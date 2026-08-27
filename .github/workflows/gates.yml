@@ -1,0 +1,61 @@
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A second push supersedes the first; nothing is learned from finishing the stale run.
+concurrency:
+  group: gates-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The floor declared in package.json engines, not the version this is
+      # developed on (26.x). CI proves the lower bound is honest; developing
+      # above it cannot.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # --ignore-scripts: every @carbon/* and @ibm/plex package runs an
+      # `ibmtelemetry` postinstall. Nothing in the build path needs a postinstall
+      # — dart-sass ships as JavaScript, and @parcel/watcher is reached only by
+      # `npm run watch` — so skipping them keeps CI quiet, offline and identical
+      # across npm versions, which differ on whether they run scripts by default.
+      - run: npm ci --ignore-scripts
+
+      # The gates. Defined once in package.json, so adding a checker there adds
+      # it here — there is no second list to drift out of sync.
+      #
+      # `verify` chains with &&, so it stops at the first failing gate rather
+      # than reporting all of them. That is deliberate: the gates are ordered by
+      # dependency, and a failed build makes every later checker meaningless.
+      - run: npm run verify
+
+      # The build writes tracked files. css/rux.css, css/rux.min.css and
+      # kitchen-sink.html are committed so the system is consumable from a raw
+      # URL with no build step — which only holds while they match their
+      # sources. A clean tree after `verify` is the proof.
+      #
+      # assets/icons.svg is deliberately excluded: `npm run icons` quarries
+      # @carbon/icons, which is not a declared dependency, so CI cannot rebuild
+      # the sprite to compare against.
+      - name: Committed build output is up to date
+        run: |
+          if ! git diff --quiet -- css kitchen-sink.html; then
+            echo "::error::Committed build output is stale — run 'npm run verify' and commit the result."
+            git diff --stat -- css kitchen-sink.html
+            exit 1
+          fi
