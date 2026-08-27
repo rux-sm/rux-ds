@@ -19,22 +19,26 @@
     The active category carries --side-nav__item--active on the <li>, and the
     current link inside it carries aria-current="page".
 
-    THREE CLASSES CARBON EMITS ARE DELIBERATELY NOT COPIED. Each was in the
-    rendered DOM and has no rule anywhere in @carbon/styles, so each would fail
-    check-classes while styling nothing:
+    THREE CLASSES THE REACT DOM CARRIES ARE NOT REPRODUCED HERE. @carbon/styles
+    has no rule behind any of them, so check-classes.mjs rejects them, and
+    leaving them out changes nothing visually:
 
-      --btn--lg                 lg is the unclassed default size; the real
-                                sizing here is --layout--size-lg. Carbon's own
-                                extraction already files this one under
-                                "size pairing is advisory" (carbon-co-classes.json).
-      --side-nav__icon--small   the chevron is styled by the compound
-                                .--side-nav__icon.--side-nav__submenu-chevron;
-                                --small is inert.
-      --text-truncate--end      Carbon's stylesheet spells it --text-truncate-end,
-                                one dash, and defines it only as a descendant of
-                                .--side-nav (the collapsed-header case). Kept at
-                                the corrected spelling; it does not apply while
-                                the menu bar is in the header.
+      --btn--lg                lg is the button's BASE size — only xs, sm and md
+                               are modifiers (_button.scss:287). The height comes
+                               from --layout--size-lg, which stays. Carbon's own
+                               extraction already files this one under "size
+                               pairing is advisory" (carbon-co-classes.json).
+      --side-nav__icon--small  the chevron is sized by the COMPOUND selector
+                               .--side-nav__icon.--side-nav__submenu-chevron
+                               (_side-nav.scss:238), both of which stay on the div.
+      --text-truncate--end     a transcription slip. Carbon's utility is
+                               --text-truncate-end, one hyphen before "end"
+                               (mixin at _text-truncate.scss:11). Kept at the
+                               corrected spelling, but note it is only ever
+                               applied as a descendant of
+                               .--side-nav a.--header__menu-item
+                               (_side-nav.scss:354-357), so it does nothing while
+                               the menu bar sits in the header.
 
     In production both header and side-nav are position:fixed. In this demo
     sandbox the header is position:absolute inside a 22rem container, so the

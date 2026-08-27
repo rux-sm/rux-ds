@@ -26,5 +26,30 @@
       <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
     </div>
 
+    <!--
+      --sm is paired with row-single deliberately. Carbon gives a width to
+      row-single+md, row-double+md|lg, row-triple+lg, xl and 2xl — and to nothing
+      at --sm (_action-set.scss:55-108). Two buttons at sm therefore keep the
+      btn-set default of full width each and run off the left of the page, which
+      is what check-rendered reported as an escape.
+    -->
+    <div class="rux--action-set rux--btn-set rux--action-set--row-single rux--action-set--sm">
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">sm · single</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--md">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">md</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--xl">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">xl</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--2xl">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button rux--action-set__action-button--expressive">2xl · expressive</button>
+    </div>
   </div>
 </section>

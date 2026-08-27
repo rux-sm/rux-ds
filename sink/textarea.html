@@ -13,6 +13,13 @@
     </div>
 
     <div class="rux--form-item">
+      <label class="rux--label" for="ta-5">Read-only</label>
+      <div class="rux--text-area__wrapper rux--text-area__wrapper--readonly">
+        <textarea id="ta-5" class="rux--text-area" rows="4" cols="50" readonly>Set upstream; not editable here.</textarea>
+      </div>
+    </div>
+
+    <div class="rux--form-item">
       <label class="rux--label" for="ta-2">Invalid</label>
       <div class="rux--text-area__wrapper" data-invalid>
         <svg class="rux--text-area__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
@@ -25,7 +32,7 @@
       <label class="rux--label" for="ta-3">Warning</label>
       <div class="rux--text-area__wrapper rux--text-area__wrapper--warn">
         <svg class="rux--text-area__invalid-icon rux--text-area__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
-        <textarea id="ta-3" class="rux--text-area" rows="4" cols="50">Careful</textarea>
+        <textarea id="ta-3" class="rux--text-area rux--text-area--warn" rows="4" cols="50">Careful</textarea>
       </div>
       <div class="rux--form-requirement">Warning message</div>
     </div>

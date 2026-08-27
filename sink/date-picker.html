@@ -1,5 +1,5 @@
 <section class="ks-sec" id="date-picker">
-  <h2>Date picker</h2><p>simple · single with calendar · range</p>
+  <h2>Date picker</h2><p>simple · single with calendar · range · the flatpickr calendar</p>
   <!-- PROVENANCE: source · cds-date-picker-input shadow DOM
        · superseded reference for light-DOM class placement (roadmap §4.1.11) -->
   <!--
@@ -20,11 +20,40 @@
       <div class="rux--date-picker-container">
         <label class="rux--label" for="dp-2">With calendar</label>
         <div class="rux--date-picker-input__wrapper">
-          <span><input id="dp-2" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy">
-          <div class="rux--date-picker__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg></div>
+          <span><input id="dp-2" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy"><svg class="rux--date-picker__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg></span>
         </div>
       </div>
     </div>
+    <div class="rux--date-picker rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--invalid">
+        <label class="rux--label" for="dp-5">Invalid</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--invalid">
+          <span><input id="dp-5" class="rux--date-picker__input rux--date-picker__input--lg rux--date-picker__input--invalid" type="text" value="31/31/2026" data-invalid aria-invalid="true"><svg class="rux--date-picker__icon rux--date-picker__icon--invalid" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></span>
+        </div>
+        <div class="rux--form-requirement">Not a valid date</div>
+      </div>
+    </div>
+
+    <div class="rux--date-picker rux--date-picker--simple">
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-6">Warning</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--warn">
+          <span><input id="dp-6" class="rux--date-picker__input rux--date-picker__input--lg rux--date-picker__input--warn" type="text" value="01/01/2020"><svg class="rux--date-picker__icon rux--date-picker__icon--warn" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg></span>
+        </div>
+        <div class="rux--form-requirement">That date is in the past</div>
+      </div>
+    </div>
+
+    <!-- --short narrows the field; Carbon pairs it on the picker and the container. -->
+    <div class="rux--date-picker rux--date-picker--simple rux--date-picker--short">
+      <div class="rux--date-picker-container rux--date-picker-container--short">
+        <label class="rux--label" for="dp-7">Short · sm</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-7" class="rux--date-picker__input rux--date-picker__input--sm" type="text" placeholder="mm/yy"></span>
+        </div>
+      </div>
+    </div>
+
     <div class="rux--date-picker rux--date-picker--range">
       <div class="rux--date-picker-container">
         <label class="rux--label" for="dp-3">From</label>
@@ -36,6 +65,119 @@
         <label class="rux--label" for="dp-4">To</label>
         <div class="rux--date-picker-input__wrapper">
           <span><input id="dp-4" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    THE CALENDAR IS NOT CARBON'S MARKUP. @carbon/styles pulls in _flatpickr.scss
+    (date-picker/_date-picker.scss:8, `@use 'flatpickr'`), which styles 14
+    UNPREFIXED .flatpickr-* class families. Those names carry no $prefix, so they
+    survive the cds→rux rename untouched and ship in css/rux.css exactly as
+    written. No Carbon documentation page describes this DOM — flatpickr builds
+    it at runtime.
+
+    STRUCTURE FROM THE RENDERED DOM, 2026-08-27 — react.carbondesignsystem.com
+    components-datepicker--range-with-calendar, calendar opened and a 10–15 range
+    selected, then read off the live page. Both React and @carbon/web-components
+    delegate to flatpickr, so this tree is the same either way.
+
+    .flatpickr-innerContainer and .flatpickr-rContainer are kept although Carbon
+    styles neither: flatpickr emits them, and Phase 5 has to reproduce this tree.
+
+    THE rux--date-picker__* CLASSES FROM THAT CAPTURE ARE DROPPED. The rendered
+    DOM puts __calendar, __month, __weekdays, __weekday, __days and __day on
+    these elements, and all six do resolve — but every rule behind them lives in
+    _date-picker-next.scss, Carbon's replacement picker, scoped under
+    `.rux--date-picker--next`. There is no such ancestor here, so on flatpickr's
+    DOM they match nothing: removing all six changes not one computed property,
+    checked in the browser. They are --btn--lg again, in a quieter form, and one
+    check-classes cannot catch — it proves a name appears in the CSS, not that
+    any selector could ever match.
+
+    That leaves this block with no rux-- class at all, which is the honest
+    shape: the calendar half of date-picker is not Carbon's markup.
+
+    Two deliberate departures from that capture, both so a styled state is not
+    left unexercised:
+      - the 20th carries .flatpickr-disabled (_flatpickr.scss:537)
+      - .inline replaces .open — the base rule is opacity:0/visibility:hidden and
+        .open is position:absolute against the input. .inline is flatpickr's own
+        always-open mode and Carbon styles it (:147), so it holds the calendar
+        open in a static page. It is still position:absolute, hence the sized
+        relative wrapper, as in ui-shell.
+
+    The dates are frozen. "Today" is the 27th because that is when the DOM was
+    read; it demonstrates .flatpickr-day.today and nothing more.
+  -->
+  <div style="position:relative;width:19.6875rem;height:21rem">
+    <div class="flatpickr-calendar rangeMode animate inline" tabindex="-1" role="application" aria-label="calendar-container">
+      <div class="flatpickr-months">
+        <span class="flatpickr-prev-month"><svg aria-label="Previous month" role="img" width="16px" height="16px" viewBox="0 0 16 16"><polygon points="5,8 10,3 10.7,3.7 6.4,8 10.7,12.3 10,13 "/></svg></span>
+        <div class="flatpickr-month">
+          <div class="flatpickr-current-month">
+            <span class="cur-month">August</span>
+            <div class="numInputWrapper">
+              <input class="numInput cur-year" type="number" tabindex="-1" aria-label="Year" value="2026">
+              <span class="arrowUp"></span>
+              <span class="arrowDown"></span>
+            </div>
+          </div>
+        </div>
+        <span class="flatpickr-next-month"><svg aria-label="Next month" role="img" width="16px" height="16px" viewBox="0 0 16 16"><polygon points="11,8 6,13 5.3,12.3 9.6,8 5.3,3.7 6,3 "/></svg></span>
+      </div>
+      <div class="flatpickr-innerContainer">
+        <div class="flatpickr-rContainer">
+          <div class="flatpickr-weekdays">
+            <div class="flatpickr-weekdaycontainer"><span class="flatpickr-weekday">S</span><span class="flatpickr-weekday">M</span><span class="flatpickr-weekday">T</span><span class="flatpickr-weekday">W</span><span class="flatpickr-weekday">Th</span><span class="flatpickr-weekday">F</span><span class="flatpickr-weekday">S</span></div>
+          </div>
+          <div class="flatpickr-days" tabindex="-1">
+            <div class="dayContainer">
+        <span class="flatpickr-day prevMonthDay" aria-label="Sunday, July 26, 2026" tabindex="-1" role="button">26</span>
+        <span class="flatpickr-day prevMonthDay" aria-label="Monday, July 27, 2026" tabindex="-1" role="button">27</span>
+        <span class="flatpickr-day prevMonthDay" aria-label="Tuesday, July 28, 2026" tabindex="-1" role="button">28</span>
+        <span class="flatpickr-day prevMonthDay" aria-label="Wednesday, July 29, 2026" tabindex="-1" role="button">29</span>
+        <span class="flatpickr-day prevMonthDay" aria-label="Thursday, July 30, 2026" tabindex="-1" role="button">30</span>
+        <span class="flatpickr-day prevMonthDay" aria-label="Friday, July 31, 2026" tabindex="-1" role="button">31</span>
+        <span class="flatpickr-day" aria-label="Saturday, August 1, 2026" tabindex="-1" role="button">1</span>
+        <span class="flatpickr-day" aria-label="Sunday, August 2, 2026" tabindex="-1" role="button">2</span>
+        <span class="flatpickr-day" aria-label="Monday, August 3, 2026" tabindex="-1" role="button">3</span>
+        <span class="flatpickr-day" aria-label="Tuesday, August 4, 2026" tabindex="-1" role="button">4</span>
+        <span class="flatpickr-day" aria-label="Wednesday, August 5, 2026" tabindex="-1" role="button">5</span>
+        <span class="flatpickr-day" aria-label="Thursday, August 6, 2026" tabindex="-1" role="button">6</span>
+        <span class="flatpickr-day" aria-label="Friday, August 7, 2026" tabindex="-1" role="button">7</span>
+        <span class="flatpickr-day" aria-label="Saturday, August 8, 2026" tabindex="-1" role="button">8</span>
+        <span class="flatpickr-day" aria-label="Sunday, August 9, 2026" tabindex="-1" role="button">9</span>
+        <span class="flatpickr-day selected startRange" aria-label="Monday, August 10, 2026" tabindex="-1" role="button">10</span>
+        <span class="flatpickr-day inRange" aria-label="Tuesday, August 11, 2026" tabindex="-1" role="button">11</span>
+        <span class="flatpickr-day inRange" aria-label="Wednesday, August 12, 2026" tabindex="-1" role="button">12</span>
+        <span class="flatpickr-day inRange" aria-label="Thursday, August 13, 2026" tabindex="-1" role="button">13</span>
+        <span class="flatpickr-day inRange" aria-label="Friday, August 14, 2026" tabindex="-1" role="button">14</span>
+        <span class="flatpickr-day selected endRange" aria-label="Saturday, August 15, 2026" tabindex="-1" role="button">15</span>
+        <span class="flatpickr-day" aria-label="Sunday, August 16, 2026" tabindex="-1" role="button">16</span>
+        <span class="flatpickr-day" aria-label="Monday, August 17, 2026" tabindex="-1" role="button">17</span>
+        <span class="flatpickr-day" aria-label="Tuesday, August 18, 2026" tabindex="-1" role="button">18</span>
+        <span class="flatpickr-day" aria-label="Wednesday, August 19, 2026" tabindex="-1" role="button">19</span>
+        <span class="flatpickr-day flatpickr-disabled" aria-label="Thursday, August 20, 2026" tabindex="-1" role="button">20</span>
+        <span class="flatpickr-day" aria-label="Friday, August 21, 2026" tabindex="-1" role="button">21</span>
+        <span class="flatpickr-day" aria-label="Saturday, August 22, 2026" tabindex="-1" role="button">22</span>
+        <span class="flatpickr-day" aria-label="Sunday, August 23, 2026" tabindex="-1" role="button">23</span>
+        <span class="flatpickr-day" aria-label="Monday, August 24, 2026" tabindex="-1" role="button">24</span>
+        <span class="flatpickr-day" aria-label="Tuesday, August 25, 2026" tabindex="-1" role="button">25</span>
+        <span class="flatpickr-day" aria-label="Wednesday, August 26, 2026" tabindex="-1" role="button">26</span>
+        <span class="flatpickr-day today" aria-label="Thursday, August 27, 2026" tabindex="-1" role="button">27</span>
+        <span class="flatpickr-day" aria-label="Friday, August 28, 2026" tabindex="-1" role="button">28</span>
+        <span class="flatpickr-day" aria-label="Saturday, August 29, 2026" tabindex="-1" role="button">29</span>
+        <span class="flatpickr-day" aria-label="Sunday, August 30, 2026" tabindex="-1" role="button">30</span>
+        <span class="flatpickr-day" aria-label="Monday, August 31, 2026" tabindex="-1" role="button">31</span>
+        <span class="flatpickr-day nextMonthDay" aria-label="Tuesday, September 1, 2026" tabindex="-1" role="button">1</span>
+        <span class="flatpickr-day nextMonthDay" aria-label="Wednesday, September 2, 2026" tabindex="-1" role="button">2</span>
+        <span class="flatpickr-day nextMonthDay" aria-label="Thursday, September 3, 2026" tabindex="-1" role="button">3</span>
+        <span class="flatpickr-day nextMonthDay" aria-label="Friday, September 4, 2026" tabindex="-1" role="button">4</span>
+        <span class="flatpickr-day nextMonthDay" aria-label="Saturday, September 5, 2026" tabindex="-1" role="button">5</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

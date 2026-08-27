@@ -11,6 +11,30 @@
     .rux--form-requirement is display:none until that selector matches.
   -->
   <div class="ks-grid">
+    <div class="rux--form-item rux--text-input-wrapper rux--text-input-wrapper--inline rux--text-input-wrapper--inline--invalid">
+      <div class="rux--text-input__label-wrapper">
+        <label class="rux--label" for="ti-9">Inline · invalid</label>
+      </div>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper" data-invalid>
+          <input id="ti-9" class="rux--text-input rux--text-input--invalid" type="text" value="—" data-invalid aria-invalid="true">
+        </div>
+        <div class="rux--form-requirement">This field is required</div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper">
+      <div class="rux--text-input__label-wrapper">
+        <label class="rux--label rux--label--disabled" for="ti-10">Disabled · helper text</label>
+      </div>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="ti-10" class="rux--text-input" type="text" value="Fixed" disabled>
+        </div>
+        <div class="rux--form__helper-text rux--form__helper-text--disabled">Set by your administrator</div>
+      </div>
+    </div>
+
     <div class="rux--form-item rux--text-input-wrapper">
       <div class="rux--text-input__label-wrapper">
         <label class="rux--label" for="ti-1">Label</label>

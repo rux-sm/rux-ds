@@ -36,6 +36,42 @@
       </div>
     </div>
     <div>
+      <label class="rux--label" for="sl-4">Read-only</label>
+      <div class="rux--slider-container rux--slider-container--readonly">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider rux--slider--readonly">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.3)"></div>
+          <div class="rux--slider__thumb-wrapper" role="slider" aria-valuemin="0" aria-valuemax="100" aria-readonly="true" style="inset-inline-start:30%;inset-block-start:50%">
+            <div class="rux--slider__thumb"></div>
+          </div>
+          <input id="sl-4" class="rux--slider__input" type="range" min="0" max="100" value="30" readonly>
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+
+    <div>
+      <label class="rux--label" for="sl-5">With validation</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.9)"></div>
+          <div class="rux--slider__thumb-wrapper" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" style="inset-inline-start:90%;inset-block-start:50%">
+            <div class="rux--slider__thumb"></div>
+          </div>
+          <input id="sl-5" class="rux--slider__input" type="range" min="0" max="100" value="90">
+        </div>
+        <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+      </div>
+      <div class="rux--slider__validation-msg rux--slider__validation-msg--invalid rux--form-requirement">
+        <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        Above the recommended range
+      </div>
+    </div>
+
+    <div>
       <label class="rux--label rux--label--disabled" for="sl-3">Disabled</label>
       <div class="rux--slider-container">
         <span class="rux--slider__range-label">0</span>
