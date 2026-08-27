@@ -16,6 +16,19 @@
     const t = e.target.closest(sel); if (t) fn(t, e);
   });
 
+  // ---- demo links must not navigate --------------------------------------
+  // The fragments use real anchors on purpose: a clickable tile IS an <a> in
+  // Carbon, and so is every breadcrumb and link item. Faking them as <div>s to
+  // stop the jump would break the markup this project exists to preserve.
+  //
+  // But the sink is ONE page, so `href="#tile"` resolves to the tile section
+  // and the browser scrolls there — which reads as "clicking the tile threw me
+  // up the page". Cancel navigation inside .ks-main only; the left nav's links
+  // are the one place a hash jump is the intended behaviour.
+  document.addEventListener('click', e => {
+    if (e.target.closest('.ks-main a[href^="#"]')) e.preventDefault();
+  });
+
   // ---- theme -------------------------------------------------------------
   $$('[data-set-theme]').forEach(b =>
     b.addEventListener('click', () => document.documentElement.dataset.theme = b.dataset.setTheme));
@@ -71,13 +84,51 @@
     const menu = lb.querySelector('.rux--list-box__menu');
     if (menu && menu.children.length) menu.hidden = !open;
   });
+  // Multiselect rows are checkboxes, so the input is the source of truth and the
+  // menu stays open. The label's `for` toggles the box natively — re-toggling it
+  // here as well would cancel itself out, which is the double-fire that made the
+  // toggle look dead in §4.1.9. So: read state on `change`, and only force a
+  // toggle for a click that missed the label.
+  const syncMulti = lb => {
+    const n = $$('.rux--checkbox', lb).filter(b => b.checked).length;
+    $$('.rux--list-box__menu-item', lb).forEach(i =>
+      i.setAttribute('aria-selected', String(!!i.querySelector('.rux--checkbox')?.checked)));
+    // The count is a Tag, not a __selection badge — Carbon renders
+    // .rux--tag.rux--tag--filter with the number in __label (verified against the
+    // rendered React DOM). The whole tag is hidden at zero, which is what Carbon
+    // does: no selection, no tag.
+    const tag = lb.querySelector('.rux--tag');
+    const count = tag?.querySelector('.rux--tag__label');
+    if (count) count.textContent = String(n);
+    tag?.toggleAttribute('hidden', n === 0);
+    lb.classList.toggle('rux--multi-select--selected', n > 0);
+  };
+  on('.rux--multi-select .rux--checkbox', 'change', box => syncMulti(box.closest('.rux--list-box')));
+  on('.rux--multi-select .rux--list-box__menu-item', 'click', (item, e) => {
+    if (e.target.closest('.rux--checkbox-wrapper')) return;   // native label/input path
+    const box = item.querySelector('.rux--checkbox');
+    if (!box) return;
+    box.checked = !box.checked;
+    syncMulti(item.closest('.rux--list-box'));
+  });
+  // Clearing resets every row. The tag is a SIBLING of the field button inside
+  // __field--wrapper, not a child of it, so this cannot also toggle the menu —
+  // which is why the old guard on the field handler is gone.
+  on('.rux--tag__close-icon', 'click', icon => {
+    const lb = icon.closest('.rux--multi-select');
+    if (!lb) return;
+    $$('.rux--checkbox', lb).forEach(b => b.checked = false);
+    syncMulti(lb);
+  });
+
   on('.rux--list-box__menu-item', 'click', item => {
     const lb = item.closest('.rux--list-box');
+    if (lb.classList.contains('rux--multi-select')) return;   // handled above
     $$('.rux--list-box__menu-item', lb).forEach(i => {
-      i.classList.remove('rux--list-box__menu-item--highlighted');
+      i.classList.remove('rux--list-box__menu-item--highlighted', 'rux--list-box__menu-item--active');
       i.setAttribute('aria-selected', 'false');
     });
-    item.classList.add('rux--list-box__menu-item--highlighted');
+    item.classList.add('rux--list-box__menu-item--highlighted', 'rux--list-box__menu-item--active');
     item.setAttribute('aria-selected', 'true');
     const label = lb.querySelector('.rux--list-box__label');
     if (label) label.textContent = item.textContent.trim();
@@ -261,6 +312,25 @@
 
   // ---- indeterminate is a property, not an attribute ---------------------
   $$('[data-ks-indeterminate]').forEach(el => el.indeterminate = true);
+
+  // ---- UI shell: hamburger toggle + side nav submenus --------------------
+  on('.rux--header__menu-toggle', 'click', btn => {
+    const header = btn.closest('.rux--header');
+    const nav = header?.querySelector('.rux--side-nav');
+    if (!nav) return;
+    const opening = btn.getAttribute('aria-expanded') !== 'true';
+    nav.style.inlineSize = opening ? '' : '0';
+    nav.classList.toggle('rux--side-nav--expanded', opening);
+    btn.setAttribute('aria-expanded', String(opening));
+  });
+  on('.rux--side-nav__submenu', 'click', btn => {
+    const item = btn.closest('.rux--side-nav__item');
+    const menu = item?.querySelector('.rux--side-nav__menu');
+    if (!menu) return;
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+  });
 
   // ---- escape closes everything -----------------------------------------
   document.addEventListener('keydown', e => {

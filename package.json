@@ -10,7 +10,7 @@
     "icons": "node tools/icons.mjs",
     "sink": "node tools/build-sink.mjs",
     "inventory": "node tools/inventory.mjs",
-    "verify": "npm run build && npm run sink && node tools/check-classes.mjs && node tools/check-co-classes.mjs && node tools/check-coverage.mjs",
+    "verify": "npm run build && npm run sink && node tools/check-classes.mjs && node tools/check-tokens.mjs && node tools/check-co-classes.mjs && node tools/check-compound.mjs && node tools/check-coverage.mjs",
     "watch": "sass --load-path=node_modules --no-source-map --watch src/app.scss css/rux.css",
     "serve": "node tools/serve.mjs"
   },

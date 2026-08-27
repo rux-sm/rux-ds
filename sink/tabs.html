@@ -1,16 +1,62 @@
 <section class="ks-sec" id="tabs">
     <h2>Tabs</h2><p>line</p>
+    <!--
+      STRUCTURE CORRECTED 2026-08-26 — the stacked underline was our bug, not
+      Carbon's. This fragment previously nested the parts:
+
+        div.rux--tabs__nav-item            <- carried --selected
+          button.rux--tabs__nav-link       <- carried the idle underline
+
+      Carbon puts BOTH classes on ONE button. From @carbon/react Tabs.tsx:
+
+        cx(`${prefix}--tabs__nav-item`, `${prefix}--tabs__nav-link`, {
+          [`${prefix}--tabs__nav-item--selected`]: selectedIndex === index, ... })
+
+      Why it mattered. `.rux--tabs__nav-link` sets border-block-end: 2px solid
+      border-subtle (css/rux.css:23901). `--nav-item--selected` sets 2px solid
+      border-interactive (:23976) and the hover rule sets 2px solid border-strong
+      (:23964) — both LATER in the cascade. On one element they override the
+      subtle border and you get a single 2px line that changes colour. Split
+      across two nested boxes they cannot override anything, so the item's border
+      painted BELOW the link's and every hovered or selected tab rendered 4px of
+      doubled edge.
+
+      This is why tabs had no "extracted from cds-tabs" provenance note and no
+      entry in docs/carbon-co-classes.json: it was inferred from the CSS rather
+      than quarried, and inferring nesting from a descendant selector is exactly
+      the mistake roadmap §4.1.7 exists to prevent. Note also that the WEB
+      COMPONENT is not the reference here — cds-tab renders an <a> in shadow DOM
+      and never emits --nav-item at all. For tabs, @carbon/react is the structure
+      @carbon/styles is written against.
+
+      __nav-item-label-wrapper is load-bearing, not decoration: for line tabs it
+      is position:relative with inset-block-start:0.0625rem (:23704), the 1px
+      nudge that optically centres the label above the underline.
+
+      DELIBERATELY NOT ADDED: roving tabindex. Carbon React sets
+      tabIndex={selected ? '0' : '-1'} and moves focus with arrow keys. Those two
+      halves only work together — the tabindex half alone would drop the
+      unselected tabs out of the Tab order with nothing able to reach them, which
+      is worse than the plain buttons we have now. Both land in Phase 5 (roadmap
+      §4.5), with the tabpanels that make aria-controls meaningful.
+    -->
     <div class="rux--tabs">
-      <div class="rux--tabs__nav">
-        <div class="rux--tabs__nav-item rux--tabs__nav-item--selected">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="true">Overview</button>
-        </div>
-        <div class="rux--tabs__nav-item">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="false">Details</button>
-        </div>
-        <div class="rux--tabs__nav-item">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="false">Activity</button>
-        </div>
+      <div class="rux--tabs__nav" role="tablist" aria-label="Tabs example">
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Overview</div>
+          </div>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Details</div>
+          </div>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Activity</div>
+          </div>
+        </button>
       </div>
     </div>
   </section>

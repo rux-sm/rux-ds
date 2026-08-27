@@ -11,8 +11,20 @@
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
           <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Selected child</span></div>
         </li>
-        <li class="rux--tree-node rux--tree-leaf-node" role="treeitem" tabindex="-1">
-          <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Second child</span></div>
+        <!--
+          This leaf carries an icon so `.rux--tree-leaf-node.rux--tree-node--with-icon`
+          (:25252, padding-inline-start: 2rem) is exercised. The parent already
+          showed --with-icon; nothing showed it on a LEAF, where Carbon indents
+          differently because there is no caret taking up the first slot.
+          check-compound flagged the pair as never sharing an element, and
+          demoing the combination is the right answer to that rather than
+          excepting it.
+        -->
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--with-icon" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label">
+            <span class="rux--tree-node__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></span>
+            <span class="rux--tree-node__label__text">Second child</span>
+          </div>
         </li>
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
           <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Disabled child</span></div>

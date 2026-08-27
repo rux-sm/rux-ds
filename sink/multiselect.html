@@ -1,36 +1,156 @@
 <section class="ks-sec" id="multiselect">
-  <h2>Multiselect</h2><p>selection count · filterable</p>
+  <h2>Multiselect</h2><p>selection tag · open with checkboxes · filterable</p>
   <!--
-    From cds-multi-select's shadow DOM. Root is `--multi-select --list-box
-    --list-box--md` — note it does NOT carry `--layout--size-*`, unlike dropdown.
-    NOTE: cds-dropdown emits `--list-box--md`, but @carbon/styles defines NO rule
-    for it — the styled size classes are `--dropdown--lg` / `--dropdown--sm`. The
-    web components are authoritative for STRUCTURE, not for which classes are
-    styled; always confirm against the compiled CSS.
+    STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
+    components-multiselect--default, class tree read out of the live page rather
+    than inferred. Six things were wrong before, and none of them was catchable by
+    any gate:
+
+      1. No `__field--wrapper`. Carbon puts one inside the root; it holds the tag
+         AND the field, as siblings.
+      2. The count is a TAG, not `__selection--multi`:
+         `.rux--tag.rux--tag--filter.rux--tag--high-contrast` > `__label` +
+         `__close-icon[role=button]`. Both are styled in our CSS, which is why
+         picking by eye was not possible — `.rux--multi-select .rux--tag`
+         (:15588) is the tell.
+      3. The field is a <button role="combobox">, not a div. `.rux--list-box__field`
+         (:9168) is a button reset — appearance:none, border:0 — which only makes
+         sense on a button.
+      4. The menu is a <ul> of <li>, not divs. (The `cds-dropdown` shadow DOM says
+         DIV; React says UL. §4.1.11 — React is authoritative for light DOM.)
+      5. Menu checkboxes nest TWICE: a bare `__checkbox-wrapper` around a
+         `form-item checkbox-wrapper`. My earlier note claiming form-item was
+         wrong here was itself wrong — Carbon uses both, nested.
+      6. `checkbox-label-text` is a <div>, and a `checkbox__validation-msg`
+         follows the label.
+
+    SIZE. React emits `cds--list-box--md` + `cds--layout--size-md`. We keep only
+    the second: @carbon/styles defines NO rule for `--list-box--md`, so using it
+    would fail check-classes for a class that does nothing. `--layout--size-md` is
+    what actually drives the height, via `--rux-layout-size-height` (:8976). This
+    also retires `--dropdown--lg`, which Carbon never emits here at all.
   -->
   <div class="ks-grid">
     <div>
-      <label class="rux--label" id="ms-1-label">Choose several</label>
-      <div class="rux--multi-select rux--list-box rux--dropdown--lg">
-        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox">
-          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">3<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
-          <span class="rux--list-box__label">Three selected</span>
-          <div class="rux--list-box__menu-icon">
-            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+        <label class="rux--label" id="ms-1-label">Choose several
+          <span class="rux--visually-hidden">Clear all selected items, 2 selected</span>
+        </label>
+        <div class="rux--multi-select rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">2</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="ms-1-menu">
+              <span class="rux--list-box__label">Choose several</span>
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </button>
           </div>
+          <ul id="ms-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-a" title="Option A">
+                      <div class="rux--checkbox-label-text">Option A</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-b" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-b" title="Option B">
+                      <div class="rux--checkbox-label-text">Option B</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-c" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-1-c" title="Option C">
+                      <div class="rux--checkbox-label-text">Option C</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+        <div class="rux--form__helper-text">Optional helper text</div>
       </div>
     </div>
+
     <div>
-      <label class="rux--label" for="ms-2">Filterable</label>
-      <div class="rux--multi-select rux--multi-select--filterable rux--list-box rux--dropdown--lg">
-        <div class="rux--list-box__field">
-          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">2<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
-          <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" placeholder="Filter…">
-          <div class="rux--list-box__menu-icon">
-            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <!--
+        FILTERABLE — the wrapper, tag and menu shape follow the verified default
+        above; the field's INPUT form is inferred, because the dump was of
+        components-multiselect--default. FilterableMultiSelect is a separate story
+        and has not been read yet. `--combo-box` is required alongside
+        `--filterable`: the input's border reset is
+        `.rux--multi-select--filterable.rux--combo-box .rux--text-input` (:15646).
+      -->
+      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+        <label class="rux--label" for="ms-2">Filterable</label>
+        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">1</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <div class="rux--list-box__field">
+              <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-controls="ms-2-menu" placeholder="Filter…">
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </div>
           </div>
+          <ul id="ms-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-2-a" title="Blueberry">
+                      <div class="rux--checkbox-label-text">Blueberry</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-b" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-2-b" title="Blackcurrant">
+                      <div class="rux--checkbox-label-text">Blackcurrant</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

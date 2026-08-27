@@ -1,43 +1,90 @@
 <section class="ks-sec" id="ui-shell">
-  <h2>UI shell</h2><p>header · global actions · side nav — wrapped in g100, which is how Carbon intends the shell to be themed. The rightmost action carries <code>--active</code>; the header nav is hidden by Carbon below 66rem.</p>
+  <h2>UI shell</h2><p>header · global actions · side nav with expandable categories — wrapped in g100, which is how Carbon intends the shell to be themed.</p>
   <!--
-    .rux--header is background-color: var(--rux-background), so it follows the
-    ambient theme rather than carrying a colour of its own. Carbon places the shell
-    inside a g100 container; without that it renders white on a white page.
+    STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-27 — react.carbondesignsystem.com
+    components-ui-shell-header--header-w-navigation-actions-and-side-nav, class tree
+    read from the live page.
+
+    Side nav categories use:
+      li.--side-nav__item.--side-nav__item--icon
+        button.--side-nav__submenu[aria-expanded]
+          div.--side-nav__icon              (category icon)
+          span.--side-nav__submenu-title
+          div.--side-nav__icon.--side-nav__icon--small.--side-nav__submenu-chevron
+        ul.--side-nav__menu
+          li.--side-nav__menu-item
+            a.--side-nav__link > span.--side-nav__link-text
+
+    The active category carries --side-nav__item--active on the <li>, and the
+    current link inside it carries aria-current="page".
+
+    In production both header and side-nav are position:fixed. In this demo
+    sandbox the header is position:absolute inside a 22rem container, so the
+    side nav needs an explicit height (see inline style).
   -->
   <div data-theme="g100" style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden;background:var(--rux-background)">
-    <header class="rux--header" style="position:absolute" aria-label="Application">
+    <header class="rux--header" style="position:absolute" aria-label="Rux DS">
       <a class="rux--skip-to-content" href="#ui-shell">Skip to main content</a>
-      <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu" aria-expanded="true"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
       <a class="rux--header__name" href="#ui-shell"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-      <nav class="rux--header__nav" aria-label="Main">
-        <ul class="rux--header__menu-bar" role="menubar">
-          <li role="none">
-            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" role="menuitem" aria-current="page">Overview</a>
+      <nav class="rux--header__nav" aria-label="Rux DS">
+        <ul class="rux--header__menu-bar">
+          <li>
+            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate--end">Overview</span></a>
           </li>
-          <li role="none"><a class="rux--header__menu-item" href="#ui-shell" role="menuitem">Reports</a></li>
+          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate--end">Reports</span></a></li>
         </ul>
       </nav>
       <div class="rux--header__global">
-        <button type="button" class="rux--header__action" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
-        <button type="button" class="rux--header__action rux--header__action--active" aria-label="Account"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
       </div>
+      <div class="rux--side-nav__overlay"></div>
+      <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
+        <ul class="rux--side-nav__items">
+          <!-- Expandable category — active, with current page -->
+          <li class="rux--side-nav__item rux--side-nav__item--active rux--side-nav__item--icon">
+            <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
+              <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></div>
+              <span class="rux--side-nav__submenu-title">Documents</span>
+              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+            </button>
+            <ul class="rux--side-nav__menu" role="menu">
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Trips</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Invoices</span></a>
+              </li>
+            </ul>
+          </li>
+          <!-- Expandable category — collapsed -->
+          <li class="rux--side-nav__item rux--side-nav__item--icon">
+            <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
+              <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></div>
+              <span class="rux--side-nav__submenu-title">Reports</span>
+              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+            </button>
+            <ul class="rux--side-nav__menu" role="menu" hidden>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Monthly</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Annual</span></a>
+              </li>
+            </ul>
+          </li>
+          <!-- Standalone link -->
+          <li class="rux--side-nav__item">
+            <a class="rux--side-nav__link" href="#ui-shell">
+              <span class="rux--side-nav__link-text">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
-    <nav class="rux--side-nav rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute" aria-label="Side navigation">
-      <ul class="rux--side-nav__items">
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link rux--side-nav__link--current" href="#ui-shell">
-            <span class="rux--side-nav__link-text">Dashboard</span>
-          </a>
-        </li>
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Trips</span></a>
-        </li>
-        <li class="rux--side-nav__divider" role="separator"></li>
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Settings</span></a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </section>

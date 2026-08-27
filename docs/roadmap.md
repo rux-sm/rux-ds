@@ -523,6 +523,59 @@ React ActionSet computes the stacked layout in JS. And
 `--pageheader-title-grid-width` defaults to `0` and is set from JS. Both are recorded
 in the fragments rather than faked; the stacking variant is simply not shown.
 
+**Four custom properties are referenced with no declarant and no fallback.** Found
+2026-08-26 by `tools/check-tokens.mjs` (§4.1.10), not by looking — they are latent,
+not visible on the sink today:
+
+| Token | Consumed as | If unset |
+|---|---|---|
+| `--rux--card--label-line-clamp` | `-webkit-line-clamp` | declaration invalid, dropped, no clamping |
+| `--rux--card--title-line-clamp` | `-webkit-line-clamp` | same |
+| `--rux--card--description-line-clamp` | `-webkit-line-clamp` | same |
+| `--rux--side-panel--scroll-animation-distance` | `inset-block-start: calc(-1px * …)` | whole `calc()` invalid |
+
+Same species as the two above: a property Carbon's React/Lit layer sets at runtime
+that light-DOM CSS never declares. The card three are reachable only through
+`__label--truncate` / `__title--truncate` / `__description--truncate`, which no
+fragment uses — so nothing renders wrong now, and a template reaching for card
+truncation would fail silently, since the *classes* resolve fine.
+
+**They are recorded, not declared.** Supplying a value would author a Carbon default
+Carbon does not ship, which §1.1 forbids — the same reasoning that leaves
+`.rux--truncated-text__expand-toggle` visibly unfixed (§4.1.5). A consumer that wants
+card truncation sets the property inline, which is Carbon's own contract. The six
+*other* unresolved references in the build all carry fallbacks and are fine; that is
+Carbon's override-hook idiom, not a defect.
+
+#### 4.1.10 The gates were all name-based on classes, and none watched tokens
+
+`check-classes.mjs` proves a class has a rule behind it. Nothing proved the same for a
+token, and the token failure is quieter: an unresolved `var()` with no fallback
+invalidates the whole declaration, the browser drops it, and the element renders with
+whatever it inherited. No error, no 404, no failing class.
+
+**§4.1.2 is the precedent and the proof this was a real hole.** Omitting
+`@carbon/styles/scss/layout` left `--rux-layout-size-height-lg` referenced 27 times and
+declared 3. The build was clean, every class resolved, every gate passed, and buttons
+were collapsed to text height. It took a visual review to find. `tools/check-tokens.mjs`
+catches that shape statically.
+
+Two rules make it usable rather than noisy:
+
+- **A reference with a fallback is not a finding.** 14 in the current build have one.
+  Flagging them would make the gate an exception list, which measures the list rather
+  than the rule.
+- **Genuinely unset properties go in `KNOWN` with a reason**, following
+  `docs/carbon-co-classes.json`'s `_ignored` precedent — reviewable, and regenerating
+  does not silently resurrect them.
+
+It is deliberately narrower than §4.8's planned token snapshot: that catches a *value*
+moving under a stable name, this catches a *name* resolving to nothing. Both are wanted.
+
+> Verified by removing a `KNOWN` entry and by injecting a fabricated token — both
+> failed the gate; the same token with a fallback passed. A gate that has only ever
+> exited 0 has not been tested.
+
 > **The pattern across §4.1.5, §4.1.7 and this section is one defect wearing three
 > costumes: a Carbon class that needs a partner class to mean anything.**
 > `docs/carbon-co-classes.json` catches the cases the web components demonstrate.
@@ -537,6 +590,98 @@ dash is exactly the find/replace this step exists to avoid, and it would put the
 convention back out of Carbon's reach for the rest of the strip. rux-ui is frozen and
 never loaded alongside this system, so the shared `--rux-*` namespace cannot collide in
 practice. If the two must ever coexist, `$prefix` is the single place that changes.
+
+#### 4.1.11 Inferred markup, and the wrong reference for it
+
+Review feedback: *the tabs are painting an extra border on hover and select.*
+Correct, and it was ours. `@carbon/react` puts **both** `--tabs__nav-item` and
+`--tabs__nav-link` on one button:
+
+```js
+cx(`${prefix}--tabs__nav-item`, `${prefix}--tabs__nav-link`,
+   { [`${prefix}--tabs__nav-item--selected`]: selectedIndex === index, … })
+```
+
+The fragment nested them instead. `--nav-link` sets `border-block-end: 2px solid
+border-subtle` (css/rux.css:23901); `--nav-item--selected` (:23976) and the hover
+rule (:23964) set their own 2px and both come **later**. On one element they
+override it — one line that changes colour. On two nested boxes they cannot
+override anything, so the outer border painted below the inner one and every
+hovered or selected tab drew 4px of doubled edge.
+
+> **§3 is wrong for structure, and this is the correction.** It names
+> `@carbon/web-components` as "the only place Carbon's markup structure exists
+> outside React". For **light-DOM class placement it is the wrong reference**:
+> `cds-tab` renders an `<a>` in shadow DOM and never emits `--nav-item` at all.
+> `@carbon/styles` is the CSS `@carbon/react` consumes, so **React is
+> authoritative for structure**; web components remain the better reference for
+> ARIA wiring and keyboard contracts, which React buries in hooks. Read the
+> rendered DOM rather than the JSX — the conditionals are where the guessing
+> creeps back in.
+
+**Only 5 of 64 fragments were ever quarried** — multiselect, text-input,
+combo-box, date-picker, dropdown. The rest were inferred from CSS selectors, and
+inferring nesting from a descendant selector is the mistake §4.1.7 exists to
+prevent. Tabs is what that costs.
+
+**`tools/check-compound.mjs` (new) narrows the search.** Carbon writes `.a.b`
+when both classes belong on one element; if a fragment splits such a pair across
+two, that is this defect. 173 structural pairs, and reconstructing the old tabs
+markup it flags the bug. Two more real defects came out of its first run:
+
+- **inline-loading had its status classes on wrappers, not on the icon.**
+  `--checkmark-container` sets `fill` (:18614) and `--error` sets `block-size`,
+  `inline-size` and `fill` (:18639) — all icon properties, inert on a `<div>`.
+  React puts both on the SVG itself. Worse, the fragment carried
+  `__checkmark` (:18626), stroke-animation styling for an inline path Carbon no
+  longer renders: its `fill: none` erased the tick outright. Neither `__checkmark`
+  nor `__svg` is emitted by React here; both were dropped.
+- **dialog split `-content` from `-scroll-content`.** Carbon defines the compound
+  and **no** descendant form (:13719). `-content` owns `overflow-y: auto`,
+  `-scroll-content` owns the fade mask — so nested, the mask sat on an element
+  that does not scroll and never tracked the scroll position.
+
+The third finding, `tree-leaf-node` + `--with-icon`, was not a bug: Carbon styles
+a leaf that has an icon and nothing demoed one. **That is the pattern to keep** —
+a finding is answered by merging the split or by demoing the combination, never
+by an ignore list. The checker carries no entries, and if a case ever needs one it
+should be demoted to a diagnostic instead.
+
+What it still cannot see: pairs Carbon never writes as a compound selector, wrong
+nesting *order*, a missing wrapper, or the wrong element type. It narrows the
+field for a reference diff against React; it does not verify structure.
+
+**Multiselect was the first fragment done by reference diff, and it justified the
+method.** Reading the class tree out of the rendered React story found six faults
+no gate could see — several of which I had already "fixed" twice by inference:
+
+| Was | Actually |
+|---|---|
+| no wrapper | `__wrapper` + `list-box__wrapper`, label inside |
+| no `__field--wrapper` | one, holding the tag and the field as **siblings** |
+| `__selection--multi` badge | `.rux--tag.rux--tag--filter.rux--tag--high-contrast` |
+| `div` field | `<button role="combobox">` |
+| `div` menu and items | `<ul>` of `<li>` |
+| one bare `checkbox-wrapper` | bare wrapper **around** `form-item checkbox-wrapper` |
+
+Both badge forms are fully styled in our CSS, so no amount of reading selectors
+could have chosen between them — `.rux--multi-select .rux--tag` (:15588) is the
+only tell, and it is one line. **That is the argument for the DOM diff over
+reading CSS or JSX.** It also retired `--dropdown--lg`, which Carbon never emits
+here: size is `--layout--size-md`, and `--list-box--md` is dropped because
+@carbon/styles defines no rule for it and check-classes would fail on a class
+that does nothing.
+
+> **The checker gained one rule from this.** Our own new markup tripped it on
+> `--tag` + `--layout--size-md`, a false positive: Carbon writes
+> `.a.b, .a :where(.b)` — one rule meaning "b carries the token itself OR
+> inherits it from ancestor a". Both are correct markup, so pairs written that
+> way are excluded (165 pairs, down from 173). A *plain* descendant alternative
+> does not exonerate — tabs has one and its nesting was still wrong.
+
+Still unverified and marked as such in the fragment: the filterable variant,
+which is a separate story. `sink/fluid.html` still carries the old
+`__selection--multi` badge and has the same defect pending its own diff.
 
 ### 4.2 Phase 2 — Inventory
 

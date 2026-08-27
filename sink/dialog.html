@@ -7,10 +7,16 @@
         <p class="rux--dialog-header__heading">Dialog heading</p>
         <button type="button" class="rux--dialog__close" aria-label="Close" style="position:absolute;inset-block-start:0;inset-inline-end:0"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button>
       </div>
-      <div class="rux--dialog-content">
-        <div class="rux--dialog-scroll-content rux--dialog-scroll-content--no-fade">
-          <p>Body content for the dialog.</p>
-        </div>
+      <!--
+        Both classes on ONE element, corrected 2026-08-26. Carbon defines
+        `.rux--dialog-content.rux--dialog-scroll-content` (:13719) and NO
+        descendant form, so nesting them split the pair: `-content` owns
+        overflow-y:auto and the grid area (:13647) while `-scroll-content` owns
+        the fade mask (:13664). On separate boxes the mask sat on an element that
+        does not scroll, so the fade never tracked the scroll position.
+      -->
+      <div class="rux--dialog-content rux--dialog-scroll-content rux--dialog-scroll-content--no-fade">
+        <p>Body content for the dialog.</p>
       </div>
       <div class="rux--dialog-footer">
         <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
@@ -21,7 +27,9 @@
       <div class="rux--dialog__header">
         <p class="rux--dialog-header__heading">Destructive action</p>
       </div>
-      <div class="rux--dialog-content"><p>Danger variant.</p></div>
+      <!-- Paired here too, and without --no-fade, so the danger-specific mask
+           rule (:13719) is actually exercised by something. -->
+      <div class="rux--dialog-content rux--dialog-scroll-content"><p>Danger variant.</p></div>
       <div class="rux--dialog-footer rux--dialog-footer--three-button">
         <button type="button" class="rux--btn rux--btn--ghost">Discard</button>
         <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>

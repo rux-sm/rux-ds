@@ -806,17 +806,63 @@
 
 <section class="ks-sec" id="tabs">
     <h2>Tabs</h2><p>line</p>
+    <!--
+      STRUCTURE CORRECTED 2026-08-26 — the stacked underline was our bug, not
+      Carbon's. This fragment previously nested the parts:
+
+        div.rux--tabs__nav-item            <- carried --selected
+          button.rux--tabs__nav-link       <- carried the idle underline
+
+      Carbon puts BOTH classes on ONE button. From @carbon/react Tabs.tsx:
+
+        cx(`${prefix}--tabs__nav-item`, `${prefix}--tabs__nav-link`, {
+          [`${prefix}--tabs__nav-item--selected`]: selectedIndex === index, ... })
+
+      Why it mattered. `.rux--tabs__nav-link` sets border-block-end: 2px solid
+      border-subtle (css/rux.css:23901). `--nav-item--selected` sets 2px solid
+      border-interactive (:23976) and the hover rule sets 2px solid border-strong
+      (:23964) — both LATER in the cascade. On one element they override the
+      subtle border and you get a single 2px line that changes colour. Split
+      across two nested boxes they cannot override anything, so the item's border
+      painted BELOW the link's and every hovered or selected tab rendered 4px of
+      doubled edge.
+
+      This is why tabs had no "extracted from cds-tabs" provenance note and no
+      entry in docs/carbon-co-classes.json: it was inferred from the CSS rather
+      than quarried, and inferring nesting from a descendant selector is exactly
+      the mistake roadmap §4.1.7 exists to prevent. Note also that the WEB
+      COMPONENT is not the reference here — cds-tab renders an <a> in shadow DOM
+      and never emits --nav-item at all. For tabs, @carbon/react is the structure
+      @carbon/styles is written against.
+
+      __nav-item-label-wrapper is load-bearing, not decoration: for line tabs it
+      is position:relative with inset-block-start:0.0625rem (:23704), the 1px
+      nudge that optically centres the label above the underline.
+
+      DELIBERATELY NOT ADDED: roving tabindex. Carbon React sets
+      tabIndex={selected ? '0' : '-1'} and moves focus with arrow keys. Those two
+      halves only work together — the tabindex half alone would drop the
+      unselected tabs out of the Tab order with nothing able to reach them, which
+      is worse than the plain buttons we have now. Both land in Phase 5 (roadmap
+      §4.5), with the tabpanels that make aria-controls meaningful.
+    -->
     <div class="rux--tabs">
-      <div class="rux--tabs__nav">
-        <div class="rux--tabs__nav-item rux--tabs__nav-item--selected">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="true">Overview</button>
-        </div>
-        <div class="rux--tabs__nav-item">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="false">Details</button>
-        </div>
-        <div class="rux--tabs__nav-item">
-          <button class="rux--tabs__nav-link" role="tab" type="button" aria-selected="false">Activity</button>
-        </div>
+      <div class="rux--tabs__nav" role="tablist" aria-label="Tabs example">
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Overview</div>
+          </div>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Details</div>
+          </div>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Activity</div>
+          </div>
+        </button>
       </div>
     </div>
   </section>
@@ -889,25 +935,42 @@
     minmax(0,1fr)) and --rux-grid-columns is set responsively (4 / 8 / 16).
     Column tokens are emitted by @carbon/grid as literal --cds-grid-* names, which
     tools/build.mjs renames; see roadmap §4.1.2.
+
+    WHY THE GAPS ARE WIDER THAN THE COLUMNS, AND WHY THAT IS NOT A DEFECT.
+    The gutter is margin-inline on the column (css/rux.css:280), not padding, so a
+    background on the column stops at the gutter and the boxes read as small
+    islands. --rux-grid-gutter is 2rem, i.e. 16px of margin per side. .ks-main caps
+    content at 64rem, leaving ~912px of track: 912/16 = 57px per column, minus 32px
+    of gutter = a ~25px box sitting in a 32px gap. Carbon's grid is drawn for a
+    99rem page, not a 64rem reading column. The 4/4/8 row below measures
+    196/196/424px, which is the check that proves the grid itself (roadmap §4.1.9).
+
+    THE LABELS, HOWEVER, WERE A REAL BUG. These boxes carried `padding:.5rem`,
+    which at a 25px column leaves a 9px content box — and "16" at body-01 (14px) is
+    about 16px wide, so every two-digit number overflowed its own background by
+    ~3.5px per side and sat visibly outside the box. Corrected 2026-08-26 to
+    vertical-only padding at .75rem, which fits the digits inside the column.
+    Below roughly a 1100px viewport the columns get too narrow for even that; the
+    grid stays correct, the numbering just runs out of room.
   -->
-  <div class="ks-label">all 16 columns, one span each</div>
+  <div class="ks-label">all 16 columns, one span each — the 2rem gutter is margin, so at this width the gap is wider than the column itself</div>
   <div class="rux--css-grid" style="margin-block-end:1.5rem">
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">1</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">2</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">3</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">4</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">5</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">6</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">7</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">8</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">9</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">10</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">11</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">12</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">13</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">14</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">15</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">16</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">1</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">2</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">3</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">4</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">5</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">6</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">7</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">8</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">9</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">10</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">11</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">12</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">13</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">14</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">15</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">16</div>
   </div>
 
   <div class="ks-label">spans — 4 · 4 · 8</div>
@@ -1268,7 +1331,23 @@
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </div>
         </div>
-        <div id="dd-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+        <div id="dd-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+          <div class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Option A
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option B
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option C
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="rux--form__helper-text">Optional helper text</div>
     </div>
@@ -1283,14 +1362,20 @@
           </div>
         </div>
         <div id="dd-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1">
-          <div class="rux--list-box__menu-item rux--list-box__menu-item--highlighted" role="option" aria-selected="true">
-            <div class="rux--list-box__menu-item__option">Option A</div>
+          <div class="rux--list-box__menu-item rux--list-box__menu-item--highlighted rux--list-box__menu-item--active" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Option A
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
           </div>
           <div class="rux--list-box__menu-item" role="option" aria-selected="false">
-            <div class="rux--list-box__menu-item__option">Option B</div>
+            <div class="rux--list-box__menu-item__option">Option B
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
           </div>
           <div class="rux--list-box__menu-item" role="option" aria-selected="false">
-            <div class="rux--list-box__menu-item__option">Option C</div>
+            <div class="rux--list-box__menu-item__option">Option C
+              <svg class="rux--list-box__menu-item__selected-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1385,7 +1470,17 @@
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </div>
         </div>
-        <div class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+        <div class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Apple</div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Apricot</div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Blackberry</div>
+          </div>
+        </div>
       </div>
     </div>
     <div>
@@ -1403,38 +1498,158 @@
 </section>
 
 <section class="ks-sec" id="multiselect">
-  <h2>Multiselect</h2><p>selection count · filterable</p>
+  <h2>Multiselect</h2><p>selection tag · open with checkboxes · filterable</p>
   <!--
-    From cds-multi-select's shadow DOM. Root is `--multi-select --list-box
-    --list-box--md` — note it does NOT carry `--layout--size-*`, unlike dropdown.
-    NOTE: cds-dropdown emits `--list-box--md`, but @carbon/styles defines NO rule
-    for it — the styled size classes are `--dropdown--lg` / `--dropdown--sm`. The
-    web components are authoritative for STRUCTURE, not for which classes are
-    styled; always confirm against the compiled CSS.
+    STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
+    components-multiselect--default, class tree read out of the live page rather
+    than inferred. Six things were wrong before, and none of them was catchable by
+    any gate:
+
+      1. No `__field--wrapper`. Carbon puts one inside the root; it holds the tag
+         AND the field, as siblings.
+      2. The count is a TAG, not `__selection--multi`:
+         `.rux--tag.rux--tag--filter.rux--tag--high-contrast` > `__label` +
+         `__close-icon[role=button]`. Both are styled in our CSS, which is why
+         picking by eye was not possible — `.rux--multi-select .rux--tag`
+         (:15588) is the tell.
+      3. The field is a <button role="combobox">, not a div. `.rux--list-box__field`
+         (:9168) is a button reset — appearance:none, border:0 — which only makes
+         sense on a button.
+      4. The menu is a <ul> of <li>, not divs. (The `cds-dropdown` shadow DOM says
+         DIV; React says UL. §4.1.11 — React is authoritative for light DOM.)
+      5. Menu checkboxes nest TWICE: a bare `__checkbox-wrapper` around a
+         `form-item checkbox-wrapper`. My earlier note claiming form-item was
+         wrong here was itself wrong — Carbon uses both, nested.
+      6. `checkbox-label-text` is a <div>, and a `checkbox__validation-msg`
+         follows the label.
+
+    SIZE. React emits `cds--list-box--md` + `cds--layout--size-md`. We keep only
+    the second: @carbon/styles defines NO rule for `--list-box--md`, so using it
+    would fail check-classes for a class that does nothing. `--layout--size-md` is
+    what actually drives the height, via `--rux-layout-size-height` (:8976). This
+    also retires `--dropdown--lg`, which Carbon never emits here at all.
   -->
   <div class="ks-grid">
     <div>
-      <label class="rux--label" id="ms-1-label">Choose several</label>
-      <div class="rux--multi-select rux--list-box rux--dropdown--lg">
-        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox">
-          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">3<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
-          <span class="rux--list-box__label">Three selected</span>
-          <div class="rux--list-box__menu-icon">
-            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+        <label class="rux--label" id="ms-1-label">Choose several
+          <span class="rux--visually-hidden">Clear all selected items, 2 selected</span>
+        </label>
+        <div class="rux--multi-select rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">2</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="ms-1-menu">
+              <span class="rux--list-box__label">Choose several</span>
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </button>
           </div>
+          <ul id="ms-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-a" title="Option A">
+                      <div class="rux--checkbox-label-text">Option A</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-b" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-b" title="Option B">
+                      <div class="rux--checkbox-label-text">Option B</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-c" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-1-c" title="Option C">
+                      <div class="rux--checkbox-label-text">Option C</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+        <div class="rux--form__helper-text">Optional helper text</div>
       </div>
     </div>
+
     <div>
-      <label class="rux--label" for="ms-2">Filterable</label>
-      <div class="rux--multi-select rux--multi-select--filterable rux--list-box rux--dropdown--lg">
-        <div class="rux--list-box__field">
-          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">2<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
-          <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" placeholder="Filter…">
-          <div class="rux--list-box__menu-icon">
-            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <!--
+        FILTERABLE — the wrapper, tag and menu shape follow the verified default
+        above; the field's INPUT form is inferred, because the dump was of
+        components-multiselect--default. FilterableMultiSelect is a separate story
+        and has not been read yet. `--combo-box` is required alongside
+        `--filterable`: the input's border reset is
+        `.rux--multi-select--filterable.rux--combo-box .rux--text-input` (:15646).
+      -->
+      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+        <label class="rux--label" for="ms-2">Filterable</label>
+        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">1</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <div class="rux--list-box__field">
+              <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-controls="ms-2-menu" placeholder="Filter…">
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </div>
           </div>
+          <ul id="ms-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-2-a" title="Blueberry">
+                      <div class="rux--checkbox-label-text">Blueberry</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-b" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-2-b" title="Blackcurrant">
+                      <div class="rux--checkbox-label-text">Blackcurrant</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1617,10 +1832,16 @@
         <p class="rux--dialog-header__heading">Dialog heading</p>
         <button type="button" class="rux--dialog__close" aria-label="Close" style="position:absolute;inset-block-start:0;inset-inline-end:0"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button>
       </div>
-      <div class="rux--dialog-content">
-        <div class="rux--dialog-scroll-content rux--dialog-scroll-content--no-fade">
-          <p>Body content for the dialog.</p>
-        </div>
+      <!--
+        Both classes on ONE element, corrected 2026-08-26. Carbon defines
+        `.rux--dialog-content.rux--dialog-scroll-content` (:13719) and NO
+        descendant form, so nesting them split the pair: `-content` owns
+        overflow-y:auto and the grid area (:13647) while `-scroll-content` owns
+        the fade mask (:13664). On separate boxes the mask sat on an element that
+        does not scroll, so the fade never tracked the scroll position.
+      -->
+      <div class="rux--dialog-content rux--dialog-scroll-content rux--dialog-scroll-content--no-fade">
+        <p>Body content for the dialog.</p>
       </div>
       <div class="rux--dialog-footer">
         <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
@@ -1631,7 +1852,9 @@
       <div class="rux--dialog__header">
         <p class="rux--dialog-header__heading">Destructive action</p>
       </div>
-      <div class="rux--dialog-content"><p>Danger variant.</p></div>
+      <!-- Paired here too, and without --no-fade, so the danger-specific mask
+           rule (:13719) is actually exercised by something. -->
+      <div class="rux--dialog-content rux--dialog-scroll-content"><p>Danger variant.</p></div>
       <div class="rux--dialog-footer rux--dialog-footer--three-button">
         <button type="button" class="rux--btn rux--btn--ghost">Discard</button>
         <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
@@ -1909,6 +2132,30 @@
 
 <section class="ks-sec" id="inline-loading">
   <h2>Inline loading</h2><p>active · finished · error</p>
+  <!--
+    STRUCTURE CORRECTED 2026-08-26, from @carbon/react InlineLoading.tsx. The
+    status classes go on the ICON SVG, not on a wrapper. The previous markup put
+    them on wrappers, which reads fine and renders wrong, because both classes
+    style an icon:
+
+      .rux--inline-loading__checkmark-container { fill: support-success }   :18614
+      .rux--inline-loading--error { block-size:1rem; inline-size:1rem; fill } :18639
+
+    On a <div> the fill does nothing and the sizes size the wrong box. React:
+
+      finished:  <CheckmarkFilled className="…__checkmark-container" />
+      error:     <ErrorFilled     className="…--error" />
+
+    both inside <div class="…__animation">, with the wrapper only ever
+    `cds--inline-loading`.
+
+    DROPPED, deliberately: `__checkmark` and `__svg`. React emits neither here.
+    `.rux--inline-loading__checkmark` (:18626) is stroke-animation styling —
+    fill:none, stroke-dasharray:12 — for an inline path Carbon no longer renders;
+    applied to our <use> of a FILLED icon its fill:none simply erased the tick.
+    `__svg` belongs to the spinner (`.rux--loading--small .rux--inline-loading__svg`
+    :18647), not to the error icon.
+  -->
   <div class="ks-row">
     <div class="rux--inline-loading">
       <div class="rux--inline-loading__animation">
@@ -1919,19 +2166,19 @@
           </svg>
         </div>
       </div>
-      <p class="rux--inline-loading__text">Submitting…</p>
+      <div class="rux--inline-loading__text">Submitting…</div>
     </div>
     <div class="rux--inline-loading">
       <div class="rux--inline-loading__animation">
-        <div class="rux--inline-loading__checkmark-container">
-          <svg class="rux--inline-loading__checkmark" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
-        </div>
+        <svg class="rux--inline-loading__checkmark-container" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
       </div>
-      <p class="rux--inline-loading__text">Submitted</p>
+      <div class="rux--inline-loading__text">Submitted</div>
     </div>
-    <div class="rux--inline-loading rux--inline-loading--error">
-      <div class="rux--inline-loading__animation"><svg class="rux--inline-loading__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></div>
-      <p class="rux--inline-loading__text">Failed</p>
+    <div class="rux--inline-loading">
+      <div class="rux--inline-loading__animation">
+        <svg class="rux--inline-loading--error" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>
+      </div>
+      <div class="rux--inline-loading__text">Failed</div>
     </div>
   </div>
 </section>
@@ -2001,8 +2248,20 @@
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
           <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Selected child</span></div>
         </li>
-        <li class="rux--tree-node rux--tree-leaf-node" role="treeitem" tabindex="-1">
-          <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Second child</span></div>
+        <!--
+          This leaf carries an icon so `.rux--tree-leaf-node.rux--tree-node--with-icon`
+          (:25252, padding-inline-start: 2rem) is exercised. The parent already
+          showed --with-icon; nothing showed it on a LEAF, where Carbon indents
+          differently because there is no caret taking up the first slot.
+          check-compound flagged the pair as never sharing an element, and
+          demoing the combination is the right answer to that rather than
+          excepting it.
+        -->
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--with-icon" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label">
+            <span class="rux--tree-node__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></span>
+            <span class="rux--tree-node__label__text">Second child</span>
+          </div>
         </li>
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
           <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Disabled child</span></div>
@@ -2242,46 +2501,73 @@
 </section>
 
 <section class="ks-sec" id="ui-shell">
-  <h2>UI shell</h2><p>header · global actions · side nav — wrapped in g100, which is how Carbon intends the shell to be themed. The rightmost action carries <code>--active</code>; the header nav is hidden by Carbon below 66rem.</p>
+  <h2>UI shell</h2><p>header · global actions · side nav with expandable categories — wrapped in g100, which is how Carbon intends the shell to be themed.</p>
   <!--
-    .rux--header is background-color: var(--rux-background), so it follows the
-    ambient theme rather than carrying a colour of its own. Carbon places the shell
-    inside a g100 container; without that it renders white on a white page.
+    STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-27 — react.carbondesignsystem.com
+    components-ui-shell-header--header-w-navigation-actions-and-side-nav.
+    See sink/ui-shell.html for full provenance notes.
   -->
   <div data-theme="g100" style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden;background:var(--rux-background)">
-    <header class="rux--header" style="position:absolute" aria-label="Application">
+    <header class="rux--header" style="position:absolute" aria-label="Rux DS">
       <a class="rux--skip-to-content" href="#ui-shell">Skip to main content</a>
-      <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu" aria-expanded="true"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
       <a class="rux--header__name" href="#ui-shell"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-      <nav class="rux--header__nav" aria-label="Main">
-        <ul class="rux--header__menu-bar" role="menubar">
-          <li role="none">
-            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" role="menuitem" aria-current="page">Overview</a>
+      <nav class="rux--header__nav" aria-label="Rux DS">
+        <ul class="rux--header__menu-bar">
+          <li>
+            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate--end">Overview</span></a>
           </li>
-          <li role="none"><a class="rux--header__menu-item" href="#ui-shell" role="menuitem">Reports</a></li>
+          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate--end">Reports</span></a></li>
         </ul>
       </nav>
       <div class="rux--header__global">
-        <button type="button" class="rux--header__action" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
-        <button type="button" class="rux--header__action rux--header__action--active" aria-label="Account"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
       </div>
+      <div class="rux--side-nav__overlay"></div>
+      <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
+        <ul class="rux--side-nav__items">
+          <li class="rux--side-nav__item rux--side-nav__item--active rux--side-nav__item--icon">
+            <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
+              <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></div>
+              <span class="rux--side-nav__submenu-title">Documents</span>
+              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+            </button>
+            <ul class="rux--side-nav__menu" role="menu">
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Trips</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Invoices</span></a>
+              </li>
+            </ul>
+          </li>
+          <li class="rux--side-nav__item rux--side-nav__item--icon">
+            <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
+              <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></div>
+              <span class="rux--side-nav__submenu-title">Reports</span>
+              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+            </button>
+            <ul class="rux--side-nav__menu" role="menu" hidden>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Monthly</span></a>
+              </li>
+              <li class="rux--side-nav__menu-item">
+                <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Annual</span></a>
+              </li>
+            </ul>
+          </li>
+          <li class="rux--side-nav__item">
+            <a class="rux--side-nav__link" href="#ui-shell">
+              <span class="rux--side-nav__link-text">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
-    <nav class="rux--side-nav rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute" aria-label="Side navigation">
-      <ul class="rux--side-nav__items">
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link rux--side-nav__link--current" href="#ui-shell">
-            <span class="rux--side-nav__link-text">Dashboard</span>
-          </a>
-        </li>
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Trips</span></a>
-        </li>
-        <li class="rux--side-nav__divider" role="separator"></li>
-        <li class="rux--side-nav__item">
-          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Settings</span></a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </section>
 

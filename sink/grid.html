@@ -5,25 +5,42 @@
     minmax(0,1fr)) and --rux-grid-columns is set responsively (4 / 8 / 16).
     Column tokens are emitted by @carbon/grid as literal --cds-grid-* names, which
     tools/build.mjs renames; see roadmap §4.1.2.
+
+    WHY THE GAPS ARE WIDER THAN THE COLUMNS, AND WHY THAT IS NOT A DEFECT.
+    The gutter is margin-inline on the column (css/rux.css:280), not padding, so a
+    background on the column stops at the gutter and the boxes read as small
+    islands. --rux-grid-gutter is 2rem, i.e. 16px of margin per side. .ks-main caps
+    content at 64rem, leaving ~912px of track: 912/16 = 57px per column, minus 32px
+    of gutter = a ~25px box sitting in a 32px gap. Carbon's grid is drawn for a
+    99rem page, not a 64rem reading column. The 4/4/8 row below measures
+    196/196/424px, which is the check that proves the grid itself (roadmap §4.1.9).
+
+    THE LABELS, HOWEVER, WERE A REAL BUG. These boxes carried `padding:.5rem`,
+    which at a 25px column leaves a 9px content box — and "16" at body-01 (14px) is
+    about 16px wide, so every two-digit number overflowed its own background by
+    ~3.5px per side and sat visibly outside the box. Corrected 2026-08-26 to
+    vertical-only padding at .75rem, which fits the digits inside the column.
+    Below roughly a 1100px viewport the columns get too narrow for even that; the
+    grid stays correct, the numbering just runs out of room.
   -->
-  <div class="ks-label">all 16 columns, one span each</div>
+  <div class="ks-label">all 16 columns, one span each — the 2rem gutter is margin, so at this width the gap is wider than the column itself</div>
   <div class="rux--css-grid" style="margin-block-end:1.5rem">
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">1</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">2</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">3</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">4</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">5</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">6</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">7</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">8</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">9</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">10</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">11</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">12</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">13</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">14</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">15</div>
-    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem;text-align:center">16</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">1</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">2</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">3</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">4</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">5</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">6</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">7</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">8</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">9</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">10</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">11</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">12</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">13</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">14</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">15</div>
+    <div class="rux--css-grid-column rux--col-span-1 ks-box" style="padding:.5rem 0;text-align:center;font-size:.75rem">16</div>
   </div>
 
   <div class="ks-label">spans — 4 · 4 · 8</div>
