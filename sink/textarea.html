@@ -1,0 +1,39 @@
+<section class="ks-sec" id="textarea">
+  <h2>Text area</h2><p>default · invalid · warning · disabled</p>
+  <div class="ks-grid">
+    <div class="rux--form-item">
+      <div class="rux--text-area__label-wrapper">
+        <label class="rux--label" for="ta-1">Notes</label>
+      </div>
+      <div class="rux--text-area__wrapper">
+        <textarea id="ta-1" class="rux--text-area" rows="4" cols="50" placeholder="Placeholder"></textarea>
+      </div>
+      <div class="rux--form__helper-text">Optional helper text</div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="ta-2">Invalid</label>
+      <div class="rux--text-area__wrapper" data-invalid>
+        <svg class="rux--text-area__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+        <textarea id="ta-2" class="rux--text-area rux--text-area--invalid" rows="4" cols="50" data-invalid aria-invalid="true">Bad</textarea>
+      </div>
+      <div class="rux--form-requirement">Error message</div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="ta-3">Warning</label>
+      <div class="rux--text-area__wrapper rux--text-area__wrapper--warn">
+        <svg class="rux--text-area__invalid-icon rux--text-area__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        <textarea id="ta-3" class="rux--text-area" rows="4" cols="50">Careful</textarea>
+      </div>
+      <div class="rux--form-requirement">Warning message</div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label rux--label--disabled" for="ta-4">Disabled</label>
+      <div class="rux--text-area__wrapper">
+        <textarea id="ta-4" class="rux--text-area" rows="4" cols="50" disabled>Disabled</textarea>
+      </div>
+    </div>
+  </div>
+</section>

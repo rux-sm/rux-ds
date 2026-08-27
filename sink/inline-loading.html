@@ -1,0 +1,28 @@
+<section class="ks-sec" id="inline-loading">
+  <h2>Inline loading</h2><p>active · finished · error</p>
+  <div class="ks-row">
+    <div class="rux--inline-loading">
+      <div class="rux--inline-loading__animation">
+        <div class="rux--loading rux--loading--small">
+          <svg class="rux--loading__svg" viewBox="0 0 100 100">
+            <circle class="rux--loading__background" cx="50%" cy="50%" r="42"></circle>
+            <circle class="rux--loading__stroke" cx="50%" cy="50%" r="42"></circle>
+          </svg>
+        </div>
+      </div>
+      <p class="rux--inline-loading__text">Submitting…</p>
+    </div>
+    <div class="rux--inline-loading">
+      <div class="rux--inline-loading__animation">
+        <div class="rux--inline-loading__checkmark-container">
+          <svg class="rux--inline-loading__checkmark" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        </div>
+      </div>
+      <p class="rux--inline-loading__text">Submitted</p>
+    </div>
+    <div class="rux--inline-loading rux--inline-loading--error">
+      <div class="rux--inline-loading__animation"><svg class="rux--inline-loading__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></div>
+      <p class="rux--inline-loading__text">Failed</p>
+    </div>
+  </div>
+</section>

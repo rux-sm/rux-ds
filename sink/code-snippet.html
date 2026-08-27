@@ -1,0 +1,22 @@
+<section class="ks-sec" id="code-snippet">
+  <h2>Code snippet</h2><p>inline · single line · multi line</p>
+  <div style="display:grid;gap:1.5rem;max-width:36rem">
+    <div>
+      <code class="rux--snippet rux--snippet--inline"><span>npm run build</span></code>
+    </div>
+    <div class="rux--snippet rux--snippet--single">
+      <div class="rux--snippet-container"><pre><code>node tools/build.mjs</code></pre></div>
+      <button type="button" class="rux--snippet-button rux--copy-btn" aria-label="Copy">
+        <span class="rux--copy-btn__feedback">Copied</span>
+      </button>
+    </div>
+    <div class="rux--snippet rux--snippet--multi">
+      <div class="rux--snippet-container"><pre><code>@use "@carbon/styles/scss/config" with ($prefix: "rux");
+@use "@carbon/styles/scss/theme";
+@use "@carbon/styles/scss/components/button";</code></pre></div>
+      <button type="button" class="rux--snippet-btn--expand">
+        <span class="rux--snippet-btn--text">Show more</span>
+      </button>
+    </div>
+  </div>
+</section>

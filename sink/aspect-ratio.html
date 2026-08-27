@@ -1,0 +1,28 @@
+<section class="ks-sec" id="aspect-ratio">
+  <h2>Aspect ratio</h2><p>16x9 · 4x3 · 1x1 · 2x1 · 9x16</p>
+  <!--
+    The ratio comes from ::before { padding-block-start: <pct> } — the box takes its
+    HEIGHT from its own width. Two things break it:
+      1. a parent that stretches children (grid/flex default) overrides the height,
+         so align-items:start is required;
+      2. any padding or in-flow content ADDS to that height, so the label is
+         absolutely positioned rather than flowed.
+  -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.5rem;align-items:start">
+    <div class="rux--aspect-ratio rux--aspect-ratio--16x9" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">16 × 9</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--4x3" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">4 × 3</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--1x1" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">1 × 1</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--2x1" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">2 × 1</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--9x16" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">9 × 16</span>
+    </div>
+  </div>
+</section>

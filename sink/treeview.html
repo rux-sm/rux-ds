@@ -1,0 +1,23 @@
+<section class="ks-sec" id="treeview">
+  <h2>Tree view</h2><p>nested nodes · selected · disabled — click to select, click the caret to collapse</p>
+  <ul class="rux--tree" role="tree">
+    <li class="rux--tree-node rux--tree-node--with-icon" role="treeitem" aria-expanded="true" tabindex="0">
+      <div class="rux--tree-node__label">
+        <span class="rux--tree-parent-node__toggle"><svg class="rux--tree-parent-node__toggle-icon rux--tree-parent-node__toggle-icon--expanded" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></span>
+        <span class="rux--tree-node__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></span>
+        <span class="rux--tree-node__label__text">Parent folder</span>
+      </div>
+      <ul class="rux--tree-node__children" role="group">
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Selected child</span></div>
+        </li>
+        <li class="rux--tree-node rux--tree-leaf-node" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Second child</span></div>
+        </li>
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
+          <div class="rux--tree-node__label"><span class="rux--tree-node__label__text">Disabled child</span></div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>

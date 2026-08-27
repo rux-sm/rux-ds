@@ -1,0 +1,59 @@
+<section class="ks-sec" id="checkbox">
+  <h2>Checkbox</h2><p>group · checked · indeterminate · disabled · invalid</p>
+  <!--
+    The tick and the indeterminate dash are drawn in CSS (::before/::after), so no
+    icon is needed. `indeterminate` is a JS property, not an attribute — the harness
+    script sets it on [data-ks-indeterminate].
+
+    Each row MUST be `form-item checkbox-wrapper`: that pair is what carries
+    position:relative (css/rux.css:6569). The input is position:absolute, so with
+    form-item alone it escapes to the document origin and clicking the label scrolls
+    the page to the top.
+  -->
+  <div class="ks-row" style="gap:4rem">
+    <fieldset class="rux--fieldset">
+      <legend class="rux--label">Group label</legend>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-1" class="rux--checkbox" type="checkbox">
+        <label for="cb-1" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Unchecked</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-2" class="rux--checkbox" type="checkbox" checked>
+        <label for="cb-2" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Checked</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-3" class="rux--checkbox" type="checkbox" data-ks-indeterminate>
+        <label for="cb-3" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Indeterminate</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-4" class="rux--checkbox" type="checkbox" disabled>
+        <label for="cb-4" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Disabled</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-5" class="rux--checkbox" type="checkbox" checked disabled>
+        <label for="cb-5" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Disabled checked</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="rux--fieldset rux--checkbox-group rux--checkbox-group--invalid">
+      <legend class="rux--label">Invalid group</legend>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-6" class="rux--checkbox" type="checkbox">
+        <label for="cb-6" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Pick at least one</span></label>
+      </div>
+      <div class="rux--form-requirement">A selection is required</div>
+    </fieldset>
+
+    <fieldset class="rux--fieldset rux--checkbox-group rux--checkbox-group--horizontal">
+      <legend class="rux--label">Horizontal</legend>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-7" class="rux--checkbox" type="checkbox" checked>
+        <label for="cb-7" class="rux--checkbox-label"><span class="rux--checkbox-label-text">One</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper">
+        <input id="cb-8" class="rux--checkbox" type="checkbox">
+        <label for="cb-8" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Two</span></label>
+      </div>
+    </fieldset>
+  </div>
+</section>

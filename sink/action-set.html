@@ -1,0 +1,29 @@
+<section class="ks-sec" id="action-set">
+  <h2>Action set</h2><p>single · double · triple rows</p>
+  <!--
+    .rux--action-set sets align-items and justify-content but NOT display — it is
+    also a .rux--btn-set, which is what supplies display:flex (css/rux.css:2353).
+    Without it the buttons are block-level and overlap.
+
+    `--stacking` is deliberately not shown: @carbon/styles contains no rule that
+    implements it, only a `:not(.rux--action-set--stacking)` negation. Carbon's React
+    ActionSet computes the stacked layout in JS, so the class is inert in light DOM.
+  -->
+  <div style="display:grid;gap:1rem">
+    <div class="rux--action-set rux--btn-set rux--action-set--row-single rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-triple rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--ghost rux--action-set__action-button rux--action-set__action-button--ghost">Discard</button>
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+  </div>
+</section>

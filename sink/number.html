@@ -1,0 +1,47 @@
+<section class="ks-sec" id="number">
+  <h2>Number input</h2><p>sizes · steppers · invalid · readonly</p>
+  <div class="ks-grid">
+    <div class="rux--form-item">
+      <label class="rux--label" for="ni-1">Quantity</label>
+      <div class="rux--number rux--number--lg">
+        <div class="rux--number__input-wrapper">
+          <input id="ni-1" type="number" value="4">
+          <div class="rux--number__controls">
+            <button type="button" class="rux--number__control-btn" aria-label="Decrement">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
+            </button>
+            <button type="button" class="rux--number__control-btn" aria-label="Increment">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="rux--form__helper-text">Between 1 and 99</div>
+    </div>
+    <div class="rux--form-item">
+      <label class="rux--label" for="ni-2">Small · invalid</label>
+      <div class="rux--number rux--number--sm" data-invalid>
+        <div class="rux--number__input-wrapper">
+          <input id="ni-2" type="number" value="0" data-invalid aria-invalid="true">
+          <div class="rux--number__controls">
+            <button type="button" class="rux--number__control-btn" aria-label="Decrement">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
+            </button>
+            <button type="button" class="rux--number__control-btn" aria-label="Increment">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="rux--form-requirement">Must be at least 1</div>
+      </div>
+    </div>
+    <div class="rux--form-item">
+      <label class="rux--label" for="ni-3">Readonly</label>
+      <div class="rux--number rux--number--md rux--number--readonly">
+        <div class="rux--number__input-wrapper">
+          <input id="ni-3" type="number" value="12" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

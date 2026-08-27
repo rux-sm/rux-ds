@@ -1,0 +1,26 @@
+<section class="ks-sec" id="side-panel">
+  <h2>Side panel</h2><p>left and right placement — `--open` is Carbon's show hook</p>
+  <div class="ks-row">
+    <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
+    <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
+  </div>
+
+  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-right" role="complementary" hidden>
+    <div class="rux--side-panel__header">
+      <p class="rux--side-panel__label-text">Context</p>
+      <h2 class="rux--side-panel__title-text">Right panel</h2>
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm" data-ks-close>Close</button>
+    </div>
+    <div class="rux--side-panel__inner-content">
+      <p>Panel body content scrolls independently of the page behind it.</p>
+    </div>
+  </div>
+
+  <div class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" role="complementary" hidden>
+    <div class="rux--side-panel__header">
+      <h2 class="rux--side-panel__title-text">Left panel</h2>
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm" data-ks-close>Close</button>
+    </div>
+    <div class="rux--side-panel__inner-content"><p>Left placement.</p></div>
+  </div>
+</section>

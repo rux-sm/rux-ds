@@ -1,0 +1,48 @@
+<section class="ks-sec" id="modal">
+  <h2>Modal</h2><p>sizes · danger footer — opens full-viewport, as Carbon renders it</p>
+  <!--
+    .rux--modal is position:fixed at 100vw/100vh. Constraining it to a box
+    misrepresents the component, so it is triggered instead: `.is-visible` on a
+    modal WITHOUT `--enable-presence` is Carbon's own show hook (css/rux.css:18838).
+    Harness JS at the bottom of the page wires the triggers.
+  -->
+  <div class="ks-row">
+    <button type="button" class="rux--btn rux--btn--primary" data-ks-open="modal-sm">Open small modal</button>
+    <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="modal-lg">Open large modal</button>
+  </div>
+
+  <div class="rux--modal" id="modal-sm" role="dialog" aria-modal="true" aria-labelledby="modal-sm-h">
+    <div class="rux--modal-container rux--modal-container--sm">
+      <div class="rux--modal-header">
+        <p class="rux--modal-header__label">Optional label</p>
+        <p class="rux--modal-header__heading" id="modal-sm-h">Delete this record?</p>
+        <button type="button" class="rux--modal-close" aria-label="Close" data-ks-close>
+          <span class="rux--modal-close__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></span>
+        </button>
+      </div>
+      <div class="rux--modal-content">
+        <p>This cannot be undone. The record and its history are removed permanently.</p>
+      </div>
+      <div class="rux--modal-footer">
+        <button type="button" class="rux--btn rux--btn--secondary" data-ks-close>Cancel</button>
+        <button type="button" class="rux--btn rux--btn--danger" data-ks-close>Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rux--modal" id="modal-lg" role="dialog" aria-modal="true" aria-labelledby="modal-lg-h">
+    <div class="rux--modal-container rux--modal-container--lg">
+      <div class="rux--modal-header">
+        <p class="rux--modal-header__heading" id="modal-lg-h">Large container</p>
+        <button type="button" class="rux--modal-close" aria-label="Close" data-ks-close>
+          <span class="rux--modal-close__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></span>
+        </button>
+      </div>
+      <div class="rux--modal-content"><p>A wider modal for denser content.</p></div>
+      <div class="rux--modal-footer">
+        <button type="button" class="rux--btn rux--btn--secondary" data-ks-close>Cancel</button>
+        <button type="button" class="rux--btn rux--btn--primary" data-ks-close>Confirm</button>
+      </div>
+    </div>
+  </div>
+</section>

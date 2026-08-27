@@ -1,0 +1,50 @@
+<section class="ks-sec" id="card">
+  <h2>Card</h2><p>productive · clickable · horizontal · disabled</p>
+  <!--
+    Vertical rhythm comes from margin-block on each CHILD, not from padding on a
+    wrapper (components/card/_card.scss:66). __body has margin-block-start: 0 and
+    only regains a top margin when it is the FIRST child — "when body is the first
+    child (no header), restore top padding" (:79). So __title must sit inside
+    __header, or the card's text sits flush against its top edge.
+    There is no base rule for __content at all; it exists only under --horizontal.
+  -->
+  <div class="ks-grid">
+    <div class="rux--card rux--card--productive">
+      <div class="rux--card__header">
+        <div class="rux--card__title">Productive card</div>
+      </div>
+      <div class="rux--card__body">A short description of what this card contains.</div>
+    </div>
+
+    <div class="rux--card rux--card--clickable">
+      <div class="rux--card__header">
+        <div class="rux--card__title">Clickable card</div>
+      </div>
+      <div class="rux--card__body">The whole surface is the target.</div>
+    </div>
+
+    <div class="rux--card">
+      <div class="rux--card__header">
+        <div class="rux--card__title">With footer</div>
+      </div>
+      <div class="rux--card__body">Actions sit in a footer below the body.</div>
+      <div class="rux--card__footer">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm">Open</button>
+      </div>
+    </div>
+
+    <div class="rux--card rux--card--disabled">
+      <div class="rux--card__header">
+        <div class="rux--card__title">Disabled</div>
+      </div>
+      <div class="rux--card__body">Not interactive.</div>
+    </div>
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">body as first child — regains its own top margin</div>
+  <div class="ks-grid">
+    <div class="rux--card">
+      <div class="rux--card__body">No header. The body supplies the top spacing itself.</div>
+    </div>
+  </div>
+</section>

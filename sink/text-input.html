@@ -1,0 +1,64 @@
+<section class="ks-sec" id="text-input">
+  <h2>Text input</h2><p>default · invalid · warning · readonly · disabled</p>
+  <!--
+    Root is `form-item text-input-wrapper` on ONE element, then __label-wrapper and
+    __field-outer-wrapper — extracted from cds-text-input's shadow DOM.
+
+    The error text is a SIBLING of .rux--text-input__field-wrapper, not a child:
+    Carbon reveals it with `[data-invalid] ~ .rux--form-requirement` (css/rux.css:6442).
+    .rux--form-requirement is display:none until that selector matches.
+  -->
+  <div class="ks-grid">
+    <div class="rux--form-item rux--text-input-wrapper">
+      <div class="rux--text-input__label-wrapper">
+        <label class="rux--label" for="ti-1">Label</label>
+      </div>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="ti-1" class="rux--text-input" type="text" placeholder="Placeholder">
+        </div>
+        <div class="rux--form__helper-text">Optional helper text</div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper">
+      <label class="rux--label" for="ti-2">Invalid</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper" data-invalid>
+          <svg class="rux--text-input__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+          <input id="ti-2" class="rux--text-input rux--text-input--invalid" type="text" value="Bad value" data-invalid aria-invalid="true">
+        </div>
+        <div class="rux--form-requirement">Error message</div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper">
+      <label class="rux--label" for="ti-3">Warning</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper rux--text-input__field-wrapper--warning">
+          <svg class="rux--text-input__invalid-icon rux--text-input__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+          <input id="ti-3" class="rux--text-input rux--text-input--warning" type="text" value="Careful">
+        </div>
+        <div class="rux--form-requirement">Warning message</div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper">
+      <label class="rux--label" for="ti-4">Readonly</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper rux--text-input-wrapper--readonly">
+          <input id="ti-4" class="rux--text-input" type="text" value="Readonly value" readonly>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper">
+      <label class="rux--label rux--label--disabled" for="ti-5">Disabled</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="ti-5" class="rux--text-input" type="text" value="Disabled" disabled>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

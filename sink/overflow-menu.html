@@ -1,0 +1,34 @@
+<section class="ks-sec" id="overflow-menu">
+  <h2>Overflow menu</h2><p>trigger and open options list — click the trigger</p>
+  <!--
+    .rux--overflow-menu-options is position:absolute at inset-block-start:2rem with
+    no positioned ancestor of its own, so the trigger must establish the containing
+    block. Carbon's web component renders the trigger as the positioned element.
+  -->
+  <div class="ks-row" style="padding-block:1rem;min-height:11rem;align-items:flex-start">
+    <button type="button" class="rux--overflow-menu"
+            aria-expanded="false" aria-haspopup="true" aria-label="More actions"
+            style="position:relative">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+      <div class="rux--overflow-menu-options">
+        <ul class="rux--overflow-menu-options__content" role="menu">
+          <li class="rux--overflow-menu-options__option" role="none">
+            <div class="rux--overflow-menu-options__btn" role="menuitem" tabindex="0">
+              <span class="rux--overflow-menu-options__option-content">Rename</span>
+            </div>
+          </li>
+          <li class="rux--overflow-menu-options__option" role="none">
+            <div class="rux--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+              <span class="rux--overflow-menu-options__option-content">Export</span>
+            </div>
+          </li>
+          <li class="rux--overflow-menu--divider rux--overflow-menu-options__option rux--overflow-menu-options__option--danger" role="none">
+            <div class="rux--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+              <span class="rux--overflow-menu-options__option-content">Delete</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </button>
+  </div>
+</section>

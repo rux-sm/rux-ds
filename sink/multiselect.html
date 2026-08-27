@@ -1,0 +1,38 @@
+<section class="ks-sec" id="multiselect">
+  <h2>Multiselect</h2><p>selection count · filterable</p>
+  <!--
+    From cds-multi-select's shadow DOM. Root is `--multi-select --list-box
+    --list-box--md` — note it does NOT carry `--layout--size-*`, unlike dropdown.
+    NOTE: cds-dropdown emits `--list-box--md`, but @carbon/styles defines NO rule
+    for it — the styled size classes are `--dropdown--lg` / `--dropdown--sm`. The
+    web components are authoritative for STRUCTURE, not for which classes are
+    styled; always confirm against the compiled CSS.
+  -->
+  <div class="ks-grid">
+    <div>
+      <label class="rux--label" id="ms-1-label">Choose several</label>
+      <div class="rux--multi-select rux--list-box rux--dropdown--lg">
+        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox">
+          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">3<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
+          <span class="rux--list-box__label">Three selected</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+        <div class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+      </div>
+    </div>
+    <div>
+      <label class="rux--label" for="ms-2">Filterable</label>
+      <div class="rux--multi-select rux--multi-select--filterable rux--list-box rux--dropdown--lg">
+        <div class="rux--list-box__field">
+          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0" title="Clear all">2<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
+          <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" placeholder="Filter…">
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

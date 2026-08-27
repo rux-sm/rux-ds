@@ -1,0 +1,51 @@
+<section class="ks-sec" id="slider">
+  <h2>Slider</h2><p>single handle · two handles · disabled</p>
+  <div style="max-width:28rem;display:grid;gap:2rem">
+    <div>
+      <label class="rux--label" for="sl-1">Volume</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.6)"></div>
+          <div class="rux--slider__thumb-wrapper" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" style="inset-inline-start:60%;inset-block-start:50%">
+            <div class="rux--slider__thumb"></div>
+          </div>
+          <input id="sl-1" class="rux--slider__input" type="range" min="0" max="100" value="60">
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+    <div>
+      <label class="rux--label" for="sl-2">Range</label>
+      <div class="rux--slider-container rux--slider-container--two-handles">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.4)"></div>
+          <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--lower" tabindex="0" role="slider" style="inset-inline-start:25%;inset-block-start:50%">
+            <div class="rux--slider__thumb rux--slider__thumb--lower"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
+          </div>
+          <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--upper" tabindex="0" role="slider" style="inset-inline-start:65%;inset-block-start:50%">
+            <div class="rux--slider__thumb rux--slider__thumb--upper"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
+          </div>
+          <input id="sl-2" class="rux--slider__input" type="range" min="0" max="100" value="65">
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+    <div>
+      <label class="rux--label rux--label--disabled" for="sl-3">Disabled</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider rux--slider--disabled">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.3)"></div>
+          <div class="rux--slider__thumb-wrapper" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" style="inset-inline-start:30%;inset-block-start:50%"><div class="rux--slider__thumb"></div></div>
+          <input id="sl-3" class="rux--slider__input" type="range" min="0" max="100" value="30" disabled>
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+  </div>
+</section>

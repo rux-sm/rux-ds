@@ -1,0 +1,61 @@
+<section class="ks-sec" id="page-header">
+  <h2>Page header</h2><p>breadcrumb bar · title · description · actions</p>
+  <!--
+    __content__body is the DESCRIPTION TEXT (margin-block-start: .5rem,
+    max-inline-size: 40rem), not a wrapper — the title goes in
+    __content__title-wrapper > __content__title-container > __content__title.
+    __content is `padding: 1.5rem 0` with no horizontal padding: Carbon expects the
+    grid to supply it, so the content sits inside a .rux--css-grid column.
+    col-span-100 is `grid-column: 1/-1` — full width at every breakpoint. A fixed
+    col-span-16 clamps below the lg breakpoint, where the grid drops to 8 or 4.
+
+    __content__start is a WRAPPING FLEX ROW, so the title wrapper sizes to its
+    content unless it is given its own line. Carbon's React header sets
+    --pageheader-title-grid-width from JS to size the wrapper's second grid column;
+    with no JS the variable defaults to 0, so the demo uses flex-basis:100% to give
+    the title row full width. That is a demo accommodation, not a Carbon rule.
+  -->
+  <div class="rux--page-header">
+    <div class="rux--page-header__breadcrumb-bar">
+      <div class="rux--css-grid">
+        <div class="rux--css-grid-column rux--col-span-100">
+          <div class="rux--page-header__breadcrumb-container">
+            <div class="rux--page-header__breadcrumb-wrapper">
+              <nav aria-label="Breadcrumb">
+                <ol class="rux--breadcrumb rux--breadcrumb--sm rux--breadcrumb--no-trailing-slash">
+                  <li class="rux--breadcrumb-item"><a class="rux--link" href="#page-header">Home</a></li>
+                  <li class="rux--breadcrumb-item"><a class="rux--link" href="#page-header">Analytics</a></li>
+                  <li class="rux--breadcrumb-item rux--breadcrumb-item--current"><a class="rux--link" href="#page-header" aria-current="page">Reports</a></li>
+                </ol>
+              </nav>
+            </div>
+            <div class="rux--page-header__breadcrumb__actions">
+              <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm">Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--page-header__content">
+      <div class="rux--css-grid">
+        <div class="rux--css-grid-column rux--col-span-100">
+          <div class="rux--page-header__content__start">
+            <div class="rux--page-header__content__title-wrapper" style="flex-basis:100%">
+              <div class="rux--page-header__content__title-container">
+                <h1 class="rux--page-header__content__title">Quarterly report</h1>
+              </div>
+              <div class="rux--page-header__content__page-actions">
+                <button type="button" class="rux--btn rux--btn--secondary rux--btn--sm">Export</button>
+                <button type="button" class="rux--btn rux--btn--primary rux--btn--sm">Publish</button>
+              </div>
+            </div>
+            <div class="rux--page-header__content__body">
+              Revenue, retention and headcount for the quarter, with commentary from each business unit.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

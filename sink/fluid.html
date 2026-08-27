@@ -1,0 +1,117 @@
+<section class="ks-sec" id="fluid">
+  <h2>Fluid inputs</h2><p>the eleven fluid-* components — label inside the field, no gap between controls</p>
+
+  <div class="ks-label">text input · text area · select</div>
+  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">
+      <div class="rux--text-input__field-wrapper">
+        <label class="rux--label" for="fl-ti">Fluid text input</label>
+        <input id="fl-ti" class="rux--text-input" type="text" placeholder="Placeholder">
+      </div>
+    </div>
+    <div class="rux--text-area--fluid">
+      <div class="rux--text-area__wrapper">
+        <label class="rux--label" for="fl-ta">Fluid text area</label>
+        <textarea id="fl-ta" class="rux--text-area" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="rux--select--fluid rux--select">
+      <div class="rux--select-input__wrapper">
+        <label class="rux--label" for="fl-se">Fluid select</label>
+        <select id="fl-se" class="rux--select-input">
+          <option class="rux--select-option" value="a">Option A</option>
+          <option class="rux--select-option" value="b">Option B</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="ks-label">number · search</div>
+  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--number-input--fluid rux--number">
+      <div class="rux--number__input-wrapper">
+        <label class="rux--label" for="fl-ni">Fluid number</label>
+        <input id="fl-ni" type="number" value="12">
+      </div>
+    </div>
+    <div class="rux--search--fluid rux--search">
+      <label class="rux--label" for="fl-sr">Fluid search</label>
+      <input id="fl-sr" class="rux--search-input" type="text" role="searchbox" placeholder="Search…">
+    </div>
+  </div>
+
+  <div class="ks-label">date picker · time picker</div>
+  <!--
+    Fluid date picker nests .rux--date-picker (position:relative) inside
+    .rux--date-picker--fluid; the absolutely-positioned label needs that context and
+    the input reserves padding: 2rem 1rem 0.8125rem for it (css/rux.css:15279, 15308).
+    Fluid time picker has no label rule of its own — each child of
+    .rux--time-picker--fluid__wrapper is itself a fluid sub-component.
+  -->
+  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--date-picker--fluid">
+      <div class="rux--date-picker rux--date-picker--simple">
+        <label class="rux--label" for="fl-dp">Fluid date</label>
+        <div class="rux--date-picker-input__wrapper">
+          <input id="fl-dp" class="rux--date-picker__input" type="text" placeholder="mm/dd/yyyy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--time-picker--fluid rux--time-picker">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">
+          <div class="rux--text-input__field-wrapper">
+            <label class="rux--label" for="fl-tp">Time</label>
+            <input id="fl-tp" class="rux--text-input rux--time-picker__input-field" type="text" placeholder="hh:mm" maxlength="5">
+          </div>
+        </div>
+        <div class="rux--select--fluid rux--select">
+          <div class="rux--select-input__wrapper">
+            <label class="rux--label" for="fl-tp-p">Period</label>
+            <select id="fl-tp-p" class="rux--select-input">
+              <option class="rux--select-option" value="am">AM</option>
+              <option class="rux--select-option" value="pm">PM</option>
+            </select>
+            <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+        <div class="rux--select--fluid rux--select">
+          <div class="rux--select-input__wrapper">
+            <label class="rux--label" for="fl-tp-z">Zone</label>
+            <select id="fl-tp-z" class="rux--select-input">
+              <option class="rux--select-option" value="utc">UTC</option>
+              <option class="rux--select-option" value="cet">CET</option>
+            </select>
+            <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ks-label">dropdown · combo box · multiselect · list box — one fluid wrapper serves all four</div>
+  <div class="rux--form--fluid" style="max-width:24rem">
+    <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid">
+      <label class="rux--label" id="fl-dd-label">Fluid dropdown</label>
+      <div class="rux--dropdown rux--list-box">
+        <button type="button" class="rux--list-box__field" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="fl-dd-label">
+          <span class="rux--list-box__label">Option A</span>
+          <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+        </button>
+      </div>
+    </div>
+    <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--condensed">
+      <label class="rux--label" id="fl-ms-label">Fluid multiselect · condensed</label>
+      <div class="rux--multi-select rux--list-box">
+        <div class="rux--list-box__field" role="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="fl-ms-label" tabindex="0">
+          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0">2<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
+          <span class="rux--list-box__label">Two selected</span>
+          <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

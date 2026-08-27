@@ -1,0 +1,43 @@
+<section class="ks-sec" id="ui-shell">
+  <h2>UI shell</h2><p>header · global actions · side nav — wrapped in g100, which is how Carbon intends the shell to be themed. The rightmost action carries <code>--active</code>; the header nav is hidden by Carbon below 66rem.</p>
+  <!--
+    .rux--header is background-color: var(--rux-background), so it follows the
+    ambient theme rather than carrying a colour of its own. Carbon places the shell
+    inside a g100 container; without that it renders white on a white page.
+  -->
+  <div data-theme="g100" style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden;background:var(--rux-background)">
+    <header class="rux--header" style="position:absolute" aria-label="Application">
+      <a class="rux--skip-to-content" href="#ui-shell">Skip to main content</a>
+      <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <a class="rux--header__name" href="#ui-shell"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+      <nav class="rux--header__nav" aria-label="Main">
+        <ul class="rux--header__menu-bar" role="menubar">
+          <li role="none">
+            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" role="menuitem" aria-current="page">Overview</a>
+          </li>
+          <li role="none"><a class="rux--header__menu-item" href="#ui-shell" role="menuitem">Reports</a></li>
+        </ul>
+      </nav>
+      <div class="rux--header__global">
+        <button type="button" class="rux--header__action" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active" aria-label="Account"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+      </div>
+    </header>
+    <nav class="rux--side-nav rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute" aria-label="Side navigation">
+      <ul class="rux--side-nav__items">
+        <li class="rux--side-nav__item">
+          <a class="rux--side-nav__link rux--side-nav__link--current" href="#ui-shell">
+            <span class="rux--side-nav__link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="rux--side-nav__item">
+          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Trips</span></a>
+        </li>
+        <li class="rux--side-nav__divider" role="separator"></li>
+        <li class="rux--side-nav__item">
+          <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Settings</span></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>

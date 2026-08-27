@@ -1,0 +1,85 @@
+<section class="ks-sec" id="dropdown">
+  <h2>Dropdown</h2><p>closed · expanded · invalid · disabled</p>
+  <!--
+    Extracted from cds-dropdown's shadow DOM, not inferred. Structure:
+      label.cds--label                                    (sibling, not wrapped)
+      div.cds--dropdown.cds--list-box.cds--list-box--md.cds--layout--size-md
+        div.cds--list-box__field[role=combobox][tabindex=0]     <- a DIV, not a button
+          span.cds--list-box__label
+          div.cds--list-box__menu-icon > svg
+        div.cds--list-box__menu[role=listbox][tabindex=-1]      <- a DIV, not a UL
+      div.cds--form__helper-text
+    `--dropdown--lg` is never emitted by Carbon at all; size comes from
+    `--list-box--<size>` plus `--layout--size-<size>`.
+    NOTE: cds-dropdown emits `--list-box--md`, but @carbon/styles defines NO rule
+    for it — the styled size classes are `--dropdown--lg` / `--dropdown--sm`. The
+    web components are authoritative for STRUCTURE, not for which classes are
+    styled; always confirm against the compiled CSS.
+  -->
+  <div class="ks-grid">
+    <div>
+      <label class="rux--label" id="dd-1-label">Choose an option</label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg">
+        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="dd-1-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="dd-1-menu">
+          <span class="rux--list-box__label">Option A</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+        <div id="dd-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden></div>
+      </div>
+      <div class="rux--form__helper-text">Optional helper text</div>
+    </div>
+
+    <div>
+      <label class="rux--label" id="dd-2-label">Expanded</label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg rux--list-box--expanded">
+        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="dd-2-label" aria-expanded="true" aria-haspopup="listbox" aria-controls="dd-2-menu">
+          <span class="rux--list-box__label">Option A</span>
+          <div class="rux--list-box__menu-icon rux--list-box__menu-icon--open">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+        <div id="dd-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1">
+          <div class="rux--list-box__menu-item rux--list-box__menu-item--highlighted" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Option A</div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option B</div>
+          </div>
+          <div class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="rux--label" id="dd-3-label">Invalid</label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg rux--dropdown--invalid rux--list-box--invalid" data-invalid>
+        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-labelledby="dd-3-label" aria-expanded="false" aria-haspopup="listbox" aria-invalid="true">
+          <span class="rux--list-box__label">Pick one</span>
+          <div class="rux--list-box__invalid-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+          </div>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-requirement">A selection is required</div>
+    </div>
+
+    <div>
+      <label class="rux--label rux--label--disabled" id="dd-4-label">Disabled</label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg rux--dropdown--disabled rux--list-box--disabled">
+        <div class="rux--list-box__field" role="combobox" aria-labelledby="dd-4-label" aria-disabled="true">
+          <span class="rux--list-box__label">Unavailable</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

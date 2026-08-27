@@ -1,0 +1,32 @@
+/* Kitchen-sink harness only. Not part of the system — everything here is ks-. */
+body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
+       background: var(--rux-background); color: var(--rux-text-primary); }
+.ks-nav { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+          padding: 1.5rem 1rem; border-inline-end: 1px solid var(--rux-border-subtle);
+          background: var(--rux-layer-01); }
+.ks-nav h1 { font-size: .875rem; letter-spacing: .32px; text-transform: uppercase;
+             color: var(--rux-text-secondary); }
+.ks-count { font-size: .75rem; color: var(--rux-text-helper); margin-block: .25rem 1rem; }
+.ks-navlinks { display: flex; flex-direction: column; }
+.ks-nav a { padding: .1875rem 0; font-size: .8125rem; color: var(--rux-text-secondary);
+            text-decoration: none; }
+.ks-nav a:hover { color: var(--rux-link-primary); text-decoration: underline; }
+.ks-main { padding: 2rem 2.5rem 6rem; max-width: 64rem; }
+.ks-themes { display: flex; gap: .25rem; margin-block-end: 1.5rem; flex-wrap: wrap;
+             position: sticky; top: 0; z-index: 10; padding-block: .5rem;
+             background: var(--rux-background); }
+.ks-sec { padding-block: 2rem; border-block-start: 1px solid var(--rux-border-subtle); }
+.ks-sec > h2 { font-size: 1.25rem; margin-block-end: .25rem; }
+.ks-sec > p  { font-size: .75rem; color: var(--rux-text-secondary); margin-block-end: 1.25rem; }
+.ks-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start;
+          margin-block-end: 1rem; }
+.ks-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.ks-label { font-size: .6875rem; letter-spacing: .32px; text-transform: uppercase;
+            color: var(--rux-text-secondary); margin-block-end: .5rem; }
+.ks-box { padding: 1rem; background: var(--rux-layer-01); }
+.ks-dark { padding: 1rem; background: var(--rux-background-inverse); }
+
+/* Carbon components set `display` on their own class, which outranks the UA
+   `[hidden] { display: none }` rule on specificity. The harness needs `hidden` to
+   actually hide, to stand in for the mount/unmount Carbon's web components do. */
+[hidden] { display: none !important; }

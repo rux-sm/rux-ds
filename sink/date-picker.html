@@ -1,0 +1,41 @@
+<section class="ks-sec" id="date-picker">
+  <h2>Date picker</h2><p>simple · single with calendar · range</p>
+  <!--
+    From cds-date-picker-input: the input sits in a bare <span> inside
+    __wrapper and carries a size class. Carbon emits `__input--md`, which
+    @carbon/styles does not define; `--lg` and `--sm` are the styled ones.
+  -->
+  <div class="ks-grid">
+    <div class="rux--date-picker rux--date-picker--simple">
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-1">Simple date</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-1" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy"></span>
+        </div>
+      </div>
+    </div>
+    <div class="rux--date-picker rux--date-picker--single">
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-2">With calendar</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-2" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy">
+          <div class="rux--date-picker__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <div class="rux--date-picker rux--date-picker--range">
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-3">From</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-3" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy"></span>
+        </div>
+      </div>
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-4">To</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-4" class="rux--date-picker__input rux--date-picker__input--lg" type="text" placeholder="mm/dd/yyyy"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

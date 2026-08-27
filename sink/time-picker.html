@@ -1,0 +1,41 @@
+<section class="ks-sec" id="time-picker">
+  <h2>Time picker</h2><p>time field plus period and zone selects · invalid</p>
+  <!--
+    Two modifiers here need their base class or the browser default shows through:
+      .rux--time-picker__input-field  ->  also .rux--text-input
+      .rux--select--inline            ->  needs .rux--select-input--inline__wrapper
+  -->
+  <div class="ks-row" style="gap:3rem">
+    <div class="rux--time-picker rux--time-picker--lg">
+      <div class="rux--time-picker__input">
+        <label class="rux--label" for="tp-1">Time</label>
+        <input id="tp-1" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5">
+      </div>
+      <div class="rux--select rux--select--inline rux--time-picker__select">
+        <div class="rux--select-input--inline__wrapper">
+          <select class="rux--select-input" aria-label="Period">
+            <option class="rux--select-option" value="am">AM</option>
+            <option class="rux--select-option" value="pm">PM</option>
+          </select>
+          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        </div>
+      </div>
+      <div class="rux--select rux--select--inline rux--time-picker__select">
+        <div class="rux--select-input--inline__wrapper">
+          <select class="rux--select-input" aria-label="Time zone">
+            <option class="rux--select-option" value="utc">UTC</option>
+            <option class="rux--select-option" value="cet">CET</option>
+          </select>
+          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--time-picker rux--time-picker--sm rux--time-picker--invalid" data-invalid>
+      <div class="rux--time-picker__input">
+        <label class="rux--label" for="tp-2">Invalid · small</label>
+        <input id="tp-2" class="rux--text-input rux--time-picker__input-field rux--time-picker__input-field-error" type="text" value="99:99" data-invalid aria-invalid="true">
+      </div>
+    </div>
+  </div>
+</section>
