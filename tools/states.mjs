@@ -64,10 +64,15 @@ const stems = n => ALIAS[n] ?? [n];
 // Families exist to rank the work, not to define it. A state's family says how
 // it is reached: FEEDBACK and VARIANT are markup a fragment can just write,
 // INTERACTION is markup only a behavior module produces.
+//
+// `--slug` is a VARIANT, not a size. It marks a field that carries an AI slug and
+// adjusts padding to make room for it (text-input/_text-input.scss:439). It sat in
+// the size family in the first cut of this file, which put 20 decorator states in
+// front of the cheap density work and overstated what `--sm` and `--lg` would cost.
 const FAMILY = [
   ['interaction', /^(open|closed|expanded|collapsed|selected|active|focused|focus|pressed|checked|current|highlighted|dragover|drag-over|is-.*)$/],
   ['feedback',    /^(invalid|warn|warning|error|success|disabled|readonly|read-only|loading|inactive|skeleton)$/],
-  ['size',        /^(xs|sm|md|lg|xl|2xl|expressive|compact|short|tall|slug)$/],
+  ['size',        /^(xs|sm|md|lg|xl|2xl|expressive|compact|short|tall)$/],
 ];
 const familyOf = mods => {
   for (const [name, re] of FAMILY) if (mods.some(m => re.test(m))) return name;
