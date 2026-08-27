@@ -789,6 +789,64 @@ stale:
 node tools/check-provenance.mjs --inferred
 ```
 
+#### 4.1.14 Where the markup for the remaining 55 actually comes from
+
+§4.1.13 produced the checklist; this is the source for working it. Two sources,
+answering different questions, and the docs site joins them: the "Live demo" on
+a component's Code tab is a `<StorybookDemo>` iframe pointed at
+react.carbondesignsystem.com, with a hand-curated variant list wrapped around
+it. Its variant selector is a story picker.
+
+**What to demo** — `carbon-website/src/pages/components/*/code.mdx`. 43 pages,
+187 `<StorybookDemo variants={[…]}/>` entries, **182 unique story ids**, all
+`components-` prefixed. This is IBM's own answer to which states are worth
+showing, offline and already in the quarry. **40 of the 55 `inferred` fragments
+sit behind one of these pages**; 15 do not.
+
+**What markup to write** — the Storybook itself: `/index.json` for the
+catalogue, `/iframe.html?id=<story>` for the DOM. Fetched 2026-08-27: **505
+stories**. `tools/extract/react-dom.js` already automates the whole harvest and
+has never been run — `docs/markup/` and `docs/components/` are empty.
+
+**Its filter would silently skip the 15.** `FILTER = /^components-/` takes 418
+of 505 stories. Prefixes are components 418 · preview 42 · elements 33 ·
+deprecated 6 · layout 2 · hooks 2 · helpers 1 · utilities 1, and the 87 it drops
+are exactly where the orphans live:
+
+| Fragment | Where its story actually is |
+|---|---|
+| `grid` | `elements-flexgrid--*` |
+| `stack` | `layout-stack--*` |
+| `chat-button` `icon-indicator` `shape-indicator` `truncated-text` | `preview-*` |
+| `page-header` | `deprecated-preview-pageheader--default` — deprecated upstream |
+| `action-set` | `components-button-set-of-buttons--*` |
+| `card` | `components-tile--*`; Carbon has no Card |
+| `skeleton` | not a component — a `--skeleton` story on each of 39 others |
+| `badge-indicator` | only `components-iconbutton--with-badge-indicator` |
+| `resizer` | **nothing.** No story matches it by id or title |
+
+`resizer` and `page-header` need a decision before either is diffed, not after.
+
+**Harvest the 182, not the 505.** The iframe-per-story pattern retains about
+1.1 MB per story — linear over the first 99, measured against
+`performance.memory` — so 505 lands somewhere between 550 MB and 1.2 GB against
+a 4096 MB renderer cap. It would not crash, but the curated 182 costs roughly
+200 MB in one tab and needs no chunking at all.
+
+Two measurements worth keeping, because both contradict the obvious fix:
+
+- **A reload does not reset the heap; a fresh tab does.** Same-origin
+  navigation reuses the renderer — 293 MB before a reload, 309 MB after, 34 MB
+  in a new tab. Any chunking has to be per tab.
+- **Blanking each frame before detaching showed no benefit.** The theory was
+  that pending timers pin the realm. It measured worse, but on a different and
+  heavier story slice from a higher starting heap, so the honest reading is *no
+  demonstrated benefit*, not *harmful*. Not adopted: a fix whose mechanism will
+  not reproduce is not a fix.
+
+Run it in a visible tab. Hidden, background throttling stretched a 60-story
+batch past 30 seconds.
+
 ### 4.2 Phase 2 — Inventory
 
 Per component, record: compiled size, its `@use` graph, the tokens it consumes, and a
