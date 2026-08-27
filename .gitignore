@@ -1,0 +1,12 @@
+# Quarry — Carbon source material. Read from, never shipped.
+# carbon-website carries its own .git; ignoring it also avoids a nested repo.
+carbon-website/
+node_modules/
+
+# Build scratch
+.sass-cache/
+*.css.map
+m/
+
+# macOS
+.DS_Store

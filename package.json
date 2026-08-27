@@ -1,0 +1,22 @@
+{
+  "name": "rux-ds",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "icons": "node tools/icons.mjs",
+    "sink": "node tools/build-sink.mjs",
+    "inventory": "node tools/inventory.mjs",
+    "verify": "npm run build && npm run sink && node tools/check-classes.mjs && node tools/check-co-classes.mjs && node tools/check-coverage.mjs",
+    "watch": "sass --load-path=node_modules --no-source-map --watch src/app.scss css/rux.css",
+    "serve": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "@carbon/elements": "^11.95.0",
+    "@carbon/styles": "^1.113.0",
+    "sass": "^1.103.1"
+  }
+}
