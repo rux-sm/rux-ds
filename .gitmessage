@@ -1,0 +1,16 @@
+
+# <type>(<scope>)!: <Subject>          <- 50 chars max, whole line
+#
+# <body>                               <- what and why, not how. wrap at 72
+#
+# <footer>                             <- BREAKING CHANGE: / Closes #123
+#
+#   type   feat fix docs style refactor perf test chore build ci revert
+#   scope  a domain: build sink gates icons tokens themes grid deps
+#
+#   1 blank line between subject and body   5 imperative: "Add", not "Added"
+#   2 subject <= 50                         6 wrap body at 72
+#   3 capitalise the subject                7 explain what and why
+#   4 no trailing period
+#
+# docs/commits.md
