@@ -146,6 +146,7 @@
 
 <section class="ks-sec" id="buttons">
     <h2>Buttons</h2><p>kinds · sizes · states</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-row">
       <button type="button" class="rux--btn rux--btn--primary">Primary</button>
       <button type="button" class="rux--btn rux--btn--secondary">Secondary</button>
@@ -177,6 +178,7 @@
 
 <section class="ks-sec" id="links">
     <h2>Links</h2><p>inline · sizes · disabled</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-row">
       <a class="rux--link" href="#links">Default link</a>
       <a class="rux--link rux--link--inline" href="#links">Inline link</a>
@@ -187,6 +189,7 @@
 
 <section class="ks-sec" id="tags">
     <h2>Tags</h2><p>colors · sizes · filter</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-row">
       <div class="rux--tag rux--tag--red"><span class="rux--tag__label">Red</span></div>
       <div class="rux--tag rux--tag--magenta"><span class="rux--tag__label">Magenta</span></div>
@@ -211,6 +214,8 @@
 
 <section class="ks-sec" id="text-input">
   <h2>Text input</h2><p>default · invalid · warning · readonly · disabled</p>
+  <!-- PROVENANCE: source · cds-text-input shadow DOM
+       · superseded reference for light-DOM class placement (roadmap §4.1.11) -->
   <!--
     Root is `form-item text-input-wrapper` on ONE element, then __label-wrapper and
     __field-outer-wrapper — extracted from cds-text-input's shadow DOM.
@@ -276,6 +281,7 @@
 
 <section class="ks-sec" id="textarea">
   <h2>Text area</h2><p>default · invalid · warning · disabled</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div class="rux--form-item">
       <div class="rux--text-area__label-wrapper">
@@ -316,6 +322,7 @@
 
 <section class="ks-sec" id="select">
   <h2>Select</h2><p>default · invalid · warning · disabled · inline</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div class="rux--form-item">
       <label class="rux--label" for="se-1">Choose</label>
@@ -375,6 +382,7 @@
 
 <section class="ks-sec" id="checkbox">
   <h2>Checkbox</h2><p>group · checked · indeterminate · disabled · invalid</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     The tick and the indeterminate dash are drawn in CSS (::before/::after), so no
     icon is needed. `indeterminate` is a JS property, not an attribute — the harness
@@ -435,6 +443,7 @@
 
 <section class="ks-sec" id="radio">
   <h2>Radio button</h2><p>vertical · horizontal · disabled · label placement</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="gap:4rem">
     <fieldset class="rux--fieldset">
       <legend class="rux--label">Pick one</legend>
@@ -487,6 +496,7 @@
 
 <section class="ks-sec" id="toggle">
   <h2>Toggle</h2><p>on · off · small (the only size with a checkmark) · disabled</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     Carbon's _renderCheckmark() returns early unless size === "sm"
     (web-components/toggle/toggle.js). The checkmark belongs to the SMALL toggle
@@ -553,6 +563,7 @@
 
 <section class="ks-sec" id="search">
   <h2>Search</h2><p>sizes · with close · disabled</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="display:grid;gap:1.5rem;max-width:34rem">
     <div class="rux--search rux--layout--size-lg">
       <label class="rux--label" for="sr-1">Large</label>
@@ -580,6 +591,7 @@
 
 <section class="ks-sec" id="number">
   <h2>Number input</h2><p>sizes · steppers · invalid · readonly</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div class="rux--form-item">
       <label class="rux--label" for="ni-1">Quantity</label>
@@ -628,6 +640,7 @@
 
 <section class="ks-sec" id="tile">
     <h2>Tile</h2><p>base · clickable</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-grid">
       <div class="rux--tile"><p>Base tile with some content inside it.</p></div>
       <a href="#tile" class="rux--tile rux--tile--clickable"><p>Clickable tile</p></a>
@@ -636,6 +649,8 @@
 
 <section class="ks-sec" id="notification">
   <h2>Notification</h2><p>inline · low contrast · toast · actionable</p>
+  <!-- PROVENANCE: source · web-component render(), actionable-notification internals only
+       · the rest of the fragment is inferred -->
   <!--
     The actionable notification renders its internals with the INLINE classes:
     render() emits `cds--${type}-notification__details` where type is inline|toast.
@@ -788,6 +803,7 @@
 
 <section class="ks-sec" id="loading">
     <h2>Loading</h2><p>spinner · small · inline</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-row">
       <div class="rux--loading" role="status">
         <svg class="rux--loading__svg" viewBox="0 0 100 100">
@@ -806,6 +822,8 @@
 
 <section class="ks-sec" id="tabs">
     <h2>Tabs</h2><p>line</p>
+    <!-- PROVENANCE: source · @carbon/react Tabs.tsx, 2026-08-26
+         · class placement only; never diffed against the rendered page -->
     <!--
       STRUCTURE CORRECTED 2026-08-26 — the stacked underline was our bug, not
       Carbon's. This fragment previously nested the parts:
@@ -869,6 +887,7 @@
 
 <section class="ks-sec" id="table">
     <h2>Data table</h2><p>default</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="rux--data-table-container">
       <table class="rux--data-table">
         <thead>
@@ -889,6 +908,7 @@
 
 <section class="ks-sec" id="breadcrumb">
   <h2>Breadcrumb</h2><p>trailing slash · no trailing slash · small</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!-- The separator is ::after on every item; --no-trailing-slash suppresses the last. -->
   <div style="display:grid;gap:1rem">
     <nav aria-label="Breadcrumb">
@@ -916,6 +936,7 @@
 
 <section class="ks-sec" id="list">
     <h2>List</h2><p>ordered · unordered</p>
+    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
     <div class="ks-grid">
       <ul class="rux--list--unordered">
         <li class="rux--list__item">First item</li>
@@ -930,6 +951,8 @@
 
 <section class="ks-sec" id="grid">
   <h2>Grid</h2><p>16 columns · spans · condensed · narrow</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
+       · f9f5414 claims a React DOM diff; the fragment records no reference. Notes are about tokens, not structure. -->
   <!--
     .rux--css-grid sets grid-template-columns: repeat(var(--rux-grid-columns),
     minmax(0,1fr)) and --rux-grid-columns is set responsively (4 / 8 / 16).
@@ -995,6 +1018,7 @@
 
 <section class="ks-sec" id="stack">
   <h2>Stack</h2><p>vertical · horizontal · spacing scale</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div class="ks-box">
       <div class="ks-label">vertical · scale 5</div>
@@ -1016,6 +1040,7 @@
 
 <section class="ks-sec" id="aspect-ratio">
   <h2>Aspect ratio</h2><p>16x9 · 4x3 · 1x1 · 2x1 · 9x16</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     The ratio comes from ::before { padding-block-start: <pct> } — the box takes its
     HEIGHT from its own width. Two things break it:
@@ -1045,6 +1070,8 @@
 
 <section class="ks-sec" id="truncated-text">
   <h2>Truncated text</h2>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
+       · known gap — --truncated-text__expand-toggle has no button reset in Carbon (roadmap §4.1.5) -->
   <p>end truncation · <strong>known upstream gap</strong> — the expand toggle has no button reset in light DOM</p>
   <!--
     RENDERED AS-IS ON PURPOSE. .rux--truncated-text__expand-toggle sets only `color`
@@ -1070,6 +1097,7 @@
 
 <section class="ks-sec" id="badge-indicator">
   <h2>Badge indicator</h2><p>dot · count</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div style="position:relative;width:2rem;height:2rem;background:var(--rux-layer-01)">
       <div class="rux--badge-indicator"></div>
@@ -1082,6 +1110,7 @@
 
 <section class="ks-sec" id="shape-indicator">
   <h2>Shape indicator</h2><p>status by shape, so colour is never the only signal</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!-- Icon per status from web-components/shape-indicator.js:55-65. The --kind
        class supplies `fill` only; the shape itself must be the right SVG. -->
   <div class="ks-row">
@@ -1101,6 +1130,7 @@
 
 <section class="ks-sec" id="icon-indicator">
   <h2>Icon indicator</h2><p>status set · 16 and 20px</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!-- Icon per status from web-components/icon-indicator.js:50-97. -->
   <div class="ks-row">
     <div class="rux--icon-indicator rux--icon-indicator--failed"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
@@ -1127,6 +1157,7 @@
 
 <section class="ks-sec" id="resizer">
   <h2>Resizer</h2><p>split-pane handles — no intrinsic size, they take it from the flex container</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div>
       <div class="ks-label">vertical handle · ew-resize · between side-by-side panes</div>
@@ -1149,6 +1180,7 @@
 
 <section class="ks-sec" id="skeleton">
   <h2>Skeleton</h2><p>text · heading · placeholder</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div>
       <p class="rux--skeleton__heading"></p>
@@ -1162,6 +1194,7 @@
 
 <section class="ks-sec" id="action-set">
   <h2>Action set</h2><p>single · double · triple rows</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     .rux--action-set sets align-items and justify-content but NOT display — it is
     also a .rux--btn-set, which is what supplies display:flex (css/rux.css:2353).
@@ -1192,6 +1225,7 @@
 
 <section class="ks-sec" id="card">
   <h2>Card</h2><p>productive · clickable · horizontal · disabled</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     Vertical rhythm comes from margin-block on each CHILD, not from padding on a
     wrapper (components/card/_card.scss:66). __body has margin-block-start: 0 and
@@ -1243,6 +1277,7 @@
 
 <section class="ks-sec" id="page-header">
   <h2>Page header</h2><p>breadcrumb bar · title · description · actions</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     __content__body is the DESCRIPTION TEXT (margin-block-start: .5rem,
     max-inline-size: 40rem), not a wrapper — the title goes in
@@ -1305,6 +1340,8 @@
 
 <section class="ks-sec" id="dropdown">
   <h2>Dropdown</h2><p>closed · expanded · invalid · disabled</p>
+  <!-- PROVENANCE: source · cds-dropdown shadow DOM
+       · superseded reference for light-DOM class placement (roadmap §4.1.11) -->
   <!--
     Extracted from cds-dropdown's shadow DOM, not inferred. Structure:
       label.cds--label                                    (sibling, not wrapped)
@@ -1413,6 +1450,7 @@
 
 <section class="ks-sec" id="list-box">
   <h2>List box</h2><p>the primitive under dropdown, combo box and multiselect</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--expanded">
@@ -1451,6 +1489,8 @@
 
 <section class="ks-sec" id="combo-box">
   <h2>Combo box</h2><p>filterable input over a list box</p>
+  <!-- PROVENANCE: source · cds-combo-box shadow DOM
+       · superseded reference for light-DOM class placement (roadmap §4.1.11) -->
   <!--
     From cds-combo-box's shadow DOM. The root carries BOTH `--dropdown` and
     `--combo-box`, and the input is `cds--text-input cds--text-input--empty`.
@@ -1499,6 +1539,8 @@
 
 <section class="ks-sec" id="multiselect">
   <h2>Multiselect</h2><p>selection tag · open with checkboxes · filterable</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com components-multiselect--default, 2026-08-26
+       · filterable variant still undiffed (roadmap §4.1.11) -->
   <!--
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
     components-multiselect--default, class tree read out of the live page rather
@@ -1658,6 +1700,8 @@
 
 <section class="ks-sec" id="fluid">
   <h2>Fluid inputs</h2><p>the eleven fluid-* components — label inside the field, no gap between controls</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
+       · known defect — still carries the old --selection--multi badge, pending its own diff (roadmap §4.1.11) -->
 
   <div class="ks-label">text input · text area · select</div>
   <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
@@ -1776,6 +1820,7 @@
 
 <section class="ks-sec" id="modal">
   <h2>Modal</h2><p>sizes · danger footer — opens full-viewport, as Carbon renders it</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     .rux--modal is position:fixed at 100vw/100vh. Constraining it to a box
     misrepresents the component, so it is triggered instead: `.is-visible` on a
@@ -1825,6 +1870,8 @@
 
 <section class="ks-sec" id="dialog">
   <h2>Dialog</h2><p>the newer primitive under modal · two-button and three-button footers</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
+       · f9f5414 claims a React DOM diff; the fragment records no reference. Compound pair corrected from the CSS. -->
   <div class="ks-grid">
     <div class="rux--dialog-container" style="position:relative">
       <div class="rux--dialog__header">
@@ -1866,6 +1913,7 @@
 
 <section class="ks-sec" id="side-panel">
   <h2>Side panel</h2><p>left and right placement — `--open` is Carbon's show hook</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
     <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
@@ -1893,6 +1941,7 @@
 
 <section class="ks-sec" id="popover">
   <h2>Popover</h2><p>caret · drop shadow · placements — click a trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="gap:6rem;padding:3rem 0 5rem 8rem">
     <span class="rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm">Bottom</button>
@@ -1915,6 +1964,7 @@
 
 <section class="ks-sec" id="tooltip">
   <h2>Tooltip</h2><p>open state · definition variant — click a trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     .rux--tooltip--visible has no CSS rule. Visibility comes from the popover
     mechanism: .rux--popover--open > .rux--popover > .rux--popover-content.
@@ -1947,6 +1997,7 @@
 
 <section class="ks-sec" id="toggletip">
   <h2>Toggletip</h2><p>click-triggered, open state — click the trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="padding:3rem 0 6rem 8rem">
     <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret">
       <button type="button" class="rux--toggletip-button" aria-expanded="false">More information</button>
@@ -1966,6 +2017,7 @@
 
 <section class="ks-sec" id="menu">
   <h2>Menu</h2><p>icons · shortcut · danger item — click the trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="padding-block:1rem;min-height:12rem;align-items:flex-start;flex-direction:column;gap:.5rem">
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm" data-ks-menu="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
     <ul id="ks-menu" class="rux--menu rux--menu--md rux--menu--with-icons"
@@ -1990,6 +2042,7 @@
 
 <section class="ks-sec" id="overflow-menu">
   <h2>Overflow menu</h2><p>trigger and open options list — click the trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     .rux--overflow-menu-options is position:absolute at inset-block-start:2rem with
     no positioned ancestor of its own, so the trigger must establish the containing
@@ -2025,6 +2078,7 @@
 
 <section class="ks-sec" id="accordion">
   <h2>Accordion</h2><p>click a heading to expand or collapse</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <ul class="rux--accordion rux--accordion--end">
     <li class="rux--accordion__item rux--accordion__item--active">
       <button type="button" class="rux--accordion__heading" aria-expanded="true">
@@ -2047,6 +2101,7 @@
 
 <section class="ks-sec" id="content-switcher">
   <h2>Content switcher</h2><p>sizes · selected state</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--sm" role="tablist">
       <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">
@@ -2074,6 +2129,7 @@
 
 <section class="ks-sec" id="progress-bar">
   <h2>Progress bar</h2><p>determinate · indeterminate · finished · error</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="max-width:28rem;display:grid;gap:1.5rem">
     <div class="rux--progress-bar rux--progress-bar--big">
       <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Uploading</span></div>
@@ -2099,6 +2155,7 @@
 
 <section class="ks-sec" id="progress-indicator">
   <h2>Progress indicator</h2><p>horizontal · vertical · step states</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <ul class="rux--progress rux--progress--space-equal" style="margin-block-end:2rem">
     <li class="rux--progress-step rux--progress-step--complete">
       <div class="rux--progress-step-button">
@@ -2132,6 +2189,8 @@
 
 <section class="ks-sec" id="inline-loading">
   <h2>Inline loading</h2><p>active · finished · error</p>
+  <!-- PROVENANCE: source · @carbon/react InlineLoading.tsx, 2026-08-26
+       · never diffed against the rendered page -->
   <!--
     STRUCTURE CORRECTED 2026-08-26, from @carbon/react InlineLoading.tsx. The
     status classes go on the ICON SVG, not on a wrapper. The previous markup put
@@ -2185,6 +2244,7 @@
 
 <section class="ks-sec" id="contained-list">
   <h2>Contained list</h2><p>on-page · disclosed · item variants</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-grid">
     <div class="rux--contained-list rux--contained-list--on-page">
       <div class="rux--contained-list__header"><h3 class="rux--contained-list__label">On page</h3></div>
@@ -2215,6 +2275,7 @@
 
 <section class="ks-sec" id="structured-list">
   <h2>Structured list</h2><p>header row · selection · condensed</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="rux--structured-list rux--structured-list--condensed">
     <div class="rux--structured-list-thead">
       <div class="rux--structured-list-row rux--structured-list-row--header-row">
@@ -2237,6 +2298,8 @@
 
 <section class="ks-sec" id="treeview">
   <h2>Tree view</h2><p>nested nodes · selected · disabled — click to select, click the caret to collapse</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
+       · f9f5414 claims a React DOM diff; the fragment records no reference. Corrected by check-compound. -->
   <ul class="rux--tree" role="tree">
     <li class="rux--tree-node rux--tree-node--with-icon" role="treeitem" aria-expanded="true" tabindex="0">
       <div class="rux--tree-node__label">
@@ -2273,6 +2336,7 @@
 
 <section class="ks-sec" id="ai-label">
   <h2>AI label</h2><p>the AI affordance · sizes and inline form</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="padding-block:1rem">
     <div class="rux--ai-label">
       <button type="button" class="rux--ai-label__button rux--ai-label__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
@@ -2290,6 +2354,7 @@
 
 <section class="ks-sec" id="slug">
   <h2>Slug</h2><p>predecessor of AI label, kept for compatibility</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row" style="padding-block:1rem">
     <div class="rux--slug">
       <button type="button" class="rux--slug__button rux--slug__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
@@ -2304,6 +2369,7 @@
 
 <section class="ks-sec" id="code-snippet">
   <h2>Code snippet</h2><p>inline · single line · multi line</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="display:grid;gap:1.5rem;max-width:36rem">
     <div>
       <code class="rux--snippet rux--snippet--inline"><span>npm run build</span></code>
@@ -2327,6 +2393,7 @@
 
 <section class="ks-sec" id="copy-button">
   <h2>Copy button</h2><p>click to see the feedback animation</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     .rux--copy-btn__feedback has no hidden state in CSS — Carbon's web component
     only puts it in the DOM while animating. The idle button therefore omits it.
@@ -2345,6 +2412,7 @@
 
 <section class="ks-sec" id="chat-button">
   <h2>Chat button</h2><p>quick actions · with icon</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary rux--chat-btn">Send</button>
     <button type="button" class="rux--btn rux--btn--tertiary rux--chat-btn rux--chat-btn--with-icon">With icon</button>
@@ -2355,6 +2423,7 @@
 
 <section class="ks-sec" id="file-uploader">
   <h2>File uploader</h2><p>drop zone · browse · uploaded items</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="max-width:32rem">
     <p class="rux--file--label">Upload files</p>
     <p class="rux--label-description">Max 500 KB each</p>
@@ -2381,6 +2450,7 @@
 
 <section class="ks-sec" id="combo-button">
   <h2>Combo button</h2><p>primary action plus a menu trigger</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div class="rux--combo-button__container rux--combo-button__container--lg">
       <button type="button" class="rux--btn rux--btn--primary rux--combo-button__primary-action">Save</button>
@@ -2395,6 +2465,7 @@
 
 <section class="ks-sec" id="menu-button">
   <h2>Menu button</h2><p>single trigger opening a menu</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="ks-row">
     <div class="rux--menu-button__container">
       <button type="button" class="rux--btn rux--btn--primary rux--menu-button__trigger" aria-haspopup="true" aria-expanded="false">Actions</button>
@@ -2407,6 +2478,7 @@
 
 <section class="ks-sec" id="pagination">
   <h2>Pagination</h2><p>full bar · nav-only variant</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div class="rux--pagination" style="margin-block-end:2rem">
     <div class="rux--pagination__left">
       <label class="rux--pagination__text" for="pg-size">Items per page:</label>
@@ -2450,6 +2522,7 @@
 
 <section class="ks-sec" id="slider">
   <h2>Slider</h2><p>single handle · two handles · disabled</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="max-width:28rem;display:grid;gap:2rem">
     <div>
       <label class="rux--label" for="sl-1">Volume</label>
@@ -2502,10 +2575,45 @@
 
 <section class="ks-sec" id="ui-shell">
   <h2>UI shell</h2><p>header · global actions · side nav with expandable categories — wrapped in g100, which is how Carbon intends the shell to be themed.</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com components-ui-shell-header--header-w-navigation-actions-and-side-nav, 2026-08-27 -->
   <!--
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-27 — react.carbondesignsystem.com
-    components-ui-shell-header--header-w-navigation-actions-and-side-nav.
-    See sink/ui-shell.html for full provenance notes.
+    components-ui-shell-header--header-w-navigation-actions-and-side-nav, class tree
+    read from the live page.
+
+    Side nav categories use:
+      li.--side-nav__item.--side-nav__item--icon
+        button.--side-nav__submenu[aria-expanded]
+          div.--side-nav__icon              (category icon)
+          span.--side-nav__submenu-title
+          div.--side-nav__icon.--side-nav__submenu-chevron
+        ul.--side-nav__menu
+          li.--side-nav__menu-item
+            a.--side-nav__link > span.--side-nav__link-text
+
+    The active category carries --side-nav__item--active on the <li>, and the
+    current link inside it carries aria-current="page".
+
+    THREE CLASSES CARBON EMITS ARE DELIBERATELY NOT COPIED. Each was in the
+    rendered DOM and has no rule anywhere in @carbon/styles, so each would fail
+    check-classes while styling nothing:
+
+      --btn--lg                 lg is the unclassed default size; the real
+                                sizing here is --layout--size-lg. Carbon's own
+                                extraction already files this one under
+                                "size pairing is advisory" (carbon-co-classes.json).
+      --side-nav__icon--small   the chevron is styled by the compound
+                                .--side-nav__icon.--side-nav__submenu-chevron;
+                                --small is inert.
+      --text-truncate--end      Carbon's stylesheet spells it --text-truncate-end,
+                                one dash, and defines it only as a descendant of
+                                .--side-nav (the collapsed-header case). Kept at
+                                the corrected spelling; it does not apply while
+                                the menu bar is in the header.
+
+    In production both header and side-nav are position:fixed. In this demo
+    sandbox the header is position:absolute inside a 22rem container, so the
+    side nav needs an explicit height (see inline style).
   -->
   <div data-theme="g100" style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden;background:var(--rux-background)">
     <header class="rux--header" style="position:absolute" aria-label="Rux DS">
@@ -2515,23 +2623,24 @@
       <nav class="rux--header__nav" aria-label="Rux DS">
         <ul class="rux--header__menu-bar">
           <li>
-            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate--end">Overview</span></a>
+            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate-end">Overview</span></a>
           </li>
-          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate--end">Reports</span></a></li>
+          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Reports</span></a></li>
         </ul>
       </nav>
       <div class="rux--header__global">
-        <button type="button" class="rux--header__action rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
-        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
       </div>
       <div class="rux--side-nav__overlay"></div>
       <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
         <ul class="rux--side-nav__items">
+          <!-- Expandable category — active, with current page -->
           <li class="rux--side-nav__item rux--side-nav__item--active rux--side-nav__item--icon">
             <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
               <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></div>
               <span class="rux--side-nav__submenu-title">Documents</span>
-              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+              <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
             <ul class="rux--side-nav__menu" role="menu">
               <li class="rux--side-nav__menu-item">
@@ -2545,11 +2654,12 @@
               </li>
             </ul>
           </li>
+          <!-- Expandable category — collapsed -->
           <li class="rux--side-nav__item rux--side-nav__item--icon">
             <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
               <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></div>
               <span class="rux--side-nav__submenu-title">Reports</span>
-              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+              <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
             <ul class="rux--side-nav__menu" role="menu" hidden>
               <li class="rux--side-nav__menu-item">
@@ -2560,6 +2670,7 @@
               </li>
             </ul>
           </li>
+          <!-- Standalone link -->
           <li class="rux--side-nav__item">
             <a class="rux--side-nav__link" href="#ui-shell">
               <span class="rux--side-nav__link-text">Settings</span>
@@ -2573,6 +2684,8 @@
 
 <section class="ks-sec" id="date-picker">
   <h2>Date picker</h2><p>simple · single with calendar · range</p>
+  <!-- PROVENANCE: source · cds-date-picker-input shadow DOM
+       · superseded reference for light-DOM class placement (roadmap §4.1.11) -->
   <!--
     From cds-date-picker-input: the input sits in a bare <span> inside
     __wrapper and carries a size class. Carbon emits `__input--md`, which
@@ -2615,6 +2728,7 @@
 
 <section class="ks-sec" id="time-picker">
   <h2>Time picker</h2><p>time field plus period and zone selects · invalid</p>
+  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <!--
     Two modifiers here need their base class or the browser default shows through:
       .rux--time-picker__input-field  ->  also .rux--text-input

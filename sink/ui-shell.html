@@ -1,5 +1,6 @@
 <section class="ks-sec" id="ui-shell">
   <h2>UI shell</h2><p>header · global actions · side nav with expandable categories — wrapped in g100, which is how Carbon intends the shell to be themed.</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com components-ui-shell-header--header-w-navigation-actions-and-side-nav, 2026-08-27 -->
   <!--
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-27 — react.carbondesignsystem.com
     components-ui-shell-header--header-w-navigation-actions-and-side-nav, class tree
@@ -10,13 +11,30 @@
         button.--side-nav__submenu[aria-expanded]
           div.--side-nav__icon              (category icon)
           span.--side-nav__submenu-title
-          div.--side-nav__icon.--side-nav__icon--small.--side-nav__submenu-chevron
+          div.--side-nav__icon.--side-nav__submenu-chevron
         ul.--side-nav__menu
           li.--side-nav__menu-item
             a.--side-nav__link > span.--side-nav__link-text
 
     The active category carries --side-nav__item--active on the <li>, and the
     current link inside it carries aria-current="page".
+
+    THREE CLASSES CARBON EMITS ARE DELIBERATELY NOT COPIED. Each was in the
+    rendered DOM and has no rule anywhere in @carbon/styles, so each would fail
+    check-classes while styling nothing:
+
+      --btn--lg                 lg is the unclassed default size; the real
+                                sizing here is --layout--size-lg. Carbon's own
+                                extraction already files this one under
+                                "size pairing is advisory" (carbon-co-classes.json).
+      --side-nav__icon--small   the chevron is styled by the compound
+                                .--side-nav__icon.--side-nav__submenu-chevron;
+                                --small is inert.
+      --text-truncate--end      Carbon's stylesheet spells it --text-truncate-end,
+                                one dash, and defines it only as a descendant of
+                                .--side-nav (the collapsed-header case). Kept at
+                                the corrected spelling; it does not apply while
+                                the menu bar is in the header.
 
     In production both header and side-nav are position:fixed. In this demo
     sandbox the header is position:absolute inside a 22rem container, so the
@@ -30,14 +48,14 @@
       <nav class="rux--header__nav" aria-label="Rux DS">
         <ul class="rux--header__menu-bar">
           <li>
-            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate--end">Overview</span></a>
+            <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate-end">Overview</span></a>
           </li>
-          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate--end">Reports</span></a></li>
+          <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Reports</span></a></li>
         </ul>
       </nav>
       <div class="rux--header__global">
-        <button type="button" class="rux--header__action rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
-        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--btn--lg rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
       </div>
       <div class="rux--side-nav__overlay"></div>
       <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
@@ -47,7 +65,7 @@
             <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
               <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></div>
               <span class="rux--side-nav__submenu-title">Documents</span>
-              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+              <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
             <ul class="rux--side-nav__menu" role="menu">
               <li class="rux--side-nav__menu-item">
@@ -66,7 +84,7 @@
             <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
               <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></div>
               <span class="rux--side-nav__submenu-title">Reports</span>
-              <div class="rux--side-nav__icon rux--side-nav__icon--small rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+              <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
             <ul class="rux--side-nav__menu" role="menu" hidden>
               <li class="rux--side-nav__menu-item">

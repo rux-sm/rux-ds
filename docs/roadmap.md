@@ -683,6 +683,112 @@ Still unverified and marked as such in the fragment: the filterable variant,
 which is a separate story. `sink/fluid.html` still carries the old
 `__selection--multi` badge and has the same defect pending its own diff.
 
+#### 4.1.12 The reference emits classes its own stylesheet does not define
+
+`ui-shell` was quarried in the same round as §4.1.11 and carried three classes
+straight out of the rendered DOM that `@carbon/styles` defines **nowhere**:
+
+| Copied | What actually styles it |
+|---|---|
+| `--btn--lg` ×2 | nothing — `lg` is the unclassed default; the size here is `--layout--size-lg` |
+| `--side-nav__icon--small` ×2 | nothing — the chevron is the compound `.--side-nav__icon.--side-nav__submenu-chevron` (css/rux.css:26099) |
+| `--text-truncate--end` ×2 | nothing at that spelling — the stylesheet writes `--text-truncate-end`, one dash, and only as `.--side-nav a.--header__menu-item .--text-truncate-end` (:26218) |
+
+All three are dropped or corrected, on the §4.1.11 precedent that retired
+`--dropdown--lg` and `--list-box--md`. The two removals are provably inert:
+computed box, padding, colour, `flex` and `transform` on both header actions and
+both chevrons are byte-identical before and after. `--text-truncate--end` is
+respelled rather than deleted, since the class is real in the collapsed-header
+case; it still styles nothing while the menu bar sits in the header, and the
+fragment says so.
+
+**The extraction method is not weakened by this — it is bounded by it.** Reading
+the rendered DOM is still the only way to get *structure* right (§4.1.11), but
+not every class in that DOM is live. Carbon ships dead ones: its own co-class
+extraction already files `cds--btn--lg` under *"size pairing is advisory"*
+(`docs/carbon-co-classes.json`). So the DOM gives the shape and `check-classes`
+filters it — quarry first, then let the gate delete what the stylesheet does not
+back. Neither step substitutes for the other.
+
+**`f9f5414` shipped with `npm run verify` failing.** The six occurrences were in
+the committed `kitchen-sink.html`; the gate was red at HEAD and stayed red until
+this entry. The only hook installed is `commit-msg`, which checks the message and
+nothing else — no hook runs `verify`. Recorded rather than fixed: a `pre-commit`
+gate is a Phase 8 decision (§4.8), not a fix to slip in here.
+
+#### 4.1.13 Every fragment now says where its markup came from
+
+§4.1.11 asked which fragments had been quarried and the answer had to be
+reconstructed from commit messages, because the fragments did not say. Each of
+the 64 now carries a one-line `<!-- PROVENANCE: … -->` as its first comment,
+under the `<h2>`. Three values, ordered by how much the structure can be trusted:
+
+| Value | Means | Count |
+|---|---|---|
+| `rendered-dom` | class tree read out of the live React page — authoritative (§4.1.11) | 2 |
+| `source` | read from an implementation: `@carbon/react` `.tsx`, a web-component `render()`, or shadow DOM | 7 |
+| `inferred` | structure read off CSS selectors, never diffed against any reference | 55 |
+
+`rendered-dom` is **multiselect** and **ui-shell**, and that is the whole of it.
+`source` is date-picker, dropdown, combo-box, text-input (shadow DOM — the
+reference §4.1.11 demoted for light-DOM class placement), plus tabs and
+inline-loading (React `.tsx`) and notification (a web-component `render()`).
+
+**The commit record overstated this.** `f9f5414` says nine fragments "now match
+the rendered React DOM"; only two of them record a rendered reference. dialog,
+grid and treeview are labelled `inferred` and say so on the line — dialog and
+treeview were corrected by `check-compound` reading the CSS, and grid's notes are
+about tokens, not structure. Where the commit and the fragment disagree, the
+fragment is labelled down, since over-marking costs a redundant diff and
+under-marking silently blesses markup nobody checked.
+
+**The remaining 55 are the Phase 1 tail, and this is the list:**
+
+```
+accordion action-set ai-label aspect-ratio badge-indicator breadcrumb
+buttons card chat-button checkbox code-snippet combo-button contained-list
+content-switcher copy-button dialog file-uploader fluid grid icon-indicator
+links list list-box loading menu menu-button modal number overflow-menu
+page-header pagination popover progress-bar progress-indicator radio resizer
+search select shape-indicator side-panel skeleton slider slug stack
+structured-list table tags textarea tile time-picker toggle toggletip
+tooltip treeview truncated-text
+```
+
+Two carry a known defect on the line rather than in a commit message: `fluid`
+still has the old `--selection--multi` badge (§4.1.11), and `truncated-text` has
+the unfixable button reset (§4.1.5).
+
+The sweep is comment-only — 77 lines added, none removed, no markup touched, and
+`verify` is unchanged at 64 sections · 567 classes · 0 undefined.
+
+**`tools/check-provenance.mjs` (new, seventh in `verify`) keeps the labels
+honest.** A label nobody enforces drifts the first time a fragment is added, so
+the gate checks five things, all of them universal rules needing no entries:
+every fragment carries a PROVENANCE comment; its kind is one of the three; the
+comment is the **first** one in the fragment rather than buried in a wall of
+notes; `rendered-dom` and `source` **name what they were read from**, because a
+verification claim with nothing after it is an assertion; and `rendered-dom`
+carries a date, because the live page it cites moves and the claim expires with
+it. All seven failure modes were exercised against fixtures before wiring it in.
+
+**It does not fail on `inferred`, and that is deliberate.** A gate that went red
+while any fragment was unverified would be red for the whole of Phase 1 with no
+action available most days, and a red gate nobody can turn green gets bypassed —
+`f9f5414` already shipped through a red `check-classes`. So it measures
+declaration, not verification. It is blind to whether a label is *true*: a
+fragment can claim `rendered-dom` against a story nobody opened and the gate
+exits 0. Same bargain as `check-coverage`, which proves a component is exercised
+and not that its markup is right.
+
+`--rendered-dom`, `--source` and `--inferred` print the fragment names, so the
+extraction checklist is a command rather than a list in this file that goes
+stale:
+
+```bash
+node tools/check-provenance.mjs --inferred
+```
+
 ### 4.2 Phase 2 — Inventory
 
 Per component, record: compiled size, its `@use` graph, the tokens it consumes, and a
