@@ -40,6 +40,33 @@
     </div>
   </div>
 
+  <div class="ks-label">validity states on the fluid wrappers</div>
+  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--number-input--fluid rux--number-input--fluid--invalid rux--number" data-invalid>
+      <div class="rux--number__input-wrapper">
+        <label class="rux--label" for="fl-ni-inv">Invalid number</label>
+        <input id="fl-ni-inv" type="number" value="0" data-invalid aria-invalid="true">
+      </div>
+      <div class="rux--form-requirement">Must be at least 1</div>
+    </div>
+    <div class="rux--number-input--fluid rux--number-input--fluid--disabled rux--number">
+      <div class="rux--number__input-wrapper">
+        <label class="rux--label rux--label--disabled" for="fl-ni-dis">Disabled number</label>
+        <input id="fl-ni-dis" type="number" value="12" disabled>
+      </div>
+    </div>
+    <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--invalid">
+      <div class="rux--dropdown rux--list-box" data-invalid>
+        <div class="rux--list-box__field" tabindex="0" role="combobox" aria-expanded="false" aria-label="Fluid dropdown, invalid" aria-invalid="true">
+          <span class="rux--list-box__label">Choose</span>
+          <div class="rux--list-box__invalid-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></div>
+          <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+        </div>
+      </div>
+      <div class="rux--form-requirement">A selection is required</div>
+    </div>
+  </div>
+
   <div class="ks-label">date picker · time picker</div>
   <!--
     Fluid date picker nests .rux--date-picker (position:relative) inside
@@ -49,6 +76,24 @@
     .rux--time-picker--fluid__wrapper is itself a fluid sub-component.
   -->
   <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--date-picker--fluid rux--date-picker--fluid--invalid">
+      <div class="rux--date-picker rux--date-picker--simple">
+        <label class="rux--label" for="fl-dp-inv">Fluid date · invalid</label>
+        <div class="rux--date-picker-input__wrapper">
+          <input id="fl-dp-inv" class="rux--date-picker__input" type="text" value="31/31/2026" data-invalid aria-invalid="true">
+        </div>
+      </div>
+      <div class="rux--form-requirement">Not a valid date</div>
+    </div>
+    <div class="rux--date-picker--fluid rux--date-picker--fluid--warn">
+      <div class="rux--date-picker rux--date-picker--simple">
+        <label class="rux--label" for="fl-dp-warn">Fluid date · warning</label>
+        <div class="rux--date-picker-input__wrapper">
+          <input id="fl-dp-warn" class="rux--date-picker__input" type="text" value="01/01/2020">
+        </div>
+      </div>
+      <div class="rux--form-requirement">That date is in the past</div>
+    </div>
     <div class="rux--date-picker--fluid">
       <div class="rux--date-picker rux--date-picker--simple">
         <label class="rux--label" for="fl-dp">Fluid date</label>
@@ -60,6 +105,35 @@
   </div>
 
   <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+    <div class="rux--time-picker--fluid rux--time-picker--fluid--invalid rux--time-picker">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--time-picker__input">
+          <label class="rux--label" for="fl-tp-invalid">Fluid time · invalid</label>
+          <input id="fl-tp-invalid" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5" data-invalid aria-invalid="true">
+        </div>
+      </div>
+    </div>
+    <div class="rux--time-picker--fluid rux--time-picker--fluid--warning rux--time-picker">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--time-picker__input">
+          <label class="rux--label" for="fl-tp-warning">Fluid time · warning</label>
+          <input id="fl-tp-warning" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5">
+        </div>
+      </div>
+    </div>
+    <div class="rux--time-picker--fluid rux--time-picker--fluid--disabled rux--time-picker">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--time-picker__input">
+          <label class="rux--label" for="fl-tp-disabled">Fluid time · disabled</label>
+          <input id="fl-tp-disabled" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5" disabled>
+        </div>
+      </div>
+    </div>
+    <div class="rux--time-picker--fluid rux--time-picker--fluid--skeleton rux--time-picker">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--time-picker__input"><span class="rux--skeleton__text"></span></div>
+      </div>
+    </div>
     <div class="rux--time-picker--fluid rux--time-picker">
       <div class="rux--time-picker--fluid__wrapper">
         <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">

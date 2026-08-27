@@ -32,6 +32,30 @@
   -->
   <div class="ks-grid">
     <div>
+      <!--
+        --multi-select--readonly is written compound with the base and the list
+        box: `.rux--multi-select.rux--multi-select--readonly.rux--list-box`, so
+        all three belong to one element.
+      -->
+      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+        <label class="rux--label" id="ms-4-label">Read-only</label>
+        <div class="rux--multi-select rux--multi-select--readonly rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">2</span>
+            </div>
+            <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="ms-4-label" aria-expanded="false" aria-readonly="true">
+              <span class="rux--list-box__label">Set by policy</span>
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
       <div class="rux--multi-select__wrapper rux--list-box__wrapper">
         <label class="rux--label" id="ms-1-label">Choose several
           <span class="rux--visually-hidden">Clear all selected items, 2 selected</span>

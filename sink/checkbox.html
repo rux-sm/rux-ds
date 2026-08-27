@@ -44,6 +44,44 @@
       <div class="rux--form-requirement">A selection is required</div>
     </fieldset>
 
+    <!--
+      --checkbox-wrapper--warning is scoped: the rule is
+      `.rux--checkbox-group .rux--checkbox-wrapper--warning > .rux--checkbox__validation-msg`,
+      so the wrapper needs a group above it and a validation message inside it
+      before either class does anything.
+    -->
+    <fieldset class="rux--fieldset rux--checkbox-group rux--checkbox-group--warning">
+      <legend class="rux--label">Warning group</legend>
+      <div class="rux--form-item rux--checkbox-wrapper rux--checkbox-wrapper--warning">
+        <input id="cb-9" class="rux--checkbox" type="checkbox" checked>
+        <label for="cb-9" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Sends email to everyone</span></label>
+        <div class="rux--checkbox__validation-msg">
+          <svg class="rux--checkbox__invalid-icon rux--checkbox__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+          <div class="rux--form-requirement">This notifies 4,000 people</div>
+        </div>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper rux--checkbox-wrapper--invalid">
+        <input id="cb-10" class="rux--checkbox" type="checkbox" data-invalid aria-invalid="true">
+        <label for="cb-10" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Required</span></label>
+        <div class="rux--checkbox__validation-msg">
+          <svg class="rux--checkbox__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+          <div class="rux--form-requirement">This field is required</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="rux--fieldset rux--checkbox-group rux--checkbox-group--readonly">
+      <legend class="rux--label">Read-only group</legend>
+      <div class="rux--form-item rux--checkbox-wrapper rux--checkbox-wrapper--readonly">
+        <input id="cb-11" class="rux--checkbox" type="checkbox" checked aria-readonly="true">
+        <label for="cb-11" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Fixed on</span></label>
+      </div>
+      <div class="rux--form-item rux--checkbox-wrapper rux--checkbox-wrapper--readonly">
+        <input id="cb-12" class="rux--checkbox" type="checkbox" aria-readonly="true">
+        <label for="cb-12" class="rux--checkbox-label"><span class="rux--checkbox-label-text">Fixed off</span></label>
+      </div>
+    </fieldset>
+
     <fieldset class="rux--fieldset rux--checkbox-group rux--checkbox-group--horizontal">
       <legend class="rux--label">Horizontal</legend>
       <div class="rux--form-item rux--checkbox-wrapper">

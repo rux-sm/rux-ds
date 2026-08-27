@@ -3,5 +3,14 @@
     <div class="ks-grid">
       <div class="rux--tile"><p>Base tile with some content inside it.</p></div>
       <a href="#tile" class="rux--tile rux--tile--clickable"><p>Clickable tile</p></a>
+      <!--
+        --tile--disabled is only ever written compound with --tile--selectable
+        (:.rux--tile--disabled.rux--tile--selectable). On its own it styles
+        nothing but a nested checkmark, so both classes go on one element.
+      -->
+      <div class="rux--tile rux--tile--selectable rux--tile--disabled">
+        <span class="rux--tile__checkmark"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg></span>
+        <p>Selectable, disabled</p>
+      </div>
     </div>
   </section>

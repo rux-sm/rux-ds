@@ -128,6 +128,32 @@
         <svg class="rux--toast-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
+    <div class="rux--toast-notification rux--toast-notification--error" role="alert">
+      <div class="rux--toast-notification__details">
+        <svg class="rux--toast-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+        <div>
+          <p class="rux--toast-notification__title">Upload failed</p>
+          <p class="rux--toast-notification__subtitle">The connection dropped at 40%.</p>
+          <p class="rux--toast-notification__caption">just now</p>
+        </div>
+      </div>
+      <button type="button" class="rux--toast-notification__close-button" aria-label="Close">
+        <svg class="rux--toast-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <div class="rux--toast-notification rux--toast-notification--warning" role="alert">
+      <div class="rux--toast-notification__details">
+        <svg class="rux--toast-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg>
+        <div>
+          <p class="rux--toast-notification__title">Storage almost full</p>
+          <p class="rux--toast-notification__subtitle">92% of your quota is in use.</p>
+          <p class="rux--toast-notification__caption">just now</p>
+        </div>
+      </div>
+      <button type="button" class="rux--toast-notification__close-button" aria-label="Close">
+        <svg class="rux--toast-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
   </div>
 
   <div class="ks-label">actionable</div>
@@ -142,6 +168,51 @@
       </div>
       <div class="rux--actionable-notification__button-wrapper">
         <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--actionable-notification__action-button">Install</button>
+      </div>
+      <button type="button" class="rux--inline-notification__close-button" aria-label="Close">
+        <svg class="rux--inline-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <div class="rux--actionable-notification rux--actionable-notification--error rux--inline-notification rux--inline-notification--error" role="alertdialog">
+      <div class="rux--inline-notification__details">
+        <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+        <div class="rux--inline-notification__text-wrapper">
+          <p class="rux--inline-notification__title">Sync failed</p>
+          <p class="rux--inline-notification__subtitle">Three records could not be written.</p>
+        </div>
+      </div>
+      <div class="rux--actionable-notification__button-wrapper">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--actionable-notification__action-button">Retry</button>
+      </div>
+      <button type="button" class="rux--inline-notification__close-button" aria-label="Close">
+        <svg class="rux--inline-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <div class="rux--actionable-notification rux--actionable-notification--warning rux--inline-notification rux--inline-notification--warning" role="alertdialog">
+      <div class="rux--inline-notification__details">
+        <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg>
+        <div class="rux--inline-notification__text-wrapper">
+          <p class="rux--inline-notification__title">Certificate expires Friday</p>
+          <p class="rux--inline-notification__subtitle">Renew it to avoid an outage.</p>
+        </div>
+      </div>
+      <div class="rux--actionable-notification__button-wrapper">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--actionable-notification__action-button">Renew</button>
+      </div>
+      <button type="button" class="rux--inline-notification__close-button" aria-label="Close">
+        <svg class="rux--inline-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <div class="rux--actionable-notification rux--actionable-notification--success rux--inline-notification rux--inline-notification--success" role="alertdialog">
+      <div class="rux--inline-notification__details">
+        <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        <div class="rux--inline-notification__text-wrapper">
+          <p class="rux--inline-notification__title">Import finished</p>
+          <p class="rux--inline-notification__subtitle">1,204 rows added.</p>
+        </div>
+      </div>
+      <div class="rux--actionable-notification__button-wrapper">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--actionable-notification__action-button">View</button>
       </div>
       <button type="button" class="rux--inline-notification__close-button" aria-label="Close">
         <svg class="rux--inline-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>

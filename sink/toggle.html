@@ -61,5 +61,28 @@
         </div>
       </label>
     </div>
+
+    <div class="rux--toggle rux--toggle--readonly">
+      <button id="tg-6" class="rux--toggle__button" role="switch" type="button" aria-checked="true" aria-readonly="true" aria-labelledby="tg-6-l"></button>
+      <label class="rux--toggle__label" for="tg-6" id="tg-6-l">
+        <span class="rux--toggle__label-text">Read-only</span>
+        <div class="rux--toggle__appearance">
+          <div class="rux--toggle__switch rux--toggle__switch--checked"></div>
+          <div class="rux--toggle__text">On</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!--
+    The skeleton is its own markup, not a modifier on the real toggle: the switch
+    and text are replaced by two shapes the skeleton rules size directly
+    (_toggle.scss:223 and :231).
+  -->
+  <div class="ks-row">
+    <div class="rux--toggle rux--toggle--skeleton">
+      <div class="rux--toggle__skeleton-circle"></div>
+      <div class="rux--toggle__skeleton-rectangle"></div>
+    </div>
   </div>
 </section>

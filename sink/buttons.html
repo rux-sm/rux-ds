@@ -20,11 +20,38 @@
       <button type="button" class="rux--btn rux--btn--primary" disabled>Disabled</button>
       <button type="button" class="rux--btn rux--btn--primary rux--btn--expressive">Expressive</button>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--selected">Selected ghost</button>
+      <!--
+        --btn--disabled is the CLASS form of the disabled attribute, for a kind
+        rendered on an <a>, where `disabled` does not exist. Carbon styles it
+        beside :disabled throughout (_button.scss:187, :231, :376).
+      -->
+      <a class="rux--btn rux--btn--ghost rux--btn--disabled" role="button" aria-disabled="true">Disabled ghost link</a>
     </div>
     <div class="ks-row">
       <div class="rux--btn-set">
         <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
         <button type="button" class="rux--btn rux--btn--primary">Submit</button>
+      </div>
+    </div>
+    <!--
+      --btn--loading has exactly one rule, and it is scoped:
+      `.rux--btn-set .rux--btn.rux--btn--loading` (_button.scss:514). Outside a
+      btn-set the class does nothing, so the set is where it has to be shown.
+    -->
+    <div class="ks-row">
+      <div class="rux--btn-set">
+        <button type="button" class="rux--btn rux--btn--secondary" disabled>Cancel</button>
+        <button type="button" class="rux--btn rux--btn--primary rux--btn--loading" disabled>
+          <div class="rux--inline-loading__animation">
+            <div class="rux--loading rux--loading--small">
+              <svg class="rux--loading__svg" viewBox="0 0 100 100">
+                <circle class="rux--loading__background" cx="50%" cy="50%" r="42"></circle>
+                <circle class="rux--loading__stroke" cx="50%" cy="50%" r="42"></circle>
+              </svg>
+            </div>
+          </div>
+          Submitting
+        </button>
       </div>
     </div>
   </section>

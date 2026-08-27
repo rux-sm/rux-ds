@@ -57,6 +57,78 @@
             <div class="rux--tabs__nav-item-label">Activity</div>
           </div>
         </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--disabled" role="tab" type="button" aria-selected="false" aria-disabled="true" disabled>
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Disabled</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!--
+      Dismissible tabs. The close control is a sibling of the tab, not a child:
+      Carbon's hover rule reaches it as
+      `.rux--tabs__nav-item:hover + .rux--tabs__nav-item--close`, so nesting it
+      inside the button would put it out of the selector's reach entirely.
+    -->
+    <div class="ks-label" style="margin-block-start:1.5rem">dismissible</div>
+    <div class="rux--tabs">
+      <div class="rux--tabs__nav" role="tablist" aria-label="Dismissible tabs">
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Report A</div>
+          </div>
+        </button>
+        <div class="rux--tabs__nav-item--close">
+          <button type="button" class="rux--tabs__nav-item--close-icon" aria-label="Close Report A">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Report B</div>
+          </div>
+        </button>
+        <div class="rux--tabs__nav-item--close">
+          <button type="button" class="rux--tabs__nav-item--close-icon rux--tabs__nav-item--close-icon--disabled" aria-label="Close Report B" disabled>
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      --tabs--tall has no rule of its own. Every selector is
+      `.rux--tabs.rux--tabs--contained.rux--tabs--tall`, or the `:not(--tall)`
+      form, so contained is a prerequisite rather than a companion.
+    -->
+    <div class="ks-label" style="margin-block-start:1.5rem">contained · tall</div>
+    <div class="rux--tabs rux--tabs--contained rux--tabs--tall">
+      <div class="rux--tabs__nav" role="tablist" aria-label="Tall contained tabs">
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Overview</div>
+            <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
+          </div>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+          <div class="rux--tabs__nav-item-label-wrapper">
+            <div class="rux--tabs__nav-item-label">Details</div>
+            <div class="rux--tabs__nav-item-secondary-label">One record</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="ks-label" style="margin-block-start:1.5rem">icon tabs · lg</div>
+    <div class="rux--tabs rux--tabs__icon--lg">
+      <div class="rux--tab--list" role="tablist" aria-label="Icon tabs">
+        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true" aria-label="Documents">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg>
+        </button>
+        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false" aria-label="Folders">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg>
+        </button>
       </div>
     </div>
   </section>

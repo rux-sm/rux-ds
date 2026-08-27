@@ -22,6 +22,36 @@
         </div>
       </div>
     </div>
+    <div class="rux--date-picker rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--invalid">
+        <label class="rux--label" for="dp-5">Invalid</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--invalid">
+          <span><input id="dp-5" class="rux--date-picker__input rux--date-picker__input--lg rux--date-picker__input--invalid" type="text" value="31/31/2026" data-invalid aria-invalid="true"><svg class="rux--date-picker__icon rux--date-picker__icon--invalid" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></span>
+        </div>
+        <div class="rux--form-requirement">Not a valid date</div>
+      </div>
+    </div>
+
+    <div class="rux--date-picker rux--date-picker--simple">
+      <div class="rux--date-picker-container">
+        <label class="rux--label" for="dp-6">Warning</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--warn">
+          <span><input id="dp-6" class="rux--date-picker__input rux--date-picker__input--lg rux--date-picker__input--warn" type="text" value="01/01/2020"><svg class="rux--date-picker__icon rux--date-picker__icon--warn" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg></span>
+        </div>
+        <div class="rux--form-requirement">That date is in the past</div>
+      </div>
+    </div>
+
+    <!-- --short narrows the field; Carbon pairs it on the picker and the container. -->
+    <div class="rux--date-picker rux--date-picker--simple rux--date-picker--short">
+      <div class="rux--date-picker-container rux--date-picker-container--short">
+        <label class="rux--label" for="dp-7">Short · sm</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span><input id="dp-7" class="rux--date-picker__input rux--date-picker__input--sm" type="text" placeholder="mm/yy"></span>
+        </div>
+      </div>
+    </div>
+
     <div class="rux--date-picker rux--date-picker--range">
       <div class="rux--date-picker-container">
         <label class="rux--label" for="dp-3">From</label>
