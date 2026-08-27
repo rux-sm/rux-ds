@@ -36,6 +36,8 @@ const ICONS = [
   // icon-indicator status set (web-components/icon-indicator.js:50-97)
   'warning--alt-inverted--filled', 'undefined--filled', 'in-progress',
   'pending--filled', 'unknown--filled', 'warning-square--filled',
+  // state demos in the sink: the icon-only content switcher and a disabled menu item
+  'list', 'grid', 'location', 'download',
 ];
 
 const symbols = [], missing = [], from = {};
