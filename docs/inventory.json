@@ -80,7 +80,12 @@
    ],
    "classCount": 39,
    "minBytes": 12710,
-   "gzipBytes": 1716
+   "gzipBytes": 1716,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 522,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "action-set",
@@ -107,7 +112,12 @@
    ],
    "classCount": 19,
    "minBytes": 2504,
-   "gzipBytes": 402
+   "gzipBytes": 402,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "ai-label",
@@ -357,7 +367,22 @@
    ],
    "classCount": 242,
    "minBytes": 101143,
-   "gzipBytes": 8671
+   "gzipBytes": 8671,
+   "deps": [
+    "slug"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "slug",
+    "toggletip",
+    "tooltip"
+   ],
+   "tokenCount": 552,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "slug"
+   ]
   },
   {
    "component": "aspect-ratio",
@@ -377,7 +402,12 @@
    ],
    "classCount": 12,
    "minBytes": 749,
-   "gzipBytes": 190
+   "gzipBytes": 190,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "badge-indicator",
@@ -387,7 +417,12 @@
    ],
    "classCount": 2,
    "minBytes": 592,
-   "gzipBytes": 193
+   "gzipBytes": 193,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "breadcrumb",
@@ -633,7 +668,23 @@
    ],
    "classCount": 238,
    "minBytes": 89384,
-   "gzipBytes": 8197
+   "gzipBytes": 8197,
+   "deps": [
+    "link",
+    "overflow-menu"
+   ],
+   "depsAll": [
+    "button",
+    "link",
+    "overflow-menu",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 552,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "link"
+   ]
   },
   {
    "component": "button",
@@ -805,7 +856,17 @@
    ],
    "classCount": 164,
    "minBytes": 70288,
-   "gzipBytes": 6272
+   "gzipBytes": 6272,
+   "deps": [
+    "tooltip"
+   ],
+   "depsAll": [
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 35,
+   "exclusiveDeps": []
   },
   {
    "component": "card",
@@ -869,7 +930,12 @@
    ],
    "classCount": 56,
    "minBytes": 9111,
-   "gzipBytes": 1698
+   "gzipBytes": 1698,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 525,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "chat-button",
@@ -1051,7 +1117,18 @@
    ],
    "classCount": 174,
    "minBytes": 72081,
-   "gzipBytes": 6486
+   "gzipBytes": 6486,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "checkbox",
@@ -1156,7 +1233,16 @@
    ],
    "classCount": 97,
    "minBytes": 25237,
-   "gzipBytes": 3369
+   "gzipBytes": 3369,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 3,
+   "exclusiveDeps": []
   },
   {
    "component": "code-snippet",
@@ -1375,7 +1461,21 @@
    ],
    "classCount": 211,
    "minBytes": 88324,
-   "gzipBytes": 8115
+   "gzipBytes": 8115,
+   "deps": [
+    "copy-button"
+   ],
+   "depsAll": [
+    "button",
+    "copy-button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "copy-button"
+   ]
   },
   {
    "component": "combo-box",
@@ -1632,7 +1732,22 @@
    ],
    "classCount": 249,
    "minBytes": 84568,
-   "gzipBytes": 9660
+   "gzipBytes": 9660,
+   "deps": [
+    "list-box"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "list-box",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "combo-button",
@@ -1841,7 +1956,20 @@
    ],
    "classCount": 201,
    "minBytes": 75764,
-   "gzipBytes": 7048
+   "gzipBytes": 7048,
+   "deps": [
+    "button",
+    "menu"
+   ],
+   "depsAll": [
+    "button",
+    "menu",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "contained-list",
@@ -2081,7 +2209,20 @@
    ],
    "classCount": 232,
    "minBytes": 88120,
-   "gzipBytes": 8059
+   "gzipBytes": 8059,
+   "deps": [
+    "button",
+    "overflow-menu"
+   ],
+   "depsAll": [
+    "button",
+    "overflow-menu",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "content-switcher",
@@ -2309,7 +2450,18 @@
    ],
    "classCount": 220,
    "minBytes": 95347,
-   "gzipBytes": 8159
+   "gzipBytes": 8159,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 551,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "copy-button",
@@ -2494,7 +2646,18 @@
    ],
    "classCount": 177,
    "minBytes": 73317,
-   "gzipBytes": 6756
+   "gzipBytes": 6756,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "data-table",
@@ -2712,7 +2875,24 @@
    ],
    "classCount": 210,
    "minBytes": 60688,
-   "gzipBytes": 7223
+   "gzipBytes": 7223,
+   "deps": [
+    "checkbox",
+    "radio-button"
+   ],
+   "depsAll": [
+    "button",
+    "checkbox",
+    "form",
+    "popover",
+    "radio-button",
+    "tooltip"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "radio-button"
+   ]
   },
   {
    "component": "date-picker",
@@ -2840,7 +3020,20 @@
    ],
    "classCount": 120,
    "minBytes": 44016,
-   "gzipBytes": 5490
+   "gzipBytes": 5490,
+   "deps": [
+    "button",
+    "form"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "dialog",
@@ -3033,7 +3226,18 @@
    ],
    "classCount": 185,
    "minBytes": 77834,
-   "gzipBytes": 7401
+   "gzipBytes": 7401,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "dropdown",
@@ -3322,7 +3526,22 @@
    ],
    "classCount": 281,
    "minBytes": 95053,
-   "gzipBytes": 10632
+   "gzipBytes": 10632,
+   "deps": [
+    "list-box"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "list-box",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 3,
+   "exclusiveDeps": []
   },
   {
    "component": "file-uploader",
@@ -3588,7 +3807,22 @@
    ],
    "classCount": 258,
    "minBytes": 93317,
-   "gzipBytes": 9066
+   "gzipBytes": 9066,
+   "deps": [
+    "button",
+    "form",
+    "loading"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "loading",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-combo-box",
@@ -3903,7 +4137,25 @@
    ],
    "classCount": 307,
    "minBytes": 110032,
-   "gzipBytes": 11776
+   "gzipBytes": 11776,
+   "deps": [
+    "dropdown",
+    "fluid-list-box"
+   ],
+   "depsAll": [
+    "button",
+    "dropdown",
+    "fluid-list-box",
+    "form",
+    "list-box",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-date-picker",
@@ -4050,7 +4302,22 @@
    ],
    "classCount": 139,
    "minBytes": 55074,
-   "gzipBytes": 6530
+   "gzipBytes": 6530,
+   "deps": [
+    "date-picker"
+   ],
+   "depsAll": [
+    "button",
+    "date-picker",
+    "form",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "date-picker"
+   ]
   },
   {
    "component": "fluid-dropdown",
@@ -4365,7 +4632,25 @@
    ],
    "classCount": 307,
    "minBytes": 109124,
-   "gzipBytes": 11609
+   "gzipBytes": 11609,
+   "deps": [
+    "dropdown",
+    "fluid-list-box"
+   ],
+   "depsAll": [
+    "button",
+    "dropdown",
+    "fluid-list-box",
+    "form",
+    "list-box",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-list-box",
@@ -4435,7 +4720,12 @@
    ],
    "classCount": 62,
    "minBytes": 14739,
-   "gzipBytes": 1726
+   "gzipBytes": 1726,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 3,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-multiselect",
@@ -4805,7 +5095,32 @@
    ],
    "classCount": 362,
    "minBytes": 127156,
-   "gzipBytes": 13974
+   "gzipBytes": 13974,
+   "deps": [
+    "fluid-combo-box",
+    "fluid-list-box",
+    "multiselect"
+   ],
+   "depsAll": [
+    "button",
+    "checkbox",
+    "dropdown",
+    "fluid-combo-box",
+    "fluid-list-box",
+    "form",
+    "list-box",
+    "multiselect",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "fluid-combo-box",
+    "multiselect"
+   ]
   },
   {
    "component": "fluid-number-input",
@@ -4926,7 +5241,19 @@
    ],
    "classCount": 113,
    "minBytes": 43779,
-   "gzipBytes": 4750
+   "gzipBytes": 4750,
+   "deps": [
+    "number-input"
+   ],
+   "depsAll": [
+    "form",
+    "number-input"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "number-input"
+   ]
   },
   {
    "component": "fluid-search",
@@ -5097,7 +5424,20 @@
    ],
    "classCount": 163,
    "minBytes": 46356,
-   "gzipBytes": 5463
+   "gzipBytes": 5463,
+   "deps": [
+    "search"
+   ],
+   "depsAll": [
+    "form",
+    "search",
+    "text-input"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "search"
+   ]
   },
   {
    "component": "fluid-select",
@@ -5206,7 +5546,17 @@
    ],
    "classCount": 101,
    "minBytes": 29523,
-   "gzipBytes": 3855
+   "gzipBytes": 3855,
+   "deps": [
+    "select"
+   ],
+   "depsAll": [
+    "form",
+    "select"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-text-area",
@@ -5308,7 +5658,19 @@
    ],
    "classCount": 94,
    "minBytes": 26527,
-   "gzipBytes": 3543
+   "gzipBytes": 3543,
+   "deps": [
+    "text-area"
+   ],
+   "depsAll": [
+    "form",
+    "text-area"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "text-area"
+   ]
   },
   {
    "component": "fluid-text-input",
@@ -5442,7 +5804,17 @@
    ],
    "classCount": 126,
    "minBytes": 40612,
-   "gzipBytes": 4766
+   "gzipBytes": 4766,
+   "deps": [
+    "text-input"
+   ],
+   "depsAll": [
+    "form",
+    "text-input"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "fluid-time-picker",
@@ -5632,7 +6004,24 @@
    ],
    "classCount": 182,
    "minBytes": 61527,
-   "gzipBytes": 6644
+   "gzipBytes": 6644,
+   "deps": [
+    "fluid-select",
+    "fluid-text-input"
+   ],
+   "depsAll": [
+    "fluid-select",
+    "fluid-text-input",
+    "form",
+    "select",
+    "text-input"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "fluid-select",
+    "fluid-text-input"
+   ]
   },
   {
    "component": "form",
@@ -5692,7 +6081,12 @@
    ],
    "classCount": 52,
    "minBytes": 13918,
-   "gzipBytes": 1913
+   "gzipBytes": 1913,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 28,
+   "exclusiveDeps": []
   },
   {
    "component": "icon-indicator",
@@ -5718,7 +6112,12 @@
    ],
    "classCount": 18,
    "minBytes": 2619,
-   "gzipBytes": 653
+   "gzipBytes": 653,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 529,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "inline-loading",
@@ -5747,7 +6146,16 @@
    ],
    "classCount": 21,
    "minBytes": 8276,
-   "gzipBytes": 1294
+   "gzipBytes": 1294,
+   "deps": [
+    "loading"
+   ],
+   "depsAll": [
+    "loading"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "link",
@@ -5772,7 +6180,12 @@
    ],
    "classCount": 17,
    "minBytes": 3792,
-   "gzipBytes": 657
+   "gzipBytes": 657,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 524,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "list",
@@ -5789,7 +6202,12 @@
    ],
    "classCount": 9,
    "minBytes": 2118,
-   "gzipBytes": 496
+   "gzipBytes": 496,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "list-box",
@@ -6038,7 +6456,23 @@
    ],
    "classCount": 241,
    "minBytes": 82626,
-   "gzipBytes": 9445
+   "gzipBytes": 9445,
+   "deps": [
+    "button",
+    "tag",
+    "text-input"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 6,
+   "exclusiveDeps": []
   },
   {
    "component": "loading",
@@ -6058,7 +6492,12 @@
    ],
    "classCount": 12,
    "minBytes": 6369,
-   "gzipBytes": 925
+   "gzipBytes": 925,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 2,
+   "exclusiveDeps": []
   },
   {
    "component": "menu",
@@ -6097,7 +6536,18 @@
    ],
    "classCount": 31,
    "minBytes": 8217,
-   "gzipBytes": 1110
+   "gzipBytes": 1110,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 2,
+   "exclusiveDeps": []
   },
   {
    "component": "menu-button",
@@ -6300,7 +6750,20 @@
    ],
    "classCount": 195,
    "minBytes": 74976,
-   "gzipBytes": 6955
+   "gzipBytes": 6955,
+   "deps": [
+    "button",
+    "menu"
+   ],
+   "depsAll": [
+    "button",
+    "menu",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "modal",
@@ -6544,7 +7007,18 @@
    ],
    "classCount": 236,
    "minBytes": 84350,
-   "gzipBytes": 8223
+   "gzipBytes": 8223,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "multiselect",
@@ -6843,7 +7317,24 @@
    ],
    "classCount": 291,
    "minBytes": 99079,
-   "gzipBytes": 11223
+   "gzipBytes": 11223,
+   "deps": [
+    "checkbox",
+    "list-box"
+   ],
+   "depsAll": [
+    "button",
+    "checkbox",
+    "form",
+    "list-box",
+    "popover",
+    "tag",
+    "text-input",
+    "tooltip"
+   ],
+   "tokenCount": 563,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "notification",
@@ -7091,7 +7582,18 @@
    ],
    "classCount": 240,
    "minBytes": 110883,
-   "gzipBytes": 9048
+   "gzipBytes": 9048,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 558,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "number-input",
@@ -7196,7 +7698,16 @@
    ],
    "classCount": 97,
    "minBytes": 31999,
-   "gzipBytes": 3831
+   "gzipBytes": 3831,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "overflow-menu",
@@ -7407,7 +7918,19 @@
    ],
    "classCount": 203,
    "minBytes": 80137,
-   "gzipBytes": 7236
+   "gzipBytes": 7236,
+   "deps": [
+    "button",
+    "tooltip"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 2,
+   "exclusiveDeps": []
   },
   {
    "component": "page-header",
@@ -7447,7 +7970,12 @@
    ],
    "classCount": 32,
    "minBytes": 3584,
-   "gzipBytes": 820
+   "gzipBytes": 820,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "pagination",
@@ -7730,7 +8258,21 @@
    ],
    "classCount": 275,
    "minBytes": 101722,
-   "gzipBytes": 9681
+   "gzipBytes": 9681,
+   "deps": [
+    "button",
+    "select"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "popover",
+    "select",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "pagination-nav",
@@ -7926,7 +8468,18 @@
    ],
    "classCount": 188,
    "minBytes": 76075,
-   "gzipBytes": 6993
+   "gzipBytes": 6993,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "popover",
@@ -8015,7 +8568,12 @@
    ],
    "classCount": 81,
    "minBytes": 49275,
-   "gzipBytes": 3670
+   "gzipBytes": 3670,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 528,
+   "neededByCount": 37,
+   "exclusiveDeps": []
   },
   {
    "component": "progress-bar",
@@ -8044,7 +8602,12 @@
    ],
    "classCount": 21,
    "minBytes": 8437,
-   "gzipBytes": 1191
+   "gzipBytes": 1191,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "progress-indicator",
@@ -8248,7 +8811,19 @@
    ],
    "classCount": 196,
    "minBytes": 78224,
-   "gzipBytes": 7292
+   "gzipBytes": 7292,
+   "deps": [
+    "button",
+    "tooltip"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "radio-button",
@@ -8344,7 +8919,20 @@
    ],
    "classCount": 88,
    "minBytes": 22299,
-   "gzipBytes": 2981
+   "gzipBytes": 2981,
+   "deps": [
+    "button",
+    "form"
+   ],
+   "depsAll": [
+    "button",
+    "form",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "resizer",
@@ -8363,7 +8951,12 @@
    ],
    "classCount": 11,
    "minBytes": 1033,
-   "gzipBytes": 368
+   "gzipBytes": 368,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "search",
@@ -8526,7 +9119,17 @@
    ],
    "classCount": 155,
    "minBytes": 44397,
-   "gzipBytes": 5172
+   "gzipBytes": 5172,
+   "deps": [
+    "text-input"
+   ],
+   "depsAll": [
+    "form",
+    "text-input"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "select",
@@ -8626,7 +9229,16 @@
    ],
    "classCount": 92,
    "minBytes": 24593,
-   "gzipBytes": 3337
+   "gzipBytes": 3337,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 4,
+   "exclusiveDeps": []
   },
   {
    "component": "shape-indicator",
@@ -8651,7 +9263,18 @@
    ],
    "classCount": 17,
    "minBytes": 2405,
-   "gzipBytes": 606
+   "gzipBytes": 606,
+   "deps": [
+    "icon-indicator"
+   ],
+   "depsAll": [
+    "icon-indicator"
+   ],
+   "tokenCount": 529,
+   "neededByCount": 0,
+   "exclusiveDeps": [
+    "icon-indicator"
+   ]
   },
   {
    "component": "side-panel",
@@ -8745,7 +9368,18 @@
    ],
    "classCount": 86,
    "minBytes": 19309,
-   "gzipBytes": 2916
+   "gzipBytes": 2916,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 528,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "skeleton-styles",
@@ -8775,7 +9409,12 @@
    ],
    "classCount": 22,
    "minBytes": 4449,
-   "gzipBytes": 729
+   "gzipBytes": 729,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "slider",
@@ -8959,7 +9598,18 @@
    ],
    "classCount": 176,
    "minBytes": 46448,
-   "gzipBytes": 5568
+   "gzipBytes": 5568,
+   "deps": [
+    "form",
+    "text-input"
+   ],
+   "depsAll": [
+    "form",
+    "text-input"
+   ],
+   "tokenCount": 525,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "slug",
@@ -9209,7 +9859,20 @@
    ],
    "classCount": 242,
    "minBytes": 101143,
-   "gzipBytes": 8671
+   "gzipBytes": 8671,
+   "deps": [
+    "popover",
+    "toggletip"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "toggletip",
+    "tooltip"
+   ],
+   "tokenCount": 552,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "stack",
@@ -9232,7 +9895,12 @@
    ],
    "classCount": 15,
    "minBytes": 739,
-   "gzipBytes": 150
+   "gzipBytes": 150,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "structured-list",
@@ -9271,7 +9939,12 @@
    ],
    "classCount": 31,
    "minBytes": 11760,
-   "gzipBytes": 1542
+   "gzipBytes": 1542,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "tabs",
@@ -9465,7 +10138,19 @@
    ],
    "classCount": 186,
    "minBytes": 77541,
-   "gzipBytes": 7028
+   "gzipBytes": 7028,
+   "deps": [
+    "button",
+    "tooltip"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 533,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "tag",
@@ -9534,7 +10219,12 @@
    ],
    "classCount": 61,
    "minBytes": 19182,
-   "gzipBytes": 2853
+   "gzipBytes": 2853,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 561,
+   "neededByCount": 7,
+   "exclusiveDeps": []
   },
   {
    "component": "text-area",
@@ -9623,7 +10313,16 @@
    ],
    "classCount": 81,
    "minBytes": 20530,
-   "gzipBytes": 2946
+   "gzipBytes": 2946,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 1,
+   "exclusiveDeps": []
   },
   {
    "component": "text-input",
@@ -9751,7 +10450,16 @@
    ],
    "classCount": 120,
    "minBytes": 34674,
-   "gzipBytes": 4236
+   "gzipBytes": 4236,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 13,
+   "exclusiveDeps": []
   },
   {
    "component": "tile",
@@ -9823,7 +10531,18 @@
    ],
    "classCount": 64,
    "minBytes": 21240,
-   "gzipBytes": 2645
+   "gzipBytes": 2645,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "time-picker",
@@ -9998,7 +10717,19 @@
    ],
    "classCount": 167,
    "minBytes": 47820,
-   "gzipBytes": 5520
+   "gzipBytes": 5520,
+   "deps": [
+    "select",
+    "text-input"
+   ],
+   "depsAll": [
+    "form",
+    "select",
+    "text-input"
+   ],
+   "tokenCount": 522,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "toggle",
@@ -10033,7 +10764,18 @@
    ],
    "classCount": 27,
    "minBytes": 7325,
-   "gzipBytes": 1354
+   "gzipBytes": 1354,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 521,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "toggletip",
@@ -10214,7 +10956,18 @@
    ],
    "classCount": 173,
    "minBytes": 72809,
-   "gzipBytes": 6525
+   "gzipBytes": 6525,
+   "deps": [
+    "button"
+   ],
+   "depsAll": [
+    "button",
+    "popover",
+    "tooltip"
+   ],
+   "tokenCount": 552,
+   "neededByCount": 2,
+   "exclusiveDeps": []
   },
   {
    "component": "tooltip",
@@ -10311,7 +11064,16 @@
    ],
    "classCount": 89,
    "minBytes": 51293,
-   "gzipBytes": 3990
+   "gzipBytes": 3990,
+   "deps": [
+    "popover"
+   ],
+   "depsAll": [
+    "popover"
+   ],
+   "tokenCount": 530,
+   "neededByCount": 36,
+   "exclusiveDeps": []
   },
   {
    "component": "treeview",
@@ -10405,7 +11167,16 @@
    ],
    "classCount": 86,
    "minBytes": 20115,
-   "gzipBytes": 2854
+   "gzipBytes": 2854,
+   "deps": [
+    "form"
+   ],
+   "depsAll": [
+    "form"
+   ],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "truncated-text",
@@ -10418,7 +11189,12 @@
    ],
    "classCount": 5,
    "minBytes": 605,
-   "gzipBytes": 219
+   "gzipBytes": 219,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 520,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   },
   {
    "component": "ui-shell",
@@ -10679,7 +11455,12 @@
    ],
    "classCount": 253,
    "minBytes": 115714,
-   "gzipBytes": 9389
+   "gzipBytes": 9389,
+   "deps": [],
+   "depsAll": [],
+   "tokenCount": 548,
+   "neededByCount": 0,
+   "exclusiveDeps": []
   }
  ]
 }
