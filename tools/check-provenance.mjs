@@ -129,6 +129,17 @@ for (const f of files) {
         `a template runs — add a BEHAVIOUR comment: ${Object.keys(BEHAVIOUR_KINDS).join(' | ')}`]);
       continue;
     }
+    // TWO CLAIMS IS THE DANGEROUS CASE, not zero. Templates are built by
+    // copying the shell, so a second file inherits the first's label along
+    // with its markup — dated, specific, and about a page nobody opened for
+    // THIS file. Reading only the first would let the inherited one answer
+    // for the new one, which is the archaeology this gate exists to stop.
+    if (bearing.length > 1) {
+      faults.push(['DUPLICATE', path,
+        `${bearing.length} BEHAVIOUR comments; there can be one. A copied template` +
+        ` inherits the original's claim — delete it and make your own`]);
+      continue;
+    }
     const bm = bearing[0].match(/^\s*BEHAVIOUR:\s*([a-z-]+)([\s\S]*)$/);
     if (!bm) {
       faults.push(['MALFORMED', path, `expected "BEHAVIOUR: <kind> · <reference> · <date>"`]);

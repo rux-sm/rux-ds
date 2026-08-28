@@ -145,6 +145,7 @@ const KNOWN = {
   // the icon-tooltip chrome, already declined for the sink under pagination:,
   // table: and overflow-menu:. `--no-index` additionally wants
   // `icon-tooltip--disabled`, which is the same wrapper in its disabled form.
+  'templates/form-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
