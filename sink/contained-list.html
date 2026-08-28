@@ -7,6 +7,12 @@
     is a heading, and the heading level gives screen-reader users the
     outline Carbon reconstructs with ARIA instead. Applies to both lists
     below. check-tags reports it by design.
+
+    The nesting report flags the buttons inside `contained-list-item__action`.
+    That class is real — two rules in @carbon/styles — but every story that
+    demos an action puts it in the HEADER's `contained-list__action` instead,
+    so no sample pairs a button with the item-level one. Kept: the item action
+    is what those two rules exist for. 2026-08-28.
   -->
   <div class="ks-grid">
     <div class="rux--contained-list rux--contained-list--on-page">

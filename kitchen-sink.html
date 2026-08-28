@@ -840,27 +840,39 @@
 
 <section class="ks-sec" id="search">
   <h2>Search</h2><p>sizes · with close · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-search--default with its disabled
+       recipe, plus --expandable and --with-layer, 2026-08-28 -->
+  <!--
+    The magnifier is not a loose svg in the search box: Carbon wraps it in
+    `search-magnifier`, which is the element positioned against the input's
+    padding, and it comes BEFORE the label. With the svg bare the two rules on
+    that wrapper had nothing to sit on.
+
+    The remaining nesting finding is `label--disabled` inside .rux--search:
+    every sampled disabled label sits in a form-item or list-box wrapper,
+    because no story disables a Search. The label belongs to this search, so
+    the pairing is right and the reference simply has no example.
+  -->
   <div style="display:grid;gap:1.5rem;max-width:34rem">
     <div class="rux--search rux--layout--size-lg">
+      <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
       <label class="rux--label" for="sr-1">Large</label>
-      <svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg>
       <input id="sr-1" class="rux--search-input" type="text" role="searchbox" placeholder="Search…">
       <button type="button" class="rux--search-close rux--search-close--hidden" aria-label="Clear">
         <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
     <div class="rux--search rux--layout--size-md">
+      <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
       <label class="rux--label" for="sr-2">Medium · with value</label>
-      <svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg>
       <input id="sr-2" class="rux--search-input" type="text" role="searchbox" value="query">
       <button type="button" class="rux--search-close" aria-label="Clear">
         <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
     <div class="rux--search rux--layout--size-sm rux--search--disabled">
+      <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
       <label class="rux--label rux--label--disabled" for="sr-3">Small · disabled</label>
-      <svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg>
       <input id="sr-3" class="rux--search-input" type="text" role="searchbox" placeholder="Search…" disabled>
     </div>
   </div>
@@ -3172,7 +3184,15 @@
 
 <section class="ks-sec" id="popover">
   <h2>Popover</h2><p>caret · drop shadow · placements — click a trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-popover--default, --tab-tip and
+       the auto-align stories, 2026-08-28 -->
+  <!--
+    DELIBERATE divergence, recorded: Carbon's popover story triggers from a bare
+    unclassed <button> holding an icon. This demo triggers from a real
+    `btn btn--sm btn--tertiary`, which is what a page would actually use and
+    what makes the trigger visible in the sink. Every nesting finding here is
+    that one choice, reported once per button.
+  -->
   <div class="ks-row" style="gap:6rem;padding:3rem 0 5rem 8rem">
     <span class="rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Bottom</button>
@@ -3681,6 +3701,12 @@
     is a heading, and the heading level gives screen-reader users the
     outline Carbon reconstructs with ARIA instead. Applies to both lists
     below. check-tags reports it by design.
+
+    The nesting report flags the buttons inside `contained-list-item__action`.
+    That class is real — two rules in @carbon/styles — but every story that
+    demos an action puts it in the HEADER's `contained-list__action` instead,
+    so no sample pairs a button with the item-level one. Kept: the item action
+    is what those two rules exist for. 2026-08-28.
   -->
   <div class="ks-grid">
     <div class="rux--contained-list rux--contained-list--on-page">
@@ -3786,8 +3812,10 @@
     <li class="rux--tree-node rux--tree-node--with-icon" role="treeitem" aria-expanded="true" tabindex="0">
       <div class="rux--tree-node__label">
         <span class="rux--tree-parent-node__toggle"><svg class="rux--tree-parent-node__toggle-icon rux--tree-parent-node__toggle-icon--expanded" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></span>
-        <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg>
-        <span class="rux--tree-node__label__text">Parent folder</span>
+        <span class="rux--tree-node__label__details">
+          <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg>
+          <span class="rux--tree-node__label__text">Parent folder</span>
+        </span>
       </div>
       <ul class="rux--tree-node__children" role="group">
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
@@ -3804,8 +3832,10 @@
         -->
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--with-icon" role="treeitem" tabindex="-1">
           <div class="rux--tree-node__label">
-            <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg>
-            <span class="rux--tree-node__label__text">Second child</span>
+            <span class="rux--tree-node__label__details">
+              <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg>
+              <span class="rux--tree-node__label__text">Second child</span>
+            </span>
           </div>
         </li>
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
