@@ -78,7 +78,7 @@ last push, and `npm run verify` runs all ten gates.
 | Kitchen sink | 31 sections · 443 classes · 0 unresolved |
 | Class coverage | **430 / 720 (60%)** — ratcheted in `docs/coverage.json` |
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
-| Icons | 59, a 15.9 KB sprite |
+| Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
 | Behaviour JS | 12 modules · 83.5 KB raw, **46% of it comment** · 45 KB of code · **22.7 KB gzipped** |
 

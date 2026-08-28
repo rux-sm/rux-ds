@@ -14,7 +14,6 @@
 <symbol id="i-chevron--down" viewBox="0 0 16 16"><path d="M8 11 3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"/></symbol>
 <symbol id="i-chevron--right" viewBox="0 0 16 16"><path d="M11 8 6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"/></symbol>
 <symbol id="i-chevron--up" viewBox="0 0 16 16"><path d="M8 5 13 10 12.3 10.7 8 6.4 3.7 10.7 3 10z"/></symbol>
-<symbol id="i-chevron--left" viewBox="0 0 16 16"><path d="M5 8 10 3 10.7 3.7 6.4 8 10.7 12.3 10 13z"/></symbol>
 <symbol id="i-caret--down" viewBox="0 0 32 32"><path d="M24 12 16 22 8 12z"/></symbol>
 <symbol id="i-caret--up" viewBox="0 0 32 32"><path d="M8 20 16 10 24 20z"/></symbol>
 <symbol id="i-caret--left" viewBox="0 0 32 32"><path d="M20 24 10 16 20 8z"/></symbol>
@@ -1892,9 +1891,12 @@
           </thead>
           <tbody>
             <tr class="rux--parent-row rux--expandable-row">
-              <td class="rux--table-expand">
+              <!-- data-previous-value names the PREVIOUS value: `collapsed` means
+                   this row is now OPEN. It turns the chevron up and clears the
+                   bottom border between the parent and its own child row. -->
+              <td class="rux--table-expand" data-previous-value="collapsed">
                 <button type="button" class="rux--table-expand__button" aria-expanded="true" aria-label="Collapse row">
-                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
                 </button>
               </td>
               <td>nightly-backup</td>
@@ -1908,7 +1910,7 @@
             <tr class="rux--parent-row">
               <td class="rux--table-expand">
                 <button type="button" class="rux--table-expand__button" aria-expanded="false" aria-label="Expand row">
-                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
                 </button>
               </td>
               <td>index-rebuild</td>

@@ -137,15 +137,15 @@
     // An EXPANDED parent carries both classes — `tr.--parent-row.--expandable-row`
     // is what Carbon selects — and a collapsed one carries only parent-row.
     row?.classList.toggle('rux--expandable-row', open);
-    // THE CHEVRON'S ROTATION HANGS OFF AN ATTRIBUTE, not a class:
-    // `.rux--table-expand[data-previous-value=collapsed] .rux--table-expand__svg`
-    // turns it to the collapsed angle, and the bare rule turns it to the expanded
-    // one. Nothing in the sink set it, so both rows drew the same chevron and the
-    // control never indicated its own state. Carbon's React sets it on the cell.
+    // THE CHEVRON'S ROTATION HANGS OFF AN ATTRIBUTE, not a class, and the
+    // attribute names the PREVIOUS value: `data-previous-value=collapsed` means
+    // the row WAS collapsed, so it is now OPEN. Carbon's React sets it on the
+    // cell when it expands, and the same selector also clears the row's bottom
+    // border so no rule cuts between a parent and its own child row.
     const cell = button.closest('td.rux--table-expand');
     if (cell) {
-      if (open) cell.removeAttribute('data-previous-value');
-      else cell.setAttribute('data-previous-value', 'collapsed');
+      if (open) cell.setAttribute('data-previous-value', 'collapsed');
+      else cell.removeAttribute('data-previous-value');
     }
     if (child?.hasAttribute('data-child-row')) {
       child.hidden = !open;
