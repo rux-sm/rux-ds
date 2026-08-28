@@ -401,11 +401,25 @@
 
 <section class="ks-sec" id="select">
   <h2>Select</h2><p>default · invalid · warning · disabled · inline</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-select--default with its invalid,
+       warn, disabled and readonly recipes, plus --inline, 2026-08-28 -->
+  <!--
+    Corrected against the reference 2026-08-28: every select carries a size,
+    and this fragment carried none — the unclassed default happened to look
+    right, so nothing caught it. The size here is `layout--size-<size>` ALONE:
+    the reference also emits `select--md`, but @carbon/styles defines no rule
+    for any `select--<size>`, so it is dropped on the §4.1.12 precedent that
+    retired `--dropdown--lg` and `--list-box--md`. The disabled variant also takes `form__helper-text--disabled` on its
+    helper text, the same greying every other disabled field gets. And the
+    LABEL SITS INSIDE .rux--select, not beside it in the form-item — the same
+    correction the number input needed, and invisible for the same reason: a
+    label inside a form-item is attested on a dozen other components, so only
+    this component's own reference says where its label goes.
+  -->
   <div class="ks-grid">
     <div class="rux--form-item">
-      <label class="rux--label" for="se-1">Choose</label>
-      <div class="rux--select">
+      <div class="rux--select rux--layout--size-md">
+        <label class="rux--label" for="se-1">Choose</label>
         <div class="rux--select-input__wrapper">
           <select id="se-1" class="rux--select-input">
             <option class="rux--select-option" value="a">Option A</option>
@@ -418,8 +432,8 @@
     </div>
 
     <div class="rux--form-item">
-      <label class="rux--label" for="se-2">Invalid</label>
-      <div class="rux--select rux--select--invalid">
+      <div class="rux--select rux--select--invalid rux--layout--size-md">
+        <label class="rux--label" for="se-2">Invalid</label>
         <div class="rux--select-input__wrapper" data-invalid>
           <select id="se-2" class="rux--select-input" data-invalid aria-invalid="true">
             <option class="rux--select-option" value="a">Option A</option>
@@ -432,8 +446,8 @@
     </div>
 
     <div class="rux--form-item">
-      <label class="rux--label" for="se-3">Warning</label>
-      <div class="rux--select rux--select--warning">
+      <div class="rux--select rux--select--warning rux--layout--size-md">
+        <label class="rux--label" for="se-3">Warning</label>
         <div class="rux--select-input__wrapper">
           <select id="se-3" class="rux--select-input">
             <option class="rux--select-option" value="a">Option A</option>
@@ -446,8 +460,8 @@
     </div>
 
     <div class="rux--form-item">
-      <label class="rux--label" for="se-5">Read-only</label>
-      <div class="rux--select rux--select--readonly">
+      <div class="rux--select rux--select--readonly rux--layout--size-md">
+        <label class="rux--label" for="se-5">Read-only</label>
         <div class="rux--select-input__wrapper">
           <select id="se-5" class="rux--select-input" aria-readonly="true">
             <option class="rux--select-option" value="a">Option A</option>
@@ -458,14 +472,15 @@
     </div>
 
     <div class="rux--form-item">
-      <label class="rux--label rux--label--disabled" for="se-4">Disabled</label>
-      <div class="rux--select rux--select--disabled">
+      <div class="rux--select rux--select--disabled rux--layout--size-md">
+        <label class="rux--label rux--label--disabled" for="se-4">Disabled</label>
         <div class="rux--select-input__wrapper">
           <select id="se-4" class="rux--select-input" disabled>
             <option class="rux--select-option" value="a">Unavailable</option>
           </select>
           <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
         </div>
+        <div class="rux--form__helper-text rux--form__helper-text--disabled">Set by your administrator</div>
       </div>
     </div>
   </div>
@@ -716,7 +731,9 @@
 
 <section class="ks-sec" id="toggle">
   <h2>Toggle</h2><p>on · off · small (the only size with a checkmark) · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-toggle--default with its disabled
+       and readonly recipes, plus --small-toggle and --with-accessible-labels,
+       2026-08-28 · diffed clean: no tag, nesting or omission difference -->
   <!--
     Carbon's _renderCheckmark() returns early unless size === "sm"
     (web-components/toggle/toggle.js). The checkmark belongs to the SMALL toggle
@@ -834,45 +851,66 @@
 
 <section class="ks-sec" id="number">
   <h2>Number input</h2><p>sizes · steppers · invalid · readonly</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-numberinput--default with its
+       invalid, warn, readonly, sm and lg recipes, 2026-08-28 -->
+  <!--
+    Corrected against the reference 2026-08-28. The LABEL BELONGS INSIDE
+    .rux--number, not beside it in the form-item — and so does the helper text
+    or requirement that follows the field, with `--helpertext` on the root when
+    one is present. Every gate passed the old shape because a label inside a
+    form-item is attested on a dozen other components; only the reference for
+    THIS component says where it goes.
+
+    Each stepper button is also followed by `__rule-divider`, the hairline
+    between the two controls, which this fragment never had.
+
+    The reference also puts `number--helpertext` on the root when helper text
+    is present; @carbon/styles defines no rule for it, so it is dropped on the
+    §4.1.12 precedent. The helper text still moves inside .rux--number, which
+    is where the reference puts it and where the spacing rules expect it.
+  -->
   <div class="ks-grid">
     <div class="rux--form-item">
-      <label class="rux--label" for="ni-1">Quantity</label>
       <div class="rux--number rux--number--lg">
+        <label class="rux--label" for="ni-1">Quantity</label>
         <div class="rux--number__input-wrapper">
           <input id="ni-1" type="number" value="4">
           <div class="rux--number__controls">
             <button type="button" class="rux--number__control-btn" aria-label="Decrement">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
             <button type="button" class="rux--number__control-btn" aria-label="Increment">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
           </div>
         </div>
+        <div class="rux--form__helper-text">Between 1 and 99</div>
       </div>
-      <div class="rux--form__helper-text">Between 1 and 99</div>
     </div>
     <div class="rux--form-item">
-      <label class="rux--label" for="ni-2">Small · invalid</label>
       <div class="rux--number rux--number--sm" data-invalid>
+        <label class="rux--label" for="ni-2">Small · invalid</label>
         <div class="rux--number__input-wrapper">
           <input id="ni-2" type="number" value="0" data-invalid aria-invalid="true">
           <div class="rux--number__controls">
             <button type="button" class="rux--number__control-btn" aria-label="Decrement">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
             <button type="button" class="rux--number__control-btn" aria-label="Increment">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
           </div>
         </div>
         <div class="rux--form-requirement">Must be at least 1</div>
       </div>
     </div>
     <div class="rux--form-item">
-      <label class="rux--label" for="ni-4">Warning</label>
       <div class="rux--number rux--number--md rux--number-input--invalid">
+        <label class="rux--label" for="ni-4">Warning</label>
         <div class="rux--number__input-wrapper rux--number__input-wrapper--warning">
           <input id="ni-4" type="number" value="99">
           <svg class="rux--number__invalid rux--number__invalid--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
@@ -880,17 +918,19 @@
             <button type="button" class="rux--number__control-btn" aria-label="Decrement">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
             <button type="button" class="rux--number__control-btn" aria-label="Increment">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
             </button>
+            <div class="rux--number__rule-divider"></div>
           </div>
         </div>
         <div class="rux--form-requirement">Close to the maximum</div>
       </div>
     </div>
     <div class="rux--form-item">
-      <label class="rux--label" for="ni-3">Readonly</label>
       <div class="rux--number rux--number--md rux--number--readonly">
+        <label class="rux--label" for="ni-3">Readonly</label>
         <div class="rux--number__input-wrapper">
           <input id="ni-3" type="number" value="12" readonly>
         </div>

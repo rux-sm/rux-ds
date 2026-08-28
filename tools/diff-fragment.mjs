@@ -179,7 +179,7 @@ for (const file of files) {
   totalFindings += rows.length;
   totalUnref += unref.size;
   summary.push([file.replace('.html', ''), rows.length, unref.size]);
-  if (!rows.length && !(wantUnref && unref.size)) continue;
+  if (!rows.length && !(wantUnref && unref.size) && !wantOmissions) continue;
   if (only || rows.length) {
     console.log(`\n  ${file}`);
     for (const [c, ours, theirs, story] of rows.sort()) {
