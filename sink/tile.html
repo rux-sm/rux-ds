@@ -97,7 +97,13 @@
     <div class="ks-label" style="margin-block-start:1.5rem">expandable</div>
     <!-- components-tile--expandable. The tile is a <button> holding ONE div that
          wraps two `tile-content` blocks with the chevron between them; the
-         below-the-fold block is the half the chevron reveals. -->
+         below-the-fold block is the half the chevron reveals.
+
+         The chevron's `span` IS in the reference and stays, but it is EMPTY.
+         React fills it from tileCollapsedLabel/tileExpandedLabel, both unset
+         in the story. @carbon/styles gives the span no rule and sizes
+         `tile__chevron` as a 48px square around a 16px icon, so text put
+         there wins the flex space: `Details` shrank the chevron to 2.6px. -->
     <div class="ks-grid">
       <button type="button" class="rux--tile rux--tile--expandable" aria-expanded="false">
         <div>
@@ -108,7 +114,7 @@
             </div>
           </div>
           <div class="rux--tile__chevron">
-            <span>Details</span>
+            <span></span>
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </div>
           <div class="rux--tile-content">
