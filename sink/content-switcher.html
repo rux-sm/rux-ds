@@ -1,6 +1,15 @@
 <section class="ks-sec" id="content-switcher">
   <h2>Content switcher</h2><p>sizes · selected state</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-contentswitcher--default,
+       --icon-only, --low-contrast and the sm/lg recipes, 2026-08-28 -->
+  <!--
+      EVERY nesting finding here is one decision, reported once per class. The
+      reference wraps this component's trigger in an icon-tooltip, so its buttons
+      sit inside `tooltip-trigger__wrapper`; the sink declines that chrome on the
+      combo-button precedent — it demos the component, not the story's hover
+      hint — which leaves our buttons as direct children of the component's own
+      wrapper. Nothing else differs.
+  -->
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--sm" role="tablist">
       <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">

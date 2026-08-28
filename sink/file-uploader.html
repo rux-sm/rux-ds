@@ -1,18 +1,31 @@
 <section class="ks-sec" id="file-uploader">
   <h2>File uploader</h2><p>drop zone · browse · uploaded items</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; elements
-       corrected 2026-08-27 against the fileuploader stories (rendered DOM):
+  <!-- PROVENANCE: rendered-dom · components-fileuploader--default,
+       --drop-container, --file-uploader-item with its invalid, complete and sm
+       recipes, and --drag-and-drop-upload-container-example-application.
+       Corrected 2026-08-27:
        the drop zone is a BUTTON carrying both __drop-container and
        file-browse-btn, with a visually-hidden label and a file-input input as
-       siblings; file-close is a button and file-complete an svg. -->
+       siblings; file-close is a button and file-complete an svg.
+       · re-diffed 2026-08-28 against --default, --drop-container and
+       --drag-and-drop-upload-container-example-application -->
+  <!--
+    THE FILE LIST IS A SIBLING OF THE DROP ZONE, not a child of it. Carbon puts
+    both inside a `form-item`: label, description, `div.file` holding the drop
+    button and its hidden input, then `file-container file-container--drop`
+    beside it. This fragment nested the container inside .rux--file, where the
+    drop variant's own rule cannot reach it.
+  -->
   <div style="max-width:32rem">
-    <p class="rux--file--label">Upload files</p>
-    <p class="rux--label-description">Max 500 KB each</p>
-    <div class="rux--file">
-      <button type="button" class="rux--file__drop-container rux--file-browse-btn">Drag and drop files here or click to upload</button>
-      <label class="rux--visually-hidden" for="fu-1">Upload files</label>
-      <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" multiple>
-      <div class="rux--file-container">
+    <div class="rux--form-item">
+      <p class="rux--file--label">Upload files</p>
+      <p class="rux--label-description">Max 500 KB each</p>
+      <div class="rux--file">
+        <button type="button" class="rux--file__drop-container rux--file-browse-btn">Drag and drop files here or click to upload</button>
+        <label class="rux--visually-hidden" for="fu-1">Upload files</label>
+        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" multiple>
+      </div>
+      <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--md">
           <p class="rux--file-filename">report-q3.pdf</p>
           <span class="rux--file__state-container">
@@ -26,12 +39,14 @@
       </div>
     </div>
 
-    <p class="rux--file--label rux--file--label--disabled" style="margin-block-start:2rem">Upload files (disabled)</p>
-    <div class="rux--file rux--file--invalid">
-      <button type="button" class="rux--file__drop-container rux--file-browse-btn rux--file-browse-btn--disabled" disabled>Uploads are turned off for this workspace</button>
-      <label class="rux--visually-hidden" for="fu-2">Upload files (disabled)</label>
-      <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" multiple disabled>
-      <div class="rux--file-container">
+    <div class="rux--form-item" style="margin-block-start:2rem">
+      <p class="rux--file--label rux--file--label--disabled">Upload files (disabled)</p>
+      <div class="rux--file rux--file--invalid">
+        <button type="button" class="rux--file__drop-container rux--file-browse-btn rux--file-browse-btn--disabled" disabled>Uploads are turned off for this workspace</button>
+        <label class="rux--visually-hidden" for="fu-2">Upload files (disabled)</label>
+        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" multiple disabled>
+      </div>
+      <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--sm rux--file__selected-file--disabled">
           <p class="rux--file-filename">archive-2019.tar</p>
           <span class="rux--file__state-container"></span>

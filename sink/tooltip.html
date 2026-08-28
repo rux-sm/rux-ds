@@ -1,6 +1,15 @@
 <section class="ks-sec" id="tooltip">
   <h2>Tooltip</h2><p>open state · definition variant — click a trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-tooltip--default, --alignment and
+       components-definitiontooltip--default with its open recipe, 2026-08-28 -->
+  <!--
+      EVERY nesting finding here is one decision, reported once per class. The
+      reference wraps this component's trigger in an icon-tooltip, so its buttons
+      sit inside `tooltip-trigger__wrapper`; the sink declines that chrome on the
+      combo-button precedent — it demos the component, not the story's hover
+      hint — which leaves our buttons as direct children of the component's own
+      wrapper. Nothing else differs.
+  -->
   <!--
     .rux--tooltip--visible has no CSS rule. Visibility comes from the popover
     mechanism: .rux--popover--open > .rux--popover > .rux--popover-content.

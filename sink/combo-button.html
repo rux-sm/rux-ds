@@ -1,14 +1,21 @@
 <section class="ks-sec" id="combo-button">
   <h2>Combo button</h2><p>primary action plus a menu trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; corrected
-       2026-08-27 against components-combobutton--default and its sm/md state
-       recipes (rendered DOM): the primary action button sits INSIDE
+  <!-- PROVENANCE: rendered-dom · components-combobutton--default with its sm,
+       md and open recipes, 2026-08-27 and re-diffed 2026-08-28: the primary action button sits INSIDE
        div.combo-button__primary-action, and both buttons carry the size pair
        btn--<size> + layout--size-<size> matching the container (btn--lg has no
        rule in @carbon/styles, so the lg pair is layout--size-lg alone —
        §4.1.12). The reference wraps the trigger in an icon-tooltip popover;
        that tooltip chrome is not copied — the sink shows the component, not
        the story's hover hint. -->
+  <!--
+      EVERY nesting finding here is one decision, reported once per class. The
+      reference wraps this component's trigger in an icon-tooltip, so its buttons
+      sit inside `tooltip-trigger__wrapper`; the sink declines that chrome on the
+      combo-button precedent — it demos the component, not the story's hover
+      hint — which leaves our buttons as direct children of the component's own
+      wrapper. Nothing else differs.
+  -->
   <div class="ks-row">
     <div class="rux--combo-button__container rux--combo-button__container--lg">
       <div class="rux--combo-button__primary-action">
