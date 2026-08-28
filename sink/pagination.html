@@ -1,5 +1,5 @@
 <section class="ks-sec" id="pagination">
-  <h2>Pagination</h2><p>full bar · nav-only variant</p>
+  <h2>Pagination</h2><p>full bar</p>
   <!-- PROVENANCE: rendered-dom · components-pagination--default and
        components-paginationnav--default, 2026-08-28 -->
   <!--
@@ -10,6 +10,11 @@
 
     The root takes `layout--size-md`; `pagination--md` comes with it in the
     reference and is dropped for having no rule (§4.1.12).
+
+    The nav-only variant is GONE from this fragment: `pagination-nav` is a
+    SEPARATE component, CUT in Phase 3, so none of its classes has a rule any
+    more. Its markup is preserved in sink/deferred/pagination.html's sibling
+    history — restoring it means uncommenting `pagination-nav` in src/app.scss.
 
     One finding recorded: `pagination__button` sits directly in
     `__right` here, where the reference wraps each in an icon-tooltip — the
@@ -39,23 +44,4 @@
       <button type="button" class="rux--pagination__button" aria-label="Next page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
     </div>
   </div>
-  <nav class="rux--pagination-nav" aria-label="Pagination">
-    <ul class="rux--pagination-nav__list">
-      <li class="rux--pagination-nav__list-item">
-        <button type="button" class="rux--pagination-nav__page rux--pagination-nav__page--direction rux--pagination-nav__page--disabled" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></button>
-      </li>
-      <li class="rux--pagination-nav__list-item">
-        <button type="button" class="rux--pagination-nav__page rux--pagination-nav__page--active">1</button>
-      </li>
-      <li class="rux--pagination-nav__list-item">
-        <button type="button" class="rux--pagination-nav__page">2</button>
-      </li>
-      <li class="rux--pagination-nav__list-item">
-        <button type="button" class="rux--pagination-nav__page">3</button>
-      </li>
-      <li class="rux--pagination-nav__list-item">
-        <button type="button" class="rux--pagination-nav__page rux--pagination-nav__page--direction" aria-label="Next"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
-      </li>
-    </ul>
-  </nav>
 </section>

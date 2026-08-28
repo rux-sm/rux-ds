@@ -10,11 +10,15 @@
     multiselect menu, the `dropdown` root of a dropdown. Each belongs to the
     fragment that owns the consumer.
 
-    Corrected 2026-08-27 against those references: the divider is an HR and a
-    SIBLING of the list-box (the fluid components use it to separate stacked
-    fields — it is not an in-menu option divider), the warning icon is an SVG
+    Corrected 2026-08-27 against those references: the warning icon is an SVG
     carrying the classes itself, before the field, and menu items render no
     __selected-icon.
+
+    The `__divider` HR this fragment gained in that pass is GONE again, and the
+    Phase 3 strip is what found it: `list-box__divider` is defined only inside
+    the fluid-* partials, so with that family cut the class has no rule. It was
+    always a fluid-stacking element rather than a list-box one — the reference
+    that showed it was fluidcombobox — and it should not have been demoed here.
   -->
   <div class="ks-grid">
     <div class="rux--list-box__wrapper">
@@ -35,7 +39,6 @@
           </li>
         </ul>
       </div>
-      <hr class="rux--list-box__divider">
     </div>
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--warning">

@@ -52,6 +52,11 @@
 //
 import { readFileSync, readdirSync } from 'node:fs';
 
+// Entries whose fragment moved to sink/deferred/ in the Phase 3 strip are kept
+// rather than deleted: the adjudication behind them is still true, and deleting
+// it would mean re-deciding from scratch if the component is restored. They
+// simply match nothing while the component is stripped.
+//
 // class -> { tag, reason }: the adjudicated residue. The reason here is the
 // summary; the fragment carries the full account next to the markup.
 const KNOWN = {

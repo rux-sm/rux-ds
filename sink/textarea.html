@@ -12,12 +12,17 @@
     The counter text is static — keeping it in sync with typing is a behaviour,
     and behaviours are Phase 5 (roadmap §4.5). The markup is the contract that
     module will drive.
+
+    `__label-counter` is NOT here, though the reference emits it: the Phase 3
+    strip showed @carbon/styles defines that class only inside the fluid-text-area
+    partial, so with the fluid family cut it styles nothing. React emits it on
+    the plain text area regardless — the mirror of §4.1.12, and the reason
+    check-classes is the arbiter rather than the reference.
   -->
   <div class="ks-grid">
     <div class="rux--form-item">
       <div class="rux--text-area__label-wrapper">
         <label class="rux--label" for="ta-1">Notes</label>
-        <div class="rux--label rux--text-area__label-counter">0/500</div>
       </div>
       <span class="rux--visually-hidden">Character count</span>
       <div class="rux--text-area__wrapper">

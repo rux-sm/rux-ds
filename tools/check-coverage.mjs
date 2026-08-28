@@ -64,10 +64,21 @@ for (const f of ROOTS.flatMap(r => walk(r))) {
     for (const c of m[1].split(/\s+/)) if (c.startsWith('rux--')) used.add(c);
 }
 
+// COMPILED, NOT ALL 75. Since Phase 3 the manifest is the strip, so the set this
+// gate must account for is whatever src/app.scss still @uses — a commented-out
+// component has no CSS and cannot be exercised, and demanding coverage for it
+// would make the gate permanently red with no action available. The manifest is
+// read directly rather than mirrored in a list here, because a second copy of
+// the keep-set is a second thing to forget.
+const manifest = readFileSync('src/app.scss', 'utf8');
+const COMPILED = new Set([...manifest.matchAll(/^@use "@carbon\/styles\/scss\/components\/([^"]+)"/gm)]
+  .map(m => m[1]));
+
 const allClasses = new Set(inv.components.flatMap(c => c.classes ?? []));
 const covered = [], missing = [], unowned = [];
 for (const c of inv.components) {
   if (c.error) continue;
+  if (!COMPILED.has(c.component)) continue;   // stripped; see above
   const own = MARKER[c.component]
     ? [...allClasses].filter(cl => cl === MARKER[c.component])
     : [...allClasses].filter(cl => stems(c.component).some(s =>

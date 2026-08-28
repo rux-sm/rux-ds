@@ -13,6 +13,10 @@
     Each stepper button is also followed by `__rule-divider`, the hairline
     between the two controls, which this fragment never had.
 
+    `number-input--invalid` went the same way in the Phase 3 strip: it is
+    defined only in the fluid-number-input partial, so with that family cut it
+    has no rule. `number__invalid` is the plain input's own class and stays.
+
     The reference also puts `number--helpertext` on the root when helper text
     is present; @carbon/styles defines no rule for it, so it is dropped on the
     §4.1.12 precedent. The helper text still moves inside .rux--number, which
@@ -58,7 +62,7 @@
       </div>
     </div>
     <div class="rux--form-item">
-      <div class="rux--number rux--number--md rux--number-input--invalid">
+      <div class="rux--number rux--number--md">
         <label class="rux--label" for="ni-4">Warning</label>
         <div class="rux--number__input-wrapper rux--number__input-wrapper--warning">
           <input id="ni-4" type="number" value="99">
