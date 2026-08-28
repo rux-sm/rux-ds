@@ -35,7 +35,7 @@ npm run verify    # build + assemble sink + class resolution + coverage + proven
 | `npm run sink` | assembles `sink/*.html` → `kitchen-sink.html` |
 | `npm run icons` | quarries `assets/icons.svg` from `@carbon/icons` |
 | `npm run inventory` | per-component classes and size → `docs/inventory.json` |
-| `tools/extract/` | quarries Carbon's rendered markup → `docs/carbon-co-classes.json` (roadmap §4.1.7) |
+| `tools/extract/` | quarries Carbon's rendered markup → `docs/carbon-co-classes.json`, `docs/carbon-*-dom.json`, and — via the state recipes in `react-dom.js` — `docs/carbon-react-states.json` (roadmap §4.1.7, §4.1.14) |
 | `tools/check-provenance.mjs --inferred` | the fragments whose markup was never diffed against a reference (roadmap §4.1.13) |
 | `npm run serve` | kitchen sink at `http://localhost:8642` |
 | `npm run watch` | rebuild CSS on change |

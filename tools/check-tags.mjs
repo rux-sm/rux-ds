@@ -59,6 +59,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 const REF_PATHS = [
   'docs/carbon-react-dom.json',        // @carbon/react, 505 stories
   'docs/carbon-ibm-products-dom.json', // @carbon/ibm-products, side-panel only
+  'docs/carbon-react-states.json',     // configured states, from the RECIPES harvest
 ];
 const PREFIX = /^(?:cds|c4p)--/;
 
