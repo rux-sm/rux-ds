@@ -172,7 +172,7 @@ findings remain.**
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink actually achieves (**370/669, 55%**, on 2026-08-28) and fails only when a
+what the sink actually achieves (**430/720, 60%**, on 2026-08-28) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.

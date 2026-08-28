@@ -97,10 +97,6 @@
       "hit": 39,
       "own": 54
     },
-    "tag": {
-      "hit": 19,
-      "own": 26
-    },
     "link": {
       "hit": 6,
       "own": 8
@@ -109,9 +105,9 @@
       "hit": 8,
       "own": 10
     },
-    "menu": {
-      "hit": 17,
-      "own": 21
+    "tag": {
+      "hit": 22,
+      "own": 27
     },
     "button": {
       "hit": 18,
@@ -120,6 +116,10 @@
     "breadcrumb": {
       "hit": 5,
       "own": 6
+    },
+    "menu": {
+      "hit": 19,
+      "own": 21
     },
     "toggle": {
       "hit": 15,
