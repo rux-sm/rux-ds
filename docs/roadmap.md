@@ -847,6 +847,31 @@ Two measurements worth keeping, because both contradict the obvious fix:
 Run it in a visible tab. Hidden, background throttling stretched a 60-story
 batch past 30 seconds.
 
+> **Amended 2026-08-27 — the extractor has now been run, and two of the
+> paragraphs above are superseded by measurement rather than estimate.**
+>
+> **"Harvest the 182, not the 505" is withdrawn.** All 505 were harvested in one
+> visible tab: 84 seconds, **2.4 GB peak heap** against the 4096 MB cap, zero
+> failures. The 1.1 MB/story figure extrapolated from the first 99 was low by
+> roughly half — the real cost is nearer 4.8 MB/story — but the conclusion it
+> supported ("it would not crash") held, and the curated subset is no longer
+> worth the loss of coverage. Chunking is still the answer if a future Carbon
+> outgrows the cap, and it still has to be per fresh tab.
+>
+> **The `FILTER` repair is not a wider prefix list.** Every one of the eight
+> prefixes yields `cds--` markup — `hooks`, `helpers` and `utilities` included,
+> which is what an allow-list drafted from this section's table would have
+> excluded. 505 of 505 rendered Carbon classes, so no exclusion is defensible
+> and the default now excludes nothing. `FILTER` remains only as a narrowing
+> knob, and a narrowed run now says on the console what it skipped.
+>
+> Two further facts the run established. **Six of the 182 curated ids no longer
+> exist** in the live index — `search--disabled`, `button--set-of-buttons`,
+> `datatable--skeleton`, `ailabel--explainability-popover`,
+> `fluidtextinput--default-with-tooltip`, `progressbar--example` — so this
+> section's 182 is really 176 reachable. And **`skeleton` is a story on 32
+> others, not 39.**
+
 ### 4.2 Phase 2 — Inventory
 
 Per component, record: compiled size, its `@use` graph, the tokens it consumes, and a

@@ -29,7 +29,25 @@
 //   (unreadable)  contentDocument threw. Not a timing problem
 //
 (async () => {
-  const FILTER = /^components-/;         // narrow this to re-harvest one component
+  // FILTER is a convenience for re-harvesting one component, NOT a correctness
+  // filter, and it used to be both. As /^components-/ it dropped 87 of 505
+  // stories, and the 15 fragments with no `components-` story of their own —
+  // grid under elements-, stack under layout-, the four preview-* indicators,
+  // page-header under deprecated- — were exactly the ones that then had nothing
+  // to diff against.
+  //
+  // The obvious repair was a wider prefix list. That would have been an
+  // allow-list needing an entry every time Carbon adds a prefix, so it was
+  // tested instead: all 505 harvested, counting which stories yield any cds--
+  // class. Every prefix scored 100%, hooks, helpers and utilities included —
+  // 505/505, no bare renders, no failures. No exclusion survives contact with
+  // the data, so the default excludes nothing.
+  //
+  // Cost of the full run, measured, not estimated: 84s, 2.4GB peak heap against
+  // a 4096MB renderer cap, in one visible tab. Comfortable, but not by so much
+  // that a future Carbon could not outgrow it — if it does, harvest in slices
+  // and merge, in a FRESH TAB each time. A reload does not reset the heap.
+  const FILTER = /./;                    // narrow this to re-harvest one component
   const CONCURRENCY = 3;                 // iframes at a time; 3 is polite and quick
 
   // SETTLE was a flat 500ms wait after load, and 500ms is genuinely enough —
@@ -59,9 +77,17 @@
     throw new Error('no index.json or stories.json — is this a Storybook origin?');
   })();
 
-  const stories = Object.values(index.entries ?? index.stories ?? {})
-    .filter(e => (e.type ?? 'story') === 'story' && FILTER.test(e.id));
+  const every = Object.values(index.entries ?? index.stories ?? {})
+    .filter(e => (e.type ?? 'story') === 'story');
+  const stories = every.filter(e => FILTER.test(e.id));
   console.log(`harvesting ${stories.length} stories…`);
+  // Say what FILTER left out. A narrowed run is a deliberate act, but a run that
+  // quietly covered two thirds of the catalogue reads exactly like a full one.
+  if (stories.length < every.length) {
+    const skipped = every.length - stories.length;
+    const prefixes = [...new Set(every.filter(e => !FILTER.test(e.id)).map(e => e.id.split('-')[0]))];
+    console.warn(`FILTER skipped ${skipped} of ${every.length} — prefixes: ${prefixes.join(' ')}`);
+  }
 
   // Compact, diffable line per element: tag.class.class[role=…]. Text is dropped
   // on purpose — structure and class placement are what we are checking, and text
