@@ -1130,8 +1130,15 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > and data-table all now use.
 >
 > Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`,
-> `js/tabs.js`, `js/accordion.js`, `js/data-table.js` and `js/modal.js`. 61 KB of the
-> 90 KB budget. Popover carries tooltip and menu carries
+> **11. Glyphs are a blind spot no gate covers.** The DOM captures record classes,
+> elements and attributes, and never which icon a `<use>` points at — so a fragment can
+> pass every gate with an arrow pointing the wrong way, which accordion and the table's
+> expand chevron both did. Where CSS rotates an icon, the base glyph is arithmetic:
+> read the rotations and solve for the direction that makes both states correct.
+>
+> Landed: the kernel, `popover`, `menu`, `list-box`, `tabs`, `accordion`, `data-table`,
+> `form-controls` (toggle, number steppers, search clear, checkbox indeterminate) and
+> `modal`. 67 KB of the 90 KB budget. Only the UI shell is left in the harness. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

@@ -15,7 +15,8 @@
 //
 // Moved to js/, with real focus management, keyboard support and ARIA:
 //   modal · popover · tooltip · menu · overflow menu · list box · tabs ·
-//   accordion
+//   accordion · data table · toggle · number steppers · search clear ·
+//   checkbox indeterminate
 //
 // Deleted outright, because the component no longer ships (Phase 3):
 //   copy button (CUT) · content switcher (CUT) · toggletip (CUT) ·
@@ -23,8 +24,7 @@
 // Their fragments live in sink/deferred/. Driving markup that is not on the
 // page is not harmless — it is code nobody can test and nobody will delete.
 //
-// Still here, awaiting their modules: toggle · number input · search clear ·
-// checkbox indeterminate · UI shell.
+// Still here, awaiting its module: the UI shell.
 //
 (() => {
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -54,48 +54,6 @@
   // ---- theme -------------------------------------------------------------
   $$('[data-set-theme]').forEach(b =>
     b.addEventListener('click', () => document.documentElement.dataset.theme = b.dataset.setTheme));
-
-  // ---- toggle ------------------------------------------------------------
-  // Listen on the BUTTON only. <label for> pointing at a button forwards the click
-  // to it, so handling the label too fires twice and the toggle appears dead.
-  on('.rux--toggle__button', 'click', btn => {
-    const root = btn.closest('.rux--toggle');
-    if (root.classList.contains('rux--toggle--disabled')) return;
-    const sw = root.querySelector('.rux--toggle__switch');
-    const isOn = sw.classList.toggle('rux--toggle__switch--checked');
-    btn.setAttribute('aria-checked', String(isOn));
-    const txt = root.querySelector('.rux--toggle__text');
-    if (txt) txt.textContent = isOn ? 'On' : 'Off';
-  });
-
-  // ---- number input steppers ---------------------------------------------
-  on('.rux--number__control-btn', 'click', btn => {
-    const root = btn.closest('.rux--number');
-    if (root.classList.contains('rux--number--readonly')) return;
-    const input = root.querySelector('input[type=number]');
-    if (!input || input.disabled) return;
-    const step = Number(input.step) || 1;
-    const up = /increment/i.test(btn.getAttribute('aria-label') || '');
-    const next = (Number(input.value) || 0) + (up ? step : -step);
-    const min = input.min === '' ? -Infinity : Number(input.min);
-    const max = input.max === '' ? Infinity : Number(input.max);
-    input.value = String(Math.min(max, Math.max(min, next)));
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-
-  // ---- search clear ------------------------------------------------------
-  on('.rux--search-input', 'input', input => {
-    const close = input.closest('.rux--search')?.querySelector('.rux--search-close');
-    close?.classList.toggle('rux--search-close--hidden', !input.value);
-  });
-  on('.rux--search-close', 'click', btn => {
-    const input = btn.closest('.rux--search')?.querySelector('.rux--search-input');
-    if (input) { input.value = ''; input.focus(); }
-    btn.classList.add('rux--search-close--hidden');
-  });
-
-  // ---- indeterminate is a property, not an attribute ---------------------
-  $$('[data-ks-indeterminate]').forEach(el => el.indeterminate = true);
 
   // ---- UI shell: hamburger toggle + side nav submenus --------------------
   on('.rux--header__menu-toggle', 'click', btn => {

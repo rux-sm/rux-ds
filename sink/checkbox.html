@@ -6,7 +6,7 @@
   <!--
     The tick and the indeterminate dash are drawn in CSS (::before/::after), so no
     icon is needed. `indeterminate` is a JS property, not an attribute — the harness
-    script sets it on [data-ks-indeterminate].
+    script sets it on [data-rux-indeterminate].
 
     Each row MUST be `form-item checkbox-wrapper`: that pair is what carries
     position:relative (css/rux.css:6569). The input is position:absolute, so with
@@ -40,7 +40,7 @@
         <div class="rux--checkbox__validation-msg"></div>
       </div>
       <div class="rux--form-item rux--checkbox-wrapper">
-        <input id="cb-3" class="rux--checkbox" type="checkbox" data-ks-indeterminate>
+        <input id="cb-3" class="rux--checkbox" type="checkbox" data-rux-indeterminate>
         <label for="cb-3" class="rux--checkbox-label"><div class="rux--checkbox-label-text">Indeterminate</div></label>
         <div class="rux--checkbox__validation-msg"></div>
       </div>
