@@ -221,7 +221,9 @@
 
 <section class="ks-sec" id="links">
     <h2>Links</h2><p>inline · sizes · disabled</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-link--default with its sm, lg and
+       visited recipes, plus --inline and --paired-with-icon, 2026-08-28
+       · diffed clean: no tag, nesting or omission difference -->
     <div class="ks-row">
       <a class="rux--link" href="#links">Default link</a>
       <a class="rux--link rux--link--inline" href="#links">Inline link</a>
@@ -353,14 +355,29 @@
 
 <section class="ks-sec" id="textarea">
   <h2>Text area</h2><p>default · invalid · warning · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-textarea--default with its
+       invalid, warn and readonly recipes, plus --with-layer, 2026-08-28 -->
+  <!--
+    Corrected against the reference 2026-08-28. The character counter was
+    missing entirely: Carbon renders `__label-counter` as a second .rux--label
+    inside __label-wrapper, a visually-hidden live region as a SIBLING of the
+    wrapper, and `__counter-alert` inside it. All three have rules in
+    @carbon/styles and none had an element here.
+
+    The counter text is static — keeping it in sync with typing is a behaviour,
+    and behaviours are Phase 5 (roadmap §4.5). The markup is the contract that
+    module will drive.
+  -->
   <div class="ks-grid">
     <div class="rux--form-item">
       <div class="rux--text-area__label-wrapper">
         <label class="rux--label" for="ta-1">Notes</label>
+        <div class="rux--label rux--text-area__label-counter">0/500</div>
       </div>
+      <span class="rux--visually-hidden">Character count</span>
       <div class="rux--text-area__wrapper">
-        <textarea id="ta-1" class="rux--text-area" rows="4" cols="50" placeholder="Placeholder"></textarea>
+        <textarea id="ta-1" class="rux--text-area" rows="4" cols="50" placeholder="Placeholder" maxlength="500"></textarea>
+        <span class="rux--text-area__counter-alert" role="alert"></span>
       </div>
       <div class="rux--form__helper-text">Optional helper text</div>
     </div>
@@ -3355,15 +3372,33 @@
 
 <section class="ks-sec" id="accordion">
   <h2>Accordion</h2><p>click a heading to expand or collapse</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
-  <ul class="rux--accordion rux--accordion--end">
+  <!-- PROVENANCE: rendered-dom · components-accordion--default with its
+       disabled recipe, plus --controlled and --with-layer, 2026-08-28 -->
+  <!--
+    Corrected against the reference 2026-08-28: the panel is
+    `__item > __heading + __wrapper > __content`. This fragment put __content
+    straight in the item, so the three rules on __wrapper — the ones that
+    animate the open and closed heights — had no element to act on.
+
+    The root takes `layout--size-md`. The reference also emits `accordion--md`,
+    dropped for having no rule in @carbon/styles (§4.1.12).
+
+    The `hidden` attribute is gone from the closed panels with it. Carbon opens
+    and closes purely from `__item--active` on the li — __wrapper is
+    display:none, max-block-size:0, opacity:0 until that class appears — so
+    `hidden` was a second, redundant mechanism that would have fought the
+    transition once the wrapper existed.
+  -->
+  <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
     <li class="rux--accordion__item rux--accordion__item--active">
       <button type="button" class="rux--accordion__heading" aria-expanded="true">
         <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
         <div class="rux--accordion__title">Expanded section</div>
       </button>
-      <div class="rux--accordion__content">
-        <p>Content revealed when the section is open.</p>
+      <div class="rux--accordion__wrapper">
+        <div class="rux--accordion__content">
+          <p>Content revealed when the section is open.</p>
+        </div>
       </div>
     </li>
     <li class="rux--accordion__item">
@@ -3371,14 +3406,18 @@
         <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
         <div class="rux--accordion__title">Collapsed section</div>
       </button>
-      <div class="rux--accordion__content" hidden><p>Hidden content.</p></div>
+      <div class="rux--accordion__wrapper">
+        <div class="rux--accordion__content"><p>Hidden content.</p></div>
+      </div>
     </li>
     <li class="rux--accordion__item rux--accordion__item--disabled">
       <button type="button" class="rux--accordion__heading" aria-expanded="false" disabled>
         <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
         <div class="rux--accordion__title">Disabled section</div>
       </button>
-      <div class="rux--accordion__content" hidden><p>Unreachable.</p></div>
+      <div class="rux--accordion__wrapper">
+        <div class="rux--accordion__content"><p>Unreachable.</p></div>
+      </div>
     </li>
   </ul>
 </section>

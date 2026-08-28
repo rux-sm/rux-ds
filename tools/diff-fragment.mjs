@@ -145,9 +145,37 @@ const files = readdirSync('sink').filter(f => f.endsWith('.html'))
 const wantOmissions = process.argv.includes('--omissions');
 
 // Stories that best cover a fragment's classes, then what they add on top.
-function omissions(ours) {
+//
+// PREFER THE COMPONENT'S OWN STORIES. Ranking every story by raw overlap picks
+// composite pages — links scored highest against a data-table batch-actions
+// story, textarea against a whole form — and then reports that whole page as
+// "missing", which is noise of the least useful kind. So candidates are first
+// narrowed to stories whose id names this component, falling back to the open
+// field only when nothing matches. Names are compared with hyphens stripped,
+// which is what turns `text-input` into Carbon's `textinput`; ALIAS carries the
+// handful where the fragment and the story disagree outright.
+const ALIAS = {
+  buttons: 'button', links: 'link', tags: 'tag', number: 'numberinput',
+  radio: 'radiobutton', table: 'datatable', 'page-header': 'pageheader',
+  'side-panel': 'sidepanel', treeview: 'treeview', notification: 'notifications',
+  'code-snippet': 'codesnippet', 'file-uploader': 'fileuploader',
+  'progress-bar': 'progressbar', 'progress-indicator': 'progressindicator',
+  'inline-loading': 'inlineloading', 'content-switcher': 'contentswitcher',
+  'contained-list': 'containedlist', 'structured-list': 'structuredlist',
+  'overflow-menu': 'overflowmenu', 'menu-button': 'menubutton',
+  'combo-button': 'combobutton', 'combo-box': 'combobox', 'list-box': 'listbox',
+  'date-picker': 'datepicker', 'time-picker': 'timepicker', 'ai-label': 'ailabel',
+  'aspect-ratio': 'aspectratio', 'badge-indicator': 'badgeindicator',
+  'icon-indicator': 'iconindicator', 'shape-indicator': 'shapeindicator',
+  'truncated-text': 'truncatedtext', 'chat-button': 'chatbutton',
+  'copy-button': 'copybutton', 'text-input': 'textinput', 'textarea': 'textarea',
+};
+function omissions(ours, fragment) {
+  const token = (ALIAS[fragment] ?? fragment).replace(/-/g, '');
+  const named = [...STORY_CLASSES.keys()].filter(id => id.replace(/-/g, '').includes(token));
+  const pool = named.length ? new Map(named.map(id => [id, STORY_CLASSES.get(id)])) : STORY_CLASSES;
   const scored = [];
-  for (const [id, cls] of STORY_CLASSES) {
+  for (const [id, cls] of pool) {
     let hit = 0;
     for (const c of ours) if (cls.has(c)) hit++;
     if (hit) scored.push([hit / ours.size, hit, id, cls]);
@@ -192,7 +220,7 @@ for (const file of files) {
   }
   if (wantOmissions) {
     const ours = new Set(pairs(readFileSync(`sink/${file}`, 'utf8')).map(p => p.cls));
-    const { top, missing } = omissions(ours);
+    const { top, missing } = omissions(ours, file.replace('.html', ''));
     console.log(`\n  ${file} — closest stories`);
     for (const t of top) console.log(`      ${t}`);
     console.log(`      Carbon renders, we do not (${missing.size}):`);

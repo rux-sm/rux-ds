@@ -90,8 +90,9 @@
     const item = h.closest('.rux--accordion__item');
     const open = item.classList.toggle('rux--accordion__item--active');
     h.setAttribute('aria-expanded', String(open));
-    const content = item.querySelector('.rux--accordion__content');
-    if (content) content.hidden = !open;          // Carbon's collapse is JS-driven
+    // No `hidden` toggle: once __content sits inside __wrapper, Carbon's own
+    // CSS opens and closes the panel from __item--active alone, and setting
+    // hidden as well fights the max-block-size transition.
   });
 
   // ---- list boxes: dropdown, combo box, multiselect ----------------------
