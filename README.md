@@ -4,7 +4,14 @@ A framework-free CSS/HTML/JS design system, derived from Carbon v11 by subtracti
 Its primary consumer is Claude Code generating consistent pages.
 
 **Start with [`docs/roadmap.md`](docs/roadmap.md)** — the end goal, the decisions on
-record, and the phase this project is in.
+record, and the phase this project is in. This README is the index: current state, what
+is open, and where each rule lives. It does not repeat the roadmap, because a rule
+stated twice drifts — which is exactly what happened to the Status block below before
+2026-08-28.
+
+**There is no guide to BUILDING a page yet, and that is Phase 6.** `templates/` and
+`CLAUDE.md` are the deliverable that answers "how do I use this"; until they exist, the
+kitchen sink is the worked example and `sink/*.html` the markup to copy.
 
 ## Status
 
@@ -83,6 +90,8 @@ lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
 npm run verify           # build + assemble sink + class resolution + coverage + provenance
 npm run coverage --all   # per-component class coverage, thinnest first
 npm run coverage:update  # re-record docs/coverage.json after adding sink markup
+npm run ancestry         # wrappers Carbon never omits, with the recorded declines
+npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 ```
 
 | | |
@@ -103,10 +112,12 @@ npm run coverage:update  # re-record docs/coverage.json after adding sink markup
 |---|---|
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
 | `css/` | Build output; becomes the source at Phase 4 |
+| `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
-| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `check-classes` · `check-tokens` · `check-compound` · `check-tags` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` |
+| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `measure` · `check-classes` · `check-tokens` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` · and two browser-only: `check-a11y.js`, `check-rendered.js` |
+| `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
 
