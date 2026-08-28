@@ -1,6 +1,19 @@
 <section class="ks-sec" id="card">
   <h2>Card</h2><p>productive · clickable · horizontal · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · preview-card--default, --clickable,
+       --disabled, --with-header-actions and --with-truncated-title,
+       2026-08-28 -->
+  <!--
+    Two things the reference has and this fragment did not: `__label`, the
+    eyebrow above the title (five rules), and `__media`, the image slot that
+    takes an aspect ratio and sits ABOVE the header (thirteen rules). Neither
+    had an element here.
+
+    One finding recorded: a ghost button in `__footer`. No story puts one
+    there — the reference's card actions live in `__action` inside the footer,
+    wrapped in an icon-tooltip this sink declines — but a footer button is what
+    __footer is for.
+  -->
   <!--
     Vertical rhythm comes from margin-block on each CHILD, not from padding on a
     wrapper (components/card/_card.scss:66). __body has margin-block-start: 0 and
@@ -12,9 +25,18 @@
   <div class="ks-grid">
     <div class="rux--card rux--card--productive">
       <div class="rux--card__header">
+        <div class="rux--card__label">Category</div>
         <div class="rux--card__title">Productive card</div>
       </div>
       <div class="rux--card__body">A short description of what this card contains.</div>
+    </div>
+
+    <div class="rux--card">
+      <div class="rux--card__media rux--aspect-ratio rux--aspect-ratio--16x9"></div>
+      <div class="rux--card__header">
+        <div class="rux--card__title">With media</div>
+      </div>
+      <div class="rux--card__body">__media takes an aspect ratio and sits above the header.</div>
     </div>
 
     <div class="rux--card rux--card--clickable">

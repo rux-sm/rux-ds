@@ -1,6 +1,21 @@
 <section class="ks-sec" id="action-set">
   <h2>Action set</h2><p>single · double · triple rows</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · the side-panel action sets in
+       components-sidepanel--slide-over and its size recipes, and
+       patterns-create-flows-createsidepanel--create-side-panel@open,
+       2026-08-28 · @carbon/react has no ActionSet; it is an ibm-products
+       component that @carbon/styles compiles -->
+  <!--
+    Two classes have no reference and are kept deliberately.
+    `action-set--row-triple` and `__action-button--ghost` are unreachable in
+    the harvest: the side-panel stories map their action count through a
+    numeric control that a URL arg never applies, so only the single and double
+    rows can be captured (recorded in tools/extract/react-dom.js). Both are
+    real CSS with rules behind them.
+
+    The ghost button in the action set is the same gap seen from the other
+    side: no sampled action set contains one.
+  -->
   <!--
     .rux--action-set sets align-items and justify-content but NOT display — it is
     also a .rux--btn-set, which is what supplies display:flex (css/rux.css:2353).

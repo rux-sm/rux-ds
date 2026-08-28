@@ -1733,8 +1733,18 @@
 
 <section class="ks-sec" id="truncated-text">
   <h2>Truncated text</h2>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · known gap — --truncated-text__expand-toggle has no button reset in Carbon (roadmap §4.1.5) -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors ·
+       NO REFERENCE EXISTS; see below -->
+  <!--
+  NO REFERENCE EXISTS. Checked 2026-08-28: the only story matching "truncat"
+      across both origins is preview-card--with-truncated-title, and that is a
+      CARD truncating its own title with `card__title-text-row--truncate` — a
+      different component. Nothing renders the TruncatedText classes, so this
+      fragment stays `inferred` for want of anything to diff against, not for
+      want of trying.
+
+      The known upstream gap below is unrelated and still stands.
+  -->
   <p>end truncation · <strong>known upstream gap</strong> — the expand toggle has no button reset in light DOM</p>
   <!--
     RENDERED AS-IS ON PURPOSE. .rux--truncated-text__expand-toggle sets only `color`
@@ -1914,7 +1924,22 @@
 
 <section class="ks-sec" id="action-set">
   <h2>Action set</h2><p>single · double · triple rows</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · the side-panel action sets in
+       components-sidepanel--slide-over and its size recipes, and
+       patterns-create-flows-createsidepanel--create-side-panel@open,
+       2026-08-28 · @carbon/react has no ActionSet; it is an ibm-products
+       component that @carbon/styles compiles -->
+  <!--
+    Two classes have no reference and are kept deliberately.
+    `action-set--row-triple` and `__action-button--ghost` are unreachable in
+    the harvest: the side-panel stories map their action count through a
+    numeric control that a URL arg never applies, so only the single and double
+    rows can be captured (recorded in tools/extract/react-dom.js). Both are
+    real CSS with rules behind them.
+
+    The ghost button in the action set is the same gap seen from the other
+    side: no sampled action set contains one.
+  -->
   <!--
     .rux--action-set sets align-items and justify-content but NOT display — it is
     also a .rux--btn-set, which is what supplies display:flex (css/rux.css:2353).
@@ -1970,7 +1995,20 @@
 
 <section class="ks-sec" id="card">
   <h2>Card</h2><p>productive · clickable · horizontal · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · preview-card--default, --clickable,
+       --disabled, --with-header-actions and --with-truncated-title,
+       2026-08-28 -->
+  <!--
+    Two things the reference has and this fragment did not: `__label`, the
+    eyebrow above the title (five rules), and `__media`, the image slot that
+    takes an aspect ratio and sits ABOVE the header (thirteen rules). Neither
+    had an element here.
+
+    One finding recorded: a ghost button in `__footer`. No story puts one
+    there — the reference's card actions live in `__action` inside the footer,
+    wrapped in an icon-tooltip this sink declines — but a footer button is what
+    __footer is for.
+  -->
   <!--
     Vertical rhythm comes from margin-block on each CHILD, not from padding on a
     wrapper (components/card/_card.scss:66). __body has margin-block-start: 0 and
@@ -1982,9 +2020,18 @@
   <div class="ks-grid">
     <div class="rux--card rux--card--productive">
       <div class="rux--card__header">
+        <div class="rux--card__label">Category</div>
         <div class="rux--card__title">Productive card</div>
       </div>
       <div class="rux--card__body">A short description of what this card contains.</div>
+    </div>
+
+    <div class="rux--card">
+      <div class="rux--card__media rux--aspect-ratio rux--aspect-ratio--16x9"></div>
+      <div class="rux--card__header">
+        <div class="rux--card__title">With media</div>
+      </div>
+      <div class="rux--card__body">__media takes an aspect ratio and sits above the header.</div>
     </div>
 
     <div class="rux--card rux--card--clickable">
@@ -2739,7 +2786,15 @@
 
 <section class="ks-sec" id="modal">
   <h2>Modal</h2><p>sizes · danger footer — opens full-viewport, as Carbon renders it</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-modal--default, --danger-modal,
+       --passive-modal and composedmodal--default, plus the xs, sm and lg
+       recipes, 2026-08-28 -->
+  <!--
+    One finding recorded: `modal-close` sits directly in `__header` here, where
+    the reference wraps it in an icon-tooltip's `tooltip-trigger__wrapper`.
+    That is the story's hover hint, which the sink declines on the combo-button
+    precedent; the close button's own placement in the header is unchanged.
+  -->
   <!--
     .rux--modal is position:fixed at 100vw/100vh. Constraining it to a box
     misrepresents the component, so it is triggered instead: `.is-visible` on a
@@ -4085,7 +4140,18 @@
 
 <section class="ks-sec" id="slug">
   <h2>Slug</h2><p>predecessor of AI label, kept for compatibility</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors ·
+       NO REFERENCE EXISTS; see below -->
+  <!--
+  slug is SUPERSEDED and no story emits it. Checked 2026-08-28 across all
+      641 captures on both origins: nothing renders `cds--slug` or any of its ten
+      classes. @carbon/styles still compiles them, and the side-panel work found
+      the same thing from the other side — `--has-slug` and `__slug-and-close`
+      are defined there and never emitted, because `ai-label` replaced the whole
+      idea (roadmap, 801a8c3). This fragment therefore cannot be diffed: it is
+      shown because the CSS ships it, and labelled `inferred` because there is
+      nothing to check it against. The successor is demoed in ai-label.
+  -->
   <div class="ks-row" style="padding-block:1rem">
     <div class="rux--slug">
       <button type="button" class="rux--slug__button rux--slug__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
