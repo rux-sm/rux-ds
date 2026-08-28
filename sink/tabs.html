@@ -1,7 +1,10 @@
 <section class="ks-sec" id="tabs">
     <h2>Tabs</h2><p>line</p>
     <!-- PROVENANCE: source · @carbon/react Tabs.tsx, 2026-08-26
-         · class placement only; never diffed against the rendered page -->
+         · class placement only; never diffed against the rendered page
+         · 2026-08-27: tablist element corrected against components-tabs--default
+           (rendered DOM) — v11 renders div.tab--list, and tabs__nav survives only
+           in the skeleton, as a UL; the label is a SPAN inside its wrapper. -->
     <!--
       STRUCTURE CORRECTED 2026-08-26 — the stacked underline was our bug, not
       Carbon's. This fragment previously nested the parts:
@@ -43,25 +46,25 @@
       §4.5), with the tabpanels that make aria-controls meaningful.
     -->
     <div class="rux--tabs">
-      <div class="rux--tabs__nav" role="tablist" aria-label="Tabs example">
+      <div class="rux--tab--list" role="tablist" aria-label="Tabs example">
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Overview</div>
+            <span class="rux--tabs__nav-item-label">Overview</span>
           </div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Details</div>
+            <span class="rux--tabs__nav-item-label">Details</span>
           </div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Activity</div>
+            <span class="rux--tabs__nav-item-label">Activity</span>
           </div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--disabled" role="tab" type="button" aria-selected="false" aria-disabled="true" disabled>
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Disabled</div>
+            <span class="rux--tabs__nav-item-label">Disabled</span>
           </div>
         </button>
       </div>
@@ -75,10 +78,10 @@
     -->
     <div class="ks-label" style="margin-block-start:1.5rem">dismissible</div>
     <div class="rux--tabs">
-      <div class="rux--tabs__nav" role="tablist" aria-label="Dismissible tabs">
+      <div class="rux--tab--list" role="tablist" aria-label="Dismissible tabs">
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Report A</div>
+            <span class="rux--tabs__nav-item-label">Report A</span>
           </div>
         </button>
         <div class="rux--tabs__nav-item--close">
@@ -88,7 +91,7 @@
         </div>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Report B</div>
+            <span class="rux--tabs__nav-item-label">Report B</span>
           </div>
         </button>
         <div class="rux--tabs__nav-item--close">
@@ -106,16 +109,16 @@
     -->
     <div class="ks-label" style="margin-block-start:1.5rem">contained · tall</div>
     <div class="rux--tabs rux--tabs--contained rux--tabs--tall">
-      <div class="rux--tabs__nav" role="tablist" aria-label="Tall contained tabs">
+      <div class="rux--tab--list" role="tablist" aria-label="Tall contained tabs">
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Overview</div>
+            <span class="rux--tabs__nav-item-label">Overview</span>
             <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
           </div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
-            <div class="rux--tabs__nav-item-label">Details</div>
+            <span class="rux--tabs__nav-item-label">Details</span>
             <div class="rux--tabs__nav-item-secondary-label">One record</div>
           </div>
         </button>

@@ -8,8 +8,13 @@
         --tile--disabled is only ever written compound with --tile--selectable
         (:.rux--tile--disabled.rux--tile--selectable). On its own it styles
         nothing but a nested checkmark, so both classes go on one element.
+        DELIBERATE, against an unsampled reference: check-tags reports
+        --tile--disabled on a <label> only because the sole story that
+        disables a tile is the feature-flag one, which renders the label
+        form. The CLASSIC selectable tile — components-tile--selectable —
+        is a div[role=checkbox], and this demo is the classic form.
       -->
-      <div class="rux--tile rux--tile--selectable rux--tile--disabled">
+      <div class="rux--tile rux--tile--selectable rux--tile--disabled" role="checkbox" aria-checked="false" aria-disabled="true">
         <span class="rux--tile__checkmark"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg></span>
         <p>Selectable, disabled</p>
       </div>

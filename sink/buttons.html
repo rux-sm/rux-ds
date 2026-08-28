@@ -15,6 +15,13 @@
       <button type="button" class="rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm">sm</button>
       <button type="button" class="rux--btn rux--btn--primary rux--btn--md rux--layout--size-md">md</button>
       <button type="button" class="rux--btn rux--btn--primary rux--layout--size-lg">lg</button>
+      <!--
+        DELIBERATE, against an unsampled reference: no story renders an xl
+        button, so check-tags only knows layout--size-xl from layout wrappers.
+        The pairing on the button itself is Carbon's own idiom — the ui-shell
+        header actions render layout--size-lg on their buttons. btn--xl and
+        btn--lg stay off for the usual §4.1.12 reason: no rule in the CSS.
+      -->
       <button type="button" class="rux--btn rux--btn--primary rux--layout--size-xl">xl</button>
     </div>
     <div class="ks-row">
@@ -25,6 +32,11 @@
         --btn--disabled is the CLASS form of the disabled attribute, for a kind
         rendered on an <a>, where `disabled` does not exist. Carbon styles it
         beside :disabled throughout (_button.scss:187, :231, :376).
+        DELIBERATE, against an unsampled reference: check-tags reports btn,
+        btn--ghost and btn--disabled here on an element no story shows, because
+        no story passes href — but Button with href is Carbon's own API and
+        renders exactly this <a class="cds--btn">. The class-form disabled
+        exists FOR that element.
       -->
       <a class="rux--btn rux--btn--ghost rux--btn--disabled" role="button" aria-disabled="true">Disabled ghost link</a>
     </div>

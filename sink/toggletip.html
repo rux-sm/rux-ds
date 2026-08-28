@@ -5,11 +5,16 @@
     <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret">
       <button type="button" class="rux--toggletip-button" aria-expanded="false">More information</button>
       <span class="rux--popover">
-        <span class="rux--popover-content rux--toggletip-content">
-          <p class="rux--toggletip-label">Explanation</p>
-          <p>Toggletips stay open until dismissed, so their content can be interactive.</p>
-          <div class="rux--toggletip-actions">
-            <a class="rux--link" href="#toggletip">Learn more</a>
+        <!-- popover-content and toggletip-content are NESTED, not compounded:
+             Carbon renders span.popover-content > div.toggletip-content
+             (components-toggletip--default). -->
+        <span class="rux--popover-content">
+          <div class="rux--toggletip-content">
+            <span class="rux--toggletip-label">Explanation</span>
+            <p>Toggletips stay open until dismissed, so their content can be interactive.</p>
+            <div class="rux--toggletip-actions">
+              <a class="rux--link" href="#toggletip">Learn more</a>
+            </div>
           </div>
         </span>
         <span class="rux--popover-caret"></span>

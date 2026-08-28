@@ -3,6 +3,14 @@
   <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
   <div style="display:grid;gap:1.5rem;max-width:36rem">
     <div>
+      <!--
+        DELIBERATE divergence, kept against the reference: Carbon's inline
+        snippet is a copy BUTTON (button.snippet.snippet--inline.copy.btn…)
+        because React wires click-to-copy into it. This system's static inline
+        snippet is a <code> element — the semantic choice for inert code, and
+        the form Carbon itself renders when the copy affordance is off. The
+        interactive form belongs to Phase 5 behaviours.
+      -->
       <code class="rux--snippet rux--snippet--inline"><span>npm run build</span></code>
     </div>
     <div class="rux--snippet rux--snippet--single">

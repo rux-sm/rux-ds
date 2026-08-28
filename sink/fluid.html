@@ -1,10 +1,13 @@
 <section class="ks-sec" id="fluid">
   <h2>Fluid inputs</h2><p>the eleven fluid-* components — label inside the field, no gap between controls</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · known defect — still carries the old --selection--multi badge, pending its own diff (roadmap §4.1.11) -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors; the fluid form
+       wrapper, dropdown invalid icon and multiselect badge corrected 2026-08-27
+       against the rendered-DOM references (fluid stories in
+       docs/carbon-react-dom.json and the state recipes) — the known
+       --selection--multi badge defect is resolved -->
 
   <div class="ks-label">text input · text area · select</div>
-  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+  <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
     <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">
       <div class="rux--text-input__field-wrapper">
         <label class="rux--label" for="fl-ti">Fluid text input</label>
@@ -26,10 +29,10 @@
         </select>
       </div>
     </div>
-  </div>
+  </form>
 
   <div class="ks-label">number · search</div>
-  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+  <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
     <div class="rux--number-input--fluid rux--number">
       <div class="rux--number__input-wrapper">
         <label class="rux--label" for="fl-ni">Fluid number</label>
@@ -40,10 +43,10 @@
       <label class="rux--label" for="fl-sr">Fluid search</label>
       <input id="fl-sr" class="rux--search-input" type="text" role="searchbox" placeholder="Search…">
     </div>
-  </div>
+  </form>
 
   <div class="ks-label">validity states on the fluid wrappers</div>
-  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+  <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
     <div class="rux--number-input--fluid rux--number-input--fluid--invalid rux--number" data-invalid>
       <div class="rux--number__input-wrapper">
         <label class="rux--label" for="fl-ni-inv">Invalid number</label>
@@ -58,16 +61,16 @@
       </div>
     </div>
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--invalid">
-      <div class="rux--dropdown rux--list-box" data-invalid>
+      <div class="rux--dropdown rux--dropdown--invalid rux--list-box rux--list-box--invalid" data-invalid>
+        <svg class="rux--list-box__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
         <div class="rux--list-box__field" tabindex="0" role="combobox" aria-expanded="false" aria-label="Fluid dropdown, invalid" aria-invalid="true">
           <span class="rux--list-box__label">Choose</span>
-          <div class="rux--list-box__invalid-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg></div>
           <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
         </div>
       </div>
       <div class="rux--form-requirement">A selection is required</div>
     </div>
-  </div>
+  </form>
 
   <div class="ks-label">date picker · time picker</div>
   <!--
@@ -77,7 +80,7 @@
     Fluid time picker has no label rule of its own — each child of
     .rux--time-picker--fluid__wrapper is itself a fluid sub-component.
   -->
-  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+  <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
     <div class="rux--date-picker--fluid rux--date-picker--fluid--invalid">
       <div class="rux--date-picker rux--date-picker--simple">
         <label class="rux--label" for="fl-dp-inv">Fluid date · invalid</label>
@@ -104,9 +107,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 
-  <div class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
+  <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
     <div class="rux--time-picker--fluid rux--time-picker--fluid--invalid rux--time-picker">
       <div class="rux--time-picker--fluid__wrapper">
         <div class="rux--time-picker__input">
@@ -133,7 +136,7 @@
     </div>
     <div class="rux--time-picker--fluid rux--time-picker--fluid--skeleton rux--time-picker">
       <div class="rux--time-picker--fluid__wrapper">
-        <div class="rux--time-picker__input"><span class="rux--skeleton__text"></span></div>
+        <div class="rux--time-picker__input"><p class="rux--skeleton__text"></p></div>
       </div>
     </div>
     <div class="rux--time-picker--fluid rux--time-picker">
@@ -166,10 +169,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 
   <div class="ks-label">dropdown · combo box · multiselect · list box — one fluid wrapper serves all four</div>
-  <div class="rux--form--fluid" style="max-width:24rem">
+  <form class="rux--form--fluid" style="max-width:24rem">
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid">
       <label class="rux--label" id="fl-dd-label">Fluid dropdown</label>
       <div class="rux--dropdown rux--list-box">
@@ -179,15 +182,27 @@
         </button>
       </div>
     </div>
+    <!-- Badge corrected 2026-08-27 against fluidmultiselect--default@open-selected
+         (docs/carbon-react-states.json): the selection count is a filter Tag
+         inside __field--wrapper, a SIBLING of the button field — not the old
+         __selection--multi badge. Same form the plain multiselect was given in
+         §4.1.11; this fragment's known defect is resolved. -->
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--condensed">
       <label class="rux--label" id="fl-ms-label">Fluid multiselect · condensed</label>
-      <div class="rux--multi-select rux--list-box">
-        <div class="rux--list-box__field" role="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="fl-ms-label" tabindex="0">
-          <div class="rux--list-box__selection rux--list-box__selection--multi" role="button" tabindex="0">2<svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></div>
-          <span class="rux--list-box__label">Two selected</span>
-          <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+      <div class="rux--multi-select rux--multi-select--selected rux--list-box">
+        <div class="rux--list-box__field--wrapper">
+          <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+            <span class="rux--tag__label">2</span>
+            <div class="rux--tag__close-icon" role="button" tabindex="0" aria-label="Clear selection">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </div>
+          </div>
+          <button type="button" class="rux--list-box__field" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="fl-ms-label">
+            <span class="rux--list-box__label">Two selected</span>
+            <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
+          </button>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </section>

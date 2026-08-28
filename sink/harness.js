@@ -105,7 +105,8 @@
   });
   on('.rux--list-box__field', 'click', field => {
     const lb = field.closest('.rux--list-box');
-    if (lb.classList.contains('rux--list-box--disabled')) return;
+    if (lb.classList.contains('rux--list-box--disabled')
+      || lb.classList.contains('rux--dropdown--disabled')) return;
     const open = !lb.classList.contains('rux--list-box--expanded');
     closeListBoxes(lb);
     lb.classList.toggle('rux--list-box--expanded', open);

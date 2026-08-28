@@ -1,18 +1,32 @@
 <section class="ks-sec" id="combo-button">
   <h2>Combo button</h2><p>primary action plus a menu trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors; corrected
+       2026-08-27 against components-combobutton--default and its sm/md state
+       recipes (rendered DOM): the primary action button sits INSIDE
+       div.combo-button__primary-action, and both buttons carry the size pair
+       btn--<size> + layout--size-<size> matching the container (btn--lg has no
+       rule in @carbon/styles, so the lg pair is layout--size-lg alone —
+       §4.1.12). The reference wraps the trigger in an icon-tooltip popover;
+       that tooltip chrome is not copied — the sink shows the component, not
+       the story's hover hint. -->
   <div class="ks-row">
     <div class="rux--combo-button__container rux--combo-button__container--lg">
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__primary-action">Save</button>
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__trigger" aria-haspopup="true" aria-expanded="false" aria-label="More save options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
+      <div class="rux--combo-button__primary-action">
+        <button type="button" class="rux--btn rux--layout--size-lg rux--btn--primary">Save</button>
+      </div>
+      <button type="button" class="rux--combo-button__trigger rux--btn rux--layout--size-lg rux--btn--primary rux--btn--icon-only" aria-haspopup="true" aria-expanded="false" aria-label="More save options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
     </div>
     <div class="rux--combo-button__container rux--combo-button__container--md">
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__primary-action">Medium</button>
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__trigger" aria-haspopup="true" aria-expanded="false" aria-label="More options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
+      <div class="rux--combo-button__primary-action">
+        <button type="button" class="rux--btn rux--btn--md rux--layout--size-md rux--btn--primary">Medium</button>
+      </div>
+      <button type="button" class="rux--combo-button__trigger rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" aria-haspopup="true" aria-expanded="false" aria-label="More options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
     </div>
     <div class="rux--combo-button__container rux--combo-button__container--sm">
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__primary-action">Small</button>
-      <button type="button" class="rux--btn rux--btn--primary rux--combo-button__trigger" aria-haspopup="true" aria-expanded="false" aria-label="More options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
+      <div class="rux--combo-button__primary-action">
+        <button type="button" class="rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary">Small</button>
+      </div>
+      <button type="button" class="rux--combo-button__trigger rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-haspopup="true" aria-expanded="false" aria-label="More options"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></button>
     </div>
   </div>
 </section>

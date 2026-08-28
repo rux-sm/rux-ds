@@ -1,6 +1,11 @@
 <section class="ks-sec" id="list-box">
   <h2>List box</h2><p>the primitive under dropdown, combo box and multiselect</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors; elements
+       corrected 2026-08-27 against the rendered-DOM references: the divider is
+       an HR and a SIBLING of the list-box (the fluid components use it to
+       separate stacked fields — it is not an in-menu option divider), the
+       warning icon is an SVG carrying the classes itself, before the field,
+       and menu items render no __selected-icon. -->
   <div class="ks-grid">
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--expanded">
@@ -10,26 +15,23 @@
         </div>
         <ul class="rux--list-box__menu" role="listbox">
           <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
-            <div class="rux--list-box__menu-item__option">
-              Selected value
-              <div class="rux--list-box__menu-item__selected-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg></div>
-            </div>
+            <div class="rux--list-box__menu-item__option">Selected value</div>
           </li>
           <li class="rux--list-box__menu-item" role="option" aria-selected="false">
             <div class="rux--list-box__menu-item__option">Another value</div>
           </li>
-          <li class="rux--list-box__divider"></li>
           <li class="rux--list-box__menu-item" role="option" aria-selected="false">
-            <div class="rux--list-box__menu-item__option">After a divider</div>
+            <div class="rux--list-box__menu-item__option">A third value</div>
           </li>
         </ul>
       </div>
+      <hr class="rux--list-box__divider">
     </div>
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--warning">
+        <svg class="rux--list-box__invalid-icon rux--list-box__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
         <div class="rux--list-box__field">
           <span class="rux--list-box__label">Warning state</span>
-          <div class="rux--list-box__invalid-icon rux--list-box__invalid-icon--warning"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg></div>
           <div class="rux--list-box__menu-icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
         </div>
       </div>
