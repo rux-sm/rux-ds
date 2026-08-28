@@ -520,7 +520,7 @@
   <!--
     The tick and the indeterminate dash are drawn in CSS (::before/::after), so no
     icon is needed. `indeterminate` is a JS property, not an attribute — the harness
-    script sets it on [data-ks-indeterminate].
+    script sets it on [data-rux-indeterminate].
 
     Each row MUST be `form-item checkbox-wrapper`: that pair is what carries
     position:relative (css/rux.css:6569). The input is position:absolute, so with
@@ -554,7 +554,7 @@
         <div class="rux--checkbox__validation-msg"></div>
       </div>
       <div class="rux--form-item rux--checkbox-wrapper">
-        <input id="cb-3" class="rux--checkbox" type="checkbox" data-ks-indeterminate>
+        <input id="cb-3" class="rux--checkbox" type="checkbox" data-rux-indeterminate>
         <label for="cb-3" class="rux--checkbox-label"><div class="rux--checkbox-label-text">Indeterminate</div></label>
         <div class="rux--checkbox__validation-msg"></div>
       </div>
@@ -1846,7 +1846,7 @@
             <tr class="rux--parent-row rux--expandable-row">
               <td class="rux--table-expand">
                 <button type="button" class="rux--table-expand__button" aria-expanded="true" aria-label="Collapse row">
-                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
                 </button>
               </td>
               <td>nightly-backup</td>
@@ -1860,7 +1860,7 @@
             <tr class="rux--parent-row">
               <td class="rux--table-expand">
                 <button type="button" class="rux--table-expand__button" aria-expanded="false" aria-label="Expand row">
-                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                  <svg class="rux--table-expand__svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
                 </button>
               </td>
               <td>index-rebuild</td>
@@ -2615,7 +2615,7 @@
   <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
     <li class="rux--accordion__item rux--accordion__item--active">
       <button type="button" class="rux--accordion__heading" aria-expanded="true">
-        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
         <div class="rux--accordion__title">Expanded section</div>
       </button>
       <div class="rux--accordion__wrapper">
@@ -2626,7 +2626,7 @@
     </li>
     <li class="rux--accordion__item">
       <button type="button" class="rux--accordion__heading" aria-expanded="false">
-        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
         <div class="rux--accordion__title">Collapsed section</div>
       </button>
       <div class="rux--accordion__wrapper">
@@ -2635,7 +2635,7 @@
     </li>
     <li class="rux--accordion__item rux--accordion__item--disabled">
       <button type="button" class="rux--accordion__heading" aria-expanded="false" disabled>
-        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
         <div class="rux--accordion__title">Disabled section</div>
       </button>
       <div class="rux--accordion__wrapper">
@@ -2884,6 +2884,7 @@
 <script src="js/tabs.js"></script>
 <script src="js/accordion.js"></script>
 <script src="js/data-table.js"></script>
+<script src="js/form-controls.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
