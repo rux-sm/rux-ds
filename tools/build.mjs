@@ -9,6 +9,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { classNames } from './lib/ownership.mjs';
 
 const SRC = 'src/app.scss';
 const OUT = 'css/rux.css';
@@ -52,7 +53,7 @@ for (const [out, extra] of [[OUT, []], [MIN, ['--style=compressed']]]) {
 const raw = readFileSync(OUT, 'utf8');
 const min = readFileSync(MIN);
 const tokens = new Set(raw.match(/--rux-[a-z0-9-]+/g) ?? []).size;
-const classes = new Set(raw.match(/\.rux--[a-z0-9-]+/g) ?? []).size;
+const classes = classNames(raw).size;
 const comps = (readFileSync(SRC, 'utf8').match(/^@use "@carbon\/styles\/scss\/components\//gm) ?? []).length;
 
 console.log(`

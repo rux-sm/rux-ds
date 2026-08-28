@@ -14,22 +14,12 @@
 //
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { stems, compiled } from './lib/ownership.mjs';
 
 const inv = JSON.parse(readFileSync('docs/inventory.json', 'utf8'));
 const ROOTS = ['kitchen-sink.html', 'templates'];
 
-// Carbon's class stem differs from the package name for these.
-const ALIAS = {
-  'button': ['btn'], 'number-input': ['number'],
-  'data-table': ['data-table', 'table'],
-  'notification': ['inline-notification', 'toast-notification', 'actionable-notification'],
-  'ui-shell': ['header', 'side-nav', 'switcher', 'navigation', 'skip-to-content'],
-  'treeview': ['tree'], 'skeleton-styles': ['skeleton'],
-  'progress-indicator': ['progress-indicator', 'progress-step'],
-  'file-uploader': ['file'], 'code-snippet': ['snippet'],
-  'truncated-text': ['truncated'], 'chat-button': ['chat-btn'],
-  'copy-button': ['copy-btn', 'copy'], 'multiselect': ['multi-select'],
-};
+// The stem table moved to tools/lib/ownership.mjs when check-classes needed it too.
 
 // The fluid-* components define no stem of their own — each is a `--fluid`
 // modifier on a base component. Ownership for them is an exact class, not a prefix.
@@ -48,8 +38,6 @@ const MARKER = {
   'fluid-multiselect': 'rux--list-box__wrapper--fluid',
   'fluid-list-box': 'rux--list-box__wrapper--fluid',
 };
-
-function stems(name) { return ALIAS[name] ?? [name]; }
 
 function walk(p, out = []) {
   if (!statSync(p, { throwIfNoEntry: false })) return out;
@@ -70,9 +58,7 @@ for (const f of ROOTS.flatMap(r => walk(r))) {
 // would make the gate permanently red with no action available. The manifest is
 // read directly rather than mirrored in a list here, because a second copy of
 // the keep-set is a second thing to forget.
-const manifest = readFileSync('src/app.scss', 'utf8');
-const COMPILED = new Set([...manifest.matchAll(/^@use "@carbon\/styles\/scss\/components\/([^"]+)"/gm)]
-  .map(m => m[1]));
+const COMPILED = compiled();
 
 const allClasses = new Set(inv.components.flatMap(c => c.classes ?? []));
 const covered = [], missing = [], unowned = [];

@@ -1,0 +1,74 @@
+//
+// Facts about rux classes: what a class is, which component owns it, and which
+// components are compiled.
+//
+// Carbon namespaces every class by component name, so the class stem IS the
+// ownership record — `rux--dropdown__wrapper` belongs to dropdown no matter
+// which compile emitted it. check-coverage established that metric; this file
+// is where it lives now, because check-classes needs the same table and a
+// second copy of it is a second thing to forget.
+//
+// The component universe comes from docs/inventory.json rather than from
+// node_modules, so the gates read a tracked file and do not depend on an
+// install having happened.
+//
+import { readFileSync } from 'node:fs';
+
+// Carbon's class stem differs from the package name for these.
+export const ALIAS = {
+  'button': ['btn'], 'number-input': ['number'],
+  'data-table': ['data-table', 'table'],
+  'notification': ['inline-notification', 'toast-notification', 'actionable-notification'],
+  'ui-shell': ['header', 'side-nav', 'switcher', 'navigation', 'skip-to-content'],
+  'treeview': ['tree'], 'skeleton-styles': ['skeleton'],
+  'progress-indicator': ['progress-indicator', 'progress-step'],
+  'file-uploader': ['file'], 'code-snippet': ['snippet'],
+  'truncated-text': ['truncated'], 'chat-button': ['chat-btn'],
+  'copy-button': ['copy-btn', 'copy'], 'multiselect': ['multi-select'],
+};
+
+export function stems(name) { return ALIAS[name] ?? [name]; }
+
+const inv = JSON.parse(readFileSync('docs/inventory.json', 'utf8'));
+
+// Longest stem first, so `list-box` claims `rux--list-box__field` before `list`
+// can, and `data-table` claims `rux--data-table--zebra` before `table`.
+const OWNERS = inv.components
+  .flatMap(c => stems(c.component).map(s => [s, c.component]))
+  .sort((a, b) => b[0].length - a[0].length);
+
+// The component a class belongs to, or null for a class no component owns —
+// the foundation classes from reset, type, grid and layout, which are always
+// compiled and therefore always legitimate.
+export function owner(cls) {
+  if (!cls.startsWith('rux--')) return null;
+  const n = cls.slice(5);
+  for (const [s, c] of OWNERS)
+    if (n === s || n.startsWith(`${s}-`) || n.startsWith(`${s}__`)) return c;
+  return null;
+}
+
+// The strip is src/app.scss, so the manifest is read directly rather than
+// mirrored in a list here (roadmap §4.3, and the same reasoning as check-coverage).
+export function compiled() {
+  const manifest = readFileSync('src/app.scss', 'utf8');
+  return new Set([...manifest.matchAll(/^@use "@carbon\/styles\/scss\/components\/([^"]+)"/gm)]
+    .map(m => m[1]));
+}
+
+// What counts as a class name in the built CSS.
+//
+// THREE TOOLS USED THREE DIFFERENT PATTERNS and reported 534, 824 and 1,609 for
+// the same stylesheet. Each was wrong in its own way:
+//   * `[a-z0-9-]` omitted `_`, so every BEM element truncated at its `__` and
+//     collapsed into its block — `.rux--data-table__foo` counted as `.rux--data-table`.
+//   * `[a-zA-Z0-9_-]` stopped at the backslash in the grid's escaped responsive
+//     classes, so `.rux--md\:col-span-4` was seen as `.rux--md`.
+//   * `[a-zA-Z0-9_\\:-]` admitted a BARE colon too, so `.rux--btn--xs:hover`
+//     counted as a class distinct from `.rux--btn--xs` and inflated the total.
+// The escape `\:` is part of the name; a bare `:` starts a pseudo-class and ends it.
+const CLASS_RE = /\.rux--(?:[a-zA-Z0-9_-]|\\:)+/g;
+
+export function classNames(css) {
+  return new Set((css.match(CLASS_RE) ?? []).map(s => s.slice(1)));
+}

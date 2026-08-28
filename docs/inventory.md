@@ -21,10 +21,19 @@ by compiling it. Measured 2026-08-28:
 |---|---|---|---|
 | Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **7 KB** | — |
 | Foundation only — 2 themes | 71 KB | **7 KB** | — |
-| Lean — 22 components, 2 themes | 375 KB | **38 KB** | 1,228 |
-| Proposed KEEP — 31 components, 2 themes | 519 KB | **51 KB** | 1,609 |
-| Proposed KEEP — 31 components, 4 themes | 564 KB | **54 KB** | 1,609 |
-| Full Carbon — 75 components, 4 themes | 849 KB | **84 KB** | 2,475 |
+| Lean — 22 components, 2 themes | 375 KB | **38 KB** | see note |
+| Proposed KEEP — 31 components, 2 themes | 519 KB | **51 KB** | 1,079 |
+| Proposed KEEP — 31 components, 4 themes | 564 KB | **54 KB** | 1,079 |
+| Full Carbon — 75 components, 4 themes | 849 KB | **84 KB** | 1,611 |
+
+> **The Classes column was recounted 2026-08-28.** It had been produced by a pattern
+> that admitted a bare `:`, so `.rux--btn--xs:hover` counted as a class distinct from
+> `.rux--btn--xs` and every pseudo-class inflated the total — 1,609 for a set that has
+> 1,079, and 2,475 for one that has 1,611. Two other tools counted differently again
+> (534 and 824, each wrong in its own way). The pattern now lives once, in
+> `tools/lib/ownership.mjs`, and all three agree. **Sizes are unaffected** — only the
+> count was wrong. The Lean-22 row reads `see note` because that row's component list
+> was never recorded and cannot be recompiled.
 
 Two findings fall out, and both change decisions.
 
@@ -117,7 +126,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads |
 | `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead |
 | `progress-indicator` | **DEFER** | 76 | 196 | 0 | multi-step wizard; no target shape has one |
-| `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; 71 KB is not cheap |
+| `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+1 KB gzipped marginal**, not 71 |
 | `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision |
 | `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet |
 | `date-picker` | **DEFER** | 43 | 120 | 1 | needs flatpickr reproduced in Phase 5 — real cost, decide then |
@@ -172,9 +181,17 @@ Four of these are judgement, not evidence, and I have proposed rather than decid
    JS in Phase 5, which is the single largest behaviour cost in the catalogue. Keeping
    them is defensible; it should be a conscious purchase.
 3. **`combo-box` / `multiselect` — DEFER.** Type-ahead and multi-select are common in
-   real forms. They are out because no target shape names them, not because they are bad.
-4. **`toggletip` — DEFER at 71 KB.** It is the click-triggered sibling of tooltip and the
-   sink demos it well; it is out on cost.
+   real forms. They are out because no target shape names them, not because they are bad
+   — and the KB column overstates them the same way: **together they add 7 KB minified /
+   1 KB gzipped**, since both are built from `list-box`, `text-input`, `checkbox` and
+   `tag`, all of which already ship. All three deferred rows together are +10 KB
+   minified / +2 KB gzipped.
+4. **`toggletip` — DEFER, but NOT on cost.** This entry read "out on cost at 71 KB",
+   which is this document's own warning ignored two sections above where it is written:
+   71 KB is the standalone-with-dependencies figure, and toggletip shares popover,
+   button and tooltip with the keep-set. **Measured marginal cost is 2 KB minified /
+   ~1 KB gzipped.** Defer it because nothing needs it yet — the price is not the
+   reason. Corrected 2026-08-28.
 
 Rows marked CUT with an evidence reason — `slug`, `resizer`, `truncated-text`, `card`,
 `page-header`, `side-panel` — came out of the Phase 1 markup sweep and are not judgement

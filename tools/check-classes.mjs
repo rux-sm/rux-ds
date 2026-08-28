@@ -1,11 +1,23 @@
 #!/usr/bin/env node
 //
-// Every rux-- class used in HTML must resolve to a rule in the built CSS.
+// Every rux-- class used in HTML must resolve to a rule in the built CSS, AND
+// must belong to a component the manifest still compiles.
 // A renamed or mistyped class is not a build error, not a type error, and not a
 // test failure — it silently loses its styling. This is the only thing that catches it.
 //
+// THE SECOND CHECK EXISTS BECAUSE THE FIRST ONE HAS A HOLE, and Phase 3 opened it.
+// `defined` is every `.rux--*` occurrence anywhere in the file, INCLUDING
+// descendant position. Kept components carry rules for the AI affordances —
+// `.rux--text-input__field-wrapper--slug ... .rux--ai-label` — so after the strip
+// cut ai-label, slug, toggletip and combo-box, their root classes still appeared
+// in the CSS and still passed. No standalone rule exists for any of them: writing
+// that markup gets fragmentary styling and a green gate, which is precisely the
+// failure this file was written to catch. Ownership is by stem, so the check is
+// "is this class's component compiled" — see tools/lib/ownership.mjs.
+//
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { owner, compiled, classNames } from './lib/ownership.mjs';
 
 const CSS = 'css/rux.css';
 const ROOTS = ['kitchen-sink.html', 'templates'];
@@ -18,10 +30,11 @@ function walk(p, out = []) {
 }
 
 const css = readFileSync(CSS, 'utf8');
-const defined = new Set(css.match(/\.rux--[a-zA-Z0-9_-]+/g)?.map(s => s.slice(1)) ?? []);
+const defined = classNames(css);
 const files = ROOTS.flatMap(r => walk(r));
+const COMPILED = compiled();
 
-let bad = 0, used = new Set();
+let bad = 0, stripped = 0, used = new Set();
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
   for (const m of html.matchAll(/class="([^"]*)"/g)) {
@@ -32,9 +45,17 @@ for (const f of files) {
       if (!defined.has(cls) && !defined.has(esc)) {
         console.log(`  UNDEFINED  ${cls.padEnd(42)} ${f}`);
         bad++;
+        continue;
+      }
+      // Owned by nothing = a foundation class from reset, type, grid or layout,
+      // which is always compiled. Owned by a commented-out component = stripped.
+      const own = owner(cls);
+      if (own && !COMPILED.has(own)) {
+        console.log(`  STRIPPED   ${cls.padEnd(42)} ${f}  (${own} is not compiled)`);
+        stripped++;
       }
     }
   }
 }
-console.log(`\n  files ${files.length} · classes used ${used.size} · defined in CSS ${defined.size} · undefined ${bad}`);
-process.exit(bad ? 1 : 0);
+console.log(`\n  files ${files.length} · classes used ${used.size} · defined in CSS ${defined.size} · undefined ${bad} · stripped ${stripped}`);
+process.exit(bad + stripped ? 1 : 0);

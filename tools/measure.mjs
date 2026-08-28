@@ -27,6 +27,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdtempSync, rmSync } from 'n
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { classNames } from './lib/ownership.mjs';
 
 const COMP_DIR = 'node_modules/@carbon/styles/scss/components';
 const ALL = readdirSync(COMP_DIR).filter(d => !d.startsWith('_')).sort();
@@ -69,7 +70,7 @@ function build(comps, themeCount) {
     '--style=compressed', f, out], { stdio: ['ignore', 'pipe', 'pipe'] });
   const css = readFileSync(out, 'utf8');
   return { min: css.length, gzip: gzipSync(Buffer.from(css), { level: 9 }).length,
-           classes: new Set(css.match(/\.rux--[a-zA-Z0-9_\\:-]+/g) ?? []).size };
+           classes: classNames(css).size };
 }
 
 const argv = process.argv.slice(2);
