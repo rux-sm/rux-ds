@@ -1122,8 +1122,16 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > here — adding them would be this system inventing behaviour rather than making
 > Carbon's work. "It barely does anything" is a smell only when nobody has checked.
 >
+> **10. A derived state still belongs in the markup when it is the initial one.**
+> `batch-actions--active` was removed on the theory that the module derives it, and
+> check-coverage's ratchet caught the cost immediately: a class applied only at runtime
+> is invisible to a gate that reads static HTML. The markup declares the state the page
+> loads in and the module maintains it from there — the arrangement accordion, list-box
+> and data-table all now use.
+>
 > Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`,
-> `js/tabs.js`, `js/accordion.js` and `js/modal.js`. 51 KB of the 90 KB budget. Popover carries tooltip and menu carries
+> `js/tabs.js`, `js/accordion.js`, `js/data-table.js` and `js/modal.js`. 61 KB of the
+> 90 KB budget. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

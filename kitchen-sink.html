@@ -1681,10 +1681,17 @@
       `batch-actions--active ~ toolbar-content` selects — activating the bar
       clips the content away. Both are in the DOM together, as in the reference.
 
-      `batch-actions--active` is ADDED to the captured structure, deliberately.
-      The bar is `clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)` at rest — zero
-      height — so the story's inactive bar would demo an invisible element. The
-      sink shows states; this is the state worth showing.
+      `batch-actions--active` STAYS IN THE MARKUP, and the module maintains it
+      from there. The bar is `clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)` at
+      rest — zero height — and the second row ships checked, so `--active` is the
+      state this table is genuinely in at load; js/data-table.js recomputes it on
+      every selection change and agrees with the markup on the first pass.
+
+      IT WAS BRIEFLY REMOVED, on the theory that a derived state should not be
+      asserted, and check-coverage's ratchet caught the cost: a class applied only
+      at runtime is invisible to a gate that reads static HTML, so data-table fell
+      40 to 39. The markup declaring an initial state the module then maintains is
+      the same arrangement accordion and list-box already use.
 
       SORT DIRECTION IS THE `aria-sort` ATTRIBUTE plus which icon CSS reveals.
       Both icons are always in the DOM: `table-sort__icon` for a sorted column,
@@ -2876,6 +2883,7 @@
 <script src="js/list-box.js"></script>
 <script src="js/tabs.js"></script>
 <script src="js/accordion.js"></script>
+<script src="js/data-table.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
