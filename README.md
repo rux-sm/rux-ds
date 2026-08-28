@@ -67,25 +67,25 @@ was verified against.
 
 | What | Where |
 |---|---|
-| The 90 KB JS budget needs a unit — 83.5 KB raw is 46% comment, 45 KB code, 22.7 KB gzipped | roadmap §4.5 |
+| The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
 | No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
 | **`stack` — restore it?** Phase 6 found the gap its DEFER row was waiting for: a form has no vertical rhythm without it. 1 KB, 15 classes. Plan and cost in full | roadmap §4.4, `docs/inventory.md` item 4 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs all eleven gates.
+last push, and `npm run verify` runs ten of the twelve gates.
 
 | | |
 |---|---|
 | Components | **31 / 75 compiled** in 34 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 610 `--rux-*` · 1,112 `.rux--*` |
-| Kitchen sink | 31 sections · 443 classes · 0 unresolved |
-| Class coverage | **431 / 720 (60%)** — ratcheted in `docs/coverage.json` |
-| Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
+| Kitchen sink | 31 sections · 433 classes; **447** with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **432 / 720 (60%)** — ratcheted in `docs/coverage.json` |
+| Markup provenance | **31 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 12 modules · 83.5 KB raw, **46% of it comment** · 45 KB of code · **22.7 KB gzipped** |
+| Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.
 
@@ -148,7 +148,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Eleven, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Twelve, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -157,7 +157,7 @@ Eleven, because none is sufficient alone — see roadmap §4.1.2 for the bug tha
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | **which** glyph a `<use>` points at |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
-| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
+| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (16 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
@@ -175,19 +175,19 @@ there was invisible to all three. The new gate intersects the classed ancestors 
 occurrence of a class across all 641 captures and requires what survives — what Carbon
 puts above it *without exception*. Its first full run found a second instance of the same
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
-wrapper and never mentioned the styled one. **15 declines are recorded with reasons; 0
+wrapper and never mentioned the styled one. **23 declines are recorded with reasons; 0
 findings remain.**
 
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink actually achieves (**431/720, 60%**, on 2026-08-28) and fails only when a
+what the sink actually achieves (**432/720, 60%**, on 2026-08-28) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
 
-The first nine run in `npm run verify`. `check-tags` was promoted from a
+The first ten run in `npm run verify`. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js` and `check-rendered.js` need a browser** — paste either into the
