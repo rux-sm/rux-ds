@@ -18,21 +18,39 @@
     --content-switcher-popover--disabled sits on the __wrapper, never on the
     button: every rule reads it as `.__wrapper:not(.popover--disabled)` or as the
     sibling of a selected wrapper.
+
+    ICON-ONLY BUTTONS ARE FULL BUTTONS. Found 2026-08-27 by looking at the
+    rendered page: these three collapsed to 16x16 icons in a 48px-wide
+    switcher. Every sizing rule for __content-switcher-btn is scoped
+    `.rux--content-switcher:not(.rux--content-switcher--icon-only)`
+    (css/rux.css:10614), so in the icon-only variant the box comes from the
+    Button classes instead — and Carbon's own stylesheet says so outright:
+    `.--content-switcher--icon-only.--content-switcher--sm .rux--btn--sm
+    { block-size: 2rem }` (:10825) is dead markup without them. The rendered
+    reference agrees, emitting btn + size pair + primary + icon-only on each
+    (components-contentswitcher--icon-only). With them the buttons measure
+    32x32 and the switcher 96x40; btn--primary paints nothing, because the
+    switcher rules and the selected ::before win.
+
+    Not copied from that reference: its icon-tooltip popover chrome and
+    __tooltip-trigger__wrapper, on the same ground as combo-button — the sink
+    demos the component, not the story's hover hint. The selected fill is a
+    ::before, which is why the button's own background computes transparent.
   -->
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--icon-only rux--content-switcher--sm" role="tablist">
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--selected">
-        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true" aria-label="List view">
+        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="true" aria-label="List view">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper">
-        <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" aria-label="Grid view">
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Grid view">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--disabled">
-        <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" aria-label="Map view" disabled>
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Map view" disabled>
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-location"/></svg>
         </button>
       </span>

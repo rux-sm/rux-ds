@@ -60,6 +60,16 @@
         <input id="fl-ni-dis" type="number" value="12" disabled>
       </div>
     </div>
+    <!--
+      LOOKED WRONG, IS CORRECT. The invalid icon renders BELOW the field,
+      level with the requirement text, not inside the field as it does on the
+      plain dropdown. That is Carbon's own rule: the fluid pairing sets
+      `inset-block-start: 5.0625rem` (81px) on the icon (css/rux.css:15024),
+      which lands past the 64px field. Measured against
+      fluiddropdown--default with invalid on, 2026-08-27: Carbon puts the icon
+      in this same list-box parent, outside the field, 9px below its bottom
+      edge — the identical offset this renders. Do not "fix" it.
+    -->
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--invalid">
       <div class="rux--dropdown rux--dropdown--invalid rux--list-box rux--list-box--invalid" data-invalid>
         <svg class="rux--list-box__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>

@@ -110,17 +110,28 @@
     <div class="ks-label" style="margin-block-start:1.5rem">contained · tall</div>
     <div class="rux--tabs rux--tabs--contained rux--tabs--tall">
       <div class="rux--tab--list" role="tablist" aria-label="Tall contained tabs">
+        <!--
+          The secondary label is a SIBLING of __nav-item-label-wrapper, both
+          direct children of the button — not nested inside it. The wrapper is
+          `display:flex; flex-direction:row`, so a secondary label placed inside
+          it becomes a second flex item on the same line and the two labels run
+          together ("OverviewEverything at once"). Corrected 2026-08-27 against
+          components-tabs--contained-with-secondary-labels (rendered DOM).
+          No gate catches this: the class sits on the element type Carbon uses,
+          so check-tags passes, and Carbon writes no compound for the pair.
+          Only looking at the page found it.
+        -->
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Overview</span>
-            <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
           </div>
+          <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Details</span>
-            <div class="rux--tabs__nav-item-secondary-label">One record</div>
           </div>
+          <div class="rux--tabs__nav-item-secondary-label">One record</div>
         </button>
       </div>
     </div>

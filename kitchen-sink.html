@@ -1283,17 +1283,28 @@
     <div class="ks-label" style="margin-block-start:1.5rem">contained · tall</div>
     <div class="rux--tabs rux--tabs--contained rux--tabs--tall">
       <div class="rux--tab--list" role="tablist" aria-label="Tall contained tabs">
+        <!--
+          The secondary label is a SIBLING of __nav-item-label-wrapper, both
+          direct children of the button — not nested inside it. The wrapper is
+          `display:flex; flex-direction:row`, so a secondary label placed inside
+          it becomes a second flex item on the same line and the two labels run
+          together ("OverviewEverything at once"). Corrected 2026-08-27 against
+          components-tabs--contained-with-secondary-labels (rendered DOM).
+          No gate catches this: the class sits on the element type Carbon uses,
+          so check-tags passes, and Carbon writes no compound for the pair.
+          Only looking at the page found it.
+        -->
         <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Overview</span>
-            <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
           </div>
+          <div class="rux--tabs__nav-item-secondary-label">Everything at once</div>
         </button>
         <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Details</span>
-            <div class="rux--tabs__nav-item-secondary-label">One record</div>
           </div>
+          <div class="rux--tabs__nav-item-secondary-label">One record</div>
         </button>
       </div>
     </div>
@@ -2329,6 +2340,16 @@
         <input id="fl-ni-dis" type="number" value="12" disabled>
       </div>
     </div>
+    <!--
+      LOOKED WRONG, IS CORRECT. The invalid icon renders BELOW the field,
+      level with the requirement text, not inside the field as it does on the
+      plain dropdown. That is Carbon's own rule: the fluid pairing sets
+      `inset-block-start: 5.0625rem` (81px) on the icon (css/rux.css:15024),
+      which lands past the 64px field. Measured against
+      fluiddropdown--default with invalid on, 2026-08-27: Carbon puts the icon
+      in this same list-box parent, outside the field, 9px below its bottom
+      edge — the identical offset this renders. Do not "fix" it.
+    -->
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid rux--list-box__wrapper--fluid--invalid">
       <div class="rux--dropdown rux--dropdown--invalid rux--list-box rux--list-box--invalid" data-invalid>
         <svg class="rux--list-box__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
@@ -3271,21 +3292,39 @@
     --content-switcher-popover--disabled sits on the __wrapper, never on the
     button: every rule reads it as `.__wrapper:not(.popover--disabled)` or as the
     sibling of a selected wrapper.
+
+    ICON-ONLY BUTTONS ARE FULL BUTTONS. Found 2026-08-27 by looking at the
+    rendered page: these three collapsed to 16x16 icons in a 48px-wide
+    switcher. Every sizing rule for __content-switcher-btn is scoped
+    `.rux--content-switcher:not(.rux--content-switcher--icon-only)`
+    (css/rux.css:10614), so in the icon-only variant the box comes from the
+    Button classes instead — and Carbon's own stylesheet says so outright:
+    `.--content-switcher--icon-only.--content-switcher--sm .rux--btn--sm
+    { block-size: 2rem }` (:10825) is dead markup without them. The rendered
+    reference agrees, emitting btn + size pair + primary + icon-only on each
+    (components-contentswitcher--icon-only). With them the buttons measure
+    32x32 and the switcher 96x40; btn--primary paints nothing, because the
+    switcher rules and the selected ::before win.
+
+    Not copied from that reference: its icon-tooltip popover chrome and
+    __tooltip-trigger__wrapper, on the same ground as combo-button — the sink
+    demos the component, not the story's hover hint. The selected fill is a
+    ::before, which is why the button's own background computes transparent.
   -->
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--icon-only rux--content-switcher--sm" role="tablist">
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--selected">
-        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true" aria-label="List view">
+        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="true" aria-label="List view">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper">
-        <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" aria-label="Grid view">
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Grid view">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--disabled">
-        <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" aria-label="Map view" disabled>
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Map view" disabled>
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-location"/></svg>
         </button>
       </span>
