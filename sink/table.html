@@ -1,8 +1,22 @@
 <section class="ks-sec" id="table">
     <h2>Data table</h2><p>default</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-datatable-basic--default with
+         its xs and md recipes, plus datatable-selection and
+         datatable-toolbar, 2026-08-28 -->
+    <!--
+      The <table> is not a direct child of the container: Carbon wraps it in
+      `data-table-content`, which is the element that scrolls a wide table.
+      This fragment had none, so every size modifier reported against the
+      container instead of the content wrapper.
+
+      One finding recorded: the status Tags in the cells. No sampled table
+      contains one — the reference's tags live in cards, contained lists and
+      page headers — but a status column of tags is the ordinary use, and the
+      tag markup itself is the same either way.
+    -->
     <div class="rux--data-table-container">
-      <table class="rux--data-table">
+      <div class="rux--data-table-content">
+        <table class="rux--data-table">
         <thead>
           <tr>
             <th scope="col"><div class="rux--table-header-label">Name</div></th>
@@ -15,30 +29,41 @@
           <tr><td>Bravo</td><td><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">Idle</span></div></td><td>Yesterday</td></tr>
           <tr><td>Charlie</td><td><div class="rux--tag rux--tag--red"><span class="rux--tag__label">Failed</span></div></td><td>3 days ago</td></tr>
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
 
     <div class="ks-label" style="margin-block-start:1.5rem">the five row densities</div>
     <div class="rux--data-table-container" style="display:grid;gap:1.5rem">
-      <table class="rux--data-table rux--data-table--xs">
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--xs">
         <thead><tr><th scope="col"><div class="rux--table-header-label">xs</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--sm">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--sm">
         <thead><tr><th scope="col"><div class="rux--table-header-label">sm</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--md">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--md">
         <thead><tr><th scope="col"><div class="rux--table-header-label">md</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--lg">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--lg">
         <thead><tr><th scope="col"><div class="rux--table-header-label">lg</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--xl">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--xl">
         <thead><tr><th scope="col"><div class="rux--table-header-label">xl</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
+        </table>
+      </div>
     </div>
   </section>

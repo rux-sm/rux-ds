@@ -1,6 +1,24 @@
 <section class="ks-sec" id="page-header">
   <h2>Page header</h2><p>breadcrumb bar · title · description · actions</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · preview-pageheader--default,
+       --content-with-icon, --content-with-contextual-actions and
+       --tab-bar-with-tabs-and-tags on the @carbon/ibm-products origin,
+       2026-08-28 · @carbon/react has no PageHeader -->
+  <!--
+    TITLE-WRAPPER AND CONTENT__START WERE INVERTED. Carbon nests them
+    `css-grid-column > __title-wrapper > __start > __title-container`, and this
+    fragment had __start outermost — so the two-column grid rules on
+    __title-wrapper applied to the wrong box and __body sat inside __start
+    instead of beside the wrapper in the grid column.
+
+    Two findings recorded rather than changed. The reference puts its
+    breadcrumb in `nav.page-header-breadcrumb-overflow`, the collapsing
+    variant, which @carbon/styles has no rule for (§4.1.12) — so the ol sits
+    directly in __breadcrumb-wrapper here, carrying `breadcrumb--sm` and
+    `--no-trailing-slash`, which do have rules and which that story does not
+    use. And every button finding is the icon-tooltip chrome the reference
+    wraps its actions in, declined throughout this sink.
+  -->
   <!--
     __content__body is the DESCRIPTION TEXT (margin-block-start: .5rem,
     max-inline-size: 40rem), not a wrapper — the title goes in
@@ -41,11 +59,12 @@
     <div class="rux--page-header__content">
       <div class="rux--css-grid">
         <div class="rux--css-grid-column rux--col-span-100">
-          <div class="rux--page-header__content__start">
-            <div class="rux--page-header__content__title-wrapper" style="flex-basis:100%">
+          <div class="rux--page-header__content__title-wrapper">
+            <div class="rux--page-header__content__start">
               <div class="rux--page-header__content__title-container">
                 <h1 class="rux--page-header__content__title">Quarterly report</h1>
               </div>
+            </div>
               <!--
                 THESE BUTTONS RENDER 40px TALL, NOT 32, AND THAT IS CARBON'S
                 LAYOUT RATHER THAN A DEFECT. __title-wrapper is a two-column grid
@@ -65,10 +84,9 @@
                 <li><button type="button" class="rux--btn rux--btn--secondary rux--btn--sm rux--layout--size-sm">Export</button></li>
                 <li><button type="button" class="rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm">Publish</button></li>
               </ul>
-            </div>
-            <div class="rux--page-header__content__body">
-              Revenue, retention and headcount for the quarter, with commentary from each business unit.
-            </div>
+          </div>
+          <div class="rux--page-header__content__body">
+            Revenue, retention and headcount for the quarter, with commentary from each business unit.
           </div>
         </div>
       </div>

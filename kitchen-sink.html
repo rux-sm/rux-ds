@@ -1480,9 +1480,23 @@
 
 <section class="ks-sec" id="table">
     <h2>Data table</h2><p>default</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-datatable-basic--default with
+         its xs and md recipes, plus datatable-selection and
+         datatable-toolbar, 2026-08-28 -->
+    <!--
+      The <table> is not a direct child of the container: Carbon wraps it in
+      `data-table-content`, which is the element that scrolls a wide table.
+      This fragment had none, so every size modifier reported against the
+      container instead of the content wrapper.
+
+      One finding recorded: the status Tags in the cells. No sampled table
+      contains one — the reference's tags live in cards, contained lists and
+      page headers — but a status column of tags is the ordinary use, and the
+      tag markup itself is the same either way.
+    -->
     <div class="rux--data-table-container">
-      <table class="rux--data-table">
+      <div class="rux--data-table-content">
+        <table class="rux--data-table">
         <thead>
           <tr>
             <th scope="col"><div class="rux--table-header-label">Name</div></th>
@@ -1495,31 +1509,42 @@
           <tr><td>Bravo</td><td><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">Idle</span></div></td><td>Yesterday</td></tr>
           <tr><td>Charlie</td><td><div class="rux--tag rux--tag--red"><span class="rux--tag__label">Failed</span></div></td><td>3 days ago</td></tr>
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
 
     <div class="ks-label" style="margin-block-start:1.5rem">the five row densities</div>
     <div class="rux--data-table-container" style="display:grid;gap:1.5rem">
-      <table class="rux--data-table rux--data-table--xs">
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--xs">
         <thead><tr><th scope="col"><div class="rux--table-header-label">xs</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--sm">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--sm">
         <thead><tr><th scope="col"><div class="rux--table-header-label">sm</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--md">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--md">
         <thead><tr><th scope="col"><div class="rux--table-header-label">md</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--lg">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--lg">
         <thead><tr><th scope="col"><div class="rux--table-header-label">lg</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
-      <table class="rux--data-table rux--data-table--xl">
+        </table>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--xl">
         <thead><tr><th scope="col"><div class="rux--table-header-label">xl</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
-      </table>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -2076,7 +2101,25 @@
 
 <section class="ks-sec" id="page-header">
   <h2>Page header</h2><p>breadcrumb bar · title · description · actions</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · preview-pageheader--default,
+       --content-with-icon, --content-with-contextual-actions and
+       --tab-bar-with-tabs-and-tags on the @carbon/ibm-products origin,
+       2026-08-28 · @carbon/react has no PageHeader -->
+  <!--
+    TITLE-WRAPPER AND CONTENT__START WERE INVERTED. Carbon nests them
+    `css-grid-column > __title-wrapper > __start > __title-container`, and this
+    fragment had __start outermost — so the two-column grid rules on
+    __title-wrapper applied to the wrong box and __body sat inside __start
+    instead of beside the wrapper in the grid column.
+
+    Two findings recorded rather than changed. The reference puts its
+    breadcrumb in `nav.page-header-breadcrumb-overflow`, the collapsing
+    variant, which @carbon/styles has no rule for (§4.1.12) — so the ol sits
+    directly in __breadcrumb-wrapper here, carrying `breadcrumb--sm` and
+    `--no-trailing-slash`, which do have rules and which that story does not
+    use. And every button finding is the icon-tooltip chrome the reference
+    wraps its actions in, declined throughout this sink.
+  -->
   <!--
     __content__body is the DESCRIPTION TEXT (margin-block-start: .5rem,
     max-inline-size: 40rem), not a wrapper — the title goes in
@@ -2117,11 +2160,12 @@
     <div class="rux--page-header__content">
       <div class="rux--css-grid">
         <div class="rux--css-grid-column rux--col-span-100">
-          <div class="rux--page-header__content__start">
-            <div class="rux--page-header__content__title-wrapper" style="flex-basis:100%">
+          <div class="rux--page-header__content__title-wrapper">
+            <div class="rux--page-header__content__start">
               <div class="rux--page-header__content__title-container">
                 <h1 class="rux--page-header__content__title">Quarterly report</h1>
               </div>
+            </div>
               <!--
                 THESE BUTTONS RENDER 40px TALL, NOT 32, AND THAT IS CARBON'S
                 LAYOUT RATHER THAN A DEFECT. __title-wrapper is a two-column grid
@@ -2141,10 +2185,9 @@
                 <li><button type="button" class="rux--btn rux--btn--secondary rux--btn--sm rux--layout--size-sm">Export</button></li>
                 <li><button type="button" class="rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm">Publish</button></li>
               </ul>
-            </div>
-            <div class="rux--page-header__content__body">
-              Revenue, retention and headcount for the quarter, with commentary from each business unit.
-            </div>
+          </div>
+          <div class="rux--page-header__content__body">
+            Revenue, retention and headcount for the quarter, with commentary from each business unit.
           </div>
         </div>
       </div>
@@ -4128,30 +4171,57 @@
 
 <section class="ks-sec" id="ai-label">
   <h2>AI label</h2><p>the AI affordance · sizes and inline form</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-ailabel--default and --inline,
+       2026-08-28 -->
+  <!--
+    The AI button is not a direct child of `.rux--ai-label`. Carbon puts a
+    toggletip popover container between them — `popover-container
+    popover--caret popover--high-contrast popover--bottom toggletip` — and the
+    button is that toggletip's trigger, which is why it also carries
+    `toggletip-button`. Without the container the trigger has no popover to
+    open and the caret rules have no element.
+
+    The reference also emits `popover--auto-align` and `autoalign`; both are
+    the floating-ui placement this system has no JS for yet, so a fixed
+    `--bottom` is used instead — the same call the side-panel decorator made.
+  -->
   <div class="ks-row" style="padding-block:1rem">
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
     </div>
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--2xs" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--2xs" aria-label="AI information">AI</button>
+      </span>
     </div>
     <div class="rux--ai-label rux--ai-label--revert">
-      <button type="button" class="rux--ai-label__button rux--toggletip-button rux--ai-label__button--inline" aria-label="AI information">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--toggletip-button rux--ai-label__button--inline" aria-label="AI information">
         AI<span class="rux--ai-label__additional-text">&nbsp;generated</span>
       </button>
+      </span>
     </div>
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--sm rux--toggletip-button" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--sm rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
     </div>
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--md rux--toggletip-button" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--md rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
     </div>
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--lg rux--toggletip-button" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--lg rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
     </div>
     <div class="rux--ai-label">
-      <button type="button" class="rux--ai-label__button rux--ai-label__button--xl rux--toggletip-button" aria-label="AI information">AI</button>
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--xl rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
     </div>
   </div>
 </section>
