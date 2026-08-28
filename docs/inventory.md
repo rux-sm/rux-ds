@@ -19,12 +19,26 @@ by compiling it. Measured 2026-08-28:
 
 | Configuration | Minified | **Gzipped** | Classes |
 |---|---|---|---|
-| Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **7 KB** | — |
-| Foundation only — 2 themes | 71 KB | **7 KB** | — |
-| Lean — 22 components, 2 themes | 375 KB | **38 KB** | see note |
-| Proposed KEEP — 31 components, 2 themes | 519 KB | **51 KB** | 1,079 |
-| Proposed KEEP — 31 components, 4 themes | 564 KB | **54 KB** | 1,079 |
-| Full Carbon — 75 components, 4 themes | 849 KB | **84 KB** | 1,611 |
+| Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **6.6 KB** | — |
+| Foundation only — 2 themes | 71 KB | **7.9 KB** | — |
+| Lean — 22 components, 2 themes | 375 KB | **~39 KB** | see note |
+| **Shipped — 31 components, 2 themes** | 519 KB | **52.7 KB** | 1,079 |
+| Shipped set — 31 components, 4 themes | 563 KB | **53.5 KB** | 1,079 |
+| Full Carbon — 75 components, 4 themes | 849 KB | **84.3 KB** | 1,611 |
+
+> **The gzipped column was re-measured 2026-08-28, after the Classes recount below.**
+> `tools/measure.mjs` took the first N of `['white','g10','g90','g100']`, so every
+> 2-theme figure priced **white + g10** — while `src/app.scss` has shipped **white +
+> g100** since Phase 3 pass 3 chose "the furthest point from" white. g10 is a
+> near-neighbour of white and compresses against it far better, so these rows ran
+> ~1.3 KB optimistic for the configuration that actually ships. The tool now reads the
+> pair from the manifest and its output matches `css/rux.min.css` byte for byte.
+> **The shipped floor is 52.7 KB gzipped, not 51.** Figures now carry one decimal:
+> integer KB straddling a boundary made a 1.3 KB difference read as 2 KB.
+>
+> The Lean-22 row is `~39 KB` and `see note` because that row's component list was
+> never recorded and cannot be recompiled; its gzip figure is the old measurement plus
+> the correction, not a re-run.
 
 > **The Classes column was recounted 2026-08-28.** It had been produced by a pattern
 > that admitted a bare `:`, so `.rux--btn--xs:hover` counted as a class distinct from
@@ -45,16 +59,25 @@ token names with different values, so it compresses almost entirely against the 
 §4.3 currently lists it as a strip pass alongside components as though the two were
 comparable. They are not.
 
-**§2.1's ≤40 KB target is reachable, but not by a set that covers the target page
-shapes.** 22 components hit 38 KB — and that set has no `ui-shell` and no `data-table`,
-so it cannot build the app shell or the table page that Phase 6 exists to produce. Adding
-those two plus `tabs` and `pagination` reaches 47 KB; the full proposed set is 51 KB.
+**§2.1's ≤40 KB target was not reachable by a set that covers the target page shapes.**
+22 components hit ~39 KB — and that set has no `ui-shell` and no `data-table`, so it
+cannot build the app shell or the table page that Phase 6 exists to produce. Adding those
+two plus `tabs` and `pagination` reaches ~48 KB; the shipped set is 52.7 KB. This finding
+is what first put the target in question; §2.1 has since removed it entirely, for the
+stronger reason recorded below.
 
-> **Recommendation: amend §2.1's target to ≤55 KB gzipped.** §5 already says the target is
-> a hypothesis and asks to "record the floor you actually hit," and §2.1's own amendment
-> warns against trading function for a number nobody downloads. Cutting `ui-shell` to save
-> 9 KB gzipped would remove one of the six page shapes to protect an estimate. **This
-> needs your sign-off** — it is the one number in the roadmap this inventory contradicts.
+> **Superseded 2026-08-28. This section recommended amending §2.1's target to ≤55 KB
+> gzipped; §2.1 now has no KB target at all, and the reason is in this table.** The
+> recommendation was sound against 40 and arbitrary in itself — 55 was the measured
+> floor rounded up to the next multiple of five, and that floor was 1.3 KB understated.
+> More decisively, **not one of the 44 CUT and DEFER rows below was decided on CSS
+> bytes.** They were decided on overlap with something already shipping, on whether a
+> named page shape needs the component, and on Phase 1 provenance. The nine rows that
+> mention size mostly use it to argue something is *cheap enough to add back*; the one
+> genuine cost cut, `toggletip`, was wrong by two orders of magnitude. A number that
+> decided nothing, and had to be amended each time it was tested, was never the
+> constraint. §2.1 now states the admission rule that was actually operating, and keeps
+> the byte count as a reported measurement with a wide tripwire.
 
 ---
 
@@ -126,7 +149,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads |
 | `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead |
 | `progress-indicator` | **DEFER** | 76 | 196 | 0 | multi-step wizard; no target shape has one |
-| `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+1 KB gzipped marginal**, not 71 |
+| `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+0.3 KB gzipped marginal**, not 71 |
 | `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision |
 | `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet |
 | `date-picker` | **DEFER** | 43 | 120 | 1 | needs flatpickr reproduced in Phase 5 — real cost, decide then |
@@ -173,25 +196,27 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 
 ## What needs your call
 
-Four of these are judgement, not evidence, and I have proposed rather than decided:
+Three of these are judgement, not evidence, and I have proposed rather than decided.
+A fourth — the ≤40 KB target — is **settled**: §2.1 removed the KB target on 2026-08-28
+rather than amending it to ≤55 KB as this document originally recommended. The measured
+floor for a set that builds all six page shapes is 52.7 KB, and the reason the number
+went rather than moved is recorded in §2.1 and above.
 
-1. **The ≤40 KB target** (above). The measured floor for a set that builds all six page
-   shapes is 47–51 KB.
-2. **`date-picker` / `time-picker` — DEFER.** Both need a calendar reproduced in vanilla
+1. **`date-picker` / `time-picker` — DEFER.** Both need a calendar reproduced in vanilla
    JS in Phase 5, which is the single largest behaviour cost in the catalogue. Keeping
    them is defensible; it should be a conscious purchase.
-3. **`combo-box` / `multiselect` — DEFER.** Type-ahead and multi-select are common in
+2. **`combo-box` / `multiselect` — DEFER.** Type-ahead and multi-select are common in
    real forms. They are out because no target shape names them, not because they are bad
    — and the KB column overstates them the same way: **together they add 7 KB minified /
-   1 KB gzipped**, since both are built from `list-box`, `text-input`, `checkbox` and
-   `tag`, all of which already ship. All three deferred rows together are +10 KB
-   minified / +2 KB gzipped.
-4. **`toggletip` — DEFER, but NOT on cost.** This entry read "out on cost at 71 KB",
+   0.8 KB gzipped**, since both are built from `list-box`, `text-input`, `checkbox` and
+   `tag`, all of which already ship. For scale, the seven sub-8 KB DEFER rows together
+   add 14 KB minified / 1.9 KB gzipped.
+3. **`toggletip` — DEFER, but NOT on cost.** This entry read "out on cost at 71 KB",
    which is this document's own warning ignored two sections above where it is written:
    71 KB is the standalone-with-dependencies figure, and toggletip shares popover,
-   button and tooltip with the keep-set. **Measured marginal cost is 2 KB minified /
-   ~1 KB gzipped.** Defer it because nothing needs it yet — the price is not the
-   reason. Corrected 2026-08-28.
+   button and tooltip with the keep-set. **Measured marginal cost is 3 KB minified /
+   0.3 KB gzipped.** Defer it because nothing needs it yet — the price is not the
+   reason. Corrected 2026-08-28, re-measured against the shipped themes.
 
 Rows marked CUT with an evidence reason — `slug`, `resizer`, `truncated-text`, `card`,
 `page-header`, `side-panel` — came out of the Phase 1 markup sweep and are not judgement

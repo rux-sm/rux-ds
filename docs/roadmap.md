@@ -77,49 +77,90 @@ measures 124 KB because it pulls list-box, text-input, checkbox and tooltip with
 because it has 124 KB of its own rules. The small end is the honest end: `badge-indicator`
 0.6 KB, `stack` 0.7 KB, `aspect-ratio` 0.7 KB — these are nearly dependency-free.
 
-### 2.1 Target
+### 2.1 Size
 
-**≤40 KB gzipped for ~24 components and 2 themes**, plus ≤90 KB of behavior JS.
+**There is no KB target.** Size is measured on every build and reported. It gates
+nothing. What gates the component set is the admission rule.
 
-Measured under the keep-core rule, 2026-08-26:
+**Admission.** A component enters `src/app.scss` only if both hold, and both are
+recorded in `docs/inventory.md`:
 
-| Configuration | Minified | **Gzipped** |
-|---|---|---|
-| Full Carbon — 75 components, 4 themes | 837 KB | 85 KB |
-| Keep-core — 24 components, 2 themes | 359 KB | **36 KB** |
-| Keep-core — 12 components, 2 themes | 218 KB | 23 KB |
+1. A named page shape in `templates/` requires it.
+2. Nothing already in the set serves that shape.
+
+**Tripwire.** If the built stylesheet exceeds **75 KB gzipped**, something has gone
+wrong structurally — a theme added by accident, a component family re-enabled, an
+opt-in layer switched on. Re-open the set. This is a smoke alarm, not a thermostat:
+it sits where no legitimate sequence of admissions reaches it.
+
+**The JS budget stands: ≤90 KB of behavior JS**, and it is a real constraint — Phase 5
+writes that code rather than selecting it, so every module is a cost someone pays for
+in maintenance as well as bytes.
+
+Measured 2026-08-28. Reproduce with `tools/measure.mjs`, which reads the theme pair
+from `src/app.scss` and whose output matches `css/rux.min.css` byte for byte:
+
+| Configuration | Minified | **Gzipped** | Classes |
+|---|---|---|---|
+| Full Carbon — 75 components, 4 themes | 849 KB | 84.3 KB | 1,611 |
+| **Shipped — 31 components, 2 themes** | 519 KB | **52.7 KB** | 1,079 |
+| Shipped set — 1 theme | 497 KB | 51.1 KB | 1,079 |
+
+> **Amended 2026-08-28. This section carried a KB target through three revisions and
+> now has none.** ≤150 KB minified became ≤40 KB gzipped became a recommended ≤55 KB.
+> Every amendment was correct on the evidence available, and that is the tell: a number
+> revised each time it was tested was never the thing constraining the design.
+>
+> **The decisive evidence is that the target never decided anything.** All 44 CUT and
+> DEFER rows in `docs/inventory.md` were settled on three grounds — overlap with
+> something already shipping (`dialog` overlaps modal, `content-switcher` overlaps tabs,
+> `structured-list` overlaps data-table), no named page shape needing the component, or
+> Phase 1 provenance (`card`, `page-header` and `side-panel` are `@carbon/ibm-products`,
+> not Carbon). Nine rows mention size; most use it to argue something is *cheap enough
+> to add back*. The one component genuinely cut on cost, `toggletip` at "71 KB", costs
+> **0.3 KB gzipped** against the shipped set. Not one component was cut because of CSS
+> bytes.
+>
+> **It also measured the wrong scarce resource.** §1 defines done partly as "small
+> enough to hold in context", and the primary consumer is Claude Code, not a browser on
+> a slow link. What binds that consumer is the routing surface — 601 tokens, 1,079
+> classes, 31 components, and the templates — not the weight of a stylesheet fetched
+> once and cached. 52.7 KB costs it nothing; two plausible ways to build a dialog costs
+> it a great deal.
+>
+> **And it could not discriminate where decisions are made.** Marginal cost against the
+> shipped set is 0.3 KB for `toggletip`, 0.8 KB for `combo-box` plus `multiselect`,
+> 1.9 KB for the seven sub-8 KB DEFER rows together. A byte budget therefore passes on
+> every individual addition and fails only in aggregate, after a dozen or more
+> individually-approved decisions. The admission rule fails correctly at the first one.
+>
+> **Put a number back when one of these becomes true:** the system serves a public site,
+> its users are on slow or metered connections, there is a performance SLO it must meet,
+> or CSS becomes a meaningful share of page weight. Restore it with that reason attached
+> — §5's instruction to record the floor you actually hit applies to the reason as much
+> as the figure.
+>
+> A measurement correction landed with this amendment. `tools/measure.mjs` took the
+> first N of `['white','g10','g90','g100']`, so every 2-theme figure it ever produced
+> priced **white + g10**, while `src/app.scss` has shipped **white + g100** since Phase 3
+> pass 3 chose "the furthest point from" white. g10 compresses against white far better,
+> so the numbers this section quoted ran ~1.3 KB optimistic. The floor is 52.7 KB, not
+> the 51 KB that the ≤55 KB proposal was rounded up from.
 
 > **Amended 2026-08-26. This section previously targeted ≤150 KB minified, and that was
 > wrong twice over.** It was unreachable under §1.1's keep-core rule, because the 55% it
 > depended on was to come from cutting Carbon's internals. More usefully: **it measured
 > the wrong thing.** Carbon's verbosity is highly repetitive — the same
 > `clamp(var(--x, var(--y)))` shapes over and over — so it compresses roughly 10:1, and
-> what reaches a browser is 36 KB. The old target would have traded away function to
-> optimize a number nobody downloads.
+> what reaches a browser is a fraction of the minified figure. The old target would have
+> traded away function to optimize a number nobody downloads.
 >
 > **Keeping Carbon's core intact is close to free in the metric that matters**, which is
 > the finding that settles §1.1 rather than merely accommodating it.
 
 For scale: rux-ui is 351 KB **unminified** for 23 components plus a 143 KB token file.
-This system will be heavier uncompressed and lighter on the wire, and it keeps Carbon's
+This system is heavier uncompressed and lighter on the wire, and it keeps Carbon's
 accessibility and interaction behavior — which is the trade §1.1 is buying.
-
-> **The floor actually hit, 2026-08-28 — recorded per §5, not yet an amendment.**
-> Phase 3 shipped **31 components and 2 themes at 519 KB minified / 53 KB gzipped**,
-> against a target of ≤40 KB. The target is not reachable by any set that builds the
-> six Phase 6 page shapes: 22 components reach 38 KB, but that set has no `ui-shell`
-> and no `data-table`, so it cannot produce the app shell or the table page. Adding
-> those plus `tabs` and `pagination` reaches 47 KB.
->
-> `docs/inventory.md` recommends amending this target to **≤55 KB gzipped** and flags
-> it as needing sign-off, since cutting `ui-shell` to protect an estimate would remove
-> a target page shape. **The number above stands unchanged until that call is made.**
->
-> A second measurement from the same pass, which §4.3 should absorb: **themes are
-> nearly free gzipped.** The foundation is 51 KB minified with one theme and 71 KB with
-> two — 7 KB gzipped either way — so the 4 → 2 theme cut saves 44 KB minified and 2 KB
-> gzipped. §4.3 pass 3 sits beside the component cut as though comparable; it is not,
-> and the cut is justified on scope instead. Reproduce with `tools/measure.mjs`.
 
 ---
 
@@ -1035,7 +1076,12 @@ every other gate is name-based, so a changed *value* passes all of them silently
   is the largest single unglamorous cost in this roadmap. It is also what makes every
   later phase verifiable, so it MUST NOT be shortened.
 - **Carbon docs describe the un-stripped system.** Phase 7's rule exists for this.
-- **The target may be wrong.** §2.1 is a hypothesis. Record the floor you actually hit.
+- **Nothing now stops the set growing except the admission rule.** §2.1 dropped its KB
+  target on 2026-08-28, because across three revisions it decided no component either
+  way. The admission rule replaces it, and it is a judgement rather than a measurement —
+  if it stops being applied honestly, the 75 KB tripwire is all that remains and it is
+  deliberately loose. The failure mode to watch for is a page shape invented to justify
+  a component rather than a component admitted to serve a page shape.
 
 ## 6. File structure
 
