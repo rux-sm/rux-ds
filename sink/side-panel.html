@@ -1,29 +1,37 @@
 <section class="ks-sec" id="side-panel">
   <h2>Side panel</h2><p>left and right placement — `--open` is Carbon's show hook</p>
-  <!-- PROVENANCE: inferred · root tag only, diffed 2026-08-27 against
-     ibm-products.carbondesignsystem.com components-sidepanel--slide-over.
-     @carbon/react has no side-panel; @carbon/styles ships the ibm-products one
-     under the cds prefix, and all 19 classes that story emits are defined in our
-     CSS, so it is a real reference. Harvest: docs/carbon-ibm-products-dom.json.
+  <!-- PROVENANCE: rendered-dom · ibm-products.carbondesignsystem.com, 2026-08-27
+     components-sidepanel--slide-in (labelled), --slide-over (unlabelled) and
+     --with-static-title. Harvest: docs/carbon-ibm-products-dom.json.
 
-     WHAT WAS FIXED: the root is an <aside>, not a <div role="complementary">.
-     Same landmark, but native rather than author-supplied, and it is what Carbon
-     renders.
+     @carbon/react has no side-panel. @carbon/styles ships the ibm-products one
+     under the cds prefix, and all 19 classes those stories emit are defined in
+     our CSS, so it is a real reference despite the c4p-- prefix on the origin.
 
-     STILL DIVERGENT, so this stays inferred. check-tags passes this file now,
-     which proves only that no class sits on the wrong element type:
+     THE HEADER IS THE REFERENCE'S, not an inference from selectors:
 
-       header      Carbon adds __header--has-title, and wraps the heading in
-                   div.__title.__title--no-label alongside a second h2,
-                   __collapsed-title-text. Ours puts the h2 straight in __header.
-       close       Carbon uses button.__close-button.--btn--primary.--btn--icon-only
-                   inside div.__decorator-and-close, wrapped in an icon-tooltip.
-                   Ours is a plain ghost button with a text label.
-       label       ours carries __label-text; the reference carries
-                   __subtitle-text. Both have rules; only one is what Carbon emits.
-       content     Carbon pairs __inner-content with --scrolls.
+       __header--has-title       present whenever there is a title at all
+       __label-text              a <p> BEFORE __title. Only slide-in renders one.
+       __title                   wraps both headings; takes --no-label when there
+                                 is no __label-text above it, which is what the
+                                 modifier means. Its only rules are compound —
+                                 `.side-panel .__title--no-label .__title-text`
+                                 and the same for __collapsed-title-text.
+       __collapsed-title-text    a SECOND h2 holding the same text, shown while
+                                 the header is collapsed.
+       __decorator-and-close     wraps the close control, position:absolute.
+       __close-button            icon-only PRIMARY button inside an icon-tooltip,
+                                 not the ghost text button this fragment had.
+       __subtitle-text           a <p> AFTER the close block, containing <strong>.
+       --scrolls                 pairs with __inner-content.
 
-     The fragment exercises 13 of the 50 side-panel classes in our CSS. -->
+     TWO CLASSES THE REFERENCE EMITS ARE NOT COPIED, both §4.1.12 cases —
+     @carbon/styles defines no rule for either, so check-classes would reject
+     them: __action-toolbar-button and
+     __subtitle-text-no-animation-no-action-toolbar.
+
+     Not yet demoed: the action toolbar, --has-overlay, --has-decorator,
+     --slide-in, and the no-title header (__header without --has-title). -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
     <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
@@ -38,56 +46,180 @@
   </div>
 
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-right" hidden>
-    <div class="rux--side-panel__header">
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
       <p class="rux--side-panel__label-text">Context</p>
-      <h2 class="rux--side-panel__title-text">Right panel</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+      <div class="rux--side-panel__title">
+        <h2 class="rux--side-panel__title-text">Right panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Right panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>With a label and a subtitle, as slide-in renders it.</strong></p>
     </div>
-    <div class="rux--side-panel__inner-content">
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
       <p>Panel body content scrolls independently of the page behind it.</p>
     </div>
   </aside>
 
   <aside class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Left panel</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">Left panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Left panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>No label, so the title block carries --no-label.</strong></p>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Left placement.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Left-placed panel. Same header shape, mirrored placement.</p>
+    </div>
   </aside>
+
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xs" id="sp-xs" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Width xs</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">xs panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">xs panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is xs.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --xs.</p>
+    </div>
   </aside>
+
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--sm" id="sp-sm" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Width sm</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">sm panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">sm panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is sm.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --sm.</p>
+    </div>
   </aside>
+
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--lg" id="sp-lg" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Width lg</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">lg panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">lg panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is lg.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --lg.</p>
+    </div>
   </aside>
+
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xl" id="sp-xl" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Width xl</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">xl panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">xl panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is xl.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --xl.</p>
+    </div>
   </aside>
+
   <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--2xl" id="sp-2xl" hidden>
-    <div class="rux--side-panel__header">
-      <h2 class="rux--side-panel__title-text">Width 2xl</h2>
-      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">2xl panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">2xl panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
     </div>
-    <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is 2xl.</p></div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --2xl.</p>
+    </div>
   </aside>
 </section>
