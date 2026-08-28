@@ -34,7 +34,9 @@ lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
 ## Commands
 
 ```bash
-npm run verify    # build + assemble sink + class resolution + coverage + provenance
+npm run verify           # build + assemble sink + class resolution + coverage + provenance
+npm run coverage --all   # per-component class coverage, thinnest first
+npm run coverage:update  # re-record docs/coverage.json after adding sink markup
 ```
 
 | | |
@@ -79,14 +81,23 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 | Gate | Catches | Blind to |
 |---|---|---|
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
-| `check-classes.mjs` | a class used in HTML with no CSS behind it | a class that resolves but renders wrong |
+| `check-classes.mjs` | a class used in HTML with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
-| `check-coverage.mjs` | a component no markup exercises | whether that markup is correct |
+| `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
+
+**Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
+COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
+it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
+It now measures per-component class coverage against `docs/coverage.json`, which records
+what the sink actually achieves (**370/669, 55%**, on 2026-08-28) and fails only when a
+component exercises fewer classes than before. A threshold high enough to mean something
+would be red today with no action available; a ratchet can only be moved up, and moving
+it is deliberate.
 
 The first eight run in `npm run verify`. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were

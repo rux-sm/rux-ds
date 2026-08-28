@@ -1,0 +1,129 @@
+{
+  "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here, so this file only ever moves up. Regenerate deliberately with `npm run coverage:update` after adding sink markup — never to make a red gate green.",
+  "components": {
+    "tile": {
+      "hit": 5,
+      "own": 26
+    },
+    "data-table": {
+      "hit": 9,
+      "own": 45
+    },
+    "dropdown": {
+      "hit": 7,
+      "own": 23
+    },
+    "popover": {
+      "hit": 10,
+      "own": 33
+    },
+    "overflow-menu": {
+      "hit": 8,
+      "own": 19
+    },
+    "skeleton-styles": {
+      "hit": 3,
+      "own": 7
+    },
+    "tooltip": {
+      "hit": 3,
+      "own": 7
+    },
+    "modal": {
+      "hit": 12,
+      "own": 25
+    },
+    "tabs": {
+      "hit": 14,
+      "own": 29
+    },
+    "text-input": {
+      "hit": 13,
+      "own": 25
+    },
+    "search": {
+      "hit": 7,
+      "own": 13
+    },
+    "ui-shell": {
+      "hit": 31,
+      "own": 55
+    },
+    "list-box": {
+      "hit": 16,
+      "own": 28
+    },
+    "text-area": {
+      "hit": 10,
+      "own": 17
+    },
+    "radio-button": {
+      "hit": 14,
+      "own": 23
+    },
+    "list": {
+      "hit": 21,
+      "own": 34
+    },
+    "inline-loading": {
+      "hit": 5,
+      "own": 8
+    },
+    "loading": {
+      "hit": 5,
+      "own": 8
+    },
+    "number-input": {
+      "hit": 12,
+      "own": 19
+    },
+    "accordion": {
+      "hit": 10,
+      "own": 15
+    },
+    "checkbox": {
+      "hit": 16,
+      "own": 24
+    },
+    "form": {
+      "hit": 4,
+      "own": 6
+    },
+    "select": {
+      "hit": 14,
+      "own": 21
+    },
+    "pagination": {
+      "hit": 7,
+      "own": 10
+    },
+    "link": {
+      "hit": 5,
+      "own": 7
+    },
+    "notification": {
+      "hit": 39,
+      "own": 54
+    },
+    "tag": {
+      "hit": 18,
+      "own": 25
+    },
+    "button": {
+      "hit": 16,
+      "own": 21
+    },
+    "menu": {
+      "hit": 16,
+      "own": 20
+    },
+    "breadcrumb": {
+      "hit": 5,
+      "own": 6
+    },
+    "toggle": {
+      "hit": 15,
+      "own": 16
+    }
+  }
+}

@@ -11,6 +11,8 @@
     "sink": "node tools/build-sink.mjs",
     "inventory": "node tools/inventory.mjs",
     "tags": "node tools/check-tags.mjs",
+    "coverage": "node tools/check-coverage.mjs",
+    "coverage:update": "node tools/check-coverage.mjs --update",
     "verify": "npm run build && npm run sink && node tools/check-classes.mjs && node tools/check-tokens.mjs && node tools/check-co-classes.mjs && node tools/check-compound.mjs && node tools/check-tags.mjs && node tools/check-coverage.mjs && node tools/check-provenance.mjs",
     "watch": "sass --load-path=node_modules --no-source-map --watch src/app.scss css/rux.css",
     "serve": "node tools/serve.mjs"
