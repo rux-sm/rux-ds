@@ -1011,7 +1011,14 @@
 
 <section class="ks-sec" id="tile">
     <h2>Tile</h2><p>base · clickable</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-tile--default, --clickable, --selectable,
+         --expandable and --radio, 2026-08-28 -->
+    <!--
+      The omissions report is dominated by `tile--with-ai-label`, the AI decorator
+      variant; those classes belong to the ai-label fragment. The one
+      tag-placement divergence is recorded beside the markup it describes,
+      below.
+    -->
     <div class="ks-grid">
       <div class="rux--tile"><p>Base tile with some content inside it.</p></div>
       <a href="#tile" class="rux--tile rux--tile--clickable"><p>Clickable tile</p></a>
@@ -1297,7 +1304,13 @@
 
 <section class="ks-sec" id="loading">
     <h2>Loading</h2><p>spinner · small · inline</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-loading--default and --overlay-loading, 2026-08-28 -->
+    <!--
+      The omissions report lists the buttons, modal and tooltip of
+      `loading--overlay-loading-behind-modal`, which is a story about what an
+      overlay spinner sits on top of rather than about the spinner. `inline-loading`
+      is its own component and its own fragment.
+    -->
     <div class="ks-row">
       <div class="rux--loading" role="status">
         <svg class="rux--loading__svg" viewBox="0 0 100 100">
@@ -1512,7 +1525,15 @@
 
 <section class="ks-sec" id="breadcrumb">
   <h2>Breadcrumb</h2><p>trailing slash · no trailing slash · small</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-breadcrumb--default, 2026-08-28
+       · every class that story emits is present, and nothing here is absent
+       from it except the story's own `layout` chrome -->
+  <!--
+    The omissions report lists the overflow-menu breadcrumb: a long trail
+    collapses its middle items into an overflow menu, which is a real variant
+    this fragment does not demo. Its classes belong to the overflow-menu
+    fragment, which owns them.
+  -->
   <!-- The separator is ::after on every item; --no-trailing-slash suppresses the last. -->
   <div style="display:grid;gap:1rem">
     <nav aria-label="Breadcrumb">
@@ -2210,12 +2231,22 @@
 
 <section class="ks-sec" id="list-box">
   <h2>List box</h2><p>the primitive under dropdown, combo box and multiselect</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; elements
-       corrected 2026-08-27 against the rendered-DOM references: the divider is
-       an HR and a SIBLING of the list-box (the fluid components use it to
-       separate stacked fields — it is not an in-menu option divider), the
-       warning icon is an SVG carrying the classes itself, before the field,
-       and menu items render no __selected-icon. -->
+  <!-- PROVENANCE: rendered-dom · the list-box stories of its consumers —
+       components-dropdown--default@open, components-combobox--default@open and
+       components-multiselect--default@open-selected, 2026-08-28 -->
+  <!--
+    List box is the PRIMITIVE under dropdown, combo box and multiselect, and it
+    has no story of its own: every reference for it is one of those three. That
+    is why the omissions report lists their parts — the checkbox rows of a
+    multiselect menu, the `dropdown` root of a dropdown. Each belongs to the
+    fragment that owns the consumer.
+
+    Corrected 2026-08-27 against those references: the divider is an HR and a
+    SIBLING of the list-box (the fluid components use it to separate stacked
+    fields — it is not an in-menu option divider), the warning icon is an SVG
+    carrying the classes itself, before the field, and menu items render no
+    __selected-icon.
+  -->
   <div class="ks-grid">
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--expanded">
@@ -3422,7 +3453,22 @@
 
 <section class="ks-sec" id="menu">
   <h2>Menu</h2><p>icons · shortcut · danger item — click the trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-menu--default, and the open menus
+       from components-menubutton--default@open and
+       components-combobutton--default@open, 2026-08-28 -->
+  <!--
+    SELECTABLE ITEMS were missing entirely — three classes with nine rules each
+    and no element to act on. Carbon marks the whole menu
+    `menu--with-selectable-items`, groups radio items in a
+    `menu-item-radio-group` holding a bare `ul[role=group]`, and gives EVERY
+    item a `__selection-icon` slot as its first child, filled only on the
+    selected one. `menu-item-group` is the same pattern for a non-radio group.
+
+    The reference also renders every menu open — `menu--open menu--shown` — but
+    those are the state the harness toggles, and this fragment demos the menus
+    inline so they are visible at rest. `menu-item-selectable--selected` is
+    emitted with no rule in @carbon/styles and is dropped (§4.1.12).
+  -->
   <div class="ks-row" style="padding-block:1rem;min-height:12rem;align-items:flex-start;flex-direction:column;gap:.5rem">
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-menu="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
     <ul id="ks-menu" class="rux--menu rux--menu--md rux--menu--with-icons"
@@ -3444,6 +3490,37 @@
       <li class="rux--menu-item rux--menu-item--danger" role="menuitem" tabindex="-1">
         <div class="rux--menu-item__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-trash-can"/></svg></div>
         <div class="rux--menu-item__label">Delete</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ks-label">selectable items · radio group</div>
+  <div class="ks-row" style="align-items:flex-start">
+    <ul class="rux--menu rux--menu--md rux--menu--with-selectable-items" role="menu" style="position:relative;inset:auto">
+      <li class="rux--menu-item-radio-group" role="none">
+        <ul role="group">
+          <li class="rux--menu-item" role="menuitemradio" aria-checked="false" tabindex="-1">
+            <div class="rux--menu-item__selection-icon"></div>
+            <div class="rux--menu-item__label">Ascending</div>
+          </li>
+          <li class="rux--menu-item" role="menuitemradio" aria-checked="true" tabindex="-1">
+            <div class="rux--menu-item__selection-icon">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+            <div class="rux--menu-item__label">Descending</div>
+          </li>
+        </ul>
+      </li>
+      <li class="rux--menu-item-divider" role="separator"></li>
+      <li class="rux--menu-item-group" role="none">
+        <ul role="group">
+          <li class="rux--menu-item" role="menuitemcheckbox" aria-checked="true" tabindex="-1">
+            <div class="rux--menu-item__selection-icon">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+            <div class="rux--menu-item__label">Show archived</div>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -3913,8 +3990,21 @@
 
 <section class="ks-sec" id="treeview">
   <h2>Tree view</h2><p>nested nodes · selected · disabled — click to select, click the caret to collapse</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Corrected by check-compound. -->
+  <!-- PROVENANCE: rendered-dom · components-treeview--default, --with-icons,
+       --with-links and --with-complex-nesting, plus the xs recipe, 2026-08-28 -->
+  <!--
+    Corrected 2026-08-28: __icon and __label__text both belong inside
+    `__label__details`, not loose in __label, and a node carrying an icon takes
+    `--with-icon`.
+
+    Two findings recorded rather than changed, both the same shape. check-tags
+    reports --tree-node--active on an <a> because the only story that sets
+    active is the with-links tree, whose nodes are anchors; in a non-link tree
+    the state sits on the node itself, the LI, which is what this demos. The
+    nesting report flags --active and --disabled inside __children because every
+    sampled tree marks nodes at the top level, and a state one level down has no
+    sample.
+  -->
   <ul class="rux--tree" role="tree">
     <li class="rux--tree-node rux--tree-node--with-icon" role="treeitem" aria-expanded="true" tabindex="0">
       <div class="rux--tree-node__label">

@@ -1,6 +1,21 @@
 <section class="ks-sec" id="menu">
   <h2>Menu</h2><p>icons · shortcut · danger item — click the trigger</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-menu--default, and the open menus
+       from components-menubutton--default@open and
+       components-combobutton--default@open, 2026-08-28 -->
+  <!--
+    SELECTABLE ITEMS were missing entirely — three classes with nine rules each
+    and no element to act on. Carbon marks the whole menu
+    `menu--with-selectable-items`, groups radio items in a
+    `menu-item-radio-group` holding a bare `ul[role=group]`, and gives EVERY
+    item a `__selection-icon` slot as its first child, filled only on the
+    selected one. `menu-item-group` is the same pattern for a non-radio group.
+
+    The reference also renders every menu open — `menu--open menu--shown` — but
+    those are the state the harness toggles, and this fragment demos the menus
+    inline so they are visible at rest. `menu-item-selectable--selected` is
+    emitted with no rule in @carbon/styles and is dropped (§4.1.12).
+  -->
   <div class="ks-row" style="padding-block:1rem;min-height:12rem;align-items:flex-start;flex-direction:column;gap:.5rem">
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-menu="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
     <ul id="ks-menu" class="rux--menu rux--menu--md rux--menu--with-icons"
@@ -22,6 +37,37 @@
       <li class="rux--menu-item rux--menu-item--danger" role="menuitem" tabindex="-1">
         <div class="rux--menu-item__icon"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-trash-can"/></svg></div>
         <div class="rux--menu-item__label">Delete</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ks-label">selectable items · radio group</div>
+  <div class="ks-row" style="align-items:flex-start">
+    <ul class="rux--menu rux--menu--md rux--menu--with-selectable-items" role="menu" style="position:relative;inset:auto">
+      <li class="rux--menu-item-radio-group" role="none">
+        <ul role="group">
+          <li class="rux--menu-item" role="menuitemradio" aria-checked="false" tabindex="-1">
+            <div class="rux--menu-item__selection-icon"></div>
+            <div class="rux--menu-item__label">Ascending</div>
+          </li>
+          <li class="rux--menu-item" role="menuitemradio" aria-checked="true" tabindex="-1">
+            <div class="rux--menu-item__selection-icon">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+            <div class="rux--menu-item__label">Descending</div>
+          </li>
+        </ul>
+      </li>
+      <li class="rux--menu-item-divider" role="separator"></li>
+      <li class="rux--menu-item-group" role="none">
+        <ul role="group">
+          <li class="rux--menu-item" role="menuitemcheckbox" aria-checked="true" tabindex="-1">
+            <div class="rux--menu-item__selection-icon">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark"/></svg>
+            </div>
+            <div class="rux--menu-item__label">Show archived</div>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>

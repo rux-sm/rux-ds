@@ -1,11 +1,21 @@
 <section class="ks-sec" id="list-box">
   <h2>List box</h2><p>the primitive under dropdown, combo box and multiselect</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; elements
-       corrected 2026-08-27 against the rendered-DOM references: the divider is
-       an HR and a SIBLING of the list-box (the fluid components use it to
-       separate stacked fields — it is not an in-menu option divider), the
-       warning icon is an SVG carrying the classes itself, before the field,
-       and menu items render no __selected-icon. -->
+  <!-- PROVENANCE: rendered-dom · the list-box stories of its consumers —
+       components-dropdown--default@open, components-combobox--default@open and
+       components-multiselect--default@open-selected, 2026-08-28 -->
+  <!--
+    List box is the PRIMITIVE under dropdown, combo box and multiselect, and it
+    has no story of its own: every reference for it is one of those three. That
+    is why the omissions report lists their parts — the checkbox rows of a
+    multiselect menu, the `dropdown` root of a dropdown. Each belongs to the
+    fragment that owns the consumer.
+
+    Corrected 2026-08-27 against those references: the divider is an HR and a
+    SIBLING of the list-box (the fluid components use it to separate stacked
+    fields — it is not an in-menu option divider), the warning icon is an SVG
+    carrying the classes itself, before the field, and menu items render no
+    __selected-icon.
+  -->
   <div class="ks-grid">
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--expanded">

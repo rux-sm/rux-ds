@@ -1,7 +1,20 @@
 <section class="ks-sec" id="treeview">
   <h2>Tree view</h2><p>nested nodes · selected · disabled — click to select, click the caret to collapse</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Corrected by check-compound. -->
+  <!-- PROVENANCE: rendered-dom · components-treeview--default, --with-icons,
+       --with-links and --with-complex-nesting, plus the xs recipe, 2026-08-28 -->
+  <!--
+    Corrected 2026-08-28: __icon and __label__text both belong inside
+    `__label__details`, not loose in __label, and a node carrying an icon takes
+    `--with-icon`.
+
+    Two findings recorded rather than changed, both the same shape. check-tags
+    reports --tree-node--active on an <a> because the only story that sets
+    active is the with-links tree, whose nodes are anchors; in a non-link tree
+    the state sits on the node itself, the LI, which is what this demos. The
+    nesting report flags --active and --disabled inside __children because every
+    sampled tree marks nodes at the top level, and a state one level down has no
+    sample.
+  -->
   <ul class="rux--tree" role="tree">
     <li class="rux--tree-node rux--tree-node--with-icon" role="treeitem" aria-expanded="true" tabindex="0">
       <div class="rux--tree-node__label">
