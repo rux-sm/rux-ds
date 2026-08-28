@@ -112,8 +112,59 @@
   const held = document.activeElement;
   if (!canTestFocus) console.warn('  check-a11y: focus-ring check SKIPPED — '
     + 'document.hasFocus() is false. Click the page and re-run.');
-  const paint = el => { const c = getComputedStyle(el);
-    return `${c.outlineStyle}|${c.outlineWidth}|${c.outlineColor}|${c.boxShadow}|${c.borderColor}|${c.backgroundColor}`; };
+  // WHERE THE RING IS DRAWN IS NOT WHERE FOCUS LANDS. Carbon hides the real
+  // control for checkbox, radio and tile — a 1x1 clipped input — and draws the
+  // ring on the label that FOLLOWS it:
+  //     .rux--checkbox:focus + .rux--checkbox-label::before
+  //     .rux--radio-button:focus + .rux--radio-button__label .rux--radio-button__appearance
+  //     .rux--tile-input:focus + .rux--tile
+  // Reading only the focused element measures an element Carbon styles nothing
+  // on — there is no `:focus` rule in the whole stylesheet that ends at one of
+  // these inputs. The check passed those 24 controls anyway, on the BROWSER's
+  // default ring: Chromium paints `outline: auto` on the invisible input. That
+  // is not this system's ring and it is not even stable — `:focus-visible`
+  // stops matching after a pointer press, and the same sweep then called all 24
+  // ringless. A pass and a failure, both measuring the wrong element.
+  //
+  // So read the ring's SURFACE rather than the focus target. The surface is
+  // derived structurally — the label that owns the control, and what is inside
+  // it — and never from a list of component names: an allow-list would measure
+  // the list instead of the rule.
+  const surfaces = el => {
+    const out = [el];
+    const label = (el.id && document.querySelector(`label[for="${CSS.escape(el.id)}"]`))
+      || el.closest('label')
+      // Carbon's hidden-control pattern is `input + label`, so the sibling is
+      // only a ring surface for an input. Widening it to every element would
+      // let an unrelated neighbour vouch for a control that has no ring.
+      || (el.tagName === 'INPUT' ? el.nextElementSibling : null);
+    if (label) { out.push(label, ...label.querySelectorAll('*')); }
+    return out;
+  };
+  // AN OUTLINE THAT PAINTS NOTHING IS NOT A RING, and there are three ways to
+  // have one. `outline-style: auto` is the UA ring and nothing else — this
+  // stylesheet writes `solid` for all 121 of its outlines and `auto` for none
+  // (`grep -c 'outline: auto' css/rux.css` is 0). `outline-style: none` paints
+  // nothing whatever the width and colour say, and Carbon moves the WIDTH of a
+  // style-none outline on focus (1.5px to 3px on the checkbox label), which is
+  // invisible. Both collapse to one token, so neither can register as a change:
+  // a first cut gave them tokens of their own, and the positive control below
+  // passed a checkbox whose ring had been deleted.
+  //
+  // The third is a TRANSPARENT outline. Carbon rests the tile on
+  // `outline: 2px solid transparent` — a forced-colors affordance, where the OS
+  // repaints the outline it can see the shape of. In an ordinary render it is
+  // invisible, so a tile going from transparent to no outline at all is not a
+  // focus indicator appearing. It read as one, and the tile survived having its
+  // ring deleted.
+  const paint = el => surfaces(el).map(n => [null, '::before', '::after'].map(pseudo => {
+    const c = getComputedStyle(n, pseudo);
+    const unpainted = c.outlineStyle === 'none' || c.outlineStyle === 'auto'
+      || /rgba\([^)]*,\s*0\s*\)\s*$/.test(c.outlineColor);
+    const outline = unpainted ? 'no-outline'
+      : `${c.outlineStyle}|${c.outlineWidth}|${c.outlineColor}`;
+    return `${outline}|${c.boxShadow}|${c.borderColor}|${c.backgroundColor}`;
+  }).join(';')).join('/');
   // TRANSITIONS MUST BE OFF OR THE DIFF MEASURES THE CLOCK. Carbon transitions
   // `outline` and `box-shadow` over 70ms, and getComputedStyle reports the value
   // the transition has REACHED, not the one the cascade asks for. Read the
@@ -135,7 +186,7 @@
       const before = paint(el);
       el.focus({ preventScroll: true });
       if (document.activeElement !== el) { say('cannot take focus', 'tabbable but .focus() did not land', el); continue; }
-      if (paint(el) === before) say('no visible focus change', 'outline, shadow, border and background all unchanged', el);
+      if (paint(el) === before) say('no visible focus change', 'nothing changed on the control, its label or their ::before/::after; the browser default ring does not count', el);
     }
     held?.focus?.({ preventScroll: true });
   } finally { noAnim.remove(); }
@@ -159,7 +210,9 @@
   if (notes.length) console.table(notes);
   console.log('\n  NOT CHECKED: screen-reader announcement, focus-ring contrast, tab-order sense.'
     + (canTestFocus ? '\n  The focus-ring check ran with transitions suppressed, so it reads the'
-        + '\n  ring the cascade asks for, not one part-way through a 70ms fade.'
+        + '\n  ring the cascade asks for, not one part-way through a 70ms fade. It'
+        + '\n  reads the label Carbon draws the ring on, and ignores the browser'
+        + '\n  default ring, so a hidden input cannot pass on UA chrome.'
       : '\n  NOT RUN: the focus-ring check, because this document does not have focus.')
     + '\n  Those need a human with an AT. See the header.\n');
   return { findings, notes, byRule: by, focusRingChecked: canTestFocus };

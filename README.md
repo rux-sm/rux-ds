@@ -198,7 +198,11 @@ is false, because `:focus` cannot match in an unfocused document and the check w
 otherwise report every control on the page. When it does run it suppresses transitions
 first: Carbon fades `outline` over 70ms, an automated pane's animation clock never
 advances, and reading mid-fade called 49 rings missing that a key press shows are
-there. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
+there. It reads the ring where Carbon DRAWS it — the label beside a hidden input,
+not the 1x1 input focus lands on — and discards outlines that paint nothing, so no
+control can pass on the browser's own ring. Until 2026-08-28 it passed 24 checkboxes,
+radios and tiles on Chromium's `outline: auto`, and called those same 24 ringless
+whenever `:focus-visible` stopped matching. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
 stays open until one is done.
 
 **`check-rendered.js` needs a browser** — paste
