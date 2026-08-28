@@ -44,6 +44,15 @@
   margin here: a template writing layout CSS is how a design system stops
   being the source of it.
 
+  THE SHELL CARRIES ITS OWN THEME, and `data-theme="g100"` on the header is
+  that. Carbon's UI-shell-header/style.mdx says the shell "can be customized to
+  use any of the four IBM themes by applying an inline theme to the shell
+  zone", and the header's background token is plain `$background` — so a shell
+  left on the page's theme is white on a white page, with the nav, the page and
+  the header separated by one 1px border and nothing else. The shell zone is
+  the header, and the side nav sits inside it, so one attribute themes both.
+  Change it to `white` only if you mean the shell to disappear into the page.
+
   ICONS ARE REFERENCED, NOT INLINED. `../assets/icons.svg#i-name` keeps the
   sprite in one place instead of copying it into every page. The page must be
   SERVED — `npm run serve` — because a cross-document <use> is a fetch, and a
@@ -55,7 +64,7 @@
   the others delegate to it.
 -->
 
-<header class="rux--header" aria-label="Rux DS">
+<header class="rux--header" data-theme="g100" aria-label="Rux DS">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
 
   <!-- The hamburger. js/ui-shell.js toggles --expanded and --hidden on the nav
