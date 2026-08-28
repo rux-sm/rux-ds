@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 //
-// A class must sit on the ELEMENT TYPE React puts it on.
+// A class must sit on the ELEMENT TYPE Carbon renders it on.
 //
 // roadmap §4.1.11 lists what check-compound cannot see: "pairs Carbon never
 // writes as a compound selector, wrong nesting *order*, a missing wrapper, or
@@ -25,8 +25,9 @@
 //
 // WHY THERE IS NO FRAGMENT-TO-STORY MAP. The first design mapped each fragment
 // to the stories covering it, which needed 26 hand-written entries and stalled
-// on `dialog`, `resizer` and `side-panel`, which have no @carbon/react story at
-// all. The map turned out to be unnecessary: THE CLASS IS THE JOIN KEY. Pool
+// on `dialog`, `resizer` and `side-panel`, none of which has an @carbon/react
+// story (side-panel has since been given one from @carbon/ibm-products; the
+// other two still have none). The map turned out to be unnecessary: THE CLASS IS THE JOIN KEY. Pool
 // every story into one class -> tags index and a fragment's classes look
 // themselves up. Fragments with no reference contribute classes the index does
 // not know, and those are skipped and counted rather than guessed at.
@@ -43,13 +44,23 @@
 // all ten of its menu-item classes look invented. Tag placement is the part
 // that survived contact with the two hand-verified fragments.
 //
-// The reference is docs/carbon-react-dom.json, harvested by
-// tools/extract/react-dom.js. It is a snapshot: a Carbon bump can move a tag
-// legitimately, and the answer then is to re-harvest, not to soften this.
+// The references are snapshots, harvested by tools/extract/react-dom.js against
+// each Storybook origin. A Carbon bump can move a tag legitimately, and the
+// answer then is to re-harvest, not to soften this.
 //
 import { readFileSync, readdirSync } from 'node:fs';
 
-const REF_PATH = 'docs/carbon-react-dom.json';
+// Two references, because two packages ship the components this system compiles.
+// @carbon/styles pulls in side-panel, and @carbon/react has no side-panel at all —
+// it lives in @carbon/ibm-products, whose Storybook is a separate origin with its
+// own `c4p--` prefix. The class NAMES are identical: all 19 that story emits are
+// defined in our CSS, so normalising the prefix away makes it a valid reference
+// for exactly the same check.
+const REF_PATHS = [
+  'docs/carbon-react-dom.json',        // @carbon/react, 505 stories
+  'docs/carbon-ibm-products-dom.json', // @carbon/ibm-products, side-panel only
+];
+const PREFIX = /^(?:cds|c4p)--/;
 
 // Void and self-closing elements never open a scope. The SVG members matter:
 // fragments are full of <use/> and <path/>, and treating them as containers
@@ -86,19 +97,19 @@ function refElements(lines) {
   return lines.map(l => {
     const body = l.trim().replace(/\[role=[^\]]*\]/, '').replace(/\{[^}]*\}/, '');
     const [tag, ...cls] = body.split('.');
-    return { tag, classes: cls.filter(Boolean).map(c => c.replace(/^cds--/, '')) };
+    return { tag, classes: cls.filter(Boolean).map(c => c.replace(PREFIX, '')) };
   });
 }
 
-// class -> every tag React renders it on, pooled across all 505 stories.
+// class -> every tag Carbon renders it on, pooled across every story.
 // Pooling is what makes the map unnecessary, and it is also the main dilution:
 // a class React puts on both a <button> and a <div> accepts either from us,
 // even where only one is right for the variant being demoed. Narrower stories
 // per class would sharpen this; they would also bring the map back.
-const ref = JSON.parse(readFileSync(REF_PATH, 'utf8'));
 const TAGS = new Map();
 let stories = 0;
-for (const lines of Object.values(ref)) {
+const refs = REF_PATHS.flatMap(p => Object.values(JSON.parse(readFileSync(p, 'utf8'))));
+for (const lines of refs) {
   if (lines[0]?.startsWith('(')) continue;      // (missing)/(empty) markers carry no DOM
   stories++;
   for (const { tag, classes } of refElements(lines))
@@ -123,7 +134,7 @@ for (const file of files) {
   if (!rows.length) continue;
   console.log(`  ${file}`);
   for (const [c, mine, theirs] of rows.sort())
-    console.log(`      rux--${c}  <${mine}>  React renders it on <${theirs}>`);
+    console.log(`      rux--${c}  <${mine}>  Carbon renders it on <${theirs}>`);
   findings += rows.length;
 }
 
