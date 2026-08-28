@@ -85,6 +85,11 @@
   //   name    unique per story; the output key is `story@name`
   //   args    Storybook URL serialization: `key:value;key2:value2`, booleans !true
   //   steps   dispatched in order after paint: {click|hover|focus: 'selector'}
+  //   waitFor wait for this selector before capturing, AFTER any steps — for
+  //           subjects that mount long after the story chrome (ibm-products'
+  //           side panel takes ~6s) or only exist once a step ran. The bare
+  //           comparison waits too, but only for args-only recipes: a subject
+  //           steps create legitimately does not exist in the bare story
   //
   // Rows were drafted against the sink classes check-tags reports with no
   //   reference — each targets specific orphans, not completeness for its own
@@ -228,6 +233,25 @@
     { story: 'components-definitiontooltip--default', name: 'open', steps: [{ hover: '.cds--definition-term' }] },
     { story: 'components-ui-shell-header--header-w-actions-and-right-panel', name: 'action-active',
       steps: [{ click: '.cds--header__global > span:nth-child(2) button' }] },
+    // ---- @carbon/ibm-products origin (ibm-products.carbondesignsystem.com).
+    // (no-story) when run against the react origin. The panel mounts ~6s after
+    // the story chrome, hence waitFor. Panel size also sizes the action-set,
+    // which is how action-set--sm/lg/xl/2xl get their references. The story's
+    // `actions` control is a numeric mapping (options 0-9) and a URL arg never
+    // applies it — probed 2026-08-27, every value left one button — so
+    // action-set--row-double, --row-triple and __action-button--ghost stay
+    // reference-less unless a story renders them.
+    { story: 'components-sidepanel--slide-over', name: 'xs',        args: 'size:xs',        waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: 'sm',        args: 'size:sm',        waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: 'lg',        args: 'size:lg',        waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: 'xl',        args: 'size:xl',        waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: '2xl',       args: 'size:2xl',       waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: 'left',      args: 'placement:left', waitFor: '.c4p--side-panel' },
+    { story: 'components-sidepanel--slide-over', name: 'condensed', args: 'condensedActions:!true', waitFor: '.c4p--side-panel' },
+    // The create pattern opens on its launch button and its two-button
+    // action-set stacks — the only place --row-double has been seen emitted.
+    { story: 'patterns-create-flows-createsidepanel--create-side-panel', name: 'open',
+      steps: [{ click: 'button' }], waitFor: '.c4p--side-panel' },
   ];
 
   // SETTLE was a flat 500ms wait after load, and 500ms is genuinely enough —
@@ -276,12 +300,19 @@
   const storyUrl = (id, args) =>
     `/iframe.html?id=${encodeURIComponent(id)}&viewMode=story` + (args ? `&args=${args}` : '');
 
+  // Both Carbon prefixes. The ibm-products origin emits c4p--; the first
+  // side-panel quarry (32c7fb6) said "the extractor needed no change", but its
+  // output carries c4p-- classes a cds-- filter would have dropped — the run
+  // must have adjusted this un-recorded. Now it is the tool's behaviour.
+  const PREFIX = /^(?:cds|c4p)--/;
+  const PREFIX_ANY = '[class*="cds--"], [class*="c4p--"]';
+
   // Compact, diffable line per element: tag.class.class[role=…]. Text is dropped
   // on purpose — structure and class placement are what we are checking, and text
   // would make every diff noisy.
   const tree = (el, depth = 0, out = []) => {
     if (!el || el.nodeType !== 1) return out;
-    const cls = [...el.classList].filter(c => c.startsWith('cds--')).join('.');
+    const cls = [...el.classList].filter(c => PREFIX.test(c)).join('.');
     const role = el.getAttribute('role');
     const aria = ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled']
       .filter(a => el.hasAttribute(a)).map(a => `${a}=${el.getAttribute(a)}`).join(',');
@@ -297,8 +328,8 @@
     const lines = tree(root);
     for (const el of doc.body.children) {
       if (el === root || el.contains(root)) continue;
-      if (![...el.classList].some(c => c.startsWith('cds--'))
-          && !el.querySelector('[class*="cds--"]')) continue;
+      if (![...el.classList].some(c => PREFIX.test(c))
+          && !el.querySelector(PREFIX_ANY)) continue;
       tree(el, 0, lines);
     }
     return lines;
@@ -379,14 +410,33 @@
         } catch (e) { return `(unreadable: ${e.message})`; }
       }
     };
-    const grabBare = async id => {
+    // waitFor: settle() returns on the FIRST painted tree, and some stories
+    // paint their chrome long before the element under test — ibm-products'
+    // side panel takes ~6s to mount after its launch chrome appears. A recipe
+    // may name the selector it is actually about; capture waits for it, and
+    // the bare comparison capture waits the same way so the diff is honest.
+    const awaitFor = async (doc, sel) => {
+      const t0 = performance.now();
+      while (!doc.querySelector(sel)) {
+        if (performance.now() - t0 >= SETTLE_MAX_MS * 2) return false;
+        await sleep(POLL_MS);
+      }
+      return true;
+    };
+    const grabBare = async (id, waitFor) => {
       const { f, verdict } = await openFrame(storyUrl(id));
-      const lines = verdict ?? await settle(f);
+      let lines = verdict ?? await settle(f);
+      if (Array.isArray(lines) && waitFor) {
+        try {
+          lines = (await awaitFor(f.contentDocument, waitFor))
+            ? capture(f.contentDocument) : `(step-miss: waitFor ${waitFor})`;
+        } catch (e) { lines = `(unreadable: ${e.message})`; }
+      }
       f.remove();
       return lines;
     };
     const classesOf = lines => new Set(
-      (Array.isArray(lines) ? lines : []).flatMap(l => l.match(/cds--[\w-]+/g) ?? []));
+      (Array.isArray(lines) ? lines : []).flatMap(l => l.match(/(?:cds|c4p)--[\w-]+/g) ?? []));
 
     // Sequential on purpose: bare captures are cached per story, and three
     // recipes of one story racing would each make their own.
@@ -399,7 +449,7 @@
         console.warn(`  !!  ${key}  (no-story)`);
         continue;
       }
-      bare[r.story] ??= await grabBare(r.story);
+      bare[r.story] ??= await grabBare(r.story, r.steps?.length ? null : r.waitFor);
       const { f, verdict } = await openFrame(storyUrl(r.story, r.args));
       let lines = verdict ?? await settle(f);
       if (Array.isArray(lines)) {
@@ -410,7 +460,7 @@
           // selector like 'button' matches that chrome first. Portals still
           // reach the capture — they only matter for reading, not clicking.
           const scope = doc.querySelector('#storybook-root, #root') ?? doc;
-          for (const step of r.steps ?? []) {
+          for (const step of Array.isArray(lines) ? r.steps ?? [] : []) {
             const [kind, sel] = Object.entries(step)[0];
             const el = scope.querySelector(sel);
             if (!el) { lines = `(step-miss: ${sel})`; break; }
@@ -422,7 +472,9 @@
             else if (kind === 'focus') el.focus();
             await sleep(r.settle ?? STEP_SETTLE_MS);
           }
-          if (Array.isArray(lines) && r.steps?.length) lines = capture(doc);
+          if (Array.isArray(lines) && r.waitFor && !(await awaitFor(doc, r.waitFor)))
+            lines = `(step-miss: waitFor ${r.waitFor})`;
+          if (Array.isArray(lines) && (r.steps?.length || r.waitFor)) lines = capture(doc);
         } catch (e) { lines = `(unreadable: ${e.message})`; }
       }
       f.remove();
