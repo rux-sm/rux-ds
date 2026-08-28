@@ -172,7 +172,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `action-set` | **DEFER** | 2 | 19 | 0 | 2 KB; modal footers may want it in Phase 6 |
 | `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it |
 | `aspect-ratio` | **DEFER** | 1 | 12 | 0 | 1 KB layout primitive; Phase 6 may want it |
-| `stack` | **DEFER** | 1 | 15 | 0 | 1 KB layout primitive; Phase 6 may want it |
+| `stack` | **DEFER — condition met** | 1 | 15 | 0 | 1 KB layout primitive; Phase 6 wanted it. See item 4 below |
 | `badge-indicator` | **DEFER** | 1 | 2 | 0 | 1 KB; pairs with a notification affordance in the shell |
 | `fluid-multiselect` | **CUT** | 124 | 362 | 0 | fluid-* family; 124 KB alone, the largest single component |
 | `fluid-combo-box` | **CUT** | 107 | 307 | 1 | fluid-* family: a duplicate input treatment (§4.2) |
@@ -234,6 +234,28 @@ went rather than moved is recorded in §2.1 and above.
    button and tooltip with the keep-set. **Measured marginal cost is 3 KB minified /
    0.3 KB gzipped.** Defer it because nothing needs it yet — the price is not the
    reason. Corrected 2026-08-28, re-measured against the shipped themes.
+
+4. **`stack` — DEFER, and its condition has been met.** This row said "Phase 6 may
+   want it". Phase 6 wants it. `templates/form-page.html` is the first page in the
+   repository with a form on it, and a form built from the compiled set has **no
+   vertical rhythm at all**: Carbon spaces one with `stack-vertical stack-scale-7`,
+   and `.rux--form-item` carries no vertical margin of its own.
+
+   **This is evidence, not judgement, which is why it is here rather than above.**
+   Read off a running `components-form--default` on 2026-08-28: the stack computes to
+   `display: grid` with `row-gap: 32px`, and every child reports
+   `margin-block-start: 0`. Carbon zeroes its controls' margins deliberately and
+   spaces from the container. A margin-based stand-in therefore cannot work — the
+   first attempt lost to `.rux--checkbox-group`'s own `margin: 0`, specificity (0,1,0)
+   against (0,0,2), and the gap measured zero.
+
+   **The template carries a `<style>` block standing in for it today**, using the same
+   grid mechanism. That is the wrong home for it: it must be repeated in every
+   template that holds a form, and a design system whose spacing lives in its
+   templates is not the source of its own spacing. Roadmap §4.4 carries the plan.
+
+   **Price: 1 KB, 15 classes, 0 tokens** — the cheapest row in this table, and the
+   §2.1 KB target that would have argued against it no longer exists.
 
 Rows marked CUT with an evidence reason — `slug`, `resizer`, `truncated-text`, `card`,
 `page-header`, `side-panel` — came out of the Phase 1 markup sweep and are not judgement

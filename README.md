@@ -69,6 +69,7 @@ was verified against.
 |---|---|
 | The 90 KB JS budget needs a unit — 83.5 KB raw is 46% comment, 45 KB code, 22.7 KB gzipped | roadmap §4.5 |
 | No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
+| **`stack` — restore it?** Phase 6 found the gap its DEFER row was waiting for: a form has no vertical rhythm without it. 1 KB, 15 classes. Plan and cost in full | roadmap §4.4, `docs/inventory.md` item 4 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the

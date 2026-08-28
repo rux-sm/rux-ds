@@ -1048,6 +1048,52 @@ Phase 3 screenshots.
 > real requirement cannot be met by `$prefix`, a flag, or module selection, this phase
 > becomes the prerequisite rather than the epilogue.
 
+> **The first gap Phase 6 found, 2026-08-28: `stack`.** The amendment above said "Phase
+> 6 builds five more page shapes, and each can find the same class of gap." The third
+> page shape found one, and it is the cheapest row in `docs/inventory.md`.
+>
+> **What is missing.** `templates/form-page.html` is the first page in the repository
+> with a form on it. Carbon spaces a form with `stack-vertical stack-scale-7`;
+> `src/app.scss:108` has `@use "@carbon/styles/scss/components/stack"` commented out,
+> and `.rux--form-item` carries no vertical margin of its own. A form built from the
+> compiled set has **no vertical rhythm at all**.
+>
+> **The evidence, read live rather than reasoned.** `components-form--default` on
+> react.carbondesignsystem.com, 2026-08-28: the stack computes to `display: grid` with
+> `row-gap: 32px`, and every child reports `margin-block-start: 0`. Carbon zeroes its
+> controls' margins on purpose and spaces from the container — which is why a
+> margin-based stand-in cannot work. The first attempt lost to `.rux--checkbox-group`'s
+> own `margin: 0`, (0,1,0) against (0,0,2), and the gap measured zero. The template's
+> `<style>` block now uses the grid mechanism instead, and is a stand-in, not an answer.
+>
+> **Why the stand-in is the wrong home.** It has to be repeated in every template that
+> holds a form, it is one specificity accident away from silently collapsing again, and
+> a design system whose spacing lives in its templates is not the source of its own
+> spacing. `templates/app-shell.html` already carries one such rule for the content
+> inset, where Carbon genuinely ships nothing — this one is different, because Carbon
+> ships the answer and the manifest declined it.
+>
+> **The plan, when it is approved.** It is the three-line restore README describes, plus
+> the consequences:
+>
+> 1. Uncomment the `@use` at `src/app.scss:108`.
+> 2. `npm run build` — expect +1 KB and +15 classes; 0 new tokens.
+> 3. In `templates/form-page.html`, wrap the form's items in
+>    `<div class="rux--stack-vertical rux--stack-scale-7">`, which is what
+>    `components-form--default` renders, and **delete the `<style>` rule** and the note
+>    that explains it.
+> 4. `npm run verify`. `check-classes` resolves the two new classes; `check-coverage`'s
+>    denominator grows by 15, so the ratchet needs `npm run coverage:update` and the
+>    figure in README moves.
+> 5. Update the component count, class count and size figures in README, and flip the
+>    `stack` row in `docs/inventory.md` from DEFER to KEEP.
+>
+> **The alternative, stated so it is a choice.** Keep the stand-in and spend the 1 KB
+> nowhere. That is defensible only while forms are rare; the moment a second template
+> holds one, the rule is duplicated and the system is no longer the source of its own
+> spacing. **Not decided here — this is rux's call**, and `docs/inventory.md` item 4
+> carries the same entry from the catalogue's side.
+
 ### 4.5 Phase 5 — Behaviors
 
 Write vanilla modules against the DOM and ARIA contracts read out of the Lit templates.
