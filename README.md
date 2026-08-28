@@ -9,9 +9,10 @@ is open, and where each rule lives. It does not repeat the roadmap, because a ru
 stated twice drifts — which is exactly what happened to the Status block below before
 2026-08-28.
 
-**There is no guide to BUILDING a page yet, and that is Phase 6.** `templates/` and
-`CLAUDE.md` are the deliverable that answers "how do I use this"; until they exist, the
-kitchen sink is the worked example and `sink/*.html` the markup to copy.
+`CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
+below rather than repeating them. **There is no guide to BUILDING a page yet, and that is
+Phase 6** — `templates/` is still empty, so the kitchen sink is the worked example and
+`sink/*.html` the markup to copy.
 
 ## Status
 
