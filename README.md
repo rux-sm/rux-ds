@@ -12,22 +12,50 @@ record, and the phase this project is in.
 shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
 now the keep-set rather than all of Carbon.
 
-**Phase 5 (behaviors) started** — `js/overlay.js` is the dismiss kernel, with
-`js/popover.js` and `js/modal.js` on top of it (20 KB of a 90 KB budget). The markup is
-the API: a `.rux--popover-container` is click-driven and the same container with
-`.rux--tooltip` is hover-and-focus driven, so neither needs an attribute at all; a modal
-takes `data-rux-open="<id>"` and `data-rux-close` only because its trigger and surface sit
-far apart in the document — as does a menu, which reuses the same attribute. An overflow
-menu needs none: its surface is the sibling of its trigger. Focus trapping, Escape, outside press and the stack that
-decides which surface a press belongs to all come from the kernel, so a page needs no
-script of its own. `sink/harness.js` still drives what Phase 5
-has not reached, and shrinks with every module that lands.
+**Phase 5 (behaviors) — every module written, exit criterion still open.** Twelve
+modules in `js/`: an overlay kernel plus popover, menu, list-box, tabs, accordion,
+data-table, form-controls, ui-shell, dismiss, tile and modal. **The markup is the API** —
+a page built from a template needs no script of its own. An attribute appears only when
+trigger and surface are too far apart for the markup to relate them (`data-rux-open` on
+modal and menu); a popover, tooltip or overflow menu needs none. Focus trapping, Escape,
+outside press and the stack deciding which surface a press belongs to all come from the
+kernel.
+
+What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
+reports 0 findings, but it reads attributes rather than running an AT, and its focus-ring
+check cannot run in an automated browser at all. See "Picking this up".
 
 **Phase 4 (devendor) now runs last.** Execution order
 is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
 closes the component set, and `data-table` shipped unable to sort or expand until the
 sink tried to demo it — so the set is frozen after the templates have finished teaching
 us what it needs, not before. Roadmap §4.4.
+
+### Picking this up
+
+Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
+in an editor session or a machine-local note.
+
+**Next:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
+is preparation. `templates/` is still empty.
+
+**Blocking §4.5's exit** — one human task, which cannot be automated here:
+
+- Run VoiceOver or NVDA over `kitchen-sink.html` and tab through it by hand. Do it in a
+  focused window: `check-a11y.js`'s focus-ring check refuses to run when
+  `document.hasFocus()` is false, and real key events are not delivered in a headless
+  pane either, so tab order has only been computed, never walked.
+
+**Decisions waiting on you**, each recorded where it applies:
+
+| What | Where |
+|---|---|
+| The 90 KB JS budget needs a unit — 83.5 KB raw is 46% comment, 45 KB code, 22.7 KB gzipped | roadmap §4.5 |
+| No gate checks which glyph a `<use>` points at; two arrows shipped wrong before anyone looked | roadmap §4.5 |
+| `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
+
+**Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
+last push, and `npm run verify` runs all ten gates.
 
 | | |
 |---|---|
