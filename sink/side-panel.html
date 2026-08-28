@@ -340,14 +340,31 @@
       <p>Body content. The action toolbar above scrolls away with the header; the action set below is pinned.</p>
     </div>
     <div class="rux--action-set rux--side-panel__actions-container rux--action-set--md rux--btn-set" role="presentation">
-      <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
-      <button type="button" class="rux--btn rux--btn--primary">Save</button>
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--secondary rux--btn--expressive">Cancel</button>
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--primary rux--btn--expressive">Save</button>
     </div>
   </aside>
 
-  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay" id="sp-notitle" hidden>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay rux--side-panel--condensed-actions" id="sp-notitle" hidden>
     <!-- No title, so __header carries NO --has-title and holds only the close
-         control. This is components-sidepanel--without-title exactly. -->
+         control. This is components-sidepanel--without-title exactly.
+
+         --condensed-actions is NOT from the reference. No story emits it,
+         across all eighteen that render a side panel. It is kept because it is
+         live rather than superseded: .--side-panel sets
+         --rux--side-panel--actions-height to 4rem and --condensed-actions sets
+         it to 3rem. Nothing else in the stylesheet does that job, so unlike
+         --has-ai-label this is undemoed rather than dead.
+
+         The variable is read by
+         `.--side-panel .__actions-container .--action-set__action-button`, so
+         it sizes the BUTTONS, not the container. That distinction was found by
+         being wrong about it: the first version of this demo set the modifier,
+         measured the container, saw 49px either way, and looked like a dead
+         class. The buttons here were missing --action-set__action-button
+         entirely, so the rule had nothing to match. With it, and with the
+         --expressive pairing the reference uses, the buttons measure 50px here
+         against 64px in every other panel. -->
     <div class="rux--side-panel__header">
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
@@ -367,7 +384,7 @@
       <p>A panel with no title at all. The header collapses to just the close button.</p>
     </div>
     <div class="rux--action-set rux--side-panel__actions-container rux--action-set--row-single rux--action-set--md rux--btn-set" role="presentation">
-      <button type="button" class="rux--btn rux--btn--primary">Done</button>
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--primary rux--btn--expressive">Done</button>
     </div>
   </aside>
   <div class="rux--side-panel__overlay" id="sp-notitle-overlay" hidden></div>

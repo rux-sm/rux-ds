@@ -46,11 +46,36 @@
   // has to be hidden with its panel or it swallows every click on the page.
   const overlayFor = el => el.nextElementSibling?.classList
     .contains('rux--side-panel__overlay') ? el.nextElementSibling : null;
-  const closeOverlays = () => $$('[data-ks-open]').forEach(b => {
+  // --side-panel--closing is the exit animation, 150ms, and the matching
+  // __overlay--closing fades the scrim with it. No Storybook story can show
+  // either — a static DOM capture of a settled panel never holds a transient
+  // state — so unlike the rest of this section they are driven here rather than
+  // copied from the reference. The CSS is unambiguous about the mechanism:
+  // `animation: side-panel-exit-right 150ms ... forwards` per placement.
+  const EXIT_MS = 150;
+  const hidePanel = (t, animate) => {
+    const o = overlayFor(t);
+    if (!animate) {
+      t.classList.remove('rux--side-panel--closing');
+      o?.classList.remove('rux--side-panel__overlay--closing');
+      t.hidden = true; if (o) o.hidden = true;
+      return;
+    }
+    t.classList.add('rux--side-panel--closing');
+    o?.classList.add('rux--side-panel__overlay--closing');
+    setTimeout(() => {
+      t.classList.remove('rux--side-panel--closing');
+      o?.classList.remove('rux--side-panel__overlay--closing');
+      t.hidden = true; if (o) o.hidden = true;
+    }, EXIT_MS);
+  };
+  // Switching panels hides the outgoing one at once: two exit animations
+  // overlapping a new entrance reads as a glitch, not as the component.
+  const closeOverlays = (animate = false) => $$('[data-ks-open]').forEach(b => {
     const t = document.getElementById(b.dataset.ksOpen);
     if (!t) return;
     t.classList.remove(hookFor(t));
-    if (isPanel(t)) { t.hidden = true; const o = overlayFor(t); if (o) o.hidden = true; }
+    if (isPanel(t)) hidePanel(t, animate && !t.hidden);
   });
   on('[data-ks-open]', 'click', b => {
     const t = document.getElementById(b.dataset.ksOpen);
@@ -58,7 +83,7 @@
     if (isPanel(t)) { t.hidden = false; const o = overlayFor(t); if (o) o.hidden = false; }
     t.classList.add(hookFor(t));
   });
-  on('[data-ks-close]', 'click', closeOverlays);
+  on('[data-ks-close]', 'click', () => closeOverlays(true));
 
   // ---- accordion ---------------------------------------------------------
   on('.rux--accordion__heading', 'click', h => {
