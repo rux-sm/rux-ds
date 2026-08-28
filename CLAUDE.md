@@ -60,10 +60,15 @@ claims a component by its interactive element, never by the root class.
 
 ## Templates — started
 
-`templates/app-shell.html` is the page frame: header, fixed side nav, and the `main`
-the other five templates drop into. **Copy it; do not copy `sink/ui-shell.html`** — the
-sink demos Carbon's OTHER shell, the rail nested inside the header, which does not
-offset the content region. The template's own comment records why they are not mixed.
+`templates/app-shell.html` is the page frame: header with product nav and global
+actions, a `--side-nav--ux` nested inside it, a working hamburger, and the `main` the
+other five templates drop into. **Copy it, not `sink/ui-shell.html`** — the sink is the
+same shell in a 22rem sandbox, so its header and nav are positioned for a specimen.
+
+**`--side-nav--ux` is 16rem, not a rail.** The rail is `--side-nav--rail`; bare
+`.rux--side-nav` is 3rem. Nothing offsets `.rux--content` for a nav inside the header —
+only a SIBLING nav does that — so the page indents itself, breakpoint-scoped, with
+`rux--lg:col-start-4`. Do not reach for a margin; the template says why.
 
 Form, table, detail, empty state and error state are not written yet; until they are,
 `sink/*.html` is still the markup to copy for a page body.

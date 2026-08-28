@@ -7,100 +7,144 @@
 <link rel="stylesheet" href="../css/rux.css">
 </head>
 <body>
-<!-- PROVENANCE: rendered-dom · components-ui-shell-sidenav--fixed-side-nav,
-     --fixed-side-nav-w-divider, --fixed-side-nav-w-icons and
-     --side-nav-w-large-side-nav-items, 2026-08-28 -->
+<!-- PROVENANCE: rendered-dom · components-ui-shell-header--header-w-navigation-actions-and-side-nav,
+     --header-w-side-nav and --side-nav-rail-w-header, 2026-08-28 -->
 <!--
   THE APP SHELL. Copy this file, replace the marked regions, delete the rest of
   this comment. The other templates are page bodies that go inside `main`.
 
-  WHY THE SIDE NAV IS A SIBLING OF THE HEADER AND NOT INSIDE IT. Carbon renders
-  two different shells and they are not interchangeable:
+  THE SIDE NAV IS THE RAIL, AND IT SITS INSIDE THE HEADER. Carbon renders two
+  shells and this is the one with a working hamburger:
 
-    expanded  nav.--side-nav--expanded sits BESIDE header and main. The content
-              region is offset by a sibling rule that no other arrangement can
-              satisfy:
-                .rux--side-nav.rux--side-nav--expanded ~ .rux--content
-                  { margin-inline-start: 16rem }
-              Four captures render it, and in every one the header carries only
-              the skip link and the product name.
+    rail      nav.--side-nav--ux INSIDE header, 3rem wide, expanded to 16rem
+              over the page by button.--header__menu-toggle. Five captures
+              render it, and they are the ones whose headers also carry
+              __nav and __global. js/ui-shell.js finds the nav with
+              `burger.closest('.rux--header')`, so this nesting is what makes
+              the hamburger work at all.
 
-    ux/rail   nav.--side-nav--ux sits INSIDE header, collapsed to a 3rem rail
-              the menu button expands over the page. Five captures render it,
-              and those are the ones whose headers carry __nav and __global.
-              The content is NOT offset by CSS there; the stories indent it
-              with grid offsets instead.
+    expanded  nav.--side-nav--expanded BESIDE header and main, permanent, no
+              hamburger in any of the 641 captures. Its one advantage is that
+              the content region is offset by a sibling rule
+              (`.rux--side-nav--expanded ~ .rux--content { 16rem }`) that this
+              arrangement cannot satisfy. REJECTED so the shell could have a
+              hamburger; a template built on it shipped in f5f1bef and was
+              replaced. Roadmap §4.6.
 
-  This template is the first shape, because a template's job is to be the frame
-  the other five sit in, and it is the only shape where the system's own CSS
-  positions the content region. `sink/ui-shell.html` demos the second, which is
-  why its header is richer than this one.
+  WHAT THAT COSTS, STATED PLAINLY: no rule offsets `.rux--content` for a nav
+  that lives inside the header. `.rux--content` is only ever indented by a
+  SIBLING side nav, and this one is not a sibling, so the page indents itself.
 
-  THE TWO ARE NOT MIXED HERE, DELIBERATELY. A header with __nav or __global
-  above a sibling expanded side nav appears in NONE of the 641 captures. Both
-  halves are corroborated on their own and check-ancestry would pass the
-  combination, but nothing in docs/ says Carbon draws it, so it is not invented
-  here. Roadmap §4.6 and README record the open question.
+  `--side-nav--ux` is 16rem, NOT a 3rem rail — the rail is `--side-nav--rail`,
+  and the bare `.rux--side-nav` is 3rem before `--ux` widens it. The nav is a
+  full panel sitting below the header, so the content has 16rem to clear, and
+  `.rux--content`'s own 2rem of padding is nowhere near it. Carbon's stories
+  clear it with `offset-lg-3` — three of sixteen columns, about 15rem — so
+  this template starts its grid at column 4 for the same reason. Do not add a
+  margin here: a template writing layout CSS is how a design system stops
+  being the source of it.
 
-  ICONS ARE REFERENCED, NOT INLINED. `../assets/other.svg#i-name` keeps the
-  15.8 KB sprite in one place instead of copying it into every page built from
-  this file. It needs the page to be SERVED — `npm run serve` — because a
-  cross-document <use> is a fetch, and a file:// page will draw blank icons.
+  ICONS ARE REFERENCED, NOT INLINED. `../assets/icons.svg#i-name` keeps the
+  sprite in one place instead of copying it into every page. The page must be
+  SERVED — `npm run serve` — because a cross-document <use> is a fetch, and a
+  file:// copy draws blank icons. check-icons enforces this form here and the
+  bare `#i-name` form in sink/.
 
-  EVERY BEHAVIOUR MODULE LOADS, not just ui-shell. README promises a page built
-  from a template needs no script of its own; that is only true if a modal or a
-  data table pasted into `main` already has its module present. The kernel is
-  first because the others delegate to it.
+  EVERY BEHAVIOUR MODULE LOADS, not just ui-shell, so a modal or a data table
+  pasted into `main` needs no script of its own. The kernel is first because
+  the others delegate to it.
 -->
 
 <header class="rux--header" aria-label="Rux DS">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
+
+  <!-- The hamburger. js/ui-shell.js toggles --expanded and --hidden on the nav
+       and keeps aria-expanded in step; nothing here needs a script.
+
+       IT SHIPS CLOSED, exactly as the captures do, and that is deliberate
+       even though `--ux` already renders 16rem wide on a desktop viewport.
+       Shipping it `--expanded` instead was tried and is worse: below Carbon's
+       breakpoint the nav overlays the page, so js/ui-shell.js activates
+       `side-nav__overlay` and the page loads behind a grey scrim.
+
+       KNOWN, and it belongs to the module rather than to this markup: on a
+       wide viewport the FIRST press of this button appears to do nothing. The
+       nav is already 16rem from `--ux`, the press adds `--expanded`, and
+       16rem does not change. The second press hides it. Roadmap §4.5. -->
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-menu"/></svg></button>
+
   <!-- REPLACE: product name. The prefix span is the lighter-weight half. -->
   <a class="rux--header__name" href="./"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+
+  <!-- REPLACE: top-level product navigation. The current one carries
+       --header__menu-item--current and aria-current="page". -->
+  <nav class="rux--header__nav" aria-label="Rux DS">
+    <ul class="rux--header__menu-bar">
+      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="./" aria-current="page"><span class="rux--text-truncate-end">Overview</span></a></li>
+      <li><a class="rux--header__menu-item" href="./"><span class="rux--text-truncate-end">Reports</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- REPLACE: global actions. Icon-only, so each needs an aria-label. -->
+  <div class="rux--header__global">
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-notification"/></svg></button>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-user--avatar"/></svg></button>
+  </div>
+
+  <!-- The scrim. Only visible under the mobile media query, where the nav
+       overlays the page; pressing it closes the nav. -->
+  <div class="rux--side-nav__overlay"></div>
+
+  <!-- REPLACE: the navigation. Every item needs an icon because the rail shows
+       nothing else. An expandable category is a <button> plus its <ul>; a
+       standalone link is an <a> on its own. -->
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Side navigation">
+    <ul class="rux--side-nav__items">
+
+      <li class="rux--side-nav__item rux--side-nav__item--active rux--side-nav__item--icon">
+        <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
+          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-document"/></svg></div>
+          <span class="rux--side-nav__submenu-title">Documents</span>
+          <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
+        </button>
+        <ul class="rux--side-nav__menu" hidden>
+          <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a></li>
+          <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Trips</span></a></li>
+          <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Invoices</span></a></li>
+        </ul>
+      </li>
+
+      <li class="rux--side-nav__item rux--side-nav__item--icon">
+        <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
+          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-folder"/></svg></div>
+          <span class="rux--side-nav__submenu-title">Reports</span>
+          <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
+        </button>
+        <ul class="rux--side-nav__menu" hidden>
+          <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Monthly</span></a></li>
+          <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Annual</span></a></li>
+        </ul>
+      </li>
+
+      <li class="rux--side-nav__item">
+        <a class="rux--side-nav__link" href="./">
+          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-list"/></svg></div>
+          <span class="rux--side-nav__link-text">Activity</span>
+        </a>
+      </li>
+
+    </ul>
+  </nav>
 </header>
 
-<!-- REPLACE: the navigation. An expandable category is a <button> plus its
-     <ul>; a standalone link is an <a> on its own. The open category carries
-     aria-expanded="true" and its <ul> is not hidden; the page you are on
-     carries aria-current="page". js/ui-shell.js drives the toggling. -->
-<nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--expanded" aria-label="Side navigation">
-  <ul class="rux--side-nav__items">
-
-    <li class="rux--side-nav__item rux--side-nav__item--active">
-      <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
-        <span class="rux--side-nav__submenu-title">Documents</span>
-        <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
-      </button>
-      <ul class="rux--side-nav__menu">
-        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a></li>
-        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Trips</span></a></li>
-        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Invoices</span></a></li>
-      </ul>
-    </li>
-
-    <li class="rux--side-nav__item">
-      <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
-        <span class="rux--side-nav__submenu-title">Reports</span>
-        <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
-      </button>
-      <ul class="rux--side-nav__menu" hidden>
-        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Monthly</span></a></li>
-        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Annual</span></a></li>
-      </ul>
-    </li>
-
-    <li class="rux--side-nav__item">
-      <a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Settings</span></a>
-    </li>
-
-  </ul>
-</nav>
-
 <main id="main-content" class="rux--content">
-  <!-- REPLACE: everything below. `col-span-100` is full width; the other
-       templates drop their body in here. -->
+  <!-- REPLACE: everything below. The offset is BREAKPOINT-SCOPED, and has to
+       be: the nav is 16rem at `lg` and up and 0 below it, so an unconditional
+       indent would hold a gap open for a nav that is not on the page. Full
+       width by default, starting at column 4 from `lg` — which is Carbon's own
+       `offset-lg-3`, in css-grid terms, at the same breakpoint. -->
   <div class="rux--css-grid">
-    <div class="rux--css-grid-column rux--col-span-100">
+    <div class="rux--css-grid-column rux--col-span-100 rux--lg:col-start-4 rux--lg:col-span-13">
       <h1>Dashboard</h1>
       <p>Replace this region with a page body.</p>
     </div>

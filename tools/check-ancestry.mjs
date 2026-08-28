@@ -135,6 +135,11 @@ const KNOWN = {
   'table:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'table:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'ui-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  // Same call as ui-shell's, made once more where it is load-bearing: these
+  // are the header actions of a page TEMPLATE, not a specimen. The name is
+  // carried by aria-label, so a screen reader is served; what the decline
+  // costs is the hover label a sighted pointer user would get from Carbon.
+  'templates/app-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout; aria-label carries the name'],
   'tooltip:tooltip__trigger': [['form-item', 'text-input-wrapper', 'password-input-wrapper',
     'text-input__field-outer-wrapper', 'text-input__field-wrapper', 'popover--high-contrast',
     'popover--bottom-end', 'toggle-password-tooltip', 'icon-tooltip', 'tooltip-trigger__wrapper'],
