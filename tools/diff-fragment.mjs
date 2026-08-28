@@ -46,9 +46,24 @@
 // findings, confirm each against the story named, then fix or record. The
 // count is a worklist, not a score.
 //
+// THE OTHER DIRECTION IS --omissions: classes the reference emits that we
+// never use. Nesting and tag checks both start from what we wrote, so neither
+// can see something absent — and absence is what the multiselect diff found
+// (§4.1.11: no __wrapper, no __field--wrapper). It picks the reference stories
+// for a fragment by class overlap rather than a hand-written map, on
+// check-tags' reasoning that the class is the join key, then lists what those
+// stories carry and we do not.
+//
+// Read it as a prompt, never as a defect list. Much of what it prints is a
+// variant the fragment deliberately does not demo, a skeleton, or story
+// furniture. The question it answers is "is there something here I did not
+// know Carbon renders", and for a fragment written by inference the answer is
+// often yes.
+//
 //   node tools/diff-fragment.mjs                  every fragment, summary
 //   node tools/diff-fragment.mjs radio            one fragment, with detail
 //   node tools/diff-fragment.mjs --unreferenced   classes no story emits
+//   node tools/diff-fragment.mjs radio --omissions  what Carbon renders and we do not
 //
 import { readFileSync, readdirSync } from 'node:fs';
 
@@ -92,11 +107,13 @@ function pairs(html) {
 // Lines are '  '*depth + tag.class.class[role=…]{aria=…}, so depth is indent/2.
 const PARENTS = new Map();                // class -> Set(parent class | '(root)')
 const STORY_OF = new Map();               // class -> a story id that shows it
+const STORY_CLASSES = new Map();          // story id -> Set(class), for --omissions
 let stories = 0;
 for (const path of REF_PATHS) {
   for (const [id, lines] of Object.entries(JSON.parse(readFileSync(path, 'utf8')))) {
     if (lines[0]?.startsWith('(')) continue;
     stories++;
+    STORY_CLASSES.set(id, new Set());
     const openAt = [];                    // depth -> classes of nearest classed ancestor
     for (const line of lines) {
       const depth = (line.match(/^ */)[0].length) / 2;
@@ -107,6 +124,7 @@ for (const path of REF_PATHS) {
       for (let d = depth - 1; d >= 0; d--) if (openAt[d]) { parent = openAt[d]; break; }
       for (const c of classes) {
         if (CHROME.test(c)) continue;
+        STORY_CLASSES.get(id).add(c);
         if (!PARENTS.has(c)) PARENTS.set(c, new Set());
         if (parent) for (const p of parent) PARENTS.get(c).add(p);
         else PARENTS.get(c).add('(root)');
@@ -123,6 +141,24 @@ const only = process.argv.find(a => !a.startsWith('-') && !a.endsWith('.mjs') &&
 const wantUnref = process.argv.includes('--unreferenced');
 const files = readdirSync('sink').filter(f => f.endsWith('.html'))
   .filter(f => !only || f === `${only}.html`).sort();
+
+const wantOmissions = process.argv.includes('--omissions');
+
+// Stories that best cover a fragment's classes, then what they add on top.
+function omissions(ours) {
+  const scored = [];
+  for (const [id, cls] of STORY_CLASSES) {
+    let hit = 0;
+    for (const c of ours) if (cls.has(c)) hit++;
+    if (hit) scored.push([hit / ours.size, hit, id, cls]);
+  }
+  scored.sort((a, b) => b[1] - a[1]);
+  const top = scored.slice(0, 4);
+  const missing = new Map();              // class -> story that shows it
+  for (const [, , id, cls] of top)
+    for (const c of cls) if (!ours.has(c) && !missing.has(c)) missing.set(c, id);
+  return { top: top.map(([r, h, id]) => `${id} (${h} of ${ours.size})`), missing };
+}
 
 let totalFindings = 0, totalUnref = 0;
 const summary = [];
@@ -153,6 +189,15 @@ for (const file of files) {
       console.log(`         see    ${story}`);
     }
     if (wantUnref && unref.size) console.log(`      no reference: ${[...unref].sort().join(' ')}`);
+  }
+  if (wantOmissions) {
+    const ours = new Set(pairs(readFileSync(`sink/${file}`, 'utf8')).map(p => p.cls));
+    const { top, missing } = omissions(ours);
+    console.log(`\n  ${file} — closest stories`);
+    for (const t of top) console.log(`      ${t}`);
+    console.log(`      Carbon renders, we do not (${missing.size}):`);
+    for (const [c, id] of [...missing].sort())
+      console.log(`         ${c.padEnd(46)} ${id.replace(/^components-|^preview-/, '')}`);
   }
 }
 
