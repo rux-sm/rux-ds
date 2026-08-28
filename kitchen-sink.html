@@ -3923,17 +3923,27 @@
 
 <section class="ks-sec" id="copy-button">
   <h2>Copy button</h2><p>click to see the feedback animation</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-copybutton--default and its
+       copied recipe, 2026-08-28 -->
   <!--
     .rux--copy-btn__feedback has no hidden state in CSS — Carbon's web component
     only puts it in the DOM while animating. The idle button therefore omits it.
+
+    THE COPY BUTTON IS A BUTTON. The reference renders
+    `copy-btn copy btn btn--primary btn--icon-only`, and this fragment carried
+    only the first two, so the button had no box, no kind and no icon-only
+    sizing — the same defect the icon-only content switcher had. Its icon is
+    `snippet__icon`, which is what sizes and centres the glyph.
+
+    Not copied: the icon-tooltip popover the story wraps it in. The sink demos
+    the component, not the story's hover hint (as with combo-button).
   -->
   <div class="ks-row" style="gap:4rem;padding-block:1rem 2rem">
-    <button type="button" class="rux--copy rux--copy-btn" aria-label="Copy to clipboard">
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-copy"/></svg>
+    <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Copy to clipboard">
+      <svg class="rux--snippet__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-copy"/></svg>
     </button>
-    <button type="button" class="rux--copy rux--copy-btn rux--copy-btn--animating rux--copy-btn--fade-in" aria-label="Copy to clipboard">
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-copy"/></svg>
+    <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--primary rux--btn--icon-only rux--copy-btn--animating rux--copy-btn--fade-in" aria-label="Copy to clipboard">
+      <svg class="rux--snippet__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-copy"/></svg>
       <span class="rux--copy-btn__feedback">Copied!</span>
     </button>
     <span class="ks-label">↑ held in the animating state so it is visible at rest</span>
@@ -3942,12 +3952,19 @@
 
 <section class="ks-sec" id="chat-button">
   <h2>Chat button</h2><p>quick actions · with icon</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · preview-chatbutton--default, 2026-08-28 -->
+  <!--
+    A chat button is a Button with `chat-btn` over it, and the reference always
+    gives it a SIZE PAIR — `btn--<size>` + `layout--size-<size>` — which this
+    fragment omitted, leaving every one at the unclassed default. The reference
+    also emits `chat-btn--sm` / `--md`; both are dropped for having no rule in
+    @carbon/styles (§4.1.12).
+  -->
   <div class="ks-row">
-    <button type="button" class="rux--btn rux--btn--primary rux--chat-btn">Send</button>
-    <button type="button" class="rux--btn rux--btn--tertiary rux--chat-btn rux--chat-btn--with-icon">With icon</button>
-    <button type="button" class="rux--btn rux--btn--ghost rux--chat-btn rux--chat-btn--quick-action">Quick action</button>
-    <button type="button" class="rux--btn rux--btn--ghost rux--chat-btn rux--chat-btn--quick-action rux--chat-btn--quick-action--selected">Selected</button>
+    <button type="button" class="rux--chat-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary">Send</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--with-icon rux--btn rux--btn--md rux--layout--size-md rux--btn--tertiary">With icon</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--quick-action rux--btn rux--btn--md rux--layout--size-md rux--btn--ghost">Quick action</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--quick-action rux--chat-btn--quick-action--selected rux--btn rux--btn--md rux--layout--size-md rux--btn--ghost">Selected</button>
   </div>
 </section>
 
@@ -4477,29 +4494,40 @@
 
 <section class="ks-sec" id="time-picker">
   <h2>Time picker</h2><p>time field plus period and zone selects · invalid</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-timepicker--default with its
+       invalid, readonly, sm and lg recipes, plus --with-layer, 2026-08-28 -->
   <!--
-    Two modifiers here need their base class or the browser default shows through:
-      .rux--time-picker__input-field  ->  also .rux--text-input
-      .rux--select--inline            ->  needs .rux--select-input--inline__wrapper
+    `.rux--time-picker__input-field` is a modifier over `.rux--text-input`; alone
+    the browser default shows through.
+
+    Rebuilt against the reference 2026-08-28, three ways:
+      - the LABEL sits in the form-item, BEFORE .rux--time-picker — not inside
+        __input beside the field, which is where this fragment had it. The
+        requirement goes in the form-item too, after the picker.
+      - the selects are plain: `select time-picker__select` wrapping a bare
+        select-input and the arrow. This fragment wrapped each in
+        `select--inline` + `select-input--inline__wrapper`, which the reference
+        never emits here — an inline select is a different component, and the
+        note claiming the pairing was required has gone with it.
+      - the invalid field pairs `__input-field-error` with a
+        `__error__icon` holding a `checkbox__invalid-icon` svg, which this
+        fragment drew nowhere.
   -->
   <div class="ks-row" style="gap:3rem">
-    <div class="rux--time-picker rux--time-picker--lg">
-      <div class="rux--time-picker__input">
-        <label class="rux--label" for="tp-1">Time</label>
-        <input id="tp-1" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5">
-      </div>
-      <div class="rux--select rux--select--inline rux--time-picker__select">
-        <div class="rux--select-input--inline__wrapper">
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-1">Time</label>
+      <div class="rux--time-picker rux--time-picker--lg">
+        <div class="rux--time-picker__input">
+          <input id="tp-1" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5">
+        </div>
+        <div class="rux--select rux--time-picker__select">
           <select class="rux--select-input" aria-label="Period">
             <option class="rux--select-option" value="am">AM</option>
             <option class="rux--select-option" value="pm">PM</option>
           </select>
           <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
         </div>
-      </div>
-      <div class="rux--select rux--select--inline rux--time-picker__select">
-        <div class="rux--select-input--inline__wrapper">
+        <div class="rux--select rux--time-picker__select">
           <select class="rux--select-input" aria-label="Time zone">
             <option class="rux--select-option" value="utc">UTC</option>
             <option class="rux--select-option" value="cet">CET</option>
@@ -4509,26 +4537,36 @@
       </div>
     </div>
 
-    <div class="rux--time-picker rux--time-picker--lg rux--time-picker--warning">
-      <div class="rux--time-picker__input">
-        <label class="rux--label" for="tp-4">Warning</label>
-        <input id="tp-4" class="rux--text-input rux--time-picker__input-field" type="text" value="03:00" maxlength="5">
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-4">Warning</label>
+      <div class="rux--time-picker rux--time-picker--lg rux--time-picker--warning">
+        <div class="rux--time-picker__input">
+          <input id="tp-4" class="rux--text-input rux--time-picker__input-field" type="text" value="03:00" maxlength="5">
+        </div>
       </div>
       <div class="rux--form-requirement">Outside business hours</div>
     </div>
 
-    <div class="rux--time-picker rux--time-picker--lg rux--time-picker--readonly">
-      <div class="rux--time-picker__input">
-        <label class="rux--label" for="tp-5">Read-only</label>
-        <input id="tp-5" class="rux--text-input rux--time-picker__input-field" type="text" value="12:00" maxlength="5" readonly>
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-5">Read-only</label>
+      <div class="rux--time-picker rux--time-picker--lg rux--time-picker--readonly">
+        <div class="rux--time-picker__input">
+          <input id="tp-5" class="rux--text-input rux--time-picker__input-field" type="text" value="12:00" maxlength="5" readonly>
+        </div>
       </div>
     </div>
 
-    <div class="rux--time-picker rux--time-picker--sm rux--time-picker--invalid" data-invalid>
-      <div class="rux--time-picker__input">
-        <label class="rux--label" for="tp-2">Invalid · small</label>
-        <input id="tp-2" class="rux--text-input rux--time-picker__input-field rux--time-picker__input-field-error" type="text" value="99:99" data-invalid aria-invalid="true">
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-2">Invalid · small</label>
+      <div class="rux--time-picker rux--time-picker--sm rux--time-picker--invalid" data-invalid>
+        <div class="rux--time-picker__input">
+          <input id="tp-2" class="rux--text-input rux--time-picker__input-field rux--time-picker__input-field-error" type="text" value="99:99" data-invalid aria-invalid="true">
+          <div class="rux--time-picker__error__icon">
+            <svg class="rux--checkbox__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+          </div>
+        </div>
       </div>
+      <div class="rux--form-requirement">Not a valid time</div>
     </div>
   </div>
 </section>
