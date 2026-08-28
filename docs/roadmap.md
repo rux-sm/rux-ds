@@ -1136,9 +1136,17 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > expand chevron both did. Where CSS rotates an icon, the base glyph is arithmetic:
 > read the rotations and solve for the direction that makes both states correct.
 >
+> **12. The kernel's default is wrong twice, in opposite directions.** A hover tooltip
+> must not dismiss what is below it (`dismissOthers: false`); a side nav must not be
+> dismissed by a press outside it (`dismissOn: { outside: false }`), because a nav panel
+> is part of the page rather than a surface floating over it. Both are one-line opt-outs
+> on a default that is right for everything else, which is the shape a good default has.
+>
 > Landed: the kernel, `popover`, `menu`, `list-box`, `tabs`, `accordion`, `data-table`,
-> `form-controls` (toggle, number steppers, search clear, checkbox indeterminate) and
-> `modal`. 67 KB of the 90 KB budget. Only the UI shell is left in the harness. Popover carries tooltip and menu carries
+> `form-controls` (toggle, number steppers, search clear, checkbox indeterminate),
+> `ui-shell` and `modal`. **72 KB of the 90 KB budget, and every component behaviour is
+> out of the harness.** What remains unwritten is notification and tag dismiss, and
+> tile's expandable and selectable states. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

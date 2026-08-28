@@ -16,7 +16,7 @@
 // Moved to js/, with real focus management, keyboard support and ARIA:
 //   modal · popover · tooltip · menu · overflow menu · list box · tabs ·
 //   accordion · data table · toggle · number steppers · search clear ·
-//   checkbox indeterminate
+//   checkbox indeterminate · UI shell
 //
 // Deleted outright, because the component no longer ships (Phase 3):
 //   copy button (CUT) · content switcher (CUT) · toggletip (CUT) ·
@@ -24,7 +24,10 @@
 // Their fragments live in sink/deferred/. Driving markup that is not on the
 // page is not harmless — it is code nobody can test and nobody will delete.
 //
-// Still here, awaiting its module: the UI shell.
+// Still here, and staying: the two demo conveniences that were never
+// component behaviour — cancelling in-page anchor jumps so a clickable tile
+// does not throw the reader up the page, and the theme switcher. Neither
+// belongs to a component, so neither has a module to move to.
 //
 (() => {
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -54,25 +57,6 @@
   // ---- theme -------------------------------------------------------------
   $$('[data-set-theme]').forEach(b =>
     b.addEventListener('click', () => document.documentElement.dataset.theme = b.dataset.setTheme));
-
-  // ---- UI shell: hamburger toggle + side nav submenus --------------------
-  on('.rux--header__menu-toggle', 'click', btn => {
-    const header = btn.closest('.rux--header');
-    const nav = header?.querySelector('.rux--side-nav');
-    if (!nav) return;
-    const opening = btn.getAttribute('aria-expanded') !== 'true';
-    nav.style.inlineSize = opening ? '' : '0';
-    nav.classList.toggle('rux--side-nav--expanded', opening);
-    btn.setAttribute('aria-expanded', String(opening));
-  });
-  on('.rux--side-nav__submenu', 'click', btn => {
-    const item = btn.closest('.rux--side-nav__item');
-    const menu = item?.querySelector('.rux--side-nav__menu');
-    if (!menu) return;
-    const open = btn.getAttribute('aria-expanded') !== 'true';
-    btn.setAttribute('aria-expanded', String(open));
-    menu.hidden = !open;
-  });
 
   // ---- dismissal is not this file's job any more --------------------------
   // Escape and outside-press both lived here and both are gone. js/overlay.js

@@ -73,6 +73,7 @@ ${sections.join('\n\n')}
 <script src="js/accordion.js"></script>
 <script src="js/data-table.js"></script>
 <script src="js/form-controls.js"></script>
+<script src="js/ui-shell.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>

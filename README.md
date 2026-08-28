@@ -39,7 +39,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 67 KB of a 90 KB budget — kernel · popover · menu · list-box · tabs · accordion · data-table · form-controls · modal |
+| Behaviour JS | 72 KB of a 90 KB budget — kernel · popover · menu · list-box · tabs · accordion · data-table · form-controls · ui-shell · modal |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 
@@ -145,14 +145,15 @@ looking at it — twice now it has been the only thing that found the bug (roadm
 
 ### The sink is interactive — the system is not, yet
 
-`sink/harness.js` drives what Phase 5 has not reached yet — the UI shell, and the two
-demo conveniences that are not component behaviour at all — by toggling the state classes
-Carbon's CSS already reacts to. **It is not the design system's behaviour layer**, and it
-is shrinking: modal, popover, tooltip, menu, overflow menu, list box and tabs have moved
-to `js/`, and the blocks driving CUT or DEFERRED components — copy button, content
-switcher, tree view, slider, toggletip, combo box, multiselect — were deleted rather than
-moved, because driving markup that is not on the page is code nobody can test and nobody
-will delete. **390 lines have become 83.** The phase is done when the file is empty. Roadmap §4.1.8.
+`sink/harness.js` is **down to two demo conveniences that were never component
+behaviour**: cancelling in-page anchor jumps so a clickable tile does not throw the
+reader up the page, and the theme switcher. Everything else has gone. Modal, popover,
+tooltip, menu, overflow menu, list box, tabs, accordion, data table, the form controls
+and the UI shell all moved to `js/` with real focus management, keyboard support and
+ARIA; the blocks driving CUT or DEFERRED components — copy button, content switcher,
+tree view, slider, toggletip, combo box, multiselect — were deleted rather than moved,
+because driving markup that is not on the page is code nobody can test and nobody will
+delete. **390 lines have become 67.** The phase is done when the file is empty. Roadmap §4.1.8.
 
 ### Known gap — closed by the strip
 
