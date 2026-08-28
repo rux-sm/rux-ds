@@ -150,7 +150,17 @@
 
 <section class="ks-sec" id="buttons">
     <h2>Buttons</h2><p>kinds · sizes · states</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-button--default and the kind
+         stories, plus button-set-of-buttons and the xs recipe, 2026-08-28 -->
+    <!--
+      One finding recorded: `inline-loading__animation` inside a loading button.
+      Carbon nests that animation in `inline-loading`, but no story renders
+      btn--loading at all — the class is in check-tags' no-reference list — so
+      there is no sampled composition to match. The pairing follows the CSS,
+      which scopes btn--loading to `.rux--btn-set .rux--btn.rux--btn--loading`.
+      The fluid btn-set variants the omissions report lists are a separate
+      layout this fragment does not demo.
+    -->
     <div class="ks-row">
       <button type="button" class="rux--btn rux--btn--primary">Primary</button>
       <button type="button" class="rux--btn rux--btn--secondary">Secondary</button>
@@ -1560,8 +1570,16 @@
 
 <section class="ks-sec" id="grid">
   <h2>Grid</h2><p>16 columns · spans · condensed · narrow</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Notes are about tokens, not structure. -->
+  <!-- PROVENANCE: rendered-dom · elements-grid--default, --subgrid, --narrow
+       and --condensed, 2026-08-28 · supersedes f9f5414, which claimed a React
+       DOM diff the fragment could not name -->
+  <!--
+    Two findings recorded rather than changed. The reference's default story
+    spans columns with BREAKPOINT-PREFIXED classes (`sm:col-span-4`), so a bare
+    `col-span-N` appears there only inside a subgrid — the same idiom either
+    way, and ours has a rule behind it. And the responsive and subgrid span sets
+    the omissions report lists are variants this fragment does not demo.
+  -->
   <!--
     .rux--css-grid sets grid-template-columns: repeat(var(--rux-grid-columns),
     minmax(0,1fr)) and --rux-grid-columns is set responsively (4 / 8 / 16).
@@ -2757,14 +2775,34 @@
 
 <section class="ks-sec" id="dialog">
   <h2>Dialog</h2><p>the newer primitive under modal · two-button and three-button footers</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Compound pair corrected from the CSS. -->
+  <!-- PROVENANCE: rendered-dom · preview-dialog--modal, --non-modal,
+       --danger-dialog, --passive-dialog and --with-scrolling-content,
+       2026-08-28 · supersedes f9f5414, which claimed a React DOM diff the
+       fragment could not name -->
+  <!--
+    The close control is not a loose absolutely-positioned button, which is what
+    this fragment had — inline styles and all. Carbon wraps it in
+    `dialog__header-controls`, and the button is a real Button
+    (`dialog__close btn btn--ghost btn--icon-only`) whose glyph carries
+    `icon__close` — dropped here for having no rule in @carbon/styles
+    (§4.1.12). The inline positioning went with the wrapper that makes it
+    unnecessary.
+
+    Every remaining nesting finding is the icon-tooltip popover the reference
+    wraps the close button in, which the sink declines on the combo-button
+    precedent, plus the footer buttons: no story puts a ghost button in a
+    dialog footer, though that is what the three-button footer is for.
+  -->
   <div class="ks-grid">
     <div class="rux--dialog-container" style="position:relative">
       <div class="rux--dialog__header">
         <h2 class="rux--dialog-header__label">Section</h2>
         <h2 class="rux--dialog-header__heading">Dialog heading</h2>
-        <button type="button" class="rux--dialog__close" aria-label="Close" style="position:absolute;inset-block-start:0;inset-inline-end:0"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button>
+        <div class="rux--dialog__header-controls">
+          <button type="button" class="rux--dialog__close rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
       </div>
       <!--
         Both classes on ONE element, corrected 2026-08-26. Carbon defines
@@ -3984,28 +4022,52 @@
 
 <section class="ks-sec" id="code-snippet">
   <h2>Code snippet</h2><p>inline · single line · multi line</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-codesnippet--inline, --singleline
+       and --multiline with their disabled recipes, 2026-08-28 -->
+  <!--
+    THE SNIPPET BUTTONS ARE BUTTONS, the third component in this sweep to be
+    missing that (copy-button and the icon-only content switcher were the
+    others). The copy control is `copy-btn copy btn btn--sm layout--size-sm
+    btn--primary btn--icon-only` and the expand control adds `btn--ghost`;
+    this fragment carried only the snippet-specific classes, so neither had a
+    box or a kind. `snippet-button` went with them — the reference never emits
+    it and @carbon/styles has no rule for it.
+
+    Not copied: the icon-tooltip popover wrapping the copy button in the
+    reference, on the combo-button precedent. That is what the nesting report
+    means when it says Carbon puts copy-btn inside `tooltip-trigger__wrapper`.
+  -->
   <div style="display:grid;gap:1.5rem;max-width:36rem">
     <div>
       <!--
-        DELIBERATE divergence, kept against the reference: Carbon's inline
-        snippet is a copy BUTTON (button.snippet.snippet--inline.copy.btn…)
-        because React wires click-to-copy into it. This system's static inline
-        snippet is a <code> element — the semantic choice for inert code, and
-        the form Carbon itself renders when the copy affordance is off. The
-        interactive form belongs to Phase 5 behaviours.
+        REVERSED 2026-08-28. The 2026-08-27 adjudication recorded this as a
+        deliberate divergence and rendered it on a <code>, reasoning that inert
+        code is semantically a code element. check-compound then failed the
+        moment the other snippet buttons got their Button classes: Carbon
+        writes `.snippet--inline.btn` as a COMPOUND, so within this system the
+        inline snippet is one element that is both. The earlier call was mine
+        and it was wrong — an inline CodeSnippet in Carbon is a copy button,
+        and a <code> cannot carry the classes that make it one. Both KNOWN
+        entries in check-tags go with it.
+
+        The child is a <code>, as the reference renders it, and that matters:
+        `.rux--copy` sets `font-size: 0` to swallow stray text, and the code
+        element is what re-establishes a readable size. With a <span> there the
+        snippet measured 4px wide.
       -->
-      <code class="rux--snippet rux--snippet--inline"><span>npm run build</span></code>
+      <button type="button" class="rux--snippet rux--snippet--inline rux--copy rux--btn rux--btn--primary rux--btn--icon-only">
+        <code>npm run build</code>
+      </button>
     </div>
     <div class="rux--snippet rux--snippet--single">
       <div class="rux--snippet-container"><pre><code>node tools/build.mjs</code></pre></div>
-      <button type="button" class="rux--snippet-button rux--copy-btn" aria-label="Copy">
+      <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy">
         <span class="rux--copy-btn__feedback">Copied</span>
       </button>
     </div>
     <div class="rux--snippet rux--snippet--single rux--snippet--disabled">
       <div class="rux--snippet-container"><pre><code>npm run verify   # disabled</code></pre></div>
-      <button type="button" class="rux--snippet-button rux--copy-btn" aria-label="Copy" disabled>
+      <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy" disabled>
         <span class="rux--copy-btn__feedback">Copied</span>
       </button>
     </div>
@@ -4013,7 +4075,7 @@
       <div class="rux--snippet-container"><pre><code>@use "@carbon/styles/scss/config" with ($prefix: "rux");
 @use "@carbon/styles/scss/theme";
 @use "@carbon/styles/scss/components/button";</code></pre></div>
-      <button type="button" class="rux--snippet-btn--expand">
+      <button type="button" class="rux--snippet-btn--expand rux--btn rux--btn--sm rux--layout--size-sm rux--btn--ghost">
         <span class="rux--snippet-btn--text">Show more</span>
       </button>
     </div>
@@ -4145,7 +4207,15 @@
 
 <section class="ks-sec" id="menu-button">
   <h2>Menu button</h2><p>single trigger opening a menu</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-menubutton--default with its open
+       and open-lg recipes, plus --with-icons and --with-dividers, 2026-08-28 -->
+  <!--
+    One finding recorded: this demo triggers from a TERTIARY button where every
+    sampled menu button is primary. Both are Button kinds and the trigger class
+    is the same; the reference simply has no tertiary sample. The open menu
+    itself — `menu menu--open menu--shown` — is demoed in the menu fragment,
+    which owns those classes.
+  -->
   <div class="ks-row">
     <div class="rux--menu-button__container">
       <button type="button" class="rux--btn rux--btn--primary rux--menu-button__trigger" aria-haspopup="true" aria-expanded="false">Actions</button>

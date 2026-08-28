@@ -52,12 +52,6 @@
 //
 import { readFileSync, readdirSync } from 'node:fs';
 
-// Two references, because two packages ship the components this system compiles.
-// @carbon/styles pulls in side-panel, and @carbon/react has no side-panel at all —
-// it lives in @carbon/ibm-products, whose Storybook is a separate origin with its
-// own `c4p--` prefix. The class NAMES are identical: all 19 that story emits are
-// defined in our CSS, so normalising the prefix away makes it a valid reference
-// for exactly the same check.
 // class -> { tag, reason }: the adjudicated residue. The reason here is the
 // summary; the fragment carries the full account next to the markup.
 const KNOWN = {
@@ -65,13 +59,18 @@ const KNOWN = {
   'btn--ghost':             { tag: 'a', reason: 'ghost link button, same href form (buttons.html)' },
   'btn--disabled':          { tag: 'a', reason: 'the class-form disabled exists FOR anchors (buttons.html)' },
   'layout--size-xl':        { tag: 'button', reason: 'no story renders an xl button; pairing on the button is Carbon idiom (buttons.html)' },
-  'snippet':                { tag: 'code', reason: 'static inline snippet on <code>; the button form is the JS copy affordance (code-snippet.html)' },
-  'snippet--inline':        { tag: 'code', reason: 'same divergence as snippet (code-snippet.html)' },
   'contained-list__label':  { tag: 'h3', reason: 'a heading where Carbon uses a div + ARIA (contained-list.html)' },
   'tile--disabled':         { tag: 'div', reason: 'classic selectable tile is div[role=checkbox]; only the feature-flag story disables, as a label (tile.html)' },
   'tree-node--active':      { tag: 'li', reason: 'active sampled only in the link tree, on <a>; non-link nodes are LIs (treeview.html)' },
 };
 
+// Four references, because two packages ship the components this system
+// compiles and each origin was harvested twice — once as its stories render,
+// once with the state recipes. @carbon/styles pulls in side-panel and
+// page-header, and @carbon/react has neither; they live in
+// @carbon/ibm-products, whose Storybook is a separate origin with its own
+// `c4p--` prefix. The class NAMES are identical, so normalising the prefix away
+// makes it a valid reference for exactly the same check.
 const REF_PATHS = [
   'docs/carbon-react-dom.json',           // @carbon/react, 505 stories
   'docs/carbon-ibm-products-dom.json',    // @carbon/ibm-products: side-panel, page-header, create pattern

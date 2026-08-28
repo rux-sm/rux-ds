@@ -1,6 +1,16 @@
 <section class="ks-sec" id="buttons">
     <h2>Buttons</h2><p>kinds · sizes · states</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-button--default and the kind
+         stories, plus button-set-of-buttons and the xs recipe, 2026-08-28 -->
+    <!--
+      One finding recorded: `inline-loading__animation` inside a loading button.
+      Carbon nests that animation in `inline-loading`, but no story renders
+      btn--loading at all — the class is in check-tags' no-reference list — so
+      there is no sampled composition to match. The pairing follows the CSS,
+      which scopes btn--loading to `.rux--btn-set .rux--btn.rux--btn--loading`.
+      The fluid btn-set variants the omissions report lists are a separate
+      layout this fragment does not demo.
+    -->
     <div class="ks-row">
       <button type="button" class="rux--btn rux--btn--primary">Primary</button>
       <button type="button" class="rux--btn rux--btn--secondary">Secondary</button>

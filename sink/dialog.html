@@ -1,13 +1,33 @@
 <section class="ks-sec" id="dialog">
   <h2>Dialog</h2><p>the newer primitive under modal · two-button and three-button footers</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Compound pair corrected from the CSS. -->
+  <!-- PROVENANCE: rendered-dom · preview-dialog--modal, --non-modal,
+       --danger-dialog, --passive-dialog and --with-scrolling-content,
+       2026-08-28 · supersedes f9f5414, which claimed a React DOM diff the
+       fragment could not name -->
+  <!--
+    The close control is not a loose absolutely-positioned button, which is what
+    this fragment had — inline styles and all. Carbon wraps it in
+    `dialog__header-controls`, and the button is a real Button
+    (`dialog__close btn btn--ghost btn--icon-only`) whose glyph carries
+    `icon__close` — dropped here for having no rule in @carbon/styles
+    (§4.1.12). The inline positioning went with the wrapper that makes it
+    unnecessary.
+
+    Every remaining nesting finding is the icon-tooltip popover the reference
+    wraps the close button in, which the sink declines on the combo-button
+    precedent, plus the footer buttons: no story puts a ghost button in a
+    dialog footer, though that is what the three-button footer is for.
+  -->
   <div class="ks-grid">
     <div class="rux--dialog-container" style="position:relative">
       <div class="rux--dialog__header">
         <h2 class="rux--dialog-header__label">Section</h2>
         <h2 class="rux--dialog-header__heading">Dialog heading</h2>
-        <button type="button" class="rux--dialog__close" aria-label="Close" style="position:absolute;inset-block-start:0;inset-inline-end:0"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button>
+        <div class="rux--dialog__header-controls">
+          <button type="button" class="rux--dialog__close rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
       </div>
       <!--
         Both classes on ONE element, corrected 2026-08-26. Carbon defines

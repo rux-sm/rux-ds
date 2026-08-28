@@ -1,7 +1,15 @@
 <section class="ks-sec" id="grid">
   <h2>Grid</h2><p>16 columns · spans · condensed · narrow</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference
-       · f9f5414 claims a React DOM diff; the fragment records no reference. Notes are about tokens, not structure. -->
+  <!-- PROVENANCE: rendered-dom · elements-grid--default, --subgrid, --narrow
+       and --condensed, 2026-08-28 · supersedes f9f5414, which claimed a React
+       DOM diff the fragment could not name -->
+  <!--
+    Two findings recorded rather than changed. The reference's default story
+    spans columns with BREAKPOINT-PREFIXED classes (`sm:col-span-4`), so a bare
+    `col-span-N` appears there only inside a subgrid — the same idiom either
+    way, and ours has a rule behind it. And the responsive and subgrid span sets
+    the omissions report lists are variants this fragment does not demo.
+  -->
   <!--
     .rux--css-grid sets grid-template-columns: repeat(var(--rux-grid-columns),
     minmax(0,1fr)) and --rux-grid-columns is set responsively (4 / 8 / 16).
