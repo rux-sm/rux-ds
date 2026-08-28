@@ -131,6 +131,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
 | `docs/roadmap.md` | Canonical plan and decision log |
+| `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
 
 ## The one rule
@@ -158,7 +159,7 @@ Eleven, because none is sufficient alone — see roadmap §4.1.2 for the bug tha
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
-| `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
+| `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |
 

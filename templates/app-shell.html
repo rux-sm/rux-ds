@@ -32,6 +32,15 @@
 <body>
 <!-- PROVENANCE: rendered-dom · components-ui-shell-header--header-w-navigation-actions-and-side-nav,
      --header-w-side-nav and --side-nav-rail-w-header, 2026-08-28 -->
+<!-- BEHAVIOUR: verified-live · https://carbondesignsystem.com/elements/2x-grid/usage/
+     read at 1280 and 900 on 2026-08-28. Confirmed there, not inferred here:
+     `header__menu-toggle__hidden` is present and the button computes
+     display:none at 1280; the side nav is persistent and keeps `--ux` at both
+     widths; the content region is cleared by a fixed inset, not a grid share.
+     NOT FROM CARBON: that page opens and closes its nav with
+     `LeftNavWrapper-module--expanded`, a gatsby-theme-carbon class, so its
+     toggle mechanism is the docs site's and is no evidence about the
+     component. Its white nav is a site class too. -->
 <!--
   THE APP SHELL. Copy this file, replace the marked regions, delete the rest of
   this comment. It is the frame the other templates are built on: each of them

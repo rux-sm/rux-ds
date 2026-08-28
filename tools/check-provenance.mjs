@@ -43,10 +43,10 @@
 // So this gate measures declaration, not verification, and every rule above is
 // universal: no fragment needs an entry anywhere to satisfy it.
 //
-import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { markupFiles } from './lib/sources.mjs';
 
-const DIR = 'sink';
+
 const KINDS = {
   'rendered-dom': 'class tree read out of the live React page',
   'source': 'read from an implementation — .tsx, a render(), or shadow DOM',
@@ -55,12 +55,34 @@ const KINDS = {
 const NEEDS_REFERENCE = new Set(['rendered-dom', 'source']);
 const NEEDS_DATE = new Set(['rendered-dom']);
 
-const files = readdirSync(DIR).filter(f => f.endsWith('.html')).sort();
+// TEMPLATES DECLARE TWICE. A fragment is a still: PROVENANCE says where its
+// markup was read from and that is the whole of what it claims. A template
+// RUNS — it carries the behaviour layer and a reader copies it expecting the
+// thing to work — so it also declares BEHAVIOUR: what was compared against a
+// live Carbon reference, and when.
+//
+// The vocabulary separates evidence from inference on purpose. `verified-live`
+// means a running Carbon page was opened and specific properties were read off
+// it. `carbon-css` means the claim was derived from the stylesheet, which is
+// how four wrong answers about the UI shell were produced in one sitting: the
+// cascade tells you the mechanism and says nothing about the intent. It is
+// allowed, like `inferred`, because a weak claim honestly labelled beats a
+// strong one nobody can check — but it is not the same thing and does not read
+// as though it were.
+const BEHAVIOUR_KINDS = {
+  'verified-live': 'a running Carbon page was opened and its behaviour read',
+  'carbon-css': 'derived from the compiled stylesheet, NOT from a running page',
+  'none': 'the template has no behaviour of its own to verify',
+};
+const B_NEEDS_REFERENCE = new Set(['verified-live']);
+const B_NEEDS_DATE = new Set(['verified-live']);
+
+const files = markupFiles();
 
 const rows = [];
 const faults = [];
 for (const f of files) {
-  const path = join(DIR, f);
+  const path = f.path;
   const html = readFileSync(path, 'utf8');
   const comments = [...html.matchAll(/<!--([\s\S]*?)-->/g)].map(m => m[1]);
   const carrying = comments.filter(c => /PROVENANCE:/.test(c));
@@ -99,7 +121,39 @@ for (const f of files) {
     continue;
   }
 
-  rows.push({ file: f.replace(/\.html$/, ''), kind });
+  // A template must also say what its behaviour was checked against.
+  if (f.root !== 'sink') {
+    const bearing = comments.filter(c => /BEHAVIOUR:/.test(c));
+    if (!bearing.length) {
+      faults.push(['NO BEHAVIOUR', path,
+        `a template runs — add a BEHAVIOUR comment: ${Object.keys(BEHAVIOUR_KINDS).join(' | ')}`]);
+      continue;
+    }
+    const bm = bearing[0].match(/^\s*BEHAVIOUR:\s*([a-z-]+)([\s\S]*)$/);
+    if (!bm) {
+      faults.push(['MALFORMED', path, `expected "BEHAVIOUR: <kind> · <reference> · <date>"`]);
+      continue;
+    }
+    const [, bkind, brest] = bm;
+    if (!(bkind in BEHAVIOUR_KINDS)) {
+      faults.push(['UNKNOWN', path,
+        `behaviour kind "${bkind}" — known: ${Object.keys(BEHAVIOUR_KINDS).join(' ')}`]);
+      continue;
+    }
+    if (B_NEEDS_REFERENCE.has(bkind) && !/https?:\/\//.test(brest)) {
+      faults.push(['UNBACKED', path,
+        `"${bkind}" must name the page it was read from, as a URL`]);
+      continue;
+    }
+    if (B_NEEDS_DATE.has(bkind) && !/\d{4}-\d{2}-\d{2}/.test(brest)) {
+      faults.push(['UNDATED', path, `"${bkind}" must carry a YYYY-MM-DD — the page it cites moves`]);
+      continue;
+    }
+    rows.push({ file: f.name, kind, behaviour: bkind });
+    continue;
+  }
+
+  rows.push({ file: f.name, kind });
 }
 
 const of = kind => rows.filter(r => r.kind === kind).map(r => r.file);
@@ -113,12 +167,16 @@ if (flag && flag.startsWith('--')) {
 }
 
 for (const [tag, path, why] of faults) {
-  console.log(`  ${tag.padEnd(11)}${path}`);
-  console.log(`  ${''.padEnd(11)}${why}`);
+  console.log(`  ${tag.padEnd(14)}${path}`);
+  console.log(`  ${''.padEnd(14)}${why}`);
 }
 
 const tally = Object.keys(KINDS).map(k => `${of(k).length} ${k}`).join(' · ');
-console.log(`\n  fragments ${files.length} · labelled ${rows.length} · ${tally}`);
+const tpl = rows.filter(r => r.behaviour);
+const btally = Object.keys(BEHAVIOUR_KINDS)
+  .map(k => `${tpl.filter(r => r.behaviour === k).length} ${k}`).join(' · ');
+console.log(`\n  files ${files.length} · labelled ${rows.length} · ${tally}`);
+console.log(`  templates ${tpl.length} · behaviour ${btally}`);
 if (faults.length) console.log(`  unlabelled or malformed ${faults.length}`);
 console.log();
 process.exit(faults.length ? 1 : 0);

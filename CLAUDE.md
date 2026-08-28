@@ -77,6 +77,13 @@ shell included — §4.6 asks for runnable skeletons, so they duplicate rather t
 Form, detail, empty state and error state are not written yet; until they are,
 `sink/*.html` is still the markup to copy for a page body.
 
+**A template's behaviour is verified against a RUNNING Carbon page, never
+derived from `css/rux.css`.** The stylesheet gives the mechanism and says
+nothing about the intent; four wrong shell answers in one sitting came from
+reading it and guessing. `docs/verifying-templates.md` is the procedure, and
+`check-provenance` requires every template to carry a `BEHAVIOUR:` comment
+naming the page, the date, and what was NOT covered.
+
 **Every page carries the sprite; every `<use>` is `#i-name`.** `build-sink` inlines it
 into `kitchen-sink.html`, `npm run icons` inlines it into each template between
 `SPRITE:BEGIN`/`SPRITE:END`. Referencing `../assets/icons.svg#i-name` instead is a
