@@ -25,6 +25,17 @@
 //               name added or removed without re-running the quarry, which
 //               leaves the committed sprite lying about what it holds
 //
+// THE TWO ROOTS HAVE OPPOSITE POLARITY, because the sprite reaches them
+// differently. build-sink.mjs INLINES assets/icons.svg into kitchen-sink.html,
+// so a fragment writes `#i-name` and an external reference would be a fetch the
+// committed sprite exists to avoid. A template is copied, not assembled, and
+// inlining 15.8 KB into each of six of them to say the same thing is the
+// duplication §4.6 warns about — so a template writes
+// `../assets/icons.svg#i-name`, and a BARE `#i-name` there is the broken case:
+// nothing on the page defines it and the icon silently paints nothing. Each
+// root is therefore checked against the form that works for it, and the form
+// that works for the other one is a fault.
+//
 // WHAT IT IS BLIND TO: WHICH GLYPH IS RIGHT. This can prove #i-chevron--left
 // resolves. It cannot know the row expander wanted #i-chevron--right, which is
 // the second defect that shipped in the same cell — the rotation turned a left
@@ -52,7 +63,8 @@
 // this names the fourth line, before the restored component renders blank.
 //
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname, normalize } from 'node:path';
+import { markupFiles } from './lib/sources.mjs';
 
 const SINK = 'sink';
 const DEFERRED = join(SINK, 'deferred');
@@ -104,25 +116,58 @@ for (const name of symbols) if (!listed.includes(name)) {
   faults.push(['STALE', SPRITE, `${name} is in the sprite but not listed in ${QUARRY} — run \`npm run icons\``]);
 }
 
-// ── every <use> the shipped sink makes ─────────────────────────────────────
-const shipped = htmlIn(SINK).flatMap(usesIn);
+// ── every <use> in a fragment or a template ────────────────────────────────
+const sources = markupFiles();
+const shipped = sources.flatMap(f => usesIn(f.path).map(u => ({ ...u, root: f.root })));
 const used = new Set();
 
+const advise = id =>
+  ` Add "${id.replace(/^i-/, '')}" to ${QUARRY} and run \`npm run icons\``;
+
 for (const u of shipped) {
+  const where = `${u.path}:${u.line}`;
   if (u.href === null) {
-    faults.push(['MALFORMED', `${u.path}:${u.line}`, `<use> with no href — it can only paint nothing`]);
+    faults.push(['MALFORMED', where, `<use> with no href — it can only paint nothing`]);
     continue;
   }
-  if (!u.href.startsWith('#')) {
-    faults.push(['EXTERNAL', `${u.path}:${u.line}`, `href="${u.href}" leaves the document;` +
-      ` the sprite is committed so the sink never fetches an icon`]);
+  const bare = u.href.startsWith('#');
+
+  if (u.root === 'sink') {
+    if (!bare) {
+      faults.push(['EXTERNAL', where, `href="${u.href}" leaves the document, but the sprite is` +
+        ` inlined into kitchen-sink.html — a fragment writes "#i-name"`]);
+      continue;
+    }
+    const id = u.href.slice(1);
+    used.add(id);
+    if (!defined.has(id)) {
+      faults.push(['UNRESOLVED', where, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
+        ` Valid SVG, paints nothing.` + advise(id)]);
+    }
     continue;
   }
-  const id = u.href.slice(1);
+
+  // templates: the sprite is not inlined, so the reference must reach the file
+  if (bare) {
+    faults.push(['BARE', where, `href="${u.href}" — a template inlines no sprite, so this defines` +
+      ` nothing and paints nothing. Write "${'../'.repeat(u.path.split('/').length - 1)}${SPRITE}${u.href}"`]);
+    continue;
+  }
+  const [file, id] = u.href.split('#');
+  if (!id) {
+    faults.push(['MALFORMED', where, `href="${u.href}" names a file but no symbol`]);
+    continue;
+  }
+  const resolved = normalize(join(dirname(u.path), file));
+  if (resolved !== normalize(SPRITE)) {
+    faults.push(['STRAY', where, `href="${u.href}" resolves to ${resolved}, not ${SPRITE}` +
+      ` — there is one sprite and it is committed`]);
+    continue;
+  }
   used.add(id);
   if (!defined.has(id)) {
-    faults.push(['UNRESOLVED', `${u.path}:${u.line}`, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
-      ` Valid SVG, paints nothing. Add "${id.replace(/^i-/, '')}" to ${QUARRY} and run \`npm run icons\``]);
+    faults.push(['UNRESOLVED', where, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
+      ` The fetch succeeds and the glyph is absent.` + advise(id)]);
   }
 }
 
@@ -143,11 +188,14 @@ for (const [tag, where, why] of faults) {
   console.log(`  ${''.padEnd(12)}${why}`);
 }
 
-const files = htmlIn(SINK).length;
-console.log(`\n  ${shipped.length} <use> in ${files} fragments · ${symbols.length} symbols` +
-  ` · ${used.size} used · ${faults.length} ${faults.length === 1 ? 'fault' : 'faults'}`);
+const frags = sources.filter(f => f.root === 'sink').length;
+const tpls = sources.length - frags;
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+console.log(`\n  ${shipped.length} <use> in ${plural(frags, 'fragment')}` + ` and ${plural(tpls, 'template')}` +
+  ` · ${symbols.length} symbols · ${used.size} used` +
+  ` · ${faults.length} ${faults.length === 1 ? 'fault' : 'faults'}`);
 if (unused.length) {
-  console.log(`  ${unused.length} symbols with no shipped user — CUT, DEFERRED or undemoed; \`--unused\` lists them`);
+  console.log(`  ${unused.length} symbols nothing references — CUT, DEFERRED or undemoed; \`--unused\` lists them`);
 }
 if (deferredMissing.length) {
   console.log(`  sink/deferred references ${deferredMissing.length} symbols the sprite does not carry` +

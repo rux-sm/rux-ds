@@ -125,6 +125,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `assets/icons.svg` | Generated sprite, committed |
 | `tools/` | `build` · `build-sink` · `icons` · `inventory` · `measure` · `check-classes` · `check-tokens` · `check-icons` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` · and two browser-only: `check-a11y.js`, `check-rendered.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
+| `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
 
@@ -147,7 +148,7 @@ Eleven, because none is sufficient alone — see roadmap §4.1.2 for the bug tha
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
-| `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a sprite out of step with `icons.mjs` | **which** glyph a `<use>` points at |
+| `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | **which** glyph a `<use>` points at |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |

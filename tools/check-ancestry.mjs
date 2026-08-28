@@ -63,7 +63,8 @@
 //   node tools/check-ancestry.mjs            gate: fail on anything not in KNOWN
 //   node tools/check-ancestry.mjs --all      show KNOWN entries too
 //
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { markupFiles } from './lib/sources.mjs';
 import { owner, compiled } from './lib/ownership.mjs';
 
 const REF_PATHS = [
@@ -211,10 +212,10 @@ function occurrences(html) {
 const showAll = process.argv.includes('--all');
 const findings = [], accepted = [];
 
-for (const file of readdirSync('sink').filter(f => f.endsWith('.html')).sort()) {
-  const name = file.replace(/\.html$/, '');
+for (const file of markupFiles()) {       // sink/*.html + templates/*.html
+  const name = file.name;
   const seen = new Map();   // class -> Set(missing ancestors)
-  for (const { cls, chain } of occurrences(readFileSync(`sink/${file}`, 'utf8'))) {
+  for (const { cls, chain } of occurrences(readFileSync(file.path, 'utf8'))) {
     const need = required.get(cls);
     if (!need?.size) continue;
     if ((seenIn.get(cls)?.size ?? 0) < MIN_STORIES) continue;   // uncorroborated

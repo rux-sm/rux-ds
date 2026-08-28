@@ -50,7 +50,8 @@
 // each Storybook origin. A Carbon bump can move a tag legitimately, and the
 // answer then is to re-harvest, not to soften this.
 //
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { markupFiles } from './lib/sources.mjs';
 
 // Entries whose fragment moved to sink/deferred/ in the Phase 3 strip are kept
 // rather than deleted: the adjudication behind them is still true, and deleting
@@ -138,13 +139,13 @@ for (const lines of refs) {
     for (const c of classes) (TAGS.get(c) ?? TAGS.set(c, new Set()).get(c)).add(tag);
 }
 
-const files = readdirSync('sink').filter(f => f.endsWith('.html')).sort();
+const files = markupFiles();          // sink/*.html + templates/*.html
 let findings = 0, checked = 0, unknown = 0, known = 0;
 
 for (const file of files) {
   const rows = [];
   const seen = new Map();                       // class -> tags this fragment uses
-  for (const { tag, classes } of elements(readFileSync(`sink/${file}`, 'utf8')))
+  for (const { tag, classes } of elements(readFileSync(file.path, 'utf8')))
     for (const c of classes) (seen.get(c) ?? seen.set(c, new Set()).get(c)).add(tag);
 
   for (const [c, tags] of seen) {
@@ -157,7 +158,7 @@ for (const file of files) {
     }
   }
   if (!rows.length) continue;
-  console.log(`  ${file}`);
+  console.log(`  ${file.path}`);
   for (const [c, mine, theirs] of rows.sort())
     console.log(`      rux--${c}  <${mine}>  Carbon renders it on <${theirs}>`);
   findings += rows.length;
