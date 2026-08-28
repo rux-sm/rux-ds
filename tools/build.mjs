@@ -64,5 +64,5 @@ console.log(`
 
   unminified   ${kb(statSync(OUT).size)}
   minified     ${kb(min.length)}
-  gzipped      ${kb(gzipSync(min, { level: 9 }).length)}
+  gzipped      ${(gzipSync(min, { level: 9 }).length / 1024).toFixed(1)} KB
 `);

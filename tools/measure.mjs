@@ -45,11 +45,37 @@ const PROPOSED = [
   'tag', 'text-area', 'text-input', 'tile', 'toggle', 'tooltip', 'ui-shell',
 ];
 
-const THEME_NAMES = ['white', 'g10', 'g90', 'g100'];
+// THE THEMES COME FROM THE MANIFEST, NOT FROM A HARDCODED ORDER.
+//
+// This file used to take the first N of ['white','g10','g90','g100'], so every
+// 2-theme figure it produced priced white + g10 — while src/app.scss has shipped
+// white + g100 since Phase 3 pass 3 chose "the furthest point from" white. g10 is
+// a near-neighbour of white and compresses against it far better, so the numbers
+// this tool fed into docs/inventory.md and roadmap §2.1 were ~1.3 KB gzipped
+// optimistic for the SHIPPED configuration: 51.5 KB where the built artifact is
+// 52.7 KB. The tool that prices every decision must price what actually ships,
+// so the pair is read from the manifest for the same reason check-coverage reads
+// it — a second copy is a second thing to forget.
+//
+// `--themes N` still works for comparing configurations. Asking for MORE themes
+// than ship measures a hypothetical, so that case uses Carbon's canonical order
+// instead — order changes gzip (a theme adjacent to its near-neighbour compresses
+// better), and the 4-theme baseline in roadmap §2 was measured that way.
+const CANONICAL = ['white', 'g10', 'g90', 'g100'];
+
+function shippedThemes() {
+  const body = readFileSync('src/app.scss', 'utf8')
+    .split('\n').filter(l => !l.trim().startsWith('//')).join('\n');
+  const found = [...body.matchAll(/@include theme\.theme\(themes\.\$([a-z0-9]+)\)/g)].map(m => m[1]);
+  return [...new Set(found)];
+}
+
+const SHIPPED = shippedThemes();
+const themeList = n => n <= SHIPPED.length ? SHIPPED.slice(0, n) : CANONICAL.slice(0, n);
 const work = mkdtempSync(join(tmpdir(), 'ruxds-measure-'));
 
 function build(comps, themeCount) {
-  const themes = THEME_NAMES.slice(0, themeCount);
+  const themes = themeList(themeCount);
   const src = [
     '@use "@carbon/styles/scss/config" with ($prefix: "rux");',
     '@use "@carbon/styles/scss/theme";',
@@ -68,13 +94,16 @@ function build(comps, themeCount) {
   writeFileSync(f, src);
   execFileSync('npx', ['sass', '--load-path=node_modules', '--no-source-map',
     '--style=compressed', f, out], { stdio: ['ignore', 'pipe', 'pipe'] });
-  const css = readFileSync(out, 'utf8');
-  return { min: css.length, gzip: gzipSync(Buffer.from(css), { level: 9 }).length,
+  // The same post-transform build.mjs applies — @carbon/grid hardcodes literal
+  // `--cds-grid-*` names that $prefix cannot reach. Without it this tool measures
+  // a file the project never ships.
+  const css = readFileSync(out, 'utf8').replace(/--cds-grid-/g, '--rux-grid-');
+  return { min: Buffer.byteLength(css), gzip: gzipSync(Buffer.from(css), { level: 9 }).length,
            classes: classNames(css).size };
 }
 
 const argv = process.argv.slice(2);
-let themeCount = 2;
+let themeCount = SHIPPED.length;
 const ti = argv.indexOf('--themes');
 if (ti !== -1) { themeCount = Number(argv[ti + 1]); argv.splice(ti, 2); }
 const adhoc = argv.filter(a => !a.startsWith('-'));
@@ -82,15 +111,15 @@ const adhoc = argv.filter(a => !a.startsWith('-'));
 const jobs = adhoc.length
   ? [[`ad-hoc — ${adhoc.length} components, ${themeCount} theme(s)`, adhoc, themeCount]]
   : [['full — 75 components, 4 themes', ALL, 4],
-     [`proposed keep — ${PROPOSED.length} components, 2 themes`, PROPOSED, 2],
-     [`proposed keep — ${PROPOSED.length} components, 1 theme`, PROPOSED, 1]];
+     [`shipped — ${PROPOSED.length} components, ${SHIPPED.length} themes`, PROPOSED, SHIPPED.length],
+     [`shipped — ${PROPOSED.length} components, 1 theme`, PROPOSED, 1]];
 
-console.log();
+console.log(`\n  themes from src/app.scss: ${SHIPPED.join(' + ')}`);
 for (const [label, comps, themes] of jobs) {
   process.stdout.write(`  ${label.padEnd(46)}`);
   const r = build(comps, themes);
   console.log(`${String(Math.round(r.min / 1024)).padStart(5)} KB min  `
-    + `${String(Math.round(r.gzip / 1024)).padStart(4)} KB gzip  ${String(r.classes).padStart(5)} classes`);
+    + `${(r.gzip / 1024).toFixed(1).padStart(6)} KB gzip  ${String(r.classes).padStart(5)} classes`);
   // What Sass pulled in that the set did not name — the accidental keeps.
   const named = new Set(comps);
   const pulled = [...new Set(comps.flatMap(c => DEPS[c] ?? []))].filter(d => !named.has(d)).sort();
