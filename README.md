@@ -39,7 +39,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 72 KB of a 90 KB budget — kernel · popover · menu · list-box · tabs · accordion · data-table · form-controls · ui-shell · modal |
+| Behaviour JS | 76 KB of a 90 KB budget — kernel · popover · menu · list-box · tabs · accordion · data-table · form-controls · ui-shell · dismiss · modal |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 

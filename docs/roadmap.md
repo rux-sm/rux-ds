@@ -1144,9 +1144,16 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 >
 > Landed: the kernel, `popover`, `menu`, `list-box`, `tabs`, `accordion`, `data-table`,
 > `form-controls` (toggle, number steppers, search clear, checkbox indeterminate),
-> `ui-shell` and `modal`. **72 KB of the 90 KB budget, and every component behaviour is
-> out of the harness.** What remains unwritten is notification and tag dismiss, and
-> tile's expandable and selectable states. Popover carries tooltip and menu carries
+> `ui-shell`, `dismiss` and `modal`. **76 KB of the 90 KB budget, and every component
+> behaviour is out of the harness.** What remains unwritten is tile's expandable and
+> selectable states.
+>
+> **13. Removing an element is a focus decision.** Dismissing the box that holds focus
+> drops the user at `<body>` — the top of the document — and clearing three filter tags
+> in a row is exactly when that hurts. Focus moves to the next dismissible in the group,
+> or the previous one when the last goes, or the group itself when nothing is left; that
+> last case needs `tabindex="-1"` on the group, programmatically focusable and never a
+> tab stop. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

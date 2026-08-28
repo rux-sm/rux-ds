@@ -16,6 +16,9 @@ import { readFileSync } from 'node:fs';
 
 // Carbon's class stem differs from the package name for these.
 export const ALIAS = {
+  // v11 wraps a dismissible tag's contents in `interactive--tag-children`,
+  // which begins with neither `tag` nor any other component name.
+  'tag': ['tag', 'interactive--tag-children'],
   'button': ['btn'], 'number-input': ['number'],
   // data-table is four modules and its classes do not all start with `table`.
   // sort and expandable add row stems; action adds the toolbar and the batch bar.
