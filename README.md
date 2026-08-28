@@ -30,8 +30,9 @@ outside press and the stack deciding which surface a press belongs to all come f
 kernel.
 
 What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports 0 findings, but it reads attributes rather than running an AT, and its focus-ring
-check cannot run in an automated browser at all. See "Picking this up".
+reports 0 findings, but it reads attributes rather than running an AT. Its focus-ring
+check does now run in an automated browser, once the page has focus. See "Picking this
+up".
 
 **Phase 4 (devendor) now runs last.** Execution order
 is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
@@ -49,10 +50,14 @@ is preparation. `templates/` is still empty.
 
 **Blocking §4.5's exit** — one human task, which cannot be automated here:
 
-- Run VoiceOver or NVDA over `kitchen-sink.html` and tab through it by hand. Do it in a
-  focused window: `check-a11y.js`'s focus-ring check refuses to run when
-  `document.hasFocus()` is false, and real key events are not delivered in a headless
-  pane either, so tab order has only been computed, never walked.
+- Run VoiceOver or NVDA over `kitchen-sink.html`. This is the ANNOUNCEMENT pass and
+  nothing here substitutes for it. Do it in a focused window: `check-a11y.js` still
+  refuses its focus-ring check when `document.hasFocus()` is false.
+
+  Two reasons this entry used to give are gone, 2026-08-28. Real key events ARE
+  delivered in an automated pane — a focused button receives a trusted `keydown` — and
+  tabs, menus and the combobox have since been driven by hand that way. Tab ORDER has
+  still only been walked in places, never swept end to end.
 
 **Decisions waiting on you**, each recorded where it applies:
 
@@ -70,14 +75,14 @@ last push, and `npm run verify` runs all ten gates.
 | Components | **31 / 75 compiled** in 34 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 610 `--rux-*` · 1,112 `.rux--*` |
-| Kitchen sink | 31 sections · 424 classes · 0 unresolved |
-| Class coverage | **421 / 711 (59%)** — ratcheted in `docs/coverage.json` |
+| Kitchen sink | 31 sections · 443 classes · 0 unresolved |
+| Class coverage | **430 / 720 (60%)** — ratcheted in `docs/coverage.json` |
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
-| Icons | 58, a 15.8 KB sprite |
+| Icons | 59, a 15.9 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
 | Behaviour JS | 12 modules · 83.5 KB raw, **46% of it comment** · 45 KB of code · **22.7 KB gzipped** |
 
-Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
+Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.
 
 The 44 components not compiled are CUT or DEFER rows in
 [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
@@ -180,8 +185,11 @@ kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and rep
 **0 findings, 5 notes**; the notes are CSS specimens with no trigger, which are not
 meant to be operable. It refuses to run its focus-ring check when `document.hasFocus()`
 is false, because `:focus` cannot match in an unfocused document and the check would
-otherwise report every control on the page. **It is not a screen-reader pass** — that
-needs a human with an AT, and §4.5 stays open until one is done.
+otherwise report every control on the page. When it does run it suppresses transitions
+first: Carbon fades `outline` over 70ms, an automated pane's animation clock never
+advances, and reading mid-fade called 49 rings missing that a key press shows are
+there. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
+stays open until one is done.
 
 **`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
