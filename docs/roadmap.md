@@ -1114,8 +1114,16 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > behaviour is what makes the missing part meaningful — recorded in the fragment, like
 > any other change.
 >
+> **9. A module is allowed to be small, and to say why.** Accordion adds `aria-controls`
+> and adopts the markup's state, and that is all: the heading is a real `<button>` so
+> Enter, Space and disabled are the browser's, and the panel is `display: none` until
+> `__item--active`, so a collapsed section is already out of the accessibility tree.
+> Arrow keys are OPTIONAL in the APG and absent from Carbon React, so they are absent
+> here — adding them would be this system inventing behaviour rather than making
+> Carbon's work. "It barely does anything" is a smell only when nobody has checked.
+>
 > Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`,
-> `js/tabs.js` and `js/modal.js`. 47 KB of the 90 KB budget. Popover carries tooltip and menu carries
+> `js/tabs.js`, `js/accordion.js` and `js/modal.js`. 51 KB of the 90 KB budget. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

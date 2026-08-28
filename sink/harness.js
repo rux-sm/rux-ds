@@ -14,7 +14,8 @@
 // WHAT HAS LEFT THIS FILE, and what is still here.
 //
 // Moved to js/, with real focus management, keyboard support and ARIA:
-//   modal · popover · tooltip · menu · overflow menu · list box · tabs
+//   modal · popover · tooltip · menu · overflow menu · list box · tabs ·
+//   accordion
 //
 // Deleted outright, because the component no longer ships (Phase 3):
 //   copy button (CUT) · content switcher (CUT) · toggletip (CUT) ·
@@ -22,8 +23,8 @@
 // Their fragments live in sink/deferred/. Driving markup that is not on the
 // page is not harmless — it is code nobody can test and nobody will delete.
 //
-// Still here, awaiting their modules: accordion · toggle · number input ·
-// search clear · checkbox indeterminate · UI shell.
+// Still here, awaiting their modules: toggle · number input · search clear ·
+// checkbox indeterminate · UI shell.
 //
 (() => {
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -53,16 +54,6 @@
   // ---- theme -------------------------------------------------------------
   $$('[data-set-theme]').forEach(b =>
     b.addEventListener('click', () => document.documentElement.dataset.theme = b.dataset.setTheme));
-
-  // ---- accordion ---------------------------------------------------------
-  on('.rux--accordion__heading', 'click', h => {
-    const item = h.closest('.rux--accordion__item');
-    const open = item.classList.toggle('rux--accordion__item--active');
-    h.setAttribute('aria-expanded', String(open));
-    // No `hidden` toggle: once __content sits inside __wrapper, Carbon's own
-    // CSS opens and closes the panel from __item--active alone, and setting
-    // hidden as well fights the max-block-size transition.
-  });
 
   // ---- toggle ------------------------------------------------------------
   // Listen on the BUTTON only. <label for> pointing at a button forwards the click
