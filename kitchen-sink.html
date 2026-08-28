@@ -1502,48 +1502,73 @@
 
 <section class="ks-sec" id="shape-indicator">
   <h2>Shape indicator</h2><p>status by shape, so colour is never the only signal</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com
+     preview-statusindicators-preview-shapeindicator--default, 2026-08-27
+     · status modifier sits on the SVG, base on the wrapper div, per the reference.
+     · --incomplete renders black here: its only rule is
+       `path:nth-of-type(2) { fill: status-blue }`, which the sprite blocks. -->
+  <!--
+    --incomplete HAS NO DIRECT FILL. Its only rule is
+    `.rux--shape-indicator--incomplete path:nth-of-type(2) { fill: status-blue }`,
+    so the shape is meant to be an outline with one blue path inside. Through the
+    sprite that selector reaches nothing and the icon renders in the inherited
+    colour. Same root cause as the note in icon-indicator.html.
+  -->
   <!-- Icon per status from web-components/shape-indicator.js:55-65. The --kind
        class supplies `fill` only; the shape itself must be the right SVG. -->
   <div class="ks-row">
-    <div class="rux--shape-indicator rux--shape-indicator--failed"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical"/></svg>Failed</div>
-    <div class="rux--shape-indicator rux--shape-indicator--critical"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical-severity"/></svg>Critical</div>
-    <div class="rux--shape-indicator rux--shape-indicator--high"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>High</div>
-    <div class="rux--shape-indicator rux--shape-indicator--medium"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Medium</div>
-    <div class="rux--shape-indicator rux--shape-indicator--low"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Low</div>
-    <div class="rux--shape-indicator rux--shape-indicator--cautious"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>Cautious</div>
-    <div class="rux--shape-indicator rux--shape-indicator--stable"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-fill"/></svg>Stable</div>
-    <div class="rux--shape-indicator rux--shape-indicator--informative"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Informative</div>
-    <div class="rux--shape-indicator rux--shape-indicator--incomplete"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
-    <div class="rux--shape-indicator rux--shape-indicator--draft"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-stroke"/></svg>Draft</div>
-    <div class="rux--shape-indicator rux--shape-indicator--undefined"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Undefined</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--failed" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical"/></svg>Failed</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--critical" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical-severity"/></svg>Critical</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--high" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>High</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--medium" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Medium</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--low" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Low</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--cautious" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>Cautious</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--stable" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-fill"/></svg>Stable</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--informative" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Informative</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--incomplete" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--draft" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-stroke"/></svg>Draft</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--undefined" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Undefined</div>
   </div>
 </section>
 
 <section class="ks-sec" id="icon-indicator">
   <h2>Icon indicator</h2><p>status set · 16 and 20px</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com
+     preview-statusindicators-preview-iconindicator--default and --default-with-size-20, 2026-08-27
+     · status modifier sits on the SVG, base and --20 on the wrapper div, per the reference.
+     · icons go through the sprite rather than inline paths, so Carbon's
+       `--caution-major path:first-of-type { fill: #000 }` cannot reach them. -->
+  <!--
+    THE SPRITE MAKES CARBON'S PER-PATH RULES INERT. Carbon colours multi-path
+    status icons with descendant rules — `--caution-major path:first-of-type
+    { fill: #000 }` is the black glyph inside the orange triangle. Our icons are
+    <use href="#symbol">, and outer-document CSS does not cross into a <use>
+    shadow tree, so those rules match nothing. Measured in the sink: of 35 such
+    rules across the system, 2 match any element. Every one-path status renders
+    correctly; the multi-path ones lose their inner colour. Not specific to this
+    fragment, and not fixable inside it.
+  -->
   <!-- Icon per status from web-components/icon-indicator.js:50-97. -->
   <div class="ks-row">
-    <div class="rux--icon-indicator rux--icon-indicator--failed"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
-    <div class="rux--icon-indicator rux--icon-indicator--caution-major"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
-    <div class="rux--icon-indicator rux--icon-indicator--caution-minor"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
-    <div class="rux--icon-indicator rux--icon-indicator--undefined"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
-    <div class="rux--icon-indicator rux--icon-indicator--succeeded"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>Succeeded</div>
-    <div class="rux--icon-indicator rux--icon-indicator--normal"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--outline"/></svg>Normal</div>
-    <div class="rux--icon-indicator rux--icon-indicator--in-progress"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-in-progress"/></svg>In progress</div>
-    <div class="rux--icon-indicator rux--icon-indicator--incomplete"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
-    <div class="rux--icon-indicator rux--icon-indicator--not-started"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-dash"/></svg>Not started</div>
-    <div class="rux--icon-indicator rux--icon-indicator--pending"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-pending--filled"/></svg>Pending</div>
-    <div class="rux--icon-indicator rux--icon-indicator--unknown"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-unknown--filled"/></svg>Unknown</div>
-    <div class="rux--icon-indicator rux--icon-indicator--informative"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning-square--filled"/></svg>Informative</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--failed" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--caution-major" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--caution-minor" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--undefined" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--succeeded" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>Succeeded</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--normal" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--outline"/></svg>Normal</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--in-progress" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-in-progress"/></svg>In progress</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--incomplete" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--not-started" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-dash"/></svg>Not started</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--pending" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-pending--filled"/></svg>Pending</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--unknown" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-unknown--filled"/></svg>Unknown</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--informative" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning-square--filled"/></svg>Informative</div>
   </div>
   <div class="ks-label">20px</div>
   <div class="ks-row">
-    <div class="rux--icon-indicator rux--icon-indicator--failed rux--icon-indicator--20"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
-    <div class="rux--icon-indicator rux--icon-indicator--caution-major rux--icon-indicator--20"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
-    <div class="rux--icon-indicator rux--icon-indicator--caution-minor rux--icon-indicator--20"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
-    <div class="rux--icon-indicator rux--icon-indicator--undefined rux--icon-indicator--20"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--failed" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--caution-major" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--caution-minor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--undefined" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
   </div>
 </section>
 
