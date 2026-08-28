@@ -29,6 +29,12 @@
     misrepresents the component, so it is triggered instead: `.is-visible` on a
     modal WITHOUT `--enable-presence` is Carbon's own show hook.
 
+    `layer-one` on the root is Carbon's, and it is not decoration: it re-declares
+    the whole --rux-layer-* group at layer-01, so a modal opened from inside a
+    layer-two region still renders as layer-one. At the sink's top level it
+    resolves to what :root already had, which is why its absence was invisible —
+    check-ancestry found it, not the page.
+
     THE TRIGGERS ARE THE REAL BEHAVIOUR LAYER, not the sink harness — js/modal.js
     on top of js/overlay.js (Phase 5). `data-rux-open="<id>"` opens, anything
     with `data-rux-close` inside a modal closes, and focus trapping, Escape and
@@ -41,7 +47,7 @@
     <button type="button" class="rux--btn rux--btn--tertiary" data-rux-open="modal-xs">Open xs modal</button>
   </div>
 
-  <div class="rux--modal" id="modal-xs" role="dialog" aria-modal="true" aria-labelledby="modal-xs-h">
+  <div class="rux--layer-one rux--modal" id="modal-xs" role="dialog" aria-modal="true" aria-labelledby="modal-xs-h">
     <div class="rux--modal-container rux--modal-container--xs">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-xs-h">Sign out?</h2>
@@ -59,7 +65,7 @@
     </div>
   </div>
 
-  <div class="rux--modal" id="modal-sm" role="dialog" aria-modal="true" aria-labelledby="modal-sm-h">
+  <div class="rux--layer-one rux--modal" id="modal-sm" role="dialog" aria-modal="true" aria-labelledby="modal-sm-h">
     <div class="rux--modal-container rux--modal-container--sm">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__label">Optional label</h2>
@@ -80,7 +86,7 @@
     </div>
   </div>
 
-  <div class="rux--modal" id="modal-lg" role="dialog" aria-modal="true" aria-labelledby="modal-lg-h">
+  <div class="rux--layer-one rux--modal" id="modal-lg" role="dialog" aria-modal="true" aria-labelledby="modal-lg-h">
     <div class="rux--modal-container rux--modal-container--lg">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-lg-h">Large container</h2>

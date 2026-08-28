@@ -16,9 +16,15 @@
     more. Its markup is preserved in sink/deferred/pagination.html's sibling
     history — restoring it means uncommenting `pagination-nav` in src/app.scss.
 
-    One finding recorded: `pagination__button` sits directly in
-    `__right` here, where the reference wraps each in an icon-tooltip — the
-    chrome this sink declines throughout.
+    TWO WRAPPERS, and this fragment kept neither until check-ancestry found it.
+    `pagination__control-buttons` is styled — `.rux--pagination
+    .rux--pagination__control-buttons { display: flex }` — so the two buttons
+    were laid out by their parent's rules rather than their own. It is back.
+
+    The SECOND wrapper is still declined: the reference nests each button in an
+    icon-tooltip, the chrome this sink passes on throughout. Same shape as the
+    modal close button, and the same mistake — a note that named the optional
+    wrapper and never mentioned the load-bearing one.
   -->
   <div class="rux--pagination rux--layout--size-md" style="margin-block-end:2rem">
     <div class="rux--pagination__left">
@@ -40,8 +46,10 @@
     </div>
     <div class="rux--pagination__right">
       <span class="rux--pagination__text rux--pagination__page-text">of 9 pages</span>
-      <button type="button" class="rux--pagination__button" aria-label="Previous page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></button>
-      <button type="button" class="rux--pagination__button" aria-label="Next page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
+      <div class="rux--pagination__control-buttons">
+        <button type="button" class="rux--pagination__button" aria-label="Previous page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></button>
+        <button type="button" class="rux--pagination__button" aria-label="Next page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
+      </div>
     </div>
   </div>
 </section>

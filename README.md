@@ -89,7 +89,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Ten, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -98,10 +98,24 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
+| `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
+
+**`check-ancestry` was written after a defect three gates could not see.** The modal's
+close button rendered in the flow under the heading, left-aligned, because the fragment
+had no `modal-close-button` — the element carrying the `position: absolute` that pins it
+to the corner. `check-tags` asks which *element type* a class sits on; `check-compound`
+asks which classes share *one element*; `diff-fragment` says in its own header that it
+reports nesting that **disagrees**, not nesting that is **absent**. A wrapper simply not
+there was invisible to all three. The new gate intersects the classed ancestors of every
+occurrence of a class across all 641 captures and requires what survives — what Carbon
+puts above it *without exception*. Its first full run found a second instance of the same
+defect, `pagination__control-buttons`, hiding behind a note that named the optional
+wrapper and never mentioned the styled one. **15 declines are recorded with reasons; 0
+findings remain.**
 
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
