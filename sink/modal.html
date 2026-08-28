@@ -4,10 +4,25 @@
        --passive-modal and composedmodal--default, plus the xs, sm and lg
        recipes, 2026-08-28 -->
   <!--
-    One finding recorded: `modal-close` sits directly in `__header` here, where
-    the reference wraps it in an icon-tooltip's `tooltip-trigger__wrapper`.
-    That is the story's hover hint, which the sink declines on the combo-button
-    precedent; the close button's own placement in the header is unchanged.
+    THE CLOSE BUTTON HAS TWO WRAPPERS IN THE REFERENCE AND THIS FRAGMENT KEPT
+    NEITHER, which was a defect rather than a decision. `modal-close-button` is
+    `position: absolute; inset-block-start: 0; inset-inline-end: 0` — it is what
+    pins the X to the header's top-right corner, against the `position: fixed`
+    container, into the 3rem the header's `padding-inline: 1rem 3rem` reserves
+    for it. Without it the button sat in the flow directly under the heading,
+    left-aligned, with the reserved gutter empty beside it. Found by looking at
+    the rendered page, which is the README's point about what no gate catches.
+
+    The SECOND wrapper is still declined: the reference nests the button in an
+    icon-tooltip's `tooltip-trigger__wrapper` for a hover hint, which the sink
+    passes on for the same reason it does on combo-button and the table's
+    overflow trigger — the positioning is floating-ui JS.
+
+    The reference also carries `btn btn--primary btn--icon-only` on the button
+    itself. They are declined too, and this one is measured rather than assumed:
+    `modal-close` sets its own 3rem box, transparent background and padding, and
+    is emitted after `button` in the manifest, so the btn classes contribute
+    nothing but a chance for the cascade to change under a Carbon bump.
   -->
   <!--
     .rux--modal is position:fixed at 100vw/100vh. Constraining it to a box
@@ -30,9 +45,11 @@
     <div class="rux--modal-container rux--modal-container--xs">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-xs-h">Sign out?</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
-          <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
+        <div class="rux--modal-close-button">
+          <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
+            <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
       </div>
       <div class="rux--modal-content"><p>You will need to sign in again.</p></div>
       <div class="rux--modal-footer">
@@ -47,9 +64,11 @@
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__label">Optional label</h2>
         <h2 class="rux--modal-header__heading" id="modal-sm-h">Delete this record?</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
-          <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
+        <div class="rux--modal-close-button">
+          <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
+            <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
       </div>
       <div class="rux--modal-content">
         <p>This cannot be undone. The record and its history are removed permanently.</p>
@@ -65,9 +84,11 @@
     <div class="rux--modal-container rux--modal-container--lg">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-lg-h">Large container</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
-          <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
+        <div class="rux--modal-close-button">
+          <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
+            <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
       </div>
       <div class="rux--modal-content"><p>A wider modal for denser content.</p></div>
       <div class="rux--modal-footer">
