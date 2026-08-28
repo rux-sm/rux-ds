@@ -1487,7 +1487,13 @@
 
 <section class="ks-sec" id="list">
     <h2>List</h2><p>ordered · unordered</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-orderedlist--default and
+         --nested, components-unorderedlist--default and --nested, 2026-08-28 -->
+    <!--
+      A nested list carries `list--nested` alongside its own type class, and
+      lives INSIDE the parent's <li> rather than beside it. Fifteen rules hang
+      off that class and this fragment had no nested list at all to hang them on.
+    -->
     <div class="ks-grid">
       <ul class="rux--list--unordered">
         <li class="rux--list__item">First item</li>
@@ -1495,7 +1501,12 @@
       </ul>
       <ol class="rux--list--ordered">
         <li class="rux--list__item">First item</li>
-        <li class="rux--list__item">Second item</li>
+        <li class="rux--list__item">Second item
+          <ol class="rux--list--ordered rux--list--nested">
+            <li class="rux--list__item">Nested item</li>
+            <li class="rux--list__item">Nested sibling</li>
+          </ol>
+        </li>
       </ol>
       <ul class="rux--list--unordered rux--list--expressive">
         <li class="rux--list__item">Expressive spacing</li>
@@ -1573,7 +1584,15 @@
 
 <section class="ks-sec" id="stack">
   <h2>Stack</h2><p>vertical · horizontal · spacing scale</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · layout-stack--default and --horizontal,
+       2026-08-28 · diffed clean -->
+  <!--
+    The nesting report flags the buttons inside these stacks, because every
+    button the reference stacks lives in an action-set. Putting arbitrary
+    children in a stack IS the component, so the finding is a limit of pooling
+    rather than a defect. `stack-scale-6` is one more step on the same scale as
+    the 3 and 5 demoed here.
+  -->
   <div class="ks-row">
     <div class="ks-box">
       <div class="ks-label">vertical · scale 5</div>
@@ -1595,7 +1614,14 @@
 
 <section class="ks-sec" id="aspect-ratio">
   <h2>Aspect ratio</h2><p>16x9 · 4x3 · 1x1 · 2x1 · 9x16</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-aspectratio--default with its
+       2x1, 4x3 and 9x16 recipes, 2026-08-28 · diffed clean -->
+  <!--
+    The reference wraps its ratios in `css-grid` / `css-grid-column` with
+    responsive span classes. That is the STORY's layout, not the component:
+    AspectRatio is the ratio box itself, and the sink lays its examples out with
+    its own ks-grid. Recorded so the omission is a decision, not an oversight.
+  -->
   <!--
     The ratio comes from ::before { padding-block-start: <pct> } — the box takes its
     HEIGHT from its own width. Two things break it:
@@ -3495,24 +3521,44 @@
 
 <section class="ks-sec" id="progress-bar">
   <h2>Progress bar</h2><p>determinate · indeterminate · finished · error</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-progressbar--default with its
+       finished, error and small recipes, plus --determinate and
+       --indeterminate, 2026-08-28 -->
+  <!--
+    The finished and error bars each render `__status-icon` inside __label,
+    after the label text — the tick and the error mark that say which state the
+    bar is in without relying on the bar colour alone. Three rules hang off it
+    and this fragment drew neither icon.
+
+    __helper-text also holds a visually-hidden live region, which is what
+    announces progress to a screen reader.
+
+    `progress-bar--default` is emitted by the reference and dropped here: it is
+    the unclassed default size and @carbon/styles has no rule for it (§4.1.12).
+  -->
   <div style="max-width:28rem;display:grid;gap:1.5rem">
     <div class="rux--progress-bar rux--progress-bar--big">
       <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Uploading</span></div>
       <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar" style="transform:scaleX(0.42)"></div></div>
-      <div class="rux--progress-bar__helper-text">42%</div>
+      <div class="rux--progress-bar__helper-text">42%<div class="rux--visually-hidden">Uploading, 42 percent complete</div></div>
     </div>
     <div class="rux--progress-bar rux--progress-bar--small rux--progress-bar--indeterminate">
       <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Working</span></div>
       <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
     </div>
     <div class="rux--progress-bar rux--progress-bar--finished">
-      <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Complete</span></div>
+      <div class="rux--progress-bar__label">
+        <span class="rux--progress-bar__label-text">Complete</span>
+        <svg class="rux--progress-bar__status-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+      </div>
       <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
       <div class="rux--progress-bar__helper-text">Done</div>
     </div>
     <div class="rux--progress-bar rux--progress-bar--error">
-      <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Failed</span></div>
+      <div class="rux--progress-bar__label">
+        <span class="rux--progress-bar__label-text">Failed</span>
+        <svg class="rux--progress-bar__status-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+      </div>
       <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
       <div class="rux--progress-bar__helper-text">Upload failed</div>
     </div>
@@ -3666,22 +3712,67 @@
 
 <section class="ks-sec" id="structured-list">
   <h2>Structured list</h2><p>header row · selection · condensed</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
-  <div class="rux--structured-list rux--structured-list--condensed">
-    <div class="rux--structured-list-thead">
-      <div class="rux--structured-list-row rux--structured-list-row--header-row">
-        <div class="rux--structured-list-th">Name</div>
-        <div class="rux--structured-list-th">Description</div>
+  <!-- PROVENANCE: rendered-dom · components-structuredlist--default,
+       --selection, --initial-selection and its condensed recipe, 2026-08-28 -->
+  <!--
+    Two corrections from the reference. The list carries ARIA table roles —
+    role=table on the root, rowgroup on thead and tbody, row on each row,
+    columnheader on the th and cell on the td — which this fragment had none of,
+    so it read to a screen reader as a stack of unrelated divs.
+
+    And the SELECTION variant is a real component state this fragment named in
+    its own subtitle but never demoed: `--selection` on the root, then each row
+    holds a visually-hidden radio `structured-list-input` and a final cell whose
+    `structured-list-svg` tick marks the chosen row. Fifteen rules hang off
+    --selection alone. The row-level `--selected` class the fragment already had
+    is what paints it; the input is what makes it selectable.
+
+    `th` is a span in the reference and `td` a div; both are kept as rendered.
+  -->
+  <div class="rux--structured-list rux--structured-list--condensed" role="table">
+    <div class="rux--structured-list-thead" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--header-row" role="row">
+        <span class="rux--structured-list-th" role="columnheader">Name</span>
+        <span class="rux--structured-list-th" role="columnheader">Description</span>
       </div>
     </div>
-    <div class="rux--structured-list-tbody">
-      <div class="rux--structured-list-row rux--structured-list-row--selected">
-        <div class="rux--structured-list-td rux--structured-list-content--nowrap">Alpha</div>
-        <div class="rux--structured-list-td">Selected row</div>
+    <div class="rux--structured-list-tbody" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--selected" role="row">
+        <div class="rux--structured-list-td rux--structured-list-content--nowrap" role="cell">Alpha</div>
+        <div class="rux--structured-list-td" role="cell">Selected row</div>
       </div>
-      <div class="rux--structured-list-row">
-        <div class="rux--structured-list-td rux--structured-list-content--nowrap">Bravo</div>
-        <div class="rux--structured-list-td">Ordinary row</div>
+      <div class="rux--structured-list-row" role="row">
+        <div class="rux--structured-list-td rux--structured-list-content--nowrap" role="cell">Bravo</div>
+        <div class="rux--structured-list-td" role="cell">Ordinary row</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">selection</div>
+  <div class="rux--structured-list rux--structured-list--selection" role="table">
+    <div class="rux--structured-list-thead" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--header-row" role="row">
+        <span class="rux--structured-list-th" role="columnheader">Plan</span>
+        <span class="rux--structured-list-th" role="columnheader">Included</span>
+        <span class="rux--structured-list-th" role="columnheader"></span>
+      </div>
+    </div>
+    <div class="rux--structured-list-tbody" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--selected" role="row">
+        <div class="rux--structured-list-td" role="cell">Standard</div>
+        <div class="rux--structured-list-td" role="cell">Everything in the base tier</div>
+        <input id="sl-1" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl" checked>
+        <div class="rux--structured-list-td" role="cell">
+          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        </div>
+      </div>
+      <div class="rux--structured-list-row" role="row">
+        <div class="rux--structured-list-td" role="cell">Extended</div>
+        <div class="rux--structured-list-td" role="cell">Adds retention and audit</div>
+        <input id="sl-2" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl">
+        <div class="rux--structured-list-td" role="cell">
+          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        </div>
       </div>
     </div>
   </div>

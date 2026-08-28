@@ -1,6 +1,13 @@
 <section class="ks-sec" id="aspect-ratio">
   <h2>Aspect ratio</h2><p>16x9 · 4x3 · 1x1 · 2x1 · 9x16</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-aspectratio--default with its
+       2x1, 4x3 and 9x16 recipes, 2026-08-28 · diffed clean -->
+  <!--
+    The reference wraps its ratios in `css-grid` / `css-grid-column` with
+    responsive span classes. That is the STORY's layout, not the component:
+    AspectRatio is the ratio box itself, and the sink lays its examples out with
+    its own ks-grid. Recorded so the omission is a decision, not an oversight.
+  -->
   <!--
     The ratio comes from ::before { padding-block-start: <pct> } — the box takes its
     HEIGHT from its own width. Two things break it:
