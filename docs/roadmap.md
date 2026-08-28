@@ -33,6 +33,8 @@ Three properties define done:
 | 2026-08-26 | 100% Carbon in, then strip | Carbon as reference-only |
 | 2026-08-26 | Docs last, rewritten to match code | Docs ported alongside each component |
 | 2026-08-26 | **Carbon's core and BEM kept intact** | Rewriting conventions or gutting internals |
+| 2026-08-28 | Size reported, not budgeted (§2.1) | A third revision of the KB target |
+| 2026-08-28 | **Devendor last, after templates** | Devendoring before behaviours and templates |
 
 **The keep-core rule.** Customization is limited to what Carbon exposes as configuration
 — `$prefix` and its sibling flags — plus choosing which components and themes to compile.
@@ -205,6 +207,11 @@ at all, and it makes Phase 1 harder than it looks.
 
 Each phase MUST end with the kitchen sink (§4.1) rendering correctly. A phase that cannot
 demonstrate that is not finished.
+
+**Execution order is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8.** Phase 4 moved to the end on
+2026-08-28; §4.4 records why. **The phase numbers are names, not positions** — they are
+written into commit messages, code comments and every fragment's provenance, so they
+stay put and the order is stated here instead.
 
 ### 4.1 Phase 1 — Standing baseline
 
@@ -987,7 +994,9 @@ version bump is a version bump rather than a re-merge.
 
 ### 4.4 Phase 4 — Devendor
 
-**The one-way door.** Scripted, executed once, in a single commit.
+**The one-way door. RUNS LAST, after Phase 6** — see the amendment below.
+
+Scripted, executed once, in a single commit.
 
 1. Compile SCSS → plain CSS. The CSS becomes the source; the SCSS is deleted.
 2. Remove every `@carbon/*` dependency.
@@ -1006,6 +1015,38 @@ Phase 3 screenshots.
 > does not exist** — what remained was mechanical, and Phase 4 is now a build change
 > rather than a rewrite. And because `cds` and `rux` are both three characters, **every
 > figure in §2 holds unchanged**; none of the baseline needed re-measuring.
+
+> **Amended 2026-08-28. This phase moves to the END of the sequence, after Phase 6.**
+> It was drafted to run before Behaviors and Templates. It is a build change, not a
+> rewrite (see above), so its position costs nothing — and running it early costs a
+> great deal, because **what this door closes is the component set.**
+>
+> **Most of what this phase is for is already banked.** §1's goal is "no Carbon at
+> runtime or in the tree", and the runtime half holds today: the built CSS contains
+> zero occurrences of `cds`, `@carbon` appears only in `devDependencies` — there are no
+> `dependencies` at all — and `css/rux.css` is committed, so a consumer fetches it from
+> a raw URL and installs nothing. What remains is the tree, which is a property of this
+> repository rather than of the thing it ships.
+>
+> **What the door closes, concretely.** Six tools read `node_modules/@carbon`. After
+> this phase there is no adding or restoring a component (`data-table/sort` was one
+> uncommented line), no adding an icon to the sprite, no theme change, no pricing a
+> subset with `tools/measure.mjs`, no capturing a reference story that Phase 1 did not
+> already capture, and no Carbon version bump — which spends the reproducibility
+> property §4.3 bought by never editing a Carbon file.
+>
+> **The evidence that decided it.** `data-table` shipped unable to sort, expand or
+> batch-select, because Carbon splits it into four modules and the manifest took one.
+> Nothing found that until the sink tried to demo sorting on 2026-08-28. Phase 6 builds
+> five more page shapes, and each can find the same class of gap. Six DEFER rows in
+> `docs/inventory.md` also defer their decision to Phase 5 or Phase 6 explicitly — under
+> the old order those phases ran after the door, so the plan could not honour its own
+> decisions.
+>
+> **What would move it earlier:** needing a change Carbon does not expose as
+> configuration. §1.1's keep-core rule forbids editing a component file, so the day a
+> real requirement cannot be met by `$prefix`, a flag, or module selection, this phase
+> becomes the prerequisite rather than the epilogue.
 
 ### 4.5 Phase 5 — Behaviors
 
@@ -1090,6 +1131,11 @@ every other gate is name-based, so a changed *value* passes all of them silently
   is the largest single unglamorous cost in this roadmap. It is also what makes every
   later phase verifiable, so it MUST NOT be shortened.
 - **Carbon docs describe the un-stripped system.** Phase 7's rule exists for this.
+- **Phase 4 is still a one-way door; it is just a later one.** Moving it after Phase 6
+  buys evidence, not safety. The set is frozen the moment it runs, so the question to
+  ask before running it is not "are the templates done" but "has a template stopped
+  teaching us anything about the set". `data-table` needed three more modules and only
+  building the page revealed it.
 - **Nothing now stops the set growing except the admission rule.** §2.1 dropped its KB
   target on 2026-08-28, because across three revisions it decided no component either
   way. The admission rule replaces it, and it is a judgement rather than a measurement —

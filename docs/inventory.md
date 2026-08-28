@@ -209,7 +209,11 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 
 ## What needs your call
 
-Three of these are judgement, not evidence, and I have proposed rather than decided.
+These are judgement, not evidence, and I have proposed rather than decided. **They are
+also no longer urgent:** Phase 4 moved to the end of the sequence on 2026-08-28, so a
+DEFER row that says "decide in Phase 5" or "decide in Phase 6" can now actually be
+decided there, with a template in front of you, instead of being frozen by a devendor
+that used to run first. Roadmap §4.4.
 A fourth — the ≤40 KB target — is **settled**: §2.1 removed the KB target on 2026-08-28
 rather than amending it to ≤55 KB as this document originally recommended. The measured
 floor for a set that builds all six page shapes is 52.7 KB, and the reason the number

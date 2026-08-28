@@ -10,18 +10,24 @@ record, and the phase this project is in.
 
 **Phase 3 complete — stripped.** Carbon compiles under the `rux` namespace, every
 shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
-now the keep-set rather than all of Carbon. Phase 4 (devendor) and Phase 5
-(behaviors) are next — see the note under Gates on why they may swap.
+now the keep-set rather than all of Carbon.
+
+**Phase 5 (behaviors) is next, and Phase 4 (devendor) now runs last.** Execution order
+is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
+closes the component set, and `data-table` shipped unable to sort or expand until the
+sink tried to demo it — so the set is frozen after the templates have finished teaching
+us what it needs, not before. Roadmap §4.4.
 
 | | |
 |---|---|
-| Components | **31 / 75 compiled** — `docs/inventory.md` decides all 75 |
+| Components | **31 / 75 compiled** in 34 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 610 `--rux-*` · 1,609 `.rux--*` |
-| Kitchen sink | 31 sections · 377 classes · 0 unresolved |
+| Tokens · classes | 610 `--rux-*` · 1,112 `.rux--*` |
+| Kitchen sink | 31 sections · 424 classes · 0 unresolved |
+| Class coverage | **421 / 711 (59%)** — ratcheted in `docs/coverage.json` |
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
-| Icons | 52, a 14.1 KB sprite |
-| Size | 577 KB raw · 519 KB min · **53 KB gzipped** |
+| Icons | 58, a 15.8 KB sprite |
+| Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 
