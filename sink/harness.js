@@ -131,16 +131,12 @@
     closeListBoxes(null);
   });
 
-  // ---- popover / tooltip / toggletip -------------------------------------
-  // All three share the popover mechanism: .rux--popover--open on the CONTAINER is
-  // what sets display:block on .rux--popover-content.
-  const POP = '.rux--popover-container, .rux--toggletip, .rux--tooltip';
-  on(POP + ' > button, ' + POP + ' > .rux--toggletip-button', 'click', trigger => {
-    const c = trigger.closest('.rux--popover-container, .rux--toggletip, .rux--tooltip');
-    const open = c.classList.toggle('rux--popover--open');
-    c.classList.toggle('rux--toggletip--open', open && c.classList.contains('rux--toggletip'));
-    trigger.setAttribute('aria-expanded', String(open));
-  });
+  // ---- popover / tooltip: GONE FROM HERE ---------------------------------
+  // js/popover.js owns both now, with Carbon's enter and leave delays, the
+  // aria each one actually wants (aria-expanded for a popover the trigger
+  // controls, aria-describedby for a tooltip that merely describes it), and
+  // dismissal through the kernel. The toggletip third of this block left with
+  // the component: it is CUT, and its fragment moved to sink/deferred/.
 
   // ---- menu + overflow menu ----------------------------------------------
   on('[data-ks-menu]', 'click', trigger => {
@@ -338,7 +334,6 @@
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     closeListBoxes(null);
-    $$('.rux--popover--open').forEach(c => c.classList.remove('rux--popover--open', 'rux--toggletip--open'));
     $$('.rux--menu--open').forEach(m => m.classList.remove('rux--menu--open', 'rux--menu--shown'));
     $$('.rux--overflow-menu--open').forEach(m => {
       m.classList.remove('rux--overflow-menu--open');
@@ -347,10 +342,12 @@
     });
   });
 
-  // ---- outside press closes list boxes and popovers ----------------------
+  // ---- outside press closes what the HARNESS still owns -------------------
+  // Popovers left this handler with their module: js/overlay.js dismisses them,
+  // and it does so on pointerdown in the capture phase rather than click, so a
+  // surface settles before the pressed control takes focus. List boxes are next.
   document.addEventListener('click', e => {
+    if (!(e.target instanceof Element)) return;
     if (!e.target.closest('.rux--list-box')) closeListBoxes(null);
-    if (!e.target.closest('.rux--popover-container, .rux--toggletip, .rux--tooltip'))
-      $$('.rux--popover--open').forEach(c => c.classList.remove('rux--popover--open', 'rux--toggletip--open'));
   }, true);
 })();

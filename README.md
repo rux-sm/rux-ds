@@ -12,10 +12,14 @@ record, and the phase this project is in.
 shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
 now the keep-set rather than all of Carbon.
 
-**Phase 5 (behaviors) started** — `js/overlay.js` is the dismiss kernel and `js/modal.js`
-the first module on top of it. The markup is the API: `data-rux-open="<id>"` opens,
-`data-rux-close` closes, and focus trapping, Escape and backdrop press come from the
-kernel, so a page needs no script of its own. `sink/harness.js` still drives what Phase 5
+**Phase 5 (behaviors) started** — `js/overlay.js` is the dismiss kernel, with
+`js/popover.js` and `js/modal.js` on top of it (20 KB of a 90 KB budget). The markup is
+the API: a `.rux--popover-container` is click-driven and the same container with
+`.rux--tooltip` is hover-and-focus driven, so neither needs an attribute at all; a modal
+takes `data-rux-open="<id>"` and `data-rux-close` only because its trigger and surface sit
+far apart in the document. Focus trapping, Escape, outside press and the stack that
+decides which surface a press belongs to all come from the kernel, so a page needs no
+script of its own. `sink/harness.js` still drives what Phase 5
 has not reached, and shrinks with every module that lands.
 
 **Phase 4 (devendor) now runs last.** Execution order
@@ -34,7 +38,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 13 KB of a 90 KB budget — `js/overlay.js` · `js/modal.js` |
+| Behaviour JS | 20 KB of a 90 KB budget — `js/overlay.js` · `js/popover.js` · `js/modal.js` |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 

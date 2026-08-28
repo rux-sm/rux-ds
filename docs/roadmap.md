@@ -1088,8 +1088,16 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > not reached; every module deletes its section there, and the phase is done when that
 > file is empty. Modal went first and took the dead side-panel code with it.
 >
-> Landed: `js/overlay.js` (the kernel) and `js/modal.js`. 13 KB of the 90 KB budget.
-> Remaining, roughly in dependency order: popover and tooltip · menu and overflow-menu ·
+> **5. A tooltip registers passively.** `dismissOthers: false` was added to the kernel
+> for it: a hover tooltip appears because a pointer crossed it, not because anyone chose
+> it, so it must not tear down a menu the user is working in. It still joins the stack,
+> so Escape reaches it first and an outside press still clears it. This is the one place
+> where "opening dismisses what is above" is the wrong default.
+>
+> Landed: `js/overlay.js` (the kernel), `js/popover.js` and `js/modal.js`. 20 KB of the
+> 90 KB budget. Popover carries tooltip too — one mechanism, two triggers, and the mode
+> is read off the markup (`.rux--tooltip` means hover and focus) so neither needs an
+> attribute. Remaining, roughly in dependency order: menu and overflow-menu ·
 > list-box (dropdown, select) · accordion · tabs · data-table (sort, expand, select-all) ·
 > notification and tag dismiss · number-input · search clear · tile · ui-shell.
 

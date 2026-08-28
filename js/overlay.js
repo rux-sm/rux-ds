@@ -28,6 +28,12 @@
      record.close(opts)    called to dismiss; receives { restoreFocus }
      record.reposition()   optional; called on resize while registered
      record.dismissOn      optional { outside = true, escape = true }
+     record.dismissOthers  optional; false means "opening me closes nothing".
+                           A hover tooltip needs this: it appears because a
+                           pointer crossed it, not because anyone chose it, and
+                           it must not tear down a menu the user is working in.
+                           It still sits on the stack, so Escape reaches it
+                           first and an outside press still dismisses it.
    release()               leave the stack WITHOUT being closed. Call it from
                            your own close(), or the kernel would call close()
                            again on a surface already closing.
@@ -104,7 +110,8 @@
     // itself; a stale record leaves the stack out of step with the page.
     const existing = stack.find(entry => entry.element === record.element);
     if (existing) drop(existing);
-    dismissAbove(topmostContaining(record.anchor), { restoreFocus: false });
+    if (record.dismissOthers !== false)
+      dismissAbove(topmostContaining(record.anchor), { restoreFocus: false });
     stack.push(record);
     return { release: () => drop(record) };
   }
