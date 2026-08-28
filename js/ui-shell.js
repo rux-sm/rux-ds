@@ -133,6 +133,32 @@
     }
   });
 
+  /* THE COLLAPSED STATE IS A SMALL-SCREEN STATE and must not survive a resize.
+     `--side-nav--ux` is 16rem above 66rem and 0 below, and the hamburger is
+     display:none above it — so a nav closed at 900px and then widened kept
+     `--hidden`, which wins over `--ux`, and arrived at the desktop with no
+     control on the page able to bring it back. IBM's design has no such state:
+     above the breakpoint the panel is persistent.
+
+     Each crossing resets the nav to whatever the stylesheet says for the width
+     it is now, rather than trying to remember what the user last chose. There
+     is nothing to remember: at desktop the panel is not theirs to close. */
+  const PERSISTENT = window.matchMedia('(min-width: 66rem)');
+  function resetToBreakpoint() {
+    const persistent = PERSISTENT.matches;
+    for (const nav of document.querySelectorAll('.rux--side-nav--ux')) {
+      const trigger = nav.closest('.rux--header')
+        ?.querySelector('.rux--header__menu-toggle') ?? live.get(nav)?.trigger;
+      nav.classList.remove(EXPANDED, HIDDEN);
+      const state = live.get(nav);
+      if (state) { state.registration?.release(); live.delete(nav); }
+      scrimFor(nav)?.classList.remove('rux--side-nav__overlay-active');
+      trigger?.setAttribute('aria-expanded', String(persistent));
+      setTriggerGlyph(trigger, persistent);
+    }
+  }
+  PERSISTENT.addEventListener('change', resetToBreakpoint);
+
   /* Adopt the markup: a nav shipped `--expanded` is open, and each submenu's
      panel is hidden or shown to match the attribute the button already carries. */
   for (const nav of document.querySelectorAll('.rux--side-nav')) {
@@ -141,6 +167,8 @@
   }
   for (const button of document.querySelectorAll('.rux--side-nav__submenu'))
     setSubmenu(button, button.getAttribute('aria-expanded') === 'true');
+
+  resetToBreakpoint();
 
   window.Rux.uiShell = {
     openNav: (nav, trigger) => setNav(nav, true, trigger),
