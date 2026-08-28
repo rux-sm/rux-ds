@@ -1,6 +1,29 @@
 <section class="ks-sec" id="side-panel">
   <h2>Side panel</h2><p>left and right placement — `--open` is Carbon's show hook</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · root tag only, diffed 2026-08-27 against
+     ibm-products.carbondesignsystem.com components-sidepanel--slide-over.
+     @carbon/react has no side-panel; @carbon/styles ships the ibm-products one
+     under the cds prefix, and all 19 classes that story emits are defined in our
+     CSS, so it is a real reference. Harvest: docs/carbon-ibm-products-dom.json.
+
+     WHAT WAS FIXED: the root is an <aside>, not a <div role="complementary">.
+     Same landmark, but native rather than author-supplied, and it is what Carbon
+     renders.
+
+     STILL DIVERGENT, so this stays inferred. check-tags passes this file now,
+     which proves only that no class sits on the wrong element type:
+
+       header      Carbon adds __header--has-title, and wraps the heading in
+                   div.__title.__title--no-label alongside a second h2,
+                   __collapsed-title-text. Ours puts the h2 straight in __header.
+       close       Carbon uses button.__close-button.--btn--primary.--btn--icon-only
+                   inside div.__decorator-and-close, wrapped in an icon-tooltip.
+                   Ours is a plain ghost button with a text label.
+       label       ours carries __label-text; the reference carries
+                   __subtitle-text. Both have rules; only one is what Carbon emits.
+       content     Carbon pairs __inner-content with --scrolls.
+
+     The fragment exercises 13 of the 50 side-panel classes in our CSS. -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
     <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
@@ -14,7 +37,7 @@
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-2xl">2xl</button>
   </div>
 
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-right" role="complementary" hidden>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-right" hidden>
     <div class="rux--side-panel__header">
       <p class="rux--side-panel__label-text">Context</p>
       <h2 class="rux--side-panel__title-text">Right panel</h2>
@@ -23,48 +46,48 @@
     <div class="rux--side-panel__inner-content">
       <p>Panel body content scrolls independently of the page behind it.</p>
     </div>
-  </div>
+  </aside>
 
-  <div class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" role="complementary" hidden>
+  <aside class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Left panel</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Left placement.</p></div>
-  </div>
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xs" id="sp-xs" role="complementary" hidden>
+  </aside>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xs" id="sp-xs" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Width xs</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is xs.</p></div>
-  </div>
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--sm" id="sp-sm" role="complementary" hidden>
+  </aside>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--sm" id="sp-sm" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Width sm</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is sm.</p></div>
-  </div>
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--lg" id="sp-lg" role="complementary" hidden>
+  </aside>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--lg" id="sp-lg" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Width lg</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is lg.</p></div>
-  </div>
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xl" id="sp-xl" role="complementary" hidden>
+  </aside>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xl" id="sp-xl" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Width xl</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is xl.</p></div>
-  </div>
-  <div class="rux--side-panel rux--side-panel--right-placement rux--side-panel--2xl" id="sp-2xl" role="complementary" hidden>
+  </aside>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--2xl" id="sp-2xl" hidden>
     <div class="rux--side-panel__header">
       <h2 class="rux--side-panel__title-text">Width 2xl</h2>
       <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-ks-close>Close</button>
     </div>
     <div class="rux--side-panel__inner-content"><p>Carbon ships six widths; this is 2xl.</p></div>
-  </div>
+  </aside>
 </section>
