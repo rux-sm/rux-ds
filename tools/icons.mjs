@@ -18,6 +18,9 @@ const SIZES = ['16', '20', '32', ''];   // preference order; '' is the unsized r
 
 const ICONS = [
   'chevron--down', 'chevron--right', 'chevron--up',
+  // data-table/expandable: the row expander's base glyph. table-expand__svg
+  // rotates it 270deg closed and 90deg open, so it reads down then up.
+  'chevron--left',
   'caret--down', 'caret--up', 'caret--left', 'caret--right',
   'checkmark', 'checkmark--filled', 'checkmark--outline',
   'close', 'close--filled',
