@@ -22,10 +22,23 @@ by compiling it. Measured 2026-08-28:
 | Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **6.6 KB** | — |
 | Foundation only — 2 themes | 71 KB | **7.9 KB** | — |
 | Lean — 22 components, 2 themes | 375 KB | **~39 KB** | see note |
-| **Shipped — 31 components, 2 themes** | 519 KB | **52.7 KB** | 1,079 |
-| Shipped set — 31 components, 4 themes | 563 KB | **53.5 KB** | 1,079 |
-| Full Carbon — 75 components, 4 themes | 849 KB | **84.3 KB** | 1,611 |
+| **Shipped — 31 components / 34 modules, 2 themes** | 546 KB | **55.6 KB** | 1,112 |
+| Shipped set — 4 themes | 590 KB | **56.4 KB** | 1,112 |
+| Full Carbon — 75 components / 79 modules, 4 themes | 881 KB | **87.6 KB** | 1,644 |
 
+> **A COMPONENT CAN BE SEVERAL MODULES, and this table now counts both.** Carbon
+> splits `data-table` into a base plus `sort`, `expandable` and `action`, and
+> `@use`s them separately in its own `components/_index.scss`. The manifest took
+> the base alone, so the shipped table could not sort, expand or batch-select —
+> `table-sort` and `table-expand__button` had no rules at all, and `table-sort`
+> passed check-classes only because it survives inside AI-qualified selectors.
+> The sink found it by trying to demo sorting. All three were admitted on
+> 2026-08-28 under roadmap §2.1's admission rule at **+26 KB minified / +2.9 KB
+> gzipped**; `data-table/skeleton` was not, because skeleton-styles already
+> ships the loading treatment. The full-Carbon baseline moved for the same
+> reason — `tools/measure.mjs` was reading a directory listing, which cannot see
+> a sub-module, and now reads Carbon's own `_index.scss`.
+>
 > **The gzipped column was re-measured 2026-08-28, after the Classes recount below.**
 > `tools/measure.mjs` took the first N of `['white','g10','g90','g100']`, so every
 > 2-theme figure priced **white + g10** — while `src/app.scss` has shipped **white +
@@ -124,7 +137,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `overflow-menu` | **KEEP** | 78 | 203 | 2 | row actions in the table page |
 | `tabs` | **KEEP** | 76 | 186 | 0 | detail page |
 | `button` | **KEEP** | 69 | 164 | 35 | every interactive shape needs it; 35 components depend on it |
-| `data-table` | **KEEP** | 59 | 210 | 0 | the table page shape |
+| `data-table` | **KEEP** | 59 | 210 | 0 | the table page shape · **four modules, all four admitted 2026-08-28** |
 | `tooltip` | **KEEP** | 50 | 89 | 36 | forced — 36 dependents, and button pulls it |
 | `popover` | **KEEP** | 48 | 81 | 37 | forced — 37 dependents; the positioning primitive under tooltip and menu |
 | `search` | **KEEP** | 43 | 155 | 1 | table page |

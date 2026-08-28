@@ -9,10 +9,6 @@
       "hit": 10,
       "own": 33
     },
-    "data-table": {
-      "hit": 17,
-      "own": 45
-    },
     "skeleton-styles": {
       "hit": 3,
       "own": 7
@@ -21,10 +17,6 @@
       "hit": 3,
       "own": 7
     },
-    "overflow-menu": {
-      "hit": 9,
-      "own": 19
-    },
     "modal": {
       "hit": 12,
       "own": 25
@@ -32,6 +24,14 @@
     "tabs": {
       "hit": 14,
       "own": 29
+    },
+    "data-table": {
+      "hit": 40,
+      "own": 80
+    },
+    "overflow-menu": {
+      "hit": 10,
+      "own": 20
     },
     "text-input": {
       "hit": 13,
@@ -43,7 +43,7 @@
     },
     "ui-shell": {
       "hit": 31,
-      "own": 55
+      "own": 56
     },
     "list-box": {
       "hit": 16,
@@ -89,33 +89,33 @@
       "hit": 14,
       "own": 21
     },
+    "checkbox": {
+      "hit": 17,
+      "own": 25
+    },
     "pagination": {
       "hit": 7,
       "own": 10
-    },
-    "checkbox": {
-      "hit": 17,
-      "own": 24
-    },
-    "link": {
-      "hit": 5,
-      "own": 7
     },
     "notification": {
       "hit": 39,
       "own": 54
     },
     "tag": {
-      "hit": 18,
-      "own": 25
+      "hit": 19,
+      "own": 26
     },
-    "button": {
-      "hit": 16,
-      "own": 21
+    "link": {
+      "hit": 6,
+      "own": 8
     },
     "menu": {
-      "hit": 16,
-      "own": 20
+      "hit": 17,
+      "own": 21
+    },
+    "button": {
+      "hit": 18,
+      "own": 22
     },
     "breadcrumb": {
       "hit": 5,

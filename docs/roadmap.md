@@ -93,6 +93,12 @@ wrong structurally — a theme added by accident, a component family re-enabled,
 opt-in layer switched on. Re-open the set. This is a smoke alarm, not a thermostat:
 it sits where no legitimate sequence of admissions reaches it.
 
+> First use of the admission rule, 2026-08-28: `data-table/sort`, `/expandable`
+> and `/action` were admitted at +2.9 KB gzipped, because the table page is a
+> named Phase 6 shape and sorting and row selection are what it is for. The rule
+> decided it; the tripwire was never consulted, which is the division of labour
+> this section is arguing for.
+
 **The JS budget stands: ≤90 KB of behavior JS**, and it is a real constraint — Phase 5
 writes that code rather than selecting it, so every module is a cost someone pays for
 in maintenance as well as bytes.
@@ -102,9 +108,17 @@ from `src/app.scss` and whose output matches `css/rux.min.css` byte for byte:
 
 | Configuration | Minified | **Gzipped** | Classes |
 |---|---|---|---|
-| Full Carbon — 75 components, 4 themes | 849 KB | 84.3 KB | 1,611 |
-| **Shipped — 31 components, 2 themes** | 519 KB | **52.7 KB** | 1,079 |
-| Shipped set — 1 theme | 497 KB | 51.1 KB | 1,079 |
+| Full Carbon — 75 components / 79 modules, 4 themes | 881 KB | 87.6 KB | 1,644 |
+| **Shipped — 31 components / 34 modules, 2 themes** | 546 KB | **55.6 KB** | 1,112 |
+| Shipped set — 1 theme | 523 KB | 54.0 KB | 1,112 |
+| Shipped set — 4 themes | 590 KB | 56.4 KB | 1,112 |
+
+**A component can be several modules.** Carbon splits `data-table` into four —
+the base plus `sort`, `expandable` and `action` — and `@use`s them separately in
+its own `components/_index.scss`. The manifest took the base alone until
+2026-08-28, which shipped a table that could not sort, expand or batch-select.
+Counting modules as well as components is what makes that visible; the
+full-Carbon baseline was understating itself by the same four.
 
 > **Amended 2026-08-28. This section carried a KB target through three revisions and
 > now has none.** ≤150 KB minified became ≤40 KB gzipped became a recommended ≤55 KB.

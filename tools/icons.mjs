@@ -28,6 +28,9 @@ const ICONS = [
   'overflow-menu--vertical', 'overflow-menu--horizontal',
   'copy', 'menu', 'notification', 'user--avatar',
   'view', 'view--off', 'arrow--right', 'arrow--up',
+  // data-table/sort: the sorted column shows arrow--down (CSS rotates it for
+  // ascending), an unsorted one the double-headed arrows--vertical
+  'arrow--down', 'arrows--vertical',
   'document', 'folder', 'edit', 'trash-can',
   // shape-indicator: Carbon maps each status to a distinct SHAPE, so colour is not
   // the only signal (web-components/shape-indicator.js:55-65)

@@ -23,27 +23,28 @@
 // components a strip would keep by accident.
 //
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { classNames } from './lib/ownership.mjs';
+import { classNames, compiledModules } from './lib/ownership.mjs';
 
-const COMP_DIR = 'node_modules/@carbon/styles/scss/components';
-const ALL = readdirSync(COMP_DIR).filter(d => !d.startsWith('_')).sort();
+// "ALL" IS CARBON'S OWN LIST, NOT A DIRECTORY LISTING. Reading the directory
+// gives `data-table` and misses `data-table/sort`, `/expandable` and `/action`,
+// which Carbon @uses separately — so the full-Carbon baseline was understating
+// itself by exactly the modules the shipped set was missing.
+const COMP_INDEX = 'node_modules/@carbon/styles/scss/components/_index.scss';
+const ALL = [...readFileSync(COMP_INDEX, 'utf8').matchAll(/^@use '([^']+)'/gm)]
+  .map(m => m[1]).filter(m => !m.startsWith('.')).sort();
 const inv = JSON.parse(readFileSync('docs/inventory.json', 'utf8'));
 const DEPS = Object.fromEntries(inv.components.filter(c => !c.error).map(c => [c.component, c.depsAll ?? []]));
 
-// Kept in sync with docs/inventory.md — that file argues for this list, and
-// changing one means changing both, so the number the document quotes is
-// reproducible from the document's own decisions.
-const PROPOSED = [
-  'accordion', 'breadcrumb', 'button', 'checkbox', 'data-table', 'dropdown',
-  'form', 'inline-loading', 'link', 'list', 'list-box', 'loading', 'menu',
-  'modal', 'notification', 'number-input', 'overflow-menu', 'pagination',
-  'popover', 'radio-button', 'search', 'select', 'skeleton-styles', 'tabs',
-  'tag', 'text-area', 'text-input', 'tile', 'toggle', 'tooltip', 'ui-shell',
-];
+// READ FROM THE MANIFEST, not mirrored. src/app.scss is the strip, and it now
+// carries module lines as well as component lines — data-table is compiled as
+// four. A hardcoded list of component names would silently stop matching what
+// ships the moment a sub-module is admitted, which is the same failure the theme
+// pair had.
+const PROPOSED = compiledModules();
 
 // THE THEMES COME FROM THE MANIFEST, NOT FROM A HARDCODED ORDER.
 //
@@ -107,23 +108,24 @@ let themeCount = SHIPPED.length;
 const ti = argv.indexOf('--themes');
 if (ti !== -1) { themeCount = Number(argv[ti + 1]); argv.splice(ti, 2); }
 const adhoc = argv.filter(a => !a.startsWith('-'));
+const count = list => new Set(list.map(c => c.split('/')[0])).size;
 
 const jobs = adhoc.length
-  ? [[`ad-hoc — ${adhoc.length} components, ${themeCount} theme(s)`, adhoc, themeCount]]
-  : [['full — 75 components, 4 themes', ALL, 4],
-     [`shipped — ${PROPOSED.length} components, ${SHIPPED.length} themes`, PROPOSED, SHIPPED.length],
-     [`shipped — ${PROPOSED.length} components, 1 theme`, PROPOSED, 1]];
+  ? [[`ad-hoc — ${count(adhoc)} components / ${adhoc.length} modules, ${themeCount} theme(s)`, adhoc, themeCount]]
+  : [[`full — ${count(ALL)} components / ${ALL.length} modules, 4 themes`, ALL, 4],
+     [`shipped — ${count(PROPOSED)} components / ${PROPOSED.length} modules, ${SHIPPED.length} themes`, PROPOSED, SHIPPED.length],
+     [`shipped — ${count(PROPOSED)} components / ${PROPOSED.length} modules, 1 theme`, PROPOSED, 1]];
 
 console.log(`\n  themes from src/app.scss: ${SHIPPED.join(' + ')}`);
 for (const [label, comps, themes] of jobs) {
-  process.stdout.write(`  ${label.padEnd(46)}`);
+  process.stdout.write(`  ${label.padEnd(52)}`);
   const r = build(comps, themes);
   console.log(`${String(Math.round(r.min / 1024)).padStart(5)} KB min  `
     + `${(r.gzip / 1024).toFixed(1).padStart(6)} KB gzip  ${String(r.classes).padStart(5)} classes`);
   // What Sass pulled in that the set did not name — the accidental keeps.
   const named = new Set(comps);
   const pulled = [...new Set(comps.flatMap(c => DEPS[c] ?? []))].filter(d => !named.has(d)).sort();
-  if (pulled.length) console.log(`  ${''.padEnd(46)}pulled in unnamed: ${pulled.join(' ')}`);
+  if (pulled.length) console.log(`  ${''.padEnd(52)}pulled in unnamed: ${pulled.join(' ')}`);
 }
 rmSync(work, { recursive: true, force: true });
 console.log();

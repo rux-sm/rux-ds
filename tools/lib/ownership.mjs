@@ -17,7 +17,12 @@ import { readFileSync } from 'node:fs';
 // Carbon's class stem differs from the package name for these.
 export const ALIAS = {
   'button': ['btn'], 'number-input': ['number'],
-  'data-table': ['data-table', 'table'],
+  // data-table is four modules and its classes do not all start with `table`.
+  // sort and expandable add row stems; action adds the toolbar and the batch bar.
+  'data-table': ['data-table', 'table', 'expandable-row', 'parent-row',
+                 'child-row-inner-container', 'batch-actions', 'batch-download',
+                 'batch-summary', 'action-list', 'toolbar-content',
+                 'toolbar-action', 'toolbar-search-container'],
   'notification': ['inline-notification', 'toast-notification', 'actionable-notification'],
   'ui-shell': ['header', 'side-nav', 'switcher', 'navigation', 'skip-to-content'],
   'treeview': ['tree'], 'skeleton-styles': ['skeleton'],
@@ -50,10 +55,21 @@ export function owner(cls) {
 
 // The strip is src/app.scss, so the manifest is read directly rather than
 // mirrored in a list here (roadmap §4.3, and the same reasoning as check-coverage).
+//
+// A COMPONENT CAN BE SEVERAL MODULES. data-table is compiled as four @use lines —
+// the base plus sort, expandable and action — and Carbon namespaces all of their
+// classes under the one component name, so ownership is by the FIRST path segment.
+// Anything deeper is a module of a component already in the set.
 export function compiled() {
   const manifest = readFileSync('src/app.scss', 'utf8');
   return new Set([...manifest.matchAll(/^@use "@carbon\/styles\/scss\/components\/([^"]+)"/gm)]
-    .map(m => m[1]));
+    .map(m => m[1].split('/')[0]));
+}
+
+// Every module line, sub-paths included — what a compile of the manifest is.
+export function compiledModules() {
+  const manifest = readFileSync('src/app.scss', 'utf8');
+  return [...manifest.matchAll(/^@use "@carbon\/styles\/scss\/components\/([^"]+)"/gm)].map(m => m[1]);
 }
 
 // What counts as a class name in the built CSS.

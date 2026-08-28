@@ -71,12 +71,18 @@ for (const f of ROOTS.flatMap(r => walk(r))) {
 // would make the gate permanently red with no action available.
 const COMPILED = compiled();
 
-// Intersected with the BUILT CSS, not just the inventory's class lists. A class
-// like `rux--text-input--fluid` has stem `text-input` and so counts as owned by a
-// component that ships — but it only exists when fluid-text-input is compiled, and
-// it is not. Leaving it in the denominator makes a target that can never be reached.
-const DEFINED = classNames(readFileSync('css/rux.css', 'utf8'));
-const allClasses = new Set(inv.components.flatMap(c => c.classes ?? []));
+// THE DENOMINATOR IS THE BUILT CSS, not the inventory's class lists.
+//
+// Two reasons, both found the hard way. A class like `rux--text-input--fluid` has
+// stem `text-input` and so counts as owned by a component that ships — but it only
+// exists when fluid-text-input is compiled, and it is not, so counting it sets a
+// target that can never be reached. And the inventory is a SNAPSHOT: when
+// data-table gained its sort, expandable and action modules, every class they
+// define was missing from inventory.json and the gate quietly kept scoring
+// data-table out of the old 45. Reading the stylesheet the build just produced is
+// the only denominator that cannot go stale.
+const allClasses = classNames(readFileSync('css/rux.css', 'utf8'));
+const DEFINED = allClasses;
 
 const rows = [], unowned = [];
 for (const c of inv.components) {
