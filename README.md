@@ -8,28 +8,28 @@ record, and the phase this project is in.
 
 ## Status
 
-**Phase 1 complete — standing baseline, and its markup is now verified.** 100% of Carbon
-compiles and renders under the `rux` namespace. All 75 components are exercised by the
-kitchen sink, each of its 64 sections has been visually reviewed in light and dark, and
-every fragment has been diffed against Carbon's own rendered DOM. Nothing has been
-stripped yet; that is Phase 3.
+**Phase 3 complete — stripped.** Carbon compiles under the `rux` namespace, every
+shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
+now the keep-set rather than all of Carbon. Phase 4 (devendor) and Phase 5
+(behaviors) are next — see the note under Gates on why they may swap.
 
 | | |
 |---|---|
-| Components | **75 / 75 rendered and verified** |
-| Themes | 4 — white, g10, g90, g100 |
-| Tokens · classes | 635 `--rux-*` · 826 `.rux--*` |
-| Kitchen sink | 64 sections · 747 classes · 0 unresolved |
-| Markup provenance | **57 `rendered-dom` · 4 `source` · 3 `inferred`** — see roadmap §4.1.13 |
-| States drawn | 382 / 689 — see `docs/states.json` |
+| Components | **31 / 75 compiled** — `docs/inventory.md` decides all 75 |
+| Themes | 2 — white, g100 |
+| Tokens · classes | 610 `--rux-*` · 1,609 `.rux--*` |
+| Kitchen sink | 31 sections · 377 classes · 0 unresolved |
+| Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 52, a 14.1 KB sprite |
-| Size | 942 KB raw · 849 KB min · **84 KB gzipped** |
+| Size | 577 KB raw · 519 KB min · **53 KB gzipped** |
 
-The three still `inferred` are not unfinished work: `resizer`, `slug` and
-`truncated-text` have **no reference anywhere**. Nothing across the 641 captured stories
-on either Storybook origin emits their classes — slug was superseded by `ai-label`, and
-the only story matching "truncated" is a card truncating its own title. Each says so in
-its fragment.
+Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
+
+The 44 components not compiled are CUT or DEFER rows in
+[`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
+still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
+lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
+`sink/ORDER`.
 
 ## Commands
 
@@ -82,7 +82,7 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 | `check-classes.mjs` | a class used in HTML with no CSS behind it | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
-| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (49 today) |
+| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
 | `check-coverage.mjs` | a component no markup exercises | whether that markup is correct |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
@@ -107,8 +107,10 @@ copy animation, Escape, outside-press) by toggling the state classes Carbon's CS
 reacts to. **It is not the design system's behaviour layer** — no focus management, no
 keyboard support past Escape, no ARIA lifecycle. Phase 5 writes that. Roadmap §4.1.8.
 
-### Known gap
+### Known gap — closed by the strip
 
-`.rux--truncated-text__expand-toggle` has no button reset in Carbon's light-DOM CSS, so
-it renders with browser default chrome. It is shown unfixed and labelled in the kitchen
-sink rather than patched, because fixing it means editing a Carbon file. Roadmap §4.1.5.
+`.rux--truncated-text__expand-toggle` had no button reset in Carbon's light-DOM CSS and
+rendered with browser default chrome; it was shown unfixed and labelled, because fixing
+it meant editing a Carbon file (roadmap §4.1.5). `truncated-text` is CUT in Phase 3, so
+`check-rendered` now reports no default chrome anywhere. The gap returns with the
+component if it is ever restored, and its fragment still says so.

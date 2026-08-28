@@ -104,6 +104,23 @@ For scale: rux-ui is 351 KB **unminified** for 23 components plus a 143 KB token
 This system will be heavier uncompressed and lighter on the wire, and it keeps Carbon's
 accessibility and interaction behavior — which is the trade §1.1 is buying.
 
+> **The floor actually hit, 2026-08-28 — recorded per §5, not yet an amendment.**
+> Phase 3 shipped **31 components and 2 themes at 519 KB minified / 53 KB gzipped**,
+> against a target of ≤40 KB. The target is not reachable by any set that builds the
+> six Phase 6 page shapes: 22 components reach 38 KB, but that set has no `ui-shell`
+> and no `data-table`, so it cannot produce the app shell or the table page. Adding
+> those plus `tabs` and `pagination` reaches 47 KB.
+>
+> `docs/inventory.md` recommends amending this target to **≤55 KB gzipped** and flags
+> it as needing sign-off, since cutting `ui-shell` to protect an estimate would remove
+> a target page shape. **The number above stands unchanged until that call is made.**
+>
+> A second measurement from the same pass, which §4.3 should absorb: **themes are
+> nearly free gzipped.** The foundation is 51 KB minified with one theme and 71 KB with
+> two — 7 KB gzipped either way — so the 4 → 2 theme cut saves 44 KB minified and 2 KB
+> gzipped. §4.3 pass 3 sits beside the component cut as though comparable; it is not,
+> and the cut is justified on scope instead. Reproduce with `tools/measure.mjs`.
+
 ---
 
 ## 3. What comes from where
