@@ -17,7 +17,8 @@ now the keep-set rather than all of Carbon.
 the API: a `.rux--popover-container` is click-driven and the same container with
 `.rux--tooltip` is hover-and-focus driven, so neither needs an attribute at all; a modal
 takes `data-rux-open="<id>"` and `data-rux-close` only because its trigger and surface sit
-far apart in the document. Focus trapping, Escape, outside press and the stack that
+far apart in the document — as does a menu, which reuses the same attribute. An overflow
+menu needs none: its surface is the sibling of its trigger. Focus trapping, Escape, outside press and the stack that
 decides which surface a press belongs to all come from the kernel, so a page needs no
 script of its own. `sink/harness.js` still drives what Phase 5
 has not reached, and shrinks with every module that lands.
@@ -38,7 +39,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 20 KB of a 90 KB budget — `js/overlay.js` · `js/popover.js` · `js/modal.js` |
+| Behaviour JS | 30 KB of a 90 KB budget — `js/overlay.js` · `js/popover.js` · `js/menu.js` · `js/modal.js` |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 
@@ -144,10 +145,11 @@ looking at it — twice now it has been the only thing that found the bug (roadm
 
 ### The sink is interactive — the system is not, yet
 
-`sink/harness.js` drives the demos (accordion, list boxes, popovers, menus, tabs, tree,
-copy animation, Escape, outside-press) by toggling the state classes Carbon's CSS already
-reacts to. **It is not the design system's behaviour layer** — no focus management, no
-keyboard support past Escape, no ARIA lifecycle. Phase 5 writes that. Roadmap §4.1.8.
+`sink/harness.js` drives what Phase 5 has not reached yet — list boxes, tabs, tree, copy
+animation, search clear — by toggling the state classes Carbon's CSS already reacts to.
+**It is not the design system's behaviour layer**, and it is shrinking: modal, popover,
+tooltip, menu and overflow menu have moved to `js/`, taking their sections with them, and
+390 lines have become 336. The phase is done when the file is empty. Roadmap §4.1.8.
 
 ### Known gap — closed by the strip
 

@@ -138,21 +138,10 @@
   // dismissal through the kernel. The toggletip third of this block left with
   // the component: it is CUT, and its fragment moved to sink/deferred/.
 
-  // ---- menu + overflow menu ----------------------------------------------
-  on('[data-ks-menu]', 'click', trigger => {
-    const menu = document.getElementById(trigger.dataset.ksMenu);
-    const open = menu.classList.toggle('rux--menu--open');
-    menu.classList.toggle('rux--menu--shown', open);
-    trigger.setAttribute('aria-expanded', String(open));
-  });
-  // The list is a SIBLING of the trigger, not a child: __btn is a real <button>
-  // and nesting one inside the trigger button would be invalid. Look sideways.
-  const optionsFor = el => el.parentElement?.querySelector('.rux--overflow-menu-options');
-  on('.rux--overflow-menu', 'click', el => {
-    const open = el.classList.toggle('rux--overflow-menu--open');
-    optionsFor(el)?.classList.toggle('rux--overflow-menu-options--open', open);
-    el.setAttribute('aria-expanded', String(open));
-  });
+  // ---- menu + overflow menu: GONE FROM HERE ------------------------------
+  // js/menu.js owns both, with the roving arrow-key pattern, Home and End,
+  // Tab-closes, Enter forwarded as a click on <li> items, and dismissal
+  // through the kernel. `optionsFor` went with them.
 
   // ---- copy button -------------------------------------------------------
   // .rux--copy-btn__feedback has no hidden state in CSS; Carbon's web component
@@ -334,12 +323,6 @@
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     closeListBoxes(null);
-    $$('.rux--menu--open').forEach(m => m.classList.remove('rux--menu--open', 'rux--menu--shown'));
-    $$('.rux--overflow-menu--open').forEach(m => {
-      m.classList.remove('rux--overflow-menu--open');
-      m.setAttribute('aria-expanded', 'false');
-      optionsFor(m)?.classList.remove('rux--overflow-menu-options--open');
-    });
   });
 
   // ---- outside press closes what the HARNESS still owns -------------------

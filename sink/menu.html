@@ -12,12 +12,16 @@
     selected one. `menu-item-group` is the same pattern for a non-radio group.
 
     The reference also renders every menu open — `menu--open menu--shown` — but
-    those are the state the harness toggles, and this fragment demos the menus
-    inline so they are visible at rest. `menu-item-selectable--selected` is
+    those are the state js/menu.js toggles, and this fragment demos the menus
+    inline so they are visible at rest. Only the FIRST menu has a trigger and so
+    is driven by the module: `data-rux-open="<id>"`, the same idiom modal uses,
+    because a menu's surface is a <ul> elsewhere in the document. The rest are
+    static specimens of density and selection state with nothing to open them,
+    which is why they carry no trigger and no attribute. `menu-item-selectable--selected` is
     emitted with no rule in @carbon/styles and is dropped (§4.1.12).
   -->
   <div class="ks-row" style="padding-block:1rem;min-height:12rem;align-items:flex-start;flex-direction:column;gap:.5rem">
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-menu="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
+    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-rux-open="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
     <ul id="ks-menu" class="rux--menu rux--menu--md rux--menu--with-icons"
         role="menu" style="position:relative;inset:auto">
       <li class="rux--menu-item" role="menuitem" tabindex="0">

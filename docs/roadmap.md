@@ -1094,10 +1094,15 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > so Escape reaches it first and an outside press still clears it. This is the one place
 > where "opening dismisses what is above" is the wrong default.
 >
-> Landed: `js/overlay.js` (the kernel), `js/popover.js` and `js/modal.js`. 20 KB of the
-> 90 KB budget. Popover carries tooltip too — one mechanism, two triggers, and the mode
-> is read off the markup (`.rux--tooltip` means hover and focus) so neither needs an
-> attribute. Remaining, roughly in dependency order: menu and overflow-menu ·
+> **6. `data-rux-open` is ONE contract, claimed by whoever recognises the surface.**
+> modal and menu both listen for it and each acts only on the surfaces it knows —
+> `.rux--modal`, `.rux--menu`. A component whose trigger and surface sit together in the
+> markup (popover, overflow menu) needs no attribute at all, and does not get one.
+>
+> Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js` and `js/modal.js`.
+> 30 KB of the 90 KB budget. Popover carries tooltip and menu carries overflow-menu —
+> in both cases one mechanism with two triggers, and the mode read off the markup.
+> Remaining, roughly in dependency order:
 > list-box (dropdown, select) · accordion · tabs · data-table (sort, expand, select-all) ·
 > notification and tag dismiss · number-input · search clear · tile · ui-shell.
 

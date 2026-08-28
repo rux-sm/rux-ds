@@ -67,6 +67,7 @@ ${sections.join('\n\n')}
      not reached yet, and shrinks with every module that lands. -->
 <script src="js/overlay.js"></script>
 <script src="js/popover.js"></script>
+<script src="js/menu.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
