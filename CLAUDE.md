@@ -73,6 +73,8 @@ only a SIBLING nav does that — so the page indents itself, breakpoint-scoped, 
 Form, table, detail, empty state and error state are not written yet; until they are,
 `sink/*.html` is still the markup to copy for a page body.
 
-**A template references the sprite, a fragment inlines it.** `../assets/icons.svg#i-name`
-in `templates/`, `#i-name` in `sink/`. `check-icons` enforces each against its own root,
-and a template must be SERVED — a cross-document `<use>` over `file://` paints nothing.
+**Every page carries the sprite; every `<use>` is `#i-name`.** `build-sink` inlines it
+into `kitchen-sink.html`, `npm run icons` inlines it into each template between
+`SPRITE:BEGIN`/`SPRITE:END`. Referencing `../assets/icons.svg#i-name` instead is a
+`check-icons` fault: WebKit follows no cross-document `<use>` and `file://` blocks it in
+every engine, and both fail SILENTLY — a fully styled page with no icons on it.

@@ -11,7 +11,7 @@
 // scales, so each icon is taken from the smallest available source and the viewBox
 // normalises it. Add an icon by adding its name below and re-running.
 //
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 
 const SRC = 'node_modules/@carbon/icons/svg';
 const SIZES = ['16', '20', '32', ''];   // preference order; '' is the unsized root
@@ -62,4 +62,24 @@ ${symbols.join('\n')}
 `;
 writeFileSync('assets/icons.svg', sprite);
 console.log(`  assets/icons.svg — ${symbols.length} icons, ${(sprite.length / 1024).toFixed(1)} KB`);
+
+// THE TEMPLATES CARRY THEIR OWN COPY, because a template is copied rather than
+// assembled and cannot reference the file: WebKit has never supported a
+// cross-document <use>, and file:// blocks the fetch everywhere. Both fail
+// silently, with a fully styled page and no icons on it. Refreshing the copies
+// here is what keeps `npm run icons` the only command anyone has to remember.
+const BEGIN = /<!-- SPRITE:BEGIN[\s\S]*?-->\n/;
+const END = '<!-- SPRITE:END -->';
+let refreshed = 0;
+for (const f of (existsSync('templates') ? readdirSync('templates') : []).filter(f => f.endsWith('.html'))) {
+  const path = `templates/${f}`;
+  const html = readFileSync(path, 'utf8');
+  const open_ = html.match(BEGIN);
+  const close = html.indexOf(END);
+  if (!open_ || close === -1) continue;          // a template with no block wants none
+  const head = html.slice(0, open_.index + open_[0].length);
+  const next = head + sprite.trim() + '\n' + html.slice(close);
+  if (next !== html) { writeFileSync(path, next); refreshed++; }
+}
+console.log(`  templates refreshed: ${refreshed}`);
 console.log(`  sourced from: ${Object.entries(from).map(([k, v]) => `${k}px:${v}`).join('  ')}`);

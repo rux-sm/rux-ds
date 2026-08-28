@@ -25,16 +25,17 @@
 //               name added or removed without re-running the quarry, which
 //               leaves the committed sprite lying about what it holds
 //
-// THE TWO ROOTS HAVE OPPOSITE POLARITY, because the sprite reaches them
-// differently. build-sink.mjs INLINES assets/icons.svg into kitchen-sink.html,
-// so a fragment writes `#i-name` and an external reference would be a fetch the
-// committed sprite exists to avoid. A template is copied, not assembled, and
-// inlining 15.8 KB into each of six of them to say the same thing is the
-// duplication §4.6 warns about — so a template writes
-// `../assets/icons.svg#i-name`, and a BARE `#i-name` there is the broken case:
-// nothing on the page defines it and the icon silently paints nothing. Each
-// root is therefore checked against the form that works for it, and the form
-// that works for the other one is a fault.
+// EVERY ROOT WRITES `#i-name`, AND EVERY PAGE CARRIES THE SPRITE. build-sink
+// inlines it into kitchen-sink.html; `npm run icons` inlines it into each
+// template between SPRITE:BEGIN and SPRITE:END. A template referencing the file
+// instead was tried and reverted: WebKit has never supported a cross-document
+// <use>, so every icon was blank in Safari, and file:// blocks the fetch in
+// every engine. Both fail silently — a fully styled page with no icons on it —
+// which is the worst way for a template to be wrong, because it looks built.
+//
+// So an external reference is a fault in both roots, and a template whose
+// inlined block has drifted from assets/icons.svg is another: a copy nobody
+// refreshes is a copy that goes stale without saying so.
 //
 // WHAT IT IS BLIND TO: WHICH GLYPH IS RIGHT. This can prove #i-chevron--left
 // resolves. It cannot know the row expander wanted #i-chevron--right, which is
@@ -118,56 +119,51 @@ for (const name of symbols) if (!listed.includes(name)) {
 
 // ── every <use> in a fragment or a template ────────────────────────────────
 const sources = markupFiles();
-const shipped = sources.flatMap(f => usesIn(f.path).map(u => ({ ...u, root: f.root })));
 const used = new Set();
 
-const advise = id =>
-  ` Add "${id.replace(/^i-/, '')}" to ${QUARRY} and run \`npm run icons\``;
+// A template defines its own symbols; a fragment borrows the sink's, which
+// build-sink inlines for it. Either way the reference is resolved against what
+// the FINISHED page will actually contain.
+const symbolsIn = html => new Set(
+  [...strip(html).matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
 
-for (const u of shipped) {
-  const where = `${u.path}:${u.line}`;
-  if (u.href === null) {
-    faults.push(['MALFORMED', where, `<use> with no href — it can only paint nothing`]);
-    continue;
+const spriteBody = sprite.trim();
+let shipped = 0;
+
+for (const f of sources) {
+  const html = readFileSync(f.path, 'utf8');
+  const own = f.root === 'sink' ? defined : symbolsIn(html);
+
+  if (f.root !== 'sink') {
+    const block = html.match(/<!-- SPRITE:BEGIN[\s\S]*?-->\n([\s\S]*?)\n<!-- SPRITE:END -->/);
+    if (!block) {
+      faults.push(['NO SPRITE', f.path, `no SPRITE:BEGIN/END block — a template is copied, not` +
+        ` assembled, so it must carry the sprite. Run \`npm run icons\``]);
+    } else if (block[1].trim() !== spriteBody) {
+      faults.push(['STALE COPY', f.path, `its inlined sprite has drifted from ${SPRITE}` +
+        ` — run \`npm run icons\` to refresh it`]);
+    }
   }
-  const bare = u.href.startsWith('#');
 
-  if (u.root === 'sink') {
-    if (!bare) {
-      faults.push(['EXTERNAL', where, `href="${u.href}" leaves the document, but the sprite is` +
-        ` inlined into kitchen-sink.html — a fragment writes "#i-name"`]);
+  for (const u of usesIn(f.path)) {
+    shipped++;
+    const where = `${f.path}:${u.line}`;
+    if (u.href === null) {
+      faults.push(['MALFORMED', where, `<use> with no href — it can only paint nothing`]);
+      continue;
+    }
+    if (!u.href.startsWith('#')) {
+      faults.push(['EXTERNAL', where, `href="${u.href}" leaves the document. WebKit does not` +
+        ` follow a cross-document <use> and file:// blocks it everywhere; both draw nothing.` +
+        ` Write "${u.href.slice(u.href.indexOf('#'))}" and let the inlined sprite define it`]);
       continue;
     }
     const id = u.href.slice(1);
     used.add(id);
-    if (!defined.has(id)) {
-      faults.push(['UNRESOLVED', where, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
+    if (!own.has(id)) {
+      faults.push(['UNRESOLVED', where, `#${id} — nothing on this page defines it.` +
         ` Valid SVG, paints nothing.` + advise(id)]);
     }
-    continue;
-  }
-
-  // templates: the sprite is not inlined, so the reference must reach the file
-  if (bare) {
-    faults.push(['BARE', where, `href="${u.href}" — a template inlines no sprite, so this defines` +
-      ` nothing and paints nothing. Write "${'../'.repeat(u.path.split('/').length - 1)}${SPRITE}${u.href}"`]);
-    continue;
-  }
-  const [file, id] = u.href.split('#');
-  if (!id) {
-    faults.push(['MALFORMED', where, `href="${u.href}" names a file but no symbol`]);
-    continue;
-  }
-  const resolved = normalize(join(dirname(u.path), file));
-  if (resolved !== normalize(SPRITE)) {
-    faults.push(['STRAY', where, `href="${u.href}" resolves to ${resolved}, not ${SPRITE}` +
-      ` — there is one sprite and it is committed`]);
-    continue;
-  }
-  used.add(id);
-  if (!defined.has(id)) {
-    faults.push(['UNRESOLVED', where, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
-      ` The fetch succeeds and the glyph is absent.` + advise(id)]);
   }
 }
 
@@ -191,7 +187,7 @@ for (const [tag, where, why] of faults) {
 const frags = sources.filter(f => f.root === 'sink').length;
 const tpls = sources.length - frags;
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
-console.log(`\n  ${shipped.length} <use> in ${plural(frags, 'fragment')}` + ` and ${plural(tpls, 'template')}` +
+console.log(`\n  ${shipped} <use> in ${plural(frags, 'fragment')}` + ` and ${plural(tpls, 'template')}` +
   ` · ${symbols.length} symbols · ${used.size} used` +
   ` · ${faults.length} ${faults.length === 1 ? 'fault' : 'faults'}`);
 if (unused.length) {
