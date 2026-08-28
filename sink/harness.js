@@ -40,16 +40,22 @@
   const SHOW = { 'rux--modal': 'is-visible', 'rux--side-panel': 'rux--side-panel--open' };
   const hookFor = el => Object.entries(SHOW).find(([b]) => el.classList.contains(b))?.[1];
   const isPanel = el => el.classList.contains('rux--side-panel');
+  // Carbon renders __overlay as the panel's NEXT SIBLING, not a child — the
+  // stylesheet says so with `.--side-panel--has-ai-label + .--side-panel__overlay`
+  // and the rendered DOM confirms it. It is position:fixed at z-index 6000, so it
+  // has to be hidden with its panel or it swallows every click on the page.
+  const overlayFor = el => el.nextElementSibling?.classList
+    .contains('rux--side-panel__overlay') ? el.nextElementSibling : null;
   const closeOverlays = () => $$('[data-ks-open]').forEach(b => {
     const t = document.getElementById(b.dataset.ksOpen);
     if (!t) return;
     t.classList.remove(hookFor(t));
-    if (isPanel(t)) t.hidden = true;
+    if (isPanel(t)) { t.hidden = true; const o = overlayFor(t); if (o) o.hidden = true; }
   });
   on('[data-ks-open]', 'click', b => {
     const t = document.getElementById(b.dataset.ksOpen);
     closeOverlays();
-    if (isPanel(t)) t.hidden = false;
+    if (isPanel(t)) { t.hidden = false; const o = overlayFor(t); if (o) o.hidden = false; }
     t.classList.add(hookFor(t));
   });
   on('[data-ks-close]', 'click', closeOverlays);

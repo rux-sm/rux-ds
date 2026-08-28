@@ -2584,11 +2584,23 @@
      them: __action-toolbar-button and
      __subtitle-text-no-animation-no-action-toolbar.
 
-     Not yet demoed: the action toolbar, --has-overlay, --has-decorator,
-     --slide-in, and the no-title header (__header without --has-title). -->
+     --has-overlay and --slide-in are demoed as of 2026-08-27. The overlay is a
+     SIBLING of the panel, not a child: the stylesheet says so with
+     `.--side-panel--has-ai-label + .--side-panel__overlay`, and the rendered DOM
+     confirms it — button, aside, then div.__overlay. It is position:fixed at
+     z-index 6000, so harness.js hides it with its panel; left up it swallows
+     every click on the page. --has-overlay itself carries no paint: its only job
+     is suppressing the panel's box-shadow, via
+     `.--side-panel:not(.--side-panel--has-overlay)`. --slide-in drops the shadow
+     the same way and takes no overlay, which is how the reference renders it.
+
+     Not yet demoed: the action toolbar, --has-decorator, --resizable,
+     --condensed-actions, and the no-title header (__header without
+     --has-title). -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
     <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
+    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-slide">Open slide-in panel</button>
   </div>
   <div class="ks-label" style="margin-block-start:1rem">the other five widths</div>
   <div class="ks-row">
@@ -2599,7 +2611,7 @@
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-2xl">2xl</button>
   </div>
 
-  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-right" hidden>
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay" id="sp-right" hidden>
     <div class="rux--side-panel__header rux--side-panel__header--has-title">
       <p class="rux--side-panel__label-text">Context</p>
       <div class="rux--side-panel__title">
@@ -2625,6 +2637,7 @@
       <p>Panel body content scrolls independently of the page behind it.</p>
     </div>
   </aside>
+  <div class="rux--side-panel__overlay" id="sp-right-overlay" hidden></div>
 
   <aside class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" hidden>
     <div class="rux--side-panel__header rux--side-panel__header--has-title">
@@ -2774,6 +2787,32 @@
     </div>
     <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
       <p>Width variant --2xl.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--slide-in" id="sp-slide" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">Slide-in panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Slide-in panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>No overlay, and the stylesheet drops the shadow too.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Slide-in sits beside the page rather than over it, so the content behind stays reachable.</p>
     </div>
   </aside>
 </section>
