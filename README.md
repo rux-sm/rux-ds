@@ -65,20 +65,24 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Eight, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
 | `check-classes.mjs` | a class used in HTML with no CSS behind it | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
-| `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper · wrong element |
+| `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
+| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (56 today) |
 | `check-coverage.mjs` | a component no markup exercises | whether that markup is correct |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
 
-The first seven run in `npm run verify`. **`check-rendered.js` needs a browser** — paste
+The first eight run in `npm run verify`. `check-tags` was promoted from a
+diagnostic on 2026-08-27, after all fifty findings of its first full run were
+adjudicated; its `KNOWN` list carries the nine recorded divergences, each with
+its reason, following `check-tokens`' precedent. **`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
 automating it means adding a headless-browser dependency and this project has none.
 

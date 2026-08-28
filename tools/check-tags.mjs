@@ -14,14 +14,16 @@
 // `--tabs__nav-link` on an `<a>` where React uses a `<button>`. Reconstructing
 // either markup, this checker flags it; the corrected fragments come back clean.
 //
-// DIAGNOSTIC, NOT A GATE — it exits 0 even with findings, and is deliberately
-// not in `npm run verify` yet. Some findings are considered divergence rather
-// than defect: this project renders `--snippet` on a `<code>` and
-// `--contained-list__label` on an `<h3>` where React uses `<div>`, and those are
-// arguably better. Until every finding has been answered one way or the other,
-// enforcing this would mean shipping it with an ignore list, and a check that
-// needs a list to pass is measuring the list. Promote it when the residue is
-// small and each remaining entry has a reason.
+// A GATE since 2026-08-27, when all fifty findings of the first full run were
+// adjudicated — most by fixing the fragment to Carbon's element, the residue
+// by a recorded decision in the fragment itself. KNOWN below carries exactly
+// that residue: each entry is a deliberate divergence or a reference sampling
+// gap, states its reason, and has a fuller account in the fragment beside the
+// markup it describes. This follows check-tokens' KNOWN precedent — a bounded,
+// reasoned list is not the ignore-list the no-list rule forbids, because the
+// gate still measures the rule for everything else and a new divergence fails
+// the build. Answer a new finding the same way: fix the fragment, or record
+// the decision there AND here.
 //
 // WHY THERE IS NO FRAGMENT-TO-STORY MAP. The first design mapped each fragment
 // to the stories covering it, which needed 26 hand-written entries and stalled
@@ -56,6 +58,20 @@ import { readFileSync, readdirSync } from 'node:fs';
 // own `c4p--` prefix. The class NAMES are identical: all 19 that story emits are
 // defined in our CSS, so normalising the prefix away makes it a valid reference
 // for exactly the same check.
+// class -> { tag, reason }: the adjudicated residue. The reason here is the
+// summary; the fragment carries the full account next to the markup.
+const KNOWN = {
+  'btn':                    { tag: 'a', reason: 'Button href API renders <a>; no story samples it (buttons.html)' },
+  'btn--ghost':             { tag: 'a', reason: 'ghost link button, same href form (buttons.html)' },
+  'btn--disabled':          { tag: 'a', reason: 'the class-form disabled exists FOR anchors (buttons.html)' },
+  'layout--size-xl':        { tag: 'button', reason: 'no story renders an xl button; pairing on the button is Carbon idiom (buttons.html)' },
+  'snippet':                { tag: 'code', reason: 'static inline snippet on <code>; the button form is the JS copy affordance (code-snippet.html)' },
+  'snippet--inline':        { tag: 'code', reason: 'same divergence as snippet (code-snippet.html)' },
+  'contained-list__label':  { tag: 'h3', reason: 'a heading where Carbon uses a div + ARIA (contained-list.html)' },
+  'tile--disabled':         { tag: 'div', reason: 'classic selectable tile is div[role=checkbox]; only the feature-flag story disables, as a label (tile.html)' },
+  'tree-node--active':      { tag: 'li', reason: 'active sampled only in the link tree, on <a>; non-link nodes are LIs (treeview.html)' },
+};
+
 const REF_PATHS = [
   'docs/carbon-react-dom.json',           // @carbon/react, 505 stories
   'docs/carbon-ibm-products-dom.json',    // @carbon/ibm-products: side-panel, page-header, create pattern
@@ -119,7 +135,7 @@ for (const lines of refs) {
 }
 
 const files = readdirSync('sink').filter(f => f.endsWith('.html')).sort();
-let findings = 0, checked = 0, unknown = 0;
+let findings = 0, checked = 0, unknown = 0, known = 0;
 
 for (const file of files) {
   const rows = [];
@@ -130,8 +146,11 @@ for (const file of files) {
   for (const [c, tags] of seen) {
     if (!TAGS.has(c)) { unknown++; continue; }   // no story emits it; nothing to compare
     checked++;
-    for (const t of tags)
-      if (!TAGS.get(c).has(t)) rows.push([c, t, [...TAGS.get(c)].sort().join('|')]);
+    for (const t of tags) {
+      if (TAGS.get(c).has(t)) continue;
+      if (KNOWN[c]?.tag === t) { known++; continue; }
+      rows.push([c, t, [...TAGS.get(c)].sort().join('|')]);
+    }
   }
   if (!rows.length) continue;
   console.log(`  ${file}`);
@@ -141,5 +160,9 @@ for (const file of files) {
 }
 
 console.log(`\n  ${stories} stories · ${checked} classes checked · ${unknown} with no reference`
-  + ` · ${findings} on a different element`);
-console.log('  diagnostic only — see the header before promoting this to a gate');
+  + ` · ${known} known divergences · ${findings} on a different element`);
+if (findings) {
+  console.log('  a class must sit on the element Carbon renders it on — fix the fragment,');
+  console.log('  or record the divergence in the fragment AND in KNOWN (see the header)');
+  process.exit(1);
+}
