@@ -202,7 +202,14 @@ there. It reads the ring where Carbon DRAWS it — the label beside a hidden inp
 not the 1x1 input focus lands on — and discards outlines that paint nothing, so no
 control can pass on the browser's own ring. Until 2026-08-28 it passed 24 checkboxes,
 radios and tiles on Chromium's `outline: auto`, and called those same 24 ringless
-whenever `:focus-visible` stopped matching. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
+whenever `:focus-visible` stopped matching. Swept afterwards, all 164 focusable
+controls change something that actually paints: 161 move an outline or a shadow, and
+three — `skip-to-content`, `header__name` and the menu trigger — carry Carbon's
+header treatment instead, a border resting at `transparent` and coloured on focus.
+That is the inverse of the tile's transparent OUTLINE and must not be suppressed with
+it: the border has width and style, so colouring it paints. No control passes on a
+border whose style is `none` or whose width is 0, so that rule is not written — an
+unexercised rule measures nothing. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
 stays open until one is done.
 
 **`check-rendered.js` needs a browser** — paste
