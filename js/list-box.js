@@ -1,0 +1,239 @@
+/* ==========================================================================
+   rux-ds — LIST BOX (dropdown, and the select-only combobox)
+                                                        Phase 5, roadmap §4.5
+   --------------------------------------------------------------------------
+   Requires js/overlay.js. Load after js/popover.js.
+
+   THIS IS A COMBOBOX, NOT A MENU, and the difference is the whole file. A
+   menu moves DOM focus onto the item the arrows reach. A select-only combobox
+   keeps focus on the field and moves a separate cursor — `aria-activedescendant`
+   — over the options, so a screen reader announces the option while the
+   button keeps the keyboard. Carbon does the latter; reusing menu.js's roving
+   tabindex here would announce the wrong thing and lose the field.
+
+   TWO HIGHLIGHT CLASSES THAT ARE NOT THE SAME THING, which the sink harness
+   had conflated by putting both on whatever was clicked:
+
+     __menu-item--highlighted   the CURSOR. `outline: 2px solid` — where the
+                                arrows are now, gone when the list closes.
+     __menu-item--active        the SELECTION. `background-color:
+                                layer-selected` — what the field is showing,
+                                and it survives closing.
+
+   No attribute to write. The field is `.rux--list-box__field` and the list is
+   `.rux--list-box__menu` inside the same `.rux--list-box`, so the markup
+   already relates them — the rule menu.js settled.
+
+   `select` NEEDS NOTHING. Carbon's Select is a native <select> and the browser
+   already owns every one of these behaviours; only the dropdown form is here.
+
+   NOT EVERY `.rux--list-box` IS A CONTROL. list-box.html demos the PRIMITIVE —
+   a specimen of the expanded state whose `__field` is a plain <div>, because
+   Carbon's ListBox on its own is not interactive. Only the dropdown form gives
+   it a `<button role="combobox">`. So this module claims a list box by its
+   FIELD rather than by the root class, and leaves the static specimens alone:
+   opening one would fight markup that is deliberately rendered open, and
+   `field.focus()` on a div does nothing, which is how this was found.
+   ========================================================================== */
+(() => {
+  'use strict';
+  const overlay = window.Rux?.overlay;
+  if (!overlay) return; // js/overlay.js must load first
+
+  const ROOT = '.rux--list-box';
+  const TYPEAHEAD_MS = 500;
+
+  const live = new Map();   // root -> { registration, cursor }
+  let typed = '', typedTimer = 0;
+
+  // A control, not a specimen: a real button, or something explicitly given the
+  // combobox role. Anything else is markup demonstrating a state.
+  const fieldOf = r => r.querySelector(
+    'button.rux--list-box__field, .rux--list-box__field[role="combobox"]');
+  const menuOf = r => r.querySelector('.rux--list-box__menu');
+  const iconOf = r => r.querySelector('.rux--list-box__menu-icon');
+  const labelOf = r => r.querySelector('.rux--list-box__label');
+  const optionsOf = r => [...r.querySelectorAll('.rux--list-box__menu-item[role="option"]')]
+    .filter(o => !o.hasAttribute('disabled') && o.getAttribute('aria-disabled') !== 'true');
+  const isDisabled = r => r.classList.contains('rux--list-box--disabled')
+    || r.classList.contains('rux--dropdown--disabled');
+  const selectedOf = r => r.querySelector('.rux--list-box__menu-item--active');
+
+  function setCursor(root, option) {
+    const field = fieldOf(root);
+    for (const o of root.querySelectorAll('.rux--list-box__menu-item--highlighted'))
+      o.classList.remove('rux--list-box__menu-item--highlighted');
+    if (!option) { field?.removeAttribute('aria-activedescendant'); return; }
+    option.classList.add('rux--list-box__menu-item--highlighted');
+    field?.setAttribute('aria-activedescendant', overlay.autoId(option, 'rux-option'));
+    // The list scrolls; the cursor must stay in it.
+    option.scrollIntoView?.({ block: 'nearest' });
+    const state = live.get(root);
+    if (state) state.cursor = option;
+  }
+
+  function close(root, options = {}) {
+    const state = live.get(root);
+    if (!state) return;
+    live.delete(root);
+    root.classList.remove('rux--list-box--expanded', 'rux--dropdown--open');
+    iconOf(root)?.classList.remove('rux--list-box__menu-icon--open');
+    const menu = menuOf(root);
+    if (menu && menu.children.length) menu.hidden = true;
+    const field = fieldOf(root);
+    field?.setAttribute('aria-expanded', 'false');
+    setCursor(root, null);
+    state.registration?.release();
+    if (options.restoreFocus !== false) field?.focus();
+    root.dispatchEvent(new CustomEvent('rux:listbox-closed', { bubbles: true }));
+  }
+
+  function open(root) {
+    if (live.has(root) || isDisabled(root)) return;
+    const field = fieldOf(root), menu = menuOf(root);
+    if (!field || !menu) return;
+
+    field.setAttribute('aria-expanded', 'true');
+    field.setAttribute('aria-controls', overlay.autoId(menu, 'rux-listbox'));
+    const registration = overlay.register({
+      element: root,
+      anchor: field,
+      close: opts => close(root, opts),
+    });
+
+    root.classList.add('rux--list-box--expanded', 'rux--dropdown--open');
+    iconOf(root)?.classList.add('rux--list-box__menu-icon--open');
+    // FOCUS THE FIELD EXPLICITLY. This pattern keeps DOM focus on the field and
+    // moves aria-activedescendant instead, so if the field does not hold focus
+    // the arrows reach nothing and the component is inert. Clicking a <button>
+    // does not focus it in Firefox or Safari on macOS — the same browser fact
+    // that broke modal's focus restore — so opening cannot assume it happened.
+    field.focus();
+    if (menu.children.length) menu.hidden = false;
+    live.set(root, { registration, cursor: null });
+    // The cursor starts on the SELECTION, not the first option — reopening a
+    // dropdown should show you where you already are.
+    setCursor(root, selectedOf(root) || optionsOf(root)[0] || null);
+    root.dispatchEvent(new CustomEvent('rux:listbox-opened', { bubbles: true }));
+  }
+
+  function choose(root, option) {
+    if (!option) return;
+    for (const o of root.querySelectorAll('.rux--list-box__menu-item')) {
+      o.classList.remove('rux--list-box__menu-item--active');
+      o.setAttribute('aria-selected', 'false');
+    }
+    option.classList.add('rux--list-box__menu-item--active');
+    option.setAttribute('aria-selected', 'true');
+    const label = labelOf(root);
+    if (label) label.textContent = option.textContent.trim();
+    root.dispatchEvent(new CustomEvent('rux:listbox-selected', {
+      bubbles: true, detail: { option, value: option.textContent.trim() },
+    }));
+    close(root, { restoreFocus: true });
+  }
+
+  const step = (list, from, by) => {
+    if (!list.length) return null;
+    const at = list.indexOf(from);
+    return at === -1 ? list[by > 0 ? 0 : list.length - 1]
+                     : list[(at + by + list.length) % list.length];
+  };
+
+  /* ── pointer ──────────────────────────────────────────────────────────── */
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+
+    const field = event.target.closest('.rux--list-box__field');
+    if (field) {
+      const root = field.closest(ROOT);
+      // fieldOf() is the interactive test; a specimen's <div> field is not ours.
+      if (!root || isDisabled(root) || fieldOf(root) !== field) return;
+      event.preventDefault();
+      live.has(root) ? close(root) : open(root);
+      return;
+    }
+    const option = event.target.closest('.rux--list-box__menu-item[role="option"]');
+    if (option && !option.hasAttribute('disabled')) {
+      const root = option.closest(ROOT);
+      if (root && live.has(root)) { event.preventDefault(); choose(root, option); }
+    }
+  });
+
+  /* ── the combobox keyboard pattern ────────────────────────────────────── */
+  document.addEventListener('keydown', event => {
+    if (!(event.target instanceof Element)) return;
+    const root = event.target.closest(ROOT);
+    if (!root || isDisabled(root) || !fieldOf(root)) return;
+    const isOpen = live.has(root);
+    const list = optionsOf(root);
+    const cursor = live.get(root)?.cursor ?? null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        event.preventDefault();
+        // Closed, an arrow OPENS and stops: open() has already put the cursor on
+        // the selection, which is where the pattern wants it. Moving as well
+        // would skip the option the field is showing.
+        if (!isOpen) { open(root); return; }
+        setCursor(root, step(list, cursor, event.key === 'ArrowDown' ? 1 : -1));
+        break;
+      case 'Home':
+      case 'End':
+        if (!isOpen) return;
+        event.preventDefault();
+        setCursor(root, event.key === 'Home' ? list[0] : list[list.length - 1]);
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        isOpen ? choose(root, cursor) : open(root);
+        break;
+      case 'Escape':
+        // The kernel closes it; this stops a form submitting under us and marks
+        // the key consumed. Nothing is selected — Escape reverts, it does not pick.
+        if (isOpen) event.preventDefault();
+        break;
+      case 'Tab':
+        if (isOpen) close(root, { restoreFocus: false });
+        break;
+      default: {
+        // TYPEAHEAD. Printable, unmodified keys only, accumulated for half a
+        // second so "de" reaches Delta rather than jumping D then E.
+        if (event.key.length !== 1 || event.metaKey || event.ctrlKey || event.altKey) return;
+        if (!isOpen) open(root);
+        clearTimeout(typedTimer);
+        typed += event.key.toLowerCase();
+        typedTimer = setTimeout(() => { typed = ''; }, TYPEAHEAD_MS);
+        const hit = optionsOf(root).find(o => o.textContent.trim().toLowerCase().startsWith(typed));
+        if (hit) { event.preventDefault(); setCursor(root, hit); }
+      }
+    }
+  });
+
+  /* MARKUP CAN DECLARE A LIST BOX ALREADY OPEN, and the module has to agree with
+     it. dropdown.html ships an "Expanded" specimen — a real `button[role=combobox]`
+     rendered with `--expanded` — and without this the first click would call open()
+     on something already open, quietly registering it and leaving the user's click
+     with no visible effect. Adopting the state means the first click CLOSES it,
+     which is what the page looks like it is offering. */
+  for (const root of document.querySelectorAll(`${ROOT}.rux--list-box--expanded`)) {
+    const field = fieldOf(root);
+    if (!field || isDisabled(root) || live.has(root)) continue;
+    live.set(root, {
+      registration: overlay.register({
+        element: root, anchor: field, close: opts => close(root, opts),
+      }),
+      cursor: null,
+    });
+    setCursor(root, selectedOf(root) || optionsOf(root)[0] || null);
+  }
+
+  window.Rux.listBox = {
+    open: root => open(root),
+    close: root => close(root),
+    select: (root, option) => choose(root, option),
+    isOpen: root => live.has(root),
+  };
+})();

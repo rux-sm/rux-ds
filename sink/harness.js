@@ -58,78 +58,16 @@
     // hidden as well fights the max-block-size transition.
   });
 
-  // ---- list boxes: dropdown, combo box, multiselect ----------------------
-  const closeListBoxes = except => $$('.rux--list-box').forEach(lb => {
-    if (lb === except) return;
-    lb.classList.remove('rux--list-box--expanded', 'rux--dropdown--open');
-    lb.querySelector('.rux--list-box__menu-icon')?.classList.remove('rux--list-box__menu-icon--open');
-    const m = lb.querySelector('.rux--list-box__menu');
-    if (m && m.children.length) m.hidden = true;
-    lb.querySelector('.rux--list-box__field')?.setAttribute('aria-expanded', 'false');
-  });
-  on('.rux--list-box__field', 'click', field => {
-    const lb = field.closest('.rux--list-box');
-    if (lb.classList.contains('rux--list-box--disabled')
-      || lb.classList.contains('rux--dropdown--disabled')) return;
-    const open = !lb.classList.contains('rux--list-box--expanded');
-    closeListBoxes(lb);
-    lb.classList.toggle('rux--list-box--expanded', open);
-    lb.classList.toggle('rux--dropdown--open', open);
-    field.setAttribute('aria-expanded', String(open));
-    lb.querySelector('.rux--list-box__menu-icon')?.classList.toggle('rux--list-box__menu-icon--open', open);
-    const menu = lb.querySelector('.rux--list-box__menu');
-    if (menu && menu.children.length) menu.hidden = !open;
-  });
-  // Multiselect rows are checkboxes, so the input is the source of truth and the
-  // menu stays open. The label's `for` toggles the box natively — re-toggling it
-  // here as well would cancel itself out, which is the double-fire that made the
-  // toggle look dead in §4.1.9. So: read state on `change`, and only force a
-  // toggle for a click that missed the label.
-  const syncMulti = lb => {
-    const n = $$('.rux--checkbox', lb).filter(b => b.checked).length;
-    $$('.rux--list-box__menu-item', lb).forEach(i =>
-      i.setAttribute('aria-selected', String(!!i.querySelector('.rux--checkbox')?.checked)));
-    // The count is a Tag, not a __selection badge — Carbon renders
-    // .rux--tag.rux--tag--filter with the number in __label (verified against the
-    // rendered React DOM). The whole tag is hidden at zero, which is what Carbon
-    // does: no selection, no tag.
-    const tag = lb.querySelector('.rux--tag');
-    const count = tag?.querySelector('.rux--tag__label');
-    if (count) count.textContent = String(n);
-    tag?.toggleAttribute('hidden', n === 0);
-    lb.classList.toggle('rux--multi-select--selected', n > 0);
-  };
-  on('.rux--multi-select .rux--checkbox', 'change', box => syncMulti(box.closest('.rux--list-box')));
-  on('.rux--multi-select .rux--list-box__menu-item', 'click', (item, e) => {
-    if (e.target.closest('.rux--checkbox-wrapper')) return;   // native label/input path
-    const box = item.querySelector('.rux--checkbox');
-    if (!box) return;
-    box.checked = !box.checked;
-    syncMulti(item.closest('.rux--list-box'));
-  });
-  // Clearing resets every row. The tag is a SIBLING of the field button inside
-  // __field--wrapper, not a child of it, so this cannot also toggle the menu —
-  // which is why the old guard on the field handler is gone.
-  on('.rux--tag__close-icon', 'click', icon => {
-    const lb = icon.closest('.rux--multi-select');
-    if (!lb) return;
-    $$('.rux--checkbox', lb).forEach(b => b.checked = false);
-    syncMulti(lb);
-  });
-
-  on('.rux--list-box__menu-item', 'click', item => {
-    const lb = item.closest('.rux--list-box');
-    if (lb.classList.contains('rux--multi-select')) return;   // handled above
-    $$('.rux--list-box__menu-item', lb).forEach(i => {
-      i.classList.remove('rux--list-box__menu-item--highlighted', 'rux--list-box__menu-item--active');
-      i.setAttribute('aria-selected', 'false');
-    });
-    item.classList.add('rux--list-box__menu-item--highlighted', 'rux--list-box__menu-item--active');
-    item.setAttribute('aria-selected', 'true');
-    const label = lb.querySelector('.rux--list-box__label');
-    if (label) label.textContent = item.textContent.trim();
-    closeListBoxes(null);
-  });
+  // ---- list boxes: GONE FROM HERE ----------------------------------------
+  // js/list-box.js owns the dropdown, as a real select-only COMBOBOX: focus
+  // stays on the field and `aria-activedescendant` moves over the options,
+  // which is what Carbon does and what a screen reader needs. It also stops
+  // conflating the two highlight classes this block put on whatever was
+  // clicked — `--highlighted` is the arrow cursor, `--active` is the selection.
+  //
+  // The combo-box and multiselect halves went with their components: combo-box
+  // is CUT and multiselect DEFER, and both fragments live in sink/deferred/.
+  // `select` never needed anything — Carbon's Select is a native <select>.
 
   // ---- popover / tooltip: GONE FROM HERE ---------------------------------
   // js/popover.js owns both now, with Carbon's enter and leave delays, the
@@ -322,15 +260,12 @@
   // has not reached yet, and each one leaves as its module lands.
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
-    closeListBoxes(null);
   });
 
   // ---- outside press closes what the HARNESS still owns -------------------
   // Popovers left this handler with their module: js/overlay.js dismisses them,
   // and it does so on pointerdown in the capture phase rather than click, so a
   // surface settles before the pressed control takes focus. List boxes are next.
-  document.addEventListener('click', e => {
-    if (!(e.target instanceof Element)) return;
-    if (!e.target.closest('.rux--list-box')) closeListBoxes(null);
-  }, true);
+  // Everything that used this handler now dismisses through js/overlay.js,
+  // which presses on pointerdown in the capture phase rather than on click.
 })();

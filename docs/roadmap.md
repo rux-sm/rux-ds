@@ -1099,9 +1099,19 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > `.rux--modal`, `.rux--menu`. A component whose trigger and surface sit together in the
 > markup (popover, overflow menu) needs no attribute at all, and does not get one.
 >
-> Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js` and `js/modal.js`.
-> 30 KB of the 90 KB budget. Popover carries tooltip and menu carries overflow-menu —
-> in both cases one mechanism with two triggers, and the mode read off the markup.
+> **7. Not every element carrying a component's class is a control.** `list-box.html`
+> demos the PRIMITIVE — a specimen of the expanded state whose `__field` is a plain
+> `<div>`, because Carbon's ListBox alone is not interactive — while `dropdown.html`
+> gives it a `button[role=combobox]`. A module must claim by the interactive element,
+> not by the root class, or it fights markup that is deliberately rendered open. And
+> where markup DOES declare a live component open, the module adopts that state at load
+> rather than contradicting it, so the first click does what the page looks like it
+> offers.
+>
+> Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`
+> and `js/modal.js`. 40 KB of the 90 KB budget. Popover carries tooltip and menu carries
+> overflow-menu — in both cases one mechanism with two triggers, and the mode read off
+> the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:
 > list-box (dropdown, select) · accordion · tabs · data-table (sort, expand, select-all) ·
 > notification and tag dismiss · number-input · search clear · tile · ui-shell.
