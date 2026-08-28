@@ -39,7 +39,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
-| Behaviour JS | 40 KB of a 90 KB budget — kernel · popover · menu · list-box · modal |
+| Behaviour JS | 47 KB of a 90 KB budget — kernel · popover · menu · list-box · tabs · modal |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 
@@ -145,11 +145,14 @@ looking at it — twice now it has been the only thing that found the bug (roadm
 
 ### The sink is interactive — the system is not, yet
 
-`sink/harness.js` drives what Phase 5 has not reached yet — accordion, tabs, toggle,
-number input, search clear, copy animation, UI shell — by toggling the state classes
+`sink/harness.js` drives what Phase 5 has not reached yet — accordion, toggle, number
+input, search clear, checkbox indeterminate, UI shell — by toggling the state classes
 Carbon's CSS already reacts to. **It is not the design system's behaviour layer**, and it
-is shrinking: modal, popover, tooltip, menu, overflow menu and list box have moved to
-`js/`, taking their sections with them, and 390 lines have become 272. The phase is done when the file is empty. Roadmap §4.1.8.
+is shrinking: modal, popover, tooltip, menu, overflow menu, list box and tabs have moved
+to `js/`, and the blocks driving CUT or DEFERRED components — copy button, content
+switcher, tree view, slider, toggletip, combo box, multiselect — were deleted rather than
+moved, because driving markup that is not on the page is code nobody can test and nobody
+will delete. **390 lines have become 134.** The phase is done when the file is empty. Roadmap §4.1.8.
 
 ### Known gap — closed by the strip
 

@@ -1108,8 +1108,14 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > rather than contradicting it, so the first click does what the page looks like it
 > offers.
 >
-> Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`
-> and `js/modal.js`. 40 KB of the 90 KB budget. Popover carries tooltip and menu carries
+> **8. A module may need markup the fragment never had.** Tabs had no `tabpanel`, so
+> `aria-controls` promised nothing; the panels went in with the module, from the same
+> story, as siblings of `.rux--tabs`. Phase 5 is allowed to complete a fragment when the
+> behaviour is what makes the missing part meaningful — recorded in the fragment, like
+> any other change.
+>
+> Landed: `js/overlay.js` (the kernel), `js/popover.js`, `js/menu.js`, `js/list-box.js`,
+> `js/tabs.js` and `js/modal.js`. 47 KB of the 90 KB budget. Popover carries tooltip and menu carries
 > overflow-menu — in both cases one mechanism with two triggers, and the mode read off
 > the markup. `select` needs nothing: Carbon's Select is a native `<select>`.
 > Remaining, roughly in dependency order:

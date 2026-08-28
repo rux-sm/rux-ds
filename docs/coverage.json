@@ -13,17 +13,13 @@
       "hit": 3,
       "own": 7
     },
+    "tabs": {
+      "hit": 16,
+      "own": 37
+    },
     "tooltip": {
       "hit": 3,
       "own": 7
-    },
-    "modal": {
-      "hit": 12,
-      "own": 25
-    },
-    "tabs": {
-      "hit": 14,
-      "own": 29
     },
     "data-table": {
       "hit": 40,
@@ -32,6 +28,10 @@
     "overflow-menu": {
       "hit": 10,
       "own": 20
+    },
+    "modal": {
+      "hit": 13,
+      "own": 25
     },
     "text-input": {
       "hit": 13,
@@ -93,10 +93,6 @@
       "hit": 17,
       "own": 25
     },
-    "pagination": {
-      "hit": 7,
-      "own": 10
-    },
     "notification": {
       "hit": 39,
       "own": 54
@@ -108,6 +104,10 @@
     "link": {
       "hit": 6,
       "own": 8
+    },
+    "pagination": {
+      "hit": 8,
+      "own": 10
     },
     "menu": {
       "hit": 17,

@@ -69,6 +69,7 @@ ${sections.join('\n\n')}
 <script src="js/popover.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/list-box.js"></script>
+<script src="js/tabs.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>

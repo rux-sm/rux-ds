@@ -26,6 +26,9 @@ export const ALIAS = {
   'notification': ['inline-notification', 'toast-notification', 'actionable-notification'],
   'ui-shell': ['header', 'side-nav', 'switcher', 'navigation', 'skip-to-content'],
   'treeview': ['tree'], 'skeleton-styles': ['skeleton'],
+  // v11 renders the tablist as `tab--list` and the panels as `tab-content`;
+  // neither begins with `tabs`, so ownership could not see them.
+  'tabs': ['tabs', 'tab--list', 'tab-content', 'tab--overflow-nav-button'],
   'progress-indicator': ['progress-indicator', 'progress-step'],
   'file-uploader': ['file'], 'code-snippet': ['snippet'],
   'truncated-text': ['truncated'], 'chat-button': ['chat-btn'],

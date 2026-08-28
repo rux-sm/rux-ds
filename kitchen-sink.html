@@ -1424,10 +1424,14 @@
 <section class="ks-sec" id="tabs">
     <h2>Tabs</h2><p>line</p>
     <!-- PROVENANCE: source · @carbon/react Tabs.tsx, 2026-08-26
-         · class placement only; never diffed against the rendered page
+         · the label stays `source` because the COMPOUND on the nav item — both
+           classes on one button — comes from Tabs.tsx and from no capture; the
+           rendered DOM confirms it but did not supply it.
          · 2026-08-27: tablist element corrected against components-tabs--default
            (rendered DOM) — v11 renders div.tab--list, and tabs__nav survives only
-           in the skeleton, as a UL; the label is a SPAN inside its wrapper. -->
+           in the skeleton, as a UL; the label is a SPAN inside its wrapper.
+         · 2026-08-28: tab-content panels added from the same story, where they
+           are SIBLINGS of .cds--tabs rather than children. -->
     <!--
       STRUCTURE CORRECTED 2026-08-26 — the stacked underline was our bug, not
       Carbon's. This fragment previously nested the parts:
@@ -1461,36 +1465,50 @@
       is position:relative with inset-block-start:0.0625rem (:23704), the 1px
       nudge that optically centres the label above the underline.
 
-      DELIBERATELY NOT ADDED: roving tabindex. Carbon React sets
-      tabIndex={selected ? '0' : '-1'} and moves focus with arrow keys. Those two
-      halves only work together — the tabindex half alone would drop the
-      unselected tabs out of the Tab order with nothing able to reach them, which
-      is worse than the plain buttons we have now. Both land in Phase 5 (roadmap
-      §4.5), with the tabpanels that make aria-controls meaningful.
+      ADDED IN PHASE 5, and this note is why it waited. Roving tabindex is
+      `tabIndex={selected ? '0' : '-1'}` in Carbon React, and it only works
+      alongside arrow-key movement: the tabindex half alone would drop every
+      unselected tab out of the Tab order with nothing able to reach them, which
+      is worse than plain buttons. js/tabs.js lands both halves together, and
+      the `tab-content` panels below are what make `aria-controls` mean
+      something. Panels are SIBLINGS of `.rux--tabs`, not children, which is
+      where components-tabs--default puts them.
     -->
     <div class="rux--tabs">
       <div class="rux--tab--list" role="tablist" aria-label="Tabs example">
-        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true">
+        <button id="tab-overview" class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true" aria-controls="panel-overview" tabindex="0">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Overview</span>
           </div>
         </button>
-        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+        <button id="tab-details" class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false" aria-controls="panel-details" tabindex="-1">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Details</span>
           </div>
         </button>
-        <button class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false">
+        <button id="tab-activity" class="rux--tabs__nav-item rux--tabs__nav-link" role="tab" type="button" aria-selected="false" aria-controls="panel-activity" tabindex="-1">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Activity</span>
           </div>
         </button>
-        <button class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--disabled" role="tab" type="button" aria-selected="false" aria-disabled="true" disabled>
+        <button id="tab-disabled" class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--disabled" role="tab" type="button" aria-selected="false" aria-disabled="true" disabled tabindex="-1">
           <div class="rux--tabs__nav-item-label-wrapper">
             <span class="rux--tabs__nav-item-label">Disabled</span>
           </div>
         </button>
       </div>
+    </div>
+    <div class="rux--tab-content" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
+      <p>Overview panel. Arrow keys move between tabs; the panel follows.</p>
+    </div>
+    <div class="rux--tab-content" role="tabpanel" id="panel-details" aria-labelledby="tab-details" tabindex="0" hidden>
+      <p>Details panel.</p>
+    </div>
+    <div class="rux--tab-content" role="tabpanel" id="panel-activity" aria-labelledby="tab-activity" tabindex="0" hidden>
+      <p>Activity panel.</p>
+    </div>
+    <div class="rux--tab-content" role="tabpanel" id="panel-disabled" aria-labelledby="tab-disabled" tabindex="0" hidden>
+      <p>Never reachable — its tab is disabled.</p>
     </div>
 
     <!--
@@ -2856,6 +2874,7 @@
 <script src="js/popover.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/list-box.js"></script>
+<script src="js/tabs.js"></script>
 <script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
