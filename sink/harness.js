@@ -153,10 +153,12 @@
     menu.classList.toggle('rux--menu--shown', open);
     trigger.setAttribute('aria-expanded', String(open));
   });
+  // The list is a SIBLING of the trigger, not a child: __btn is a real <button>
+  // and nesting one inside the trigger button would be invalid. Look sideways.
+  const optionsFor = el => el.parentElement?.querySelector('.rux--overflow-menu-options');
   on('.rux--overflow-menu', 'click', el => {
     const open = el.classList.toggle('rux--overflow-menu--open');
-    el.querySelector('.rux--overflow-menu-options')
-      ?.classList.toggle('rux--overflow-menu-options--open', open);
+    optionsFor(el)?.classList.toggle('rux--overflow-menu-options--open', open);
     el.setAttribute('aria-expanded', String(open));
   });
 
@@ -341,7 +343,8 @@
     $$('.rux--menu--open').forEach(m => m.classList.remove('rux--menu--open', 'rux--menu--shown'));
     $$('.rux--overflow-menu--open').forEach(m => {
       m.classList.remove('rux--overflow-menu--open');
-      m.querySelector('.rux--overflow-menu-options')?.classList.remove('rux--overflow-menu-options--open');
+      m.setAttribute('aria-expanded', 'false');
+      optionsFor(m)?.classList.remove('rux--overflow-menu-options--open');
     });
   });
 
