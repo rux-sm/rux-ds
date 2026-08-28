@@ -1144,9 +1144,24 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 >
 > Landed: the kernel, `popover`, `menu`, `list-box`, `tabs`, `accordion`, `data-table`,
 > `form-controls` (toggle, number steppers, search clear, checkbox indeterminate),
-> `ui-shell`, `dismiss` and `modal`. **76 KB of the 90 KB budget, and every component
-> behaviour is out of the harness.** What remains unwritten is tile's expandable and
-> selectable states.
+> `ui-shell`, `dismiss`, `tile` and `modal`. **EVERY MODULE THIS PHASE NEEDS IS
+> WRITTEN.** What is left of §4.5 is its exit criterion, which is not code: a keyboard
+> and screen-reader pass over every interactive component in the sink.
+>
+> **14. The 90 KB JS budget needs a unit before it can bind.** The files measure 83.5 KB
+> raw — close enough to look alarming — but **46% of that is comment**, the code alone
+> is 45 KB, and gzipped the whole set is 22.7 KB. §2.1 removed the CSS target after
+> establishing that a number nobody downloads is the wrong thing to measure; the same
+> argument applies here, and the budget should say gzipped or say nothing. Flagged
+> rather than amended: it is the author's call, exactly as the KB target was.
+>
+> **15. An inline style is right when no class can express the state.** ui-shell's note
+> says a behaviour layer should never write widths — and it should not, when a class
+> already says it, as `side-nav--hidden` did. Tile is the exception that proves it:
+> `tile-content__below-the-fold` is `visibility: hidden`, which still OCCUPIES LAYOUT,
+> so a collapsed tile stood as tall as an expanded one and reserved 48px for content
+> nobody could see. The collapsed height depends on the content, so it cannot be a
+> class, and Carbon's React sets the same inline value for the same reason.
 >
 > **13. Removing an element is a focus decision.** Dismissing the box that holds focus
 > drops the user at `<body>` — the top of the document — and clearing three filter tags
