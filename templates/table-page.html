@@ -5,6 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Table page — rux-ds</title>
 <link rel="stylesheet" href="../css/rux.css">
+<style>
+/* THE ONE PIECE OF LAYOUT CARBON DOES NOT SHIP.
+   `.rux--content` is only ever indented by a SIBLING side nav, and the nav in
+   this shell lives inside the header, so none of Carbon's three rules match.
+   IBM hit the same wall: carbondesignsystem.com pads its own main region with
+   a site class, `Main-module--padded`, at `padding: 80px 32px 160px 302.5px`.
+   There is no Carbon class for it to use, and none for this to use either.
+
+   A GRID OFFSET WAS TRIED AND IS WRONG. `lg:col-start-4` indents by three of
+   sixteen columns, which is proportional, while the nav is a fixed 16rem. At
+   1440 that overshoots to 60px of clearance; at 1100 it undershoots and the
+   content starts 4px INSIDE the nav. It also indents one column rather than
+   the region, so anything dropped into `main` outside that column slides
+   under the nav.
+
+   16rem clears the nav and the remaining 2rem is `.rux--content`'s own
+   padding, kept the same on every side. The breakpoint is the one Carbon
+   pairs the nav with. When Phase 4 makes `css/` the source this belongs
+   there as a real class, not here. */
+@media (min-width: 66rem) {
+  .rux--content { padding-inline-start: 18rem; }
+}
+</style>
 </head>
 <body>
 <!-- PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav;
@@ -42,16 +65,15 @@
 
   WHAT THAT COSTS, STATED PLAINLY: no rule offsets `.rux--content` for a nav
   that lives inside the header. `.rux--content` is only ever indented by a
-  SIBLING side nav, and this one is not a sibling, so the page indents itself.
+  SIBLING side nav, and this one is not a sibling, so the page indents itself
+  — see the <style> block in the head, which is the only CSS these templates
+  carry and says why it has to exist.
 
   `--side-nav--ux` is 16rem, NOT a 3rem rail — the rail is `--side-nav--rail`,
   and the bare `.rux--side-nav` is 3rem before `--ux` widens it. The nav is a
-  full panel sitting below the header, so the content has 16rem to clear, and
-  `.rux--content`'s own 2rem of padding is nowhere near it. Carbon's stories
-  clear it with `offset-lg-3` — three of sixteen columns, about 15rem — so
-  this template starts its grid at column 4 for the same reason. Do not add a
-  margin here: a template writing layout CSS is how a design system stops
-  being the source of it.
+  full panel sitting below the header, so the content has a fixed 16rem to
+  clear, which is why the indent is a fixed padding and not a share of the
+  grid.
 
   THE SHELL CARRIES ITS OWN THEME, and `data-theme="g100"` on the header is
   that. Carbon's UI-shell-header/style.mdx says the shell "can be customized to
@@ -252,7 +274,7 @@
 
 <main id="main-content" class="rux--content">
   <div class="rux--css-grid">
-    <div class="rux--css-grid-column rux--col-span-100 rux--lg:col-start-4 rux--lg:col-span-13">
+    <div class="rux--css-grid-column rux--col-span-100">
 
       <!-- REPLACE: the table. Everything below is one `data-table-container`
            holding a header, a toolbar and the table, with pagination after it.
