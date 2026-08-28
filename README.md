@@ -12,7 +12,13 @@ record, and the phase this project is in.
 shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
 now the keep-set rather than all of Carbon.
 
-**Phase 5 (behaviors) is next, and Phase 4 (devendor) now runs last.** Execution order
+**Phase 5 (behaviors) started** — `js/overlay.js` is the dismiss kernel and `js/modal.js`
+the first module on top of it. The markup is the API: `data-rux-open="<id>"` opens,
+`data-rux-close` closes, and focus trapping, Escape and backdrop press come from the
+kernel, so a page needs no script of its own. `sink/harness.js` still drives what Phase 5
+has not reached, and shrinks with every module that lands.
+
+**Phase 4 (devendor) now runs last.** Execution order
 is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
 closes the component set, and `data-table` shipped unable to sort or expand until the
 sink tried to demo it — so the set is frozen after the templates have finished teaching
@@ -28,6 +34,7 @@ us what it needs, not before. Roadmap §4.4.
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
+| Behaviour JS | 13 KB of a 90 KB budget — `js/overlay.js` · `js/modal.js` |
 
 Before the strip: 75 components, 4 themes, 849 KB min, **84 KB gzipped**.
 
@@ -87,7 +94,7 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 | Gate | Catches | Blind to |
 |---|---|---|
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
-| `check-classes.mjs` | a class used in HTML with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
+| `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |

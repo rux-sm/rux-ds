@@ -21,11 +21,16 @@ import { owner, compiled, classNames } from './lib/ownership.mjs';
 
 const CSS = 'css/rux.css';
 const ROOTS = ['kitchen-sink.html', 'templates'];
+// Phase 5 put class names in JAVASCRIPT, where the same failure is available:
+// js/modal.js selects `.rux--modal-container`, and a renamed class breaks it
+// silently — no build error, no test failure, just a modal that stops trapping
+// focus. Same gate, same reasoning, one more root.
+const JS_ROOTS = ['js'];
 
-function walk(p, out = []) {
+function walk(p, out = [], exts = ['.html']) {
   if (!statSync(p, { throwIfNoEntry: false })) return out;
-  if (statSync(p).isDirectory()) { for (const f of readdirSync(p)) walk(join(p, f), out); return out; }
-  if (['.html'].includes(extname(p))) out.push(p);
+  if (statSync(p).isDirectory()) { for (const f of readdirSync(p)) walk(join(p, f), out, exts); return out; }
+  if (exts.includes(extname(p))) out.push(p);
   return out;
 }
 
@@ -57,5 +62,22 @@ for (const f of files) {
     }
   }
 }
-console.log(`\n  files ${files.length} · classes used ${used.size} · defined in CSS ${defined.size} · undefined ${bad} · stripped ${stripped}`);
+// Class names in JS live in string literals, so the match is the bare name
+// rather than a `class="..."` attribute. Only rux-- names are checked; a state
+// hook like `is-visible` is Carbon's own and carries no prefix to find.
+const jsFiles = JS_ROOTS.flatMap(r => walk(r, [], ['.js']));
+for (const f of jsFiles) {
+  for (const m of readFileSync(f, 'utf8').matchAll(/['"`.]((?:rux--)[a-zA-Z0-9_-]+)/g)) {
+    const cls = m[1];
+    used.add(cls);
+    if (!defined.has(cls)) { console.log(`  UNDEFINED  ${cls.padEnd(42)} ${f}`); bad++; continue; }
+    const own = owner(cls);
+    if (own && !COMPILED.has(own)) {
+      console.log(`  STRIPPED   ${cls.padEnd(42)} ${f}  (${own} is not compiled)`);
+      stripped++;
+    }
+  }
+}
+
+console.log(`\n  files ${files.length} + ${jsFiles.length} js · classes used ${used.size} · defined in CSS ${defined.size} · undefined ${bad} · stripped ${stripped}`);
 process.exit(bad + stripped ? 1 : 0);

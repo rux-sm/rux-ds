@@ -2245,27 +2245,32 @@
   <!--
     .rux--modal is position:fixed at 100vw/100vh. Constraining it to a box
     misrepresents the component, so it is triggered instead: `.is-visible` on a
-    modal WITHOUT `--enable-presence` is Carbon's own show hook (css/rux.css:18838).
-    Harness JS at the bottom of the page wires the triggers.
+    modal WITHOUT `--enable-presence` is Carbon's own show hook.
+
+    THE TRIGGERS ARE THE REAL BEHAVIOUR LAYER, not the sink harness — js/modal.js
+    on top of js/overlay.js (Phase 5). `data-rux-open="<id>"` opens, anything
+    with `data-rux-close` inside a modal closes, and focus trapping, Escape and
+    backdrop press come from the kernel. This is what a page built from a
+    template gets, with no script of its own.
   -->
   <div class="ks-row">
-    <button type="button" class="rux--btn rux--btn--primary" data-ks-open="modal-sm">Open small modal</button>
-    <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="modal-lg">Open large modal</button>
-    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="modal-xs">Open xs modal</button>
+    <button type="button" class="rux--btn rux--btn--primary" data-rux-open="modal-sm">Open small modal</button>
+    <button type="button" class="rux--btn rux--btn--secondary" data-rux-open="modal-lg">Open large modal</button>
+    <button type="button" class="rux--btn rux--btn--tertiary" data-rux-open="modal-xs">Open xs modal</button>
   </div>
 
   <div class="rux--modal" id="modal-xs" role="dialog" aria-modal="true" aria-labelledby="modal-xs-h">
     <div class="rux--modal-container rux--modal-container--xs">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-xs-h">Sign out?</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-ks-close>
+        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
           <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </div>
       <div class="rux--modal-content"><p>You will need to sign in again.</p></div>
       <div class="rux--modal-footer">
-        <button type="button" class="rux--btn rux--btn--secondary" data-ks-close>Stay</button>
-        <button type="button" class="rux--btn rux--btn--primary" data-ks-close>Sign out</button>
+        <button type="button" class="rux--btn rux--btn--secondary" data-rux-close>Stay</button>
+        <button type="button" class="rux--btn rux--btn--primary" data-rux-close>Sign out</button>
       </div>
     </div>
   </div>
@@ -2275,7 +2280,7 @@
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__label">Optional label</h2>
         <h2 class="rux--modal-header__heading" id="modal-sm-h">Delete this record?</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-ks-close>
+        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
           <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </div>
@@ -2283,8 +2288,8 @@
         <p>This cannot be undone. The record and its history are removed permanently.</p>
       </div>
       <div class="rux--modal-footer">
-        <button type="button" class="rux--btn rux--btn--secondary" data-ks-close>Cancel</button>
-        <button type="button" class="rux--btn rux--btn--danger" data-ks-close>Delete</button>
+        <button type="button" class="rux--btn rux--btn--secondary" data-rux-close>Cancel</button>
+        <button type="button" class="rux--btn rux--btn--danger" data-rux-close>Delete</button>
       </div>
     </div>
   </div>
@@ -2293,14 +2298,14 @@
     <div class="rux--modal-container rux--modal-container--lg">
       <div class="rux--modal-header">
         <h2 class="rux--modal-header__heading" id="modal-lg-h">Large container</h2>
-        <button type="button" class="rux--modal-close" aria-label="Close" data-ks-close>
+        <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
           <svg class="rux--modal-close__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </div>
       <div class="rux--modal-content"><p>A wider modal for denser content.</p></div>
       <div class="rux--modal-footer">
-        <button type="button" class="rux--btn rux--btn--secondary" data-ks-close>Cancel</button>
-        <button type="button" class="rux--btn rux--btn--primary" data-ks-close>Confirm</button>
+        <button type="button" class="rux--btn rux--btn--secondary" data-rux-close>Cancel</button>
+        <button type="button" class="rux--btn rux--btn--primary" data-rux-close>Confirm</button>
       </div>
     </div>
   </div>
@@ -2804,6 +2809,12 @@
 </section>
 </main>
 
+<!-- Phase 5 behaviour layer. The kernel loads FIRST; modules delegate to it.
+     These are the system's, not the sink's — a page from templates/ loads the
+     same two files. sink/harness.js is scaffolding for whatever Phase 5 has
+     not reached yet, and shrinks with every module that lands. -->
+<script src="js/overlay.js"></script>
+<script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
 </html>

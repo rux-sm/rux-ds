@@ -61,6 +61,12 @@ ${nav}
 ${sections.join('\n\n')}
 </main>
 
+<!-- Phase 5 behaviour layer. The kernel loads FIRST; modules delegate to it.
+     These are the system's, not the sink's — a page from templates/ loads the
+     same two files. sink/harness.js is scaffolding for whatever Phase 5 has
+     not reached yet, and shrinks with every module that lands. -->
+<script src="js/overlay.js"></script>
+<script src="js/modal.js"></script>
 <script src="sink/harness.js"></script>
 </body>
 </html>

@@ -12,7 +12,13 @@
 //
 (() => {
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // The Element guard is not defensive noise. A real click lands on an
+  // Element, but an event DISPATCHED at document — which is how the Phase 5
+  // modules are exercised, and how any test drives Escape — makes the target
+  // `document`, which has no .closest. rux-ui carries the same guard on its
+  // own document handlers for the same reason.
   const on = (sel, ev, fn) => document.addEventListener(ev, e => {
+    if (!(e.target instanceof Element)) return;
     const t = e.target.closest(sel); if (t) fn(t, e);
   });
 
@@ -33,57 +39,14 @@
   $$('[data-set-theme]').forEach(b =>
     b.addEventListener('click', () => document.documentElement.dataset.theme = b.dataset.setTheme));
 
-  // ---- fixed-position overlays: modal + side panel -----------------------
-  // The modal hides itself in CSS (.is-visible is the hook). The side panel does
-  // NOT — its base is transform:translateX(0) and --open only runs the entrance
-  // animation, because Carbon's web component mounts and unmounts the element.
-  const SHOW = { 'rux--modal': 'is-visible', 'rux--side-panel': 'rux--side-panel--open' };
-  const hookFor = el => Object.entries(SHOW).find(([b]) => el.classList.contains(b))?.[1];
-  const isPanel = el => el.classList.contains('rux--side-panel');
-  // Carbon renders __overlay as the panel's NEXT SIBLING, not a child — the
-  // stylesheet says so with `.--side-panel--has-ai-label + .--side-panel__overlay`
-  // and the rendered DOM confirms it. It is position:fixed at z-index 6000, so it
-  // has to be hidden with its panel or it swallows every click on the page.
-  const overlayFor = el => el.nextElementSibling?.classList
-    .contains('rux--side-panel__overlay') ? el.nextElementSibling : null;
-  // --side-panel--closing is the exit animation, 150ms, and the matching
-  // __overlay--closing fades the scrim with it. No Storybook story can show
-  // either — a static DOM capture of a settled panel never holds a transient
-  // state — so unlike the rest of this section they are driven here rather than
-  // copied from the reference. The CSS is unambiguous about the mechanism:
-  // `animation: side-panel-exit-right 150ms ... forwards` per placement.
-  const EXIT_MS = 150;
-  const hidePanel = (t, animate) => {
-    const o = overlayFor(t);
-    if (!animate) {
-      t.classList.remove('rux--side-panel--closing');
-      o?.classList.remove('rux--side-panel__overlay--closing');
-      t.hidden = true; if (o) o.hidden = true;
-      return;
-    }
-    t.classList.add('rux--side-panel--closing');
-    o?.classList.add('rux--side-panel__overlay--closing');
-    setTimeout(() => {
-      t.classList.remove('rux--side-panel--closing');
-      o?.classList.remove('rux--side-panel__overlay--closing');
-      t.hidden = true; if (o) o.hidden = true;
-    }, EXIT_MS);
-  };
-  // Switching panels hides the outgoing one at once: two exit animations
-  // overlapping a new entrance reads as a glitch, not as the component.
-  const closeOverlays = (animate = false) => $$('[data-ks-open]').forEach(b => {
-    const t = document.getElementById(b.dataset.ksOpen);
-    if (!t) return;
-    t.classList.remove(hookFor(t));
-    if (isPanel(t)) hidePanel(t, animate && !t.hidden);
-  });
-  on('[data-ks-open]', 'click', b => {
-    const t = document.getElementById(b.dataset.ksOpen);
-    closeOverlays();
-    if (isPanel(t)) { t.hidden = false; const o = overlayFor(t); if (o) o.hidden = false; }
-    t.classList.add(hookFor(t));
-  });
-  on('[data-ks-close]', 'click', () => closeOverlays(true));
+  // ---- modal: GONE FROM HERE, and that is the point ----------------------
+  // Phase 5 landed js/overlay.js and js/modal.js, so the sink loads the real
+  // behaviour layer for modals rather than a state-class toggle. The side-panel
+  // half of this block went with it: side-panel is CUT, and its fragment moved
+  // to sink/deferred/ in Phase 3, so the code had nothing left to drive.
+  //
+  // Every module Phase 5 lands deletes its section here. When this file is
+  // empty the phase is done.
 
   // ---- accordion ---------------------------------------------------------
   on('.rux--accordion__heading', 'click', h => {
@@ -367,10 +330,13 @@
     menu.hidden = !open;
   });
 
-  // ---- escape closes everything -----------------------------------------
+  // ---- escape closes everything the HARNESS still owns --------------------
+  // Modals are no longer among them: js/overlay.js owns Escape for anything
+  // registered with it, and dismisses only the topmost surface rather than
+  // everything at once. What is left here is the state-class demos Phase 5
+  // has not reached yet, and each one leaves as its module lands.
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
-    closeOverlays();
     closeListBoxes(null);
     $$('.rux--popover--open').forEach(c => c.classList.remove('rux--popover--open', 'rux--toggletip--open'));
     $$('.rux--menu--open').forEach(m => m.classList.remove('rux--menu--open', 'rux--menu--shown'));

@@ -1059,6 +1059,40 @@ reading directly, even though this project is not extracted from it.
 
 Exit: keyboard and screen-reader passes on every interactive component in the sink.
 
+> **Started 2026-08-28. Four decisions, recorded before the modules multiply.**
+>
+> **1. The markup is the API.** rux-ui exposes `RuxMenu.open(trigger, menu)` because an
+> application calls it. This system's consumer generates MARKUP and never writes the
+> call, so a module must attach itself: a trigger carrying `data-rux-open="<id>"` opens
+> the surface with that id, and `data-rux-close` inside it closes. A page built from a
+> Phase 6 template MUST work with no script of its own. The imperative entry points stay
+> (`Rux.modal.open`), but as the second door, not the first.
+>
+> **2. `data-rux-*` is ours, and it has to be.** Carbon's behaviour contract is React
+> props, which have no HTML equivalent to copy — this is the one part of the system with
+> no reference to diff against. The attribute names are the only invention; every CLASS
+> the modules touch is still Carbon's, and `check-classes` now reads `js/` so a renamed
+> class fails the same gate it always did.
+>
+> **3. No positioning engine, which is a finding rather than an omission.** rux-ui needed
+> one because it placed surfaces itself. Carbon places them with classes — `popover--bottom`
+> and its fifteen siblings are static CSS. Only `popover--auto-align` needs measurement,
+> and no template asks for it yet. The overlay record carries an optional `reposition()`
+> for the day one does.
+>
+> **4. No portaling.** rux-ui promoted portaled surfaces above their owning modal with a
+> data attribute. Carbon's light-DOM markup keeps every surface inline beside its trigger,
+> so there is no second stacking context and nothing to promote.
+>
+> **The harness shrinks as the modules land.** `sink/harness.js` drives what Phase 5 has
+> not reached; every module deletes its section there, and the phase is done when that
+> file is empty. Modal went first and took the dead side-panel code with it.
+>
+> Landed: `js/overlay.js` (the kernel) and `js/modal.js`. 13 KB of the 90 KB budget.
+> Remaining, roughly in dependency order: popover and tooltip · menu and overflow-menu ·
+> list-box (dropdown, select) · accordion · tabs · data-table (sort, expand, select-all) ·
+> notification and tag dismiss · number-input · search clear · tile · ui-shell.
+
 ### 4.6 Phase 6 — Templates and skeleton
 
 **This is the actual goal.** Everything before it is preparation.
