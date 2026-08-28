@@ -114,14 +114,31 @@
     + 'document.hasFocus() is false. Click the page and re-run.');
   const paint = el => { const c = getComputedStyle(el);
     return `${c.outlineStyle}|${c.outlineWidth}|${c.outlineColor}|${c.boxShadow}|${c.borderColor}|${c.backgroundColor}`; };
-  for (const el of canTestFocus ? root.querySelectorAll('button, a[href], input, select, textarea, [tabindex]') : []) {
-    if (!visible(el) || !enabled(el) || el.tabIndex < 0) continue;
-    const before = paint(el);
-    el.focus({ preventScroll: true });
-    if (document.activeElement !== el) { say('cannot take focus', 'tabbable but .focus() did not land', el); continue; }
-    if (paint(el) === before) say('no visible focus change', 'outline, shadow, border and background all unchanged', el);
-  }
-  held?.focus?.({ preventScroll: true });
+  // TRANSITIONS MUST BE OFF OR THE DIFF MEASURES THE CLOCK. Carbon transitions
+  // `outline` and `box-shadow` over 70ms, and getComputedStyle reports the value
+  // the transition has REACHED, not the one the cascade asks for. Read the
+  // instant after `.focus()` and every ring is still at its starting value.
+  // In an automated pane it never leaves it: `document.visibilityState` is
+  // `hidden`, so the animation timeline does not advance at all — a 100ms
+  // transition sat unmoved after 500ms, and a stuck one outranks the cascade,
+  // beating even `!important`. Measured on the sink: 49 findings with
+  // transitions live, 0 with them suppressed. Every one was the clock.
+  // Suppressing also ABORTS transitions already in flight, so a page someone
+  // has been clicking around needs no separate cancelling.
+  const noAnim = document.createElement('style');
+  noAnim.textContent = '*, *::before, *::after '
+    + '{ transition: none !important; animation: none !important; }';
+  if (canTestFocus) document.head.append(noAnim);
+  try {
+    for (const el of canTestFocus ? root.querySelectorAll('button, a[href], input, select, textarea, [tabindex]') : []) {
+      if (!visible(el) || !enabled(el) || el.tabIndex < 0) continue;
+      const before = paint(el);
+      el.focus({ preventScroll: true });
+      if (document.activeElement !== el) { say('cannot take focus', 'tabbable but .focus() did not land', el); continue; }
+      if (paint(el) === before) say('no visible focus change', 'outline, shadow, border and background all unchanged', el);
+    }
+    held?.focus?.({ preventScroll: true });
+  } finally { noAnim.remove(); }
 
   // 6. NOTHING FOCUSABLE INSIDE A BOX HIDDEN FROM ASSISTIVE TECH. The dangerous
   //    case is `aria-hidden="true"` on something STILL RENDERED: the browser will
@@ -141,7 +158,9 @@
   if (findings.length) { console.table(by); console.table(findings); }
   if (notes.length) console.table(notes);
   console.log('\n  NOT CHECKED: screen-reader announcement, focus-ring contrast, tab-order sense.'
-    + (canTestFocus ? '' : '\n  NOT RUN: the focus-ring check, because this document does not have focus.')
+    + (canTestFocus ? '\n  The focus-ring check ran with transitions suppressed, so it reads the'
+        + '\n  ring the cascade asks for, not one part-way through a 70ms fade.'
+      : '\n  NOT RUN: the focus-ring check, because this document does not have focus.')
     + '\n  Those need a human with an AT. See the header.\n');
   return { findings, notes, byRule: by, focusRingChecked: canTestFocus };
 })();
