@@ -17,6 +17,13 @@
 @use "@carbon/styles/scss/grid";   // auto-emits CSS grid
 @use "@carbon/styles/scss/layout"; // size/density constraint classes components depend on
 
+// Phase 3 pass 2, 2026-08-28 — the opt-in layers, verified absent rather than
+// removed. `compat/` (the v10 shim), `feature-flags` and the flexbox grid are
+// all off by default and none is opted into above. Grepping the built CSS finds
+// zero occurrences of `cds--`, `bx--`, `compat`, `feature-flag` or the flexbox
+// row/col classes. Declining an opt-in is not surgery, so this pass changes
+// nothing; it is recorded so nobody re-does the check.
+
 // Components. Phase 3 pass 1, 2026-08-28: 75 -> 31. A commented line is a
 // CUT or DEFER row in docs/inventory.md; uncommenting it is the whole of
 // restoring a component, because no Carbon file is edited (§1.1). The set here
@@ -103,7 +110,21 @@
 @include type.default-type;
 
 // Themes — all four in the baseline; Phase 3 cuts to two.
+// Phase 3 pass 3, 2026-08-28 — four themes to two.
+//
+// NOT A SIZE DECISION, and Phase 2 is why. A theme is the same ~600 token names
+// with different values, so it compresses almost entirely against the first
+// one: the foundation measures 51 KB minified with one theme and 71 KB with
+// two, and 7 KB GZIPPED EITHER WAY. Across the whole keep-set, dropping two
+// themes saves 44 KB minified and 2 KB gzipped. §4.3 lists this pass beside the
+// component cut as though they were comparable; docs/inventory.md records the
+// measurement that says they are not.
+//
+// The real reason is scope: two themes is what an application needs, and every
+// theme kept is another combination every visual check has to cover.
+//
+// white and g100 are the pair — the existing :root default, and the furthest
+// point from it, so light and dark are unambiguous. g90 over g100 is a design
+// preference and a one-line change; both are dark, g90 softer.
 :root                  { @include theme.theme(themes.$white); }
-[data-theme="g10"]     { @include theme.theme(themes.$g10);   }
-[data-theme="g90"]     { @include theme.theme(themes.$g90);   }
 [data-theme="g100"]    { @include theme.theme(themes.$g100);  }
