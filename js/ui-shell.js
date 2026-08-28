@@ -43,8 +43,15 @@
     trigger?.setAttribute('aria-expanded', String(open));
     scrimFor(nav)?.classList.toggle('rux--side-nav__overlay-active', open);
 
+    // A NAV WITH NO TRIGGER IS NOT DISMISSIBLE, because nothing could reopen it.
+    // Carbon ships two shells: the rail inside the header has a hamburger, and
+    // Escape closing it is a kindness. A `--expanded` nav standing beside the
+    // header has no hamburger in any capture, so registering it meant one
+    // Escape emptied the navigation for good — 16rem to `--hidden`, the content
+    // sliding under it, and no control on the page able to undo it. Dismissal
+    // is only offered where a way back exists.
     const state = live.get(nav);
-    if (open && !state) {
+    if (open && !state && trigger) {
       live.set(nav, {
         registration: overlay.register({
           element: nav,
