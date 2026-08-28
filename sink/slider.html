@@ -1,6 +1,19 @@
 <section class="ks-sec" id="slider">
   <h2>Slider</h2><p>single handle · two handles · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-slider--default with its
+       disabled, readonly, invalid and warn recipes, plus --two-handle-slider,
+       2026-08-28 -->
+  <!--
+    The value field is not a bare input in the slider container: Carbon wraps it
+    in `text-input-wrapper slider-text-input-wrapper`, which is the element its
+    two rules position beside the track. `slider-text-input--upper` and
+    `--lower` name the two fields of a two-handle slider and have no rule in
+    @carbon/styles, so they are not copied (§4.1.12).
+
+    The validation ICON goes in that wrapper too, beside the input — not inside
+    `__validation-msg`, which holds only the text. This fragment had it in the
+    message, where the rule that positions it against the field cannot work.
+  -->
   <div style="max-width:28rem;display:grid;gap:2rem">
     <div>
       <label class="rux--label" for="sl-1">Volume</label>
@@ -63,10 +76,12 @@
           </div>
           <input id="sl-5" class="rux--slider__input" type="range" min="0" max="100" value="90">
         </div>
-        <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+        <div class="rux--text-input-wrapper rux--slider-text-input-wrapper">
+          <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+          <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        </div>
       </div>
       <div class="rux--slider__validation-msg rux--slider__validation-msg--invalid rux--form-requirement">
-        <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
         Above the recommended range
       </div>
     </div>

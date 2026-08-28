@@ -1,16 +1,34 @@
 <section class="ks-sec" id="pagination">
   <h2>Pagination</h2><p>full bar · nav-only variant</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
-  <div class="rux--pagination" style="margin-block-end:2rem">
+  <!-- PROVENANCE: rendered-dom · components-pagination--default and
+       components-paginationnav--default, 2026-08-28 -->
+  <!--
+    `select__item-count` is not a class on the select: Carbon puts it on a
+    `form-item` WRAPPING the select, which is the element its one rule sizes.
+    The select inside is a plain inline select, and it keeps its own
+    `select-input__wrapper` that this fragment had skipped.
+
+    The root takes `layout--size-md`; `pagination--md` comes with it in the
+    reference and is dropped for having no rule (§4.1.12).
+
+    One finding recorded: `pagination__button` sits directly in
+    `__right` here, where the reference wraps each in an icon-tooltip — the
+    chrome this sink declines throughout.
+  -->
+  <div class="rux--pagination rux--layout--size-md" style="margin-block-end:2rem">
     <div class="rux--pagination__left">
       <label class="rux--pagination__text" for="pg-size">Items per page:</label>
-      <div class="rux--select rux--select--inline rux--select__item-count">
-        <div class="rux--select-input--inline__wrapper">
-          <select id="pg-size" class="rux--select-input">
-            <option class="rux--select-option" value="10">10</option>
-            <option class="rux--select-option" value="20">20</option>
-          </select>
-          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <div class="rux--form-item rux--select__item-count">
+        <div class="rux--select rux--select--inline">
+          <div class="rux--select-input--inline__wrapper">
+            <div class="rux--select-input__wrapper">
+              <select id="pg-size" class="rux--select-input">
+                <option class="rux--select-option" value="10">10</option>
+                <option class="rux--select-option" value="20">20</option>
+              </select>
+              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </div>
+          </div>
         </div>
       </div>
       <span class="rux--pagination__items-count rux--pagination__text">1–10 of 84 items</span>

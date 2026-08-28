@@ -4424,17 +4424,35 @@
 
 <section class="ks-sec" id="pagination">
   <h2>Pagination</h2><p>full bar · nav-only variant</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
-  <div class="rux--pagination" style="margin-block-end:2rem">
+  <!-- PROVENANCE: rendered-dom · components-pagination--default and
+       components-paginationnav--default, 2026-08-28 -->
+  <!--
+    `select__item-count` is not a class on the select: Carbon puts it on a
+    `form-item` WRAPPING the select, which is the element its one rule sizes.
+    The select inside is a plain inline select, and it keeps its own
+    `select-input__wrapper` that this fragment had skipped.
+
+    The root takes `layout--size-md`; `pagination--md` comes with it in the
+    reference and is dropped for having no rule (§4.1.12).
+
+    One finding recorded: `pagination__button` sits directly in
+    `__right` here, where the reference wraps each in an icon-tooltip — the
+    chrome this sink declines throughout.
+  -->
+  <div class="rux--pagination rux--layout--size-md" style="margin-block-end:2rem">
     <div class="rux--pagination__left">
       <label class="rux--pagination__text" for="pg-size">Items per page:</label>
-      <div class="rux--select rux--select--inline rux--select__item-count">
-        <div class="rux--select-input--inline__wrapper">
-          <select id="pg-size" class="rux--select-input">
-            <option class="rux--select-option" value="10">10</option>
-            <option class="rux--select-option" value="20">20</option>
-          </select>
-          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      <div class="rux--form-item rux--select__item-count">
+        <div class="rux--select rux--select--inline">
+          <div class="rux--select-input--inline__wrapper">
+            <div class="rux--select-input__wrapper">
+              <select id="pg-size" class="rux--select-input">
+                <option class="rux--select-option" value="10">10</option>
+                <option class="rux--select-option" value="20">20</option>
+              </select>
+              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </div>
+          </div>
         </div>
       </div>
       <span class="rux--pagination__items-count rux--pagination__text">1–10 of 84 items</span>
@@ -4468,7 +4486,20 @@
 
 <section class="ks-sec" id="slider">
   <h2>Slider</h2><p>single handle · two handles · disabled</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-slider--default with its
+       disabled, readonly, invalid and warn recipes, plus --two-handle-slider,
+       2026-08-28 -->
+  <!--
+    The value field is not a bare input in the slider container: Carbon wraps it
+    in `text-input-wrapper slider-text-input-wrapper`, which is the element its
+    two rules position beside the track. `slider-text-input--upper` and
+    `--lower` name the two fields of a two-handle slider and have no rule in
+    @carbon/styles, so they are not copied (§4.1.12).
+
+    The validation ICON goes in that wrapper too, beside the input — not inside
+    `__validation-msg`, which holds only the text. This fragment had it in the
+    message, where the rule that positions it against the field cannot work.
+  -->
   <div style="max-width:28rem;display:grid;gap:2rem">
     <div>
       <label class="rux--label" for="sl-1">Volume</label>
@@ -4531,10 +4562,12 @@
           </div>
           <input id="sl-5" class="rux--slider__input" type="range" min="0" max="100" value="90">
         </div>
-        <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+        <div class="rux--text-input-wrapper rux--slider-text-input-wrapper">
+          <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+          <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        </div>
       </div>
       <div class="rux--slider__validation-msg rux--slider__validation-msg--invalid rux--form-requirement">
-        <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
         Above the recommended range
       </div>
     </div>
