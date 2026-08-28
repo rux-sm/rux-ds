@@ -1,8 +1,9 @@
 <section class="ks-sec" id="table">
     <h2>Data table</h2><p>default</p>
-    <!-- PROVENANCE: rendered-dom · components-datatable-basic--default with
-         its xs and md recipes, plus datatable-selection and
-         datatable-toolbar, 2026-08-28 -->
+    <!-- PROVENANCE: rendered-dom · components-datatable-basic--default with its
+         xs and md recipes, components-datatable-selection--default and
+         --with-radio-selection, and components-datatable-toolbar--with-overflow-menu,
+         2026-08-28 -->
     <!--
       The <table> is not a direct child of the container: Carbon wraps it in
       `data-table-content`, which is the element that scrolls a wide table.
@@ -19,9 +20,9 @@
         <table class="rux--data-table">
         <thead>
           <tr>
-            <th scope="col"><div class="rux--table-header-label">Name</div></th>
-            <th scope="col"><div class="rux--table-header-label">Status</div></th>
-            <th scope="col"><div class="rux--table-header-label">Updated</div></th>
+            <th scope="col"><div class="rux--table-header-label">Name<div class="rux--table-header-label--decorator-inner"></div></div></th>
+            <th scope="col"><div class="rux--table-header-label">Status<div class="rux--table-header-label--decorator-inner"></div></div></th>
+            <th scope="col"><div class="rux--table-header-label">Updated<div class="rux--table-header-label--decorator-inner"></div></div></th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +64,134 @@
         <table class="rux--data-table rux--data-table--xl">
         <thead><tr><th scope="col"><div class="rux--table-header-label">xl</div></th><th scope="col"><div class="rux--table-header-label">Rows</div></th></tr></thead>
         <tbody><tr><td>Alpha</td><td>12</td></tr><tr><td>Bravo</td><td>8</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ks-label" style="margin-block-start:1.5rem">header, selection and row actions</div>
+    <!--
+      `data-table-header__content` is NOT copied. React wraps the title and
+      description in it, but @carbon/styles defines no rule for the class, so
+      check-classes would reject it. The wrapper element is kept so the two stay
+      grouped, which is the only thing it does here.
+
+      The overflow trigger is the bare `overflow-menu` button, not React's
+      tooltip-wrapped one. The reference nests it in a popover/icon-tooltip
+      container whose positioning is floating-ui JS — Phase 5 — and the
+      overflow-menu fragment records the same divergence for the same reason.
+      diff-fragment reports it as `overflow-menu` inside `overflow-menu__wrapper`
+      where Carbon has `tooltip-trigger__wrapper`; that is this decision, not a
+      defect. Its other seven findings are the status Tags noted above.
+
+      SORTING AND EXPANSION ARE ABSENT ON PURPOSE. `table-sort`,
+      `table-sort__header` and the expand button belong to
+      `@carbon/styles/scss/components/data-table/sort` and `/expandable`, which
+      src/app.scss does not compile — Carbon splits data-table into four modules
+      and the manifest takes only the base. Writing that markup would put
+      unstyled controls on the page, which is what check-rendered exists to
+      catch. See docs/inventory.md.
+    -->
+    <section class="rux--data-table-container">
+      <div class="rux--data-table-header">
+        <div>
+          <div class="rux--data-table-header__title">Deployments</div>
+          <p class="rux--data-table-header__description">Every service in the current namespace.</p>
+        </div>
+      </div>
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--lg rux--data-table--visible-overflow-menu">
+          <thead>
+            <tr>
+              <th scope="col" class="rux--table-column-checkbox">
+                <div class="rux--checkbox--inline">
+                  <input type="checkbox" id="ks-tbl-all" class="rux--checkbox">
+                  <label for="ks-tbl-all" class="rux--checkbox-label"><span class="rux--visually-hidden">Select all rows</span></label>
+                </div>
+              </th>
+              <th scope="col"><div class="rux--table-header-label">Service<div class="rux--table-header-label--decorator-inner"></div></div></th>
+              <th scope="col"><div class="rux--table-header-label">Status<div class="rux--table-header-label--decorator-inner"></div></div></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rux--table-column-checkbox">
+                <div class="rux--checkbox--inline">
+                  <input type="checkbox" id="ks-tbl-r1" class="rux--checkbox">
+                  <label for="ks-tbl-r1" class="rux--checkbox-label"><span class="rux--visually-hidden">Select gateway</span></label>
+                </div>
+              </td>
+              <td>gateway</td>
+              <td><div class="rux--tag rux--tag--green"><span class="rux--tag__label">Running</span></div></td>
+              <td class="rux--table-column-menu">
+                <span class="rux--overflow-menu__wrapper">
+                  <button type="button" class="rux--overflow-menu" aria-expanded="false" aria-haspopup="true" aria-label="Actions for gateway">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+                  </button>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="rux--table-column-checkbox">
+                <div class="rux--checkbox--inline">
+                  <input type="checkbox" id="ks-tbl-r2" class="rux--checkbox" checked>
+                  <label for="ks-tbl-r2" class="rux--checkbox-label"><span class="rux--visually-hidden">Select scheduler</span></label>
+                </div>
+              </td>
+              <td>scheduler</td>
+              <td><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">Paused</span></div></td>
+              <td class="rux--table-column-menu">
+                <span class="rux--overflow-menu__wrapper">
+                  <button type="button" class="rux--overflow-menu" aria-expanded="false" aria-haspopup="true" aria-label="Actions for scheduler">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+                  </button>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="ks-label" style="margin-block-start:1.5rem">single-select rows</div>
+    <!-- components-datatable-selection--with-radio-selection. The radio cell keeps
+         `table-column-checkbox` and adds `table-column-radio` — the base class is
+         what sizes the column, the modifier only swaps the control. -->
+    <div class="rux--data-table-container">
+      <div class="rux--data-table-content">
+        <table class="rux--data-table rux--data-table--lg">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"><div class="rux--table-header-label">Region<div class="rux--table-header-label--decorator-inner"></div></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rux--table-column-checkbox rux--table-column-radio">
+                <div class="rux--radio-button-wrapper">
+                  <input type="radio" name="ks-tbl-region" id="ks-tbl-eu" class="rux--radio-button">
+                  <label for="ks-tbl-eu" class="rux--radio-button__label">
+                    <span class="rux--radio-button__appearance"></span>
+                    <span class="rux--radio-button__label-text rux--visually-hidden">Select eu-west-1</span>
+                  </label>
+                </div>
+              </td>
+              <td>eu-west-1</td>
+            </tr>
+            <tr>
+              <td class="rux--table-column-checkbox rux--table-column-radio">
+                <div class="rux--radio-button-wrapper">
+                  <input type="radio" name="ks-tbl-region" id="ks-tbl-us" class="rux--radio-button" checked>
+                  <label for="ks-tbl-us" class="rux--radio-button__label">
+                    <span class="rux--radio-button__appearance"></span>
+                    <span class="rux--radio-button__label-text rux--visually-hidden">Select us-east-2</span>
+                  </label>
+                </div>
+              </td>
+              <td>us-east-2</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

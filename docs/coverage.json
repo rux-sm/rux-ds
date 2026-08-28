@@ -1,14 +1,6 @@
 {
   "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here, so this file only ever moves up. Regenerate deliberately with `npm run coverage:update` after adding sink markup — never to make a red gate green.",
   "components": {
-    "tile": {
-      "hit": 5,
-      "own": 26
-    },
-    "data-table": {
-      "hit": 9,
-      "own": 45
-    },
     "dropdown": {
       "hit": 7,
       "own": 23
@@ -17,9 +9,9 @@
       "hit": 10,
       "own": 33
     },
-    "overflow-menu": {
-      "hit": 8,
-      "own": 19
+    "data-table": {
+      "hit": 17,
+      "own": 45
     },
     "skeleton-styles": {
       "hit": 3,
@@ -28,6 +20,10 @@
     "tooltip": {
       "hit": 3,
       "own": 7
+    },
+    "overflow-menu": {
+      "hit": 9,
+      "own": 19
     },
     "modal": {
       "hit": 12,
@@ -77,13 +73,13 @@
       "hit": 12,
       "own": 19
     },
+    "tile": {
+      "hit": 17,
+      "own": 26
+    },
     "accordion": {
       "hit": 10,
       "own": 15
-    },
-    "checkbox": {
-      "hit": 16,
-      "own": 24
     },
     "form": {
       "hit": 4,
@@ -96,6 +92,10 @@
     "pagination": {
       "hit": 7,
       "own": 10
+    },
+    "checkbox": {
+      "hit": 17,
+      "own": 24
     },
     "link": {
       "hit": 5,
