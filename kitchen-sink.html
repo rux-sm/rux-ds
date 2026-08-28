@@ -2610,43 +2610,72 @@
 
 <section class="ks-sec" id="fluid">
   <h2>Fluid inputs</h2><p>the eleven fluid-* components — label inside the field, no gap between controls</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; the fluid form
-       wrapper, dropdown invalid icon and multiselect badge corrected 2026-08-27
-       against the rendered-DOM references (fluid stories in
-       docs/carbon-react-dom.json and the state recipes) — the known
-       --selection--multi badge defect is resolved -->
+  <!-- PROVENANCE: rendered-dom · the fluid-components stories —
+       fluidform--default, fluidtextinput, fluidtextarea, fluidselect,
+       fluidnumberinput, fluidsearch, fluiddatepicker, fluidtimepicker,
+       fluiddropdown and fluidmultiselect — with their invalid, warn and
+       disabled recipes, 2026-08-27 and re-diffed 2026-08-28 -->
+  <!--
+    THE LABEL RULE IS THE SAME AS THE NON-FLUID FIELDS, and this fragment broke
+    it everywhere: a fluid field's label is a direct child of the component root
+    (select, number) or of its own `__label-wrapper` (text input, text area) —
+    never tucked in beside the input. Each fluid field is also wrapped in a
+    `form-item`, which the reference always emits.
+
+    The fluid date picker repeats its state modifier on an inner
+    `date-picker-container` that this fragment did not have at all, and the
+    composite time picker nests its text input inside `time-picker__input`
+    rather than directly in the fluid wrapper.
+
+    THIRTEEN FINDINGS REMAIN AND ARE THE GROUPING ITSELF. Carbon's per-component
+    fluid stories each render one field standalone at the root, so no sample
+    places, say, a fluid date picker inside a form — while fluidform--default
+    shows exactly that pattern for the fields it happens to include. Grouping
+    them is what `form--fluid` is for, and it is the point this section demos:
+    fluid fields stack with no gap between them.
+  -->
 
   <div class="ks-label">text input · text area · select</div>
   <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
-    <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">
-      <div class="rux--text-input__field-wrapper">
+    <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
+      <div class="rux--text-input__label-wrapper">
         <label class="rux--label" for="fl-ti">Fluid text input</label>
-        <input id="fl-ti" class="rux--text-input" type="text" placeholder="Placeholder">
+      </div>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="fl-ti" class="rux--text-input" type="text" placeholder="Placeholder">
+        </div>
       </div>
     </div>
-    <div class="rux--text-area--fluid">
-      <div class="rux--text-area__wrapper">
+    <div class="rux--form-item rux--text-area--fluid">
+      <div class="rux--text-area__label-wrapper">
         <label class="rux--label" for="fl-ta">Fluid text area</label>
+      </div>
+      <div class="rux--text-area__wrapper">
         <textarea id="fl-ta" class="rux--text-area" rows="3"></textarea>
       </div>
     </div>
-    <div class="rux--select--fluid rux--select">
-      <div class="rux--select-input__wrapper">
+    <div class="rux--form-item rux--select--fluid">
+      <div class="rux--select">
         <label class="rux--label" for="fl-se">Fluid select</label>
+        <div class="rux--select-input__wrapper">
         <select id="fl-se" class="rux--select-input">
           <option class="rux--select-option" value="a">Option A</option>
           <option class="rux--select-option" value="b">Option B</option>
         </select>
+        </div>
       </div>
     </div>
   </form>
 
   <div class="ks-label">number · search</div>
   <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
-    <div class="rux--number-input--fluid rux--number">
-      <div class="rux--number__input-wrapper">
+    <div class="rux--form-item rux--number-input--fluid">
+      <div class="rux--number">
         <label class="rux--label" for="fl-ni">Fluid number</label>
-        <input id="fl-ni" type="number" value="12">
+        <div class="rux--number__input-wrapper">
+          <input id="fl-ni" type="number" value="12">
+        </div>
       </div>
     </div>
     <div class="rux--search--fluid rux--search">
@@ -2657,17 +2686,21 @@
 
   <div class="ks-label">validity states on the fluid wrappers</div>
   <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
-    <div class="rux--number-input--fluid rux--number-input--fluid--invalid rux--number" data-invalid>
-      <div class="rux--number__input-wrapper">
+    <div class="rux--form-item rux--number-input--fluid rux--number-input--fluid--invalid">
+      <div class="rux--number" data-invalid>
         <label class="rux--label" for="fl-ni-inv">Invalid number</label>
-        <input id="fl-ni-inv" type="number" value="0" data-invalid aria-invalid="true">
+        <div class="rux--number__input-wrapper">
+          <input id="fl-ni-inv" type="number" value="0" data-invalid aria-invalid="true">
+        </div>
+        <div class="rux--form-requirement">Must be at least 1</div>
       </div>
-      <div class="rux--form-requirement">Must be at least 1</div>
     </div>
-    <div class="rux--number-input--fluid rux--number-input--fluid--disabled rux--number">
-      <div class="rux--number__input-wrapper">
+    <div class="rux--form-item rux--number-input--fluid rux--number-input--fluid--disabled">
+      <div class="rux--number">
         <label class="rux--label rux--label--disabled" for="fl-ni-dis">Disabled number</label>
-        <input id="fl-ni-dis" type="number" value="12" disabled>
+        <div class="rux--number__input-wrapper">
+          <input id="fl-ni-dis" type="number" value="12" disabled>
+        </div>
       </div>
     </div>
     <!--
@@ -2701,29 +2734,35 @@
     .rux--time-picker--fluid__wrapper is itself a fluid sub-component.
   -->
   <form class="rux--form--fluid" style="max-width:24rem;margin-block-end:2rem">
-    <div class="rux--date-picker--fluid rux--date-picker--fluid--invalid">
+    <div class="rux--form-item rux--date-picker--fluid rux--date-picker--fluid--invalid">
       <div class="rux--date-picker rux--date-picker--simple">
-        <label class="rux--label" for="fl-dp-inv">Fluid date · invalid</label>
-        <div class="rux--date-picker-input__wrapper">
-          <input id="fl-dp-inv" class="rux--date-picker__input" type="text" value="31/31/2026" data-invalid aria-invalid="true">
+        <div class="rux--date-picker-container rux--date-picker--fluid--invalid">
+          <label class="rux--label" for="fl-dp-inv">Fluid date · invalid</label>
+          <div class="rux--date-picker-input__wrapper">
+            <input id="fl-dp-inv" class="rux--date-picker__input" type="text" value="31/31/2026" data-invalid aria-invalid="true">
+          </div>
         </div>
       </div>
       <div class="rux--form-requirement">Not a valid date</div>
     </div>
-    <div class="rux--date-picker--fluid rux--date-picker--fluid--warn">
+    <div class="rux--form-item rux--date-picker--fluid rux--date-picker--fluid--warn">
       <div class="rux--date-picker rux--date-picker--simple">
-        <label class="rux--label" for="fl-dp-warn">Fluid date · warning</label>
-        <div class="rux--date-picker-input__wrapper">
-          <input id="fl-dp-warn" class="rux--date-picker__input" type="text" value="01/01/2020">
+        <div class="rux--date-picker-container rux--date-picker--fluid--warn">
+          <label class="rux--label" for="fl-dp-warn">Fluid date · warning</label>
+          <div class="rux--date-picker-input__wrapper">
+            <input id="fl-dp-warn" class="rux--date-picker__input" type="text" value="01/01/2020">
+          </div>
         </div>
       </div>
       <div class="rux--form-requirement">That date is in the past</div>
     </div>
-    <div class="rux--date-picker--fluid">
+    <div class="rux--form-item rux--date-picker--fluid">
       <div class="rux--date-picker rux--date-picker--simple">
-        <label class="rux--label" for="fl-dp">Fluid date</label>
-        <div class="rux--date-picker-input__wrapper">
-          <input id="fl-dp" class="rux--date-picker__input" type="text" placeholder="mm/dd/yyyy">
+        <div class="rux--date-picker-container">
+          <label class="rux--label" for="fl-dp">Fluid date</label>
+          <div class="rux--date-picker-input__wrapper">
+            <input id="fl-dp" class="rux--date-picker__input" type="text" placeholder="mm/dd/yyyy">
+          </div>
         </div>
       </div>
     </div>
@@ -2761,30 +2800,40 @@
     </div>
     <div class="rux--time-picker--fluid rux--time-picker">
       <div class="rux--time-picker--fluid__wrapper">
-        <div class="rux--form-item rux--text-input-wrapper rux--text-input--fluid">
-          <div class="rux--text-input__field-wrapper">
-            <label class="rux--label" for="fl-tp">Time</label>
-            <input id="fl-tp" class="rux--text-input rux--time-picker__input-field" type="text" placeholder="hh:mm" maxlength="5">
+        <div class="rux--time-picker__input">
+          <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="fl-tp">Time</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="fl-tp" class="rux--text-input rux--time-picker__input-field" type="text" placeholder="hh:mm" maxlength="5">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="rux--select--fluid rux--select">
-          <div class="rux--select-input__wrapper">
+        <div class="rux--form-item rux--select--fluid">
+          <div class="rux--select">
             <label class="rux--label" for="fl-tp-p">Period</label>
+            <div class="rux--select-input__wrapper">
             <select id="fl-tp-p" class="rux--select-input">
               <option class="rux--select-option" value="am">AM</option>
               <option class="rux--select-option" value="pm">PM</option>
             </select>
             <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </div>
           </div>
         </div>
-        <div class="rux--select--fluid rux--select">
-          <div class="rux--select-input__wrapper">
+        <div class="rux--form-item rux--select--fluid">
+          <div class="rux--select">
             <label class="rux--label" for="fl-tp-z">Zone</label>
-            <select id="fl-tp-z" class="rux--select-input">
-              <option class="rux--select-option" value="utc">UTC</option>
-              <option class="rux--select-option" value="cet">CET</option>
-            </select>
-            <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            <div class="rux--select-input__wrapper">
+              <select id="fl-tp-z" class="rux--select-input">
+                <option class="rux--select-option" value="utc">UTC</option>
+                <option class="rux--select-option" value="cet">CET</option>
+              </select>
+              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </div>
           </div>
         </div>
       </div>

@@ -1079,288 +1079,6 @@
       ]
     },
     {
-      "component": "list",
-      "states": 28,
-      "drawn": 14,
-      "byFamily": {
-        "interaction": {
-          "total": 5,
-          "drawn": 4
-        },
-        "feedback": {
-          "total": 5,
-          "drawn": 4
-        },
-        "size": {
-          "total": 1,
-          "drawn": 1
-        },
-        "variant": {
-          "total": 17,
-          "drawn": 5
-        }
-      },
-      "list": [
-        {
-          "class": "rux--list-box__invalid-icon--warning",
-          "on": "list-box__invalid-icon",
-          "modifiers": [
-            "warning"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__wrapper--fluid--invalid",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "fluid",
-            "invalid"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box--disabled",
-          "on": "list-box",
-          "modifiers": [
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box--invalid",
-          "on": "list-box",
-          "modifiers": [
-            "invalid"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box--warning",
-          "on": "list-box",
-          "modifiers": [
-            "warning"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__menu-icon--open",
-          "on": "list-box__menu-icon",
-          "modifiers": [
-            "open"
-          ],
-          "family": "interaction",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__menu-item--active",
-          "on": "list-box__menu-item",
-          "modifiers": [
-            "active"
-          ],
-          "family": "interaction",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__menu-item--highlighted",
-          "on": "list-box__menu-item",
-          "modifiers": [
-            "highlighted"
-          ],
-          "family": "interaction",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__wrapper--fluid--focus",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "fluid",
-            "focus"
-          ],
-          "family": "interaction",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box--expanded",
-          "on": "list-box",
-          "modifiers": [
-            "expanded"
-          ],
-          "family": "interaction",
-          "drawn": true
-        },
-        {
-          "class": "rux--list--expressive",
-          "on": "list",
-          "modifiers": [
-            "expressive"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--list--nested",
-          "on": "list",
-          "modifiers": [
-            "nested"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list--ordered",
-          "on": "list",
-          "modifiers": [
-            "ordered"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--list--ordered--native",
-          "on": "list",
-          "modifiers": [
-            "ordered",
-            "native"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list--unordered",
-          "on": "list",
-          "modifiers": [
-            "unordered"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__field--wrapper",
-          "on": "list-box__field",
-          "modifiers": [
-            "wrapper"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__field--wrapper--input-focused",
-          "on": "list-box__field",
-          "modifiers": [
-            "wrapper",
-            "input-focused"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__inner-wrapper--decorator",
-          "on": "list-box__inner-wrapper",
-          "modifiers": [
-            "decorator"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__selection--multi",
-          "on": "list-box__selection",
-          "modifiers": [
-            "multi"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__wrapper--decorator",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "decorator"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__wrapper--decorator-inner",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "decorator-inner"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__wrapper--fluid",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "fluid"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__wrapper--fluid--condensed",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "fluid",
-            "condensed"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--list-box__wrapper--inline",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "inline"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box__wrapper--slug",
-          "on": "list-box__wrapper",
-          "modifiers": [
-            "slug"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box--inline",
-          "on": "list-box",
-          "modifiers": [
-            "inline"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box--light",
-          "on": "list-box",
-          "modifiers": [
-            "light"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--list-box--up",
-          "on": "list-box",
-          "modifiers": [
-            "up"
-          ],
-          "family": "variant",
-          "drawn": false
-        }
-      ]
-    },
-    {
       "component": "side-panel",
       "states": 30,
       "drawn": 16,
@@ -1875,6 +1593,288 @@
           "on": "tabs",
           "modifiers": [
             "vertical"
+          ],
+          "family": "variant",
+          "drawn": false
+        }
+      ]
+    },
+    {
+      "component": "list",
+      "states": 28,
+      "drawn": 15,
+      "byFamily": {
+        "interaction": {
+          "total": 5,
+          "drawn": 4
+        },
+        "feedback": {
+          "total": 5,
+          "drawn": 4
+        },
+        "size": {
+          "total": 1,
+          "drawn": 1
+        },
+        "variant": {
+          "total": 17,
+          "drawn": 6
+        }
+      },
+      "list": [
+        {
+          "class": "rux--list-box__invalid-icon--warning",
+          "on": "list-box__invalid-icon",
+          "modifiers": [
+            "warning"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__wrapper--fluid--invalid",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "fluid",
+            "invalid"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box--disabled",
+          "on": "list-box",
+          "modifiers": [
+            "disabled"
+          ],
+          "family": "feedback",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box--invalid",
+          "on": "list-box",
+          "modifiers": [
+            "invalid"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box--warning",
+          "on": "list-box",
+          "modifiers": [
+            "warning"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__menu-icon--open",
+          "on": "list-box__menu-icon",
+          "modifiers": [
+            "open"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__menu-item--active",
+          "on": "list-box__menu-item",
+          "modifiers": [
+            "active"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__menu-item--highlighted",
+          "on": "list-box__menu-item",
+          "modifiers": [
+            "highlighted"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__wrapper--fluid--focus",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "fluid",
+            "focus"
+          ],
+          "family": "interaction",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box--expanded",
+          "on": "list-box",
+          "modifiers": [
+            "expanded"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--list--expressive",
+          "on": "list",
+          "modifiers": [
+            "expressive"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--list--nested",
+          "on": "list",
+          "modifiers": [
+            "nested"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list--ordered",
+          "on": "list",
+          "modifiers": [
+            "ordered"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list--ordered--native",
+          "on": "list",
+          "modifiers": [
+            "ordered",
+            "native"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list--unordered",
+          "on": "list",
+          "modifiers": [
+            "unordered"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__field--wrapper",
+          "on": "list-box__field",
+          "modifiers": [
+            "wrapper"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__field--wrapper--input-focused",
+          "on": "list-box__field",
+          "modifiers": [
+            "wrapper",
+            "input-focused"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__inner-wrapper--decorator",
+          "on": "list-box__inner-wrapper",
+          "modifiers": [
+            "decorator"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__selection--multi",
+          "on": "list-box__selection",
+          "modifiers": [
+            "multi"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__wrapper--decorator",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "decorator"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__wrapper--decorator-inner",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "decorator-inner"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__wrapper--fluid",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "fluid"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__wrapper--fluid--condensed",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "fluid",
+            "condensed"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--list-box__wrapper--inline",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "inline"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box__wrapper--slug",
+          "on": "list-box__wrapper",
+          "modifiers": [
+            "slug"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box--inline",
+          "on": "list-box",
+          "modifiers": [
+            "inline"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box--light",
+          "on": "list-box",
+          "modifiers": [
+            "light"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--list-box--up",
+          "on": "list-box",
+          "modifiers": [
+            "up"
           ],
           "family": "variant",
           "drawn": false
@@ -4080,139 +4080,6 @@
       ]
     },
     {
-      "component": "menu",
-      "states": 12,
-      "drawn": 7,
-      "byFamily": {
-        "interaction": {
-          "total": 2,
-          "drawn": 1
-        },
-        "feedback": {
-          "total": 1,
-          "drawn": 1
-        },
-        "size": {
-          "total": 4,
-          "drawn": 4
-        },
-        "variant": {
-          "total": 5,
-          "drawn": 1
-        }
-      },
-      "list": [
-        {
-          "class": "rux--menu-item--disabled",
-          "on": "menu-item",
-          "modifiers": [
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--open",
-          "on": "menu",
-          "modifiers": [
-            "open"
-          ],
-          "family": "interaction",
-          "drawn": false
-        },
-        {
-          "class": "rux--menu-button__trigger--open",
-          "on": "menu-button__trigger",
-          "modifiers": [
-            "open"
-          ],
-          "family": "interaction",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--lg",
-          "on": "menu",
-          "modifiers": [
-            "lg"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--md",
-          "on": "menu",
-          "modifiers": [
-            "md"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--sm",
-          "on": "menu",
-          "modifiers": [
-            "sm"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--xs",
-          "on": "menu",
-          "modifiers": [
-            "xs"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--background-token__background",
-          "on": "menu",
-          "modifiers": [
-            "background-token__background"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--menu--border",
-          "on": "menu",
-          "modifiers": [
-            "border"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--menu--shown",
-          "on": "menu",
-          "modifiers": [
-            "shown"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--menu--with-icons",
-          "on": "menu",
-          "modifiers": [
-            "with-icons"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--menu--with-selectable-items",
-          "on": "menu",
-          "modifiers": [
-            "with-selectable-items"
-          ],
-          "family": "variant",
-          "drawn": false
-        }
-      ]
-    },
-    {
       "component": "multiselect",
       "states": 8,
       "drawn": 3,
@@ -4862,6 +4729,139 @@
       ]
     },
     {
+      "component": "menu",
+      "states": 12,
+      "drawn": 8,
+      "byFamily": {
+        "interaction": {
+          "total": 2,
+          "drawn": 1
+        },
+        "feedback": {
+          "total": 1,
+          "drawn": 1
+        },
+        "size": {
+          "total": 4,
+          "drawn": 4
+        },
+        "variant": {
+          "total": 5,
+          "drawn": 2
+        }
+      },
+      "list": [
+        {
+          "class": "rux--menu-item--disabled",
+          "on": "menu-item",
+          "modifiers": [
+            "disabled"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--open",
+          "on": "menu",
+          "modifiers": [
+            "open"
+          ],
+          "family": "interaction",
+          "drawn": false
+        },
+        {
+          "class": "rux--menu-button__trigger--open",
+          "on": "menu-button__trigger",
+          "modifiers": [
+            "open"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--lg",
+          "on": "menu",
+          "modifiers": [
+            "lg"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--md",
+          "on": "menu",
+          "modifiers": [
+            "md"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--sm",
+          "on": "menu",
+          "modifiers": [
+            "sm"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--xs",
+          "on": "menu",
+          "modifiers": [
+            "xs"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--background-token__background",
+          "on": "menu",
+          "modifiers": [
+            "background-token__background"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--menu--border",
+          "on": "menu",
+          "modifiers": [
+            "border"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--menu--shown",
+          "on": "menu",
+          "modifiers": [
+            "shown"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--menu--with-icons",
+          "on": "menu",
+          "modifiers": [
+            "with-icons"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--menu--with-selectable-items",
+          "on": "menu",
+          "modifiers": [
+            "with-selectable-items"
+          ],
+          "family": "variant",
+          "drawn": true
+        }
+      ]
+    },
+    {
       "component": "slug",
       "states": 11,
       "drawn": 7,
@@ -4986,202 +4986,6 @@
       ]
     },
     {
-      "component": "tag",
-      "states": 19,
-      "drawn": 15,
-      "byFamily": {
-        "interaction": {
-          "total": 0,
-          "drawn": 0
-        },
-        "feedback": {
-          "total": 1,
-          "drawn": 1
-        },
-        "size": {
-          "total": 2,
-          "drawn": 2
-        },
-        "variant": {
-          "total": 16,
-          "drawn": 12
-        }
-      },
-      "list": [
-        {
-          "class": "rux--tag--disabled",
-          "on": "tag",
-          "modifiers": [
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--lg",
-          "on": "tag",
-          "modifiers": [
-            "lg"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--sm",
-          "on": "tag",
-          "modifiers": [
-            "sm"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--blue",
-          "on": "tag",
-          "modifiers": [
-            "blue"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--cool-gray",
-          "on": "tag",
-          "modifiers": [
-            "cool-gray"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--cyan",
-          "on": "tag",
-          "modifiers": [
-            "cyan"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--filter",
-          "on": "tag",
-          "modifiers": [
-            "filter"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--gray",
-          "on": "tag",
-          "modifiers": [
-            "gray"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--green",
-          "on": "tag",
-          "modifiers": [
-            "green"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--high-contrast",
-          "on": "tag",
-          "modifiers": [
-            "high-contrast"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--interactive",
-          "on": "tag",
-          "modifiers": [
-            "interactive"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--tag--magenta",
-          "on": "tag",
-          "modifiers": [
-            "magenta"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--operational",
-          "on": "tag",
-          "modifiers": [
-            "operational"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--tag--purple",
-          "on": "tag",
-          "modifiers": [
-            "purple"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--red",
-          "on": "tag",
-          "modifiers": [
-            "red"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--selectable",
-          "on": "tag",
-          "modifiers": [
-            "selectable"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--tag--selectable-selected",
-          "on": "tag",
-          "modifiers": [
-            "selectable-selected"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--tag--teal",
-          "on": "tag",
-          "modifiers": [
-            "teal"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--tag--warm-gray",
-          "on": "tag",
-          "modifiers": [
-            "warm-gray"
-          ],
-          "family": "variant",
-          "drawn": true
-        }
-      ]
-    },
-    {
       "component": "ai-label",
       "states": 11,
       "drawn": 8,
@@ -5299,131 +5103,6 @@
           "on": "ai-label-content",
           "modifiers": [
             "with-actions"
-          ],
-          "family": "variant",
-          "drawn": false
-        }
-      ]
-    },
-    {
-      "component": "file-uploader",
-      "states": 11,
-      "drawn": 8,
-      "byFamily": {
-        "interaction": {
-          "total": 1,
-          "drawn": 0
-        },
-        "feedback": {
-          "total": 5,
-          "drawn": 5
-        },
-        "size": {
-          "total": 2,
-          "drawn": 2
-        },
-        "variant": {
-          "total": 3,
-          "drawn": 1
-        }
-      },
-      "list": [
-        {
-          "class": "rux--file__selected-file--disabled",
-          "on": "file__selected-file",
-          "modifiers": [
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--file__selected-file--invalid",
-          "on": "file__selected-file",
-          "modifiers": [
-            "invalid"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--file--invalid",
-          "on": "file",
-          "modifiers": [
-            "invalid"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--file--label--disabled",
-          "on": "file",
-          "modifiers": [
-            "label",
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--file-browse-btn--disabled",
-          "on": "file-browse-btn",
-          "modifiers": [
-            "disabled"
-          ],
-          "family": "feedback",
-          "drawn": true
-        },
-        {
-          "class": "rux--file__drop-container--drag-over",
-          "on": "file__drop-container",
-          "modifiers": [
-            "drag-over"
-          ],
-          "family": "interaction",
-          "drawn": false
-        },
-        {
-          "class": "rux--file__selected-file--md",
-          "on": "file__selected-file",
-          "modifiers": [
-            "md"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--file__selected-file--sm",
-          "on": "file__selected-file",
-          "modifiers": [
-            "sm"
-          ],
-          "family": "size",
-          "drawn": true
-        },
-        {
-          "class": "rux--file__selected-file--invalid__wrapper",
-          "on": "file__selected-file",
-          "modifiers": [
-            "invalid__wrapper"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--file--label",
-          "on": "file",
-          "modifiers": [
-            "label"
-          ],
-          "family": "variant",
-          "drawn": true
-        },
-        {
-          "class": "rux--file-container--drop",
-          "on": "file-container",
-          "modifiers": [
-            "drop"
           ],
           "family": "variant",
           "drawn": false
@@ -5713,87 +5392,195 @@
       ]
     },
     {
-      "component": "structured-list",
-      "states": 7,
-      "drawn": 4,
+      "component": "tag",
+      "states": 19,
+      "drawn": 16,
       "byFamily": {
         "interaction": {
+          "total": 0,
+          "drawn": 0
+        },
+        "feedback": {
           "total": 1,
           "drawn": 1
         },
-        "feedback": {
-          "total": 0,
-          "drawn": 0
-        },
         "size": {
-          "total": 0,
-          "drawn": 0
+          "total": 2,
+          "drawn": 2
         },
         "variant": {
-          "total": 6,
-          "drawn": 3
+          "total": 16,
+          "drawn": 13
         }
       },
       "list": [
         {
-          "class": "rux--structured-list-row--selected",
-          "on": "structured-list-row",
+          "class": "rux--tag--disabled",
+          "on": "tag",
           "modifiers": [
-            "selected"
+            "disabled"
           ],
-          "family": "interaction",
+          "family": "feedback",
           "drawn": true
         },
         {
-          "class": "rux--structured-list--condensed",
-          "on": "structured-list",
+          "class": "rux--tag--lg",
+          "on": "tag",
           "modifiers": [
-            "condensed"
+            "lg"
           ],
-          "family": "variant",
+          "family": "size",
           "drawn": true
         },
         {
-          "class": "rux--structured-list--flush",
-          "on": "structured-list",
+          "class": "rux--tag--sm",
+          "on": "tag",
           "modifiers": [
-            "flush"
+            "sm"
           ],
-          "family": "variant",
-          "drawn": false
+          "family": "size",
+          "drawn": true
         },
         {
-          "class": "rux--structured-list--selection",
-          "on": "structured-list",
+          "class": "rux--tag--blue",
+          "on": "tag",
           "modifiers": [
-            "selection"
-          ],
-          "family": "variant",
-          "drawn": false
-        },
-        {
-          "class": "rux--structured-list-content--nowrap",
-          "on": "structured-list-content",
-          "modifiers": [
-            "nowrap"
+            "blue"
           ],
           "family": "variant",
           "drawn": true
         },
         {
-          "class": "rux--structured-list-row--focused-within",
-          "on": "structured-list-row",
+          "class": "rux--tag--cool-gray",
+          "on": "tag",
           "modifiers": [
-            "focused-within"
+            "cool-gray"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--cyan",
+          "on": "tag",
+          "modifiers": [
+            "cyan"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--filter",
+          "on": "tag",
+          "modifiers": [
+            "filter"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--gray",
+          "on": "tag",
+          "modifiers": [
+            "gray"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--green",
+          "on": "tag",
+          "modifiers": [
+            "green"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--high-contrast",
+          "on": "tag",
+          "modifiers": [
+            "high-contrast"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--interactive",
+          "on": "tag",
+          "modifiers": [
+            "interactive"
           ],
           "family": "variant",
           "drawn": false
         },
         {
-          "class": "rux--structured-list-row--header-row",
-          "on": "structured-list-row",
+          "class": "rux--tag--magenta",
+          "on": "tag",
           "modifiers": [
-            "header-row"
+            "magenta"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--operational",
+          "on": "tag",
+          "modifiers": [
+            "operational"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--purple",
+          "on": "tag",
+          "modifiers": [
+            "purple"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--red",
+          "on": "tag",
+          "modifiers": [
+            "red"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--selectable",
+          "on": "tag",
+          "modifiers": [
+            "selectable"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--tag--selectable-selected",
+          "on": "tag",
+          "modifiers": [
+            "selectable-selected"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--tag--teal",
+          "on": "tag",
+          "modifiers": [
+            "teal"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--tag--warm-gray",
+          "on": "tag",
+          "modifiers": [
+            "warm-gray"
           ],
           "family": "variant",
           "drawn": true
@@ -5984,6 +5771,131 @@
           ],
           "family": "interaction",
           "drawn": false
+        }
+      ]
+    },
+    {
+      "component": "file-uploader",
+      "states": 11,
+      "drawn": 9,
+      "byFamily": {
+        "interaction": {
+          "total": 1,
+          "drawn": 0
+        },
+        "feedback": {
+          "total": 5,
+          "drawn": 5
+        },
+        "size": {
+          "total": 2,
+          "drawn": 2
+        },
+        "variant": {
+          "total": 3,
+          "drawn": 2
+        }
+      },
+      "list": [
+        {
+          "class": "rux--file__selected-file--disabled",
+          "on": "file__selected-file",
+          "modifiers": [
+            "disabled"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--file__selected-file--invalid",
+          "on": "file__selected-file",
+          "modifiers": [
+            "invalid"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--file--invalid",
+          "on": "file",
+          "modifiers": [
+            "invalid"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--file--label--disabled",
+          "on": "file",
+          "modifiers": [
+            "label",
+            "disabled"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--file-browse-btn--disabled",
+          "on": "file-browse-btn",
+          "modifiers": [
+            "disabled"
+          ],
+          "family": "feedback",
+          "drawn": true
+        },
+        {
+          "class": "rux--file__drop-container--drag-over",
+          "on": "file__drop-container",
+          "modifiers": [
+            "drag-over"
+          ],
+          "family": "interaction",
+          "drawn": false
+        },
+        {
+          "class": "rux--file__selected-file--md",
+          "on": "file__selected-file",
+          "modifiers": [
+            "md"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--file__selected-file--sm",
+          "on": "file__selected-file",
+          "modifiers": [
+            "sm"
+          ],
+          "family": "size",
+          "drawn": true
+        },
+        {
+          "class": "rux--file__selected-file--invalid__wrapper",
+          "on": "file__selected-file",
+          "modifiers": [
+            "invalid__wrapper"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--file--label",
+          "on": "file",
+          "modifiers": [
+            "label"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--file-container--drop",
+          "on": "file-container",
+          "modifiers": [
+            "drop"
+          ],
+          "family": "variant",
+          "drawn": true
         }
       ]
     },
@@ -6191,6 +6103,94 @@
           "on": "progress-bar",
           "modifiers": [
             "small"
+          ],
+          "family": "variant",
+          "drawn": true
+        }
+      ]
+    },
+    {
+      "component": "structured-list",
+      "states": 7,
+      "drawn": 5,
+      "byFamily": {
+        "interaction": {
+          "total": 1,
+          "drawn": 1
+        },
+        "feedback": {
+          "total": 0,
+          "drawn": 0
+        },
+        "size": {
+          "total": 0,
+          "drawn": 0
+        },
+        "variant": {
+          "total": 6,
+          "drawn": 4
+        }
+      },
+      "list": [
+        {
+          "class": "rux--structured-list-row--selected",
+          "on": "structured-list-row",
+          "modifiers": [
+            "selected"
+          ],
+          "family": "interaction",
+          "drawn": true
+        },
+        {
+          "class": "rux--structured-list--condensed",
+          "on": "structured-list",
+          "modifiers": [
+            "condensed"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--structured-list--flush",
+          "on": "structured-list",
+          "modifiers": [
+            "flush"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--structured-list--selection",
+          "on": "structured-list",
+          "modifiers": [
+            "selection"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--structured-list-content--nowrap",
+          "on": "structured-list-content",
+          "modifiers": [
+            "nowrap"
+          ],
+          "family": "variant",
+          "drawn": true
+        },
+        {
+          "class": "rux--structured-list-row--focused-within",
+          "on": "structured-list-row",
+          "modifiers": [
+            "focused-within"
+          ],
+          "family": "variant",
+          "drawn": false
+        },
+        {
+          "class": "rux--structured-list-row--header-row",
+          "on": "structured-list-row",
+          "modifiers": [
+            "header-row"
           ],
           "family": "variant",
           "drawn": true

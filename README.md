@@ -8,20 +8,28 @@ record, and the phase this project is in.
 
 ## Status
 
-**Phase 1 complete — standing baseline.** 100% of Carbon compiles and renders under the
-`rux` namespace. All 75 components are exercised by the kitchen sink and each of its 64
-sections has been visually reviewed in light and dark. Nothing has been stripped yet;
-that is Phase 3.
+**Phase 1 complete — standing baseline, and its markup is now verified.** 100% of Carbon
+compiles and renders under the `rux` namespace. All 75 components are exercised by the
+kitchen sink, each of its 64 sections has been visually reviewed in light and dark, and
+every fragment has been diffed against Carbon's own rendered DOM. Nothing has been
+stripped yet; that is Phase 3.
 
 | | |
 |---|---|
 | Components | **75 / 75 rendered and verified** |
 | Themes | 4 — white, g10, g90, g100 |
 | Tokens · classes | 635 `--rux-*` · 826 `.rux--*` |
-| Kitchen sink | 64 sections · 567 classes · 0 unresolved |
-| Markup provenance | **2 `rendered-dom` · 7 `source` · 55 `inferred`** — see roadmap §4.1.13 |
+| Kitchen sink | 64 sections · 747 classes · 0 unresolved |
+| Markup provenance | **57 `rendered-dom` · 4 `source` · 3 `inferred`** — see roadmap §4.1.13 |
+| States drawn | 382 / 689 — see `docs/states.json` |
 | Icons | 52, a 14.1 KB sprite |
 | Size | 942 KB raw · 849 KB min · **84 KB gzipped** |
+
+The three still `inferred` are not unfinished work: `resizer`, `slug` and
+`truncated-text` have **no reference anywhere**. Nothing across the 641 captured stories
+on either Storybook origin emits their classes — slug was superseded by `ai-label`, and
+the only story matching "truncated" is a card truncating its own title. Each says so in
+its fragment.
 
 ## Commands
 
@@ -37,6 +45,7 @@ npm run verify    # build + assemble sink + class resolution + coverage + proven
 | `npm run inventory` | per-component classes and size → `docs/inventory.json` |
 | `tools/extract/` | quarries Carbon's rendered markup → `docs/carbon-co-classes.json`, `docs/carbon-*-dom.json`, and — via the state recipes in `react-dom.js` — `docs/carbon-react-states.json` (roadmap §4.1.7, §4.1.14) |
 | `tools/check-provenance.mjs --inferred` | the fragments whose markup was never diffed against a reference (roadmap §4.1.13) |
+| `tools/diff-fragment.mjs <name> --omissions` | where a fragment's nesting disagrees with Carbon, and what Carbon renders that it omits |
 | `npm run serve` | kitchen sink at `http://localhost:8642` |
 | `npm run watch` | rebuild CSS on change |
 
@@ -49,7 +58,7 @@ npm run verify    # build + assemble sink + class resolution + coverage + proven
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
-| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `check-classes` · `check-tokens` · `check-compound` · `check-coverage` · `check-provenance` · `serve` |
+| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `check-classes` · `check-tokens` · `check-compound` · `check-tags` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
 
@@ -73,7 +82,7 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 | `check-classes.mjs` | a class used in HTML with no CSS behind it | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
-| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (56 today) |
+| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (49 today) |
 | `check-coverage.mjs` | a component no markup exercises | whether that markup is correct |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
@@ -81,7 +90,7 @@ Nine, because none is sufficient alone — see roadmap §4.1.2 for the bug that 
 
 The first eight run in `npm run verify`. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
-adjudicated; its `KNOWN` list carries the nine recorded divergences, each with
+adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
 automating it means adding a headless-browser dependency and this project has none.
