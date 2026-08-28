@@ -58,8 +58,16 @@ claims a component by its interactive element, never by the root class.
 `docs/commits.md`, enforced by a hook: subject ≤50 chars, body wrapped at 72 **bytes**
 (an em-dash costs 3), no AI attribution of any kind.
 
-## Templates — pending
+## Templates — started
 
-`templates/` is empty and `CLAUDE.md` is meant to route to it. That is Phase 6, the next
-phase. Until then the kitchen sink is the worked example and `sink/*.html` the markup to
-copy.
+`templates/app-shell.html` is the page frame: header, fixed side nav, and the `main`
+the other five templates drop into. **Copy it; do not copy `sink/ui-shell.html`** — the
+sink demos Carbon's OTHER shell, the rail nested inside the header, which does not
+offset the content region. The template's own comment records why they are not mixed.
+
+Form, table, detail, empty state and error state are not written yet; until they are,
+`sink/*.html` is still the markup to copy for a page body.
+
+**A template references the sprite, a fragment inlines it.** `../assets/icons.svg#i-name`
+in `templates/`, `#i-name` in `sink/`. `check-icons` enforces each against its own root,
+and a template must be SERVED — a cross-document `<use>` over `file://` paints nothing.

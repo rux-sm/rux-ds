@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-theme="white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App shell — rux-ds</title>
+<link rel="stylesheet" href="../css/rux.css">
+</head>
+<body>
+<!-- PROVENANCE: rendered-dom · components-ui-shell-sidenav--fixed-side-nav,
+     --fixed-side-nav-w-divider, --fixed-side-nav-w-icons and
+     --side-nav-w-large-side-nav-items, 2026-08-28 -->
+<!--
+  THE APP SHELL. Copy this file, replace the marked regions, delete the rest of
+  this comment. The other templates are page bodies that go inside `main`.
+
+  WHY THE SIDE NAV IS A SIBLING OF THE HEADER AND NOT INSIDE IT. Carbon renders
+  two different shells and they are not interchangeable:
+
+    expanded  nav.--side-nav--expanded sits BESIDE header and main. The content
+              region is offset by a sibling rule that no other arrangement can
+              satisfy:
+                .rux--side-nav.rux--side-nav--expanded ~ .rux--content
+                  { margin-inline-start: 16rem }
+              Four captures render it, and in every one the header carries only
+              the skip link and the product name.
+
+    ux/rail   nav.--side-nav--ux sits INSIDE header, collapsed to a 3rem rail
+              the menu button expands over the page. Five captures render it,
+              and those are the ones whose headers carry __nav and __global.
+              The content is NOT offset by CSS there; the stories indent it
+              with grid offsets instead.
+
+  This template is the first shape, because a template's job is to be the frame
+  the other five sit in, and it is the only shape where the system's own CSS
+  positions the content region. `sink/ui-shell.html` demos the second, which is
+  why its header is richer than this one.
+
+  THE TWO ARE NOT MIXED HERE, DELIBERATELY. A header with __nav or __global
+  above a sibling expanded side nav appears in NONE of the 641 captures. Both
+  halves are corroborated on their own and check-ancestry would pass the
+  combination, but nothing in docs/ says Carbon draws it, so it is not invented
+  here. Roadmap §4.6 and README record the open question.
+
+  ICONS ARE REFERENCED, NOT INLINED. `../assets/other.svg#i-name` keeps the
+  15.8 KB sprite in one place instead of copying it into every page built from
+  this file. It needs the page to be SERVED — `npm run serve` — because a
+  cross-document <use> is a fetch, and a file:// page will draw blank icons.
+
+  EVERY BEHAVIOUR MODULE LOADS, not just ui-shell. README promises a page built
+  from a template needs no script of its own; that is only true if a modal or a
+  data table pasted into `main` already has its module present. The kernel is
+  first because the others delegate to it.
+-->
+
+<header class="rux--header" aria-label="Rux DS">
+  <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
+  <!-- REPLACE: product name. The prefix span is the lighter-weight half. -->
+  <a class="rux--header__name" href="./"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+</header>
+
+<!-- REPLACE: the navigation. An expandable category is a <button> plus its
+     <ul>; a standalone link is an <a> on its own. The open category carries
+     aria-expanded="true" and its <ul> is not hidden; the page you are on
+     carries aria-current="page". js/ui-shell.js drives the toggling. -->
+<nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--expanded" aria-label="Side navigation">
+  <ul class="rux--side-nav__items">
+
+    <li class="rux--side-nav__item rux--side-nav__item--active">
+      <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
+        <span class="rux--side-nav__submenu-title">Documents</span>
+        <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
+      </button>
+      <ul class="rux--side-nav__menu">
+        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a></li>
+        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Trips</span></a></li>
+        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Invoices</span></a></li>
+      </ul>
+    </li>
+
+    <li class="rux--side-nav__item">
+      <button class="rux--side-nav__submenu" type="button" aria-expanded="false">
+        <span class="rux--side-nav__submenu-title">Reports</span>
+        <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="../assets/icons.svg#i-chevron--down"/></svg></div>
+      </button>
+      <ul class="rux--side-nav__menu" hidden>
+        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Monthly</span></a></li>
+        <li class="rux--side-nav__menu-item"><a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Annual</span></a></li>
+      </ul>
+    </li>
+
+    <li class="rux--side-nav__item">
+      <a class="rux--side-nav__link" href="./"><span class="rux--side-nav__link-text">Settings</span></a>
+    </li>
+
+  </ul>
+</nav>
+
+<main id="main-content" class="rux--content">
+  <!-- REPLACE: everything below. `col-span-100` is full width; the other
+       templates drop their body in here. -->
+  <div class="rux--css-grid">
+    <div class="rux--css-grid-column rux--col-span-100">
+      <h1>Dashboard</h1>
+      <p>Replace this region with a page body.</p>
+    </div>
+  </div>
+</main>
+
+<!-- The behaviour layer. The kernel loads FIRST; the others delegate to it. -->
+<script src="../js/overlay.js"></script>
+<script src="../js/popover.js"></script>
+<script src="../js/menu.js"></script>
+<script src="../js/list-box.js"></script>
+<script src="../js/tabs.js"></script>
+<script src="../js/accordion.js"></script>
+<script src="../js/data-table.js"></script>
+<script src="../js/form-controls.js"></script>
+<script src="../js/ui-shell.js"></script>
+<script src="../js/dismiss.js"></script>
+<script src="../js/tile.js"></script>
+<script src="../js/modal.js"></script>
+</body>
+</html>

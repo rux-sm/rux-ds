@@ -10,9 +10,9 @@ stated twice drifts — which is exactly what happened to the Status block below
 2026-08-28.
 
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
-below rather than repeating them. **There is no guide to BUILDING a page yet, and that is
-Phase 6** — `templates/` is still empty, so the kitchen sink is the worked example and
-`sink/*.html` the markup to copy.
+below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
+started** — `templates/app-shell.html` is the frame the other five sit in. Until they
+land the kitchen sink is still the worked example and `sink/*.html` the markup to copy.
 
 ## Status
 
@@ -46,7 +46,9 @@ Everything below is in the repo, so a fresh clone is the whole handover — noth
 in an editor session or a machine-local note.
 
 **Next:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
-is preparation. `templates/` is still empty.
+is preparation. One of six exists — `app-shell.html`; form, table, detail, empty state
+and error state are open. Every gate that reads markup per file now reads `templates/`
+too.
 
 **Blocking §4.5's exit** — one human task, which cannot be automated here:
 
@@ -120,6 +122,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
 | `css/` | Build output; becomes the source at Phase 4 |
 | `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
+| `templates/` | **Runnable page skeletons — Phase 6's deliverable.** `app-shell.html` is the frame; the rest go inside its `main`. Roadmap §4.6 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
