@@ -165,7 +165,19 @@
     </ul>
   </nav>
 
-  <!-- REPLACE: global actions. Icon-only, so each needs an aria-label. -->
+  <!-- REPLACE: global actions. Icon-only, so each needs an aria-label.
+
+       ORDER IS PRESCRIBED, right to left: switcher, account, notifications,
+       help. Carbon fixes those so they do not shift as a user moves between
+       products, and anything a product adds of its own goes in the band LEFT
+       of them, with search furthest left of all. Right-aligned, no gaps.
+
+       A theme toggle, if a product wants one, is one of those product icons —
+       it is not in the system. No capture has one, Carbon reserves these
+       utilities for "universal, system-level functions", and the sink's own
+       switcher lives in harness.js as a demo convenience that Phase 5 deletes.
+       It would toggle `data-theme` on <html>, which moves the CONTENT only:
+       the shell keeps its own g100 either way. -->
   <div class="rux--header__global">
     <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
     <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
