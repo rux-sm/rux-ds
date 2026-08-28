@@ -3369,14 +3369,17 @@
       --side-nav__icon--small  the chevron is sized by the COMPOUND selector
                                .--side-nav__icon.--side-nav__submenu-chevron
                                (_side-nav.scss:238), both of which stay on the div.
-      --text-truncate--end     a transcription slip. Carbon's utility is
-                               --text-truncate-end, one hyphen before "end"
-                               (mixin at _text-truncate.scss:11). Kept at the
-                               corrected spelling, but note it is only ever
-                               applied as a descendant of
+      --text-truncate--end     NOT a transcription slip, as this comment said
+                               until the React DOM was actually harvested: React
+                               emits the double-dash form 12 times in this story,
+                               and @carbon/styles never defines it. The single
+                               hyphen `--text-truncate-end` is the only spelling
+                               with a rule, and even that one is scoped to
                                .--side-nav a.--header__menu-item
-                               (_side-nav.scss:354-357), so it does nothing while
-                               the menu bar sits in the header.
+                               (_side-nav.scss:354-357), which this markup is not
+                               inside. So the class is inert either way; the
+                               single-dash form is used because it is the only
+                               one check-classes can resolve.
 
     In production both header and side-nav are position:fixed. In this demo
     sandbox the header is position:absolute inside a 22rem container, so the
