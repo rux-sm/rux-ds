@@ -239,7 +239,21 @@
 
 <section class="ks-sec" id="tags">
     <h2>Tags</h2><p>colors · sizes · filter</p>
-    <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+    <!-- PROVENANCE: rendered-dom · components-tag--operational, --dismissible,
+         --read-only with its disabled and lg recipes, and --selectable,
+         2026-08-28 -->
+    <!--
+      OPERATIONAL is a real variant this fragment never demoed — 57 rules, more
+      than any other tag modifier. It is a BUTTON, not a div, takes the size
+      pair `layout--size-md`, and puts its glyph in `__custom-icon` with the
+      text in a bare span rather than __label. Added above.
+
+      Not copied from the reference: the icon-tooltip popover it wraps
+      operational and dismissible tags in, on the combo-button precedent — the
+      sink demos the component, not the story's hover hint. `tag--md` and
+      `tag--dismissible` come from the reference and are dropped for having no
+      rule in @carbon/styles (§4.1.12).
+    -->
     <div class="ks-row">
       <div class="rux--tag rux--tag--red"><span class="rux--tag__label">Red</span></div>
       <div class="rux--tag rux--tag--magenta"><span class="rux--tag__label">Magenta</span></div>
@@ -259,6 +273,19 @@
       <div class="rux--tag rux--tag--blue"><span class="rux--tag__label">Medium</span></div>
       <div class="rux--tag rux--tag--blue rux--tag--lg"><span class="rux--tag__label">Large</span></div>
       <div class="rux--tag rux--tag--gray rux--tag--disabled"><span class="rux--tag__label">Disabled</span></div>
+    </div>
+
+    <div class="ks-label" style="margin-block-start:1.5rem">operational</div>
+    <div class="ks-row" role="group">
+      <button type="button" class="rux--tag rux--tag--operational rux--layout--size-md rux--tag--red">
+        <div class="rux--tag__custom-icon">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        </div>
+        <span>Degraded</span>
+      </button>
+      <button type="button" class="rux--tag rux--tag--operational rux--layout--size-md rux--tag--blue">
+        <span>Filter by region</span>
+      </button>
     </div>
   </section>
 
@@ -637,11 +664,15 @@
 
 <section class="ks-sec" id="radio">
   <h2>Radio button</h2><p>vertical · horizontal · disabled · label placement</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; group structure
-       corrected 2026-08-27 against components-radiobutton--default (rendered DOM):
+  <!-- PROVENANCE: rendered-dom · components-radiobutton--default with its
+       invalid, warn and readonly recipes, plus --vertical, 2026-08-27:
        the GROUP is the fieldset — form-item > fieldset.radio-button-group >
        legend.label, with the validation message a sibling of the fieldset.
-       Carbon always emits --label-right (labelPosition defaults to right). -->
+       Carbon always emits --label-right (labelPosition defaults to right).
+       · 2026-08-28: re-diffed clean on nesting and tags. The omissions report
+       lists the ai-label decorator chrome from radiobutton--with-ai-label,
+       which is the AI variant this fragment does not demo and which belongs to
+       the ai-label fragment. -->
   <div class="ks-row" style="gap:4rem">
     <div class="rux--form-item">
       <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
@@ -1690,14 +1721,32 @@
 
 <section class="ks-sec" id="badge-indicator">
   <h2>Badge indicator</h2><p>dot · count</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · components-iconbutton--with-badge-indicator,
+       2026-08-28 -->
+  <!--
+    A badge is not a free-standing box. Carbon renders it as the LAST CHILD of
+    an icon-only ghost button — `btn btn--lg layout--size-lg btn--ghost
+    btn--icon-only` — after the glyph, and the button is what gives the
+    absolutely-positioned badge its containing block. This fragment used a
+    hand-rolled `position:relative` div with an inline background instead, which
+    demoed the badge's own paint but not the pairing that positions it, and put
+    sink furniture where the component should be.
+
+    `btn--lg` comes with the size pair in the reference and is dropped for
+    having no rule in @carbon/styles (§4.1.12); `layout--size-lg` carries it.
+
+    Not copied: the icon-tooltip popover the story wraps the button in. The sink
+    demos the component, not the story's hover hint (as with combo-button).
+  -->
   <div class="ks-row">
-    <div style="position:relative;width:2rem;height:2rem;background:var(--rux-layer-01)">
+    <button type="button" class="rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg>
       <div class="rux--badge-indicator"></div>
-    </div>
-    <div style="position:relative;width:2rem;height:2rem;background:var(--rux-layer-01)">
+    </button>
+    <button type="button" class="rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications, 8 unread">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg>
       <div class="rux--badge-indicator rux--badge-indicator--count">8</div>
-    </div>
+    </button>
   </div>
 </section>
 
@@ -1775,7 +1824,13 @@
 
 <section class="ks-sec" id="resizer">
   <h2>Resizer</h2><p>split-pane handles — no intrinsic size, they take it from the flex container</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors · NO REFERENCE
+       EXISTS: checked 2026-08-28 against all 641 captures across both
+       Storybook origins and nothing emits `resizer`, by id or by class.
+       Roadmap §4.1.14 first recorded this and asked for a decision; the
+       harvest since has only confirmed it. This fragment stays `inferred`
+       not for want of effort but because there is nothing to diff it
+       against, and it will stay that way until Carbon ships a story. -->
   <div class="ks-row">
     <div>
       <div class="ks-label">vertical handle · ew-resize · between side-by-side panes</div>
@@ -1798,7 +1853,15 @@
 
 <section class="ks-sec" id="skeleton">
   <h2>Skeleton</h2><p>text · heading · placeholder</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · the --skeleton story on each host component
+       (accordion, tag, slider, structuredlist and the rest), 2026-08-28 -->
+  <!--
+    Skeleton is not a component of its own: roadmap §4.1.14 records that it is a
+    `--skeleton` story on 32 others. So the omissions report lists whole host
+    components — accordion, data-table, tile — because those stories ARE the
+    reference. What this fragment owns is the skeleton classes themselves, and
+    those match; the hosts belong to their own fragments.
+  -->
   <div class="ks-grid">
     <div>
       <p class="rux--skeleton__heading"></p>

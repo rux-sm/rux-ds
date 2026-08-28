@@ -1,6 +1,14 @@
 <section class="ks-sec" id="skeleton">
   <h2>Skeleton</h2><p>text · heading · placeholder</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: rendered-dom · the --skeleton story on each host component
+       (accordion, tag, slider, structuredlist and the rest), 2026-08-28 -->
+  <!--
+    Skeleton is not a component of its own: roadmap §4.1.14 records that it is a
+    `--skeleton` story on 32 others. So the omissions report lists whole host
+    components — accordion, data-table, tile — because those stories ARE the
+    reference. What this fragment owns is the skeleton classes themselves, and
+    those match; the hosts belong to their own fragments.
+  -->
   <div class="ks-grid">
     <div>
       <p class="rux--skeleton__heading"></p>

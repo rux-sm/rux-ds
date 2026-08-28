@@ -1,6 +1,12 @@
 <section class="ks-sec" id="resizer">
   <h2>Resizer</h2><p>split-pane handles — no intrinsic size, they take it from the flex container</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors, never diffed against a reference -->
+  <!-- PROVENANCE: inferred · structure read off CSS selectors · NO REFERENCE
+       EXISTS: checked 2026-08-28 against all 641 captures across both
+       Storybook origins and nothing emits `resizer`, by id or by class.
+       Roadmap §4.1.14 first recorded this and asked for a decision; the
+       harvest since has only confirmed it. This fragment stays `inferred`
+       not for want of effort but because there is nothing to diff it
+       against, and it will stay that way until Carbon ships a story. -->
   <div class="ks-row">
     <div>
       <div class="ks-label">vertical handle · ew-resize · between side-by-side panes</div>

@@ -1,10 +1,14 @@
 <section class="ks-sec" id="radio">
   <h2>Radio button</h2><p>vertical · horizontal · disabled · label placement</p>
-  <!-- PROVENANCE: inferred · structure read off CSS selectors; group structure
-       corrected 2026-08-27 against components-radiobutton--default (rendered DOM):
+  <!-- PROVENANCE: rendered-dom · components-radiobutton--default with its
+       invalid, warn and readonly recipes, plus --vertical, 2026-08-27:
        the GROUP is the fieldset — form-item > fieldset.radio-button-group >
        legend.label, with the validation message a sibling of the fieldset.
-       Carbon always emits --label-right (labelPosition defaults to right). -->
+       Carbon always emits --label-right (labelPosition defaults to right).
+       · 2026-08-28: re-diffed clean on nesting and tags. The omissions report
+       lists the ai-label decorator chrome from radiobutton--with-ai-label,
+       which is the AI variant this fragment does not demo and which belongs to
+       the ai-label fragment. -->
   <div class="ks-row" style="gap:4rem">
     <div class="rux--form-item">
       <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
