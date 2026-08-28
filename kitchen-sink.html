@@ -2500,9 +2500,16 @@
     item a `__selection-icon` slot as its first child, filled only on the
     selected one. `menu-item-group` is the same pattern for a non-radio group.
 
-    The reference also renders every menu open — `menu--open menu--shown` — but
-    those are the state js/menu.js toggles, and this fragment demos the menus
-    inline so they are visible at rest. Only the FIRST menu has a trigger and so
+    THE SPECIMENS NOW CARRY `menu--open menu--shown`, AND HAD TO. This comment
+    claimed they were "visible at rest" and they were not: `.rux--menu` is
+    `visibility: hidden; opacity: 0` at rest, so every menu here except the
+    triggered one rendered as blank space — 177px of it for the icons demo — for
+    as long as this fragment has existed. Nothing caught it. The classes are the
+    same ones js/menu.js toggles, which is why the triggered menu below does NOT
+    have them: it starts closed and its trigger opens it.
+
+    Found by the Phase 5 keyboard pass, which asked why a `role="menu"` had no
+    reachable items and turned up a menu nobody could see either. Only the FIRST menu has a trigger and so
     is driven by the module: `data-rux-open="<id>"`, the same idiom modal uses,
     because a menu's surface is a <ul> elsewhere in the document. The rest are
     static specimens of density and selection state with nothing to open them,
@@ -2536,7 +2543,7 @@
 
   <div class="ks-label">selectable items · radio group</div>
   <div class="ks-row" style="align-items:flex-start">
-    <ul class="rux--menu rux--menu--md rux--menu--with-selectable-items" role="menu" style="position:relative;inset:auto">
+    <ul class="rux--menu rux--menu--open rux--menu--shown rux--menu--md rux--menu--with-selectable-items" role="menu" style="position:relative;inset:auto">
       <li class="rux--menu-item-radio-group" role="none">
         <ul role="group">
           <li class="rux--menu-item" role="menuitemradio" aria-checked="false" tabindex="-1">
@@ -2567,15 +2574,15 @@
 
   <div class="ks-label">densities · xs · sm · lg</div>
   <div class="ks-row" style="align-items:flex-start">
-    <ul id="ks-menu-xs" class="rux--menu rux--menu--xs" role="menu" style="position:relative;inset:auto">
+    <ul id="ks-menu-xs" class="rux--menu rux--menu--open rux--menu--shown rux--menu--xs" role="menu" style="position:relative;inset:auto">
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">xs</div></li>
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">Second</div></li>
     </ul>
-    <ul id="ks-menu-sm" class="rux--menu rux--menu--sm" role="menu" style="position:relative;inset:auto">
+    <ul id="ks-menu-sm" class="rux--menu rux--menu--open rux--menu--shown rux--menu--sm" role="menu" style="position:relative;inset:auto">
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">sm</div></li>
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">Second</div></li>
     </ul>
-    <ul id="ks-menu-lg" class="rux--menu rux--menu--lg" role="menu" style="position:relative;inset:auto">
+    <ul id="ks-menu-lg" class="rux--menu rux--menu--open rux--menu--shown rux--menu--lg" role="menu" style="position:relative;inset:auto">
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">lg</div></li>
       <li class="rux--menu-item" role="menuitem" tabindex="-1"><div class="rux--menu-item__label">Second</div></li>
     </ul>

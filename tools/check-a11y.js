@@ -1,0 +1,147 @@
+//
+// KEYBOARD AND ARIA AUDIT — paste into the kitchen sink's devtools console.
+//
+// A browser tool, not a Node one, for the same reason as check-rendered.js:
+// answering these questions needs a layout and an accessibility tree, and
+// automating it means adding a headless-browser dependency this project has
+// none of (roadmap §4.8, README "Gates").
+//
+// WHAT IT CANNOT TELL YOU, said first so the pass is not mistaken for a
+// clean bill of health:
+//   * whether a screen reader ANNOUNCES the right thing. This reads the
+//     attributes an AT would use; it does not run one. §4.5's exit needs a
+//     human with VoiceOver or NVDA and there is no substitute.
+//   * whether the visible focus ring is legible against its background.
+//   * whether the tab ORDER is sensible. It checks that composites expose one
+//     stop and that nothing is stranded; "sensible" is a judgement.
+//
+// What it does check is the part that is mechanical, and every one of these
+// has a real failure mode behind it.
+//
+(() => {
+  const MAIN = '.ks-main';
+  const root = document.querySelector(MAIN) || document.body;
+  const findings = [], notes = [];
+  const row = (rule, detail, el) => ({ rule, detail,
+    where: el?.closest?.('.ks-sec')?.id ?? '(page)',
+    what: (el?.className || el?.tagName || '').toString().slice(0, 60) });
+  const say = (rule, detail, el) => findings.push(row(rule, detail, el));
+  // A NOTE IS NOT A FINDING. The sink demos CSS states as well as working
+  // components, and a specimen is a real thing that is deliberately not
+  // operable. Counting those as defects would leave this tool permanently at
+  // five and teach everyone to ignore the number — the reasoning check-coverage
+  // gives for not scoring stripped components.
+  const note = (rule, detail, el) => notes.push(row(rule, detail, el));
+
+  // `offsetParent` alone is not enough: an element inside `visibility: hidden`
+  // still HAS layout, so a closed modal's buttons and a closed menu's items all
+  // looked visible and then failed to take focus. visibility inherits, so
+  // reading it on the element itself covers the ancestors.
+  const visible = el => {
+    const c = getComputedStyle(el);
+    if (c.visibility === 'hidden' || c.display === 'none') return false;
+    return el.offsetParent !== null || c.position === 'fixed';
+  };
+  const enabled = el => !el.disabled && el.getAttribute('aria-disabled') !== 'true';
+
+  const name = el =>
+    (el.getAttribute('aria-label') || '').trim()
+    || (el.getAttribute('aria-labelledby') || '').split(/\s+/)
+         .map(id => document.getElementById(id)?.textContent ?? '').join(' ').trim()
+    || (el.id ? (document.querySelector(`label[for="${CSS.escape(el.id)}"]`)?.textContent ?? '').trim() : '')
+    || (el.closest('label')?.textContent ?? '').trim()
+    || el.textContent.trim()
+    || (el.getAttribute('title') || '').trim();
+
+  // 1. EVERY IDREF RESOLVES. A dangling aria-controls is silent: nothing breaks
+  //    visually and the relationship the attribute promises simply is not there.
+  for (const el of root.querySelectorAll('[aria-controls],[aria-labelledby],[aria-describedby],[aria-activedescendant]'))
+    for (const attr of ['aria-controls', 'aria-labelledby', 'aria-describedby', 'aria-activedescendant'])
+      for (const id of (el.getAttribute(attr) || '').split(/\s+/).filter(Boolean))
+        if (!document.getElementById(id)) say('dangling idref', `${attr}="${id}"`, el);
+
+  // 2. A COMPOSITE EXPOSES ONE TAB STOP. Menus, tablists and listboxes move an
+  //    internal cursor; N tab stops means the roving tabindex was never applied
+  //    and a keyboard user tabs through every item instead of arrowing.
+  for (const [widget, item] of [['[role="menu"]', '[role^="menuitem"]'],
+                                ['[role="tablist"]', '[role="tab"]'],
+                                ['[role="listbox"]', '[role="option"]']]) {
+    for (const w of root.querySelectorAll(widget)) {
+      if (!visible(w)) continue;
+      const items = [...w.querySelectorAll(item)].filter(enabled);
+      const stops = items.filter(i => i.tabIndex >= 0);
+      if (stops.length > 1) say('composite has many tab stops', `${stops.length} of ${items.length}`, w);
+      // A composite with NO stop and nothing that opens it cannot be reached at
+      // all. In the sink that is usually a deliberate specimen, so it is a note.
+      // No stop and nothing that opens it: a specimen of a state, not a control.
+      // menu.html demos four densities and list-box.html the expanded primitive,
+      // none of which has a trigger, because what they demonstrate is the CSS.
+      if (!stops.length && items.length && !document.querySelector(`[aria-controls="${w.id}"]`))
+        note('specimen: composite with no trigger', `${items.length} items, not operable by design`, w);
+    }
+  }
+
+  // 3. EVERY CONTROL HAS AN ACCESSIBLE NAME. An unnamed button is announced as
+  //    "button" and nothing else.
+  for (const el of root.querySelectorAll('button, a[href], input:not([type=hidden]), select, textarea,'
+    + '[role="tab"],[role="option"],[role^="menuitem"],[role="checkbox"],[role="switch"],[role="combobox"]'))
+    if (visible(el) && enabled(el) && !name(el)) say('no accessible name', el.tagName, el);
+
+  // 4. A ROLE THAT PROMISES STATE MUST CARRY IT. role="switch" with no
+  //    aria-checked is announced as a switch whose position is unknown.
+  const REQUIRED = { tab: ['aria-selected'], option: ['aria-selected'], checkbox: ['aria-checked'],
+                     switch: ['aria-checked'], combobox: ['aria-expanded'], tabpanel: ['aria-labelledby'] };
+  for (const [role, attrs] of Object.entries(REQUIRED))
+    for (const el of root.querySelectorAll(`[role="${role}"]`))
+      if (visible(el)) for (const a of attrs)
+        if (!el.hasAttribute(a)) say('role missing required state', `role=${role} needs ${a}`, el);
+
+  // 5. FOCUS MUST BECOME VISIBLE, which is a question about the FOCUSED state
+  //    and not the resting one. A first draft read the resting outline and
+  //    reported 74 controls, all of them fine — no element shows a focus ring
+  //    while unfocused. So focus each one and diff what changed. `.focus()`
+  //    matches `:focus`, which is what Carbon styles; a rule written only for
+  //    `:focus-visible` would need a real key press and is out of reach here.
+  // THIS CHECK CANNOT RUN IN AN UNFOCUSED DOCUMENT, and saying so beats
+  // reporting nonsense. `:focus` only matches while the document itself has
+  // focus, so in a headless or background window every control appears to have
+  // no focus style — the first run of this tool reported 167 of them, including
+  // plain buttons Carbon quite clearly styles. Same root cause as key events
+  // not being delivered: no OS focus, no focus.
+  const canTestFocus = document.hasFocus();
+  const held = document.activeElement;
+  if (!canTestFocus) console.warn('  check-a11y: focus-ring check SKIPPED — '
+    + 'document.hasFocus() is false. Click the page and re-run.');
+  const paint = el => { const c = getComputedStyle(el);
+    return `${c.outlineStyle}|${c.outlineWidth}|${c.outlineColor}|${c.boxShadow}|${c.borderColor}|${c.backgroundColor}`; };
+  for (const el of canTestFocus ? root.querySelectorAll('button, a[href], input, select, textarea, [tabindex]') : []) {
+    if (!visible(el) || !enabled(el) || el.tabIndex < 0) continue;
+    const before = paint(el);
+    el.focus({ preventScroll: true });
+    if (document.activeElement !== el) { say('cannot take focus', 'tabbable but .focus() did not land', el); continue; }
+    if (paint(el) === before) say('no visible focus change', 'outline, shadow, border and background all unchanged', el);
+  }
+  held?.focus?.({ preventScroll: true });
+
+  // 6. NOTHING FOCUSABLE INSIDE A BOX HIDDEN FROM ASSISTIVE TECH. The dangerous
+  //    case is `aria-hidden="true"` on something STILL RENDERED: the browser will
+  //    happily focus a child a screen reader has been told does not exist. A
+  //    first draft also flagged `[hidden]`, which was wrong — `hidden` is
+  //    `display: none`, so those children cannot be focused by anyone, and it
+  //    reported the side nav's own collapsed submenus.
+  for (const el of root.querySelectorAll('[aria-hidden="true"]')) {
+    if (!visible(el)) continue;
+    for (const child of el.querySelectorAll('button, a[href], input, select, textarea, [tabindex]'))
+      if (child.tabIndex >= 0 && !child.disabled && visible(child))
+        say('focusable inside aria-hidden', child.tagName, el);
+  }
+
+  const by = findings.reduce((m, f) => (m[f.rule] = (m[f.rule] || 0) + 1, m), {});
+  console.log(`\n  check-a11y — ${findings.length} findings, ${notes.length} notes\n`);
+  if (findings.length) { console.table(by); console.table(findings); }
+  if (notes.length) console.table(notes);
+  console.log('\n  NOT CHECKED: screen-reader announcement, focus-ring contrast, tab-order sense.'
+    + (canTestFocus ? '' : '\n  NOT RUN: the focus-ring check, because this document does not have focus.')
+    + '\n  Those need a human with an AT. See the header.\n');
+  return { findings, notes, byRule: by, focusRingChecked: canTestFocus };
+})();

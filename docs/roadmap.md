@@ -1059,6 +1059,28 @@ reading directly, even though this project is not extracted from it.
 
 Exit: keyboard and screen-reader passes on every interactive component in the sink.
 
+> **Keyboard pass run 2026-08-28. `tools/check-a11y.js` — 0 findings, 5 notes.**
+> Every idref resolves, every composite (menu, tablist, listbox) exposes exactly one
+> tab stop, every visible control has an accessible name, and every role that promises
+> state carries it. The five notes are specimens: menu.html demos four densities and
+> list-box.html the expanded primitive, none with a trigger, because what they
+> demonstrate is the CSS.
+>
+> **IT FOUND A DEFECT NOTHING ELSE HAD.** Four of those specimens were
+> `visibility: hidden; opacity: 0` — `.rux--menu` at rest — so they rendered as blank
+> space, 177px of it for the icons demo, for as long as the fragment had existed. The
+> fragment's own comment claimed they were "visible at rest". Asking why a `role="menu"`
+> had no reachable items turned up a menu nobody could see either.
+>
+> **THE SCREEN-READER HALF IS NOT DONE AND CANNOT BE DONE HERE.** This tool reads the
+> attributes an assistive technology would use; it does not run one. Two further checks
+> are also out of reach in an automated browser, and the tool now says so rather than
+> guessing: the focus-ring check needs `document.hasFocus()`, which is false in a
+> headless pane — its first run reported 167 controls as having no focus style,
+> including plain buttons Carbon quite clearly styles — and real key delivery does not
+> work there either, so Tab order was computed rather than walked. **§4.5 stays open
+> until a human runs VoiceOver or NVDA over the sink and tabs through it by hand.**
+
 > **Started 2026-08-28. Four decisions, recorded before the modules multiply.**
 >
 > **1. The markup is the API.** rux-ui exposes `RuxMenu.open(trigger, menu)` because an

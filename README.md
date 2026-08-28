@@ -108,6 +108,7 @@ Ten, because none is sufficient alone — see roadmap §4.1.2 for the bug that p
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from | whether the label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
+| `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |
 
 **`check-ancestry` was written after a defect three gates could not see.** The modal's
 close button rendered in the flow under the heading, left-aligned, because the fragment
@@ -134,7 +135,15 @@ it is deliberate.
 The first eight run in `npm run verify`. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
-its reason, following `check-tokens`' precedent. **`check-rendered.js` needs a browser** — paste
+its reason, following `check-tokens`' precedent. **`check-a11y.js` and `check-rendered.js` need a browser** — paste either into the
+kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
+**0 findings, 5 notes**; the notes are CSS specimens with no trigger, which are not
+meant to be operable. It refuses to run its focus-ring check when `document.hasFocus()`
+is false, because `:focus` cannot match in an unfocused document and the check would
+otherwise report every control on the page. **It is not a screen-reader pass** — that
+needs a human with an AT, and §4.5 stays open until one is done.
+
+**`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
 automating it means adding a headless-browser dependency and this project has none.
 
