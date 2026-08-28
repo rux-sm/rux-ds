@@ -52,6 +52,12 @@
 // called "symbol" that nobody ever wrote. check-provenance reads comments on
 // purpose; this one must not.
 //
+// js/ IS SCANNED TOO, because a module can name a symbol as well as a fragment
+// can. js/ui-shell.js swaps the hamburger's <use> target to `#i-close` while
+// the nav is open, and that reference is invisible to a gate reading only
+// markup — the icon would simply stop painting the moment someone pressed the
+// button. check-classes already reads js/ for the same reason.
+//
 // UNUSED SYMBOLS ARE A NOTE, NOT A FAULT. Thirty-two of the fifty-eight belong
 // to components that are CUT or DEFERRED, or to states the sink does not demo.
 // A gate failing on those would be red today with no action available, and a
@@ -130,6 +136,9 @@ const symbolsIn = html => new Set(
 const spriteBody = sprite.trim();
 let shipped = 0;
 
+const advise = id =>
+  ` Add "${id.replace(/^i-/, '')}" to ${QUARRY} and run \`npm run icons\``;
+
 for (const f of sources) {
   const html = readFileSync(f.path, 'utf8');
   const own = f.root === 'sink' ? defined : symbolsIn(html);
@@ -163,6 +172,23 @@ for (const f of sources) {
     if (!own.has(id)) {
       faults.push(['UNRESOLVED', where, `#${id} — nothing on this page defines it.` +
         ` Valid SVG, paints nothing.` + advise(id)]);
+    }
+  }
+}
+
+// ── symbols a module names at runtime ──────────────────────────────────────
+const JS = 'js';
+for (const f of (existsSync(JS) ? readdirSync(JS) : []).filter(f => f.endsWith('.js'))) {
+  const path = join(JS, f);
+  const src = readFileSync(path, 'utf8');
+  for (const m of src.matchAll(/['"`](#i-[a-z0-9-]+)['"`]/g)) {
+    const id = m[1].slice(1);
+    const line = src.slice(0, m.index).split('\n').length;
+    used.add(id);
+    if (!defined.has(id)) {
+      faults.push(['UNRESOLVED', `${path}:${line}`, `#${id} — no <symbol id="${id}"> in ${SPRITE}.` +
+        ` A module naming a symbol that does not exist blanks the icon the moment it runs.` +
+        advise(id)]);
     }
   }
 }

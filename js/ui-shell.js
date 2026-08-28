@@ -4,6 +4,12 @@
    Requires js/overlay.js. The side nav registers with the kernel; the
    submenus do not — they are inline disclosure, like accordion.
 
+   THE HAMBURGER IS A RESPONSIVE CONTROL, not a desktop one. Carbon hides it
+   above 66rem with `header__menu-toggle__hidden` and widens `--side-nav--ux`
+   to 16rem at the same breakpoint: the panel is persistent at desktop and
+   collapses behind the button below it. A template showing the button at
+   desktop invents a state IBM's design does not have.
+
    THE HAMBURGER TOGGLES CLASSES CARBON ALREADY HAS. `.rux--side-nav` is
    `inline-size: 3rem` (the rail), `--expanded` is 16rem and `--hidden` is 0.
    The sink harness set `style.inlineSize = '0'` by hand, which reimplemented
@@ -36,11 +42,30 @@
   const scrimFor = nav => nav.closest('.rux--header, body')
     ?.querySelector('.rux--side-nav__overlay') ?? null;
 
+  // THE HAMBURGER BECOMES AN X, which IBM specifies for this control and no
+  // stylesheet can do: the glyph is a <use> target, not a background image.
+  // UI-shell-left-panel/accessibility.mdx — "The hamburger button's icon
+  // becomes an X, and must be activated to close the left panel."
+  //
+  // ONLY THE KNOWN PAIR IS SWAPPED. A trigger pointing at anything else is a
+  // product's own icon and is left alone; swapping it would be this module
+  // deciding what a page's chrome looks like, which is not its job.
+  const GLYPH = { closed: '#i-menu', open: '#i-close' };
+  function setTriggerGlyph(trigger, open) {
+    const use = trigger?.querySelector('svg use');
+    if (!use) return;
+    const attr = use.hasAttribute('href') ? 'href' : 'xlink:href';
+    const now = use.getAttribute(attr);
+    if (now !== GLYPH.closed && now !== GLYPH.open) return;
+    use.setAttribute(attr, open ? GLYPH.open : GLYPH.closed);
+  }
+
   function setNav(nav, open, trigger) {
     if (!nav) return;
     nav.classList.toggle(EXPANDED, open);
     nav.classList.toggle(HIDDEN, !open);
     trigger?.setAttribute('aria-expanded', String(open));
+    setTriggerGlyph(trigger, open);
     scrimFor(nav)?.classList.toggle('rux--side-nav__overlay-active', open);
 
     // A NAV WITH NO TRIGGER IS NOT DISMISSIBLE, because nothing could reopen it.

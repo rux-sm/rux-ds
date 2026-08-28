@@ -144,17 +144,29 @@
   <!-- The hamburger. js/ui-shell.js toggles --expanded and --hidden on the nav
        and keeps aria-expanded in step; nothing here needs a script.
 
-       IT SHIPS CLOSED, exactly as the captures do, and that is deliberate
-       even though `--ux` already renders 16rem wide on a desktop viewport.
-       Shipping it `--expanded` instead was tried and is worse: below Carbon's
-       breakpoint the nav overlays the page, so js/ui-shell.js activates
-       `side-nav__overlay` and the page loads behind a grey scrim.
+       `__menu-toggle__hidden` IS WHAT MAKES THIS IBM'S DESIGN, not a
+       decoration. It is `display: none` above 66rem, and `--side-nav--ux` is
+       16rem above 66rem and 0 below it: one breakpoint, two halves of one
+       behaviour. IBM's UI-shell-left-panel/accessibility.mdx describes it —
+       the left panel is PERSISTENT at desktop, and "on smaller screens, or if
+       content is zoomed up to approximately 175% magnification, Carbon
+       responsively hides the left panel behind a 'hamburger' button", which
+       then "overlays the main content area, which often becomes dimmed". The
+       header doc puts it plainly: the hamburger "is only needed when there is
+       a collapsable left navigation".
 
-       KNOWN, and it belongs to the module rather than to this markup: on a
-       wide viewport the FIRST press of this button appears to do nothing. The
-       nav is already 16rem from `--ux`, the press adds `--expanded`, and
-       16rem does not change. The second press hides it. Roadmap §4.5. -->
-  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+       WITHOUT THE CLASS THE BUTTON SHOWS AT DESKTOP, and closing the nav there
+       leaves the content indented against a nav that is no longer beside it.
+       That state does not exist in IBM's design, and this template shipped it
+       until 2026-08-28.
+
+       IT SHIPS CLOSED, as the captures do. Shipping it `--expanded` was tried
+       and is worse: below the breakpoint the nav overlays, js/ui-shell.js
+       activates `side-nav__overlay`, and the page loads behind a grey scrim.
+
+       js/ui-shell.js swaps the glyph to a close icon while the nav is open,
+       which is the rest of what IBM specifies for this control. -->
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
 
   <!-- REPLACE: product name. The prefix span is the lighter-weight half. -->
   <a class="rux--header__name" href="./"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
