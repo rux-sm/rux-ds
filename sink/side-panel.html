@@ -55,15 +55,36 @@
      §4.1.12, and the same answer applies: follow what Carbon renders, not what
      its stylesheet leaves lying about. Demoing them would be invention.
 
-     Not yet demoed: --has-decorator, --resizable, --condensed-actions,
-     --closing, and the second-step navigation. --resizable needs the resizer
-     component, which has no reference in any Storybook. -->
+     --has-decorator is demoed as of 2026-08-27, and it proves the overlay is
+     placed right. Carbon tints the overlay for a decorated panel through an
+     ADJACENT SIBLING selector, `.--side-panel--has-decorator +
+     .--side-panel__overlay`. Measured: the decorated panel's overlay is
+     rgba(0,17,65,0.5) while the two plain ones are rgba(0,0,0,0.6). That
+     selector cannot match a child or a distant sibling, so the tint firing is
+     independent confirmation of the placement. --has-decorator also swaps the
+     panel's shadow for the AI glow, inset 0 -80px 70px -65px.
+
+     FOUR CLASSES ARE DEFINED BUT NEVER EMITTED, and are not used here:
+     __ai-label-and-close, __slug-and-close, --has-ai-label and --has-slug, all
+     zero occurrences across the ten stories. The generic --has-decorator /
+     __decorator-and-close pair superseded them; @carbon/styles still carries
+     both spellings, and its own AI rules still list all three. Same trap as
+     --has-action-toolbar: check-classes would accept any of them, because they
+     have rules. Only the reference says they are dead.
+
+     Not yet demoed: --resizable, --condensed-actions, --closing, and the
+     second-step navigation. The second step needs a click to reach, so
+     panel-with-second-step captures only step one and neither
+     __header--has-navigation-back nor __navigation-back-button appears anywhere
+     in the harvest. --resizable needs the resizer component, which has no
+     reference in any Storybook. -->
   <div class="ks-row">
     <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
     <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
     <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-slide">Open slide-in panel</button>
     <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-toolbar">Open panel with toolbar</button>
     <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-notitle">Open panel with no title</button>
+    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-decorator">Open panel with decorator</button>
   </div>
   <div class="ks-label" style="margin-block-start:1rem">the other five widths</div>
   <div class="ks-row">
@@ -350,4 +371,59 @@
     </div>
   </aside>
   <div class="rux--side-panel__overlay" id="sp-notitle-overlay" hidden></div>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-decorator rux--side-panel--has-overlay" id="sp-decorator" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">With a decorator</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">With a decorator</h2>
+      </div>
+      <!--
+        The decorator goes INSIDE __decorator-and-close, BEFORE the close
+        control, and the root takes --has-decorator. Two departures from the
+        reference, both deliberate:
+
+        · The reference's toggletip is --auto-align, which exists so floating-ui
+          can place it; the rule
+          `.--popover-container:not(.--popover--auto-align)` means the container
+          drops position:relative when it is set. With no auto-align JS here the
+          popover would be placed from the wrong box, so --left is used instead.
+        · ai-label__button--default is dropped. @carbon/styles defines no rule
+          for it — §4.1.12.
+      -->
+      <div class="rux--side-panel__decorator-and-close">
+        <div class="rux--ai-label">
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--toggletip">
+            <button type="button" class="rux--toggletip-button rux--ai-label__button rux--ai-label__button--xs" aria-expanded="false" aria-label="AI information">
+              <span class="rux--ai-label__text">AI</span>
+            </button>
+            <span class="rux--popover">
+              <span class="rux--popover-content rux--ai-label-content">
+                <div class="rux--toggletip-content">
+                  <p>Summarised by a model from the records in this panel.</p>
+                </div>
+              </span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>--has-decorator on the root, the decorator itself beside the close button.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>The decorator sits in the header, not the body.</p>
+    </div>
+  </aside>
+  <div class="rux--side-panel__overlay" id="sp-decorator-overlay" hidden></div>
 </section>
