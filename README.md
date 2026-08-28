@@ -64,11 +64,11 @@ is preparation. `templates/` is still empty.
 | What | Where |
 |---|---|
 | The 90 KB JS budget needs a unit — 83.5 KB raw is 46% comment, 45 KB code, 22.7 KB gzipped | roadmap §4.5 |
-| No gate checks which glyph a `<use>` points at; two arrows shipped wrong before anyone looked | roadmap §4.5 |
+| No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs all ten gates.
+last push, and `npm run verify` runs all eleven gates.
 
 | | |
 |---|---|
@@ -107,6 +107,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `npm run icons` | quarries `assets/icons.svg` from `@carbon/icons` |
 | `npm run inventory` | per-component classes and size → `docs/inventory.json` |
 | `tools/extract/` | quarries Carbon's rendered markup → `docs/carbon-co-classes.json`, `docs/carbon-*-dom.json`, and — via the state recipes in `react-dom.js` — `docs/carbon-react-states.json` (roadmap §4.1.7, §4.1.14) |
+| `tools/check-icons.mjs --unused` | the sprite's symbols nothing in the shipped sink references; `--deferred` is the ones `sink/deferred/` would need back |
 | `tools/check-provenance.mjs --inferred` | the fragments whose markup was never diffed against a reference (roadmap §4.1.13) |
 | `tools/diff-fragment.mjs <name> --omissions` | where a fragment's nesting disagrees with Carbon, and what Carbon renders that it omits |
 | `npm run serve` | kitchen sink at `http://localhost:8642` |
@@ -122,7 +123,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
-| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `measure` · `check-classes` · `check-tokens` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` · and two browser-only: `check-a11y.js`, `check-rendered.js` |
+| `tools/` | `build` · `build-sink` · `icons` · `inventory` · `measure` · `check-classes` · `check-tokens` · `check-icons` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` · and two browser-only: `check-a11y.js`, `check-rendered.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
@@ -139,13 +140,14 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Ten, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Eleven, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
+| `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a sprite out of step with `icons.mjs` | **which** glyph a `<use>` points at |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (9 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
@@ -177,7 +179,7 @@ component exercises fewer classes than before. A threshold high enough to mean s
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
 
-The first eight run in `npm run verify`. `check-tags` was promoted from a
+The first nine run in `npm run verify`. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js` and `check-rendered.js` need a browser** — paste either into the

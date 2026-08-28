@@ -36,7 +36,7 @@ on every build. Roadmap §1.1.
 
 ## Verifying
 
-`npm run verify` runs ten gates. **Check its exit code — do not grep its output**; a pipe
+`npm run verify` runs eleven gates. **Check its exit code — do not grep its output**; a pipe
 returns the exit code of the last command, which has reported a pass over a failure here.
 
 **The gates cannot see everything, and looking is not optional.** Five defects this
