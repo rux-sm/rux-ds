@@ -70,7 +70,11 @@ same shell in a 22rem sandbox, so its header and nav are positioned for a specim
 only a SIBLING nav does that — so the page indents itself, breakpoint-scoped, with
 `rux--lg:col-start-4`. Do not reach for a margin; the template says why.
 
-Form, table, detail, empty state and error state are not written yet; until they are,
+`templates/table-page.html` is the second: the same shell with a sortable, selectable
+table, a toolbar, batch actions and pagination. **Each template is a COMPLETE page**,
+shell included — §4.6 asks for runnable skeletons, so they duplicate rather than nest.
+
+Form, detail, empty state and error state are not written yet; until they are,
 `sink/*.html` is still the markup to copy for a page body.
 
 **Every page carries the sprite; every `<use>` is `#i-name`.** `build-sink` inlines it

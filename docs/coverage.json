@@ -101,10 +101,6 @@
       "hit": 6,
       "own": 8
     },
-    "pagination": {
-      "hit": 8,
-      "own": 10
-    },
     "tag": {
       "hit": 22,
       "own": 27
@@ -120,6 +116,10 @@
     "menu": {
       "hit": 19,
       "own": 21
+    },
+    "pagination": {
+      "hit": 9,
+      "own": 10
     },
     "toggle": {
       "hit": 15,

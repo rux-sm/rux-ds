@@ -11,8 +11,9 @@ stated twice drifts — which is exactly what happened to the Status block below
 
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
-started** — `templates/app-shell.html` is the frame the other five sit in. Until they
-land the kitchen sink is still the worked example and `sink/*.html` the markup to copy.
+started** — `templates/app-shell.html` is the frame and `table-page.html` the first page
+built on it. Until the rest land the kitchen sink is still the worked example and
+`sink/*.html` the markup to copy.
 
 ## Status
 
@@ -46,9 +47,9 @@ Everything below is in the repo, so a fresh clone is the whole handover — noth
 in an editor session or a machine-local note.
 
 **Next:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
-is preparation. One of six exists — `app-shell.html`; form, table, detail, empty state
-and error state are open. Every gate that reads markup per file now reads `templates/`
-too.
+is preparation. Two of six exist — `app-shell.html` and `table-page.html`; form,
+detail, empty state and error state are open. Every gate that reads markup per file
+reads `templates/` too.
 
 **Blocking §4.5's exit** — one human task, which cannot be automated here:
 
@@ -78,7 +79,7 @@ last push, and `npm run verify` runs all eleven gates.
 | Themes | 2 — white, g100 |
 | Tokens · classes | 610 `--rux-*` · 1,112 `.rux--*` |
 | Kitchen sink | 31 sections · 443 classes · 0 unresolved |
-| Class coverage | **430 / 720 (60%)** — ratcheted in `docs/coverage.json` |
+| Class coverage | **431 / 720 (60%)** — ratcheted in `docs/coverage.json` |
 | Markup provenance | **28 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
@@ -122,7 +123,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
 | `css/` | Build output; becomes the source at Phase 4 |
 | `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
-| `templates/` | **Runnable page skeletons — Phase 6's deliverable.** `app-shell.html` is the frame; the rest go inside its `main`. Roadmap §4.6 |
+| `templates/` | **Runnable page skeletons — Phase 6's deliverable.** Each is a COMPLETE page carrying the shell, not a fragment. Roadmap §4.6 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
@@ -178,7 +179,7 @@ findings remain.**
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink actually achieves (**430/720, 60%**, on 2026-08-28) and fails only when a
+what the sink actually achieves (**431/720, 60%**, on 2026-08-28) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.

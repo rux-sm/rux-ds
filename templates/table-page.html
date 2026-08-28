@@ -3,18 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>App shell — rux-ds</title>
+<title>Table page — rux-ds</title>
 <link rel="stylesheet" href="../css/rux.css">
 </head>
 <body>
-<!-- PROVENANCE: rendered-dom · components-ui-shell-header--header-w-navigation-actions-and-side-nav,
-     --header-w-side-nav and --side-nav-rail-w-header, 2026-08-28 -->
+<!-- PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav;
+     table from components-datatable-batch-actions--batch-batch-actions, --with-sorting,
+     --with-overflow-menu and components-pagination--default, 2026-08-28 -->
 <!--
-  THE APP SHELL. Copy this file, replace the marked regions, delete the rest of
-  this comment. It is the frame the other templates are built on: each of them
-  is a COMPLETE page carrying this same shell, because roadmap §4.6 asks for
-  runnable skeletons and a file that only runs once pasted into another one is
-  not runnable. templates/table-page.html is the worked example.
+  THE TABLE PAGE. A complete page: the app-shell frame with a sortable,
+  selectable table in it. Copy this file, replace the marked regions, delete
+  the rest of this comment.
+
+  THE SHELL IS THE SAME MARKUP AS templates/app-shell.html, deliberately
+  duplicated. Roadmap §4.6 asks for "complete, runnable page skeletons", and a
+  skeleton that only runs once pasted into another file is not one. If the
+  shell changes, it changes in each template — that is the cost of the word
+  "runnable", and it is paid once per template rather than by every page built
+  from them.
 
   THE SIDE NAV IS THE RAIL, AND IT SITS INSIDE THE HEADER. Carbon renders two
   shells and this is the one with a working hamburger:
@@ -233,15 +239,200 @@
 </header>
 
 <main id="main-content" class="rux--content">
-  <!-- REPLACE: everything below. The offset is BREAKPOINT-SCOPED, and has to
-       be: the nav is 16rem at `lg` and up and 0 below it, so an unconditional
-       indent would hold a gap open for a nav that is not on the page. Full
-       width by default, starting at column 4 from `lg` — which is Carbon's own
-       `offset-lg-3`, in css-grid terms, at the same breakpoint. -->
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100 rux--lg:col-start-4 rux--lg:col-span-13">
-      <h1>Dashboard</h1>
-      <p>Replace this region with a page body.</p>
+
+      <!-- REPLACE: the table. Everything below is one `data-table-container`
+           holding a header, a toolbar and the table, with pagination after it.
+
+           THE TOOLBAR HOLDS TWO SIBLINGS AND SHOWS ONE. `batch-actions` and
+           `toolbar-content` are both in the DOM; `batch-actions--active ~
+           toolbar-content` clips the content away when a row is selected. The
+           bar ships INACTIVE here and js/data-table.js activates it — the sink
+           ships it active instead, because a specimen has to show the state
+           statically for check-coverage to see it. A page skeleton should open
+           with nothing selected.
+
+           SORT IS `aria-sort` PLUS THE CLASS THE MODULE DERIVES FROM IT. Ship
+           the column you actually sorted by with aria-sort, and put the rows in
+           that order: the module syncs the classes without reordering, because
+           it presumes the markup is in the order it claims. Both arrows stay in
+           the DOM at all times — `table-sort__icon` for the sorted column and
+           `table-sort__icon-unsorted` for the rest — and CSS reveals one. -->
+      <section class="rux--data-table-container">
+        <div class="rux--data-table-header">
+          <div>
+            <div class="rux--data-table-header__title">Documents</div>
+            <p class="rux--data-table-header__description">Everything shared with your team.</p>
+          </div>
+        </div>
+
+        <section class="rux--table-toolbar" role="group" aria-label="Table actions">
+          <div class="rux--batch-actions" aria-hidden="true">
+            <div class="rux--batch-summary">
+              <p class="rux--batch-summary__para"><span>0 items selected</span></p>
+            </div>
+            <div class="rux--action-list">
+              <button type="button" class="rux--btn rux--btn--primary">Download
+                <svg class="rux--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-download"/></svg>
+              </button>
+              <button type="button" class="rux--btn rux--btn--primary">Delete
+                <svg class="rux--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-trash-can"/></svg>
+              </button>
+              <button type="button" class="rux--btn rux--btn--primary rux--batch-summary__cancel">Cancel</button>
+            </div>
+          </div>
+          <div class="rux--toolbar-content">
+            <div class="rux--search rux--toolbar-search-container-expandable" role="search">
+              <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
+              <label class="rux--label" for="tbl-search">Search documents</label>
+              <input id="tbl-search" class="rux--search-input" type="text" role="searchbox" placeholder="Search…">
+              <button type="button" class="rux--search-close rux--search-close--hidden" aria-label="Clear">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </button>
+            </div>
+            <span class="rux--overflow-menu__wrapper">
+              <button type="button" class="rux--toolbar-action rux--overflow-menu rux--btn rux--btn--ghost rux--btn--icon-only"
+                      aria-expanded="false" aria-haspopup="true" aria-label="Table settings">
+                <svg class="rux--overflow-menu__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" role="img"><use href="#i-overflow-menu--vertical"/></svg>
+              </button>
+            </span>
+          </div>
+        </section>
+
+        <div class="rux--data-table-content">
+          <table class="rux--data-table rux--data-table--lg rux--data-table--sort rux--data-table--visible-overflow-menu">
+            <thead>
+              <tr>
+                <th scope="col" class="rux--table-column-checkbox">
+                  <div class="rux--checkbox--inline">
+                    <input type="checkbox" id="tbl-all" class="rux--checkbox">
+                    <label for="tbl-all" class="rux--checkbox-label"><span class="rux--visually-hidden">Select all rows</span></label>
+                  </div>
+                </th>
+                <th scope="col" class="rux--table-sort__header" aria-sort="ascending">
+                  <div class="rux--table-sort__description rux--visually-hidden">Sort by Name</div>
+                  <button type="button" class="rux--table-sort">
+                    <span class="rux--table-sort__flex">
+                      <div class="rux--table-header-label">Name</div>
+                      <svg class="rux--table-sort__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-arrow--down"/></svg>
+                      <svg class="rux--table-sort__icon-unsorted" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-arrows--vertical"/></svg>
+                      <div class="rux--table-header-label--decorator-inner"></div>
+                    </span>
+                  </button>
+                </th>
+                <th scope="col"><div class="rux--table-header-label">Status<div class="rux--table-header-label--decorator-inner"></div></div></th>
+                <th scope="col" class="rux--table-sort__header" aria-sort="none">
+                  <div class="rux--table-sort__description rux--visually-hidden">Sort by Modified</div>
+                  <button type="button" class="rux--table-sort">
+                    <span class="rux--table-sort__flex">
+                      <div class="rux--table-header-label">Modified</div>
+                      <svg class="rux--table-sort__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-arrow--down"/></svg>
+                      <svg class="rux--table-sort__icon-unsorted" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-arrows--vertical"/></svg>
+                      <div class="rux--table-header-label--decorator-inner"></div>
+                    </span>
+                  </button>
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="rux--table-column-checkbox">
+                  <div class="rux--checkbox--inline">
+                    <input type="checkbox" id="tbl-r1" class="rux--checkbox">
+                    <label for="tbl-r1" class="rux--checkbox-label"><span class="rux--visually-hidden">Select Annual report</span></label>
+                  </div>
+                </td>
+                <td>Annual report</td>
+                <td><div class="rux--tag rux--tag--green"><span class="rux--tag__label">Approved</span></div></td>
+                <td>24 Aug 2026</td>
+                <td class="rux--table-column-menu">
+                  <span class="rux--overflow-menu__wrapper">
+                    <button type="button" class="rux--overflow-menu" aria-expanded="false" aria-haspopup="true" aria-label="Actions for Annual report">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="rux--table-column-checkbox">
+                  <div class="rux--checkbox--inline">
+                    <input type="checkbox" id="tbl-r2" class="rux--checkbox">
+                    <label for="tbl-r2" class="rux--checkbox-label"><span class="rux--visually-hidden">Select Budget forecast</span></label>
+                  </div>
+                </td>
+                <td>Budget forecast</td>
+                <td><div class="rux--tag rux--tag--blue"><span class="rux--tag__label">In review</span></div></td>
+                <td>26 Aug 2026</td>
+                <td class="rux--table-column-menu">
+                  <span class="rux--overflow-menu__wrapper">
+                    <button type="button" class="rux--overflow-menu" aria-expanded="false" aria-haspopup="true" aria-label="Actions for Budget forecast">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="rux--table-column-checkbox">
+                  <div class="rux--checkbox--inline">
+                    <input type="checkbox" id="tbl-r3" class="rux--checkbox">
+                    <label for="tbl-r3" class="rux--checkbox-label"><span class="rux--visually-hidden">Select Vendor contract</span></label>
+                  </div>
+                </td>
+                <td>Vendor contract</td>
+                <td><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">Draft</span></div></td>
+                <td>27 Aug 2026</td>
+                <td class="rux--table-column-menu">
+                  <span class="rux--overflow-menu__wrapper">
+                    <button type="button" class="rux--overflow-menu" aria-expanded="false" aria-haspopup="true" aria-label="Actions for Vendor contract">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REPLACE: pagination. It is a SIBLING of the container, not inside it.
+
+           THE BUTTONS ARE BUTTONS. Carbon renders each control as
+           `pagination__button` AND `btn btn--ghost btn--icon-only`, and
+           check-compound rejects them split apart — this template was the first
+           file to hold both classes, which is how the omission surfaced.
+           `pagination__button--backward` and `--forward` are NOT copied:
+           @carbon/styles defines no rule for either, the same omission
+           dropdown--md and tile--md already record. The disabled previous keeps
+           `--no-index`, which does have one. -->
+      <div class="rux--pagination rux--layout--size-md">
+        <div class="rux--pagination__left">
+          <label class="rux--pagination__text" for="tbl-size">Items per page:</label>
+          <div class="rux--form-item rux--select__item-count">
+            <div class="rux--select rux--select--inline">
+              <div class="rux--select-input--inline__wrapper">
+                <div class="rux--select-input__wrapper">
+                  <select id="tbl-size" class="rux--select-input">
+                    <option class="rux--select-option" value="10">10</option>
+                    <option class="rux--select-option" value="20">20</option>
+                  </select>
+                  <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="rux--pagination__items-count rux--pagination__text">1–10 of 24 items</span>
+        </div>
+        <div class="rux--pagination__right">
+          <span class="rux--pagination__text rux--pagination__page-text">of 3 pages</span>
+          <div class="rux--pagination__control-buttons">
+            <button type="button" class="rux--pagination__button rux--pagination__button--no-index rux--btn rux--btn--ghost rux--btn--disabled rux--btn--icon-only" aria-label="Previous page" disabled><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></button>
+            <button type="button" class="rux--pagination__button rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Next page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </main>

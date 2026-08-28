@@ -140,6 +140,19 @@ const KNOWN = {
   // carried by aria-label, so a screen reader is served; what the decline
   // costs is the hover label a sighted pointer user would get from Carbon.
   'templates/app-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout; aria-label carries the name'],
+  // THE SAME DECLINE, SIXFOLD, because KNOWN is keyed per file and the table
+  // page is the first file to hold all of these at once. Every entry below is
+  // the icon-tooltip chrome, already declined for the sink under pagination:,
+  // table: and overflow-menu:. `--no-index` additionally wants
+  // `icon-tooltip--disabled`, which is the same wrapper in its disabled form.
+  'templates/table-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:pagination__button': [[...TOOLTIP_CHROME, 'popover--top'],
+    'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:pagination__button--no-index': [[...TOOLTIP_CHROME, 'popover--top', 'icon-tooltip--disabled'],
+    'the icon-tooltip the sink declines throughout, in its disabled form'],
   'tooltip:tooltip__trigger': [['form-item', 'text-input-wrapper', 'password-input-wrapper',
     'text-input__field-outer-wrapper', 'text-input__field-wrapper', 'popover--high-contrast',
     'popover--bottom-end', 'toggle-password-tooltip', 'icon-tooltip', 'tooltip-trigger__wrapper'],
