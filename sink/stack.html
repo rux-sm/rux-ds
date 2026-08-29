@@ -16,10 +16,39 @@
     restore added. That mechanism is why the stand-in had to be a grid too: a
     margin-based version lost to `.rux--checkbox-group`'s own `margin: 0`.
 
-    THE SCALE IS CARBON'S SPACING SCALE, steps 1 to 13. Every step is demoed
-    because the point of the component is choosing between them, and a fragment
-    that showed one would leave twelve classes uncovered while claiming the
-    component is exercised.
+    THE SCALE IS CARBON'S SPACING SCALE, steps 1 to 13 — `$spacing-01` through
+    `-13`, 0.125rem to 10rem. Every step is demoed IN THE STRIP because the point
+    of the component is choosing between them, and a comparison missing a rung
+    cannot be used for the one thing it is for.
+
+    IT SAID THAT WHILE MISSING THREE, until 2026-08-28. Steps 3, 5 and 7 were on
+    the page but not in the strip — 5 and 7 on the two demos above, and 3 as the
+    strip's own wrapper, which is to say the 8px gap BETWEEN these rows is itself
+    the step it was failing to label. All thirteen classes were used, so
+    check-coverage read stack 15/15 and had nothing to say; the claim was about
+    the DEMO being complete, and no gate measures that. The three that were
+    missing were 8px, 16px and 32px — the middle of the scale, and the steps a
+    page actually reaches for.
+
+    THE GAP IS THE SPECIMEN. Each row holds two tags and the space between them
+    is what that class produces, so the rows fan out to the right as the scale
+    climbs. That drift is the demo, not a layout fault.
+
+    IT ONLY BECAME A RULER WHEN `ks-ruler` WAS ADDED, and the difference was
+    worth measuring rather than assuming. `stack-horizontal` is a grid of `auto`
+    tracks, and auto tracks STRETCH to absorb free width. In the sink's 507px
+    column that meant the visible distance between the two tags was the gap PLUS
+    the leftover — 44px for a 2px gap — and steps 1 to 10 compressed into a range
+    of 44 to 71px, near-identical at the bottom. Only 11, 12 and 13 read true,
+    because by then the tracks were narrower than the tag's own 13rem max-width.
+    A strip that cannot distinguish 2px from 8px is not a comparison.
+
+    `ks-ruler` is `justify-content: start`, in harness.css with the sink's other
+    demo layout. It changes no `column-gap` — it stops the tracks stretching — so
+    all thirteen now measure exactly their label. THE CAVEAT THAT REMAINS: a
+    real page does not carry `ks-ruler`, and `stack-horizontal` in a container
+    wider than its content WILL spread that way. The two demos above are left
+    alone deliberately, so the honest behaviour is on the page beside the ruler.
   -->
   <div class="ks-label">VERTICAL · SCALE 7, WHAT A FORM USES</div>
   <div class="rux--stack-vertical rux--stack-scale-7">
@@ -36,15 +65,18 @@
 
   <div class="ks-label" style="margin-block-start:1.5rem">THE SCALE, 1 TO 13</div>
   <div class="rux--stack-vertical rux--stack-scale-3">
-    <div class="rux--stack-horizontal rux--stack-scale-1"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">1</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-2"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-4"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-6"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">6</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">24px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-8"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">8</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">40px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-9"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">9</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">48px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-10"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">10</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">64px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-11"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">11</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">80px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-12"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">96px</span></div></div>
-    <div class="rux--stack-horizontal rux--stack-scale-13"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">13</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">160px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-1 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">1</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-2 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-3 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">3</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">8px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-4 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-5 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">5</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">16px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-6 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">6</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">24px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-7 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">7</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">32px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-8 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">8</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">40px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-9 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">9</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">48px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-10 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">10</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">64px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-11 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">11</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">80px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-12 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">96px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-13 ks-ruler"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">13</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">160px</span></div></div>
   </div>
 </section>

@@ -24,6 +24,14 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
 .ks-label { font-size: .6875rem; letter-spacing: .32px; text-transform: uppercase;
             color: var(--rux-text-secondary); margin-block-end: .5rem; }
 .ks-box { padding: 1rem; background: var(--rux-layer-01); }
+/* The stack scale strip measures itself, so its tracks must not absorb the
+   sink column's leftover width. `stack-horizontal` is a grid of `auto` tracks,
+   and auto tracks STRETCH by default — in a 507px column that put 44px of
+   visible space between two tags whose gap is 2px, and flattened steps 1 to 10
+   into a range of 44 to 71px. `justify-content: start` packs the tracks instead,
+   leaving the gap as the only space between them. It changes no `column-gap`
+   and so misrepresents nothing: what it removes is the container's slack. */
+.ks-ruler { justify-content: start; }
 .ks-dark { padding: 1rem; background: var(--rux-background-inverse); }
 
 /* Carbon components set `display` on their own class, which outranks the UA
