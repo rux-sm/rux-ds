@@ -1260,6 +1260,40 @@ twice drifts.
 Exit: a page shape not in `templates/` can be built by Claude Code from the templates
 alone, without inventing a class.
 
+**DECIDED 2026-08-28 — the kitchen sink does not use the UI shell as its own page
+chrome.** Asked directly, and recorded because the opposite is the intuitive answer:
+a design system whose own reference page is not built from it looks like a system
+nobody trusts.
+
+The reason is mechanical rather than aesthetic. `check-coverage` reads the whole
+assembled `kitchen-sink.html` (`tools/check-coverage.mjs` ROOTS), so anything in the
+page chrome counts as exercised markup. `ui-shell` owns 56 classes and stands at
+32/56. Building the harness from `rux--header` and `rux--side-nav` raises that number
+from the harness, with no fragment demonstrating anything — which is exactly the
+defect §4.1 rewrote this gate to fix, when one `rux--header` in the sink marked all 55
+of ui-shell's classes covered. The ratchet only moves up, so an inflated figure would
+lock in and permanently hide the gap it was measuring. **The instrument may not be
+built out of the thing it measures.**
+
+The prefix boundary already says so in code: the chrome outside `<main>` carries zero
+`rux--` classes, only `ks-nav`, `ks-count`, `ks-navlinks`. One exception exists and is
+not a precedent for more — the theme switcher is a `rux--btn`, because it has to sit
+outside every section.
+
+**The rejected alternative is dogfooding**, and it is a real argument: §1 says the
+primary consumer is Claude Code generating pages, so the system has to be proven as
+page chrome and not only as parts. It is proven — by `templates/app-shell.html`, the
+artifact designed for that question and the file a page author copies. The sink
+answers "what is this component's markup"; a template answers "what does a page look
+like". Merging them costs the first question its answer and gains the second nothing.
+
+Evidence arrived the same day the question was asked. A `position: fixed`, z-index
+6000 side-nav scrim escaped the ui-shell fragment's 22rem sandbox and covered the
+entire page — invisible above the breakpoint while still consuming every press. It
+took several wrong readings to find, and it was diagnosable only because the harness
+around it was independent. A shell defect that also owns the page chrome takes down
+the page you would use to find it.
+
 ### 4.7 Phase 7 — Documentation
 
 Only now, and only for what survived.

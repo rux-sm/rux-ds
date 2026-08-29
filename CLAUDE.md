@@ -29,7 +29,7 @@ on every build. Roadmap §1.1.
 - **Markup structure.** Diff against the captures in `docs/`, not against a guess and not
   against the live Storybook — the captures match the compiled Carbon version and need no
   network. `node tools/diff-fragment.mjs <name>` does it mechanically.
-- **Decisions.** Roadmap §1.1, §2.1 and §4.4 record choices *with their rejected
+- **Decisions.** Roadmap §1.1, §2.1, §4.4 and §4.6 record choices *with their rejected
   alternatives*. Ask before reopening one; do not re-derive it.
 - **Behaviour Carbon does not have.** Modules make Carbon's components work; they do not
   add interactions Carbon declines (see accordion's note on arrow keys).
