@@ -25,6 +25,25 @@
 // actions, copy feedback), then captures the CONFIGURED tree into
 // carbon-react-states.json. Both files are check-tags references.
 //
+// A THIRD MODE, 'spacing', answers what the other two cannot. The tree records
+// structure and drops everything else on purpose, so `docs/carbon-*.json` says
+// which classes Carbon puts where and NOTHING about the space between them. That
+// gap has cost this project real defects: a page whose components sat flush
+// because Carbon zeroes their margins by design, and a Stack used as a row that
+// stretched a 24px tag to 208x48. Both were settled by opening a Carbon page by
+// hand, which is not a check.
+//
+// 'spacing' captures the COMPUTED value of the box properties for every classed
+// element, keyed by the element's class signature, and folds them into a table:
+// signature → values → the stories it was seen in. That makes "what does Carbon
+// compute for .cds--stack-vertical.cds--stack-scale-7" a lookup rather than an
+// inference. Where one signature computes different values in different stories
+// the variants are ALL recorded — a signature whose gap depends on its parent is
+// a fact worth seeing, not a conflict to resolve by picking one.
+//
+// It records what Carbon computes. It does not record what rux-ds computes, and
+// comparing the two is a separate tool's job.
+//
 // Every recipe capture is compared against a bare capture of the same story
 // made in the same run. A recipe that changed nothing records '(unchanged)'
 // rather than the tree — a wrong arg name or a click that bound to nothing
@@ -59,6 +78,7 @@
 (async () => {
   const MODE = 'stories';                // 'stories' → carbon-react-dom.json
                                          // 'states'  → carbon-react-states.json
+                                         // 'spacing' → carbon-react-spacing.json
   // FILTER is a convenience for re-harvesting one component, NOT a correctness
   // filter, and it used to be both. As /^components-/ it dropped 87 of 505
   // stories, and the 15 fragments with no `components-` story of their own —
@@ -322,8 +342,48 @@
     return out;
   };
 
+  // THE BOX PROPERTIES, and only these. Width and height are content-dependent
+  // and would change with every string in a story, so they are left out — what is
+  // wanted is the SPEC, not the render. min-block-size is in because it is what
+  // told us the stretched tag's own intrinsic height was 24px.
+  // gridTemplateColumns WAS HERE AND IS NOT, because it records the render and
+  // not the rule: on the kitchen sink it came back as `804px`, which is the
+  // container's width at that viewport. It only accounted for 2 of the 57
+  // signatures that computed more than one way, so this is not about noise — a
+  // viewport artefact does not belong in a file that will be read as a spec.
+  const SPACING_PROPS = [
+    'display', 'gridAutoFlow', 'gridAutoColumns',
+    'rowGap', 'columnGap',
+    'marginBlockStart', 'marginBlockEnd', 'marginInlineStart', 'marginInlineEnd',
+    'paddingBlockStart', 'paddingBlockEnd', 'paddingInlineStart', 'paddingInlineEnd',
+    'minBlockSize',
+  ];
+  // Defaults are dropped so the table carries what Carbon SET, not what CSS
+  // already says. A signature with nothing left is not recorded at all.
+  const DEFAULTS = { display: 'block', gridAutoFlow: 'row', gridAutoColumns: 'auto',
+    rowGap: 'normal', columnGap: 'normal',
+    marginBlockStart: '0px', marginBlockEnd: '0px', marginInlineStart: '0px',
+    marginInlineEnd: '0px', paddingBlockStart: '0px', paddingBlockEnd: '0px',
+    paddingInlineStart: '0px', paddingInlineEnd: '0px', minBlockSize: 'auto' };
+
+  const spacingCapture = doc => {
+    const win = doc.defaultView;
+    const out = [];
+    for (const el of doc.querySelectorAll(PREFIX_ANY)) {
+      const sig = [...el.classList].filter(c => PREFIX.test(c)).join('.');
+      if (!sig) continue;
+      const c = win.getComputedStyle(el);
+      const values = {};
+      for (const prop of SPACING_PROPS)
+        if (c[prop] && c[prop] !== DEFAULTS[prop]) values[prop] = c[prop];
+      if (Object.keys(values).length) out.push({ sig, values });
+    }
+    return out;
+  };
+
   // Root tree plus body-level floats — see the header for why floats matter.
   const capture = doc => {
+    if (MODE === 'spacing') return spacingCapture(doc);
     const root = doc.querySelector('#storybook-root, #root');
     const lines = tree(root);
     for (const el of doc.body.children) {
@@ -518,26 +578,56 @@
     let recovered = 0;
     for (const id of retryable) {
       const [, lines] = await grab(id, { maxMs: SETTLE_MAX_MS * 2 });
-      if (!lines[0].startsWith('(')) { out[id] = lines; recovered++; }
+      if (!verdictOf(lines)) { out[id] = lines; recovered++; }
       else out[id] = lines;   // keep the retry's verdict; it may have resolved to (missing)
     }
     console.log(`  recovered ${recovered}/${retryable.length}`);
   }
 
-  const bad = Object.entries(out).filter(([, v]) => v[0]?.startsWith('('));
-  const by = k => bad.filter(([, v]) => v[0] === k).map(([id]) => id);
+  // A VERDICT IS A STRING FIRST ELEMENT. 'spacing' mode fills the array with
+  // record objects, and `v[0].startsWith` on one of those throws — the check has
+  // to ask what it is holding before it asks what it says.
+  const verdictOf = v => (typeof v?.[0] === 'string' && v[0].startsWith('(')) ? v[0] : null;
+  const bad = Object.entries(out).filter(([, v]) => verdictOf(v));
+  const by = k => bad.filter(([, v]) => verdictOf(v) === k).map(([id]) => id);
   console.log(`done — ${Object.keys(out).length} stories, ${Object.keys(out).length - bad.length} usable`);
   for (const kind of ['(missing)', '(empty)', '(timeout)']) {
     const ids = by(kind);
     if (ids.length) console.log(`${kind} ${ids.length}: ${ids.join(' ')}`);
   }
-  const odd = bad.filter(([, v]) => v[0].startsWith('(unreadable'));
+  const odd = bad.filter(([, v]) => verdictOf(v).startsWith('(unreadable'));
   if (odd.length) console.log(`(unreadable) ${odd.length}: ${odd.map(([id]) => id).join(' ')}`);
 
-  const blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
+  // 'spacing' ships a TABLE, not per-story records. The same signature recurs in
+  // dozens of stories with the same computed values, and a per-story file would
+  // be mostly repetition. Folded, it is a lookup: signature → values → where it
+  // was seen. Distinct value sets under one signature are all kept, because a
+  // signature that computes differently in two places is the interesting case,
+  // not a conflict to resolve by choosing.
+  let payload = out;
+  if (MODE === 'spacing') {
+    const table = {};
+    for (const [story, records] of Object.entries(out)) {
+      if (verdictOf(records)) continue;
+      for (const { sig, values } of records) {
+        const key = JSON.stringify(values);
+        const entry = (table[sig] ??= {});
+        (entry[key] ??= { values, seen: [] });
+        if (entry[key].seen.length < 6 && !entry[key].seen.includes(story))
+          entry[key].seen.push(story);
+      }
+    }
+    payload = Object.fromEntries(Object.entries(table).sort(([a], [b]) => a.localeCompare(b))
+      .map(([sig, variants]) => [sig, Object.values(variants)]));
+    const multi = Object.entries(payload).filter(([, v]) => v.length > 1);
+    console.log(`spacing — ${Object.keys(payload).length} signatures, `
+      + `${multi.length} computing more than one way`);
+  }
+
+  const blob = new Blob([JSON.stringify(payload, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'carbon-react-dom.json';
+  a.download = MODE === 'spacing' ? 'carbon-react-spacing.json' : 'carbon-react-dom.json';
   a.click();
   return out;
 })();
