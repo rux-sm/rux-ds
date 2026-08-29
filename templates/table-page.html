@@ -489,7 +489,36 @@
           <span class="rux--pagination__items-count rux--pagination__text">1–10 of 24 items</span>
         </div>
         <div class="rux--pagination__right">
-          <span class="rux--pagination__text rux--pagination__page-text">of 3 pages</span>
+          <!-- THE PAGE-NUMBER SELECT IS PART OF THE SHAPE, not an extra. Carbon
+               renders `pagination__right` two ways and only two: with this select
+               and a plain `pagination__text` reading "of N pages", or — when the
+               count is unknown — no select and a text carrying BOTH
+               `page-text` and `unknown-pages-text`. Shipping `page-text` without
+               the select is neither, and it is what this file did until
+               2026-08-28: the class's `margin-inline: 1rem 0.0625rem` is sized to
+               clear a select that was not there, so the text sat 17px from the
+               divider and 1px from the buttons.
+               `select__page-number`, the class Carbon puts on this wrapper, has no
+               rule in @carbon/styles, so it is dropped and the element kept — the
+               same call `data-table-header__content` records. Do NOT reach for
+               `select__item-count` instead: that one draws a border-inline-end,
+               and Carbon's page-number select has none. -->
+          <div class="rux--form-item">
+            <div class="rux--select rux--select--inline">
+              <label class="rux--label rux--visually-hidden" for="tbl-page">Page of 3 pages</label>
+              <div class="rux--select-input--inline__wrapper">
+                <div class="rux--select-input__wrapper">
+                  <select id="tbl-page" class="rux--select-input">
+                    <option class="rux--select-option" value="1">1</option>
+                    <option class="rux--select-option" value="2">2</option>
+                    <option class="rux--select-option" value="3">3</option>
+                  </select>
+                  <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="rux--pagination__text">of 3 pages</span>
           <div class="rux--pagination__control-buttons">
             <button type="button" class="rux--pagination__button rux--pagination__button--no-index rux--btn rux--btn--ghost rux--btn--disabled rux--btn--icon-only" aria-label="Previous page" disabled><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></button>
             <button type="button" class="rux--pagination__button rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Next page"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></button>
