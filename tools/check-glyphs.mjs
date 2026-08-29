@@ -22,6 +22,27 @@
 // It is a separate capture and a separate gate, and saying so here is the point:
 // a green run of this file is not evidence that the icons are right.
 //
+// B IS FEASIBLE, AND THE THREE PIECES WERE PROVEN ON 2026-08-29 BEFORE THIS FILE
+// WAS COMMITTED, so whoever picks it up is not starting from a guess:
+//
+//   1. The SLOT is identifiable. An svg's own `cds--*` classes, or the nearest
+//      classed ancestor's when it has none, gives a stable key —
+//      `cds--table-sort__icon` came back identical on all five columns of
+//      components-datatable-sorting--default.
+//   2. The captured drawing RESOLVES TO A NAME offline. Indexing the 2,828 files
+//      in @carbon/icons by size+geometry yields 2,823 distinct keys; the sort
+//      slot's path resolved to `arrow--up` and the unsorted slot's to
+//      `arrows--vertical`, which are exactly right.
+//   3. The 5 collisions are ALIASES, not ambiguity — asleep/moon,
+//      close--outline/misuse--outline and three more are one drawing Carbon
+//      ships under two names. A slot whose glyph is one of those should accept
+//      either, and that set is derived from the package rather than maintained
+//      by hand, so it is not an allow-list.
+//
+// What is left is the capture itself: a fourth mode in tools/extract/react-dom.js
+// alongside stories/states/spacing, recording slot -> geometry per story, then a
+// gate comparing our `<use href="#i-name">` per slot against the resolved name.
+//
 // WHAT IT IS EVIDENCE FOR. A hand-edited path, a symbol renamed without its
 // drawing being changed, a glyph pasted from the wrong size, an optimiser run
 // over assets/icons.svg that moved a coordinate — all of those are real ways a
