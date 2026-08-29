@@ -36,9 +36,28 @@
    `field.focus()` on a div does nothing, which is how this was found.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · built from the captured open/closed states of dropdown, combo box and multiselect.
-   list-box has NO story of its own -- its references are its three consumers -- so the
-   states come from captures rather than from watching one operate.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-dropdown--default
+   with real key events, reading aria-activedescendant and the option classes after each.
+
+   CONFIRMED: the field is a <button role="combobox"> and KEEPS focus through every key --
+   every option's tabIndex is -1, so the cursor really is aria-activedescendant and not a
+   roving tabindex. `__menu-item--highlighted` is that cursor. Opening adds BOTH
+   `--dropdown--open` and `--list-box--expanded` to the root. ArrowDown on a closed field
+   opens it AND lands on the first option. Home and End jump to first and last. Enter
+   selects, closes, and leaves focus on the field. Escape closes, clears the cursor, and
+   leaves focus on the field. Typeahead exists and accumulates -- `o` then `p` holds the
+   same option rather than jumping.
+
+   TWO THINGS THIS FILE HAD WRONG, both now fixed and both invisible to every gate:
+   the arrows WRAPPED where Carbon clamps at each end, and Space was grouped with Enter
+   -- opening a closed field, choosing in an open one -- where Carbon ignores it in both
+   states. The Space fault was first written up here as typeahead swallowing the key;
+   that was wrong, and the `case ' '` beside `case 'Enter'` was the actual cause.
+
+   NOT VERIFIED: the multiselect and combo-box forms. This drove the DROPDOWN, which is
+   the only consumer whose field is select-only; a combo box has a text input and its own
+   filtering, and nothing here should be read as covering it.
    ========================================================================== */
 (() => {
   'use strict';
@@ -138,11 +157,17 @@
     close(root, { restoreFocus: true });
   }
 
+  // CARBON CLAMPS, IT DOES NOT WRAP, and this used to do the opposite. Driven on
+  // components-dropdown--default 2026-08-29: ArrowDown on the last option leaves
+  // aria-activedescendant on the last option, and ArrowUp on the first leaves it
+  // on the first. A wrap was the obvious guess from menu.js, where a roving
+  // tabindex genuinely does cycle — but a combobox is not a menu, which is this
+  // file's opening claim, and the arrow behaviour is one more place it holds.
   const step = (list, from, by) => {
     if (!list.length) return null;
     const at = list.indexOf(from);
-    return at === -1 ? list[by > 0 ? 0 : list.length - 1]
-                     : list[(at + by + list.length) % list.length];
+    if (at === -1) return list[by > 0 ? 0 : list.length - 1];
+    return list[Math.min(list.length - 1, Math.max(0, at + by))];
   };
 
   /* ── pointer ──────────────────────────────────────────────────────────── */
@@ -190,8 +215,19 @@
         event.preventDefault();
         setCursor(root, event.key === 'Home' ? list[0] : list[list.length - 1]);
         break;
+      // ENTER ONLY. Space used to be grouped here, opening a closed field and
+      // choosing in an open one, which is what the ARIA combobox pattern
+      // describes. Carbon does not do it: driven on
+      // components-dropdown--default 2026-08-29, Space left aria-expanded and
+      // aria-activedescendant untouched in both states.
+      //
+      // FOLLOWING CARBON IS THE RULE HERE, and it is worth being explicit that
+      // this is the case where the rule costs something. Space on a focused
+      // combobox is a reasonable thing for a keyboard user to try, and the APG
+      // sanctions it. Adding it would be behaviour Carbon declines, which this
+      // project does not do; the divergence is Carbon's to own, and a consumer
+      // who wants it can bind it.
       case 'Enter':
-      case ' ':
         event.preventDefault();
         isOpen ? choose(root, cursor) : open(root);
         break;
@@ -206,6 +242,12 @@
       default: {
         // TYPEAHEAD. Printable, unmodified keys only, accumulated for half a
         // second so "de" reaches Delta rather than jumping D then E.
+        //
+        // SPACE IS NOT ONE OF THEM. `event.key` for the spacebar is `' '` —
+        // length 1 and unmodified — so without this it would reach typeahead
+        // and search for an option beginning with a space. It is inert in
+        // Carbon, so it is inert here; the case above says what that costs.
+        if (event.key === ' ') return;
         if (event.key.length !== 1 || event.metaKey || event.ctrlKey || event.altKey) return;
         if (!isOpen) open(root);
         clearTimeout(typedTimer);

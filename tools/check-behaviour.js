@@ -48,6 +48,11 @@
   // A real click. The modules bind at document level, so a synthetic
   // `dispatchEvent` on a detached path would miss the delegation entirely.
   const click = el => el.click();
+  // Dispatched on the element, bubbling, because every module listens on
+  // document. Not a trusted event — it cannot test what the browser does with a
+  // key, only what our own handlers do with one, which is what is being checked.
+  const key = (el, k) => el.dispatchEvent(
+    new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
 
   // ── data-table: the batch bar ─────────────────────────────────────────────
   // The bug this file exists for. Closed must be aria-hidden with every button
@@ -216,6 +221,43 @@
     record('list-box', 'and closes it',
       trigger.getAttribute('aria-expanded') === 'false',
       `aria-expanded=${trigger.getAttribute('aria-expanded')}`);
+
+    // BOTH OF THESE WERE WRONG UNTIL 2026-08-29, and both were found by driving
+    // Carbon rather than by reading ours. They are here so the next edit to
+    // list-box.js cannot quietly restore either.
+    const cursor = () => {
+      const id = trigger.getAttribute('aria-activedescendant');
+      const opts = [...trigger.closest('.rux--list-box')
+        .querySelectorAll('.rux--list-box__menu-item[role="option"]')];
+      return opts.findIndex(o => o.id === id);
+    };
+    const opts = [...trigger.closest('.rux--list-box')
+      .querySelectorAll('.rux--list-box__menu-item[role="option"]')];
+
+    // SPACE IS INERT. Carbon leaves a closed dropdown closed; ours used to open
+    // it, because ' ' is a length-1 key and fell through into typeahead.
+    trigger.focus();
+    key(trigger, ' ');
+    record('list-box', 'space does not open a closed dropdown',
+      trigger.getAttribute('aria-expanded') === 'false',
+      `aria-expanded=${trigger.getAttribute('aria-expanded')} after Space`);
+
+    // THE ARROWS CLAMP. Carbon stops at each end; ours used to wrap.
+    key(trigger, 'ArrowDown');            // opens, cursor on the first option
+    key(trigger, 'End');                  // jump to the last
+    const atEnd = cursor();
+    key(trigger, 'ArrowDown');            // must not wrap to the first
+    record('list-box', 'ArrowDown clamps at the last option',
+      cursor() === atEnd && atEnd === opts.length - 1,
+      `was ${atEnd}, now ${cursor()}, of ${opts.length}`);
+
+    key(trigger, 'Home');
+    const atTop = cursor();
+    key(trigger, 'ArrowUp');              // must not wrap to the last
+    record('list-box', 'ArrowUp clamps at the first option',
+      cursor() === atTop && atTop === 0,
+      `was ${atTop}, now ${cursor()}`);
+    key(trigger, 'Escape');
   })();
 
   // ── the kernel's stack: one open surface at a time ────────────────────────
