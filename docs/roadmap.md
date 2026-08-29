@@ -1626,16 +1626,48 @@ unchanged.
 
 ---
 
-## 8. Distribution — nothing decided
+## 8. Distribution — licence decided, versioning open
 
-Raised by the 2026-08-29 audit (`docs/audits.md`, findings 1 and 6). **Neither question
-below has an answer, and both block anyone but this repository's author from using the
-system.** They are recorded together because they are one domain: what it means to hand
-this to someone else.
+Raised by the 2026-08-29 audit (`docs/audits.md`, findings 1 and 6). They are recorded
+together because they are one domain: what it means to hand this to someone else.
 
-### 8.1 Licence — a decision AND an obligation
+**§8.1 is decided and done as of 2026-08-29. §8.2 is still open**, and until it is
+answered a consumer pins to a commit SHA or to nothing.
 
-There is no `LICENSE` file, no `license` field in `package.json`, and — before this
+### 8.1 Licence — DECIDED 2026-08-29, Apache-2.0
+
+**The project ships under Apache-2.0**, and both halves below are now satisfied. What
+follows is kept as the reasoning, not as an open question.
+
+Four things landed together:
+
+| | |
+|---|---|
+| `LICENSE` | The Apache-2.0 text, copied verbatim from `@carbon/styles`'s own copy so it is not transcribed from memory. Byte-identical to it apart from the appendix copyright line, which reads `Copyright 2026 rux` |
+| `NOTICE` | Names every artefact carrying Carbon-derived material and what was changed in each, per §4(b) |
+| Banner in `css/rux.css` and `css/rux.min.css` | Written by `tools/build.mjs`, so it survives every rebuild rather than being a one-time edit |
+| Attribution in `assets/icons.svg` | Written by `tools/icons.mjs`, and `npm run icons` inlines it into all six templates; `build-sink` and `build-portal` carry it into the two generated pages |
+
+**Apache-2.0 was chosen because it matches upstream.** MIT is compatible but would leave
+Carbon's Apache-2.0 material needing separate attribution anyway, so it buys nothing and
+costs a second licensing story. Staying `private: true` and never publishing was the
+third option and is contradicted by §1's "consumable from a raw URL", which is built and
+CI-enforced. `private: true` stays set — it blocks an accidental `npm publish` and says
+nothing about the licence.
+
+**THE §4(c) HOLE WAS REAL AND IS THE REASON THE BANNER IS IN THE BUILD TOOL.** Carbon's
+Sass carries `// Copyright IBM Corp.` on every partial. Sass strips `//` comments. So
+`css/rux.css` — committed, and served from a raw URL by design — carried **zero**
+attribution, and `assets/icons.svg` named `@carbon/icons` as a source without a copyright
+line. A hand-added header would have been deleted by the next `npm run build`. Putting it
+in `build.mjs` makes it a property of the build.
+
+`build.mjs`'s namespace check scans the banner along with the CSS, so a notice that named
+the old prefix would fail the build. That is deliberate.
+
+#### The reasoning, kept
+
+There was no `LICENSE` file, no `license` field in `package.json`, and — before this
 section — no mention of licensing anywhere in 89 KB of roadmap.
 
 **The obligation half is not a matter of taste.** §3 records that `css/rux.css` is
@@ -1651,8 +1683,9 @@ Staying `private: true` and never publishing is a legitimate third answer, and w
 make this section moot — but it contradicts §1's "consumable from a raw URL", which is
 already built and CI-enforced.
 
-**What must not happen is the current state**: shipping the material, with the delivery
-mechanism deliberately engineered, and no licence file either way.
+**What must not happen is the state this section was written in**: shipping the material,
+with the delivery mechanism deliberately engineered, and no licence file either way. That
+state lasted from Phase 1 until 2026-08-29 and is now closed.
 
 ### 8.2 Versioning — consumers pin to a SHA or to nothing
 

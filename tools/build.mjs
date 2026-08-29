@@ -41,12 +41,50 @@ function verify(css, label) {
   }
 }
 
+// THE ATTRIBUTION BANNER. Apache-2.0 section 4(c) asks a redistributor to retain the
+// copyright and attribution notices from the source form, and section 4(b) to mark
+// changed files. Carbon's Sass carries `// Copyright IBM Corp.` headers on every
+// partial — and Sass STRIPS `//` comments, so before 2026-08-29 the built stylesheet
+// carried none of them. css/rux.css is committed and served from a raw URL by design
+// (roadmap section 8.1), which is distribution, so the notice has to be put back here.
+//
+// It goes AFTER `@charset`, which only takes effect as the very first thing in the
+// file. `/*!` rather than `/*` so a minifier treats it as a loud comment and keeps it.
+//
+// IT MUST NOT CONTAIN THE THREE LETTERS verify() LOOKS FOR. "Carbon Design System"
+// does not; a phrase naming the old prefix would fail the build, and that is correct
+// behaviour rather than an obstacle.
+const BANNER = `/*!
+ * rux-ds — a framework-free design system derived from the Carbon Design System
+ * by subtraction. Not endorsed by or affiliated with IBM.
+ *
+ * Copyright 2026 rux
+ * Licensed under the Apache License, Version 2.0. See LICENSE.
+ *
+ * Contains rules compiled from @carbon/styles, with the class and custom-property
+ * prefix changed at build time, the component set reduced, and two of four themes
+ * kept:
+ *   Carbon Design System, Copyright IBM Corp. 2015, 2026
+ *   Licensed under the Apache License, Version 2.0
+ *
+ * Carbon's own Sass headers do not survive compilation. See NOTICE.
+ */
+`;
+
+// After @charset, which must lead the file to have any effect.
+function brand(css) {
+  const m = css.match(/^@charset[^;]*;\n?/);
+  return m ? m[0] + BANNER + css.slice(m[0].length) : BANNER + css;
+}
+
 function kb(n) { return `${(n / 1024).toFixed(0)} KB`; }
 
 for (const [out, extra] of [[OUT, []], [MIN, ['--style=compressed']]]) {
   sass(out, extra);
-  const css = readFileSync(out, 'utf8').replace(GRID_TOKEN, '--rux-grid-');
+  const css = brand(readFileSync(out, 'utf8').replace(GRID_TOKEN, '--rux-grid-'));
   writeFileSync(out, css);
+  // Scans the banner too, deliberately: a notice that named the old prefix would be a
+  // build failure rather than a comment nobody reads.
   verify(css, out);
 }
 
@@ -62,6 +100,7 @@ console.log(`
   tokens       ${tokens} unique --rux-*
   classes      ${classes} unique .rux--*
   cds leakage  none
+  attribution  banner + NOTICE
 
   unminified   ${kb(statSync(OUT).size)}
   minified     ${kb(min.length)}

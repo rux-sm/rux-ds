@@ -76,7 +76,6 @@ was verified against.
 | The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
 | No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
-| **No LICENCE, and Apache-2.0 material ships in `css/` and `assets/`** | roadmap §8.1 |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | `js/` has no automated regression net; `tests/` is empty | roadmap §4.8 |
 | `build-portal`'s icon assertion is a real check outside the registry — fifteenth gate or not | roadmap §4.8 |
@@ -146,6 +145,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
 | `docs/carbon-react-spacing.json` | **What Carbon COMPUTES, harvested 2026-08-28** — 798 class signatures → box properties → the nearest classed ancestor → the stories each was seen in. The markup captures record structure and say nothing about space; this is the other half. 133 signatures compute more than one way and all variants are kept |
+| `LICENSE` · `NOTICE` | **Apache-2.0**, decided 2026-08-29. `LICENSE` is upstream's own copy of the text; `NOTICE` names each artefact carrying Carbon-derived material. The attribution in `css/` and `assets/` is written by the BUILD tools, so it survives a rebuild — roadmap §8.1 |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
 | `docs/audits.md` | **Which whole-project sweeps have been run, and what each did NOT look at** — the ledger only; every finding is filed where its decision lives |

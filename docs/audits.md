@@ -86,7 +86,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 
 | # | Finding | Status | Filed |
 |---|---|---|---|
-| 1 | No LICENCE or NOTICE; Apache-2.0 material is compiled into committed output | **filed §8.1** | `docs/roadmap.md` §8.1 · README decision table |
+| 1 | No LICENCE or NOTICE; Apache-2.0 material is compiled into committed output | **CLOSED 2026-08-29** | Apache-2.0 shipped — `LICENSE`, `NOTICE`, build-written banners; roadmap §8.1 |
 | 2 | `tests/` is empty — 1,942 lines in `js/` have no automated regression net | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
 | 3 | g100 never measured — every browser baseline reads theme white | **CLOSED 2026-08-29** | `docs/gate-coverage.json` — all 25 cells re-read in both themes |
 | 4 | Token value snapshot does not exist | on record, §4.8 | `docs/roadmap.md` §4.8 — the sequencing objection now stated there · README |
@@ -97,6 +97,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 | 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | **CLOSED 2026-08-29** | **FIXED at source** — `gates.mjs` now reads 39 · 6, plus the module line |
 | 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
 | 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | **filed** | `docs/gate-coverage.json` `_portal` |
+| 12 | `check-icons` baseline in `gates.mjs` reads `58 symbols, 32 CUT or DEFERRED`; the committed sprite has held **59 · 29 unreferenced** for some time | **CLOSED 2026-08-29** | **FIXED at source** — found while adding the licence attribution, same class as finding 9 |
 
 Finding 9 was produced by running `npm run verify` at the end of this sweep —
 after the entry above had already recorded that verify was not run. Both

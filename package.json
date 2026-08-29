@@ -1,6 +1,7 @@
 {
   "name": "rux-ds",
   "private": true,
+  "license": "Apache-2.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"

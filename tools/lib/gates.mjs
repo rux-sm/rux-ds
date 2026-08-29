@@ -122,7 +122,7 @@ export const GATES = [
     inputs: [...ROOTS, 'assets/icons.svg', 'tools/icons.mjs'],
     redRun: 'point a `<use>` at `#i-nonesuch`',
     sideEffects: null,
-    baseline: '0 faults · 58 symbols, 32 belonging to CUT or DEFERRED components',
+    baseline: '0 faults · 59 symbols · 30 used · 29 referenced by nothing — CUT, DEFERRED or undemoed',
   },
   {
     id: 'check-co-classes',
