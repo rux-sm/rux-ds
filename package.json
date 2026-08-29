@@ -10,6 +10,7 @@
     "icons": "node tools/icons.mjs",
     "sink": "node tools/build-sink.mjs",
     "inventory": "node tools/inventory.mjs",
+    "gates": "node tools/check-gates.mjs",
     "tags": "node tools/check-tags.mjs",
     "ancestry": "node tools/check-ancestry.mjs --all",
     "coverage": "node tools/check-coverage.mjs",
