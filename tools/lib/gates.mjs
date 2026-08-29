@@ -276,7 +276,11 @@ export const GATES = [
     kind: 'browser',
     inVerify: false,
     catches: 'a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees',
-    blindTo: 'anything behind an interaction; it is load-time only',
+    blindTo: 'anything behind an interaction (it is load-time only), and — found by '
+      + 'its own red run on 2026-08-29 — PARTIAL stripping. It compares SETS of class '
+      + 'names, so removing one of six elements carrying a class changes nothing it '
+      + 'reports; only a class that leaves the page entirely is caught. The red run '
+      + 'has to use a class that occurs exactly once, or it comes back green.',
     reads: 'page',
     fileTargets: [],
     pageTargets: pageTargets(),

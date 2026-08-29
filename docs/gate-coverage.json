@@ -1,146 +1,146 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
-  "_triage": "check-spacing 2026-08-29: 28 divergences across all seven pages, 0 defects. Causes recorded in tools/check-spacing.js's header -- 6 are each template's deliberate 18rem nav indent, 2 the stack margin that belongs to Storybook's welcome page rather than the component, and the rest were already on the sink's list. check-spacing is a diagnostic, not a verify gate.",
-  "_measured": "Re-swept 2026-08-29 at commit c7a7294, 1440x900, both themes asserted from the resolved --rux-field-hover token (#e8e8e8 white / #333333 g100). The six conditions in .claude/skills/sink-check/SKILL.md in order: check-runtime-classes FIRST on an untouched page, then a click for document.hasFocus(), pointer parked off content. Red run on check-a11y: wrapping a live control in aria-hidden took it 0 -> 1 finding of \"focusable inside aria-hidden\" -- the rule the batch bar broke -- and back to 0 when restored.",
+  "_triage": "check-spacing 2026-08-29, second sweep at c4509d2: 31 divergences across all eight pages, 0 defects. By cause -- 7 are each page's deliberate nav indent (content paddingInlineStart 288px vs Carbon 32px), which templates/app-shell.html explains in its own head; 3 are stack-scale-5 marginBlockStart, whose \"Carbon\" 32px comes from getting-started-welcome--welcome, i.e. Storybook’s OWN page styling and not a component, the fourth time a reference figure has turned out to be that; the remaining 21 are the sink families already adjudicated in the first sweep (grid column padding, modal-header__heading, links link--disabled, form-requirement, toast close button, data-table-container, table-header-label, popover btn, header__name). TWO WERE NEW THIS SWEEP AND BOTH RESOLVED TO SAMPLING, not to us: form-page's form-item.checkbox-wrapper reads marginBlockEnd 3px against Carbon 6px because 3px is our own :last-of-type rule -- Carbon’s, compiled -- measured against a capture of a checkbox that was not last; and table-page’s tag--blue reads display inline-flex against Carbon flex, where ours is the correct pill and the captured tag was a flex item in its story’s container.",
+  "_measured": "Re-swept 2026-08-29 at commit c4509d2 after js/overlay.js, sink/table.html, sink/overflow-menu.html and templates/table-page.html changed, which had turned every cell stale. Viewport 1280x720 -- NOT the 1440x900 of the first sweep, so a divergence that only appears at a wider breakpoint would not have been seen; the counts are comparable because none of the 31 is width-dependent, but the difference is recorded rather than smoothed over. check-a11y ran in BOTH themes on all eight pages, asserted each time from the resolved --rux-field-hover token (#e8e8e8 white / #333333 g100). check-spacing and check-runtime-classes ran in white only, which is sound because neither reads a colour. check-rendered does both themes itself. THE SIX CONDITIONS: document focus verified per page via document.hasFocus() and, for check-a11y, via focusRingChecked in the returned object -- empty-state initially reported focusRingChecked FALSE and that reading was discarded and retaken, which is condition 1 catching exactly what it exists for. check-runtime-classes ran first on each untouched page. The pointer was parked off content and the hover chain recorded with each result; on templates/detail-page it rested on accordion__wrapper and on the sink on list-box__wrapper, neither of which has a hover style. TWO RED RUNS, both on the sink: removing a singleton class from the live DOM made check-runtime-classes report it stripped with its section and element, and restoring it cleared the report; the checkbox focus-ring recipe from the sink-check skill produced exactly the 12 findings that skill records. THE FIRST RED RUN ALSO FOUND A BLIND SPOT. Removing ONE of the six occurrences of overflow-menu__icon changed nothing, because check-runtime-classes compares SETS of class names: a class stripped from some but not all of its elements is invisible to it. Only a class that disappears from the page entirely is caught.",
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 6 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
+      "commit": "c4509d2",
+      "result": "0 findings · 6 notes · focusRingChecked true · clean in white AND g100"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 findings \u00b7 0 notes \u00b7 focusRingChecked true \u00b7 clean in white AND g100"
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 3 added"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 1 added"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
+      "commit": "c4509d2",
+      "result": "0 stripped · 3 added (data-table--selected, side-nav__overlay-active, table-sort--active)"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "0 stripped \u00b7 0 added"
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 1 added (table-sort--active, the sort module marking the active button)"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "0 stripped · 0 added"
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 278 \u00b7 matched 261 \u00b7 diverges 17 \u00b7 noReference 145"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 21 \u00b7 matched 20 \u00b7 diverges 1 \u00b7 noReference 3"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 61 \u00b7 matched 58 \u00b7 diverges 3 \u00b7 noReference 11"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 54 \u00b7 matched 52 \u00b7 diverges 2 \u00b7 noReference 4"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 59 \u00b7 matched 58 \u00b7 diverges 1 \u00b7 noReference 5"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 32 \u00b7 matched 30 \u00b7 diverges 2 \u00b7 noReference 5"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 29 \u00b7 matched 27 \u00b7 diverges 2 \u00b7 noReference 4"
+      "commit": "c4509d2",
+      "result": "checked 278 · matched 261 · diverges 17 · noReference 145"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "checked 26 \u00b7 matched 23 \u00b7 diverges 3 \u00b7 noReference 10"
+      "commit": "c4509d2",
+      "result": "checked 26 · matched 23 · diverges 3 · noReference 10"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 21 · matched 20 · diverges 1 · noReference 3"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 61 · matched 58 · diverges 3 · noReference 11"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 54 · matched 52 · diverges 2 · noReference 4"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 59 · matched 58 · diverges 1 · noReference 5"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 32 · matched 30 · diverges 2 · noReference 5"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "c4509d2",
+      "result": "checked 29 · matched 27 · diverges 2 · noReference 4"
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c7a7294",
-      "result": "34 sections \u00b7 uaStyled 0 \u00b7 collapsed none \u00b7 escaped none \u00b7 nothingToMeasure [spacing] \u00b7 BOTH themes"
+      "commit": "c4509d2",
+      "result": "34 sections · emptySvgs 0 · uaStyled 0 · collapsed none · escaped none · nothingToMeasure [spacing] · BOTH themes"
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "8396dd2",
-      "result": "18 of 18 cases passing \u00b7 red run reverted the menu offset and the batch-bar tabindex pairing and caught both, naming an 8px overlap and tabindex [0,0,0] on a hidden bar"
+      "commit": "c4509d2",
+      "result": "18 of 18 cases passing"
     }
   }
 }
