@@ -142,6 +142,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `docs/carbon-react-spacing.json` | **What Carbon COMPUTES, harvested 2026-08-28** — 798 class signatures → box properties → the nearest classed ancestor → the stories each was seen in. The markup captures record structure and say nothing about space; this is the other half. 133 signatures compute more than one way and all variants are kept |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
+| `docs/audits.md` | **Which whole-project sweeps have been run, and what each did NOT look at** — the ledger only; every finding is filed where its decision lives |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |
 
 ## The one rule
