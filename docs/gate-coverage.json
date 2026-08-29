@@ -3,33 +3,137 @@
   "_triage": "check-spacing 2026-08-29: 28 divergences across all seven pages, 0 defects. Causes recorded in tools/check-spacing.js's header -- 6 are each template's deliberate 18rem nav indent, 2 the stack margin that belongs to Storybook's welcome page rather than the component, and the rest were already on the sink's list. check-spacing is a diagnostic, not a verify gate.",
   "_measured": "2026-08-29 at 1440x900, theme white, following the six conditions in .claude/skills/sink-check/SKILL.md -- check-runtime-classes first on an untouched page, then a click for document.hasFocus(), pointer parked off content.",
   "check-a11y": {
-    "kitchen-sink.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 6 notes · focusRingChecked true" },
-    "templates/app-shell.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" },
-    "templates/table-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" },
-    "templates/form-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" },
-    "templates/detail-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" },
-    "templates/empty-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" },
-    "templates/error-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 0 notes · focusRingChecked true" }
+    "kitchen-sink.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 6 notes · focusRingChecked true"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "portal.html": {
+      "date": "2026-08-29",
+      "commit": "14db75d",
+      "result": "0 findings · 0 notes · focusRingChecked true · also clean in g100"
+    }
   },
   "check-runtime-classes": {
-    "kitchen-sink.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 3 added" },
-    "templates/app-shell.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 0 added" },
-    "templates/table-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 1 added" },
-    "templates/form-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 0 added" },
-    "templates/detail-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 0 added" },
-    "templates/empty-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 0 added" },
-    "templates/error-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 stripped · 0 added" }
+    "kitchen-sink.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 3 added"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 1 added"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 0 added"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "0 stripped · 0 added"
+    },
+    "portal.html": {
+      "date": "2026-08-29",
+      "commit": "14db75d",
+      "result": "0 stripped · 0 added"
+    }
   },
   "check-spacing": {
-    "kitchen-sink.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 276 · matched 259 · diverges 17 · noReference 144" },
-    "templates/app-shell.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 20 · matched 19 · diverges 1 · noReference 3" },
-    "templates/table-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 61 · matched 58 · diverges 3 · noReference 11" },
-    "templates/form-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 54 · matched 52 · diverges 2 · noReference 4" },
-    "templates/detail-page.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 59 · matched 58 · diverges 1 · noReference 5" },
-    "templates/empty-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 32 · matched 30 · diverges 2 · noReference 5" },
-    "templates/error-state.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "checked 29 · matched 27 · diverges 2 · noReference 4" }
+    "kitchen-sink.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 276 · matched 259 · diverges 17 · noReference 144"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 20 · matched 19 · diverges 1 · noReference 3"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 61 · matched 58 · diverges 3 · noReference 11"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 54 · matched 52 · diverges 2 · noReference 4"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 59 · matched 58 · diverges 1 · noReference 5"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 32 · matched 30 · diverges 2 · noReference 5"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "checked 29 · matched 27 · diverges 2 · noReference 4"
+    },
+    "portal.html": {
+      "date": "2026-08-29",
+      "commit": "14db75d",
+      "result": "checked 25 · matched 22 · diverges 3 · noReference 8"
+    }
   },
   "check-rendered": {
-    "kitchen-sink.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "uaStyled 0 · collapsed 0 · escaped 0 · nothingToMeasure [spacing]" }
-  }
+    "kitchen-sink.html": {
+      "date": "2026-08-29",
+      "commit": "6fc79b2",
+      "result": "uaStyled 0 · collapsed 0 · escaped 0 · nothingToMeasure [spacing]"
+    }
+  },
+  "_portal": "portal.html's three cells were read at 14db75d, BEFORE the same commit's successor added portal.html to pageTargets(). The page renders its own matrix, so registering it grows that table by three rows -- the readings above were taken on a 22-row version of a table that now has 25. Recorded rather than re-run: three more rows of identical structure change no rule either gate applies."
 }

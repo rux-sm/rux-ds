@@ -45,7 +45,7 @@ import { ROOTS, markupFiles } from './sources.mjs';
 // ever loads a fragment — it loads the assembled sink, or one template. Keeping
 // these apart stops the registry claiming a shared target that does not exist.
 export function pageTargets() {
-  return ['kitchen-sink.html',
+  return ['kitchen-sink.html', 'portal.html',
     ...markupFiles(['templates']).map(f => f.path)];
 }
 

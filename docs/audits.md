@@ -73,6 +73,11 @@ An entry says which of these it swept. Naming them in advance is what makes
 **Not swept:** behaviour (`js/` read only as line counts, no module internals) ·
 markup (no fragment or template read) · output (`css/rux.css` never opened)
 
+> **Partly superseded 2026-08-29 by `14db75d`.** Building `portal.html` opened
+> markup and output, ran `npm run verify`, and read the page in a browser in
+> both themes. That is a later sweep's evidence, not this one's: the boundary
+> above is what THIS audit covered, and it stands as written.
+
 **Also not done, and each would change a conclusion below:** `npm run verify`
 was not run, so every claim here is structural and none is a pass/fail state.
 No page was opened in a browser. `docs/roadmap.md` was read at §4.7, §4.8, §5,
@@ -90,6 +95,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 | 7 | `check-co-classes` prints no path; `check-coverage` has no per-file axis | on record | `gates.mjs` `knownGap` |
 | 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | unrecorded | **not yet filed** |
 | 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | unrecorded | **not yet filed** |
+| 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | unrecorded | **not yet filed** |
 
 Finding 9 was produced by running `npm run verify` at the end of this sweep —
 after the entry above had already recorded that verify was not run. Both
@@ -98,6 +104,12 @@ result it did produce is the ninth. It contradicts a `baseline` field in the
 gate registry, which is the second kind of figure `gates.mjs` names — a record
 with a date, not an assertion — so a stale one is expected and is still worth
 correcting at the source.
+
+Finding 10 is a check this audit's own follow-on work created, and it is
+recorded here rather than registered because the registry says fourteen and
+three documents agree with it. Adding a fifteenth is a decision. It earned its
+keep on its first run by catching `#i-katex`, a glyph nothing in the sprite
+defines -- the silent-blank-icon failure CLAUDE.md names.
 
 **The filing is itself incomplete.** Five rows have nowhere to point yet, which
 is the honest state and not a formatting gap — filing them means adding rows to
