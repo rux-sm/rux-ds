@@ -13,25 +13,17 @@
       "hit": 16,
       "own": 33
     },
-    "overflow-menu": {
-      "hit": 10,
-      "own": 20
-    },
     "data-table": {
       "hit": 41,
       "own": 80
-    },
-    "text-input": {
-      "hit": 13,
-      "own": 25
     },
     "search": {
       "hit": 7,
       "own": 13
     },
-    "tooltip": {
-      "hit": 4,
-      "own": 7
+    "text-input": {
+      "hit": 14,
+      "own": 25
     },
     "ui-shell": {
       "hit": 32,
@@ -40,6 +32,10 @@
     "text-area": {
       "hit": 10,
       "own": 17
+    },
+    "overflow-menu": {
+      "hit": 12,
+      "own": 20
     },
     "list-box": {
       "hit": 17,
@@ -89,6 +85,10 @@
       "hit": 17,
       "own": 25
     },
+    "tooltip": {
+      "hit": 5,
+      "own": 7
+    },
     "notification": {
       "hit": 39,
       "own": 54
@@ -122,7 +122,7 @@
       "own": 10
     },
     "toggle": {
-      "hit": 15,
+      "hit": 16,
       "own": 16
     }
   }

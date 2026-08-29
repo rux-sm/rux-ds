@@ -396,6 +396,95 @@
         </div>
       </div>
     </div>
+    <!-- PASSWORD INPUT · components-passwordinput--default. The visibility
+         toggle is not a plain button: it is a tooltip TRIGGER, wrapped in the
+         same icon-tooltip a bare icon button gets, and it carries
+         `tooltip--a11y` — the class Carbon puts on a trigger whose tooltip is
+         the control's only label.
+
+         Three classes the capture emits are left off because @carbon/styles
+         defines no rule for them and check-classes would reject them:
+         `icon-visibility-on`, `tooltip--bottom` and `tooltip--align-end`. The
+         placement comes from the popover container instead, which is where the
+         compiled CSS actually reads it. -->
+    <div class="rux--form-item rux--text-input-wrapper rux--password-input-wrapper">
+      <label class="rux--label" for="ti-pw">Password</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper rux--layout--size-md">
+          <input id="ti-pw" class="rux--text-input rux--password-input" type="password" value="correct-horse">
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom-end rux--tooltip rux--toggle-password-tooltip rux--icon-tooltip">
+            <div class="rux--tooltip-trigger__wrapper">
+              <button type="button" class="rux--text-input--password__visibility__toggle rux--btn rux--tooltip__trigger rux--tooltip--a11y" aria-label="Show password">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-view"/></svg>
+              </button>
+            </div>
+            <span class="rux--popover" role="tooltip" id="tt-pw">
+              <span class="rux--popover-content rux--tooltip-content">Show password</span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+        <div class="rux--form__helper-text">At least 12 characters</div>
+      </div>
+    </div>
+    <!-- The invalid and warning states are DEMOED rather than excepted, which is
+         what check-compound asks for: @carbon/styles writes
+         `.password-input.text-input--invalid` and `.password-input.text-input--warning`
+         as compounds, so both classes belong on one element, and a fragment that
+         holds password-input and text-input--invalid on different specimens is
+         reporting a split the gate is right to flag. No capture renders an
+         invalid password field; the compound selector is the reference, and a
+         compound says "one element" without any inference about nesting.
+
+         NO STATE ICON ON THESE TWO, and it is measured rather than assumed.
+         `text-input__invalid-icon` is `position: absolute; inset-inline-end: 16px`
+         and the visibility toggle is a 40px box flush to the same edge, so the
+         icon would land inside the toggle. @carbon/styles ships no rule that
+         offsets one for the other — there is no `.password-input` selector
+         touching the icon anywhere in the compiled CSS. The state is carried by
+         the border, the form-requirement text and aria-invalid, which is what
+         Carbon leaves it to here. -->
+    <div class="rux--form-item rux--text-input-wrapper rux--password-input-wrapper">
+      <label class="rux--label" for="ti-pw-invalid">Password · invalid</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper" data-invalid>
+          <input id="ti-pw-invalid" class="rux--text-input rux--password-input rux--text-input--invalid" type="password" value="short" data-invalid aria-invalid="true">
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom-end rux--tooltip rux--toggle-password-tooltip rux--icon-tooltip">
+            <div class="rux--tooltip-trigger__wrapper">
+              <button type="button" class="rux--text-input--password__visibility__toggle rux--btn rux--tooltip__trigger rux--tooltip--a11y" aria-label="Show password">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-view"/></svg>
+              </button>
+            </div>
+            <span class="rux--popover" role="tooltip" id="tt-pw-invalid">
+              <span class="rux--popover-content rux--tooltip-content">Show password</span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+        <div class="rux--form-requirement">At least 12 characters</div>
+      </div>
+    </div>
+
+    <div class="rux--form-item rux--text-input-wrapper rux--password-input-wrapper">
+      <label class="rux--label" for="ti-pw-warn">Password · warning</label>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="ti-pw-warn" class="rux--text-input rux--password-input rux--text-input--warning" type="password" value="reused-passphrase">
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom-end rux--tooltip rux--toggle-password-tooltip rux--icon-tooltip">
+            <div class="rux--tooltip-trigger__wrapper">
+              <button type="button" class="rux--text-input--password__visibility__toggle rux--btn rux--tooltip__trigger rux--tooltip--a11y" aria-label="Show password">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-view"/></svg>
+              </button>
+            </div>
+            <span class="rux--popover" role="tooltip" id="tt-pw-warn">
+              <span class="rux--popover-content rux--tooltip-content">Show password</span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+        <div class="rux--form-requirement">This password has been used before</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2960,7 +3049,7 @@
 </section>
 
 <section class="ks-sec" id="overflow-menu">
-  <h2>Overflow menu</h2><p>trigger and open options list — click the trigger</p>
+  <h2>Overflow menu</h2><p>trigger · open options list · open at rest — click the trigger</p>
   <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com
      components-breadcrumb--breadcrumb-with-overflow-visual-snapshots, 2026-08-27
      · the only harvested story that renders this list open. -->
@@ -3004,6 +3093,32 @@
         <li class="rux--overflow-menu--divider rux--overflow-menu-options__option rux--overflow-menu-options__option--danger" role="none">
           <button type="button" class="rux--overflow-menu-options__btn" role="menuitem" tabindex="-1">
             <div class="rux--overflow-menu-options__option-content">Delete</div>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- OPEN AT REST · components-overflowmenu--default@open. The trigger takes
+         `--open` with aria-expanded=true and the list takes
+         `overflow-menu-options--open`; they are always set together, because one
+         is the button's state and the other is the surface's. This specimen has
+         no trigger behaviour of its own — js/menu.js drives the one above. It is
+         here because coverage reads static markup, and a class only a runtime
+         click ever applies is a class the sink cannot show. -->
+    <div style="position:relative">
+      <button type="button" class="rux--overflow-menu rux--overflow-menu--open"
+              aria-expanded="true" aria-haspopup="true" aria-label="More actions, open">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--vertical"/></svg>
+      </button>
+      <ul class="rux--overflow-menu-options rux--overflow-menu-options--open" role="menu" aria-label="More actions">
+        <li class="rux--overflow-menu-options__option" role="none">
+          <button type="button" class="rux--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+            <div class="rux--overflow-menu-options__option-content">Rename</div>
+          </button>
+        </li>
+        <li class="rux--overflow-menu-options__option" role="none">
+          <button type="button" class="rux--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+            <div class="rux--overflow-menu-options__option-content">Export</div>
           </button>
         </li>
       </ul>
