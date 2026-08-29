@@ -114,7 +114,8 @@ export const GATES = [
     kind: 'node',
     inVerify: true,
     catches: 'a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs`',
-    blindTo: 'which glyph a `<use>` points at',
+    blindTo: 'which glyph a `<use>` points at — half of that is now check-glyphs, '
+      + 'the other half (is this the right glyph for this SLOT) is still nobody\'s',
     reads: 'per-file',
     fileTargets: ROOTS,
     pageTargets: [],
@@ -123,6 +124,35 @@ export const GATES = [
     redRun: 'point a `<use>` at `#i-nonesuch`',
     sideEffects: null,
     baseline: '0 faults · 59 symbols · 30 used · 29 referenced by nothing — CUT, DEFERRED or undemoed',
+  },
+  {
+    id: 'check-glyphs',
+    tool: 'tools/check-glyphs.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a sprite symbol that does not DRAW the glyph its name claims — a '
+      + 'hand-edited path, a rename without the drawing following, a glyph pasted '
+      + 'from the wrong size, an optimiser that moved a coordinate · a symbol name '
+      + '@carbon/icons has no file for',
+    // STATED PLAINLY BECAUSE A GREEN RUN HERE IS EASY TO OVER-READ. This gate
+    // would have caught NONE of the three icon defects this project shipped: two
+    // chevrons rotated from the wrong base glyph and the 2026-08-29 sort arrow
+    // were all correct symbols referenced from the wrong SLOT. It guards the
+    // other half of the same family, and it is the half that makes the first
+    // half checkable — asking "does Carbon put arrow--up in this slot" only
+    // means something once `#i-arrow--up` is known to draw arrow--up.
+    blindTo: 'WHICH slot a glyph belongs in, which is the half that has actually '
+      + 'shipped defects · anything about a glyph nothing in the sprite claims',
+    reads: 'per-file',
+    fileTargets: ['assets/icons.svg'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['assets/icons.svg', 'docs/carbon-glyphs.json'],
+    redRun: 'move one coordinate in any symbol\'s path, or swap two symbols\' '
+      + 'drawings, or add a symbol under an invented name — all three verified '
+      + '2026-08-29, exit 1 each',
+    sideEffects: null,
+    baseline: '59 symbols checked · 0 drawing a different glyph · 0 outside the snapshot',
   },
   {
     id: 'check-co-classes',

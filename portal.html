@@ -632,7 +632,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>15 gates. 10 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>16 gates. 11 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -678,7 +678,14 @@
                   <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
                   <td>a `&lt;use&gt;` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs`</td>
-                  <td>which glyph a `&lt;use&gt;` points at</td>
+                  <td>which glyph a `&lt;use&gt;` points at — half of that is now check-glyphs, the other half (is this the right glyph for this SLOT) is still nobody's</td>
+                </tr>
+                <tr>
+                  <td>check-glyphs</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a sprite symbol that does not DRAW the glyph its name claims — a hand-edited path, a rename without the drawing following, a glyph pasted from the wrong size, an optimiser that moved a coordinate · a symbol name @carbon/icons has no file for</td>
+                  <td>WHICH slot a glyph belongs in, which is the half that has actually shipped defects · anything about a glyph nothing in the sprite claims</td>
                 </tr>
                 <tr>
                   <td>check-co-classes</td>

@@ -1504,7 +1504,7 @@ exists and is empty; `package.json` has no test script and no runner. That is 1,
 across twelve modules whose only verification is a person driving a browser and writing
 the result into `docs/gate-coverage.json` by hand.
 
-The asymmetry is the point. Markup and CSS have fourteen gates, a ratchet, a provenance
+The asymmetry is the point. Markup and CSS have sixteen gates, a ratchet, a provenance
 requirement and a CI job. Focus trapping, the overlay stack, Escape and outside-press —
 the kernel every other module delegates to — have none of that. `tools/lib/gates.mjs`
 already documents the failure mode in its own header: editing `js/menu.js` on 2026-08-29
