@@ -201,6 +201,7 @@
     <div class="rux--modal-container rux--modal-container--lg rux--modal-container--full-width">
       <div class="rux--modal-container-body">
         <div class="rux--modal-header">
+          <h2 class="rux--modal-header__label">Content reaches the container edge</h2>
           <h2 class="rux--modal-header__heading" id="modal-full-h">Full width</h2>
         <div class="rux--modal-close-button">
           <button type="button" class="rux--modal-close" aria-label="Close" data-rux-close>
@@ -208,8 +209,35 @@
           </button>
         </div>
         </div>
+        <!-- A TABLE, NOT A PARAGRAPH, and the difference is the whole specimen.
+             `--full-width` sets `padding: 0` on modal-content so something can
+             bleed to the container edge; both of Carbon's full-width stories put
+             a structured-list there for exactly that reason. This fragment used
+             to hold a <p>, which put body text flush against the edge and read
+             as a MISSING RULE rather than as the point of the variant — asked
+             about twice from the page on 2026-08-29.
+             structured-list is CUT (docs/inventory.md: "overlaps data-table"),
+             so the substitute is the component it was cut in favour of. The
+             explanation moved to `modal-header__label`, which is inside the
+             header and therefore still padded — text in the content area is the
+             one thing this variant cannot show without looking broken. -->
         <div class="rux--layer-two rux--modal-content rux--modal-scroll-content--no-fade">
-          <p>--full-width drops the content padding so a table or a chart can reach the container edge.</p>
+          <div class="rux--data-table-content">
+            <table class="rux--data-table">
+              <thead>
+                <tr>
+                  <th scope="col"><div class="rux--table-header-label">Service</div></th>
+                  <th scope="col"><div class="rux--table-header-label">Region</div></th>
+                  <th scope="col"><div class="rux--table-header-label">Updated</div></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Atlas</td><td>eu-west-1</td><td>2 hours ago</td></tr>
+                <tr><td>Borealis</td><td>us-east-2</td><td>Yesterday</td></tr>
+                <tr><td>Cascade</td><td>ap-south-1</td><td>3 days ago</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="rux--modal-footer rux--btn-set">
           <button type="button" class="rux--btn rux--btn--primary" data-rux-close>Done</button>
