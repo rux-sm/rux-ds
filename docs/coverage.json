@@ -5,10 +5,6 @@
       "hit": 9,
       "own": 23
     },
-    "skeleton-styles": {
-      "hit": 3,
-      "own": 7
-    },
     "popover": {
       "hit": 16,
       "own": 33
@@ -120,6 +116,10 @@
     "pagination": {
       "hit": 9,
       "own": 10
+    },
+    "skeleton-styles": {
+      "hit": 7,
+      "own": 7
     },
     "toggle": {
       "hit": 16,
