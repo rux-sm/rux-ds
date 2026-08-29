@@ -121,6 +121,10 @@
       "hit": 7,
       "own": 7
     },
+    "stack": {
+      "hit": 15,
+      "own": 15
+    },
     "toggle": {
       "hit": 16,
       "own": 16

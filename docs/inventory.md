@@ -172,7 +172,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `action-set` | **DEFER** | 2 | 19 | 0 | 2 KB; modal footers may want it in Phase 6 |
 | `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it |
 | `aspect-ratio` | **DEFER** | 1 | 12 | 0 | 1 KB layout primitive; Phase 6 may want it |
-| `stack` | **DEFER — condition met** | 1 | 15 | 0 | 1 KB layout primitive; Phase 6 wanted it. See item 4 below |
+| `stack` | **KEEP** | 1 | 15 | 1 | restored 2026-08-28 — two templates had no vertical rhythm without it. Item 4 |
 | `badge-indicator` | **DEFER** | 1 | 2 | 0 | 1 KB; pairs with a notification affordance in the shell |
 | `fluid-multiselect` | **CUT** | 124 | 362 | 0 | fluid-* family; 124 KB alone, the largest single component |
 | `fluid-combo-box` | **CUT** | 107 | 307 | 1 | fluid-* family: a duplicate input treatment (§4.2) |
@@ -235,7 +235,11 @@ went rather than moved is recorded in §2.1 and above.
    0.3 KB gzipped.** Defer it because nothing needs it yet — the price is not the
    reason. Corrected 2026-08-28, re-measured against the shipped themes.
 
-4. **`stack` — DEFER, and its condition has been met.** This row said "Phase 6 may
+4. **`stack` — RESTORED 2026-08-28, on the terms this row was written with.** It is
+   now KEEP in the table above. What follows is the case as it stood, kept because the
+   decision reads better with the evidence that produced it than without.
+
+   **`stack` — DEFER, and its condition has been met.** This row said "Phase 6 may
    want it". Phase 6 wants it. `templates/form-page.html` is the first page in the
    repository with a form on it, and a form built from the compiled set has **no
    vertical rhythm at all**: Carbon spaces one with `stack-vertical stack-scale-7`,

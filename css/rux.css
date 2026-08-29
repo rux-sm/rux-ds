@@ -14517,6 +14517,70 @@ span.rux--pagination__text.rux--pagination__items-count {
     background: Canvas;
   }
 }
+.rux--stack-horizontal {
+  display: inline-grid;
+  column-gap: var(--rux-stack-gap, 0);
+  grid-auto-flow: column;
+}
+
+.rux--stack-vertical {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: var(--rux-stack-gap, 0);
+}
+
+.rux--stack-scale-1 {
+  --rux-stack-gap: 0.125rem;
+}
+
+.rux--stack-scale-2 {
+  --rux-stack-gap: 0.25rem;
+}
+
+.rux--stack-scale-3 {
+  --rux-stack-gap: 0.5rem;
+}
+
+.rux--stack-scale-4 {
+  --rux-stack-gap: 0.75rem;
+}
+
+.rux--stack-scale-5 {
+  --rux-stack-gap: 1rem;
+}
+
+.rux--stack-scale-6 {
+  --rux-stack-gap: 1.5rem;
+}
+
+.rux--stack-scale-7 {
+  --rux-stack-gap: 2rem;
+}
+
+.rux--stack-scale-8 {
+  --rux-stack-gap: 2.5rem;
+}
+
+.rux--stack-scale-9 {
+  --rux-stack-gap: 3rem;
+}
+
+.rux--stack-scale-10 {
+  --rux-stack-gap: 4rem;
+}
+
+.rux--stack-scale-11 {
+  --rux-stack-gap: 5rem;
+}
+
+.rux--stack-scale-12 {
+  --rux-stack-gap: 6rem;
+}
+
+.rux--stack-scale-13 {
+  --rux-stack-gap: 10rem;
+}
+
 .rux--tabs.rux--tabs--contained.rux--tabs--full-width .rux--tab--list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));

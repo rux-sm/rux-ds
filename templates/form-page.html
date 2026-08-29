@@ -28,29 +28,6 @@
   .rux--content { padding-inline-start: 18rem; }
 }
 
-/* STANDS IN FOR `stack`, WHICH PHASE 3 CUT — src/app.scss:108 has
-   `@use ".../components/stack"` commented out, and `.rux--form-item` carries
-   no vertical margin, so a form built from the compiled set has no rhythm at
-   all.
-
-   IT COPIES CARBON'S MECHANISM, NOT JUST ITS SPACING. Read off a running
-   `components-form--default` on 2026-08-28: `stack-vertical stack-scale-7`
-   computes to `display: grid` with `row-gap: 32px`, and every child reports
-   `margin-block-start: 0`. Carbon zeroes control margins on purpose and
-   spaces from the container, which is why a margin-based version of this rule
-   did not work — `.rux--checkbox-group`'s own `margin: 0` at (0,1,0) beat
-   `form > * + *` at (0,0,2) and that gap collapsed to nothing.
-
-   IT APPLIES AT THE FORM LEVEL ONLY. Scoping it to `form fieldset` as well
-   was tried and is wrong: a radio group is a fieldset too, and 2rem between
-   its options is not rhythm, it is a broken control. Carbon puts the stack
-   around the form's items and lets each control space its own insides.
-
-   Restoring the component would delete this rule outright. The plan and its
-   cost are written down: roadmap §4.4, "The first gap Phase 6 found", and
-   `docs/inventory.md` item 4. Not decided — do not quietly widen the manifest
-   to make this file tidier. */
-form { display: grid; row-gap: 2rem; }
 </style>
 </head>
 <body>
@@ -324,106 +301,113 @@ form { display: grid; row-gap: 2rem; }
            its own, so the rule in the <style> block stands in for it at the
            same 2rem. See the note there. -->
       <form>
+        <!-- components-form--default puts a `stack-vertical stack-scale-7`
+             between the form and its items, and that div is where the whole of
+             the form's vertical rhythm comes from. It replaces the <style> rule
+             this file used to carry: `stack` was restored on 2026-08-28,
+             roadmap §4.4. -->
+        <div class="rux--stack-vertical rux--stack-scale-7">
 
-        <div class="rux--form-item rux--text-input-wrapper">
-            <div class="rux--text-input__label-wrapper">
-              <label class="rux--label" for="f-name">Full name</label>
+          <div class="rux--form-item rux--text-input-wrapper">
+              <div class="rux--text-input__label-wrapper">
+                <label class="rux--label" for="f-name">Full name</label>
+              </div>
+              <div class="rux--text-input__field-outer-wrapper">
+                <div class="rux--text-input__field-wrapper">
+                  <input id="f-name" class="rux--text-input" type="text" placeholder="Ada Lovelace">
+                </div>
+              </div>
             </div>
-            <div class="rux--text-input__field-outer-wrapper">
-              <div class="rux--text-input__field-wrapper">
-                <input id="f-name" class="rux--text-input" type="text" placeholder="Ada Lovelace">
+
+          <div class="rux--form-item rux--text-input-wrapper">
+              <div class="rux--text-input__label-wrapper">
+                <label class="rux--label" for="f-email">Email</label>
+              </div>
+              <div class="rux--text-input__field-outer-wrapper">
+                <div class="rux--text-input__field-wrapper">
+                  <input id="f-email" class="rux--text-input" type="email" placeholder="name@example.com">
+                </div>
+                <div class="rux--form__helper-text">We only use this to reply.</div>
+              </div>
+            </div>
+
+          <div class="rux--form-item">
+            <div class="rux--select rux--layout--size-md">
+              <label class="rux--label" for="f-dept">Department</label>
+              <div class="rux--select-input__wrapper">
+                <select id="f-dept" class="rux--select-input">
+                  <option class="rux--select-option" value="ops">Operations</option>
+                  <option class="rux--select-option" value="fin">Finance</option>
+                  <option class="rux--select-option" value="eng">Engineering</option>
+                </select>
+                <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
               </div>
             </div>
           </div>
 
-        <div class="rux--form-item rux--text-input-wrapper">
-            <div class="rux--text-input__label-wrapper">
-              <label class="rux--label" for="f-email">Email</label>
-            </div>
-            <div class="rux--text-input__field-outer-wrapper">
-              <div class="rux--text-input__field-wrapper">
-                <input id="f-email" class="rux--text-input" type="email" placeholder="name@example.com">
+          <div class="rux--form-item">
+            <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
+              <legend class="rux--label">Priority</legend>
+              <div class="rux--radio-button-wrapper">
+                <input id="f-p1" class="rux--radio-button" type="radio" name="f-priority" checked>
+                <label for="f-p1" class="rux--radio-button__label">
+                  <span class="rux--radio-button__appearance"></span>
+                  <span class="rux--radio-button__label-text">Standard</span>
+                </label>
               </div>
-              <div class="rux--form__helper-text">We only use this to reply.</div>
-            </div>
+              <div class="rux--radio-button-wrapper">
+                <input id="f-p2" class="rux--radio-button" type="radio" name="f-priority">
+                <label for="f-p2" class="rux--radio-button__label">
+                  <span class="rux--radio-button__appearance"></span>
+                  <span class="rux--radio-button__label-text">Urgent</span>
+                </label>
+              </div>
+            </fieldset>
           </div>
 
-        <div class="rux--form-item">
-          <div class="rux--select rux--layout--size-md">
-            <label class="rux--label" for="f-dept">Department</label>
-            <div class="rux--select-input__wrapper">
-              <select id="f-dept" class="rux--select-input">
-                <option class="rux--select-option" value="ops">Operations</option>
-                <option class="rux--select-option" value="fin">Finance</option>
-                <option class="rux--select-option" value="eng">Engineering</option>
-              </select>
-              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          <fieldset class="rux--checkbox-group" aria-disabled="false">
+            <legend class="rux--label">Notify me when</legend>
+            <div class="rux--form-item rux--checkbox-wrapper">
+              <input id="f-n1" class="rux--checkbox" type="checkbox" checked>
+              <label for="f-n1" class="rux--checkbox-label"><div class="rux--checkbox-label-text">The request is approved</div></label>
+              <div class="rux--checkbox__validation-msg"></div>
             </div>
-          </div>
-        </div>
-
-        <div class="rux--form-item">
-          <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
-            <legend class="rux--label">Priority</legend>
-            <div class="rux--radio-button-wrapper">
-              <input id="f-p1" class="rux--radio-button" type="radio" name="f-priority" checked>
-              <label for="f-p1" class="rux--radio-button__label">
-                <span class="rux--radio-button__appearance"></span>
-                <span class="rux--radio-button__label-text">Standard</span>
-              </label>
-            </div>
-            <div class="rux--radio-button-wrapper">
-              <input id="f-p2" class="rux--radio-button" type="radio" name="f-priority">
-              <label for="f-p2" class="rux--radio-button__label">
-                <span class="rux--radio-button__appearance"></span>
-                <span class="rux--radio-button__label-text">Urgent</span>
-              </label>
+            <div class="rux--form-item rux--checkbox-wrapper">
+              <input id="f-n2" class="rux--checkbox" type="checkbox">
+              <label for="f-n2" class="rux--checkbox-label"><div class="rux--checkbox-label-text">Someone comments</div></label>
+              <div class="rux--checkbox__validation-msg"></div>
             </div>
           </fieldset>
-        </div>
 
-        <fieldset class="rux--checkbox-group" aria-disabled="false">
-          <legend class="rux--label">Notify me when</legend>
-          <div class="rux--form-item rux--checkbox-wrapper">
-            <input id="f-n1" class="rux--checkbox" type="checkbox" checked>
-            <label for="f-n1" class="rux--checkbox-label"><div class="rux--checkbox-label-text">The request is approved</div></label>
-            <div class="rux--checkbox__validation-msg"></div>
-          </div>
-          <div class="rux--form-item rux--checkbox-wrapper">
-            <input id="f-n2" class="rux--checkbox" type="checkbox">
-            <label for="f-n2" class="rux--checkbox-label"><div class="rux--checkbox-label-text">Someone comments</div></label>
-            <div class="rux--checkbox__validation-msg"></div>
-          </div>
-        </fieldset>
-
-        <div class="rux--form-item">
-          <div class="rux--text-area__label-wrapper">
-            <label class="rux--label" for="f-notes">Notes</label>
-          </div>
-          <div class="rux--text-area__wrapper">
-            <textarea id="f-notes" class="rux--text-area" rows="4" cols="50" maxlength="500" placeholder="Anything else we should know?"></textarea>
-            <span class="rux--text-area__counter-alert" role="alert"></span>
-          </div>
-          <div class="rux--form__helper-text">Optional.</div>
-        </div>
-
-        <!-- js/form-controls.js drives this; the markup needs no script. -->
-        <div class="rux--toggle">
-          <button id="f-copy" class="rux--toggle__button" role="switch" type="button" aria-checked="false" aria-labelledby="f-copy-l"></button>
-          <label class="rux--toggle__label" for="f-copy" id="f-copy-l">
-            <span class="rux--toggle__label-text">Send me a copy</span>
-            <div class="rux--toggle__appearance">
-              <div class="rux--toggle__switch"></div>
-              <span class="rux--toggle__text">Off</span>
+          <div class="rux--form-item">
+            <div class="rux--text-area__label-wrapper">
+              <label class="rux--label" for="f-notes">Notes</label>
             </div>
-          </label>
-        </div>
+            <div class="rux--text-area__wrapper">
+              <textarea id="f-notes" class="rux--text-area" rows="4" cols="50" maxlength="500" placeholder="Anything else we should know?"></textarea>
+              <span class="rux--text-area__counter-alert" role="alert"></span>
+            </div>
+            <div class="rux--form__helper-text">Optional.</div>
+          </div>
 
-        <div class="rux--btn-set">
-          <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
-          <button type="submit" class="rux--btn rux--btn--primary">Submit</button>
-        </div>
+          <!-- js/form-controls.js drives this; the markup needs no script. -->
+          <div class="rux--toggle">
+            <button id="f-copy" class="rux--toggle__button" role="switch" type="button" aria-checked="false" aria-labelledby="f-copy-l"></button>
+            <label class="rux--toggle__label" for="f-copy" id="f-copy-l">
+              <span class="rux--toggle__label-text">Send me a copy</span>
+              <div class="rux--toggle__appearance">
+                <div class="rux--toggle__switch"></div>
+                <span class="rux--toggle__text">Off</span>
+              </div>
+            </label>
+          </div>
 
+          <div class="rux--btn-set">
+            <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
+            <button type="submit" class="rux--btn rux--btn--primary">Submit</button>
+          </div>
+
+        </div>
       </form>
 
     </div>

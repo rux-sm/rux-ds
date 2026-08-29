@@ -69,7 +69,6 @@ was verified against.
 |---|---|
 | The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
 | No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
-| **`stack` — restore it?** Phase 6 found the gap its DEFER row was waiting for: a form has no vertical rhythm without it. 1 KB, 15 classes. Plan and cost in full | roadmap §4.4, `docs/inventory.md` item 4 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
@@ -77,19 +76,19 @@ last push, and `npm run verify` runs ten of the twelve gates.
 
 | | |
 |---|---|
-| Components | **31 / 75 compiled** in 34 modules — `docs/inventory.md` decides all 75 |
+| Components | **32 / 75 compiled** in 35 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 610 `--rux-*` · 1,112 `.rux--*` |
-| Kitchen sink | 31 sections · 433 classes; **447** with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **432 / 720 (60%)** — ratcheted in `docs/coverage.json` |
-| Markup provenance | **31 `rendered-dom` · 3 `source` · 0 `inferred`** |
+| Tokens · classes | 611 `--rux-*` · 1,127 `.rux--*` |
+| Kitchen sink | 32 sections · 504 classes; **515** with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **500 / 735 (68%)** — ratcheted in `docs/coverage.json` |
+| Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
-| Size | 606 KB raw · 546 KB min · **55.6 KB gzipped** |
+| Size | 607 KB raw · 546 KB min · **55.8 KB gzipped** |
 | Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.
 
-The 44 components not compiled are CUT or DEFER rows in
+The 43 components not compiled are CUT or DEFER rows in
 [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
 still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
 lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to

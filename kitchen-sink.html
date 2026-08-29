@@ -74,7 +74,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">31 sections</div>
+  <div class="ks-count">32 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#links">Links</a>
@@ -96,6 +96,7 @@
     <a href="#list">List</a>
     <a href="#grid">Grid</a>
     <a href="#skeleton">Skeleton</a>
+    <a href="#stack">Stack</a>
     <a href="#dropdown">Dropdown</a>
     <a href="#list-box">List box</a>
     <a href="#modal">Modal</a>
@@ -2388,6 +2389,57 @@
       <div class="rux--breadcrumb-item"><span class="rux--link"></span></div>
       <div class="rux--breadcrumb-item"><span class="rux--link"></span></div>
     </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="stack">
+  <h2>Stack</h2><p>vertical · horizontal · the thirteen scale steps</p>
+  <!-- PROVENANCE: rendered-dom · layout-stack--default and layout-stack--horizontal,
+       2026-08-28 · both render `div.stack-<axis>.stack-scale-N` around bare divs and
+       nothing else; the children carry no class of their own. -->
+  <!--
+    RESTORED 2026-08-28, roadmap §4.4. Phase 3 cut it and two templates then found
+    the same gap: Carbon components carry NO vertical margin on purpose — the
+    spacing overview says so outright, "components ... not use margin and instead
+    delegate the responsibility of positioning and layout to parent components" —
+    so a page built from the compiled set had no rhythm at all and
+    templates/form-page.html carried a hand-written stand-in for it.
+
+    IT IS A GRID, NOT MARGINS. `stack-vertical` computes to `display: grid` with
+    `row-gap` from `--rux-stack-gap`, which is the one new custom property the
+    restore added. That mechanism is why the stand-in had to be a grid too: a
+    margin-based version lost to `.rux--checkbox-group`'s own `margin: 0`.
+
+    THE SCALE IS CARBON'S SPACING SCALE, steps 1 to 13. Every step is demoed
+    because the point of the component is choosing between them, and a fragment
+    that showed one would leave twelve classes uncovered while claiming the
+    component is exercised.
+  -->
+  <div class="ks-label">VERTICAL · SCALE 7, WHAT A FORM USES</div>
+  <div class="rux--stack-vertical rux--stack-scale-7">
+    <div class="rux--tile"><p>First</p></div>
+    <div class="rux--tile"><p>Second</p></div>
+    <div class="rux--tile"><p>Third</p></div>
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">HORIZONTAL · SCALE 5</div>
+  <div class="rux--stack-horizontal rux--stack-scale-5">
+    <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
+    <button type="button" class="rux--btn rux--btn--primary">Save</button>
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">THE SCALE, 1 TO 13</div>
+  <div class="rux--stack-vertical rux--stack-scale-3">
+    <div class="rux--stack-horizontal rux--stack-scale-1"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">1</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-2"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">2</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-4"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">4</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-6"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">6</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">24px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-8"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">8</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">40px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-9"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">9</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">48px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-10"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">10</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">64px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-11"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">11</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">80px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-12"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">12</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">96px</span></div></div>
+    <div class="rux--stack-horizontal rux--stack-scale-13"><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">13</span></div><div class="rux--tag rux--tag--gray"><span class="rux--tag__label">160px</span></div></div>
   </div>
 </section>
 
