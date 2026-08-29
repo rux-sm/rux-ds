@@ -376,13 +376,23 @@
             <li class="rux--list__item">CPU request — 500m</li>
             <li class="rux--list__item">Owner — Platform</li>
           </ul>
-          <!-- THE TILE NEEDS A LAYER OR IT IS INVISIBLE, measured rather than
-               assumed: `tile` paints `layer`, the tab panel around it paints
-               `layer` too, and both came out rgb(244,244,244) — a tile with no
-               edge on a background of its own colour. `layer-two` is Carbon's
-               answer and the modal fragment uses it the same way; it lifts the
-               tile to rgb(255,255,255). A tile dropped straight into a panel is
-               the mistake this line exists to stop a reader repeating. -->
+          <!-- THE LAYER WRAPPER IS CONDITIONAL. READ THIS BEFORE COPYING IT.
+               `tile` paints `layer`. So does the tab panel around it — both
+               measured rgb(244,244,244), a tile with no edge on a background of
+               its own colour — and `layer-two` lifts this one to white.
+
+               ON A PLAIN PAGE THE WRAPPER IS WRONG AND HIDES THE TILE. The page
+               background is white, `layer-two` is white, and the tile vanishes.
+               That is not hypothetical: it is what happened the first time this
+               idiom was copied out of this file, into a dashboard built for
+               §4.6's exit test on 2026-08-28. The markup was faithful and the
+               result was an invisible component.
+
+               THE RULE, not the snippet: a tile needs a background that differs
+               from what it sits on. Inside a panel already painting `layer`,
+               wrap it in `layer-two`. Directly on the page, use a bare
+               `rux--tile` with no wrapper — it paints `layer` against white and
+               is visible on its own. Measure it either way. -->
           <div class="rux--layer-two">
             <div class="rux--tile">
               <p>All six replicas reporting. No restarts in the last 24 hours.</p>

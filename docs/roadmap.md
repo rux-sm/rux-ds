@@ -1260,6 +1260,33 @@ twice drifts.
 Exit: a page shape not in `templates/` can be built by Claude Code from the templates
 alone, without inventing a class.
 
+> **First exit attempt, 2026-08-28 — NOT MET, and usefully so.** All six templates
+> existed, so the criterion was run rather than assumed: build a dashboard, a shape none
+> of the six covers, using `templates/` as the only source.
+>
+> **The class half passed.** 54 `rux--` classes used, every one of them already present
+> in the six; nothing was invented and nothing was fetched from `sink/` or `docs/`. The
+> 188 classes the templates carry between them were enough for a metric grid, a tile, a
+> list and a link.
+>
+> **The page was still wrong.** The tiles rendered invisible — white on white. The
+> dashboard copied `layer-two > tile` out of `detail-page.html`, faithfully, and that
+> idiom is correct only where it sits: inside a tab panel already painting `layer`. On a
+> plain page `layer-two` resolves to the page's own white and the tile disappears.
+> Measured: tile `rgb(255,255,255)` against body `rgb(255,255,255)`, no border. Removing
+> the wrapper gives `rgb(244,244,244)` and a visible tile.
+>
+> **So the criterion needs its second half read as strictly as its first.** "Without
+> inventing a class" was satisfied; "can be built" was not. A template that encodes an
+> idiom without its CONDITION teaches the idiom, and the reader gets a correct-looking
+> copy of the wrong thing. `detail-page.html`'s comment now states the rule — a tile
+> needs a background differing from what it sits on — instead of the snippet.
+>
+> Nothing else in the attempt reached outside the templates, and the built page passed
+> check-a11y at 0 findings and check-runtime-classes at 0 stripped. **Re-run the test
+> before calling the phase done**; one shape is one sample, and the fix has not been
+> tested by a second attempt.
+
 **DECIDED 2026-08-28 — the kitchen sink does not use the UI shell as its own page
 chrome.** Asked directly, and recorded because the opposite is the intuitive answer:
 a design system whose own reference page is not built from it looks like a system
