@@ -25,9 +25,30 @@
    would make one arrow press appear to do nothing.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · roving tabindex, arrow keys and Home/End are the ARIA tabs pattern applied to the
-   captured markup of components-tabs--default. The structure came from that story; the
-   BEHAVIOUR was not read off it. templates/detail-page.html records the same gap.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-tabs--default
+   and https://react.carbondesignsystem.com/iframe.html?id=components-tabs--vertical
+   clicking a real tab and sending real key events, reading tabIndex, aria-selected
+   and which panel is unhidden after each.
+
+   CONFIRMED, all of it: roving tabindex, selected 0 and every other -1. aria-selected
+   toggling. Panels switched with the `hidden` attribute, addressed through aria-controls.
+   SELECTION FOLLOWS FOCUS -- one arrow press moves focus, aria-selected and the visible
+   panel together. Home and End select the ends. THE ARROWS WRAP: ArrowLeft on the first
+   tab lands on the last and ArrowRight on the last lands on the first. And a disabled tab
+   is skipped ENTIRELY -- from `Learn`, one ArrowDown passed over the disabled `Settings`
+   and wrapped to `Dashboard`.
+
+   The wrap is worth naming because list-box's did NOT survive the same test on the same
+   day. A combobox clamps and a tablist wraps; they are different patterns and Carbon
+   implements both, so neither answer generalises to the other.
+
+   ONE THING WAS WRONG. Vertical was detected from aria-orientation, which Carbon does not
+   set and our markup does not either, so every vertical tablist was treated as horizontal
+   and answered the wrong arrows. See the keydown handler.
+
+   NOT VERIFIED: the dismissible variant's close buttons, and the overflow scroll buttons
+   that appear when a tablist is too narrow. Neither was exercised.
    ========================================================================== */
 (() => {
   'use strict';
@@ -105,8 +126,19 @@
 
     const ring = tabsIn(list);
     const at = ring.indexOf(tab);
-    // Horizontal by default; a vertical tablist swaps which arrows move it.
-    const vertical = list.getAttribute('aria-orientation') === 'vertical';
+    // VERTICAL IS A CLASS, NOT AN ATTRIBUTE, and reading the attribute alone
+    // made this exactly wrong. Driven on components-tabs--vertical 2026-08-29:
+    // ArrowDown moves and ArrowRight does nothing, so Carbon does swap the axis
+    // -- but its tablist has NO aria-orientation, and neither does ours. So the
+    // test below was never true, every vertical tablist was treated as
+    // horizontal, and the sink's vertical tabs answered Left/Right while
+    // ignoring Up/Down. Precisely inverted from the component they copy.
+    //
+    // The wrapper's `--vertical` class is what Carbon's own CSS keys on and
+    // what our markup already carries, so it is the honest signal. The
+    // attribute is still honoured for a consumer who sets it.
+    const vertical = !!list.closest('.rux--tabs--vertical')
+      || list.getAttribute('aria-orientation') === 'vertical';
     const prev = vertical ? 'ArrowUp' : 'ArrowLeft';
     const next = vertical ? 'ArrowDown' : 'ArrowRight';
 

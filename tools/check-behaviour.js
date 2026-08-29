@@ -131,6 +131,28 @@
     record('tabs', 'exactly one tab is in the tab order',
       tabs.filter(t => t.tabIndex === 0).length === 1,
       `tabindex=[${tabs.map(t => t.tabIndex)}]`);
+
+    // A VERTICAL TABLIST ANSWERS UP AND DOWN, and until 2026-08-29 it answered
+    // Left and Right instead — vertical was read off aria-orientation, which
+    // neither Carbon nor this markup sets, so the axis never swapped.
+    const vlist = q('.rux--tabs--vertical [role="tablist"]');
+    if (!vlist) {
+      record('tabs', 'a vertical tablist answers the vertical arrows', false,
+        'no vertical tablist on this page');
+    } else {
+      const vt = [...vlist.querySelectorAll('[role="tab"]')];
+      const at = () => vt.indexOf(document.activeElement);
+      vt[0].focus();
+      key(document.activeElement, 'ArrowDown');
+      const down = at();
+      vt[0].focus();
+      key(document.activeElement, 'ArrowRight');
+      const right = at();
+      vt[0].focus();
+      record('tabs', 'a vertical tablist answers the vertical arrows',
+        down === 1 && right === 0,
+        `ArrowDown -> ${down} (want 1), ArrowRight -> ${right} (want 0, it is the wrong axis)`);
+    }
     const panel = document.getElementById(other.getAttribute('aria-controls'));
     record('tabs', 'its panel is shown and the others are hidden',
       panel && !panel.hidden, panel ? `hidden=${panel.hidden}` : 'no panel for aria-controls');
