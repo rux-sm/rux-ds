@@ -337,6 +337,29 @@
       `stayed ${toggle.getAttribute('aria-checked')}`);
 
     click(toggle);
+
+    // THE STEPPERS STEP THE RIGHT WAY, and they are told apart by the class
+    // Carbon marks them with. Until 2026-08-29 our markup carried neither
+    // down-icon nor up-icon, so both sat at CSS `order: 0` and only DOM order
+    // decided what a user saw — which made reading position work by accident.
+    const num = q('#number .rux--number');
+    const input = num?.querySelector('input[type="number"]');
+    const btns = num ? [...num.querySelectorAll('.rux--number__control-btn')] : [];
+    if (!input || btns.length < 2) {
+      record('form-controls', 'the steppers are marked up/down and step that way',
+        false, 'no number input with two controls here');
+    } else {
+      const marked = btns.some(b => b.classList.contains('down-icon'))
+        && btns.some(b => b.classList.contains('up-icon'));
+      const start = Number(input.value);
+      click(btns.find(b => b.classList.contains('up-icon')) ?? btns[1]);
+      const afterUp = Number(input.value);
+      click(btns.find(b => b.classList.contains('down-icon')) ?? btns[0]);
+      const afterDown = Number(input.value);
+      record('form-controls', 'the steppers are marked up/down and step that way',
+        marked && afterUp === start + 1 && afterDown === start,
+        `marked=${marked}, ${start} -> up ${afterUp} -> down ${afterDown}`);
+    }
   })();
 
   // ── list-box: the dropdown its consumers are built from ───────────────────

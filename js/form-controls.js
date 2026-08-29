@@ -10,13 +10,24 @@
    are grouped by what they are — form controls that only ever mutate
    themselves — rather than by component name.
 
-   THE STEPPERS ARE TOLD APART BY ORDER, NOT BY LABEL. Carbon gives both
-   buttons the identical class `number__control-btn` and distinguishes them by
-   nothing else; the sink harness read `aria-label` for "increment", which is a
-   TRANSLATED STRING and would leave the control dead on any page not in
-   English. The reference renders decrement first and increment second, so
-   position is the signal — locale-independent, and the only one Carbon
-   actually provides.
+   THE STEPPERS ARE TOLD APART BY CLASS, AND THIS BLOCK USED TO SAY OTHERWISE.
+   It claimed Carbon gives both buttons the identical `number__control-btn` and
+   "distinguishes them by nothing else", so position was "the only signal
+   Carbon actually provides". Measured on the running number input: Carbon
+   writes `number__control-btn down-icon` and `number__control-btn up-icon`.
+   The signal was there all along.
+
+   The original point still stands against `aria-label`: reading "increment"
+   is reading a TRANSLATED STRING and would leave the control dead on any page
+   not in English. But `down-icon`/`up-icon` are neither translated nor
+   positional, so they are better than both.
+
+   IT ALSO MATTERED MORE THAN IT LOOKED. Carbon's CSS — compiled into ours —
+   gives `.down-icon { order: 1 }` and `.up-icon { order: 2 }`. Our markup
+   carried neither class, so both buttons sat at `order: 0` and the rendered
+   order was DOM order, which is why reading position happened to work. It is
+   a flex `order` that decides what a user sees, so DOM order and visual order
+   are not the same question, and the module was answering the wrong one.
 
    `data-rux-indeterminate` HAS TO BE AN ATTRIBUTE, because `indeterminate` is
    a DOM PROPERTY with no HTML counterpart: a checkbox cannot express the
@@ -25,9 +36,34 @@
    the reason is that HTML gives no alternative.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · the toggle, steppers, search clear and indeterminate checkbox are driven from the
-   captured markup and the attributes it declares. No running Carbon control was opened;
-   templates/form-page.html records the same gap from its side.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-numberinput--default
+   and https://react.carbondesignsystem.com/iframe.html?id=components-toggle--default
+
+   THE STEPPER ORDER IS RIGHT AND THE REASON GIVEN FOR IT WAS WRONG. Carbon does render
+   decrement first and increment second -- confirmed, with the subtract glyph on the first
+   and add on the second -- so this module always stepped the right way. But it marks them
+   `down-icon` and `up-icon`, which the header claimed it does not do, and its own CSS
+   gives those `order: 1` and `order: 2`. Our markup carried neither class, so both
+   buttons sat at `order: 0` and rendered in DOM order, which is the only reason reading
+   position worked. Both classes are now in the markup and the module reads them, keeping
+   position as a fallback.
+
+   THE TOGGLE IS CONFIRMED WHOLE: a <button role="switch"> with aria-checked, beside a
+   `toggle__switch` that takes `toggle__switch--checked`, and a `toggle__text` carrying the
+   words On and Off. That is the structure this module writes.
+
+   ONE OBSERVATION ABOUT OUR OWN CODE, not about Carbon: setToggle() hard-codes the English
+   strings 'On' and 'Off'. This file's header objects to depending on a TRANSLATED STRING
+   when reading aria-label, and writing one is the same problem facing the other way. Where
+   Carbon's text comes from was NOT established -- an attempt to override it through
+   Storybook args did not take, so nothing is claimed about whether Carbon's is
+   configurable. Ours is not, and that is worth a decision rather than a silent default.
+
+   NOT VERIFIED: the search clear button and the indeterminate checkbox. Neither was
+   driven, and `data-rux-indeterminate` is this project's own attribute in any case --
+   `indeterminate` is a DOM property with no HTML form, so there is no Carbon markup to
+   compare it against.
    ========================================================================== */
 (() => {
   'use strict';
@@ -53,8 +89,18 @@
     const input = root.querySelector('input[type="number"]');
     if (!input || input.disabled || input.readOnly) return;
 
+    // THE CLASS FIRST, POSITION ONLY AS A FALLBACK. Carbon marks these
+    // `down-icon` and `up-icon` -- see the header, which used to claim it marks
+    // them with nothing. Position agrees today only because our markup omitted
+    // both classes, so every button sat at the default `order: 0` and fell back
+    // to DOM order; Carbon's own CSS gives down-icon `order: 1` and up-icon
+    // `order: 2`, which means the VISUAL order is a CSS decision and DOM order
+    // is not guaranteed to match it. Reading the class reads what Carbon
+    // actually says.
     const buttons = [...root.querySelectorAll('.rux--number__control-btn')];
-    const up = buttons.indexOf(button) > 0;   // decrement first, increment second
+    const up = button.classList.contains('up-icon') ? true
+      : button.classList.contains('down-icon') ? false
+      : buttons.indexOf(button) > 0;   // unmarked markup: decrement first
     const by = Number(input.step) || 1;
     const min = input.min === '' ? -Infinity : Number(input.min);
     const max = input.max === '' ? Infinity : Number(input.max);
