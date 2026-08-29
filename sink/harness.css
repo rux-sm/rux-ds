@@ -16,6 +16,22 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
              position: sticky; top: 0; z-index: 10; padding-block: .5rem;
              background: var(--rux-background); }
 .ks-sec { padding-block: 2rem; border-block-start: 1px solid var(--rux-border-subtle); }
+/* EVERY SECTION IS ITS OWN STACKING CONTEXT, AND THE MODAL SECTION IS NOT.
+   The sink shows overlay components in their OPEN state statically — a page
+   does not normally have a dropdown, a menu and an overflow menu all open at
+   once — and those specimens carry Carbon's real z-indexes. `list-box__menu`
+   is 9100, and Carbon's scale puts `dropdown: 9100` deliberately ABOVE
+   `modal: 9000` so a dropdown inside a modal renders over the modal's surface.
+   Correct on a real page; wrong here, where the open specimen sits in a
+   different section entirely and painted over any modal the reader opened —
+   reported 2026-08-29, and elementFromPoint confirmed the menu was taking the
+   press, not just the pixels.
+   `isolation` confines each specimen's z-index to its own section without
+   touching a single Carbon value. The modal section is EXEMPT because the
+   modal is the one thing that must win: left in the root stacking context at
+   9000 it outranks every isolated section, whatever their DOM order. Anything
+   added later that must cover the whole page belongs outside this rule too. */
+.ks-sec:not(#modal) { isolation: isolate; }
 .ks-sec > h2 { font-size: 1.25rem; margin-block-end: .25rem; }
 .ks-sec > p  { font-size: .75rem; color: var(--rux-text-secondary); margin-block-end: 1.25rem; }
 .ks-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start;
