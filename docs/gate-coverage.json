@@ -1,137 +1,137 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
   "_triage": "check-spacing 2026-08-29, second sweep at c4509d2: 31 divergences across all eight pages, 0 defects. By cause -- 7 are each page's deliberate nav indent (content paddingInlineStart 288px vs Carbon 32px), which templates/app-shell.html explains in its own head; 3 are stack-scale-5 marginBlockStart, whose \"Carbon\" 32px comes from getting-started-welcome--welcome, i.e. Storybook’s OWN page styling and not a component, the fourth time a reference figure has turned out to be that; the remaining 21 are the sink families already adjudicated in the first sweep (grid column padding, modal-header__heading, links link--disabled, form-requirement, toast close button, data-table-container, table-header-label, popover btn, header__name). TWO WERE NEW THIS SWEEP AND BOTH RESOLVED TO SAMPLING, not to us: form-page's form-item.checkbox-wrapper reads marginBlockEnd 3px against Carbon 6px because 3px is our own :last-of-type rule -- Carbon’s, compiled -- measured against a capture of a checkbox that was not last; and table-page’s tag--blue reads display inline-flex against Carbon flex, where ours is the correct pill and the captured tag was a flex item in its story’s container.",
-  "_measured": "Re-swept 2026-08-29 at commit c4509d2 after js/overlay.js, sink/table.html, sink/overflow-menu.html and templates/table-page.html changed, which had turned every cell stale. RUN TWICE, AT 1280x720 AND AGAIN AT 1440x900, and every gate returned the same numbers at both. The one movement was on portal.html, where check-spacing’s noReference count went 10 to 9 because a class picked up a comparable reference at the wider width; its divergences were the same three. The first pass recorded a caveat that a width-only divergence would have been missed -- that caveat was wrong about its own cause and is retracted here: resize_window emulates a viewport independently of how wide the Browser pane is, scaling the picture down rather than the layout, so innerWidth and every media query really do evaluate at the emulated size. The width was a choice, never a limit. check-a11y ran in BOTH themes on all eight pages at both widths, asserted each time from the resolved --rux-field-hover token (#e8e8e8 white / #333333 g100). check-spacing and check-runtime-classes ran in white only, which is sound because neither reads a colour. check-rendered does both themes itself; check-behaviour passed 18 of 18 at both widths. THE SIX CONDITIONS: document focus verified per page via document.hasFocus() and, for check-a11y, via focusRingChecked in the returned object -- empty-state initially reported focusRingChecked FALSE and that reading was discarded and retaken, which is condition 1 catching exactly what it exists for. check-runtime-classes ran first on each untouched page. The pointer was parked off content and the hover chain recorded with every result; on the 1440 pass it was empty on six of the eight pages. TWO RED RUNS, both on the sink: removing a singleton class from the live DOM made check-runtime-classes report it stripped with its section and element, and restoring it cleared the report; the checkbox focus-ring recipe from the sink-check skill produced exactly the 12 findings that skill records. THE FIRST RED RUN ALSO FOUND A BLIND SPOT. Removing ONE of the six occurrences of overflow-menu__icon changed nothing, because check-runtime-classes compares SETS of class names: a class stripped from some but not all of its elements is invisible to it. Only a class that disappears from the page entirely is caught. NOT COVERED BY ANY OF THIS: nobody has LOOKED at the rendered pages this sweep. Five defects this project shipped passed every gate.",
+  "_measured": "Re-swept 2026-08-29 at commit 0d10eaa. All 26 cells run at 1440x900, and earlier the same day at 1280x720 with identical results. The sort-glyph fix changed no gate’s numbers, checked rather than assumed. portal.html’s noReference reads 10 where an earlier run said 9 because the portal RENDERS this ledger and its own content moved between runs -- see _portal. A CLAIM FROM THE EARLIER ENTRY IS WRONG AND IS CORRECTED HERE. It said none of the divergences is width-dependent. That held across 1280 and 1440, which sit in the same Carbon breakpoint band, and fails at 1671, where the sink reports 20 rather than 17. The three extra are two more toast-notification__close-button margins, which are auto margins and so are whatever the width makes them, and css-grid--narrow padding, where --rux-grid-margin resolves to 24px in the band above the one the capture was taken in. Neither is a defect, and the general fact is the useful one: check-spacing compares live computed values against captures taken at ONE unrecorded viewport, so any breakpoint-scoped or auto-computed value will diverge away from that width. check-a11y ran in BOTH themes on all eight pages, asserted each time from the resolved --rux-field-hover token (#e8e8e8 white / #333333 g100). check-spacing and check-runtime-classes ran in white only, sound because neither reads a colour. check-rendered does both themes itself; check-behaviour passed 18 of 18. THE SIX CONDITIONS: focus verified per page via document.hasFocus() and, for check-a11y, via focusRingChecked -- empty-state once reported focusRingChecked FALSE and that reading was discarded and retaken. check-runtime-classes ran first on each untouched page. The pointer was parked off content and the hover chain recorded. TWO RED RUNS, both on the sink: a singleton class removed from the live DOM was reported stripped with its section and element and cleared on restore; the checkbox focus-ring recipe produced exactly the 12 findings the sink-check skill records. THE FIRST RED RUN FOUND A BLIND SPOT: check-runtime-classes compares SETS of class names, so a class stripped from some but not all of its elements is invisible to it. See _visual for what opening the pages found that none of this did.",
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 6 notes · focusRingChecked true · clean in white AND g100"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 3 added (data-table--selected, side-nav__overlay-active, table-sort--active)"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 1 added (table-sort--active, the sort module marking the active button)"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "0 stripped · 0 added"
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 278 · matched 261 · diverges 17 · noReference 145"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 26 · matched 23 · diverges 3 · noReference 10"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 21 · matched 20 · diverges 1 · noReference 3"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 61 · matched 58 · diverges 3 · noReference 11"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 54 · matched 52 · diverges 2 · noReference 4"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 59 · matched 58 · diverges 1 · noReference 5"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 32 · matched 30 · diverges 2 · noReference 5"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "checked 29 · matched 27 · diverges 2 · noReference 4"
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "34 sections · emptySvgs 0 · uaStyled 0 · collapsed none · escaped none · nothingToMeasure [spacing] · BOTH themes"
     }
   },
@@ -139,8 +139,9 @@
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "c4509d2",
+      "commit": "0d10eaa",
       "result": "18 of 18 cases passing"
     }
-  }
+  },
+  "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark."
 }
