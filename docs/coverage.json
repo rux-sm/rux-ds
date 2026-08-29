@@ -113,6 +113,10 @@
       "hit": 19,
       "own": 21
     },
+    "badge-indicator": {
+      "hit": 2,
+      "own": 2
+    },
     "pagination": {
       "hit": 10,
       "own": 10

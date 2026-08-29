@@ -89,15 +89,15 @@ reports the other four and which pages each has been run against.
 
 | | |
 |---|---|
-| Components | **32 / 75 compiled** in 35 modules — `docs/inventory.md` decides all 75 |
+| Components | **33 / 75 compiled** in 36 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 611 `--rux-*` · 1,127 `.rux--*` |
-| Kitchen sink | 33 sections · **518** classes with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **501 / 735 (68%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | 611 `--rux-*` · 1,128 `.rux--*` |
+| Kitchen sink | 34 sections · **525** classes with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **503 / 737 (68%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
-| Size | 607 KB raw · 546 KB min · **55.8 KB gzipped** |
+| Size | 608 KB raw · 548 KB min · **56.3 KB gzipped** |
 | Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.

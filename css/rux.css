@@ -1,4 +1,19 @@
 @charset "UTF-8";
+/*!
+ * rux-ds — a framework-free design system derived from the Carbon Design System
+ * by subtraction. Not endorsed by or affiliated with IBM.
+ *
+ * Copyright 2026 rux
+ * Licensed under the Apache License, Version 2.0. See LICENSE.
+ *
+ * Contains rules compiled from @carbon/styles, with the class and custom-property
+ * prefix changed at build time, the component set reduced, and two of four themes
+ * kept:
+ *   Carbon Design System, Copyright IBM Corp. 2015, 2026
+ *   Licensed under the Apache License, Version 2.0
+ *
+ * Carbon's own Sass headers do not survive compilation. See NOTICE.
+ */
 html,
 body,
 div,
@@ -2329,6 +2344,30 @@ li.rux--accordion__item--disabled:last-of-type {
 [dir=rtl] .rux--accordion--start .rux--accordion__title {
   margin-inline-end: 0;
   padding-inline-start: 0;
+}
+
+.rux--badge-indicator {
+  font-size: var(--rux-helper-text-01-font-size, 0.75rem);
+  line-height: var(--rux-helper-text-01-line-height, 1.33333);
+  letter-spacing: var(--rux-helper-text-01-letter-spacing, 0.32px);
+  position: absolute;
+  display: flex;
+  padding: 0 0.25rem 0.125rem;
+  border-radius: 100px;
+  background: var(--rux-support-error, #da1e28);
+  color: var(--rux-text-on-color, #ffffff);
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  margin-block-start: 0.5rem;
+  margin-inline-end: 0.5rem;
+  max-block-size: 1rem;
+  min-block-size: 0.5rem;
+  min-inline-size: 0.5rem;
+}
+
+.rux--badge-indicator--count {
+  margin-block-start: 0.25rem;
+  margin-inline-end: 0.25rem;
 }
 
 @keyframes rux--hide-feedback {

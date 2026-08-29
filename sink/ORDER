@@ -17,6 +17,7 @@ search
 number
 tile
 notification
+badge-indicator
 loading
 tabs
 table

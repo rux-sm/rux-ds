@@ -22,7 +22,7 @@ by compiling it. Measured 2026-08-28:
 | Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **6.6 KB** | — |
 | Foundation only — 2 themes | 71 KB | **7.9 KB** | — |
 | Lean — 22 components, 2 themes | 375 KB | **~39 KB** | see note |
-| **Shipped — 31 components / 34 modules, 2 themes** | 546 KB | **55.6 KB** | 1,112 |
+| **Shipped — 33 components / 36 modules, 2 themes** | 548 KB | **56.3 KB** | 1,128 |
 | Shipped set — 4 themes | 590 KB | **56.4 KB** | 1,112 |
 | Full Carbon — 75 components / 79 modules, 4 themes | 881 KB | **87.6 KB** | 1,644 |
 
@@ -173,7 +173,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it — **measured +0.3 KB gzipped** |
 | `aspect-ratio` | **DEFER** | 1 | 12 | 0 | 1 KB layout primitive; Phase 6 may want it — **measured +0.1 KB gzipped** |
 | `stack` | **KEEP** | 1 | 15 | 1 | restored 2026-08-28 — two templates had no vertical rhythm without it. Item 4 |
-| `badge-indicator` | **DEFER** | 1 | 2 | 0 | 1 KB; pairs with a notification affordance in the shell — **measured +0.1 KB gzipped** |
+| `badge-indicator` | **KEEP** | 1 | 2 | 0 | restored 2026-08-29 — the shell ships a Notifications button and the system could not express an unread count at all. **Measured +0.1 KB gzipped / 2 classes**, both exercised. Carbon renders it only as the last child of an icon-only button, which supplies its containing block |
 | `fluid-multiselect` | **CUT** | 124 | 362 | 0 | fluid-* family; 124 KB alone, the largest single component |
 | `fluid-combo-box` | **CUT** | 107 | 307 | 1 | fluid-* family: a duplicate input treatment (§4.2) |
 | `fluid-dropdown` | **CUT** | 107 | 307 | 0 | fluid-* family |
@@ -203,7 +203,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
 
-**32 KEEP · 15 DEFER · 28 CUT** — 75 rows, every row decided.
+**33 KEEP · 14 DEFER · 28 CUT** — 75 rows, every row decided.
 
 ---
 

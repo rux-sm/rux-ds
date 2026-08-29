@@ -132,6 +132,17 @@ const KNOWN = {
     + 'STYLED wrapper the same note used to omit, is present as of 2026-08-28.'],
   'table:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
   'table:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  // Restored 2026-08-29. Carbon only ever renders a badge on an icon button
+  // that also carries a hover hint, so all four captures wrap the pair in the
+  // tooltip chrome. The fragment declines it for the reason the sink declines it
+  // everywhere — the popover is positioned by floating-ui, which is Phase 5
+  // behaviour this project has not written — and says so in its own comment.
+  'badge-indicator:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'badge-indicator:badge-indicator': [TOOLTIP_CHROME,
+    'the badge sits inside the same declined icon-tooltip; the BUTTON that gives it its '
+    + 'containing block is present, which is the ancestor that positions it'],
+  'badge-indicator:badge-indicator--count': [TOOLTIP_CHROME,
+    'as badge-indicator — the count variant is the same element with a number in it'],
   'table:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'table:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'ui-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
