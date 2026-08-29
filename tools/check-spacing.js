@@ -51,6 +51,32 @@
 //   modal-header__heading     a percentage resolving against three different
 //                             modal widths. Carbon's 91.9141px is itself resolved.
 //
+// ALL TWELVE WERE TRIAGED ON 2026-08-28 AND NONE WAS A DEFECT. The causes, in
+// order of how often they came up:
+//
+//   4  SAME CLASS SET, DIFFERENT ANCESTOR. This is the tool's real weakness and
+//      it is structural: the table is keyed on the class set alone, so
+//      `form-requirement` inside a checkbox-group and `form-requirement` in a
+//      plain form are one key. Carbon's own rule zeroes the top margin in the
+//      first case; the reference happened to record the second. Same for
+//      table-header-label, the toast close button, and link--disabled — where
+//      Carbon's plain `link` computes BOTH inline-flex and flex, and only the
+//      data-table context reached the table.
+//   3  THE SINK'S OWN DEMO LAYOUT. css-grid and data-table-container carry inline
+//      `margin-block-end` and `display:grid` from the fragment, to lay the
+//      specimen out. Not the component.
+//   3  A PERCENTAGE RESOLVING. modal-header__heading against three modal widths;
+//      Carbon's 91.9141px is itself a resolved percentage.
+//   1  CARBON'S OWN STATE RULE. `header__menu-toggle:not(.__hidden) ~ header__name`
+//      sets 0.5rem. Our hamburger is visible; the capture's was hidden.
+//   1  ONE CONTEXT RECORDED. stack-horizontal at scale-6 is inline-grid in the
+//      story that reached the harvest and grid on the bare class. Both are Carbon.
+//
+// So the honest reading of a clean-ish run: the divergences are mostly the
+// REFERENCE being thin, not the system being wrong. That is worth knowing before
+// anyone treats this as a gate — it belongs beside check-rendered as a diagnostic
+// a person reads, not in npm run verify.
+//
 // The lesson for the next reader: check what state each side was in before
 // calling anything a defect. The tool's value is that the list is short and
 // investigable, not that every row is wrong.
@@ -147,16 +173,24 @@
     }
     checked++;
     if (variants.some(v => diffOf(ours, v.values).length === 0)) { matched++; continue; }
-    // Report against the CLOSEST variant — the one differing in fewest properties.
-    const closest = variants
-      .map(v => ({ v, diff: diffOf(ours, v.values) }))
-      .sort((a, b) => a.diff.length - b.diff.length)[0];
+    // A PROPERTY DIVERGES ONLY IF IT DIFFERS FROM EVERY VARIANT. Reporting the
+    // closest variant's diff was wrong and said so out loud: radio-button__appearance
+    // has five recorded variants, one of them carrying the exact margin-inline-end
+    // this page computes, and the row still named that property because no single
+    // variant matched the whole set. Whole-set matching is right for deciding
+    // whether to report; it is the wrong unit for saying WHAT is wrong.
+    const perProperty = [...new Set(variants.flatMap(v => Object.keys(v.values))
+      .concat(Object.keys(ours)))].sort()
+      .filter(k => !isPercent(ours[k]) && !variants.some(v => isPercent(v.values[k])))
+      .filter(k => !variants.some(v => sameValue(ours[k], v.values[k])));
+    if (!perProperty.length) { matched++; continue; }   // every property matches some variant
     diverges.push({
       class: sig,
       where: el.closest('.ks-sec')?.id ?? '(page)',
-      differs: closest.diff.join(' · '),
+      differs: perProperty.map(k => `${k}: ours ${ours[k] ?? '—'} · Carbon `
+        + [...new Set(variants.map(v => v.values[k] ?? '—'))].join('/')).join(' · '),
       variants: variants.length,
-      seen: closest.v.seen[0] ?? '?',
+      seen: variants[0].seen[0] ?? '?',
     });
   }
 
