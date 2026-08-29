@@ -93,7 +93,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 | 5 | No component → fragment → template index for a consumer | on record, §4.7 | `docs/roadmap.md` §4.7 — Phase 7, unstarted |
 | 6 | No version, no tags, no changelog; consumers pin to a SHA | **filed §8.2** | `docs/roadmap.md` §8.2 · README decision table |
 | 7 | `check-co-classes` prints no path; `check-coverage` has no per-file axis | on record | `gates.mjs` `knownGap` |
-| 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | **filed §4.6** | `docs/roadmap.md` §4.6 · README decision table |
+| 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | **CLOSED 2026-08-29** | **RESOLVED by deciding, not by fixing** — archived to `~/Developer/_archive/` and deleted. §4.6's entry is now the record and stands alone |
 | 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | **CLOSED 2026-08-29** | **FIXED at source** — `gates.mjs` now reads 39 · 6, plus the module line |
 | 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
 | 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | **filed** | `docs/gate-coverage.json` `_portal` |

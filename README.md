@@ -80,7 +80,7 @@ was verified against.
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules, the 15th gate. There is no `tests/` directory at all | roadmap §4.8 |
 | `build-portal`'s icon assertion is a real check outside the registry — fifteenth gate or not | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
-| `dashboard.html` is untracked — §4.6 exit evidence a fresh clone does not have | roadmap §4.6 |
+| Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates | roadmap §4.6 |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`
