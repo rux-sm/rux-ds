@@ -1307,6 +1307,43 @@ alone, without inventing a class.
 >
 > **Two samples, both by the same author who knew the traps.** That is the standing
 > weakness of this test and no amount of re-running by me fixes it.
+>
+> **Third attempt, 2026-08-28 — MET, and for the first time not by the author.** A fresh
+> Claude Code agent in a clean worktree — no conversation context, no trap list, only
+> what the repo records — was asked for an analytics dashboard: shell, four metric
+> tiles, an Overview/Details switcher, a table of recent events. 131 classes, none
+> invented, none unresolved; `check-classes` read the page alongside the templates and
+> counted 0 undefined, 0 stripped. Driven in a browser: tabs swap panels, the row
+> checkbox activates the batch bar, `check-runtime-classes` 0 stripped and 1 added
+> (`table-sort--active`, derived exactly as table-page's comment says).
+>
+> **The tile rule held against a reader who was never told it.** Bare `rux--tile` on the
+> white page, `rgb(244,244,244)`, visible — chosen because `detail-page.html` states the
+> condition, and the page's source comment cites it. That is what the first two samples
+> could not show: the templates teaching someone with no memory of the failures.
+>
+> **"From the templates alone" was NOT met literally, and the miss is the finding.** The
+> four-across responsive tile row came from `docs/carbon-react-dom.json`
+> (`elements-grid--subgrid`) — the sanctioned markup reference, but no template or
+> fragment demos a responsive column row. Nothing was invented; the templates simply do
+> not hold a metric-row idiom. Substitutions where the component is not compiled were
+> reasonable and recorded in the page: contained tabs for the content switcher, the
+> title stack for page-header. Before closing the phase, decide which reading the exit
+> criterion means: the templates alone (then a grid-row idiom is missing), or the repo
+> without inventing (then this attempt met it).
+>
+> **What the attempt surfaced beyond its page.** `check-a11y`'s 3 findings are inherited
+> byte-for-byte from `table-page.html`: the inactive batch bar ships
+> `aria-hidden="true"` over three focusable buttons, a state the sink never shows
+> because its bar is active — needs adjudicating against a running Carbon page. The
+> per-file gates cannot be pointed at a consumer page: `sources.mjs` reads `sink/` and
+> `templates/` only, and `check-ancestry`'s KNOWN is keyed by file, so a byte-compatible
+> copy of already-adjudicated markup fails in a new file. `npm run icons` rewrites only
+> `templates/*.html`, so a consumer page splices the sprite by hand and will drift
+> silently. And `CLAUDE.md` carried two stale rules the agent hit — fixed the same day.
+>
+> **Still one author of the test's design.** The prompt and the audit came from inside
+> the project; only the sample did not. Independent in execution, not yet in conception.
 
 **DECIDED 2026-08-28 — the kitchen sink does not use the UI shell as its own page
 chrome.** Asked directly, and recorded because the opposite is the intuitive answer:
