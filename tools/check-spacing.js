@@ -132,6 +132,38 @@
 // The fix is a false-NEGATIVE elimination, so every row it adds is a comparison
 // that should always have happened. It does not make the reference thicker.
 //
+// THE TEMPLATES WERE SWEPT ON 2026-08-29 — the first time — and produced 11
+// divergences across the six, none of them a defect. Four causes, and only the
+// last was new:
+//
+//   6  `content` at 288px against Carbon's 32px, once per template. That is the
+//      18rem indent each template writes in its own <head> to clear a side nav
+//      nested INSIDE the header, which templates/app-shell.html documents at
+//      length along with the grid offset that was tried and is wrong. The
+//      reference story puts no nav inside the header, so its content is not
+//      indented. Ours is deliberate and theirs is a different page.
+//   2  `table-header-label` and `tag--blue`, both already on this list from the
+//      sink — same class set, different ancestor.
+//   1  `form-item.checkbox-wrapper` at 3px against 6px, already adjudicated in
+//      roadmap §4.6: both values are Carbon's own, 0.375rem for the class and
+//      0.1875rem for `:last-of-type`, and the page reported its LAST wrapper
+//      against a recorded non-last one. Position is the dimension the key
+//      cannot hold.
+//   2  NEW — `stack-vertical.stack-scale-5` with no margin-block-start against
+//      Carbon's 32px, on empty-state and error-state. Checked at the source:
+//      `@carbon/styles/scss/layout/_stack.scss` sets NO margin at all, and the
+//      reference is a single sample from `getting-started-welcome--welcome`,
+//      Storybook's own welcome page. The 32px is that page's layout, not the
+//      component's — the same shape as elements-grid--overview's demo
+//      min-height, and the reverse of the sink's own inline demo margins
+//      already listed above. OURS IS CORRECT: a stack's rhythm is the
+//      container's gap, and Carbon zeroes its children's margins deliberately.
+//
+// So across all seven pages — 17 on the sink, 11 on the templates — twenty-eight
+// divergences and zero defects. That is worth stating plainly because the number
+// looks alarming and the tool's value is that the list is short and
+// investigable, not that any row is wrong.
+//
 // WHAT IT CANNOT SEE. Whether the value is RIGHT — only whether it matches
 // Carbon. A component we and Carbon both space wrongly passes. It also says
 // nothing about a class set absent from both sides, and nothing about anything

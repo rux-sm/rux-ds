@@ -1,5 +1,6 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
+  "_triage": "check-spacing 2026-08-29: 28 divergences across all seven pages, 0 defects. Causes recorded in tools/check-spacing.js's header -- 6 are each template's deliberate 18rem nav indent, 2 the stack margin that belongs to Storybook's welcome page rather than the component, and the rest were already on the sink's list. check-spacing is a diagnostic, not a verify gate.",
   "_measured": "2026-08-29 at 1440x900, theme white, following the six conditions in .claude/skills/sink-check/SKILL.md -- check-runtime-classes first on an untouched page, then a click for document.hasFocus(), pointer parked off content.",
   "check-a11y": {
     "kitchen-sink.html": { "date": "2026-08-29", "commit": "6fc79b2", "result": "0 findings · 6 notes · focusRingChecked true" },
