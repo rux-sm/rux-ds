@@ -20,7 +20,7 @@ import { join, extname } from 'node:path';
 
 // Declarations live in the built CSS; references may appear anywhere that ships.
 const DEFINES = ['css/rux.css', 'sink/harness.css'];
-const ROOTS = ['css/rux.css', 'sink/harness.css', 'kitchen-sink.html', 'templates'];
+const ROOTS = ['css/rux.css', 'sink/harness.css', 'kitchen-sink.html', 'portal.html', 'templates'];
 
 // Carbon custom properties its React/Lit layer sets at runtime and its light-DOM CSS
 // never declares. Each is unreachable from the markup we ship, and declaring a value

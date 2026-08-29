@@ -31,7 +31,7 @@ import { join, extname } from 'node:path';
 import { stems, compiled, classNames } from './lib/ownership.mjs';
 
 const inv = JSON.parse(readFileSync('docs/inventory.json', 'utf8'));
-const ROOTS = ['kitchen-sink.html', 'templates'];
+const ROOTS = ['kitchen-sink.html', 'portal.html', 'templates'];
 const BASELINE = 'docs/coverage.json';
 
 // The fluid-* components define no stem of their own — each is a `--fluid`

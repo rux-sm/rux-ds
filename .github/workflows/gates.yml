@@ -44,9 +44,9 @@ jobs:
       # dependency, and a failed build makes every later checker meaningless.
       - run: npm run verify
 
-      # The build writes tracked files. css/rux.css, css/rux.min.css and
-      # kitchen-sink.html are committed so the system is consumable from a raw
-      # URL with no build step — which only holds while they match their
+      # The build writes tracked files. css/rux.css, css/rux.min.css,
+      # kitchen-sink.html and portal.html are committed so the system is
+      # consumable from a raw URL with no build step — which only holds while they match their
       # sources. A clean tree after `verify` is the proof.
       #
       # assets/icons.svg is deliberately excluded: `npm run icons` quarries
@@ -54,8 +54,8 @@ jobs:
       # the sprite to compare against.
       - name: Committed build output is up to date
         run: |
-          if ! git diff --quiet -- css kitchen-sink.html; then
+          if ! git diff --quiet -- css kitchen-sink.html portal.html; then
             echo "::error::Committed build output is stale — run 'npm run verify' and commit the result."
-            git diff --stat -- css kitchen-sink.html
+            git diff --stat -- css kitchen-sink.html portal.html
             exit 1
           fi

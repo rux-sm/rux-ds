@@ -20,7 +20,7 @@ import { join, extname } from 'node:path';
 import { owner, compiled, classNames } from './lib/ownership.mjs';
 
 const CSS = 'css/rux.css';
-const ROOTS = ['kitchen-sink.html', 'templates'];
+const ROOTS = ['kitchen-sink.html', 'portal.html', 'templates'];
 // Phase 5 put class names in JAVASCRIPT, where the same failure is available:
 // js/modal.js selects `.rux--modal-container`, and a renamed class breaks it
 // silently — no build error, no test failure, just a modal that stops trapping

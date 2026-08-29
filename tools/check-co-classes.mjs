@@ -13,7 +13,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 const map = JSON.parse(readFileSync('docs/carbon-co-classes.json', 'utf8'));
-const ROOTS = ['kitchen-sink.html', 'templates'];
+const ROOTS = ['kitchen-sink.html', 'portal.html', 'templates'];
 
 function walk(p, out = []) {
   if (!statSync(p, { throwIfNoEntry: false })) return out;
