@@ -169,8 +169,16 @@ const templateCards = templates.map(t =>
             </a>
           </div>`).join('\n');
 
+// NO `--side-nav__item--icon` HERE, even though every item carries an icon.
+// That modifier does not mean "this item has an icon"; it means "this item's
+// SUBMENU sits under an icon", and its whole effect is to indent the nested
+// links to 4.5rem so they clear the parent's glyph. Put it on an item whose
+// direct child is a link and the 4.5rem lands on that link instead, pushing
+// its own icon to 72px and its text to 112px. Carbon's top-level icon links
+// are a bare `side-nav__item`; measured on the running fixed-side-nav-w-icons
+// story, 2026-08-29 — padding 16px, icon at 16px, text at 56px.
 const navItem = (id, label, ic, current) =>
-`      <li class="rux--side-nav__item${current ? ' rux--side-nav__item--active' : ''} rux--side-nav__item--icon">
+`      <li class="rux--side-nav__item${current ? ' rux--side-nav__item--active' : ''}">
         <a class="rux--side-nav__link" href="#${id}"${current ? ' aria-current="page"' : ''}>
           <div class="rux--side-nav__icon">${icon(ic, 20)}</div>
           <span class="rux--side-nav__link-text">${esc(label)}</span>
