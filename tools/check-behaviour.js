@@ -238,6 +238,30 @@
       `while open: ${expandedWhileOpen}, after close: ${trigger.getAttribute('aria-expanded')}`);
   })();
 
+  // ── tile: the collapsed cap is an inline value, and it round-trips ────────
+  // Confirmed on components-tile--expandable 2026-08-29: Carbon's collapsed
+  // tile carries style="max-height: 232px", expanding CLEARS it and adds
+  // tile--is-expanded, collapsing restores it. The fold is visibility:hidden
+  // and still occupies layout, which is why no class can express the height.
+  (() => {
+    const tile = q('#tile .rux--tile--expandable');
+    if (!tile) return record('tile', 'expand', false, 'no expandable tile here');
+    const capped = tile.style.maxHeight;
+    if (!capped) return record('tile', 'a collapsed tile carries an inline max-height',
+      false, 'no inline max-height at load — the fold was never measured');
+    record('tile', 'a collapsed tile carries an inline max-height', true, capped);
+
+    click(tile);
+    const openOk = has(tile, 'rux--tile--is-expanded') && tile.style.maxHeight === '';
+    record('tile', 'expanding clears the cap and marks the tile expanded',
+      openOk, `--is-expanded=${has(tile, 'rux--tile--is-expanded')}, maxHeight="${tile.style.maxHeight}"`);
+
+    click(tile);
+    record('tile', 'collapsing restores the same cap',
+      !has(tile, 'rux--tile--is-expanded') && tile.style.maxHeight === capped,
+      `maxHeight="${tile.style.maxHeight}" (was "${capped}")`);
+  })();
+
   // ── popover: the container is what opens ──────────────────────────────────
   // Confirmed on components-popover--tab-tip 2026-08-29: clicking the trigger
   // toggles popover--open on the CONTAINER and aria-expanded on the trigger,

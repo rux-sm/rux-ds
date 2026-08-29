@@ -55,6 +55,14 @@
    states. The Space fault was first written up here as typeahead swallowing the key;
    that was wrong, and the `case ' '` beside `case 'Enter'` was the actual cause.
 
+   THE SPACE EVIDENCE WAS RE-TAKEN 2026-08-29 AND THE FIRST RUN OF IT WAS WORTHLESS.
+   It used the browser tool's `key: "Space"`, which the tool does not map -- a listener on
+   the page recorded the keydown arriving with `key: ""`. So "Carbon ignores Space" had
+   been read off a keypress that never happened. Re-driven by TYPING a space instead,
+   which does arrive: on a closed dropdown with the field focused, aria-expanded stayed
+   "false" and aria-activedescendant stayed empty. The conclusion survived; the evidence
+   behind it did not, and only the second run is worth citing.
+
    NOT VERIFIED: the multiselect and combo-box forms. This drove the DROPDOWN, which is
    the only consumer whose field is select-only; a combo box has a text input and its own
    filtering, and nothing here should be read as covering it.

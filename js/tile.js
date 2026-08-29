@@ -29,9 +29,37 @@
    cancel itself out — the defect §4.1.9 records for toggle.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · expandable and selectable tiles are driven from the captured markup. The collapsed
-   height is measured from THIS page at load, not from Carbon -- see the note below on
-   why it cannot be a class.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-tile--expandable
+   and https://react.carbondesignsystem.com/iframe.html?id=components-tile--selectable
+
+   THE INLINE max-height IS CARBON'S, which is the claim this file most needed to defend
+   because writing an inline dimension is the thing ui-shell's note forbids. Carbon's
+   collapsed expandable tile carries `style="max-height: 232px"` on the tile itself, its
+   `tile-content__below-the-fold` computes `visibility: hidden` at 400px tall, and the
+   tile measures 232 against a 632 expanded. So the hidden fold really does occupy layout
+   and the collapsed height really cannot be a class. Expanding CLEARS the inline value
+   and adds `tile--is-expanded`; collapsing restores it. That is what setExpanded() does,
+   down to clearing rather than setting a value.
+
+   ALSO CONFIRMED: the expandable tile is a <button> carrying aria-expanded and
+   aria-controls; the selectable tile is a <div role="checkbox" aria-checked tabindex="0">
+   -- the div-pretending-to-be-a-control this file describes -- and selecting it adds
+   `tile--is-selected` alongside aria-checked, which is the pair setChecked() writes.
+   Enter toggles it.
+
+   SPACE ON THE SELECTABLE TILE IS UNRESOLVED and is left that way rather than written up.
+   Two runs disagreed -- one toggled, one did not -- which is most likely a focus artefact
+   between tool calls, not a Carbon behaviour. This module handles Space and Enter and
+   Carbon handles at least click and Enter, so nothing here is doing LESS than Carbon; the
+   question is only whether it does slightly more.
+
+   A NOTE ON METHOD THAT COST A WRONG MEASUREMENT ELSEWHERE: the browser tool's
+   `key: "Space"` is not mapped and arrives as `key: ""`. Typing a space works. js/list-box.js
+   records where that mattered.
+
+   NOT VERIFIED: the radio-tile form -- syncRadios() and the tile-group mirroring were not
+   driven -- and the resize re-measure.
    ========================================================================== */
 (() => {
   'use strict';
