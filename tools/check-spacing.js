@@ -77,6 +77,17 @@
 // anyone treats this as a gate — it belongs beside check-rendered as a diagnostic
 // a person reads, not in npm run verify.
 //
+// PARENT SIGNATURES WERE ADDED TO THE HARVEST TO FIX THAT, AND THE COUNT DID NOT
+// MOVE — still twelve. What changed is that the rows now say which comparison
+// they were: eight read `context: unmatched`, meaning the reference holds no
+// variant recorded under our ancestor and the comparison was context-blind. The
+// four that DID match a context are the percentage and state cases above.
+//
+// That is worth being plain about. The parent did not make the reference cover
+// our contexts; it made the tool admit when it does not. Covering them needs
+// Carbon to render the combination somewhere in its own stories, which is not
+// something this end can arrange.
+//
 // The lesson for the next reader: check what state each side was in before
 // calling anything a defect. The tool's value is that the list is short and
 // investigable, not that every row is wrong.
@@ -119,6 +130,24 @@
   // `rux--` is `cds--` renamed by $prefix and nothing else, which is the one rule
   // this whole project rests on. That is what makes the join legal.
   const toCarbon = sig => sig.replace(/\brux--/g, 'cds--');
+
+  // THE PARENT NARROWS THE MATCH, and without it four of the twelve divergences
+  // this tool first reported were the same class set in a different ancestor.
+  // Carbon writes descendant rules — `.checkbox-group__validation-msg
+  // .form-requirement` zeroes a margin the plain `.form-requirement` has — so
+  // comparing on the class set alone asks a question with two right answers.
+  //
+  // When the reference has a variant recorded under OUR parent, only those
+  // variants are compared. When it does not, every variant is compared and the
+  // row says `context: unmatched` — the comparison still happened, and the reader
+  // is told it was context-blind rather than left to assume it was not.
+  const parentSig = el => {
+    for (let n = el.parentElement; n; n = n.parentElement) {
+      const sig = [...n.classList].filter(c => c.startsWith('rux--')).join('.');
+      if (sig) return toCarbon(sig);
+    }
+    return '';
+  };
 
   // THREE KINDS OF DIFFERENCE THAT ARE NOT DISAGREEMENTS, and the first run
   // reported all three as findings before this existed.
@@ -172,25 +201,29 @@
       continue;
     }
     checked++;
-    if (variants.some(v => diffOf(ours, v.values).length === 0)) { matched++; continue; }
+    const mine = parentSig(el);
+    const inContext = variants.filter(v => (v.parents ?? []).includes(mine));
+    const compare = inContext.length ? inContext : variants;
+    if (compare.some(v => diffOf(ours, v.values).length === 0)) { matched++; continue; }
     // A PROPERTY DIVERGES ONLY IF IT DIFFERS FROM EVERY VARIANT. Reporting the
     // closest variant's diff was wrong and said so out loud: radio-button__appearance
     // has five recorded variants, one of them carrying the exact margin-inline-end
     // this page computes, and the row still named that property because no single
     // variant matched the whole set. Whole-set matching is right for deciding
     // whether to report; it is the wrong unit for saying WHAT is wrong.
-    const perProperty = [...new Set(variants.flatMap(v => Object.keys(v.values))
+    const perProperty = [...new Set(compare.flatMap(v => Object.keys(v.values))
       .concat(Object.keys(ours)))].sort()
-      .filter(k => !isPercent(ours[k]) && !variants.some(v => isPercent(v.values[k])))
-      .filter(k => !variants.some(v => sameValue(ours[k], v.values[k])));
+      .filter(k => !isPercent(ours[k]) && !compare.some(v => isPercent(v.values[k])))
+      .filter(k => !compare.some(v => sameValue(ours[k], v.values[k])));
     if (!perProperty.length) { matched++; continue; }   // every property matches some variant
     diverges.push({
       class: sig,
       where: el.closest('.ks-sec')?.id ?? '(page)',
       differs: perProperty.map(k => `${k}: ours ${ours[k] ?? '—'} · Carbon `
-        + [...new Set(variants.map(v => v.values[k] ?? '—'))].join('/')).join(' · '),
-      variants: variants.length,
-      seen: variants[0].seen[0] ?? '?',
+        + [...new Set(compare.map(v => v.values[k] ?? '—'))].join('/')).join(' · '),
+      context: inContext.length ? mine || '(root)' : 'unmatched',
+      variants: `${compare.length}/${variants.length}`,
+      seen: compare[0].seen[0] ?? '?',
     });
   }
 

@@ -374,6 +374,24 @@
     minBlockSize: 'auto' };
   const ALSO_DEFAULT = { minBlockSize: '0px' };
 
+  // THE PARENT IS RECORDED BECAUSE THE CLASS SET ALONE IS NOT THE QUESTION.
+  // Keyed on its own classes, `form-requirement` inside a checkbox-group and
+  // `form-requirement` in a plain form are one key, and Carbon's own rule zeroes
+  // the top margin in the first case — so the table said they disagreed with each
+  // other. Four of the twelve divergences check-spacing reported on 2026-08-28
+  // were that, and none was a defect.
+  //
+  // The NEAREST CLASSED ANCESTOR, not the whole chain: it is what Carbon's own
+  // descendant selectors are usually written against, and a full chain would make
+  // almost every element unique and the table useless for matching.
+  const parentSig = el => {
+    for (let n = el.parentElement; n; n = n.parentElement) {
+      const sig = [...n.classList].filter(c => PREFIX.test(c)).join('.');
+      if (sig) return sig;
+    }
+    return '';
+  };
+
   const spacingCapture = doc => {
     const win = doc.defaultView;
     const out = [];
@@ -385,7 +403,7 @@
       for (const prop of SPACING_PROPS)
         if (c[prop] && c[prop] !== DEFAULTS[prop] && c[prop] !== ALSO_DEFAULT[prop])
           values[prop] = c[prop];
-      if (Object.keys(values).length) out.push({ sig, values });
+      if (Object.keys(values).length) out.push({ sig, parent: parentSig(el), values });
     }
     return out;
   };
@@ -618,10 +636,14 @@
     const table = {};
     for (const [story, records] of Object.entries(out)) {
       if (verdictOf(records)) continue;
-      for (const { sig, values } of records) {
+      for (const { sig, parent, values } of records) {
         const key = JSON.stringify(values);
         const entry = (table[sig] ??= {});
-        (entry[key] ??= { values, seen: [] });
+        (entry[key] ??= { values, parents: [], seen: [] });
+        // Parents are capped like `seen`: this is a lookup, not a census. Five is
+        // enough to tell "always this context" from "anywhere".
+        if (parent && entry[key].parents.length < 5 && !entry[key].parents.includes(parent))
+          entry[key].parents.push(parent);
         if (entry[key].seen.length < 3 && !entry[key].seen.includes(story))
           entry[key].seen.push(story);
       }
