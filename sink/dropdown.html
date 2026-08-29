@@ -70,6 +70,42 @@
       </div>
     </div>
 
+    <!-- OPENS UPWARD · --list-box--up, from
+         components-dropdown--experimental-auto-align, where it sits on the
+         dropdown root beside list-box. The story pairs it with `autoalign`,
+         which is floating-ui deciding the direction at runtime; the modifier
+         alone is pure CSS and flips the menu above the field, so it is shown
+         open here and the autoalign class is left off — the same call the
+         popover fragment makes about --auto-align, and for the same reason.
+
+         WHAT THIS SPECIMEN CANNOT SHOW, and it is not particular to --up.
+         js/list-box.js adopts a list box shipped `--expanded` so the first click
+         closes rather than re-opens it, and by the time the page settles the
+         root has lost `--open` and `--expanded` and the menu is `hidden`. Both
+         expanded dropdowns here read 0px tall at rest. The classes are in the
+         static markup, so check-coverage counts them, but a reader never sees
+         the state — press the field to open it. That gap belongs to the
+         specimen and the module together and is recorded, not fixed here. -->
+    <div class="rux--list-box__wrapper">
+      <label class="rux--label" id="dd-8-label">Expanded upward</label>
+      <div class="rux--dropdown rux--list-box rux--list-box--up rux--dropdown--lg rux--layout--size-lg rux--dropdown--open rux--list-box--expanded">
+        <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="dd-8-label" aria-expanded="true" aria-haspopup="listbox" aria-controls="dd-8-menu">
+          <span class="rux--list-box__label">Option A</span>
+          <div class="rux--list-box__menu-icon rux--list-box__menu-icon--open">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </button>
+        <ul id="dd-8-menu" class="rux--list-box__menu" role="listbox">
+          <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Option A</div>
+          </li>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option B</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div class="rux--list-box__wrapper">
       <label class="rux--label" id="dd-3-label">Invalid</label>
       <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg rux--dropdown--invalid rux--list-box--invalid" data-invalid>

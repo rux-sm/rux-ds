@@ -58,6 +58,21 @@
             <a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate-end">Overview</span></a>
           </li>
           <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Reports</span></a></li>
+          <!-- SUBMENU. components-ui-shell-header--header-w-navigation puts the
+               trigger and the list as SIBLINGS inside one li.header__submenu: an
+               anchor carrying __menu-title with the arrow svg, then ul.header__menu.
+               The arrow is a child of the anchor, not of the li. -->
+          <li class="rux--header__submenu">
+            <a class="rux--header__menu-item rux--header__menu-title" href="#ui-shell" aria-expanded="false">
+              <span class="rux--text-truncate-end">Manage</span>
+              <svg class="rux--header__menu-arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </a>
+            <ul class="rux--header__menu">
+              <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Users</span></a></li>
+              <li><a class="rux--header__menu-item rux--header__menu-item--current" href="#ui-shell" aria-current="page"><span class="rux--text-truncate-end">Billing</span></a></li>
+              <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Regions</span></a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <div class="rux--header__global">
@@ -74,6 +89,16 @@
       <div class="rux--side-nav__overlay" style="position:absolute;block-size:calc(22rem - 3rem);inline-size:100%"></div>
       <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
         <ul class="rux--side-nav__items">
+          <!-- The header nav MIRRORED into the side nav, which is how Carbon
+               reaches it below the breakpoint: header-w-navigation nests a
+               ul.side-nav__header-navigation inside side-nav__items holding the
+               same header__menu-item anchors. It is a nested UL, not an li, and
+               __header-divider is a MODIFIER on that same UL rather than a
+               separate element — check-tags caught it on an li of its own. -->
+          <ul class="rux--side-nav__header-navigation rux--side-nav__header-divider">
+            <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Overview</span></a></li>
+            <li><a class="rux--header__menu-item" href="#ui-shell"><span class="rux--text-truncate-end">Reports</span></a></li>
+          </ul>
           <!-- Expandable category — active, with current page -->
           <li class="rux--side-nav__item rux--side-nav__item--active rux--side-nav__item--icon">
             <button class="rux--side-nav__submenu" type="button" aria-expanded="true">
@@ -115,8 +140,49 @@
               <span class="rux--side-nav__link-text">Settings</span>
             </a>
           </li>
+          <li class="rux--side-nav__divider"></li>
+          <!-- --item--large is the taller row shape from
+               components-ui-shell-sidenav--side-nav-w-large-side-nav-items. -->
+          <li class="rux--side-nav__item rux--side-nav__item--large">
+            <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Support</span></a>
+          </li>
         </ul>
       </nav>
+    </header>
+  </div>
+
+  <!-- HEADER PANEL AND SWITCHER · components-ui-shell-header--header-w-actions-and-switcher.
+       The panel is a SIBLING of the header's content, not a child of
+       __global: a div.header-panel holding ul.switcher. Its expanded state is
+       a class on the panel, not on the action that opened it — the @action-active
+       recipe shows --expanded on the panel while the button keeps
+       __action--active. Both are shown here, open, because a collapsed panel
+       renders nothing and there is no trigger behaviour in this fragment.
+
+       switcher__item--divider is an <hr> inside a plain li, NOT a modifier on
+       an item: the divider is a sibling of the links, so it sits in an li of
+       its own with no __item class. -->
+  <div class="ks-label" style="margin-block-start:1.5rem">header panel · switcher, expanded</div>
+  <div data-theme="g100" style="position:relative;height:20rem;border:1px solid var(--rux-border-subtle);overflow:hidden;background:var(--rux-background)">
+    <header class="rux--header" style="position:absolute" aria-label="Rux DS switcher">
+      <a class="rux--header__name" href="#ui-shell"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+      <div class="rux--header__global">
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="true"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
+      </div>
+      <!-- Same demo override the side nav and the scrim carry: Carbon's panel is
+           position:fixed with inset-block-end:0, which against this 20rem
+           sandbox's 3rem header resolves to zero height. It measured 256x0 and
+           the switcher rendered nothing. -->
+      <div class="rux--header-panel rux--header-panel--expanded" style="position:absolute;block-size:calc(20rem - 3rem)">
+        <ul class="rux--switcher" aria-label="Applications">
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="#ui-shell">Deployments</a></li>
+          <li><hr class="rux--switcher__item--divider"></li>
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="#ui-shell">Billing</a></li>
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="#ui-shell">Audit log</a></li>
+          <li><hr class="rux--switcher__item--divider"></li>
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="#ui-shell">Settings</a></li>
+        </ul>
+      </div>
     </header>
   </div>
 </section>

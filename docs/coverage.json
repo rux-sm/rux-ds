@@ -21,10 +21,6 @@
       "hit": 14,
       "own": 25
     },
-    "ui-shell": {
-      "hit": 32,
-      "own": 56
-    },
     "text-area": {
       "hit": 10,
       "own": 17
@@ -32,10 +28,6 @@
     "overflow-menu": {
       "hit": 12,
       "own": 20
-    },
-    "list-box": {
-      "hit": 17,
-      "own": 28
     },
     "radio-button": {
       "hit": 14,
@@ -53,9 +45,9 @@
       "hit": 12,
       "own": 19
     },
-    "list": {
-      "hit": 22,
-      "own": 34
+    "list-box": {
+      "hit": 18,
+      "own": 28
     },
     "tile": {
       "hit": 17,
@@ -76,6 +68,10 @@
     "checkbox": {
       "hit": 17,
       "own": 25
+    },
+    "list": {
+      "hit": 23,
+      "own": 34
     },
     "modal": {
       "hit": 17,
@@ -104,6 +100,10 @@
     "button": {
       "hit": 18,
       "own": 22
+    },
+    "ui-shell": {
+      "hit": 46,
+      "own": 56
     },
     "breadcrumb": {
       "hit": 5,
