@@ -40,9 +40,23 @@
 // With both, the seven-site defect that this file's own reference found by hand
 // is now caught by the file.
 //
+// COVERAGE IS NOT ENFORCEMENT, and the second round moved only the first.
+// Adding twelve more configured captures and a subset match took UNCOVERED from
+// 13 slots to 4 — we now know what Carbon draws in the pagination arrows, the
+// open list-box chevron, the side-nav submenu chevron, inline loading's error
+// and number's warn, and ours agrees in every case. The enforced count did not
+// move off 33, because each of those rests on a SINGLE story and has no
+// siblings to vouch for it. Knowing more and checking more are different
+// things, and only the first happened.
+//
 // WHAT IT CANNOT SEE, stated because a green run is otherwise easy to over-read:
-//   * 13 of our icon slots still have no Carbon capture at all and are reported
-//     UNCOVERED, never as passing.
+//   * 4 slots have no Carbon capture that can answer, and are reported
+//     UNCOVERED, never as passing: an ACTIVE header action, which no story
+//     renders; a bare `pagination__button`, which sits under both the forward
+//     and backward captures and so matches neither; and the password visibility
+//     toggle, where Carbon puts the class on the svg and we put it on the
+//     button, so there is no shared key to compare.
+//   * 25 more are captured and recorded but under the bar.
 //   * a slot Carbon fills from a prop, where there is no right answer to know.
 //   * whether the icon is the right SIZE, or positioned correctly, or visible.
 //
@@ -127,24 +141,61 @@ function iconSites(html) {
 const wrong = [], uncovered = new Map(), unenforced = new Map();
 let checked = 0;
 
+// SUBSET MATCH, for when Carbon's element carries a modifier ours does not.
+// Our `header__action.header__menu-trigger.header__menu-toggle` and Carbon's
+// `…toggle.header__menu-toggle__hidden` are the same slot in different states;
+// `pagination__button.btn.btn--ghost.btn--icon-only` is Carbon's
+// `pagination__button.pagination__button--forward.…` with the direction left
+// off. An exact key misses both and reports UNCOVERED, which understates what
+// the capture knows.
+//
+// ONE DIRECTION ONLY, and every candidate must agree. Ours ⊆ Carbon's is a
+// specialisation we can read; Carbon's ⊆ ours is not, and would let the generic
+// `btn.btn--ghost.btn--icon-only` — which is a PAGINATION arrow in the captures
+// — vouch for any ghost icon button on the page. And where several Carbon slots
+// are supersets and they disagree about the glyph, the answer is genuinely
+// unknown: a bare `pagination__button` sits under both the forward and the
+// backward capture, so it matches neither.
+const CARBON = Object.entries(slots).map(([k, v]) => [k, new Set(k.split('.')), v]);
+const subsetCache = new Map();
+function bySubset(slot) {
+  if (subsetCache.has(slot)) return subsetCache.get(slot);
+  const mine = new Set(slot.split('.'));
+  const supersets = CARBON.filter(([, set]) => [...mine].every(c => set.has(c)));
+  // One candidate is the answer whatever it says — including "Carbon draws six
+  // different glyphs here", which is a capture and belongs under the bar rather
+  // than in UNCOVERED. Several candidates only answer when the single-glyph ones
+  // agree.
+  let hit = null;
+  if (supersets.length === 1) hit = supersets[0];
+  else if (supersets.length > 1) {
+    const single = supersets.filter(([, , v]) => v.drawings === 1);
+    if (new Set(single.map(([, , v]) => v.glyphs[0])).size === 1) hit = single[0];
+  }
+  subsetCache.set(slot, hit);
+  return hit;
+}
+
 for (const file of markupFiles()) {
   for (const { slot, use } of iconSites(readFileSync(file.path, 'utf8'))) {
-    const ref = slots[slot];
+    let ref = slots[slot], matched = slot;
+    if (!ref) { const hit = bySubset(slot); if (hit) { [matched, , ref] = hit; } }
     if (!ref) { push(uncovered, slot, `${use} · ${file.name}`); continue; }
-    if (!ENFORCED.has(slot)) { push(unenforced, slot, `${use} · ${file.name}`); continue; }
+    if (!ENFORCED.has(matched)) { push(unenforced, `${slot}\u0000${matched}`, use); continue; }
     checked++;
     if (ref.glyphs.includes(use)) continue;
-    wrong.push({ file: file.name, slot, ours: use, carbon: ref.glyphs.join(' / '), ref });
+    wrong.push({ file: file.name, slot, matched, ours: use, carbon: ref.glyphs.join(' / '), ref });
   }
 }
 function push(map, k, v) { (map.get(k) ?? map.set(k, []).get(k)).push(v); }
 
 for (const w of wrong) {
   console.log(`\n  ${w.file}  ·  ${w.slot}`);
+  if (w.matched !== w.slot) console.log(`     matched Carbon's ${w.matched} by subset`);
   console.log(`     ours    #i-${w.ours}`);
   const why = w.ref.corroboration[0] >= 3
     ? `one glyph across ${w.ref.corroboration[0]}+ stories`
-    : `one glyph across ${byRole.get(role(w.slot))?.get(w.ref.glyphs[0])} sibling ${role(w.slot)} slots`;
+    : `one glyph across ${byRole.get(role(w.matched))?.get(w.ref.glyphs[0])} sibling ${role(w.matched)} slots`;
   console.log(`     Carbon  ${w.carbon}   (${why})`);
 }
 
@@ -153,8 +204,11 @@ if (showAll) {
   for (const [slot, uses] of [...uncovered].sort())
     console.log(`     ${slot}  ${[...new Set(uses.map(u => u.split(' · ')[0]))].join(' ')}`);
   console.log(`\n  RECORDED BUT NOT ENFORCED — Carbon draws more than one glyph here, or too few stories back it`);
-  for (const [slot, uses] of [...unenforced].sort())
-    console.log(`     ${slot}  ${[...new Set(uses.map(u => u.split(' · ')[0]))].join(' ')}  ·  ${slots[slot].rule}`);
+  for (const [key, uses] of [...unenforced].sort()) {
+    const [slot, matched] = key.split('\u0000');
+    const via = matched === slot ? '' : `  (via Carbon's ${matched})`;
+    console.log(`     ${slot}${via}  ${[...new Set(uses)].join(' ')}  ·  ${slots[matched].rule}`);
+  }
 }
 
 console.log(`\n  ${ENFORCED.size} enforced slots · ${checked} icon sites checked · ${wrong.length} wrong glyph`);

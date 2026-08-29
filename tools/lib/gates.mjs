@@ -170,10 +170,10 @@ export const GATES = [
     // and reverting it does NOT turn this red. `states` recipes for the invalid
     // and warning states would raise those slots over the bar; until then the
     // reference is worth more than the check.
-    blindTo: '13 of our icon slots have no Carbon capture at all and are reported '
-      + 'UNCOVERED rather than passed · 18 more are captured but under the '
-      + 'corroboration bar · a slot Carbon fills from a prop, where there is no '
-      + 'right answer · size, position and visibility of the icon',
+    blindTo: '4 slots have no Carbon capture that can answer and are reported '
+      + 'UNCOVERED rather than passed · 25 more are captured and recorded but under '
+      + 'the corroboration bar, each resting on a single story · a slot Carbon fills '
+      + 'from a prop, where there is no right answer · size, position and visibility',
     reads: 'per-file',
     fileTargets: ROOTS,
     pageTargets: [],
@@ -184,7 +184,7 @@ export const GATES = [
       + 'fix to `#i-error--filled` (7) — all verified 2026-08-29. That last one did '
       + 'NOT fire before ICON_STATES and the sibling rule, which is why both exist.',
     sideEffects: null,
-    baseline: '33 enforced slots · 102 icon sites checked · 0 wrong glyph · 13 uncovered · 18 under the bar',
+    baseline: '33 enforced slots · 104 icon sites checked · 0 wrong glyph · 4 uncovered · 25 under the bar',
   },
   {
     id: 'check-co-classes',

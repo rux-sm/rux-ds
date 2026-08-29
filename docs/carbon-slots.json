@@ -53,6 +53,30 @@
       ],
       "rule": "6 different glyphs"
     },
+    "btn.btn--ghost.btn--disabled.btn--icon-only": {
+      "kind": "in",
+      "glyphs": [
+        "caret--left"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "btn.btn--ghost.btn--icon-only": {
+      "kind": "in",
+      "glyphs": [
+        "caret--right"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
     "checkbox__invalid-icon": {
       "kind": "own",
       "glyphs": [
@@ -77,6 +101,22 @@
       "rule": "one glyph but only 1 story/stories",
       "from": "ICON_STATES"
     },
+    "header__action.btn.btn--lg.layout--size-lg.btn--ghost.btn--icon-only": {
+      "kind": "in",
+      "glyphs": [
+        "search",
+        "notification",
+        "switcher"
+      ],
+      "drawings": 3,
+      "corroboration": [
+        1,
+        1,
+        1
+      ],
+      "rule": "3 different glyphs",
+      "from": "ICON_STATES"
+    },
     "header__action.header__menu-trigger.header__menu-toggle.header__menu-toggle__hidden": {
       "kind": "in",
       "glyphs": [
@@ -99,10 +139,34 @@
       ],
       "rule": "one glyph in 3+ stories"
     },
+    "icon-visibility-on": {
+      "kind": "own",
+      "glyphs": [
+        "view"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        2
+      ],
+      "rule": "one glyph but only 2 story/stories",
+      "from": "ICON_STATES"
+    },
     "inline-loading__checkmark-container": {
       "kind": "own",
       "glyphs": [
         "checkmark--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "inline-loading--error": {
+      "kind": "own",
+      "glyphs": [
+        "error--filled"
       ],
       "drawings": 1,
       "corroboration": [
@@ -169,6 +233,18 @@
       ],
       "rule": "one glyph in 3+ stories"
     },
+    "list-box__menu-icon.list-box__menu-icon--open": {
+      "kind": "in",
+      "glyphs": [
+        "chevron--down"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        2
+      ],
+      "rule": "one glyph but only 2 story/stories",
+      "from": "ICON_STATES"
+    },
     "menu-item__icon": {
       "kind": "in",
       "glyphs": [
@@ -227,6 +303,18 @@
       ],
       "rule": "2 different glyphs"
     },
+    "number__invalid.number__invalid--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
     "overflow-menu__icon": {
       "kind": "own",
       "glyphs": [
@@ -243,6 +331,30 @@
         1
       ],
       "rule": "4 different glyphs"
+    },
+    "pagination__button.pagination__button--backward.pagination__button--no-index.btn.btn--ghost.btn--disabled.btn--icon-only": {
+      "kind": "in",
+      "glyphs": [
+        "caret--left"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "pagination__button.pagination__button--forward.btn.btn--ghost.btn--icon-only": {
+      "kind": "in",
+      "glyphs": [
+        "caret--right"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "popover--tab-tip__button": {
       "kind": "in",
@@ -346,6 +458,18 @@
         3
       ],
       "rule": "one glyph in 3+ stories"
+    },
+    "side-nav__icon.side-nav__icon--small.side-nav__submenu-chevron": {
+      "kind": "in",
+      "glyphs": [
+        "chevron--down"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "tab--overflow-nav-button.tab--overflow-nav-button--next.tab--overflow-nav-button--hidden": {
       "kind": "in",
