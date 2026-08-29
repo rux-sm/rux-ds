@@ -10,8 +10,11 @@
 //   uaStyled   a Carbon modifier applied without its base class, so the browser's
 //              default form-control chrome shows through. Found the UI-shell menu
 //              toggle and the time-picker field this way (roadmap §4.1.5).
-//   collapsed  a section whose tallest element is under 8px — the layout-module
-//              bug (§4.1.2), which compiled clean and passed every name check.
+//   collapsed  a section whose tallest Carbon-classed element is under 8px — the
+//              layout-module bug (§4.1.2), which compiled clean and passed every
+//              name check. Reported ONLY when the section has such elements; a
+//              section with none is `nothingToMeasure`, which is a different
+//              statement and not a fault. See the note at the test.
 //   escaped    an element rendering far left of the content column, i.e. an
 //              absolutely-positioned child with no positioned ancestor.
 //
@@ -36,7 +39,7 @@
   const sweep = theme => {
     document.documentElement.dataset.theme = theme;
     const main = document.querySelector(MAIN).getBoundingClientRect();
-    const collapsed = [], escaped = [];
+    const collapsed = [], nothingToMeasure = [], escaped = [];
     for (const sec of document.querySelectorAll(SEC)) {
       let max = 0, n = 0;
       for (const el of sec.querySelectorAll('[class*="rux--"]')) {
@@ -50,9 +53,19 @@
             && !el.classList.contains('rux--checkbox') && !el.classList.contains('rux--radio-button'))
           escaped.push(sec.id);
       }
-      if (!n || max < 8) collapsed.push(sec.id);
+      // TWO DIFFERENT ANSWERS, AND THEY WERE ONE BUCKET UNTIL 2026-08-29.
+      // `max < 8` is the defect this rule was written for: the section HAS
+      // Carbon-classed elements and they render flat. `!n` is not that — it
+      // means there was nothing here to measure, and the sweep can say so
+      // without calling the section broken. `spacing` is the honest case: a
+      // foundation section demoing the spacing TOKENS carries no `rux--` class
+      // by nature, and reporting it as collapsed invited exactly the wrong fix
+      // — bolting a component class onto it to quiet the gate, which would
+      // have raised that component's coverage from a section demoing none of it.
+      if (!n) nothingToMeasure.push(sec.id);
+      else if (max < 8) collapsed.push(sec.id);
     }
-    return { collapsed, escaped: [...new Set(escaped)] };
+    return { collapsed, nothingToMeasure, escaped: [...new Set(escaped)] };
   };
 
   const out = {
