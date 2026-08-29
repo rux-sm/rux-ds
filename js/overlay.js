@@ -53,16 +53,54 @@
    measurement. Until a template asks for `popover--auto-align`, the record's
    optional reposition() is the whole of the contract.
 
-   NO PORTALING. rux-ui promoted portaled surfaces above their owning modal
-   with a data attribute. Carbon's light-DOM markup keeps every surface inline
-   next to its trigger, so the stacking context is the document's and there is
-   nothing to promote.
+   NO PORTALING HERE — AND CARBON DOES PORTAL, FOR ONE SURFACE. This paragraph
+   used to say Carbon "keeps every surface inline next to its trigger". Measured
+   on 2026-08-29 that is true for two families and false for the third:
+
+     popover          inside `.cds--popover-container`, `position: absolute`,
+                      no inline style. Placed by class.
+     list-box menu    inside `.cds--dropdown`, same. Placed by class.
+     overflow menu    PORTALED. The options list leaves the trigger's
+                      `overflow-menu__wrapper` entirely and renders as a sibling
+                      DIV under `cds--layout`, positioned by an inline
+                      `top`/`left` in VIEWPORT coordinates.
+
+   rux-ds does not portal any of them: our overflow list stays beside its
+   trigger and js/menu.js writes an offset relative to the shared wrapper, so
+   the two arrive at the same place by different arithmetic (that module's
+   header carries the measurement).
+
+   WHAT PORTALING BUYS THAT WE THEREFORE DO NOT HAVE, stated so the next reader
+   does not have to rediscover it: a portaled surface escapes both an ancestor's
+   stacking context and its `overflow`. Ours escapes neither.
+
+   The first cost is already paid and recorded — sink/harness.css isolates every
+   section because our in-place surfaces painted over an open modal, which a
+   portaled surface would not have done.
+
+   The second is LATENT, not present. `.rux--data-table-content` computes
+   `overflow: auto`, and our row overflow menus live inside it, so a row menu
+   near the bottom of a tight or scrolled table would be clipped where Carbon's
+   would not. Checked on templates/table-page.html: a two-item list built into
+   the last row ends 209px clear of the content edge and is fully hit-testable,
+   so nothing is clipped today. It is a condition to watch, not a defect to fix.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · the dismiss stack, Escape and outside-press are the ARIA dialog and menu patterns
-   applied to Carbon's captured markup. No running Carbon page was opened to compare
-   the ORDER two overlapping surfaces dismiss in, which is this kernel's whole reason
-   for existing and its least corroborated part.
+/* BEHAVIOUR: verified-live · read 2026-08-29 from three running stories —
+   https://react.carbondesignsystem.com/iframe.html?id=components-overflowmenu--default
+   plus components-dropdown--default and components-popover--default. What was read is
+   WHERE EACH SURFACE LIVES: popover and the list-box menu stay inside their own
+   containers and are placed by class; the overflow menu is portaled out to a sibling
+   DIV and placed by an inline style in viewport coordinates. The header above is
+   corrected accordingly — it had claimed Carbon never portals.
+
+   NOT VERIFIED, AND NOT VERIFIABLE FROM THE STORY SET: the dismiss ORDER, which is
+   this kernel's whole reason for existing and still its least corroborated part.
+   Confirming it needs a page where two dismissible surfaces overlap — a menu whose
+   trigger sits inside a popover — and no story was found that renders one. Building
+   such a page here would test the construction, not Carbon. So the stack, the
+   contains-the-anchor rule and the dismissOthers escape hatch remain derived from the
+   ARIA patterns, and that gap is a property of the reference rather than of the search.
    ========================================================================== */
 (() => {
   'use strict';
