@@ -85,8 +85,9 @@ last push, and `npm run verify` runs ten of the twelve gates.
 | Components | **32 / 75 compiled** in 35 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 611 `--rux-*` · 1,127 `.rux--*` |
-| Kitchen sink | 32 sections · 504 classes; **515** with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **500 / 735 (68%)** — ratcheted in `docs/coverage.json` |
+| Kitchen sink | 33 sections · **518** classes with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **501 / 735 (68%)** — ratcheted in `docs/coverage.json` |
+| Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 58, a 15.8 KB sprite |
 | Size | 607 KB raw · 546 KB min · **55.8 KB gzipped** |
@@ -168,7 +169,7 @@ Fourteen, because none is sufficient alone — see roadmap §4.1.2 for the bug t
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
-| `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
+| `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
 | `check-spacing.js` | a box property that disagrees with what Carbon computes for the same class set, read from `docs/carbon-react-spacing.json` | whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |

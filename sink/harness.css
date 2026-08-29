@@ -32,6 +32,25 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
    leaving the gap as the only space between them. It changes no `column-gap`
    and so misrepresents nothing: what it removes is the container's slack. */
 .ks-ruler { justify-content: start; }
+
+/* The spacing scale table. Four columns: token, rem, px, swatch.
+   THE SWATCH IS SIZED BY THE TOKEN IT NAMES — each row sets `--ks-swatch` to
+   its own step's spacing token and the square reads both dimensions off it.
+   That is deliberate: a hardcoded px would still draw a correct-looking square
+   if the token were missing or moved, which is precisely the failure this
+   section exists to make visible.
+   NAME NO PLACEHOLDER TOKENS IN THIS FILE. The first draft wrote the spacing
+   token with a two-letter stand-in for the digits, inside this very comment,
+   and check-tokens failed the build on it as unresolved: the gate scans
+   harness.css for token references and has no idea what a comment is. Twice,
+   because the note explaining the first one repeated the name. Describe the
+   token in prose or write a real one. */
+.ks-scale { display: grid; grid-template-columns: 10rem 4rem 3rem 1fr;
+            gap: .5rem 1rem; align-items: center; font-size: .8125rem; }
+.ks-scale > .ks-label { margin-block-end: 0; }
+.ks-scale code { font-size: .75rem; color: var(--rux-text-secondary); }
+.ks-swatch { inline-size: var(--ks-swatch); block-size: var(--ks-swatch);
+             background: var(--rux-interactive); }
 .ks-dark { padding: 1rem; background: var(--rux-background-inverse); }
 
 /* Carbon components set `display` on their own class, which outranks the UA

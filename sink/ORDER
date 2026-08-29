@@ -23,6 +23,7 @@ table
 breadcrumb
 list
 grid
+spacing
 skeleton
 stack
 dropdown
