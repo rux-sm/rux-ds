@@ -158,28 +158,28 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `skeleton-styles` | **KEEP** | 4 | 22 | 0 | loading states, 4 KB |
 | `link` | **KEEP** | 4 | 17 | 1 | unavoidable, 4 KB |
 | `list` | **KEEP** | 2 | 9 | 0 | unavoidable, 2 KB |
-| `multiselect` | **DEFER** | 97 | 291 | 1 | add with combo-box or not at all |
-| `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads |
-| `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead |
-| `progress-indicator` | **DEFER** | 76 | 196 | 0 | multi-step wizard; no target shape has one |
+| `multiselect` | **DEFER** | 97 | 291 | 1 | add with combo-box or not at all — **measured +0.6 KB gzipped** |
+| `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads — **measured +1.1 KB gzipped** |
+| `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead — **measured +0.2 KB gzipped** |
+| `progress-indicator` | **DEFER** | 76 | 196 | 0 | multi-step wizard; no target shape has one — **measured +1.1 KB gzipped** |
 | `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+0.3 KB gzipped marginal**, not 71 |
-| `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision |
-| `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet |
-| `date-picker` | **DEFER** | 43 | 120 | 1 | needs flatpickr reproduced in Phase 5 — real cost, decide then |
-| `treeview` | **DEFER** | 20 | 86 | 0 | no target shape needs it yet |
-| `progress-bar` | **DEFER** | 8 | 21 | 0 | 8 KB; cheap to add back when something reports progress |
-| `icon-indicator` | **DEFER** | 3 | 18 | 1 | status vocabulary; tag covers most of it |
-| `action-set` | **DEFER** | 2 | 19 | 0 | 2 KB; modal footers may want it in Phase 6 |
-| `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it |
-| `aspect-ratio` | **DEFER** | 1 | 12 | 0 | 1 KB layout primitive; Phase 6 may want it |
+| `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision — **measured +0.4 KB gzipped** |
+| `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet — **measured +1.4 KB gzipped** |
+| `date-picker` | **DEFER** | 43 | 120 | 1 | needs flatpickr reproduced in Phase 5 — real cost, decide then — **measured +3.3 KB gzipped** |
+| `treeview` | **DEFER** | 20 | 86 | 0 | no target shape needs it yet — **measured +0.7 KB gzipped** |
+| `progress-bar` | **DEFER** | 8 | 21 | 0 | 8 KB; cheap to add back when something reports progress — **measured +0.6 KB gzipped** |
+| `icon-indicator` | **DEFER** | 3 | 18 | 1 | status vocabulary; tag covers most of it — **measured +0.4 KB gzipped** |
+| `action-set` | **DEFER** | 2 | 19 | 0 | 2 KB; modal footers may want it in Phase 6 — **measured +0.3 KB gzipped** |
+| `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it — **measured +0.3 KB gzipped** |
+| `aspect-ratio` | **DEFER** | 1 | 12 | 0 | 1 KB layout primitive; Phase 6 may want it — **measured +0.1 KB gzipped** |
 | `stack` | **KEEP** | 1 | 15 | 1 | restored 2026-08-28 — two templates had no vertical rhythm without it. Item 4 |
-| `badge-indicator` | **DEFER** | 1 | 2 | 0 | 1 KB; pairs with a notification affordance in the shell |
+| `badge-indicator` | **DEFER** | 1 | 2 | 0 | 1 KB; pairs with a notification affordance in the shell — **measured +0.1 KB gzipped** |
 | `fluid-multiselect` | **CUT** | 124 | 362 | 0 | fluid-* family; 124 KB alone, the largest single component |
 | `fluid-combo-box` | **CUT** | 107 | 307 | 1 | fluid-* family: a duplicate input treatment (§4.2) |
 | `fluid-dropdown` | **CUT** | 107 | 307 | 0 | fluid-* family |
 | `ai-label` | **CUT** | 99 | 242 | 0 | AI affordance — one decision with slug and chat-button (§4.2) |
 | `slug` | **CUT** | 99 | 242 | 1 | superseded by ai-label; nothing in 641 captures emits it |
-| `content-switcher` | **CUT** | 93 | 220 | 0 | overlaps tabs |
+| `content-switcher` | **CUT** | 93 | 220 | 0 | overlaps tabs — **CONFIRMED BY SUBSTITUTION**: the §4.6 exit attempts reached for it twice and contained tabs served both times, correctly. Measured +1.7 KB gzipped, not 93; cost was never the reason and is not now |
 | `code-snippet` | **CUT** | 86 | 211 | 0 | documentation component, not an application one |
 | `contained-list` | **CUT** | 86 | 232 | 0 | overlaps list and data-table |
 | `dialog` | **CUT** | 76 | 185 | 0 | overlaps modal; both are the same shape |
@@ -197,15 +197,44 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `fluid-text-area` | **CUT** | 26 | 94 | 0 | fluid-* family |
 | `side-panel` | **CUT** | 19 | 86 | 0 | ibm-products; modal covers the overlay need |
 | `fluid-list-box` | **CUT** | 14 | 62 | 3 | fluid-* family |
-| `structured-list` | **CUT** | 11 | 31 | 0 | overlaps data-table |
+| `structured-list` | **CUT** | 11 | 31 | 0 | overlaps data-table — **CONFIRMED BY SUBSTITUTION** 2026-08-29: the full-width modal wanted the shape Carbon fills with a structured-list, and a `rux--data-table` filled it, bleeding edge to edge as the variant intends. Measured +0.8 KB gzipped, not 11 |
 | `card` | **CUT** | 9 | 56 | 0 | Carbon has no Card — it is an ibm-products preview (§4.1.14) |
-| `page-header` | **CUT** | 4 | 32 | 0 | deprecated upstream; an ibm-products component, not @carbon/react |
+| `page-header` | **CUT** | 4 | 32 | 0 | deprecated upstream; an ibm-products component, not @carbon/react — **CONFIRMED BY SUBSTITUTION**: the §4.6 dashboard used the title-stack idiom instead. Measured +0.5 KB gzipped, but deprecation is the reason and price does not move it |
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
 
-**31 KEEP · 16 DEFER · 28 CUT** — 75 rows, every row decided.
+**32 KEEP · 15 DEFER · 28 CUT** — 75 rows, every row decided.
 
 ---
+
+## Every row priced, 2026-08-29 — and cost decides nothing
+
+The whole DEFER set and the three contested CUT rows were measured by compiling
+each one on top of the shipped keep-set with `tools/measure.mjs`, which is the
+only honest way to price a subset. Baseline: **32 components, 520 KB minified,
+52.9 KB gzipped, 1,094 classes.**
+
+**Not one candidate costs more than 3.3 KB gzipped.** The dearest is
+`date-picker` at +3.3; the cheapest, `aspect-ratio` and `badge-indicator`, are
++0.1. The KB column in the table above is standalone-with-dependencies and
+overstates every shared-dependency row by ten to a hundred times —
+`content-switcher` reads 93 KB there and costs **+1.7 KB gzipped**; `toggletip`
+reads 71 KB and costs **+0.3**.
+
+**So no row is deferred on price any more, and none should be argued on price
+again.** Every DEFER row now carries its measured marginal cost, and the reason
+each is still out is NEED: no page shape in `templates/` asks for it. That is the
+line roadmap §5 draws — a component is admitted to serve a page shape, never a
+page shape invented to justify a component.
+
+**The one genuine cost is not in this table.** `date-picker` and `time-picker`
+need a calendar reproduced in vanilla JS in Phase 5. +3.3 KB of CSS is not the
+price; the behaviour is, and no measurement here speaks to it.
+
+**Do this before Phase 4.** `tools/measure.mjs` compiles against
+`node_modules/@carbon`, so it stops working the moment devendor runs. These
+figures cannot be taken again afterwards, and neither can any decision that
+depends on them.
 
 ## What needs your call
 
