@@ -179,8 +179,8 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <h3>26 / 26</h3>
-              <p>0 stale · 0 never run</p>
+              <h3>0 / 26</h3>
+              <p>26 stale · 0 never run</p>
             </div>
           </div>
           </div>
@@ -632,7 +632,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>16 gates. 11 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>17 gates. 12 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -686,6 +686,13 @@
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
                   <td>a sprite symbol that does not DRAW the glyph its name claims — a hand-edited path, a rename without the drawing following, a glyph pasted from the wrong size, an optimiser that moved a coordinate · a symbol name @carbon/icons has no file for</td>
                   <td>WHICH slot a glyph belongs in, which is the half that has actually shipped defects · anything about a glyph nothing in the sprite claims</td>
+                </tr>
+                <tr>
+                  <td>check-slots</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>the WRONG GLYPH in a slot — the half of the icon question every one of this project's four shipped icon defects was, and which check-icons and check-glyphs both pass</td>
+                  <td>24 of our 64 icon slots have no Carbon capture at all — almost all invalid/warn states no default story renders — and are reported UNCOVERED rather than passed · 21 more are captured but under the corroboration bar, the `__invalid-icon` family among them · a slot Carbon fills from a prop, where there is no right answer · size, position and visibility of the icon</td>
                 </tr>
                 <tr>
                   <td>check-co-classes</td>
@@ -772,7 +779,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 26 of 26 cells are current; 0 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 0 of 26 cells are current; 26 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -789,184 +796,184 @@
                 <tr>
                   <td>check-rendered</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-behaviour</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-29</td>
-                  <td>2026-08-29</td>
+                  <td>uncommitted: kitchen-sink.html</td>
                 </tr>
                 </tbody>
               </table>

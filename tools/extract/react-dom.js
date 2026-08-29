@@ -79,6 +79,7 @@
   const MODE = 'stories';                // 'stories' → carbon-react-dom.json
                                          // 'states'  → carbon-react-states.json
                                          // 'spacing' → carbon-react-spacing.json
+                                         // 'icons'   → carbon-react-icons.json
   // FILTER is a convenience for re-harvesting one component, NOT a correctness
   // filter, and it used to be both. As /^components-/ it dropped 87 of 505
   // stories, and the 15 fragments with no `components-` story of their own —
@@ -99,6 +100,20 @@
   // and merge, in a FRESH TAB each time. A reload does not reset the heap.
   const FILTER = /./;                    // narrow this to re-harvest one component
   const CONCURRENCY = 3;                 // iframes at a time; 3 is polite and quick
+
+  // SLICE IS THE REMEDY THIS HEADER ALREADY PRESCRIBED, now with a way to do it.
+  // The note above says that if a future Carbon outgrows the renderer cap the
+  // answer is to harvest in slices and merge, in a fresh tab each time. On
+  // 2026-08-29 that happened: an 'icons' run over all 505 died at 465/505 with
+  // the tab gone. FILTER could not express "the next 250" — it matches ids, not
+  // position — so the only way to slice was by component name, which is a
+  // guess about where the memory goes.
+  //
+  // [start, count]. The run harvests stories.slice(start, start + count) and
+  // names the download with the range, so two halves cannot be mistaken for two
+  // copies of the same file. Merge them in Node; the fold is per-file, so
+  // merging folded halves means unioning each slot's drawings.
+  const SLICE = null;                    // e.g. [0, 250] then [250, 500]
 
   // The RECIPES table drives 'states' mode. Each row is one configured capture:
   //   story   the story id to load (skipped as (no-story) if not in this origin)
@@ -304,7 +319,8 @@
 
   const every = Object.values(index.entries ?? index.stories ?? {})
     .filter(e => (e.type ?? 'story') === 'story');
-  const stories = every.filter(e => FILTER.test(e.id));
+  const all = every.filter(e => FILTER.test(e.id));
+  const stories = SLICE ? all.slice(SLICE[0], SLICE[0] + SLICE[1]) : all;
   if (MODE !== 'states') {
     console.log(`harvesting ${stories.length} stories…`);
     // Say what FILTER left out. A narrowed run is a deliberate act, but a run that
@@ -408,9 +424,59 @@
     return out;
   };
 
+  // WHICH NAMED ICON DOES CARBON PUT IN THIS SLOT, which is the question the
+  // other three modes cannot reach. 'stories' records `svg.cds--table-sort__icon`
+  // and stops — the tree keeps structure and drops geometry on purpose — so
+  // nothing in docs/ says the glyph there is ArrowUp. That gap has cost this
+  // project three shipped defects: two chevrons rotated from the wrong base and
+  // a sort arrow that pointed the wrong way in both states, all of them a
+  // CORRECT symbol referenced from the wrong slot, and all invisible to
+  // check-icons, which only asks whether a `<use>` resolves.
+  //
+  // The drawing is captured, not a name, because React inlines the path and
+  // there is no name in the DOM to read. Resolving drawing → name happens in
+  // Node against @carbon/icons, which indexes 2,828 files to 2,823 distinct
+  // size+geometry keys — near-perfect, and the five collisions are aliases
+  // (asleep/moon and four more) rather than ambiguity.
+  //
+  // TWO KINDS OF SLOT, kept apart because they are not equally strong. An svg
+  // carrying its own `cds--*` class names its slot exactly. An svg with none —
+  // and Carbon's menu and header icons have none — can only be keyed by its
+  // nearest classed ancestor, which is a weaker claim: a button may legitimately
+  // hold any glyph, while `table-sort__icon` may not. `own` and `in` are
+  // recorded distinctly so a gate can require the first and merely report the
+  // second, rather than treating a container as if it were a slot.
+  const iconCapture = doc => {
+    const out = [];
+    for (const svg of doc.querySelectorAll('svg')) {
+      const own = [...svg.classList].filter(c => PREFIX.test(c)).join('.');
+      let slot = own, kind = 'own';
+      if (!slot) {
+        for (let n = svg.parentElement; n; n = n.parentElement) {
+          const s = [...n.classList].filter(c => PREFIX.test(c)).join('.');
+          if (s) { slot = s; kind = 'in'; break; }
+        }
+      }
+      if (!slot) continue;
+      // Same normalisation as tools/glyphs.mjs, and it has to stay the same or
+      // the two sides of the comparison stop meeting: geometry children in
+      // order, attributes sorted, whitespace collapsed, xmlns dropped.
+      const geometry = [...svg.querySelectorAll('path,circle,rect,polygon,polyline,ellipse,line')]
+        .map(el => el.tagName.toLowerCase() + '|' + [...el.attributes]
+          .map(a => [a.name, a.value.replace(/\s+/g, ' ').trim()])
+          .filter(([k]) => k !== 'xmlns')
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([k, v]) => `${k}=${v}`).join(' '));
+      if (!geometry.length) continue;      // an <svg> that draws nothing
+      out.push({ slot, kind, viewBox: svg.getAttribute('viewBox') || '', geometry });
+    }
+    return out;
+  };
+
   // Root tree plus body-level floats — see the header for why floats matter.
   const capture = doc => {
     if (MODE === 'spacing') return spacingCapture(doc);
+    if (MODE === 'icons') return iconCapture(doc);
     const root = doc.querySelector('#storybook-root, #root');
     const lines = tree(root);
     for (const el of doc.body.children) {
@@ -454,6 +520,22 @@
           if (missing(doc)) return finish(['(missing)']);
           const elapsed = performance.now() - t0;
           if (elapsed < SETTLE_MIN_MS) return;
+          // 'icons' NEEDS A DIFFERENT SETTLE SIGNAL, and using the shared one
+          // would have quietly ruined the harvest. The test below is "more than
+          // one record yet?", which suits a tree or a spacing table because both
+          // are dense. Icons are sparse: a story with exactly one icon would
+          // poll until maxMs and be filed (empty), and the many stories with NO
+          // icon — a legitimate, common answer — would each burn the full 6s
+          // and then be recorded as a failure. So icons settles on the story
+          // having PAINTED, which is the thing actually being waited for, and
+          // then takes however many icons there are, zero included.
+          if (MODE === 'icons') {
+            if (!doc.querySelector('[class*="cds--"], [class*="c4p--"]')) {
+              if (elapsed >= maxMs) finish(['(empty)']);
+              return;
+            }
+            return finish(capture(doc));
+          }
           const lines = capture(doc);
           if (lines.length > 1) return finish(lines);
           // Nothing yet. Keep looking until maxMs, then record the gap rather
@@ -655,10 +737,41 @@
       + `${multi.length} computing more than one way`);
   }
 
+  // 'icons' folds the same way 'spacing' does and for the same reason: the same
+  // slot recurs across dozens of stories drawing the same glyph, and a per-story
+  // file would be mostly repetition. Folded, it is a lookup: slot → each
+  // distinct drawing seen there → where.
+  //
+  // DISTINCT DRAWINGS UNDER ONE SLOT ARE ALL KEPT, and that is the interesting
+  // case rather than a conflict. `table-sort__icon` is one glyph everywhere, but
+  // a slot like `btn__icon` legitimately holds whatever the button is for, and a
+  // slot that draws six things is telling the gate not to demand one.
+  if (MODE === 'icons') {
+    const table = {};
+    for (const [story, records] of Object.entries(out)) {
+      if (verdictOf(records)) continue;
+      for (const { slot, kind, viewBox, geometry } of records) {
+        const key = JSON.stringify([viewBox, geometry]);
+        const entry = (table[slot] ??= { kind, drawings: {} });
+        // A slot seen both ways is recorded as `own`: the class is on the svg
+        // somewhere, which is the stronger fact about it.
+        if (kind === 'own') entry.kind = 'own';
+        const d = (entry.drawings[key] ??= { viewBox, geometry, seen: [] });
+        if (d.seen.length < 3 && !d.seen.includes(story)) d.seen.push(story);
+      }
+    }
+    payload = Object.fromEntries(Object.entries(table).sort(([a], [b]) => a.localeCompare(b))
+      .map(([slot, e]) => [slot, { kind: e.kind, drawings: Object.values(e.drawings) }]));
+    const single = Object.values(payload).filter(v => v.drawings.length === 1).length;
+    console.log(`icons — ${Object.keys(payload).length} slots, ${single} drawing exactly one glyph`);
+  }
+
   const blob = new Blob([JSON.stringify(payload, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = MODE === 'spacing' ? 'carbon-react-spacing.json' : 'carbon-react-dom.json';
+  const stem = MODE === 'spacing' ? 'carbon-react-spacing'
+    : MODE === 'icons' ? 'carbon-react-icons' : 'carbon-react-dom';
+  a.download = `${stem}${SLICE ? `-${SLICE[0]}-${SLICE[0] + SLICE[1]}` : ''}.json`;
   a.click();
   return out;
 })();

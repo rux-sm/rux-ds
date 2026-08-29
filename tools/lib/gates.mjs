@@ -155,6 +155,38 @@ export const GATES = [
     baseline: '59 symbols checked · 0 drawing a different glyph · 0 outside the snapshot',
   },
   {
+    id: 'check-slots',
+    tool: 'tools/check-slots.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'the WRONG GLYPH in a slot — the half of the icon question every one '
+      + 'of this project\'s four shipped icon defects was, and which check-icons and '
+      + 'check-glyphs both pass',
+    // THE BAR IS WHY THIS IS HONEST AND ALSO WHY IT IS NARROW. A slot is only
+    // enforced where Carbon drew one glyph in 3+ distinct stories. That excludes
+    // the `__invalid-icon` family, which Carbon renders once or twice in the
+    // default stories — so the seven-site invalid-icon defect fixed on
+    // 2026-08-29 was found by READING docs/carbon-slots.json, not by this gate,
+    // and reverting it does NOT turn this red. `states` recipes for the invalid
+    // and warning states would raise those slots over the bar; until then the
+    // reference is worth more than the check.
+    blindTo: '24 of our 64 icon slots have no Carbon capture at all — almost all '
+      + 'invalid/warn states no default story renders — and are reported UNCOVERED '
+      + 'rather than passed · 21 more are captured but under the corroboration bar, '
+      + 'the `__invalid-icon` family among them · a slot Carbon fills from a prop, '
+      + 'where there is no right answer · size, position and visibility of the icon',
+    reads: 'per-file',
+    fileTargets: ROOTS,
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: [...ROOTS, 'docs/carbon-slots.json'],
+    redRun: 'point `table-sort__icon` at `#i-arrow--down` (4 findings) or '
+      + '`accordion__arrow` at `#i-chevron--down` (3) — both verified 2026-08-29. '
+      + 'Reverting the invalid-icon fix does NOT fire: that slot is under the bar.',
+    sideEffects: null,
+    baseline: '19 enforced slots · 76 icon sites checked · 0 wrong glyph · 24 uncovered · 21 under the bar',
+  },
+  {
     id: 'check-co-classes',
     tool: 'tools/check-co-classes.mjs',
     kind: 'node',

@@ -36,7 +36,7 @@ on every build. Roadmap §1.1.
 
 ## Verifying
 
-**Sixteen gates. Eleven run in `npm run verify`; five need a browser.** `npm run gates`
+**Seventeen gates. Twelve run in `npm run verify`; five need a browser.** `npm run gates`
 says which has been run against which page, and which have never been run at all —
 `tools/lib/gates.mjs` is the registry and the single source for those counts.
 That coverage check runs in `verify` too and **fails on a page nobody has ever

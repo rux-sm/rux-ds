@@ -74,7 +74,7 @@ was verified against.
 | What | Where |
 |---|---|
 | The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
-| Half-answered 2026-08-29. `check-glyphs` now proves each sprite symbol DRAWS the glyph its name claims; which glyph belongs in a given SLOT is still unchecked, and that is the half all three shipped defects were | roadmap §4.5 |
+| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family sits under the corroboration bar — `states` recipes would raise it | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules, the 15th gate. There is no `tests/` directory at all | roadmap §4.8 |
@@ -83,7 +83,7 @@ was verified against.
 | `dashboard.html` is untracked — §4.6 exit evidence a fresh clone does not have | roadmap §4.6 |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs eleven of the sixteen gates — `npm run gates`
+last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`
 reports the other five and which pages each has been run against.
 
 | | |
@@ -141,7 +141,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
-| `tools/` | `build` · `build-sink` · `build-portal` · `icons` · `glyphs` · `inventory` · `measure` · `states` · `check-classes` · `check-tokens` · `check-icons` · `check-glyphs` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `check-gates` · `diff-fragment` · `serve` · and five browser-only: `check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js`, `check-behaviour.js` |
+| `tools/` | `build` · `build-sink` · `build-portal` · `icons` · `glyphs` · `inventory` · `measure` · `states` · `check-classes` · `check-tokens` · `check-icons` · `check-glyphs` · `check-slots` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `check-gates` · `diff-fragment` · `serve` · and five browser-only: `check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js`, `check-behaviour.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
 | `docs/carbon-react-spacing.json` | **What Carbon COMPUTES, harvested 2026-08-28** — 798 class signatures → box properties → the nearest classed ancestor → the stories each was seen in. The markup captures record structure and say nothing about space; this is the other half. 133 signatures compute more than one way and all variants are kept |
@@ -171,7 +171,8 @@ Fifteen, because none is sufficient alone — see roadmap §4.1.2 for the bug th
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
-| `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — the half all three shipped icon defects were |
+| `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
+| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 19 slots where Carbon drew one glyph in 3+ stories | 24 of our 64 slots have no Carbon capture (reported UNCOVERED, never passed) · 21 more are under the corroboration bar, the `__invalid-icon` family among them |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (16 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
