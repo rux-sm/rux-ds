@@ -1,8 +1,15 @@
 <section class="ks-sec" id="popover">
-  <h2>Popover</h2><p>caret · drop shadow · placements · open · auto-align · tab tip</p>
+  <h2>Popover</h2><p>caret · drop shadow · placements · open · tab tip</p>
   <!-- PROVENANCE: rendered-dom · components-popover--default, --tab-tip and
        the auto-align stories, 2026-08-28 -->
   <!--
+    Content is a <p>, not bare text. components-popover--default renders
+    span.popover-content > h2 + p, and Carbon ships NO padding rule on
+    popover-content — the spacing comes from the block children. With bare text
+    every specimen here sat flush against the panel edge. The h2 is left off:
+    nothing styles a heading inside a popover, so it would render at the
+    browser's default size and read as a defect rather than a demo.
+
     DELIBERATE divergence, recorded: Carbon's popover story triggers from a bare
     unclassed <button> holding an icon. This demo triggers from a real
     `btn btn--sm btn--tertiary`, which is what a page would actually use and
@@ -13,16 +20,14 @@
     <span class="rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Bottom</button>
       <span class="rux--popover">
-        <span class="rux--popover-content rux--popover--high-contrast">
-          Popover content, bottom aligned.
-        </span>
+        <span class="rux--popover-content rux--popover--high-contrast"><p>Popover content, bottom aligned.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
     <span class="rux--popover-container rux--popover--top rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Top</button>
       <span class="rux--popover">
-        <span class="rux--popover-content">Top aligned.</span>
+        <span class="rux--popover-content"><p>Top aligned.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
@@ -45,21 +50,21 @@
     <span class="rux--popover-container rux--popover--bottom-end rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Bottom end</button>
       <span class="rux--popover">
-        <span class="rux--popover-content">Aligned to the trigger's end edge.</span>
+        <span class="rux--popover-content"><p>Aligned to the trigger's end edge.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
     <span class="rux--popover-container rux--popover--left rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Left</button>
       <span class="rux--popover">
-        <span class="rux--popover-content">To the left.</span>
+        <span class="rux--popover-content"><p>To the left.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
     <span class="rux--popover-container rux--popover--right rux--popover--caret rux--popover--drop-shadow">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Right</button>
       <span class="rux--popover">
-        <span class="rux--popover-content">To the right.</span>
+        <span class="rux--popover-content"><p>To the right.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
@@ -79,20 +84,27 @@
        demonstrable statically, and rendering it broken to move a coverage
        number is worse than leaving the number where it is. -->
   <p class="ks-note">OPEN · TAB TIP</p>
-  <div class="ks-row" style="gap:8rem;padding:1rem 0 9rem 8rem">
+  <div class="ks-row" style="padding:1rem 0 5rem 8rem">
     <span class="rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--drop-shadow rux--popover--open">
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" aria-expanded="true">Open</button>
       <span class="rux--popover">
-        <span class="rux--popover-content">Open at rest — the state Carbon's own story captures.</span>
+        <span class="rux--popover-content"><p>Open at rest — the state Carbon's own story captures.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
+  </div>
+
+  <!-- The tab tip gets its own row. Both panels are wider than 350px, and one
+       row could not hold a 368px panel centred at 8rem beside a 359px one
+       without either escaping the column on the left or running off it on the
+       right below about 1000px. Two rows have no such width to trade. -->
+  <div class="ks-row" style="padding:0 0 9rem 2rem">
     <span class="rux--popover-container rux--popover--bottom-start rux--popover--tab-tip rux--popover--drop-shadow rux--popover--open">
       <button type="button" class="rux--popover--tab-tip__button" aria-expanded="true" aria-label="Tab tip">
         <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
       </button>
       <span class="rux--popover">
-        <span class="rux--popover-content">A tab tip has no caret gap — the button is the tab.</span>
+        <span class="rux--popover-content"><p>A tab tip has no caret gap — the button is the tab.</p></span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>

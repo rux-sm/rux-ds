@@ -64,7 +64,14 @@
         <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
         <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
       </div>
-      <div class="rux--side-nav__overlay"></div>
+      <!-- The scrim is position:fixed in Carbon, which is right in production and
+           wrong in a 22rem sandbox: it escaped this container's overflow:hidden and
+           covered the whole kitchen sink whenever the window was under 65.98rem,
+           where --overlay-active sizes it to 100vw x 100vh. Below that width the
+           page went black at 60% and every press landed on the scrim instead of
+           the section under the pointer. Same demo override the nav below already
+           carries, and for the same reason (see the note above). -->
+      <div class="rux--side-nav__overlay" style="position:absolute;block-size:calc(22rem - 3rem);inline-size:100%"></div>
       <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--fixed rux--side-nav--expanded" style="position:absolute;height:calc(22rem - 3rem)" aria-label="Side navigation">
         <ul class="rux--side-nav__items">
           <!-- Expandable category — active, with current page -->
