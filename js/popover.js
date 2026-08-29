@@ -35,9 +35,40 @@
    choice, and waiting on it reads as lag.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · the tooltip and popover modes are read off the markup, which is why neither needs an
-   attribute. POSITIONING IS DELIBERATELY ABSENT: Carbon places these with floating-ui,
-   which this project has not written, and the sink pins its specimens instead.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-popover--default
+   https://react.carbondesignsystem.com/iframe.html?id=components-popover--tab-tip
+   and https://react.carbondesignsystem.com/iframe.html?id=components-tooltip--default
+
+   CONFIRMED: `popover--open` on the CONTAINER is the show hook, exactly as the header
+   claims -- the tab tip's trigger toggled it and `aria-expanded` in step, twice. Placement
+   really is a class and nothing else: `popover--bottom` on one story, `popover--bottom-start`
+   on another, no inline style on the container. `.cds--tooltip` sits on the container
+   beside `popover-container`, so reading the mode off the markup is what Carbon's own
+   markup supports. A click popover's trigger carries aria-expanded; a tooltip's does not.
+
+   POSITIONING IS CONFIRMED AS CARBON'S, NOT OURS. Its default tooltip carries
+   `popover--auto-align` and its content had `style="position: fixed; left: …; top: …"` --
+   floating-ui measuring at runtime. This project has not written that and the sink pins
+   its specimens instead, which the header already said and can now cite.
+
+   ONE DIFFERENCE RECORDED RATHER THAN CHANGED. Carbon's tooltip trigger uses
+   `aria-labelledby`; this module writes `aria-describedby`. Both are right for the markup
+   they are in: Carbon's trigger is icon-only, so the tooltip IS its name, while the sink's
+   trigger is a <button>Trigger</button> that already has one, and describedby is the
+   supplementary-description pattern. THE LATENT ISSUE IS THAT OURS IS UNCONDITIONAL -- a
+   consumer who puts a tooltip on an icon-only button gets a description and no name.
+   Fixing it would mean guessing whether a trigger is named, which is a decision to record
+   and not a rule to invent.
+
+   NOT VERIFIED, AND NOT VERIFIABLE WITH WHAT IS HERE: the 100ms/300ms delays this header
+   states as Carbon's. They are not in @carbon/styles -- popover and tooltip declare no
+   delay at all -- so they live in @carbon/react's JS, which this project never vendored.
+   Measuring them from outside failed twice and both attempts are worth naming: timing a
+   REAL hover needs the mark and the pointer move in one instant, and they are separate
+   tool calls seconds apart; and synthetic pointer events do not reliably drive React's
+   hover state, which returned a flat ~2000ms for both directions, a polling artefact
+   rather than a delay. The numbers stay unsourced.
    ========================================================================== */
 (() => {
   'use strict';

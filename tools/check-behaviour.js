@@ -238,6 +238,31 @@
       `while open: ${expandedWhileOpen}, after close: ${trigger.getAttribute('aria-expanded')}`);
   })();
 
+  // ── popover: the container is what opens ──────────────────────────────────
+  // Confirmed on components-popover--tab-tip 2026-08-29: clicking the trigger
+  // toggles popover--open on the CONTAINER and aria-expanded on the trigger,
+  // together, twice. Neither alone is the state.
+  (() => {
+    const container = q('#popover .rux--popover-container:not(.rux--tooltip)');
+    if (!container) return record('popover', 'toggle', false, 'no click popover here');
+    const trigger = container.querySelector('button');
+    if (!trigger) return record('popover', 'toggle', false, 'no trigger in the container');
+
+    click(trigger);
+    const opened = has(container, 'rux--popover--open')
+      && trigger.getAttribute('aria-expanded') === 'true';
+    record('popover', 'a click opens the container and marks the trigger expanded',
+      opened, `open=${has(container, 'rux--popover--open')}, `
+      + `aria-expanded=${trigger.getAttribute('aria-expanded')}`);
+
+    key(document, 'Escape');
+    record('popover', 'Escape closes it and clears aria-expanded',
+      !has(container, 'rux--popover--open')
+      && trigger.getAttribute('aria-expanded') === 'false',
+      `open=${has(container, 'rux--popover--open')}, `
+      + `aria-expanded=${trigger.getAttribute('aria-expanded')}`);
+  })();
+
   // ── dismiss: removed, not hidden ──────────────────────────────────────────
   // js/dismiss.js states Carbon's React unmounts rather than hides, and that a
   // hidden-but-present element would keep answering querySelectorAll.
