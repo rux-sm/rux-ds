@@ -252,6 +252,28 @@
       !box.isConnected, box.isConnected ? 'still connected' : '');
 
     if (!box.isConnected) parent.insertBefore(box, next);
+
+    // FOCUS GOES TO THE NEXT ONE, which Carbon does too — measured on
+    // components-tag--dismissible 2026-08-29, where dismissing the tag at
+    // index 3 left focus on the tag that slid into index 3.
+    const tags = [...document.querySelectorAll('#tags .rux--tag')]
+      .filter(t => t.querySelector('.rux--tag__close-icon'));
+    // TWO IS ENOUGH: dismiss the first and the second is the "next". The sink
+    // ships two dismissible tags because two is what the specimen needs, and a
+    // test that asks for a third would be measuring the markup it demanded.
+    if (tags.length < 2) {
+      record('dismiss', 'focus lands on the next dismissible', false,
+        `only ${tags.length} dismissible tags here, need 2`);
+    } else {
+      const victim = tags[0];
+      const wanted = tags[1].querySelector('.rux--tag__close-icon');
+      const p2 = victim.parentNode, n2 = victim.nextSibling;
+      click(victim.querySelector('.rux--tag__close-icon'));
+      record('dismiss', 'focus lands on the next dismissible',
+        document.activeElement === wanted,
+        `focus on ${document.activeElement.tagName}.${(document.activeElement.className || '').split(' ')[0]}`);
+      if (!victim.isConnected) p2.insertBefore(victim, n2);
+    }
   })();
 
   // ── form-controls: the toggle ─────────────────────────────────────────────

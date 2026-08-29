@@ -26,10 +26,32 @@
    `tabindex="-1"`: programmatically focusable, never a tab stop.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · NOTE ONE UNSOURCED CLAIM: this file states that Carbon's React unmounts a dismissed
-   notification rather than hiding it, and nothing cites where that was observed. The
-   remove-don't-hide behaviour follows from it. Worth confirming against a running
-   story before it is relied on.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-notifications-inline--default
+   and https://react.carbondesignsystem.com/iframe.html?id=components-tag--dismissible
+   clicking real close buttons and reading the DOM and document.activeElement after each.
+
+   THE UNSOURCED CLAIM IS NOW SOURCED, AND IT WAS TRUE. This label used to say that
+   "Carbon's React unmounts a dismissed notification rather than hiding it" was asserted
+   with nothing cited, and that the whole remove-don't-hide design rested on it. Measured:
+   clicking the close button took the notification out of the DOM entirely -- querying it
+   afterwards returns nothing, and there is no hidden survivor. The same for a tag, 12 to
+   11. Nothing was hidden; both were unmounted.
+
+   FOCUS AFTER DISMISSAL SPLITS, and only one half is ours. Dismissing a TAG moved focus
+   to the NEXT tag's close button -- dismissing the tag at index 3 left focus on the tag
+   that slid into index 3, which is exactly what nextFocus() does. Dismissing a
+   NOTIFICATION left document.activeElement on BODY. So this module matches Carbon for
+   tags and deliberately exceeds it for notifications, which is the same call already made
+   in modal.js and made for the same reason: dropping a keyboard user at the top of the
+   document is a real cost and Carbon paying it is not a reason to.
+
+   The close-button class names match per variant, and `.cds--tag__close-icon` is a real
+   <button>, so the selectors in KINDS are right.
+
+   NOT VERIFIED: the toast and actionable variants -- their close buttons carry different
+   classes, which are in KINDS from the captures but were not clicked. And the
+   last-one-removed case, where focus falls back to the group.
    ========================================================================== */
 (() => {
   'use strict';
