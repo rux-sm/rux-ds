@@ -28,6 +28,11 @@
    Handling the radio input's click as well as its change would fire twice and
    cancel itself out — the defect §4.1.9 records for toggle.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · expandable and selectable tiles are driven from the captured markup. The collapsed
+   height is measured from THIS page at load, not from Carbon -- see the note below on
+   why it cannot be a class.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

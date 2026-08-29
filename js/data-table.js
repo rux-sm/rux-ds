@@ -39,6 +39,15 @@
    2026-08-28: closed is aria-hidden=true with every button at -1, open is
    aria-hidden=false with every button at 0.
    ========================================================================== */
+
+/* BEHAVIOUR: verified-live · https://react.carbondesignsystem.com/iframe.html?id=components-datatable-batch-actions--default
+   read 2026-08-28 -- both batch-bar states from the DOM: closed is aria-hidden=true with
+   every button tabindex=-1, open is aria-hidden=false with every button at 0.
+   NOT VERIFIED: sorting and expansion. No running Carbon table was opened for either, and
+   no capture in docs/ carries a sorted column -- table-sort--active, --descending and
+   __icon-inactive appear in none of the 641. templates/table-page.html calls the sorted
+   state its weakest claim for the same reason.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

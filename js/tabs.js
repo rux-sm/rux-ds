@@ -24,6 +24,11 @@
    refused. A disabled <button> cannot take focus, so including it in the ring
    would make one arrow press appear to do nothing.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · roving tabindex, arrow keys and Home/End are the ARIA tabs pattern applied to the
+   captured markup of components-tabs--default. The structure came from that story; the
+   BEHAVIOUR was not read off it. templates/detail-page.html records the same gap.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

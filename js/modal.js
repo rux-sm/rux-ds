@@ -28,6 +28,11 @@
    the scrim — it fills the viewport, so registering it would make a press on
    the backdrop "inside" the surface and the backdrop would never dismiss.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · focus trapping, the initial focus target and Escape are the ARIA dialog pattern applied
+   to Carbon's captured markup. No running Carbon modal was opened, so the ORDER of focus
+   restoration and what Carbon focuses first are inferred rather than observed.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

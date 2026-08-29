@@ -33,6 +33,14 @@
    itself; a list item does not, and every consumer of a menu listens for
    click. Sending the same event from both keeps that one listener honest.
    ========================================================================== */
+
+/* BEHAVIOUR: verified-live · https://react.carbondesignsystem.com/iframe.html?id=components-overflowmenu--default
+   read 2026-08-29 -- the open list carries an INLINE top equal to the trigger's bottom
+   edge, flush, and is portaled to the body. That offset is reproduced here.
+   NOT COVERED: collision handling. Carbon runs floating-ui and flips the list above the
+   trigger near a viewport edge; this sets the resting offset only. The menu half of this
+   file (rux--menu) was not compared against a running page at all.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

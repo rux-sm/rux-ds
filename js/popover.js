@@ -34,6 +34,11 @@
    immediate. Focus and blur are not delayed — a keyboard user has made a
    choice, and waiting on it reads as lag.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · the tooltip and popover modes are read off the markup, which is why neither needs an
+   attribute. POSITIONING IS DELIBERATELY ABSENT: Carbon places these with floating-ui,
+   which this project has not written, and the sink pins its specimens instead.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

@@ -24,6 +24,11 @@
    attribute for something other than relating a trigger to a surface, and
    the reason is that HTML gives no alternative.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · the toggle, steppers, search clear and indeterminate checkbox are driven from the
+   captured markup and the attributes it declares. No running Carbon control was opened;
+   templates/form-page.html records the same gap from its side.
+   ========================================================================== */
 (() => {
   'use strict';
   if (!window.Rux?.overlay) return; // js/overlay.js must load first

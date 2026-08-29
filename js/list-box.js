@@ -35,6 +35,11 @@
    opening one would fight markup that is deliberately rendered open, and
    `field.focus()` on a div does nothing, which is how this was found.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · built from the captured open/closed states of dropdown, combo box and multiselect.
+   list-box has NO story of its own -- its references are its three consumers -- so the
+   states come from captures rather than from watching one operate.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

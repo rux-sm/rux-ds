@@ -30,6 +30,11 @@
    And the markup's own state is adopted at load, so an item shipped
    `--active` has `aria-expanded="true"` whether or not the author remembered.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · built from the captured markup and what a real <button> already does. Carbon's own
+   accordion declines arrow-key navigation and so does this; that decline is recorded
+   below but was not read off a running page.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

@@ -30,6 +30,13 @@
    the same attribute the button already needs for screen readers. Setting
    aria-expanded is the whole of the behaviour; the arrow follows.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · the LAYOUT half was verified live and is recorded in templates/app-shell.html: the
+   hamburger is hidden above 66rem and the nav is persistent there. THIS MODULE'S
+   behaviour was not. app-shell.html is explicit that the docs site's own toggle uses a
+   gatsby-theme-carbon class and is NO evidence about the component, so what opens and
+   closes the nav here is derived from Carbon's cascade, not observed.
+   ========================================================================== */
 (() => {
   'use strict';
   const overlay = window.Rux?.overlay;

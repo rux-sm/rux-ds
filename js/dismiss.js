@@ -25,6 +25,12 @@
    is left. That last case needs the group to be focusable, so it is given
    `tabindex="-1"`: programmatically focusable, never a tab stop.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · NOTE ONE UNSOURCED CLAIM: this file states that Carbon's React unmounts a dismissed
+   notification rather than hiding it, and nothing cites where that was observed. The
+   remove-don't-hide behaviour follows from it. Worth confirming against a running
+   story before it is relied on.
+   ========================================================================== */
 (() => {
   'use strict';
   if (!window.Rux?.overlay) return; // js/overlay.js must load first

@@ -58,6 +58,12 @@
    next to its trigger, so the stacking context is the document's and there is
    nothing to promote.
    ========================================================================== */
+
+/* BEHAVIOUR: derived · the dismiss stack, Escape and outside-press are the ARIA dialog and menu patterns
+   applied to Carbon's captured markup. No running Carbon page was opened to compare
+   the ORDER two overlapping surfaces dismiss in, which is this kernel's whole reason
+   for existing and its least corroborated part.
+   ========================================================================== */
 (() => {
   'use strict';
 

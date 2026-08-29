@@ -43,7 +43,8 @@
 // So this gate measures declaration, not verification, and every rule above is
 // universal: no fragment needs an entry anywhere to satisfy it.
 //
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { markupFiles } from './lib/sources.mjs';
 
 
@@ -72,10 +73,64 @@ const NEEDS_DATE = new Set(['rendered-dom']);
 const BEHAVIOUR_KINDS = {
   'verified-live': 'a running Carbon page was opened and its behaviour read',
   'carbon-css': 'derived from the compiled stylesheet, NOT from a running page',
-  'none': 'the template has no behaviour of its own to verify',
+  // The honest label for most of js/. A module is usually built from the
+  // captured markup, the ARIA pattern that markup declares, and what the
+  // browser already does for a real <button> — none of which is the same as
+  // watching Carbon's own JavaScript run. Carbon's behaviour has NEVER been in
+  // this tree: node_modules/@carbon carries styles, elements, grid, icons,
+  // layout, motion, themes and type, and no React. The only reference is the
+  // live Storybook, so `derived` is what a module can honestly claim until
+  // someone opens one.
+  'derived': 'built from the captured markup and the ARIA pattern, NOT from a running page',
+  'none': 'the file has no behaviour of its own to verify',
 };
 const B_NEEDS_REFERENCE = new Set(['verified-live']);
 const B_NEEDS_DATE = new Set(['verified-live']);
+
+// One BEHAVIOUR claim, validated the same way wherever it appears — a template's
+// or a module's. Returns the kind, or pushes a fault and returns null.
+//
+// SHARED ON PURPOSE. `js/` needs exactly these rules and nothing else: a module
+// is behaviour with no markup, so it has no PROVENANCE to declare, only a
+// BEHAVIOUR one. Duplicating the block for it would be two things to keep in
+// step, which is the shape of drift this gate exists to catch.
+function behaviourClaim(comments, path, subject, faults) {
+  const bearing = comments.filter(c => /BEHAVIOUR:/.test(c));
+  if (!bearing.length) {
+    faults.push(['NO BEHAVIOUR', path,
+      `${subject} — add a BEHAVIOUR comment: ${Object.keys(BEHAVIOUR_KINDS).join(' | ')}`]);
+    return null;
+  }
+  // TWO CLAIMS IS THE DANGEROUS CASE, not zero. Templates are built by copying
+  // the shell, so a second file inherits the first's label along with its
+  // markup — dated, specific, and about a page nobody opened for THIS file.
+  if (bearing.length > 1) {
+    faults.push(['DUPLICATE', path,
+      `${bearing.length} BEHAVIOUR comments; there can be one. A copy inherits the` +
+      ` original's claim — delete it and make your own`]);
+    return null;
+  }
+  const bm = bearing[0].match(/^\s*BEHAVIOUR:\s*([a-z-]+)([\s\S]*)$/);
+  if (!bm) {
+    faults.push(['MALFORMED', path, `expected "BEHAVIOUR: <kind> · <reference> · <date>"`]);
+    return null;
+  }
+  const [, bkind, brest] = bm;
+  if (!(bkind in BEHAVIOUR_KINDS)) {
+    faults.push(['UNKNOWN', path,
+      `behaviour kind "${bkind}" — known: ${Object.keys(BEHAVIOUR_KINDS).join(' ')}`]);
+    return null;
+  }
+  if (B_NEEDS_REFERENCE.has(bkind) && !/https?:\/\//.test(brest)) {
+    faults.push(['UNBACKED', path, `"${bkind}" must name the page it was read from, as a URL`]);
+    return null;
+  }
+  if (B_NEEDS_DATE.has(bkind) && !/\d{4}-\d{2}-\d{2}/.test(brest)) {
+    faults.push(['UNDATED', path, `"${bkind}" must carry a YYYY-MM-DD — the page it cites moves`]);
+    return null;
+  }
+  return bkind;
+}
 
 const files = markupFiles();
 
@@ -123,48 +178,33 @@ for (const f of files) {
 
   // A template must also say what its behaviour was checked against.
   if (f.root !== 'sink') {
-    const bearing = comments.filter(c => /BEHAVIOUR:/.test(c));
-    if (!bearing.length) {
-      faults.push(['NO BEHAVIOUR', path,
-        `a template runs — add a BEHAVIOUR comment: ${Object.keys(BEHAVIOUR_KINDS).join(' | ')}`]);
-      continue;
-    }
-    // TWO CLAIMS IS THE DANGEROUS CASE, not zero. Templates are built by
-    // copying the shell, so a second file inherits the first's label along
-    // with its markup — dated, specific, and about a page nobody opened for
-    // THIS file. Reading only the first would let the inherited one answer
-    // for the new one, which is the archaeology this gate exists to stop.
-    if (bearing.length > 1) {
-      faults.push(['DUPLICATE', path,
-        `${bearing.length} BEHAVIOUR comments; there can be one. A copied template` +
-        ` inherits the original's claim — delete it and make your own`]);
-      continue;
-    }
-    const bm = bearing[0].match(/^\s*BEHAVIOUR:\s*([a-z-]+)([\s\S]*)$/);
-    if (!bm) {
-      faults.push(['MALFORMED', path, `expected "BEHAVIOUR: <kind> · <reference> · <date>"`]);
-      continue;
-    }
-    const [, bkind, brest] = bm;
-    if (!(bkind in BEHAVIOUR_KINDS)) {
-      faults.push(['UNKNOWN', path,
-        `behaviour kind "${bkind}" — known: ${Object.keys(BEHAVIOUR_KINDS).join(' ')}`]);
-      continue;
-    }
-    if (B_NEEDS_REFERENCE.has(bkind) && !/https?:\/\//.test(brest)) {
-      faults.push(['UNBACKED', path,
-        `"${bkind}" must name the page it was read from, as a URL`]);
-      continue;
-    }
-    if (B_NEEDS_DATE.has(bkind) && !/\d{4}-\d{2}-\d{2}/.test(brest)) {
-      faults.push(['UNDATED', path, `"${bkind}" must carry a YYYY-MM-DD — the page it cites moves`]);
-      continue;
-    }
+    const bkind = behaviourClaim(comments, path, 'a template runs', faults);
+    if (!bkind) continue;
     rows.push({ file: f.name, kind, behaviour: bkind });
     continue;
   }
 
   rows.push({ file: f.name, kind });
+}
+
+// ── the behaviour layer ─────────────────────────────────────────────────────
+// A module has no markup, so it declares no PROVENANCE — only what its
+// BEHAVIOUR was built from. Added 2026-08-29, when the asymmetry was measured:
+// 38 of 38 markup files carried a label and 0 of 12 modules did, while the
+// modules are what makes a component usable. Two named a Carbon story between
+// them, across 45 KB of code.
+const modules = existsSync('js')
+  ? readdirSync('js').filter(f => f.endsWith('.js')).sort()
+  : [];
+const mrows = [];
+for (const name of modules) {
+  const path = join('js', name);
+  // Block comments only, matching the markup side: a `//` line is a note to the
+  // next reader, not a claim about a page.
+  const comments = [...readFileSync(path, 'utf8').matchAll(/\/\*([\s\S]*?)\*\//g)]
+    .map(m => m[1]);
+  const bkind = behaviourClaim(comments, path, 'a module IS behaviour', faults);
+  if (bkind) mrows.push({ file: path, behaviour: bkind });
 }
 
 const of = kind => rows.filter(r => r.kind === kind).map(r => r.file);
@@ -188,6 +228,9 @@ const btally = Object.keys(BEHAVIOUR_KINDS)
   .map(k => `${tpl.filter(r => r.behaviour === k).length} ${k}`).join(' · ');
 console.log(`\n  files ${files.length} · labelled ${rows.length} · ${tally}`);
 console.log(`  templates ${tpl.length} · behaviour ${btally}`);
+const mt = Object.entries(mrows.reduce((a, r) => (a[r.behaviour] = (a[r.behaviour] ?? 0) + 1, a), {}))
+  .map(([k, n]) => `${n} ${k}`).join(' · ');
+console.log(`  modules ${modules.length} · ${mt || 'none labelled'}`);
 if (faults.length) console.log(`  unlabelled or malformed ${faults.length}`);
 console.log();
 process.exit(faults.length ? 1 : 0);
