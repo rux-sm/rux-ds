@@ -76,6 +76,12 @@ was verified against.
 | The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
 | No gate checks which glyph a `<use>` points at — `check-icons` only proves it resolves | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
+| **No LICENCE, and Apache-2.0 material ships in `css/` and `assets/`** | roadmap §8.1 |
+| No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
+| `js/` has no automated regression net; `tests/` is empty | roadmap §4.8 |
+| `build-portal`'s icon assertion is a real check outside the registry — fifteenth gate or not | roadmap §4.8 |
+| The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
+| `dashboard.html` is untracked — §4.6 exit evidence a fresh clone does not have | roadmap §4.6 |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs ten of the fourteen gates — `npm run gates`

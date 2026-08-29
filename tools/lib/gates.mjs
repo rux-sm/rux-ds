@@ -231,7 +231,7 @@ export const GATES = [
     inputs: ROOTS,
     redRun: 'strip a PROVENANCE comment from any fragment',
     sideEffects: null,
-    baseline: '38 files labelled · 33 rendered-dom · 5 source · 0 inferred · 6 templates verified-live',
+    baseline: '39 files labelled · 33 rendered-dom · 6 source · 0 inferred · 6 templates verified-live · 12 modules, 10 derived · 2 verified-live',
   },
 
   // ── browser-only ────────────────────────────────────────────────────────

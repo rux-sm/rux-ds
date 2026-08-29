@@ -86,17 +86,17 @@ means "absent from a targeted grep", not "absent from the roadmap".
 
 | # | Finding | Status | Filed |
 |---|---|---|---|
-| 1 | No LICENCE or NOTICE; Apache-2.0 material is compiled into committed output | unrecorded | **not yet filed** |
-| 2 | `tests/` is empty — 1,942 lines in `js/` have no automated regression net | unrecorded | **not yet filed** |
+| 1 | No LICENCE or NOTICE; Apache-2.0 material is compiled into committed output | **filed §8.1** | `docs/roadmap.md` §8.1 · README decision table |
+| 2 | `tests/` is empty — 1,942 lines in `js/` have no automated regression net | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
 | 3 | g100 never measured — every browser baseline reads theme white | **CLOSED 2026-08-29** | `docs/gate-coverage.json` — all 25 cells re-read in both themes |
-| 4 | Token value snapshot does not exist | on record, §4.8 | §4.8 — but it runs *after* §4.7 documents the values |
-| 5 | No component → fragment → template index for a consumer | on record, §4.7 | §4.7 |
-| 6 | No version, no tags, no changelog; consumers pin to a SHA | unrecorded | **not yet filed** |
+| 4 | Token value snapshot does not exist | on record, §4.8 | `docs/roadmap.md` §4.8 — the sequencing objection now stated there · README |
+| 5 | No component → fragment → template index for a consumer | on record, §4.7 | `docs/roadmap.md` §4.7 — Phase 7, unstarted |
+| 6 | No version, no tags, no changelog; consumers pin to a SHA | **filed §8.2** | `docs/roadmap.md` §8.2 · README decision table |
 | 7 | `check-co-classes` prints no path; `check-coverage` has no per-file axis | on record | `gates.mjs` `knownGap` |
-| 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | unrecorded | **not yet filed** |
-| 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | unrecorded | **not yet filed** |
-| 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | unrecorded | **not yet filed** |
-| 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | unrecorded | `docs/gate-coverage.json` `_portal` |
+| 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | **filed §4.6** | `docs/roadmap.md` §4.6 · README decision table |
+| 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | **CLOSED 2026-08-29** | **FIXED at source** — `gates.mjs` now reads 39 · 6, plus the module line |
+| 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
+| 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | **filed** | `docs/gate-coverage.json` `_portal` |
 
 Finding 9 was produced by running `npm run verify` at the end of this sweep —
 after the entry above had already recorded that verify was not run. Both
@@ -125,7 +125,17 @@ greens were written down. A green run nobody has seen go red is the same
 category of non-evidence as a gate never pointed at a target, which is the
 defect this file exists for.
 
-**The filing is itself incomplete.** Five rows have nowhere to point yet, which
-is the honest state and not a formatting gap — filing them means adding rows to
-README's decision table or sections to the roadmap, and that is a separate edit
-by someone who decides. Until then this ledger is the only record they exist.
+**Filing completed 2026-08-29.** Every row now points somewhere a decision can be
+made, which is what this ledger asked for and did not have when it was written. What
+changed is only WHERE the findings live — none of them was decided by being filed, and
+six of them are now rows in README's "Decisions waiting on you" table precisely because
+they are still open.
+
+Two closed rather than filed. Finding 3 was closed by re-sweeping all 25 cells in both
+themes. Finding 9 was a stale `baseline` field, which `gates.mjs` names as a record with
+a date rather than an assertion; it was corrected at source, so there is nothing to
+decide and nowhere to point.
+
+**The earlier version of this paragraph said five rows had nowhere to point yet.** That
+was true when written and is no longer. It is replaced rather than deleted, because a
+ledger that edits away its own history is worth less than one that shows the correction.
