@@ -10,8 +10,8 @@
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "78b40a3",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
@@ -40,7 +40,7 @@
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "7de569b",
+      "commit": "78b40a3",
       "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     }
   },
@@ -52,8 +52,8 @@
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 stripped · 0 added"
+      "commit": "78b40a3",
+      "result": "0 stripped · 0 added · 40 classes"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
@@ -82,8 +82,8 @@
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "7de569b",
-      "result": "0 stripped · 0 added · 63 classes"
+      "commit": "78b40a3",
+      "result": "0 stripped · 0 added · 64 classes"
     }
   },
   "check-spacing": {
@@ -94,8 +94,8 @@
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "checked 20 · matched 19 · diverges 1 · noReference 3"
+      "commit": "78b40a3",
+      "result": "checked 21 · matched 20 · diverges 1 · noReference 3"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
@@ -124,8 +124,8 @@
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "7de569b",
-      "result": "checked 26 · matched 23 · diverges 3 · noReference 9"
+      "commit": "78b40a3",
+      "result": "checked 26 · matched 23 · diverges 3 · noReference 10"
     }
   },
   "check-rendered": {
