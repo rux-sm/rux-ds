@@ -51,8 +51,10 @@ in an editor session or a machine-local note.
 is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
-`templates/` can be built from them without inventing a class, and nobody has
-tried that yet. Every gate that reads
+`templates/` can be built from them without inventing a class. Three attempts
+are on record at roadmap §4.6, the third by a fresh agent; the phase stays open
+until the criterion's reading is decided — the templates alone, or the repo's
+captures with them. Every gate that reads
 markup per file reads `templates/` too, and each template declares what its BEHAVIOUR
 was verified against.
 
