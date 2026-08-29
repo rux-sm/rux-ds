@@ -60,11 +60,32 @@
         surface.classList.add('rux--overflow-menu-options--open');
         trigger?.classList.add('rux--overflow-menu--open');
         trigger?.setAttribute('aria-expanded', 'true');
+        // THE LIST SITS BELOW THE TRIGGER, AND CSS ALONE CANNOT PUT IT THERE.
+        // Carbon's stylesheet pre-positions the surface at `inset-block-start:
+        // $spacing-07` — 32px, the height of an `sm` trigger — while the trigger
+        // itself defaults to `md`, 40px. React then overwrites it: measured on
+        // components-overflowmenu--default on 2026-08-29, the open list carries
+        // an INLINE `top` equal to the trigger's bottom edge, flush, no overlap.
+        // Without that write the CSS fallback shows through and the list covers
+        // the last 8px of its own trigger.
+        //
+        // The offset is the trigger's height because the surface is absolutely
+        // positioned inside the wrapper the trigger shares. Carbon computes a
+        // viewport coordinate instead, since it portals the list to the body;
+        // this does not portal, so the two arrive at the same place by
+        // different arithmetic.
+        //
+        // NOT COVERED: collision handling. Carbon runs floating-ui, which flips
+        // the list above the trigger near a viewport edge and shifts it inline.
+        // This sets the resting offset only — the same line this project draws
+        // for the icon-tooltip it declines throughout.
+        if (trigger) surface.style.insetBlockStart = `${trigger.offsetHeight}px`;
       },
       hide: (surface, trigger) => {
         surface.classList.remove('rux--overflow-menu-options--open');
         trigger?.classList.remove('rux--overflow-menu--open');
         trigger?.setAttribute('aria-expanded', 'false');
+        surface.style.insetBlockStart = '';
       },
     },
   };
@@ -200,6 +221,17 @@
       }
     }
   });
+
+  /* Adopt an overflow list the MARKUP ships open. Setting the offset is all
+     this does — the surface is deliberately NOT registered on the overlay
+     stack, because a specimen with no trigger of its own must not be
+     dismissible by a press somewhere else on the page. Without this the static
+     specimen keeps the stylesheet's 32px fallback and overlaps its trigger by
+     8px, which is the state a reader would copy. */
+  for (const surface of document.querySelectorAll('.rux--overflow-menu-options--open')) {
+    const trigger = surface.parentElement?.querySelector(':scope > .rux--overflow-menu');
+    if (trigger) surface.style.insetBlockStart = `${trigger.offsetHeight}px`;
+  }
 
   window.Rux.menu = {
     open: (surfaceOrId, trigger) => {

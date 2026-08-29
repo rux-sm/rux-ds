@@ -3342,6 +3342,20 @@
     static specimens of density and selection state with nothing to open them,
     which is why they carry no trigger and no attribute. `menu-item-selectable--selected` is
     emitted with no rule in @carbon/styles and is dropped (§4.1.12).
+
+    EVERY MENU HERE IS PINNED IN FLOW BY `style="position:relative;inset:auto"`,
+    and that is a DEMO CHOICE, not the component. Carbon's menu is
+    `position: fixed` and floats where its JS puts it — React runs floating-ui,
+    which places the surface against the trigger and flips it near a viewport
+    edge. This project has not written that, so a floating menu here would pile
+    at the page's top-left corner. Pinning it makes the specimen readable and
+    the override visible in the markup, where a reader can see it is the sink's
+    and not the system's.
+    WHAT THAT COSTS: nothing on the page shows where a menu actually LANDS. The
+    8px under the triggered menu is the ks-row's own gap, not an offset any rule
+    produces. The overflow menu next door is the opposite case and worth the
+    contrast — its list IS positioned by CSS, so js/menu.js corrects the resting
+    offset there rather than pinning it.
   -->
   <div class="ks-row" style="padding-block:1rem;min-height:12rem;align-items:flex-start;flex-direction:column;gap:.5rem">
     <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-rux-open="ks-menu" aria-haspopup="menu" aria-expanded="false">Open menu</button>
