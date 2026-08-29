@@ -21,10 +21,6 @@
       "hit": 41,
       "own": 80
     },
-    "modal": {
-      "hit": 13,
-      "own": 25
-    },
     "text-input": {
       "hit": 13,
       "own": 25
@@ -86,6 +82,10 @@
       "own": 21
     },
     "checkbox": {
+      "hit": 17,
+      "own": 25
+    },
+    "modal": {
       "hit": 17,
       "own": 25
     },
