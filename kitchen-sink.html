@@ -2129,7 +2129,7 @@
 </section>
 
 <section class="ks-sec" id="dropdown">
-  <h2>Dropdown</h2><p>closed · expanded · invalid · disabled</p>
+  <h2>Dropdown</h2><p>closed · expanded · invalid · read-only · inline · disabled</p>
   <!-- PROVENANCE: rendered-dom · components-dropdown--default and its state
        recipes (open, disabled, readonly, sm, lg, warn) in
        docs/carbon-react-states.json, harvested 2026-08-27 -->
@@ -2235,6 +2235,33 @@
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </div>
         </button>
+      </div>
+    </div>
+
+    <!-- INLINE. The only unexercised dropdown class any capture emits, with its
+         wrapper: components-dropdown--inline puts --inline on BOTH the wrapper and
+         the dropdown root, and pairs list-box__wrapper--inline alongside. The
+         other fourteen unexercised rux--dropdown-* classes are v10 markup
+         (dropdown-item, dropdown-link, dropdown-list, dropdown-text,
+         dropdown-v2, dropdown__arrow) or states no story renders; none has a
+         reference, so none is demoed rather than guessed at. -->
+    <div class="rux--list-box__wrapper rux--dropdown__wrapper--inline rux--list-box__wrapper--inline">
+      <label class="rux--label" id="dd-7-label">Inline</label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--inline rux--layout--size-md">
+        <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="dd-7-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="dd-7-menu">
+          <span class="rux--list-box__label">Option A</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </button>
+        <ul id="dd-7-menu" class="rux--list-box__menu" role="listbox" hidden>
+          <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Option A</div>
+          </li>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Option B</div>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -2414,7 +2441,7 @@
 </section>
 
 <section class="ks-sec" id="popover">
-  <h2>Popover</h2><p>caret · drop shadow · placements — click a trigger</p>
+  <h2>Popover</h2><p>caret · drop shadow · placements · open · auto-align · tab tip</p>
   <!-- PROVENANCE: rendered-dom · components-popover--default, --tab-tip and
        the auto-align stories, 2026-08-28 -->
   <!--
@@ -2438,6 +2465,76 @@
       <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Top</button>
       <span class="rux--popover">
         <span class="rux--popover-content">Top aligned.</span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+  </div>
+
+  <!-- PLACEMENTS. Every class below is on a popover-container in a capture:
+       --left and --right from components-composedmodal--default and
+       components-form--with-ai-label, --bottom-end from the tab-tip capture's
+       second container. --top-start and --top-end are NOT here: check-ancestry
+       reports Carbon renders top-start only inside a fluid datepicker's
+       .form-item .label, and top-end only inside .unstable-pagination, in every
+       capture that emits them. Neither has a standalone form, and wrapping a
+       specimen in a host it does not belong to would be contriving markup to
+       move a number. The v10 corner names Carbon still
+       ships CSS for — bottom-left, bottom-right, left-top, left-bottom,
+       right-top, right-bottom, top-left, top-right — appear in NO capture and
+       are not demoed. --border and --background-token__background likewise. -->
+  <p class="ks-note">PLACEMENTS · CLICK A TRIGGER</p>
+  <div class="ks-row" style="gap:6rem;padding:3rem 0 5rem 8rem">
+    <span class="rux--popover-container rux--popover--bottom-end rux--popover--caret rux--popover--drop-shadow">
+      <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Bottom end</button>
+      <span class="rux--popover">
+        <span class="rux--popover-content">Aligned to the trigger's end edge.</span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+    <span class="rux--popover-container rux--popover--left rux--popover--caret rux--popover--drop-shadow">
+      <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Left</button>
+      <span class="rux--popover">
+        <span class="rux--popover-content">To the left.</span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+    <span class="rux--popover-container rux--popover--right rux--popover--caret rux--popover--drop-shadow">
+      <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm">Right</button>
+      <span class="rux--popover">
+        <span class="rux--popover-content">To the right.</span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+  </div>
+
+  <!-- SPECIMENS, not operable. --open is the resting state of
+       components-popover--default and components-popover--tab-tip, so it can
+       only be shown by a popover that starts open; there is no trigger to press
+       and none is missing.
+
+       --auto-align is NOT demoed, and the measurement is why. The class alone
+       resolves to position:absolute + inset:0, so the popover became a
+       726x863 box with its content painted at the document's top-left corner,
+       14,000px from its trigger. Carbon pairs the class with floating-ui
+       setting inline top/left at runtime; this system ships no such module and
+       Phase 3 kept none. A class that needs behaviour we do not have is not
+       demonstrable statically, and rendering it broken to move a coverage
+       number is worse than leaving the number where it is. -->
+  <p class="ks-note">OPEN · TAB TIP</p>
+  <div class="ks-row" style="gap:8rem;padding:1rem 0 9rem 8rem">
+    <span class="rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--drop-shadow rux--popover--open">
+      <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" aria-expanded="true">Open</button>
+      <span class="rux--popover">
+        <span class="rux--popover-content">Open at rest — the state Carbon's own story captures.</span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+    <span class="rux--popover-container rux--popover--bottom-start rux--popover--tab-tip rux--popover--drop-shadow rux--popover--open">
+      <button type="button" class="rux--popover--tab-tip__button" aria-expanded="true" aria-label="Tab tip">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
+      </button>
+      <span class="rux--popover">
+        <span class="rux--popover-content">A tab tip has no caret gap — the button is the tab.</span>
         <span class="rux--popover-caret"></span>
       </span>
     </span>
