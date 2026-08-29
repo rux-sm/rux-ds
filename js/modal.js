@@ -29,9 +29,36 @@
    the backdrop "inside" the surface and the backdrop would never dismiss.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · focus trapping, the initial focus target and Escape are the ARIA dialog pattern applied
-   to Carbon's captured markup. No running Carbon modal was opened, so the ORDER of focus
-   restoration and what Carbon focuses first are inferred rather than observed.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-modal--default
+   -- opened from its launch button, closed with Escape, reading the class list, the
+   container's attributes and document.activeElement at each step.
+
+   CONFIRMED: `is-visible` on the root is the entire show hook, added on open and removed
+   on close, exactly as the header above claims. Nothing else toggles.
+
+   WHERE THE DIALOG ROLE LIVES WAS WRONG HERE, and it is the finding of this pass. Carbon
+   puts `role="presentation"` on the ROOT -- the full-viewport scrim -- and
+   `role="dialog" aria-modal="true" aria-label tabindex="-1"` on the CONTAINER. Our markup
+   had all of it on the root, which made the scrim the dialog and left the container
+   unlabelled and unfocusable. The module was already right: its own header says the
+   record's element is the CONTAINER, so the markup had been disagreeing with the module.
+   Fixed across all six modals in sink/modal.html.
+
+   WHAT CARBON FOCUSES ON OPEN: the element carrying `data-modal-primary-focus`, NOT the
+   first focusable. In its story that is the first text input while the close button comes
+   first in the DOM. Ours reads `[autofocus]` and falls back to the first focusable, which
+   is the same shape of rule with a different attribute; no rux markup designates either,
+   so ours lands on the close button. Recorded, not changed -- Carbon's attribute is a
+   React prop name and copying it would invent a contract.
+
+   TWO DELIBERATE DIVERGENCES, both measured and both kept:
+   * CARBON DOES NOT RESTORE FOCUS. After Escape, document.activeElement was BODY, not the
+     launch button. Ours restores to the trigger, which is a fix this project made after
+     watching a keyboard user get stranded at the top of the page. Keeping it.
+   * Carbon sets NOTHING on the trigger. We keep `aria-haspopup` and `aria-controls`, and
+     dropped `aria-expanded`, which was both absent from Carbon and wrong for a dialog.
+     See show() for the reasoning.
    ========================================================================== */
 (() => {
   'use strict';
@@ -49,7 +76,6 @@
     open.delete(modal);
     modal.classList.remove(OPEN);
     state.registration?.release();
-    state.trigger?.setAttribute('aria-expanded', 'false');
     // The trap owns focus restoration and was told where to send it (see
     // show()), so this only passes the flag. One owner, not two racing.
     state.releaseTrap?.({ restoreFocus: options.restoreFocus !== false });
@@ -60,10 +86,25 @@
     if (open.has(modal)) return;
     const container = containerOf(modal);
 
+    // CARBON SETS NOTHING ON THE TRIGGER — measured on components-modal--default
+    // 2026-08-29, where the launch button carries only `class` and `type` before
+    // and after opening. This file used to set three attributes; one of them was
+    // wrong and two are kept as deliberate additions.
+    //
+    // `aria-expanded` IS GONE. It describes a region that expands in place, and
+    // a modal is not one: a screen reader announced "collapsed" for a button
+    // that opens a dialog and then "expanded" for one whose dialog had taken
+    // over the screen. It was also unpaired — close() set it back to false, so
+    // the wrong state was being maintained carefully.
+    //
+    // `aria-haspopup` and `aria-controls` STAY, and that is a departure from
+    // Carbon recorded rather than hidden. They are additive and true: the button
+    // does open a dialog, and the dialog it opens is the one named. Nothing here
+    // invents BEHAVIOUR, which is what the one rule is about; dropping them
+    // would make the system worse for an AT user to match an absence.
     if (trigger) {
       trigger.setAttribute('aria-haspopup', 'dialog');
       trigger.setAttribute('aria-controls', overlay.autoId(modal, 'rux-modal'));
-      trigger.setAttribute('aria-expanded', 'true');
     }
 
     const registration = overlay.register({

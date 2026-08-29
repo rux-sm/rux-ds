@@ -172,6 +172,26 @@
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     record('modal', 'Escape dismisses it through the kernel',
       !has(modal, 'is-visible'), `still visible: ${has(modal, 'is-visible')}`);
+
+    // WHERE THE DIALOG ROLE LIVES. Carbon puts role=presentation on the scrim
+    // and the dialog on the container; ours had it the other way until
+    // 2026-08-29, which made the full-viewport backdrop the dialog.
+    const container = modal.querySelector('.rux--modal-container');
+    record('modal', 'the container is the dialog, not the scrim',
+      modal.getAttribute('role') === 'presentation'
+      && container?.getAttribute('role') === 'dialog'
+      && container?.getAttribute('aria-modal') === 'true',
+      `root role=${modal.getAttribute('role')}, `
+      + `container role=${container?.getAttribute('role')} aria-modal=${container?.getAttribute('aria-modal')}`);
+
+    // aria-expanded described a region that expands in place. A dialog is not
+    // one, and Carbon sets nothing on the trigger at all.
+    click(trigger);
+    const expandedWhileOpen = trigger.getAttribute('aria-expanded');
+    key(document, 'Escape');
+    record('modal', 'the trigger is never given aria-expanded',
+      expandedWhileOpen === null && trigger.getAttribute('aria-expanded') === null,
+      `while open: ${expandedWhileOpen}, after close: ${trigger.getAttribute('aria-expanded')}`);
   })();
 
   // ── dismiss: removed, not hidden ──────────────────────────────────────────
