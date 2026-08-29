@@ -20,7 +20,11 @@
     always a fluid-stacking element rather than a list-box one — the reference
     that showed it was fluidcombobox — and it should not have been demoed here.
   -->
-  <div class="ks-grid">
+  <!-- ks-overlay-room reserves the open menu's own height. The menu is
+       `position: absolute` so it adds nothing to the section's layout, and this
+       specimen never closes — without the reservation it hung 88px into the
+       modal section and painted over its heading. See harness.css. -->
+  <div class="ks-grid ks-overlay-room">
     <div class="rux--list-box__wrapper">
       <div class="rux--list-box rux--list-box--expanded">
         <div class="rux--list-box__field">

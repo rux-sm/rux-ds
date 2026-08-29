@@ -32,6 +32,17 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
    9000 it outranks every isolated section, whatever their DOM order. Anything
    added later that must cover the whole page belongs outside this rule too. */
 .ks-sec:not(#modal) { isolation: isolate; }
+/* ROOM FOR A SPECIMEN THAT IS PERMANENTLY OPEN. An absolutely-positioned menu
+   reserves no height, which is right on a real page — an open dropdown should
+   overlay what follows it — but wrong for a specimen that never closes: the
+   list box menu is 120px tall and hung 88px past its own section, painting
+   over the NEXT section's h2 and subtitle. Isolation did not fix that and was
+   never going to: it decides which stacking context a thing belongs to, not
+   how much space it takes. Confirmed pre-existing by measuring with the
+   isolation rule on and off — the heading read as covered either way.
+   7.5rem is the menu's own height, so the section reserves exactly what the
+   open state needs. */
+.ks-overlay-room { padding-block-end: 7.5rem; }
 .ks-sec > h2 { font-size: 1.25rem; margin-block-end: .25rem; }
 .ks-sec > p  { font-size: .75rem; color: var(--rux-text-secondary); margin-block-end: 1.25rem; }
 .ks-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start;
