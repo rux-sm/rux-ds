@@ -321,6 +321,41 @@
     .filter(e => (e.type ?? 'story') === 'story');
   const all = every.filter(e => FILTER.test(e.id));
   const stories = SLICE ? all.slice(SLICE[0], SLICE[0] + SLICE[1]) : all;
+  // ICON_STATES, and it exists because of what a DEFAULT story cannot show.
+  // 24 of the 64 icon slots rux-ds uses had no capture at all after the bare
+  // harvest, and almost every one of them is an invalid or warning state that no
+  // story renders by default — which is exactly the family the 2026-08-29
+  // invalid-icon defect lived in. These re-load one story with Storybook's
+  // `args=` override, the same mechanism the RECIPES table uses for 'states'.
+  //
+  // THEY ARE NOT HERE TO INFLATE CORROBORATION. Adding three recipes that all
+  // render the same slot would manufacture the 3-story agreement check-slots
+  // asks for, which is the "exception list that measures itself" this project
+  // refuses. Each row below configures a DIFFERENT component, so what the set
+  // establishes is that six independent components agree on one glyph — which
+  // is a fact about Carbon, not about how many URLs were typed.
+  const ICON_STATES = MODE !== 'icons' ? [] : [
+    { story: 'components-checkbox--default', key: 'checkbox@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-checkbox--default', key: 'checkbox@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-textinput--default', key: 'text-input@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-textinput--default', key: 'text-input@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-textarea--default', key: 'text-area@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-textarea--default', key: 'text-area@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-select--default', key: 'select@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-select--default', key: 'select@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-dropdown--default', key: 'dropdown@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-dropdown--default', key: 'dropdown@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-radiobutton--default', key: 'radio@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-radiobutton--default', key: 'radio@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-numberinput--default', key: 'number@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-numberinput--default', key: 'number@warn', args: 'warn:!true;warnText:Careful' },
+    { story: 'components-combobox--default', key: 'combo-box@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-multiselect--default', key: 'multiselect@invalid', args: 'invalid:!true;invalidText:Bad' },
+    { story: 'components-inlineloading--default', key: 'inline-loading@error', args: 'status:error' },
+    { story: 'components-inlineloading--default', key: 'inline-loading@finished', args: 'status:finished' },
+    { story: 'components-search--default', key: 'search@with-value', args: 'value:query' },
+    { story: 'components-tile--selectable', key: 'tile@selected', args: 'selected:!true' },
+  ];
   if (MODE !== 'states') {
     console.log(`harvesting ${stories.length} stories…`);
     // Say what FILTER left out. A narrowed run is a deliberate act, but a run that
@@ -501,16 +536,22 @@
 
   const grab = (story, { maxMs = SETTLE_MAX_MS } = {}) => new Promise(resolve => {
     const id = typeof story === 'string' ? story : story.id;
+    // ARGS AND A SEPARATE KEY, so a configured capture can sit beside a bare one.
+    // The bare harvest passes neither and behaves exactly as before; ICON_STATES
+    // rows pass both, and the key is what keeps `story@invalid` from overwriting
+    // `story` in `out`.
+    const args = typeof story === 'object' ? story.args : null;
+    const key = (typeof story === 'object' && story.key) || id;
     const f = document.createElement('iframe');
     f.style.cssText = 'position:fixed;left:-10000px;top:0;width:1280px;height:900px;border:0';
-    f.src = `/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`;
+    f.src = storyUrl(id, args);
     let done = false, poll = 0, loadTimer = 0;
     const finish = value => {
       if (done) return;
       done = true;
       clearInterval(poll); clearTimeout(loadTimer);
       f.remove();
-      resolve([id, value]);
+      resolve([key, value]);
     };
     f.onload = () => {
       const t0 = performance.now();
@@ -669,10 +710,11 @@
   }
 
   const out = {};
-  for (let i = 0; i < stories.length; i += CONCURRENCY) {
-    const batch = stories.slice(i, i + CONCURRENCY);
+  const harvest = [...stories, ...ICON_STATES];
+  for (let i = 0; i < harvest.length; i += CONCURRENCY) {
+    const batch = harvest.slice(i, i + CONCURRENCY);
     for (const [id, lines] of await Promise.all(batch.map(s => grab(s)))) out[id] = lines;
-    console.log(`  ${Math.min(i + CONCURRENCY, stories.length)}/${stories.length}`);
+    console.log(`  ${Math.min(i + CONCURRENCY, harvest.length)}/${harvest.length}`);
   }
 
   // Retry pass. Only (empty) and (timeout) are worth repeating — (missing) is a

@@ -1,6 +1,6 @@
 {
   "_": "Which NAMED @carbon/icons glyph Carbon renders into each icon slot, harvested from the 505 react.carbondesignsystem.com stories by tools/extract/react-dom.js in its icons mode on 2026-08-29, then resolved from drawing to name against @carbon/icons 11.86.0. Committed so check-slots survives Phase 4, which removes node_modules.",
-  "_rule": "A slot is ENFORCED only when Carbon draws exactly ONE glyph there and did so in 3 or more distinct stories — the same corroboration bar check-ancestry uses, and for the same reason: one story is a description of that story, not a rule. Everything else is recorded and reported, never failed.",
+  "_rule": "A slot is ENFORCED when Carbon draws exactly ONE glyph there AND that is corroborated, either by 3+ distinct stories — check-ancestry’s MIN_STORIES, for its reason — or by 3+ SIBLING slots agreeing. A sibling is a slot with the same ROLE, the class with its component name stripped: checkbox__invalid-icon, select__invalid-icon and four more are all __invalid-icon. Six independent components drawing one glyph is corroboration of the same kind as one component in six stories, and it is the form the evidence actually takes for the invalid and warn states, which no default story renders. Everything under the bar is recorded and reported, never failed.",
   "_declined": {
     "side-nav__icon": "the consumer chooses their nav icons; Carbon’s stories happen to use `fade` throughout, which is a fact about the stories",
     "tag__custom-icon": "the class says custom; the glyph is the consumer’s by definition",
@@ -53,6 +53,30 @@
       ],
       "rule": "6 different glyphs"
     },
+    "checkbox__invalid-icon": {
+      "kind": "own",
+      "glyphs": [
+        "warning--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "checkbox__invalid-icon.checkbox__invalid-icon--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
     "header__action.header__menu-trigger.header__menu-toggle.header__menu-toggle__hidden": {
       "kind": "in",
       "glyphs": [
@@ -74,6 +98,18 @@
         3
       ],
       "rule": "one glyph in 3+ stories"
+    },
+    "inline-loading__checkmark-container": {
+      "kind": "own",
+      "glyphs": [
+        "checkmark--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "inline-notification__close-icon": {
       "kind": "own",
@@ -106,9 +142,21 @@
       ],
       "drawings": 1,
       "corroboration": [
+        3
+      ],
+      "rule": "one glyph in 3+ stories"
+    },
+    "list-box__invalid-icon.list-box__invalid-icon--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
         1
       ],
-      "rule": "one glyph but only 1 story/stories"
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "list-box__menu-icon": {
       "kind": "in",
@@ -207,6 +255,30 @@
       ],
       "rule": "one glyph but only 1 story/stories"
     },
+    "radio-button__invalid-icon": {
+      "kind": "own",
+      "glyphs": [
+        "warning--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "radio-button__invalid-icon.radio-button__invalid-icon--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
     "search-close.search-close--hidden": {
       "kind": "in",
       "glyphs": [
@@ -239,6 +311,30 @@
         3
       ],
       "rule": "one glyph in 3+ stories"
+    },
+    "select__invalid-icon": {
+      "kind": "own",
+      "glyphs": [
+        "warning--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "select__invalid-icon.select__invalid-icon--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "side-nav__icon": {
       "kind": "in",
@@ -392,6 +488,30 @@
       ],
       "rule": "one glyph in 3+ stories"
     },
+    "text-area__invalid-icon": {
+      "kind": "own",
+      "glyphs": [
+        "warning--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
+    "text-area__invalid-icon.text-area__invalid-icon--warning": {
+      "kind": "own",
+      "glyphs": [
+        "warning--alt--filled"
+      ],
+      "drawings": 1,
+      "corroboration": [
+        1
+      ],
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
+    },
     "text-input__invalid-icon": {
       "kind": "own",
       "glyphs": [
@@ -403,18 +523,17 @@
       ],
       "rule": "one glyph but only 2 story/stories"
     },
-    "tile--icon": {
+    "text-input__invalid-icon.text-input__invalid-icon--warning": {
       "kind": "own",
       "glyphs": [
-        "launch",
-        "arrow--right"
+        "warning--alt--filled"
       ],
-      "drawings": 2,
+      "drawings": 1,
       "corroboration": [
-        1,
-        3
+        1
       ],
-      "rule": "2 different glyphs"
+      "rule": "one glyph but only 1 story/stories",
+      "from": "ICON_STATES"
     },
     "tile__checkmark": {
       "kind": "in",
@@ -464,6 +583,19 @@
       ],
       "rule": "one glyph in 3+ stories"
     },
+    "tile--icon": {
+      "kind": "own",
+      "glyphs": [
+        "launch",
+        "arrow--right"
+      ],
+      "drawings": 2,
+      "corroboration": [
+        1,
+        3
+      ],
+      "rule": "2 different glyphs"
+    },
     "toast-notification__close-icon": {
       "kind": "own",
       "glyphs": [
@@ -508,5 +640,6 @@
       ],
       "rule": "one glyph in 3+ stories"
     }
-  }
+  },
+  "_states": "20 configured captures via ICON_STATES in tools/extract/react-dom.js, run 2026-08-29. They exist because 24 of our 64 slots had no capture from the bare harvest, almost all of them invalid or warn states. Each row configures a DIFFERENT component: the point is agreement ACROSS components, not repeating one slot until it clears a threshold, which would be measuring the recipe list."
 }

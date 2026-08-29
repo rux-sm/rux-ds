@@ -170,21 +170,21 @@ export const GATES = [
     // and reverting it does NOT turn this red. `states` recipes for the invalid
     // and warning states would raise those slots over the bar; until then the
     // reference is worth more than the check.
-    blindTo: '24 of our 64 icon slots have no Carbon capture at all — almost all '
-      + 'invalid/warn states no default story renders — and are reported UNCOVERED '
-      + 'rather than passed · 21 more are captured but under the corroboration bar, '
-      + 'the `__invalid-icon` family among them · a slot Carbon fills from a prop, '
-      + 'where there is no right answer · size, position and visibility of the icon',
+    blindTo: '13 of our icon slots have no Carbon capture at all and are reported '
+      + 'UNCOVERED rather than passed · 18 more are captured but under the '
+      + 'corroboration bar · a slot Carbon fills from a prop, where there is no '
+      + 'right answer · size, position and visibility of the icon',
     reads: 'per-file',
     fileTargets: ROOTS,
     pageTargets: [],
     canRun: { sink: true, templates: true },
     inputs: [...ROOTS, 'docs/carbon-slots.json'],
-    redRun: 'point `table-sort__icon` at `#i-arrow--down` (4 findings) or '
-      + '`accordion__arrow` at `#i-chevron--down` (3) — both verified 2026-08-29. '
-      + 'Reverting the invalid-icon fix does NOT fire: that slot is under the bar.',
+    redRun: 'point `table-sort__icon` at `#i-arrow--down` (4 findings), '
+      + '`accordion__arrow` at `#i-chevron--down` (3), or revert the invalid-icon '
+      + 'fix to `#i-error--filled` (7) — all verified 2026-08-29. That last one did '
+      + 'NOT fire before ICON_STATES and the sibling rule, which is why both exist.',
     sideEffects: null,
-    baseline: '19 enforced slots · 76 icon sites checked · 0 wrong glyph · 24 uncovered · 21 under the bar',
+    baseline: '33 enforced slots · 102 icon sites checked · 0 wrong glyph · 13 uncovered · 18 under the bar',
   },
   {
     id: 'check-co-classes',

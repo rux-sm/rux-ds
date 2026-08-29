@@ -22,20 +22,27 @@
 // hash to 2,823 distinct size+geometry keys. All 69 drawings in our slots
 // resolved; the five collisions in the package are aliases.
 //
-// THE CORROBORATION BAR IS THE WHOLE DIFFERENCE BETWEEN A RULE AND A STORY.
-// A slot is enforced only where Carbon drew ONE glyph there in 3 OR MORE
-// distinct stories — check-ancestry's MIN_STORIES, for check-ancestry's reason:
-// intersecting one occurrence describes that occurrence. Of 40 slots our markup
-// shares with Carbon, 25 clear the bar and 19 are enforced after six are
-// declined in the reference WITH REASONS, because their glyph is the consumer's
-// and not the component's: a side nav icon, a tag's `custom-icon`, a toast whose
-// four variants Carbon's stories only rendered one of.
+// THE CORROBORATION BAR IS THE WHOLE DIFFERENCE BETWEEN A RULE AND A STORY, and
+// it is cleared two ways — see `enforced` below. 33 of the 51 slots our markup
+// shares with Carbon are enforced; six are declined in the reference WITH
+// REASONS because their glyph is the consumer's and not the component's, and the
+// rest are recorded under the bar and reported, never failed.
+//
+// IT TOOK BOTH A CAPTURE AND A RULE, and the first draft claimed otherwise. That
+// draft enforced 19 slots on story-count alone, and REVERTING THE INVALID-ICON
+// DEFECT LEFT IT GREEN: no default story renders an invalid field, so
+// list-box__invalid-icon had one capture and text-input__invalid-icon two, both
+// under a 3-story bar. Its header said `states` recipes would fix that and a
+// rule change would not. Half right. The 20 ICON_STATES rows supplied the
+// captures, and every one still had a single story behind it — what made them
+// evidence was noticing that SIX INDEPENDENT COMPONENTS agree on one glyph,
+// which is corroboration of the same kind as one component in six stories.
+// With both, the seven-site defect that this file's own reference found by hand
+// is now caught by the file.
 //
 // WHAT IT CANNOT SEE, stated because a green run is otherwise easy to over-read:
-//   * 24 of our 64 icon slots have no Carbon capture at all — almost all of them
-//     invalid and warning states no default story renders. They are reported as
-//     UNCOVERED, never as passing. Closing that needs `states` recipes, not a
-//     rule change.
+//   * 13 of our icon slots still have no Carbon capture at all and are reported
+//     UNCOVERED, never as passing.
 //   * a slot Carbon fills from a prop, where there is no right answer to know.
 //   * whether the icon is the right SIZE, or positioned correctly, or visible.
 //
@@ -49,9 +56,34 @@ const REF = JSON.parse(readFileSync('docs/carbon-slots.json', 'utf8'));
 const { slots, _declined: DECLINED } = REF;
 const showAll = process.argv.includes('--all');
 
-const ENFORCED = new Set(Object.entries(slots)
-  .filter(([k, v]) => v.rule === 'one glyph in 3+ stories' && !DECLINED[k])
-  .map(([k]) => k));
+// THE ROLE IS THE CLASS WITH ITS COMPONENT NAME STRIPPED, so that
+// checkbox__invalid-icon and select__invalid-icon are both `__invalid-icon`.
+// It is what lets sibling slots corroborate each other.
+const role = slot => slot.split('.').map(c => c.replace(/^[a-z0-9-]+?(?=__)/, '')).join('.');
+
+// Single-glyph slots grouped by role, so a role that six components agree on can
+// be counted. Declined slots are excluded from the tally as well as from
+// enforcement — a consumer-supplied glyph should not vouch for anything.
+const byRole = new Map();
+for (const [k, v] of Object.entries(slots)) {
+  if (v.drawings !== 1 || DECLINED[k]) continue;
+  const r = role(k);
+  if (!byRole.has(r)) byRole.set(r, new Map());
+  const m = byRole.get(r);
+  m.set(v.glyphs[0], (m.get(v.glyphs[0]) ?? 0) + 1);
+}
+
+// TWO WAYS TO CLEAR THE SAME BAR, and the second is not a loosening. One story
+// describes that story; so does one component. Three of either is the point at
+// which a coincidence has had a chance to fall over. The invalid and warn
+// states can only ever reach it the second way — no default story renders them,
+// so their evidence is six components agreeing rather than one repeated.
+function enforced(k, v) {
+  if (DECLINED[k] || v.drawings !== 1) return false;
+  if (v.corroboration[0] >= 3) return true;
+  return (byRole.get(role(k))?.get(v.glyphs[0]) ?? 0) >= 3;
+}
+const ENFORCED = new Set(Object.entries(slots).filter(([k, v]) => enforced(k, v)).map(([k]) => k));
 
 // Slot = the svg's own rux-- classes, or the nearest classed ancestor's. Same
 // definition the capture used, or the two sides would not meet.
@@ -110,7 +142,10 @@ function push(map, k, v) { (map.get(k) ?? map.set(k, []).get(k)).push(v); }
 for (const w of wrong) {
   console.log(`\n  ${w.file}  ·  ${w.slot}`);
   console.log(`     ours    #i-${w.ours}`);
-  console.log(`     Carbon  ${w.carbon}   (one glyph across ${w.ref.corroboration[0]}+ stories)`);
+  const why = w.ref.corroboration[0] >= 3
+    ? `one glyph across ${w.ref.corroboration[0]}+ stories`
+    : `one glyph across ${byRole.get(role(w.slot))?.get(w.ref.glyphs[0])} sibling ${role(w.slot)} slots`;
+  console.log(`     Carbon  ${w.carbon}   (${why})`);
 }
 
 if (showAll) {

@@ -74,7 +74,7 @@ was verified against.
 | What | Where |
 |---|---|
 | The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
-| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family sits under the corroboration bar — `states` recipes would raise it | roadmap §4.5 |
+| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 13 slots still have no capture | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules, the 15th gate. There is no `tests/` directory at all | roadmap §4.8 |
@@ -172,7 +172,7 @@ Fifteen, because none is sufficient alone — see roadmap §4.1.2 for the bug th
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
-| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 19 slots where Carbon drew one glyph in 3+ stories | 24 of our 64 slots have no Carbon capture (reported UNCOVERED, never passed) · 21 more are under the corroboration bar, the `__invalid-icon` family among them |
+| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 13 slots have no Carbon capture (reported UNCOVERED, never passed) · 18 more are under the corroboration bar |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (16 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
