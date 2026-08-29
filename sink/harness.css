@@ -32,6 +32,17 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
    leaving the gap as the only space between them. It changes no `column-gap`
    and so misrepresents nothing: what it removes is the container's slack. */
 .ks-ruler { justify-content: start; }
+/* The stack scale strip. Three columns, and only ONE thing varies down it: the
+   space between the two markers. The markers are a FIXED 12x24 in every row so
+   the eye has nothing else to track — the earlier version put the px number in
+   a Tag inside the stack, which made the label's own width change with the text
+   (38px at "2px", 52px at "160px") while the gap changed underneath it. Two
+   variables at once, and a reader inspecting the 160px pill found it 52px wide
+   and reasonably asked why. The number now sits OUTSIDE the stack, where its
+   width cannot be mistaken for the measurement. */
+.ks-strip-row { display: grid; grid-template-columns: 2rem 12rem auto;
+                gap: 1rem; align-items: center; font-size: .8125rem; }
+.ks-mark { inline-size: .75rem; block-size: 1.5rem; background: var(--rux-interactive); }
 
 /* The spacing scale table. Four columns: token, rem, px, swatch.
    THE SWATCH IS SIZED BY THE TOKEN IT NAMES — each row sets `--ks-swatch` to
