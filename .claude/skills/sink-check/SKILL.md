@@ -1,6 +1,6 @@
 ---
 name: sink-check
-description: Run the kitchen sink's browser-only gates (check-a11y.js, check-rendered.js) and any focus or contrast measurement against the running page. Use when asked to run the browser checks, verify the sink in a browser, measure focus rings or contrast, or look at the sink after a change. Encodes four conditions that each silently produce a wrong answer if skipped.
+description: Run the kitchen sink's browser-only gates (check-a11y.js, check-rendered.js) and any focus or contrast measurement against the running page. Use when asked to run the browser checks, verify the sink in a browser, measure focus rings or contrast, or look at the sink after a change. Encodes six conditions that each silently produce a wrong answer if skipped.
 ---
 
 # Running the browser-only gates
@@ -47,7 +47,30 @@ theme's:
 A contrast finding was once recorded against g100's tokens while the page was labelled
 white.
 
-**4. A green run proves nothing until you have seen it go red.** Delete the thing you are
+**4. SUPPRESS TRANSITIONS BEFORE READING ANY STATE YOU JUST CHANGED**, not only for focus
+rings. Carbon transitions width and opacity over 300ms and this pane's animation clock does
+not advance on its own, so a value read straight after a click is mid-flight and usually a
+lie. On 2026-08-28 it produced two false alarms in one sitting: a side nav measured 256px
+wide while `--expanded` was absent (it was 0 once settled), and a scrim measured full-size
+at `opacity: 0`, which reads exactly like an invisible overlay eating every press. Both
+dissolved under
+
+    document.head.appendChild(Object.assign(document.createElement('style'),
+      {textContent:'*{transition:none!important;animation:none!important}'}))
+
+Do this before the interaction, then read. The nav round trip then reads correctly at every
+step: closed 0, open 256 with a 900px scrim at opacity 1, closed 0 again.
+
+**5. `check-runtime-classes` wants a page nobody has touched.** It compares the file against
+the live DOM, so any state a module changed under your pointer is counted as a difference
+the markup caused. That puts it in direct tension with condition 1 — the click check-a11y
+needs for `document.hasFocus()` is exactly the kind of press the overlay kernel acts on.
+Run `check-runtime-classes` FIRST on a freshly loaded page, or reload before it. A
+`stripped` count read after a session of clicking is not the page's, and one such reading
+(`side-nav--expanded`, 2026-08-28) survived long enough to be written up as a defect before
+a clean re-run showed 0 at every width.
+
+**6. A green run proves nothing until you have seen it go red.** Delete the thing you are
 checking and confirm the check fails, then restore. For focus rings:
 
     .rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important; }
@@ -95,6 +118,16 @@ modules delete teaches the wrong markup:
 
 Those are three distinct classes, not four: `check-coverage` reads `templates/` as well as
 the sink, so `table-sort--active` goes uncounted in both places for one reason.
+
+**Re-measured on a freshly loaded page at 800px AND 1440px on 2026-08-28: unchanged.** The
+figures are not viewport-dependent, which was worth establishing because a `stripped: 1`
+reading of `side-nav--expanded` at 1440px sent someone looking for a breakpoint bug that
+does not exist. It was interaction state — see condition 5 — and it did not survive a clean
+run. The shell itself was checked in both directions across 65.98rem while that was chased:
+nav 0 ↔ 256, hamburger hidden above and shown below, and the burger closes what it opens.
+Crossing UP with the nav open does leave `--expanded` and `side-nav__overlay-active` set,
+and both are inert there — Carbon sizes the scrim only inside `@media (max-width: 65.98rem)`,
+so it measures 0×0 with presses passing through. Stale to read, harmless to the page.
 
 Its red run: remove any class from the live DOM by hand and it reports that class as
 stripped, with the section and element it came from.
