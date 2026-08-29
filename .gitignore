@@ -3,6 +3,13 @@
 carbon-website/
 node_modules/
 
+# Guide data emitted by rux-ln-atlas. NEVER COMMITTED, and the reason is not
+# tidiness: this repository is PUBLIC, and a rendered LN procedure is derived
+# from Infor's copyrighted documentation and a client's configured environment.
+# It is delivered here only while a template is authored against it; the
+# consuming project is private and is where it belongs.
+data/
+
 # Build scratch
 .sass-cache/
 *.css.map
