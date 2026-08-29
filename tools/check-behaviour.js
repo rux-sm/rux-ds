@@ -238,6 +238,46 @@
       `while open: ${expandedWhileOpen}, after close: ${trigger.getAttribute('aria-expanded')}`);
   })();
 
+  // ── ui-shell: the hamburger, and what does NOT dismiss the nav ───────────
+  // Confirmed on components-ui-shell-header--header-w-side-nav at 900px
+  // 2026-08-29: --expanded alone takes the nav 0 to 256px, the glyph becomes
+  // an X, aria-label swaps to "Close menu", Escape closes it, and an outside
+  // press does not.
+  (() => {
+    const trigger = q('#ui-shell .rux--header__menu-trigger');
+    const nav = q('#ui-shell .rux--side-nav');
+    if (!trigger || !nav) return record('ui-shell', 'hamburger', false, 'no shell here');
+    const EXP = 'rux--side-nav--expanded';
+    const glyph = () => trigger.querySelector('svg use')?.getAttribute('href');
+
+    // Drive it to a known closed state first; the sink ships this nav open.
+    if (has(nav, EXP)) click(trigger);
+    const closedGlyph = glyph(), closedLabel = trigger.getAttribute('aria-label');
+
+    click(trigger);
+    record('ui-shell', 'the hamburger opens the nav and becomes an X',
+      has(nav, EXP) && glyph() === '#i-close'
+      && trigger.getAttribute('aria-expanded') === 'true',
+      `--expanded=${has(nav, EXP)}, glyph=${glyph()}, aria-expanded=${trigger.getAttribute('aria-expanded')}`);
+
+    // THE NAME MOVES WITH THE GLYPH. Until 2026-08-29 the icon became an X
+    // while aria-label still read "Open menu".
+    record('ui-shell', 'and its accessible name changes with it',
+      trigger.getAttribute('aria-label') !== closedLabel,
+      `label stayed "${trigger.getAttribute('aria-label')}"`);
+
+    // AN OUTSIDE PRESS MUST NOT CLOSE IT. Carbon leaves it open; a nav is part
+    // of the page, not a surface over it.
+    document.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    record('ui-shell', 'an outside press does not dismiss the nav',
+      has(nav, EXP), `--expanded=${has(nav, EXP)} after a press on the body`);
+
+    key(document, 'Escape');
+    record('ui-shell', 'but Escape does',
+      !has(nav, EXP) && glyph() === closedGlyph,
+      `--expanded=${has(nav, EXP)}, glyph=${glyph()}`);
+  })();
+
   // ── tile: the collapsed cap is an inline value, and it round-trips ────────
   // Confirmed on components-tile--expandable 2026-08-29: Carbon's collapsed
   // tile carries style="max-height: 232px", expanding CLEARS it and adds

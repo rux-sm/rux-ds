@@ -31,11 +31,36 @@
    aria-expanded is the whole of the behaviour; the arrow follows.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · the LAYOUT half was verified live and is recorded in templates/app-shell.html: the
-   hamburger is hidden above 66rem and the nav is persistent there. THIS MODULE'S
-   behaviour was not. app-shell.html is explicit that the docs site's own toggle uses a
-   gatsby-theme-carbon class and is NO evidence about the component, so what opens and
-   closes the nav here is derived from Carbon's cascade, not observed.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-ui-shell-header--header-w-side-nav
+   at a 900px viewport -- below the 66rem breakpoint, where the hamburger exists -- reading
+   the class list, the button's attributes and the nav's measured width at each step.
+
+   This label used to say the LAYOUT half was verified and this module's behaviour was not,
+   because the docs site's own toggle uses a gatsby-theme-carbon class and is no evidence
+   about the component. The component's own story is, and it confirms every mechanism here.
+
+   CONFIRMED: `side-nav--expanded` on the nav is the entire toggle -- the nav measured 0
+   closed and 256px open with no inline width anywhere, which is what "a behaviour layer
+   should never be writing widths" was betting on. The trigger's aria-expanded tracks it.
+   The scrim takes `side-nav__overlay-active`. The hamburger glyph really does become an X:
+   the path changed from the four-bar menu to the close glyph, so the claim this file cites
+   from IBM's accessibility page is now also observed.
+
+   THE TWO DISTINCTIVE DECISIONS BOTH HELD. Escape closes the nav -- 256px back to 0,
+   aria-expanded false. An outside press does NOT: clicking page content well clear of the
+   panel left it open at 256px. That is exactly `dismissOn: { outside: false }`, and it was
+   the part most at risk of being a guess.
+
+   ONE DEFECT: THE NAME DID NOT MOVE WITH THE GLYPH. Carbon swaps aria-label from
+   "Open menu" to "Close menu" on open. This module swapped the icon to an X and left the
+   label reading "Open menu", so a sighted user saw close while a screen-reader user was
+   told open -- the same shape of fault as the modal trigger's aria-expanded, an attribute
+   describing the state that has just ended. Fixed, with the same "only the known pair"
+   guard the glyph swap uses.
+
+   NOT VERIFIED: the submenu chevron rotation, which is CSS off aria-expanded and was not
+   driven; and the header nav's own menus.
    ========================================================================== */
 (() => {
   'use strict';
@@ -64,6 +89,29 @@
     const now = use.getAttribute(attr);
     if (now !== GLYPH.closed && now !== GLYPH.open) return;
     use.setAttribute(attr, open ? GLYPH.open : GLYPH.closed);
+  }
+
+  // THE NAME HAS TO MOVE WITH THE GLYPH, and it did not until 2026-08-29.
+  // Carbon swaps aria-label "Open menu" to "Close menu" when the nav opens --
+  // measured on components-ui-shell-header--header-w-side-nav. Ours swapped the
+  // icon to an X and left the label saying "Open menu", so a sighted user saw
+  // close and a screen-reader user was told open. The same shape of fault as
+  // the modal trigger's aria-expanded: an attribute describing the old state.
+  //
+  // ONLY THE KNOWN PAIR IS SWAPPED, exactly as the glyph is. A trigger labelled
+  // anything else is a product's own wording -- most likely translated -- and
+  // overwriting it with English would be worse than leaving it. That also means
+  // a localised shell gets no swap and must set `data-rux-label-open`.
+  const LABEL = { closed: 'Open menu', open: 'Close menu' };
+  function setTriggerLabel(trigger, open) {
+    if (!trigger) return;
+    const pair = {
+      closed: trigger.getAttribute('data-rux-label-closed') ?? LABEL.closed,
+      open: trigger.getAttribute('data-rux-label-open') ?? LABEL.open,
+    };
+    const now = trigger.getAttribute('aria-label');
+    if (now !== pair.closed && now !== pair.open) return;
+    trigger.setAttribute('aria-label', open ? pair.open : pair.closed);
   }
 
   /* `adopt` MARKS THE INIT PASS, and it changes exactly one thing: whether
@@ -98,6 +146,7 @@
     nav.classList.toggle(EXPANDED, open);
     trigger?.setAttribute('aria-expanded', String(open));
     setTriggerGlyph(trigger, open);
+    setTriggerLabel(trigger, open);
     scrimFor(nav)?.classList.toggle('rux--side-nav__overlay-active', open);
 
     // A NAV WITH NO TRIGGER IS NOT DISMISSIBLE, because nothing could reopen it.
