@@ -80,8 +80,21 @@ authored beside the one the modules finished with.
 
 STRIPPED is the direction that matters: a class in the file and not in the page is one
 `check-coverage` counts while nobody can see it. ADDED is harmless — the page shows a
-class the file never had, so the ratchet understates. Expect **0 stripped and 3 added**
-on the kitchen sink, and 0/0 on `templates/app-shell.html`.
+class the file never had, so the ratchet understates.
+
+Expected today, measured 2026-08-28 — **nothing is stripped anywhere**, which is the
+reading that matters for `templates/`, since a worked example that ships a class the
+modules delete teaches the wrong markup:
+
+| page | stripped | added |
+|---|---|---|
+| `kitchen-sink.html` | 0 | 3 — `data-table--selected`, `table-sort--active`, `side-nav__overlay-active` |
+| `templates/app-shell.html` | 0 | 0 |
+| `templates/table-page.html` | 0 | 1 — `table-sort--active`, the same module marking the active sort button |
+| `templates/form-page.html` | 0 | 0 |
+
+Those are three distinct classes, not four: `check-coverage` reads `templates/` as well as
+the sink, so `table-sort--active` goes uncounted in both places for one reason.
 
 Its red run: remove any class from the live DOM by hand and it reports that class as
 stripped, with the section and element it came from.
