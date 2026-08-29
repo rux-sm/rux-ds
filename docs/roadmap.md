@@ -1242,6 +1242,28 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > Remaining, roughly in dependency order:
 > list-box (dropdown, select) · accordion · tabs · data-table (sort, expand, select-all) ·
 > notification and tag dismiss · number-input · search clear · tile · ui-shell.
+>
+> **16. A hidden thing has to be hidden from every sense at once, 2026-08-28.** The
+> closed batch bar was `clip-path`-ed off the screen and `aria-hidden` to the
+> accessibility tree, and its three buttons were still tab stops: focus went somewhere
+> invisible that announced nothing. Read from running Carbon
+> (`components-datatable-batch-actions--default`): closed is `aria-hidden=true` with
+> every button at `tabindex="-1"`, open is `aria-hidden=false` with every button at
+> `0`. js/data-table.js now moves the tabindex with the aria-hidden, since both derive
+> from the same count.
+>
+> **The captures could not have answered this, and neither could the sink.**
+> `tools/extract/react-dom.js` records `role` and four aria attributes; `aria-hidden`
+> and `tabindex` are not among them, so the capture's silence meant nothing — checking
+> the extractor's allowlist before reading the capture as evidence is the step that
+> stopped a wrong conclusion here. And the sink ships the bar OPEN, because a specimen
+> has to show the state statically for check-coverage; the defect only exists CLOSED,
+> so `check-a11y` read 0 findings on the sink for as long as the bug lived.
+>
+> **It took a consumer page to surface it** — the §4.6 third exit attempt, whose
+> dashboard shipped the bar closed. That page was never edited, and it now reports 0
+> findings instead of 3 purely because the module repairs the attribute at load. A gate
+> pointed only at the reference page measures the states the reference happens to hold.
 
 ### 4.6 Phase 6 — Templates and skeleton
 
@@ -1332,10 +1354,12 @@ alone, without inventing a class.
 > criterion means: the templates alone (then a grid-row idiom is missing), or the repo
 > without inventing (then this attempt met it).
 >
-> **What the attempt surfaced beyond its page.** `check-a11y`'s 3 findings are inherited
-> byte-for-byte from `table-page.html`: the inactive batch bar ships
+> **What the attempt surfaced beyond its page.** `check-a11y`'s 3 findings were
+> inherited byte-for-byte from `table-page.html`: the inactive batch bar shipped
 > `aria-hidden="true"` over three focusable buttons, a state the sink never shows
-> because its bar is active — needs adjudicating against a running Carbon page. The
+> because its bar is active. **Adjudicated and fixed the same day — a real defect, not
+> a divergence; see §4.5's entry 16.** Carbon pairs the two attributes, and the
+> dashboard now reads 0 findings without being edited. The
 > per-file gates cannot be pointed at a consumer page: `sources.mjs` reads `sink/` and
 > `templates/` only, and `check-ancestry`'s KNOWN is keyed by file, so a byte-compatible
 > copy of already-adjudicated markup fails in a new file. `npm run icons` rewrites only

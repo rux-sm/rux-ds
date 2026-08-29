@@ -212,8 +212,18 @@ diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js` and `check-spacing.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**0 findings, 5 notes**; the notes are CSS specimens with no trigger, which are not
-meant to be operable. It refuses to run its focus-ring check when `document.hasFocus()`
+**0 findings, 6 notes** on the sink; the notes are CSS specimens with no trigger, which
+are not meant to be operable — four menu densities, the overflow menu's options and the
+list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
+unrelated change found it had been 6 for some time; a count in prose drifts unless
+something re-reads it.
+
+**The sink is the wrong page to run this gate on alone.** Its bar ships ACTIVE, so the
+one state that carries the defect — a closed batch bar whose buttons are still tab stops
+— cannot occur there, and the sink read 0 findings for as long as the defect existed.
+It surfaced in `templates/table-page.html`, which ships the bar closed, and only because
+a page built from that template was checked. **Run it on the templates too, not only on
+the sink.** It refuses to run its focus-ring check when `document.hasFocus()`
 is false, because `:focus` cannot match in an unfocused document and the check would
 otherwise report every control on the page. When it does run it suppresses transitions
 first: Carbon fades `outline` over 70ms, an automated pane's animation clock never
