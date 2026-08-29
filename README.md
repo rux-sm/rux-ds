@@ -12,7 +12,8 @@ stated twice drifts — which is exactly what happened to the Status block below
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
 started** — `templates/app-shell.html` is the frame, with `table-page.html`,
-`form-page.html`, `detail-page.html` and `empty-state.html` built on it. Until the rest land the kitchen sink is still the worked
+`form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`
+built on it. Until the rest land the kitchen sink is still the worked
 example and `sink/*.html` the markup to copy.
 
 ## Status
@@ -47,8 +48,11 @@ Everything below is in the repo, so a fresh clone is the whole handover — noth
 in an editor session or a machine-local note.
 
 **Next:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
-is preparation. Five of six exist — `app-shell.html`, `table-page.html`,
-`form-page.html`, `detail-page.html` and `empty-state.html`; error state is open. Every gate that reads
+is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
+`form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
+That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
+`templates/` can be built from them without inventing a class, and nobody has
+tried that yet. Every gate that reads
 markup per file reads `templates/` too, and each template declares what its BEHAVIOUR
 was verified against.
 
