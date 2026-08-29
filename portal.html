@@ -175,9 +175,9 @@
           </div>
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
-              <p>Browser gate cells</p>
-              <h3>25 / 25</h3>
-              <p>0 never run</p>
+              <p>Browser gates current</p>
+              <h3>3 / 25</h3>
+              <p>22 stale · 0 never run</p>
             </div>
           </div>
           </div>
@@ -755,7 +755,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed. 25 of 25 cells have a recorded run.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 3 of 25 cells are current; 22 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -763,160 +763,186 @@
                   <tr>
                     <th scope="col"><div class="rux--table-header-label">Gate</div></th>
                     <th scope="col"><div class="rux--table-header-label">Page</div></th>
+                    <th scope="col"><div class="rux--table-header-label">State</div></th>
                     <th scope="col"><div class="rux--table-header-label">Last run</div></th>
-                    <th scope="col"><div class="rux--table-header-label">Result</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Result or reason</div></th>
                   </tr>
                 </thead>
                 <tbody>
                 <tr>
                   <td>check-rendered</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>uaStyled 0 · collapsed 0 · escaped 0 · nothingToMeasure [spacing]</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 3 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added · 63 classes</td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>2026-08-29</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 0 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 stripped · 1 added</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 276 · matched 259 · diverges 17 · noReference 144</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 26 · matched 23 · diverges 3 · noReference 9</td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>2026-08-29</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 20 · matched 19 · diverges 1 · noReference 3</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 59 · matched 58 · diverges 1 · noReference 5</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 32 · matched 30 · diverges 2 · noReference 5</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 29 · matched 27 · diverges 2 · noReference 4</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 54 · matched 52 · diverges 2 · noReference 4</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>checked 61 · matched 58 · diverges 3 · noReference 11</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 6 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true · re-read after the stack fix, clean in white AND g100</td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>2026-08-29</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">2026-08-29</span></span></td>
-                  <td>0 findings · 0 notes · focusRingChecked true</td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>js changed since</td>
                 </tr>
                 </tbody>
               </table>

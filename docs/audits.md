@@ -96,6 +96,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 | 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | unrecorded | **not yet filed** |
 | 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | unrecorded | **not yet filed** |
 | 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | unrecorded | **not yet filed** |
+| 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | unrecorded | `docs/gate-coverage.json` `_portal` |
 
 Finding 9 was produced by running `npm run verify` at the end of this sweep —
 after the entry above had already recorded that verify was not run. Both

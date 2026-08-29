@@ -63,57 +63,15 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { GATES, browserGates, cells, inVerify } from './lib/gates.mjs';
+import { cellStates } from './lib/staleness.mjs';
 
-const LEDGER = 'docs/gate-coverage.json';
-
-const ledger = existsSync(LEDGER)
-  ? JSON.parse(readFileSync(LEDGER, 'utf8'))
-  : {};
-
-const git = args => {
-  try { return execFileSync('git', args, { encoding: 'utf8' }).trim(); }
-  catch { return ''; }
-};
-
-// Commits touching `path` since `since`. Empty means the input has not moved,
-// which is the only thing that makes a recorded result still current.
-function movedSince(since, path) {
-  if (!existsSync(path)) return false;
-  return git(['log', '--oneline', `${since}..HEAD`, '--', path]).length > 0;
-}
-
-// Paths with uncommitted changes. A result read against a modified file cannot
-// be reconstructed later, so it is reported even though nothing has "moved".
-const dirty = new Set(
-  git(['status', '--porcelain'])
-    .split('\n').filter(Boolean).map(l => l.slice(3).trim()));
-
-const isDirty = input => [...dirty].some(p => p === input || p.startsWith(input + '/'));
-
+// THE RULE NOW LIVES IN tools/lib/staleness.mjs. It moved there when
+// portal.html became a second reader of the same matrix and counted recorded
+// cells instead of current ones — see that file's header. Nothing about the
+// states or their precedence changed in the move.
 const gapsOnly = process.argv.includes('--gaps');
 
-const rows = [];
-for (const { gate: id, page } of cells()) {
-  const gate = GATES.find(g => g.id === id);
-  const recorded = ledger[id]?.[page] ?? null;
-
-  if (!recorded) { rows.push({ id, page, state: 'NEVER RUN', why: '' }); continue; }
-
-  // Without a commit there is nothing to measure against. Say so rather than
-  // guessing from the date — a ledger entry that cannot be aged is its own
-  // finding.
-  if (!recorded.commit) {
-    rows.push({ id, page, state: 'NO COMMIT', why: 'ledger entry records no commit to age against' });
-    continue;
-  }
-
-  const moved = gate.inputs.filter(i => movedSince(recorded.commit, i));
-  const modified = gate.inputs.filter(isDirty);
-
-  if (moved.length) rows.push({ id, page, state: 'STALE', why: `${moved.join(', ')} changed since` });
-  else if (modified.length) rows.push({ id, page, state: 'DIRTY', why: `uncommitted: ${modified.join(', ')}` });
-  else rows.push({ id, page, state: 'ok', why: recorded.date });
-}
+const rows = cellStates();
 
 const gaps = rows.filter(r => r.state !== 'ok');
 const width = Math.max(...rows.map(r => r.id.length));

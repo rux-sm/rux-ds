@@ -44,8 +44,9 @@
 //
 import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-import { GATES, browserGates, cells } from './lib/gates.mjs';
+import { GATES, browserGates } from './lib/gates.mjs';
 import { markupFiles } from './lib/sources.mjs';
+import { cellStates } from './lib/staleness.mjs';
 import { compiled } from './lib/ownership.mjs';
 
 const read = p => readFileSync(p, 'utf8');
@@ -88,11 +89,21 @@ const covOwn = Object.values(coverage.components).reduce((a, c) => a + c.own, 0)
 const covPct = Math.round((covHit / covOwn) * 100);
 
 // Browser-gate matrix: every cell the registry says a sweep has to fill.
-const matrix = cells().map(c => {
-  const rec = ledger[c.gate]?.[c.page];
-  return { ...c, run: Boolean(rec), date: rec?.date ?? null, result: rec?.result ?? null };
+//
+// STATE COMES FROM tools/lib/staleness.mjs, NOT FROM "is there a row in the
+// ledger". The first version of this page asked the weaker question and
+// answered "25 / 25 · 0 never run" while `npm run gates` reported 22 stale in
+// the same tree — a status page contradicting the tool it reports on. A reading
+// whose inputs have moved since is not coverage; `js/` changing invalidates
+// every browser cell, which is how 22 of them went stale in one commit.
+const matrix = cellStates().map(r => {
+  const rec = ledger[r.id]?.[r.page];
+  return { gate: r.id, page: r.page, state: r.state, why: r.why,
+           current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
-const runCells = matrix.filter(c => c.run).length;
+const currentCells = matrix.filter(c => c.current).length;
+const staleCells = matrix.filter(c => c.state === 'STALE' || c.state === 'DIRTY').length;
+const neverRun = matrix.filter(c => c.state === 'NEVER RUN').length;
 
 // ── icons, asserted ─────────────────────────────────────────────────────────
 const sprite = read('assets/icons.svg').trim();
@@ -136,13 +147,19 @@ const gateRows = GATES.map(g =>
                   <td>${esc(g.blindTo ?? '—')}</td>
                 </tr>`).join('\n');
 
-const matrixRows = matrix.map(c =>
-`                <tr>
+const STATE_TAG = { 'ok': ['current', 'green'], 'STALE': ['stale', 'red'],
+  'DIRTY': ['dirty', 'magenta'], 'NEVER RUN': ['never run', 'red'],
+  'NO COMMIT': ['no commit', 'warm-gray'] };
+const matrixRows = matrix.map(c => {
+  const [label, colour] = STATE_TAG[c.state] ?? [c.state, 'cool-gray'];
+  return `                <tr>
                   <td>${esc(c.gate)}</td>
                   <td>${esc(c.page)}</td>
-                  <td>${c.run ? tag(c.date, 'green') : tag('never run', 'red')}</td>
-                  <td>${esc(c.result ?? 'no result recorded')}</td>
-                </tr>`).join('\n');
+                  <td>${tag(label, colour)}</td>
+                  <td>${esc(c.date ?? '—')}</td>
+                  <td>${esc(c.why || c.result || 'no result recorded')}</td>
+                </tr>`;
+}).join('\n');
 
 const templateCards = templates.map(t =>
 `          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
@@ -237,7 +254,7 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
 ${tile('Components compiled', `${COMPILED.size} / ${allComponents.length}`, `${allComponents.length - COMPILED.size} cut or deferred`)}
 ${tile('Class coverage', `${covPct}%`, `${covHit} of ${covOwn} classes exercised`)}
 ${tile('Stylesheet', kb(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
-${tile('Browser gate cells', `${runCells} / ${matrix.length}`, `${matrix.length - runCells} never run`)}
+${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCells} stale · ${neverRun} never run`)}
           </div>
         </div>
 
@@ -307,7 +324,7 @@ ${gateRows}
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed. ${runCells} of ${matrix.length} cells have a recorded run.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. ${currentCells} of ${matrix.length} cells are current; ${staleCells} stale, ${neverRun} never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -315,8 +332,9 @@ ${gateRows}
                   <tr>
                     <th scope="col"><div class="rux--table-header-label">Gate</div></th>
                     <th scope="col"><div class="rux--table-header-label">Page</div></th>
+                    <th scope="col"><div class="rux--table-header-label">State</div></th>
                     <th scope="col"><div class="rux--table-header-label">Last run</div></th>
-                    <th scope="col"><div class="rux--table-header-label">Result</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Result or reason</div></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -359,4 +377,4 @@ ${matrixRows}
 `;
 
 writeFileSync('portal.html', page);
-console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${runCells}/${matrix.length} browser cells run`);
+console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${currentCells}/${matrix.length} browser cells current, ${staleCells} stale, ${neverRun} never run`);
