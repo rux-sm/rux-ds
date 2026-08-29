@@ -283,7 +283,17 @@
 
 <main id="main-content" class="rux--content">
   <div class="rux--css-grid">
-    <div class="rux--css-grid-column rux--col-span-100 rux--lg:col-span-8">
+    <!-- PER-BREAKPOINT SPANS, NOT col-span-100 PLUS AN OVERRIDE. This carried
+         `col-span-100 lg:col-span-8` and the lg class did NOTHING: both are one
+         class of specificity, a media query adds none, and `.col-span-100` is
+         emitted later in the stylesheet, so `1 / -1` won at every width. The
+         form was full width at 1400 — measured 1016px, the same as
+         table-page's — while the markup said half.
+
+         Carbon's own idiom is every breakpoint named:
+         `sm:col-span-4 md:col-span-8 lg:col-span-16` on one element, in
+         preview-pageheader--default. A form wants 8 of 16 at lg, so it says 8. -->
+    <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8">
 
       <h1>New request</h1>
 
@@ -402,6 +412,11 @@
             </label>
           </div>
 
+          <!-- `btn-set` IS FOR A SET, and it caps its children at
+               max-inline-size 196px so a row of them stays even. Copy it for ONE
+               action and the label wraps — "Add a deployment" came out over three
+               lines in templates/empty-state.html before that was found. A single
+               button goes in a plain container and sizes itself. -->
           <div class="rux--btn-set">
             <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
             <button type="submit" class="rux--btn rux--btn--primary">Submit</button>

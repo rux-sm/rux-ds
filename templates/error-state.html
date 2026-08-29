@@ -342,6 +342,22 @@
 
            js/dismiss.js closes it and needs no attribute in the markup. -->
       <div style="margin-block-start:4rem">
+        <!-- THE ROLE IS A CHOICE, NOT BOILERPLATE. Carbon's notification
+             accessibility page sanctions `alert`, `log` or `status` for a
+             notification that does NOT require user action, and `alertdialog`
+             for one that does. Within that set the difference is ARIA's:
+             `alert` is an assertive live region and interrupts whatever a
+             screen reader is saying, `status` is polite and waits.
+        
+             So this is the wrong thing to copy without thinking. An error a
+             reader must know about now takes `alert`; a routine confirmation
+             takes `status`, or it will talk over them. Carbon's own captures
+             only ever show `status` — the default story emits it — so `alert`
+             is a deliberate step up, not the component's habit.
+        
+             NO GATE SEES THIS. Both roles resolve, both are valid ARIA, and
+             the only symptom of the wrong one is a screen reader behaving
+             badly — which is why §4.5's pass is still open. -->
         <div class="rux--inline-notification rux--inline-notification--error rux--inline-notification--low-contrast" role="alert">
           <div class="rux--inline-notification__details">
             <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
