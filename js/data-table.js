@@ -30,6 +30,14 @@
    `clip-path` opening the bar, and it belongs to "some row is selected"
    rather than to the markup. The count text is the same fact said twice, so
    it is written from the same place.
+
+   THE CLOSED BAR IS HIDDEN THREE WAYS AND EACH ONE IS NEEDED. `clip-path`
+   takes it off the screen, `aria-hidden` takes it off the accessibility tree,
+   and `tabindex="-1"` takes its buttons out of the tab order. Ship only the
+   first two and the page has focusable elements inside an aria-hidden subtree
+   — invisible tab stops that announce nothing. Read from running Carbon on
+   2026-08-28: closed is aria-hidden=true with every button at -1, open is
+   aria-hidden=false with every button at 0.
    ========================================================================== */
 (() => {
   'use strict';
@@ -121,6 +129,13 @@
     if (bar) {
       bar.classList.toggle('rux--batch-actions--active', count > 0);
       bar.setAttribute('aria-hidden', String(count === 0));
+      // aria-hidden AND tabindex, together or not at all. The bar is closed by
+      // `clip-path`, which removes it from view and leaves its buttons in the
+      // tab order — a tab stop inside an aria-hidden subtree, which is the one
+      // combination the ARIA spec rules out. Carbon pairs them.
+      for (const btn of bar.querySelectorAll('button')) {
+        btn.tabIndex = count === 0 ? -1 : 0;
+      }
       const para = bar.querySelector('.rux--batch-summary__para span');
       if (para) para.textContent = `${count} item${count === 1 ? '' : 's'} selected`;
     }
