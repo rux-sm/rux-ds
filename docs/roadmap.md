@@ -1286,6 +1286,27 @@ alone, without inventing a class.
 > check-a11y at 0 findings and check-runtime-classes at 0 stripped. **Re-run the test
 > before calling the phase done**; one shape is one sample, and the fix has not been
 > tested by a second attempt.
+>
+> **Second attempt, 2026-08-28 — MET, on a different shape.** A settings page: grouped
+> sections, a persistent action pair, and — deliberately — a tile on a plain page, the
+> exact idiom that failed the first time. 68 classes, all present in the six.
+>
+> **The tile came out right.** `rgb(244,244,244)` on a white page, visible, because the
+> rewritten comment in `detail-page.html` states the condition rather than the snippet.
+> That is the first attempt's fix tested by something other than itself. The button pair
+> measured 196x48 each with no wrap, `check-a11y` 0 findings and 0 notes with the ring
+> check running, `check-runtime-classes` 0 stripped and 0 added, `check-spacing` 39 of
+> 41 with both divergences explained — one context the reference does not hold, one
+> `:last-of-type` rule whose value is Carbon's own.
+>
+> **One reach outside, and it was avoidable.** `rux--fieldset` went in from memory before
+> the audit caught it; `form-page.html` already shows the grouping idiom as
+> `<fieldset class="rux--checkbox-group">` with a `<legend class="rux--label">`. The
+> templates held the answer and were not consulted. Worth knowing that the failure mode
+> is not only a missing template — it is also a present one going unread.
+>
+> **Two samples, both by the same author who knew the traps.** That is the standing
+> weakness of this test and no amount of re-running by me fixes it.
 
 **DECIDED 2026-08-28 — the kitchen sink does not use the UI shell as its own page
 chrome.** Asked directly, and recorded because the opposite is the intuitive answer:

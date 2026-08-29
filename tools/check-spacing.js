@@ -88,6 +88,15 @@
 // Carbon to render the combination somewhere in its own stories, which is not
 // something this end can arrange.
 //
+// POSITION IS A THIRD DIMENSION THE KEY DOES NOT HOLD, found on 2026-08-28 by a
+// row that DID match its context: `form-item.checkbox-wrapper` inside
+// `checkbox-group`, ours 3px against Carbon's 6px. Both are Carbon's own —
+// `.form-item.checkbox-wrapper` is 0.375rem and `:last-of-type` is 0.1875rem —
+// and the page simply reported its last wrapper against a recorded non-last one.
+// Neither the class set nor the parent can express "the last of its kind", so a
+// context-matched row is still not proof of disagreement. Check which element in
+// the run the value came from before believing it.
+//
 // The lesson for the next reader: check what state each side was in before
 // calling anything a defect. The tool's value is that the list is short and
 // investigable, not that every row is wrong.
