@@ -69,6 +69,28 @@
       </div>
     </div>
 
+    <!-- PERSISTENT SEARCH. The table above demos the EXPANDABLE search, which
+         collapses to a magnifier. components-datatable-pagination--default
+         renders the other variant — --toolbar-search-container-persistent, a
+         field that is always open — on the same search structure. It is a
+         toolbar on its own here rather than a second whole table: one modifier
+         does not need forty rows behind it to be shown. -->
+    <div class="ks-label" style="margin-block-start:1.5rem">toolbar · persistent search</div>
+    <section class="rux--data-table-container">
+      <section class="rux--table-toolbar" role="group" aria-label="Persistent search toolbar">
+      <div class="rux--toolbar-content">
+        <div class="rux--search rux--toolbar-search-container-persistent" role="search">
+          <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
+          <label class="rux--label" for="ks-tbl-search-persistent">Search records</label>
+          <input id="ks-tbl-search-persistent" class="rux--search-input" type="text" role="searchbox" placeholder="Search…">
+          <button type="button" class="rux--search-close rux--search-close--hidden" aria-label="Clear">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+      </section>
+    </section>
+
     <div class="ks-label" style="margin-block-start:1.5rem">header, toolbar, batch actions, sorting and row actions</div>
     <!--
       `data-table-header__content` is NOT copied. React wraps the title and

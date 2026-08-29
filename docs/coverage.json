@@ -9,25 +9,17 @@
       "hit": 3,
       "own": 7
     },
-    "tabs": {
-      "hit": 16,
-      "own": 37
-    },
-    "tooltip": {
-      "hit": 3,
-      "own": 7
-    },
     "popover": {
       "hit": 16,
       "own": 33
     },
-    "data-table": {
-      "hit": 40,
-      "own": 80
-    },
     "overflow-menu": {
       "hit": 10,
       "own": 20
+    },
+    "data-table": {
+      "hit": 41,
+      "own": 80
     },
     "modal": {
       "hit": 13,
@@ -40,6 +32,10 @@
     "search": {
       "hit": 7,
       "own": 13
+    },
+    "tooltip": {
+      "hit": 4,
+      "own": 7
     },
     "ui-shell": {
       "hit": 32,
@@ -100,6 +96,10 @@
     "link": {
       "hit": 6,
       "own": 8
+    },
+    "tabs": {
+      "hit": 28,
+      "own": 37
     },
     "tag": {
       "hit": 22,

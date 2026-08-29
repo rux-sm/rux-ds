@@ -17,7 +17,7 @@ const SRC = 'node_modules/@carbon/icons/svg';
 const SIZES = ['16', '20', '32', ''];   // preference order; '' is the unsized root
 
 const ICONS = [
-  'chevron--down', 'chevron--right', 'chevron--up',
+  'chevron--down', 'chevron--left', 'chevron--right', 'chevron--up',
   'caret--down', 'caret--up', 'caret--left', 'caret--right',
   'checkmark', 'checkmark--filled', 'checkmark--outline',
   'close', 'close--filled',
