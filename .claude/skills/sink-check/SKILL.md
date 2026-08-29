@@ -26,7 +26,7 @@ The cache-buster matters after you edit a tool. Both tools RETURN their result o
 read the return value rather than the console. `check-a11y` returns
 `{findings, notes, byRule, focusRingChecked}`; `check-rendered` returns its own summary.
 
-## Four conditions, each of which has produced a wrong answer here
+## Six conditions, each of which has produced a wrong answer here
 
 **1. The document must have focus.** `check-a11y` reports `focusRingChecked: false` and
 skips its focus-ring check entirely when `document.hasFocus()` is false — and a bare

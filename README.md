@@ -78,7 +78,8 @@ was verified against.
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs ten of the twelve gates.
+last push, and `npm run verify` runs ten of the fourteen gates — `npm run gates`
+reports the other four and which pages each has been run against.
 
 | | |
 |---|---|
@@ -184,14 +185,14 @@ there was invisible to all three. The new gate intersects the classed ancestors 
 occurrence of a class across all 641 captures and requires what survives — what Carbon
 puts above it *without exception*. Its first full run found a second instance of the same
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
-wrapper and never mentioned the styled one. **23 declines are recorded with reasons; 0
+wrapper and never mentioned the styled one. **26 declines are recorded with reasons; 0
 findings remain.**
 
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink actually achieves (**432/720, 60%**, on 2026-08-28) and fails only when a
+what the sink and templates actually achieve (**501/735, 68%**) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
@@ -208,7 +209,7 @@ figure is 488, not 485. They are NOT worth hardcoding into the markup to collect
 duplicates state a module derives from the checkbox, the sort button and the nav, and the
 copy goes stale the moment the real state moves. **0 stripped, 3 added on 2026-08-28.**
 
-The first ten run in `npm run verify`; the last three need a browser. `check-tags` was promoted from a
+The first ten run in `npm run verify`; the last four need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js` and `check-spacing.js` need a browser** — paste any into the
