@@ -2478,8 +2478,18 @@
          expanded dropdowns here read 0px tall at rest. The classes are in the
          static markup, so check-coverage counts them, but a reader never sees
          the state — press the field to open it. That gap belongs to the
-         specimen and the module together and is recorded, not fixed here. -->
-    <div class="rux--list-box__wrapper">
+         specimen and the module together and is recorded, not fixed here.
+
+         FIXED 2026-08-28 in js/ui-shell.js: adopting the sink's declared-open
+         nav ran register()'s default dismissAbove() and closed both of these
+         before the page settled. Adoption now dismisses nothing; a hamburger
+         PRESS still does. The margin below is for the same specimen — a menu
+         that opens upward is absolutely positioned over whatever sits above it,
+         and without the room it covered the closed dropdown in the row above.
+         Its own LABEL is still covered, and that is not a defect to fix: the
+         menu is positioned above the FIELD, and the label sits there. A real
+         page reaches this state only when there is no room below. -->
+    <div class="rux--list-box__wrapper" style="margin-block-start:7rem">
       <label class="rux--label" id="dd-8-label">Expanded upward</label>
       <div class="rux--dropdown rux--list-box rux--list-box--up rux--dropdown--lg rux--layout--size-lg rux--dropdown--open rux--list-box--expanded">
         <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="dd-8-label" aria-expanded="true" aria-haspopup="listbox" aria-controls="dd-8-menu">

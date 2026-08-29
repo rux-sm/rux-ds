@@ -165,6 +165,19 @@
       : `${c.outlineStyle}|${c.outlineWidth}|${c.outlineColor}`;
     return `${outline}|${c.boxShadow}|${c.borderColor}|${c.backgroundColor}`;
   }).join(';')).join('/');
+  const activeDescendantIndicated = el => {
+    const id = el.getAttribute?.('aria-activedescendant');
+    const target = id && document.getElementById(id);
+    if (!target || !visible(target)) return false;
+    for (const node of [target, ...target.querySelectorAll('*')])
+      for (const pseudo of [null, '::before', '::after']) {
+        const c = getComputedStyle(node, pseudo);
+        const unpainted = c.outlineStyle === 'none' || c.outlineStyle === 'auto'
+          || /rgba\([^)]*,\s*0\s*\)\s*$/.test(c.outlineColor);
+        if (!unpainted && parseFloat(c.outlineWidth) > 0) return true;
+      }
+    return false;
+  };
   // TRANSITIONS MUST BE OFF OR THE DIFF MEASURES THE CLOCK. Carbon transitions
   // `outline` and `box-shadow` over 70ms, and getComputedStyle reports the value
   // the transition has REACHED, not the one the cascade asks for. Read the
@@ -186,7 +199,19 @@
       const before = paint(el);
       el.focus({ preventScroll: true });
       if (document.activeElement !== el) { say('cannot take focus', 'tabbable but .focus() did not land', el); continue; }
-      if (paint(el) === before) say('no visible focus change', 'nothing changed on the control, its label or their ::before/::after; the browser default ring does not count', el);
+      // A COMPOSITE IS INDICATED BY ITS ACTIVE DESCENDANT, and for one the
+      // requirement is not that focusing CHANGES something. ARIA keeps DOM focus
+      // on the control and moves the visual indicator to the element
+      // aria-activedescendant names; Carbon writes that literally, with
+      // `.dropdown--open .list-box__field { outline: none }` removing the field's
+      // own ring while the menu is open and the highlighted option carrying the
+      // 2px outline instead. That option is already highlighted before focus
+      // arrives, so the diff is empty and an open dropdown read as ringless —
+      // twice, once per expanded specimen. What matters is that the indicator is
+      // THERE, not that it appeared. The attribute is the pointer; this knows
+      // nothing about dropdowns.
+      if (paint(el) === before && !activeDescendantIndicated(el))
+        say('no visible focus change', 'nothing changed on the control, its label or their ::before/::after, and no active descendant carries a ring; the browser default ring does not count', el);
     }
     held?.focus?.({ preventScroll: true });
   } finally { noAnim.remove(); }

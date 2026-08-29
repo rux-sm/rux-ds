@@ -59,7 +59,21 @@
     use.setAttribute(attr, open ? GLYPH.open : GLYPH.closed);
   }
 
-  function setNav(nav, open, trigger) {
+  /* `adopt` MARKS THE INIT PASS, and it changes exactly one thing: whether
+     registering this nav dismisses what is already on the overlay stack.
+
+     A nav shipped `--expanded` did not open because anyone chose it, so it must
+     not tear down surfaces the markup also declared open. Without this the shell
+     adopted the sink's open nav, register() ran its default dismissAbove(), and
+     both of dropdown.html's expanded dropdowns closed before the page had
+     settled — at rest, with nothing pressed. The classes stayed in the static
+     markup, so check-coverage kept counting a state no reader could see.
+
+     A hamburger PRESS is the opposite case and keeps the default: choosing to
+     open the navigation should close a menu you left open. The kernel's own
+     comment draws this line for hover tooltips, which appear because a pointer
+     crossed them rather than because anyone chose them. */
+  function setNav(nav, open, trigger, adopt = false) {
     if (!nav) return;
     // ONLY `--expanded` IS TOGGLED, and that is the whole mechanism. Carbon's
     // cascade already says everything: `--ux` is 16rem, a max-width:65.98rem
@@ -93,6 +107,7 @@
           element: nav,
           anchor: trigger,
           dismissOn: { outside: false },   // see the header
+          dismissOthers: !adopt,
           close: opts => setNav(nav, false, opts?.trigger ?? trigger),
         }),
         trigger,
@@ -148,7 +163,7 @@
      panel is hidden or shown to match the attribute the button already carries. */
   for (const nav of document.querySelectorAll('.rux--side-nav')) {
     const burger = nav.closest('.rux--header')?.querySelector('.rux--header__menu-toggle');
-    if (nav.classList.contains(EXPANDED)) setNav(nav, true, burger);
+    if (nav.classList.contains(EXPANDED)) setNav(nav, true, burger, true);
   }
   for (const button of document.querySelectorAll('.rux--side-nav__submenu'))
     setSubmenu(button, button.getAttribute('aria-expanded') === 'true');

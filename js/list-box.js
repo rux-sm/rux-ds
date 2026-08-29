@@ -217,13 +217,30 @@
      rendered with `--expanded` — and without this the first click would call open()
      on something already open, quietly registering it and leaving the user's click
      with no visible effect. Adopting the state means the first click CLOSES it,
-     which is what the page looks like it is offering. */
+     which is what the page looks like it is offering.
+
+     `dismissOthers: false` IS LOAD-BEARING, and its absence closed every one of
+     these. register() calls dismissAbove() by default, so adopting the second
+     declared-open list box dismissed the first, and the next module to adopt an
+     open surface dismissed that one — by the time the page settled both of
+     dropdown.html's expanded specimens had lost --expanded and --open and their
+     menus were hidden, at rest, with nothing pressed. The classes stayed in the
+     static markup, so check-coverage went on counting them as exercised while
+     the page showed a closed dropdown.
+
+     The kernel's own reasoning covers this and its comment names the parallel: a
+     surface that was DECLARED open did not open because anyone chose it, exactly
+     as a hover tooltip appears because a pointer crossed it. It belongs on the
+     stack — Escape and outside press must still reach it — but it must not tear
+     down what is already there. Nothing else adopts onto the stack; accordion
+     and data-table adopt markup state without registering. */
   for (const root of document.querySelectorAll(`${ROOT}.rux--list-box--expanded`)) {
     const field = fieldOf(root);
     if (!field || isDisabled(root) || live.has(root)) continue;
     live.set(root, {
       registration: overlay.register({
-        element: root, anchor: field, close: opts => close(root, opts),
+        element: root, anchor: field, dismissOthers: false,
+        close: opts => close(root, opts),
       }),
       cursor: null,
     });
