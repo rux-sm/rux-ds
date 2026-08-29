@@ -212,6 +212,23 @@ border whose style is `none` or whose width is 0, so that rule is not written �
 unexercised rule measures nothing. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
 stays open until one is done.
 
+
+**Focus-ring CONTRAST was swept by hand on 2026-08-28, and no gate does it.** All 164
+focusable controls in both themes: 126 outline rings, 35 box-shadow rings, 3 that colour
+a border. Nothing is below 3:1 on both of its edges. One number is worth knowing — the
+data-table toolbar's overflow button reads **2.76:1 on the ring's INNER edge**, where
+Carbon's `background-active` sits under an inset ring, and 4.55:1 on the outer edge that
+meets the toolbar. Not ours to fix and not a defect: `--rux-focus` compiles to `#0f62fe`
+and `#ffffff`, byte-identical to Carbon's generated `$focus`, and the rules are Carbon's
+own. The captures in `docs/` cannot check this — they carry markup, no colour.
+
+Two things the sweep does NOT cover. **Forced colors**, where `--rux-focus` becomes the
+system `Highlight` keyword and every number above stops applying. And legibility: this is
+arithmetic over computed colours, not a judgement that a ring reads at a glance. Carbon's
+button ring is two-tone — blue outer, white inner — so scoring one layer against the
+surface beneath it says nothing; a first pass did exactly that and called 27 controls
+1:1 before the edges were measured separately.
+
 **`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
 automating it means adding a headless-browser dependency and this project has none.
