@@ -21,19 +21,42 @@
    this system inventing behaviour rather than making Carbon's work. If a
    template ever needs it, it is a decision to record, not a gap to fill.
 
-   WHAT IS ADDED: `aria-controls`. Carbon emits `aria-expanded` and stops, so a
-   screen reader is told the button expands something but never told what. The
-   wrapper gets an id and the heading points at it. `role="region"` is NOT
-   added with it — the APG warns off landmarks once there are more than a
-   handful of panels, and a sink section with three accordions would make six.
+   `aria-controls` IS CARBON'S, NOT OURS. This block used to claim Carbon
+   "emits aria-expanded and stops" and that the attribute was our addition.
+   Measured on the running accordion 2026-08-29, that is false: every Carbon
+   heading carries `aria-controls`, pointing at the `__content` div — not at
+   the `__wrapper` this module used to name. Both sit inside the collapsed
+   subtree so either resolves, but the content IS the panel and the wrapper is
+   the box that animates it, so this now points where Carbon points.
+
+   `role="region"` is still NOT added — the APG warns off landmarks once there
+   are more than a handful of panels, and a sink section with three accordions
+   would make six. Carbon does not add it either.
 
    And the markup's own state is adopted at load, so an item shipped
    `--active` has `aria-expanded="true"` whether or not the author remembered.
    ========================================================================== */
 
-/* BEHAVIOUR: derived · built from the captured markup and what a real <button> already does. Carbon's own
-   accordion declines arrow-key navigation and so does this; that decline is recorded
-   below but was not read off a running page.
+/* BEHAVIOUR: verified-live · driven 2026-08-29 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-accordion--default
+   clicking real headings and sending real key events.
+
+   THE DECLINE IS REAL, which is this file's central claim and the one most worth
+   checking, since "we deliberately do nothing" is otherwise unfalsifiable. With a
+   heading focused, ArrowDown moved nothing and End moved nothing -- focus stayed on the
+   heading and no aria-expanded changed. Carbon implements no arrow-key navigation here,
+   so neither does this.
+
+   ALSO CONFIRMED: the heading is a real <button type="button">; clicking it toggles
+   `__item--active` and `aria-expanded` together; the wrapper is display:none while
+   collapsed; and SEVERAL ITEMS STAY OPEN AT ONCE -- opening a second did not close the
+   first, so there is no single-open behaviour to implement.
+
+   ONE CLAIM ABOVE WAS FALSE AND IS CORRECTED. Carbon does emit `aria-controls`; it was
+   never our addition, and it points at `__content` rather than `__wrapper`.
+
+   NOT VERIFIED: a disabled item. The default story has none, and ours is markup-only --
+   a disabled <button> is unreachable by the browser's own rules.
    ========================================================================== */
 (() => {
   'use strict';
@@ -44,6 +67,11 @@
   const ACTIVE = 'rux--accordion__item--active';
 
   const wrapperOf = item => item.querySelector(':scope > .rux--accordion__wrapper');
+  // The panel aria-controls names. Carbon points at the content; the wrapper is
+  // the animating box around it. Falls back to the wrapper for markup that has
+  // no content div of its own.
+  const panelOf = item => item.querySelector(':scope > .rux--accordion__wrapper > .rux--accordion__content')
+    || wrapperOf(item);
   const headingOf = item => item.querySelector(':scope > .rux--accordion__heading');
   const isDisabled = item => item.classList.contains('rux--accordion__item--disabled')
     || headingOf(item)?.disabled === true;
@@ -68,9 +96,9 @@
   /* Wire aria-controls, and make aria-expanded agree with the class the markup
      shipped. Both are things a template author should not have to remember. */
   for (const item of document.querySelectorAll(ITEM)) {
-    const heading = headingOf(item), wrapper = wrapperOf(item);
+    const heading = headingOf(item), panel = panelOf(item);
     if (!heading) continue;
-    if (wrapper) heading.setAttribute('aria-controls', overlay.autoId(wrapper, 'rux-accordion'));
+    if (panel) heading.setAttribute('aria-controls', overlay.autoId(panel, 'rux-accordion'));
     heading.setAttribute('aria-expanded', String(item.classList.contains(ACTIVE)));
   }
 

@@ -177,6 +177,28 @@
     click(head);
     record('accordion', 'and toggles back', head.getAttribute('aria-expanded') === before,
       `ended at ${head.getAttribute('aria-expanded')}`);
+
+    // aria-controls NAMES THE CONTENT, which is where Carbon points it. This
+    // module pointed at the wrapper until 2026-08-29 — both resolve, but only
+    // one matches the component being copied.
+    const target = document.getElementById(head.getAttribute('aria-controls'));
+    record('accordion', 'aria-controls names the content panel',
+      !!target && target.classList.contains('rux--accordion__content'),
+      `aria-controls=${head.getAttribute('aria-controls')} -> ${target ? target.className : 'nothing'}`);
+
+    // THE DECLINE, ASSERTED. Carbon implements no arrow-key navigation here and
+    // neither does this; without a case saying so, adding it later would look
+    // like a fix rather than a divergence.
+    const heads = [...document.querySelectorAll('#accordion .rux--accordion__heading')];
+    head.focus();
+    const wasFocus = document.activeElement;
+    const wasExpanded = heads.map(h => h.getAttribute('aria-expanded')).join(',');
+    key(head, 'ArrowDown');
+    key(head, 'End');
+    record('accordion', 'arrow keys are declined, as Carbon declines them',
+      document.activeElement === wasFocus
+      && heads.map(h => h.getAttribute('aria-expanded')).join(',') === wasExpanded,
+      `focus moved: ${document.activeElement !== wasFocus}, expanded now ${heads.map(h => h.getAttribute('aria-expanded')).join(',')}`);
   })();
 
   // ── modal + the overlay kernel ────────────────────────────────────────────
