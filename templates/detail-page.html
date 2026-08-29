@@ -314,23 +314,38 @@
              `btn-set`. -->
         <h1>api-gateway</h1>
         <p>Region eu-west-1 · last deployed 2 hours ago</p>
-        <!-- A HORIZONTAL STACK, because a vertical one stretches. `stack-vertical`
-             is `display: grid`, so its children fill the column — the tag came
-             out as a full-width green bar. The horizontal stack is the axis this
-             row wants, and it keeps each child at its own width. -->
-        <div class="rux--stack-horizontal rux--stack-scale-4">
+        <!-- A PLAIN CONTAINER, NOT A STACK, and this is IBM's own answer:
+             preview-pageheader--tab-bar-with-tabs-and-tags puts its tags in a
+             `page-header--tag-overflow-container` — an unclassed box of `div.tag`
+             siblings — and never in a Stack.
+
+             BOTH STACK AXES STRETCH, which is what sent the first two attempts
+             wrong. `stack-vertical` is `display: grid`, so the tag filled the
+             column as a full-width green bar. `stack-horizontal` is
+             `grid-auto-flow: column` with `grid-auto-columns: auto`, so it
+             DISTRIBUTES the row: the tag measured 208x48 in a 267px column
+             against its own 24px min-height. Stack spaces siblings; it is not a
+             row primitive, and a tag is not a stack item. -->
+        <div>
           <div class="rux--tag rux--tag--green"><span class="rux--tag__label">Active</span></div>
-          <div class="rux--btn-set">
-            <button type="button" class="rux--btn rux--btn--secondary">Roll back</button>
-            <button type="button" class="rux--btn rux--btn--primary">Deploy</button>
-          </div>
+        </div>
+        <div class="rux--btn-set">
+          <button type="button" class="rux--btn rux--btn--secondary">Roll back</button>
+          <button type="button" class="rux--btn rux--btn--primary">Deploy</button>
         </div>
 
         <!-- REPLACE: the tabs. A detail page is one subject seen several ways,
              which is what tabs are for. js/tabs.js owns the roving tabindex and
              the arrow keys; the panels are SIBLINGS of .rux--tabs, which is where
              components-tabs--default puts them. -->
-        <div class="rux--tabs rux--tabs--contained rux--layout--size-lg">
+        <!-- THE TAB STRIP AND ITS PANELS ARE ONE STACK CHILD. They are siblings —
+           components-tabs--default puts the panels beside `.rux--tabs`, not
+           inside it — so the stack was inserting its 24px BETWEEN the strip and
+           the panel it belongs to, and contained tabs detached from their own
+           content. Wrapped, the gap falls above the strip where it belongs and
+           the panel still meets it at zero. -->
+      <div>
+      <div class="rux--tabs rux--tabs--contained rux--layout--size-lg">
           <button type="button" class="rux--tab--overflow-nav-button rux--tab--overflow-nav-button--previous rux--tab--overflow-nav-button--hidden" aria-hidden="true" tabindex="-1"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg></button>
           <div class="rux--tab--list" role="tablist" aria-label="api-gateway">
             <button id="tab-overview" class="rux--tabs__nav-item rux--tabs__nav-link rux--tabs__nav-item--selected" role="tab" type="button" aria-selected="true" aria-controls="panel-overview" tabindex="0">
@@ -453,6 +468,8 @@
             </div>
           </div>
         </div>
+
+      </div>
 
       </div>
     </div>
