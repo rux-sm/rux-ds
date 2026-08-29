@@ -179,7 +179,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <h3>25 / 25</h3>
+              <h3>26 / 26</h3>
               <p>0 stale · 0 never run</p>
             </div>
           </div>
@@ -632,7 +632,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>14 gates. 10 run in <code>npm run verify</code>; 4 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>15 gates. 10 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -744,6 +744,13 @@
                   <td>whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders</td>
                 </tr>
                 <tr>
+                  <td>check-behaviour</td>
+                  <td><span class="rux--tag rux--tag--purple rux--tag--sm"><span class="rux--tag__label">browser</span></span></td>
+                  <td><span class="rux--tag rux--tag--warm-gray rux--tag--sm"><span class="rux--tag__label">by hand</span></span></td>
+                  <td>a behaviour module that stops doing what its own header claims — the state a click produces, which every other gate is blind to</td>
+                  <td>anything landing in a microtask: focus destination, focus restoration, and the order two surfaces close in</td>
+                </tr>
+                <tr>
                   <td>check-a11y</td>
                   <td><span class="rux--tag rux--tag--purple rux--tag--sm"><span class="rux--tag__label">browser</span></span></td>
                   <td><span class="rux--tag rux--tag--warm-gray rux--tag--sm"><span class="rux--tag__label">by hand</span></span></td>
@@ -758,7 +765,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 25 of 25 cells are current; 0 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 26 of 26 cells are current; 0 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -887,6 +894,13 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/table-page.html</td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td>2026-08-29</td>
+                  <td>2026-08-29</td>
+                </tr>
+                <tr>
+                  <td>check-behaviour</td>
+                  <td>kitchen-sink.html</td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
                   <td>2026-08-29</td>
                   <td>2026-08-29</td>

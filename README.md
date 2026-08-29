@@ -83,7 +83,7 @@ was verified against.
 | `dashboard.html` is untracked — §4.6 exit evidence a fresh clone does not have | roadmap §4.6 |
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs ten of the fourteen gates — `npm run gates`
+last push, and `npm run verify` runs ten of the fifteen gates — `npm run gates`
 reports the other four and which pages each has been run against.
 
 | | |
@@ -163,7 +163,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Fourteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Fifteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -180,6 +180,7 @@ Fourteen, because none is sufficient alone — see roadmap §4.1.2 for the bug t
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
 | `check-spacing.js` | a box property that disagrees with what Carbon computes for the same class set, read from `docs/carbon-react-spacing.json` | whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders |
+| `check-behaviour.js` | a behaviour module that stops doing what its own header claims — the state a click produces | anything landing in a microtask: focus destination, focus restoration, the order two surfaces close in |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |
 
 **`check-ancestry` was written after a defect three gates could not see.** The modal's
@@ -216,7 +217,7 @@ figure is 488, not 485. They are NOT worth hardcoding into the markup to collect
 duplicates state a module derives from the checkbox, the sort button and the nav, and the
 copy goes stale the moment the real state moves. **0 stripped, 3 added on 2026-08-28.**
 
-The first ten run in `npm run verify`; the last four need a browser. `check-tags` was promoted from a
+The first ten run in `npm run verify`; the last five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js` and `check-spacing.js` need a browser** — paste any into the

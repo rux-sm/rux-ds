@@ -310,6 +310,30 @@ export const GATES = [
     status: 'self-declassified to a diagnostic a person reads, not a verify gate (check-spacing.js:88)',
   },
   {
+    id: 'check-behaviour',
+    tool: 'tools/check-behaviour.js',
+    kind: 'browser',
+    inVerify: false,
+    catches: 'a behaviour module that stops doing what its own header claims — the state a click produces, which every other gate is blind to',
+    blindTo: 'anything landing in a microtask: focus destination, focus restoration, and the order two surfaces close in',
+    reads: 'page',
+    // The sink only. It drives real components, so it needs one of everything —
+    // a selectable table, an overflow menu, tabs, an accordion, a modal, a
+    // dismissible notification, a toggle and a dropdown. No template carries
+    // that set, and five of the twelve modules bind to nothing in any template.
+    fileTargets: [],
+    pageTargets: ['kitchen-sink.html'],
+    canRun: { sink: true, templates: false },
+    cannotRunReason: 'it drives every module, and no template carries the components to drive — five modules bind to nothing there at all',
+    inputs: ['kitchen-sink.html', ...RENDERED_INPUTS],
+    redRun: 'revert the offset write in js/menu.js and the tabindex pairing in js/data-table.js — expect 3 failures naming an 8px overlap and tabindex [0,0,0] on a hidden bar',
+    // Every case restores what it touched, so it is safe to run twice and safe
+    // beside the other browser gates. It still runs AFTER check-runtime-classes,
+    // which needs a page nobody has touched.
+    sideEffects: 'clicks through every component and restores each; leaves the page as it found it',
+    baseline: '18 of 18 cases passing on the sink',
+  },
+  {
     id: 'check-a11y',
     tool: 'tools/check-a11y.js',
     kind: 'browser',

@@ -36,7 +36,7 @@ on every build. Roadmap §1.1.
 
 ## Verifying
 
-**Fourteen gates. Ten run in `npm run verify`; four need a browser.** `npm run gates`
+**Fifteen gates. Ten run in `npm run verify`; five need a browser.** `npm run gates`
 says which has been run against which page, and which have never been run at all —
 `tools/lib/gates.mjs` is the registry and the single source for those counts.
 That coverage check runs in `verify` too and **fails on a page nobody has ever
@@ -51,12 +51,13 @@ project has shipped passed every gate: two chevrons rotated from the wrong base 
 (no gate reads which icon a `<use>` points at), a missing positioning wrapper, a missing
 styled wrapper, and four menu specimens that were `visibility: hidden`. Open the page.
 
-`tools/check-a11y.js`, `tools/check-rendered.js`, `tools/check-runtime-classes.js` and
-`tools/check-spacing.js` are browser-only — run them from the served page, not by
+`tools/check-a11y.js`, `tools/check-rendered.js`, `tools/check-runtime-classes.js`,
+`tools/check-spacing.js` and `tools/check-behaviour.js` are browser-only — run them from the served page, not by
 pasting, so the file on disk is what runs. **`check-a11y`, `check-runtime-classes` and
 `check-spacing` run on a TEMPLATE as well as the sink**, and a bug shipped nine times in
-`table-page.html` because nobody did. `check-rendered` cannot: its unit is the `.ks-sec`
-section and a template has none. `check-runtime-classes` answers
+`table-page.html` because nobody did. Two cannot: `check-rendered`, whose unit is the
+`.ks-sec` section that no template has, and `check-behaviour`, which drives every module
+and needs one of every component to drive. `check-runtime-classes` answers
 what `check-coverage` cannot: whether a class in the markup still exists once the
 modules have run.
 
