@@ -5,9 +5,10 @@ description: Run the kitchen sink's browser-only gates (check-a11y.js, check-ren
 
 # Running the browser-only gates
 
-`tools/check-a11y.js` and `tools/check-rendered.js` are not Node tools and never will be
-(README, "Gates"). They need a layout and an accessibility tree. This is how to run them
-without getting a confident wrong number.
+`tools/check-a11y.js`, `tools/check-rendered.js` and `tools/check-runtime-classes.js`
+are not Node tools and never will be (README, "Gates"). They need a layout, an
+accessibility tree, and a page that has actually run. This is how to run them without
+getting a confident wrong number.
 
 ## Start the page
 
@@ -70,6 +71,20 @@ Carbon's button focus is one two-tone ring — blue outer 1px, white inner 1px, 
 fill — so score each EDGE against its own neighbour. Scoring a layer against the surface
 beneath it reports a blue ring on a blue button as 1:1; that mistake once produced 27
 findings, all of them nothing.
+
+## check-runtime-classes
+
+Run it on any page, including a template — it fetches whatever `location.pathname` is
+and parses that with DOMParser, which runs no scripts, so you get the document as
+authored beside the one the modules finished with.
+
+STRIPPED is the direction that matters: a class in the file and not in the page is one
+`check-coverage` counts while nobody can see it. ADDED is harmless — the page shows a
+class the file never had, so the ratchet understates. Expect **0 stripped and 3 added**
+on the kitchen sink, and 0/0 on `templates/app-shell.html`.
+
+Its red run: remove any class from the live DOM by hand and it reports that class as
+stripped, with the section and element it came from.
 
 ## What this can never tell you
 

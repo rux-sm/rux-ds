@@ -148,7 +148,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Twelve, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Thirteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -163,6 +163,7 @@ Twelve, because none is sufficient alone — see roadmap §4.1.2 for the bug tha
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for |
+| `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |
 
 **`check-ancestry` was written after a defect three gates could not see.** The modal's
@@ -187,10 +188,22 @@ component exercises fewer classes than before. A threshold high enough to mean s
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
 
-The first ten run in `npm run verify`. `check-tags` was promoted from a
+**It counts the FILE, and the file is not what the reader sees.** `check-coverage` is a
+Node tool, so it parses `kitchen-sink.html`; modules then run. `check-runtime-classes.js`
+compares the two and the directions are not symmetric. A class STRIPPED at load is
+counted while nobody can see it — a green number over a state that does not render, and
+it found dropdown.html's two expanded specimens rendering closed for as long as the sink
+had shipped an open side nav (§4.5, fixed 2026-08-28). A class ADDED at load is the
+harmless direction: the ratchet understates. Three today —
+`data-table--selected`, `table-sort--active` and `side-nav__overlay-active` — so the real
+figure is 488, not 485. They are NOT worth hardcoding into the markup to collect: that
+duplicates state a module derives from the checkbox, the sort button and the nav, and the
+copy goes stale the moment the real state moves. **0 stripped, 3 added on 2026-08-28.**
+
+The first ten run in `npm run verify`; the last three need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
-its reason, following `check-tokens`' precedent. **`check-a11y.js` and `check-rendered.js` need a browser** — paste either into the
+its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js` and `check-runtime-classes.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
 **0 findings, 5 notes**; the notes are CSS specimens with no trigger, which are not
 meant to be operable. It refuses to run its focus-ring check when `document.hasFocus()`

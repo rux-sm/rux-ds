@@ -44,8 +44,10 @@ project has shipped passed every gate: two chevrons rotated from the wrong base 
 (no gate reads which icon a `<use>` points at), a missing positioning wrapper, a missing
 styled wrapper, and four menu specimens that were `visibility: hidden`. Open the page.
 
-`tools/check-a11y.js` and `tools/check-rendered.js` are browser-only — paste into the
-kitchen sink's devtools console.
+`tools/check-a11y.js`, `tools/check-rendered.js` and `tools/check-runtime-classes.js`
+are browser-only — paste into the kitchen sink's devtools console. The last one answers
+what `check-coverage` cannot: whether a class in the markup still exists once the
+modules have run.
 
 ## The sink contains specimens as well as components
 
