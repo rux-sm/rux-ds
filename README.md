@@ -131,6 +131,7 @@ npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 | `tools/` | `build` · `build-sink` · `icons` · `inventory` · `measure` · `check-classes` · `check-tokens` · `check-icons` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-provenance` · `diff-fragment` · `serve` · and two browser-only: `check-a11y.js`, `check-rendered.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
+| `docs/carbon-react-spacing.json` | **What Carbon COMPUTES, harvested 2026-08-28** — 800 class signatures → box properties → the stories each was seen in. The markup captures record structure and say nothing about space; this is the other half. 136 signatures compute more than one way and all variants are kept |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
 | `carbon-website/` | Gitignored quarry — Carbon's docs, read from, never shipped |

@@ -364,7 +364,15 @@
     rowGap: 'normal', columnGap: 'normal',
     marginBlockStart: '0px', marginBlockEnd: '0px', marginInlineStart: '0px',
     marginInlineEnd: '0px', paddingBlockStart: '0px', paddingBlockEnd: '0px',
-    paddingInlineStart: '0px', paddingInlineEnd: '0px', minBlockSize: 'auto' };
+    paddingInlineStart: '0px', paddingInlineEnd: '0px',
+    // CARBON'S BASELINE, NOT THE BROWSER'S. min-block-size computed to 0px on
+    // 541 of the 934 signatures the first harvest produced, and on 134 of them
+    // it was the ONLY value — Carbon's own reset, saying nothing about the
+    // component. `auto` is the browser default and would have kept every one.
+    // A real min-block-size still lands: the tag's 24px is what told us how far
+    // a Stack had stretched it.
+    minBlockSize: 'auto' };
+  const ALSO_DEFAULT = { minBlockSize: '0px' };
 
   const spacingCapture = doc => {
     const win = doc.defaultView;
@@ -375,7 +383,8 @@
       const c = win.getComputedStyle(el);
       const values = {};
       for (const prop of SPACING_PROPS)
-        if (c[prop] && c[prop] !== DEFAULTS[prop]) values[prop] = c[prop];
+        if (c[prop] && c[prop] !== DEFAULTS[prop] && c[prop] !== ALSO_DEFAULT[prop])
+          values[prop] = c[prop];
       if (Object.keys(values).length) out.push({ sig, values });
     }
     return out;
@@ -613,7 +622,7 @@
         const key = JSON.stringify(values);
         const entry = (table[sig] ??= {});
         (entry[key] ??= { values, seen: [] });
-        if (entry[key].seen.length < 6 && !entry[key].seen.includes(story))
+        if (entry[key].seen.length < 3 && !entry[key].seen.includes(story))
           entry[key].seen.push(story);
       }
     }
