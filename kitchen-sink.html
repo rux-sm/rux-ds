@@ -2354,11 +2354,27 @@
     THE TOKENS ARE REFERENCED ZERO TIMES BY OUR OWN STYLESHEET, and that is
     Carbon's design rather than a fault. Sass compiles the literal `0.125rem`
     into every rule — `.rux--stack-scale-1` sets `--rux-stack-gap: 0.125rem`, not
-    `var(--rux-spacing-01)` — and the custom properties are emitted as the public
-    API a PAGE AUTHOR uses. Roughly 312 of the 602 defined tokens are in the same
-    position. This project's stated consumer is Claude Code generating pages, so
-    these are exactly the names a generated page needs for spacing no component
-    provides, and until now nothing told it they existed.
+    `var(--rux-spacing-01)`. Roughly 312 of the 602 defined tokens sit the same
+    way.
+
+    WHAT CARBON DOCUMENTS IS THE SASS API, NOT THESE. Checked against
+    carbondesignsystem.com/elements/spacing/code on 2026-08-29: it describes
+    `@use '@carbon/layout'` and `layout.$spacing-05`, and its API table lists the
+    Sass exports only — no custom property appears anywhere on that page. An
+    earlier draft of this comment called these "the public API a page author
+    uses", which overstated it.
+
+    They are emitted all the same, by the THEME layer: `--rux-spacing-01` sits
+    among the colour tokens inside both the white and g100 blocks of
+    css/rux.css, with the same value in each, since spacing does not vary by
+    theme. That is Carbon's own output compiled unmodified.
+
+    So the honest claim is narrower and still the reason this section exists:
+    rux-ds ships CSS and gives its consumers no Sass, so the custom property is
+    the ONLY form in which the scale can be reached here. The documented API is
+    unavailable by construction. This project's consumer is Claude Code
+    generating pages, and these are the names such a page needs for spacing no
+    component provides.
 
     REM IS THE VALUE; PX IS THE RENDER. Carbon defines the scale in rem, so the
     px column is what it computes to at a 16px root and nothing more. The stack
