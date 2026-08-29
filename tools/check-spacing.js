@@ -31,6 +31,17 @@
 //                 produces simply is not in it. Worth reading — a set Carbon
 //                 never emits may be one we invented — but it is not a failure.
 //
+//                 READ THIS LIST. It is the quietest output here and it has
+//                 already hidden a real defect: pagination shipped
+//                 `pagination__text.page-text` with no page-number select, a
+//                 combination Carbon renders in NEITHER of its two shapes, and
+//                 the row sat in this bucket reading as "unmeasured" while the
+//                 text rendered 17px from one edge and 1px from the other. It
+//                 was found by eye. The bucket cannot be promoted to a failure:
+//                 triaged on one page it held 9 near-misses of which 1 was real,
+//                 and the noise is the reference's own story sampling, not our
+//                 markup. A rule that needs that allow-list measures the list.
+//
 //   MATCHES       our values equal one of the recorded variants. Counted only.
 //
 // A SIGNATURE WITH SEVERAL VARIANTS PASSES ON ANY ONE OF THEM. 136 of the 800
@@ -101,6 +112,26 @@
 // calling anything a defect. The tool's value is that the list is short and
 // investigable, not that every row is wrong.
 //
+// SORTING THE KEY MOVED ELEVEN SIGNATURES OUT OF NO REFERENCE, 2026-08-28. On
+// the kitchen sink at 1440px: checked 262 -> 276, matched 250 -> 259,
+// noReference 153 -> 142, diverges 12 -> 17. All five new divergences were
+// triaged before the change landed, on check-tags' precedent, and NONE is a
+// defect:
+//
+//   4  css-grid-column.col-span-4 / --8, against `elements-grid--overview`.
+//      Carbon's reference carries min-block-size 80px and block padding; its own
+//      `scss/grid/_css-grid.scss` sets neither. That is the STORY's demo styling,
+//      added to make columns visible — the mirror image of the sink's own inline
+//      demo margins already listed above, on Carbon's side of the comparison.
+//   1  btn--tertiary.btn--sm inside a popover or tooltip, ours inline-flex against
+//      a reference captured in `preview-preview-card--overview` at flex. Same
+//      class set, different ancestor — cause 1 above, and the row says
+//      `context: unmatched` rather than pretending otherwise. 56 buttons on the
+//      page compute flex and agree; the 9 that do not are all popover triggers.
+//
+// The fix is a false-NEGATIVE elimination, so every row it adds is a comparison
+// that should always have happened. It does not make the reference thicker.
+//
 // WHAT IT CANNOT SEE. Whether the value is RIGHT — only whether it matches
 // Carbon. A component we and Carbon both space wrongly passes. It also says
 // nothing about a class set absent from both sides, and nothing about anything
@@ -116,7 +147,29 @@
       + ' Run this from a page served by `npm run serve`.');
     return { error: request.status };
   }
-  const reference = JSON.parse(request.responseText);
+  const rawReference = JSON.parse(request.responseText);
+
+  // THE KEY IS A SET, SO IT IS SORTED BEFORE IT IS COMPARED. Both sides build a
+  // signature with `[...classList].join('.')`, which preserves the order the
+  // class attribute was written in — and that order is not a fact about the
+  // component. `batch-summary__cancel.btn.btn--primary` and
+  // `btn.btn--primary.batch-summary__cancel` are the same element; unsorted they
+  // are two keys, the lookup misses, and the element lands in NO REFERENCE where
+  // it reads as "Carbon never renders this" rather than "we wrote the attribute
+  // in a different order". Two elements on templates/table-page.html were
+  // silently uncompared for that reason alone, found 2026-08-28 while tracing a
+  // pagination defect this tool had been unable to see.
+  //
+  // Normalising at read time rather than re-harvesting keeps the JSON as
+  // captured — it stays a record of what Carbon rendered, order included.
+  const sortSig = sig => sig.split('.').filter(Boolean).sort().join('.');
+  const reference = {};
+  for (const [key, variants] of Object.entries(rawReference)) {
+    const k = sortSig(key);
+    // Two raw keys can normalise onto one. Concatenate rather than overwrite:
+    // a signature passes on ANY recorded variant, so more variants is correct.
+    reference[k] = reference[k] ? reference[k].concat(variants) : variants;
+  }
 
   // Identical to the extractor's, deliberately. See the header.
   const PROPS = ['display', 'gridAutoFlow', 'gridAutoColumns', 'rowGap', 'columnGap',
@@ -153,7 +206,7 @@
   const parentSig = el => {
     for (let n = el.parentElement; n; n = n.parentElement) {
       const sig = [...n.classList].filter(c => c.startsWith('rux--')).join('.');
-      if (sig) return toCarbon(sig);
+      if (sig) return sortSig(toCarbon(sig));   // sorted, as the lookup key is
     }
     return '';
   };
@@ -198,7 +251,7 @@
     const key = sig + '|' + JSON.stringify(ours);
     if (seen.has(key)) continue;            // one report per distinct rendering
     seen.add(key);
-    const variants = reference[toCarbon(sig)];
+    const variants = reference[sortSig(toCarbon(sig))];
     if (!variants) {
       noReference.set(sig, (noReference.get(sig) ?? 0) + 1);
       continue;
@@ -211,7 +264,7 @@
     }
     checked++;
     const mine = parentSig(el);
-    const inContext = variants.filter(v => (v.parents ?? []).includes(mine));
+    const inContext = variants.filter(v => (v.parents ?? []).some(p => sortSig(p) === mine));
     const compare = inContext.length ? inContext : variants;
     if (compare.some(v => diffOf(ours, v.values).length === 0)) { matched++; continue; }
     // A PROPERTY DIVERGES ONLY IF IT DIFFERS FROM EVERY VARIANT. Reporting the
