@@ -212,102 +212,132 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
 
-      <h1 id="status">rux-ds</h1>
-      <p>A framework-free CSS/HTML/JS design system, derived from Carbon v11 by subtraction. Every figure below is read from this repository at build time.</p>
+      <!-- STACK IS THE PAGE'S ONLY VERTICAL RHYTHM, and it is not optional.
+           templates/detail-page.html states the rule this page was built
+           without: Carbon components carry no margin, because the spacing
+           overview has them "delegate the responsibility of positioning and
+           layout to parent components". Without a stack every child of this
+           column measures margin 0 and gapToNext 0 -- which is exactly what
+           this page shipped at 14db75d, and no gate saw it. check-spacing
+           compares CLASSED elements against Carbon's computed signatures; the
+           gap between an h2 and the section under it belongs to neither.
 
-      <div class="rux--subgrid rux--subgrid--wide">
+           NESTED, as templates/empty-state.html nests four. The outer stack
+           separates sections at scale 8 (2.5rem); each section groups its
+           heading, its intro and its content at scale 5 (1rem), so a heading
+           sits nearer the thing it names than the section above it. -->
+      <div class="rux--stack-vertical rux--stack-scale-8">
+
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h1 id="status">rux-ds</h1>
+          <p>A framework-free CSS/HTML/JS design system, derived from Carbon v11 by subtraction. Every figure below is read from this repository at build time.</p>
+          <!-- with-row-gap: the tiles wrap at md and below, and without it the
+               rows butt together into one unbroken slab of layer colour. -->
+          <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
 ${tile('Components compiled', `${COMPILED.size} / ${allComponents.length}`, `${allComponents.length - COMPILED.size} cut or deferred`)}
 ${tile('Class coverage', `${covPct}%`, `${covHit} of ${covOwn} classes exercised`)}
 ${tile('Stylesheet', kb(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
 ${tile('Browser gate cells', `${runCells} / ${matrix.length}`, `${matrix.length - runCells} never run`)}
-      </div>
-
-      <h2 id="components">Components</h2>
-      <p>${COMPILED.size} of ${allComponents.length} compile into <code>css/rux.css</code>. Coverage is what the kitchen sink and templates actually exercise, ratcheted in <code>docs/coverage.json</code>.</p>
-      <section class="rux--data-table-container">
-        <div class="rux--data-table-header">
-          <div>
-            <div class="rux--data-table-header__title">All ${allComponents.length} components</div>
-            <p class="rux--data-table-header__description">Disposition for every Carbon component, decided in docs/inventory.md.</p>
           </div>
         </div>
-        <div class="rux--data-table-content">
-          <table class="rux--data-table rux--data-table--lg">
-            <thead>
-              <tr>
-                <th scope="col"><div class="rux--table-header-label">Component</div></th>
-                <th scope="col"><div class="rux--table-header-label">State</div></th>
-                <th scope="col"><div class="rux--table-header-label">Classes exercised</div></th>
-              </tr>
-            </thead>
-            <tbody>
+
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h2 id="components">Components</h2>
+          <p>${COMPILED.size} of ${allComponents.length} compile into <code>css/rux.css</code>. Coverage is what the kitchen sink and templates actually exercise, ratcheted in <code>docs/coverage.json</code>.</p>
+          <section class="rux--data-table-container">
+            <div class="rux--data-table-header">
+              <div>
+                <div class="rux--data-table-header__title">All ${allComponents.length} components</div>
+                <p class="rux--data-table-header__description">Disposition for every Carbon component, decided in docs/inventory.md.</p>
+              </div>
+            </div>
+            <div class="rux--data-table-content">
+              <table class="rux--data-table rux--data-table--lg">
+                <thead>
+                  <tr>
+                    <th scope="col"><div class="rux--table-header-label">Component</div></th>
+                    <th scope="col"><div class="rux--table-header-label">State</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Classes exercised</div></th>
+                  </tr>
+                </thead>
+                <tbody>
 ${componentRows}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </section>
 
-      <h2 id="templates">Templates</h2>
-      <p>${templates.length} complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
-      <div class="rux--subgrid rux--subgrid--wide">
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h2 id="templates">Templates</h2>
+          <p>${templates.length} complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
+          <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
 ${templateCards}
-      </div>
-
-      <h2 id="gates">Gates</h2>
-      <p>${GATES.length} gates. ${GATES.filter(g => g.inVerify).length} run in <code>npm run verify</code>; ${browserGates().length} need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
-      <section class="rux--data-table-container">
-        <div class="rux--data-table-header">
-          <div>
-            <div class="rux--data-table-header__title">The registry</div>
-            <p class="rux--data-table-header__description">What each gate catches, and what it is blind to. Read from tools/lib/gates.mjs.</p>
           </div>
         </div>
-        <div class="rux--data-table-content">
-          <table class="rux--data-table rux--data-table--lg">
-            <thead>
-              <tr>
-                <th scope="col"><div class="rux--table-header-label">Gate</div></th>
-                <th scope="col"><div class="rux--table-header-label">Kind</div></th>
-                <th scope="col"><div class="rux--table-header-label">Runs</div></th>
-                <th scope="col"><div class="rux--table-header-label">Catches</div></th>
-                <th scope="col"><div class="rux--table-header-label">Blind to</div></th>
-              </tr>
-            </thead>
-            <tbody>
+
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h2 id="gates">Gates</h2>
+          <p>${GATES.length} gates. ${GATES.filter(g => g.inVerify).length} run in <code>npm run verify</code>; ${browserGates().length} need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <section class="rux--data-table-container">
+            <div class="rux--data-table-header">
+              <div>
+                <div class="rux--data-table-header__title">The registry</div>
+                <p class="rux--data-table-header__description">What each gate catches, and what it is blind to. Read from tools/lib/gates.mjs.</p>
+              </div>
+            </div>
+            <div class="rux--data-table-content">
+              <table class="rux--data-table rux--data-table--lg">
+                <thead>
+                  <tr>
+                    <th scope="col"><div class="rux--table-header-label">Gate</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Kind</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Runs</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Catches</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Blind to</div></th>
+                  </tr>
+                </thead>
+                <tbody>
 ${gateRows}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </section>
 
-      <h3>Browser gate coverage</h3>
-      <p>A gate never run against a target is indistinguishable from one that passed. ${runCells} of ${matrix.length} cells have a recorded run.</p>
-      <section class="rux--data-table-container">
-        <div class="rux--data-table-content">
-          <table class="rux--data-table rux--data-table--lg">
-            <thead>
-              <tr>
-                <th scope="col"><div class="rux--table-header-label">Gate</div></th>
-                <th scope="col"><div class="rux--table-header-label">Page</div></th>
-                <th scope="col"><div class="rux--table-header-label">Last run</div></th>
-                <th scope="col"><div class="rux--table-header-label">Result</div></th>
-              </tr>
-            </thead>
-            <tbody>
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h3>Browser gate coverage</h3>
+          <p>A gate never run against a target is indistinguishable from one that passed. ${runCells} of ${matrix.length} cells have a recorded run.</p>
+          <section class="rux--data-table-container">
+            <div class="rux--data-table-content">
+              <table class="rux--data-table rux--data-table--lg">
+                <thead>
+                  <tr>
+                    <th scope="col"><div class="rux--table-header-label">Gate</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Page</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Last run</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Result</div></th>
+                  </tr>
+                </thead>
+                <tbody>
 ${matrixRows}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </section>
 
-      <h2>Behaviour</h2>
-      <p>12 modules, ${kb(jsBytes)} raw. The markup is the API — a page built from a template needs no script of its own.</p>
-      <ul class="rux--list--unordered">
-        <li class="rux--list__item"><a class="rux--link" href="kitchen-sink.html">Kitchen sink</a> — ${allComponents.length > 0 ? COMPILED.size : 0} compiled components as live specimens</li>
-        <li class="rux--list__item"><a class="rux--link" href="templates/app-shell.html">App shell</a> — the frame every template is built on</li>
-        <li class="rux--list__item">${tokenCount} <code>--rux-*</code> tokens · ${classCount} <code>.rux--*</code> classes</li>
-      </ul>
+        <div class="rux--stack-vertical rux--stack-scale-5">
+          <h2>Behaviour</h2>
+          <p>12 modules, ${kb(jsBytes)} raw. The markup is the API — a page built from a template needs no script of its own.</p>
+          <ul class="rux--list--unordered">
+            <li class="rux--list__item"><a class="rux--link" href="kitchen-sink.html">Kitchen sink</a> — ${COMPILED.size} compiled components as live specimens</li>
+            <li class="rux--list__item"><a class="rux--link" href="templates/app-shell.html">App shell</a> — the frame every template is built on</li>
+            <li class="rux--list__item">${tokenCount} <code>--rux-*</code> tokens · ${classCount} <code>.rux--*</code> classes</li>
+          </ul>
+        </div>
 
+      </div>
     </div>
   </div>
 </main>
