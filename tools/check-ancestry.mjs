@@ -144,8 +144,25 @@ const KNOWN = {
   'badge-indicator:badge-indicator--count': [TOOLTIP_CHROME,
     'as badge-indicator — the count variant is the same element with a number in it'],
   'table:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
-  'table:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'table:overflow-menu__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--ghost', 'btn--icon-only'],
+    'the icon-tooltip the sink declines throughout, plus the btn classes declined on '
+    + 'measurement — see the note above overflow-menu:overflow-menu__icon'],
   'ui-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  // THE BTN CLASSES ON AN OVERFLOW-MENU TRIGGER, declined on the same grounds as
+  // modal-close__icon above and measured rather than argued. `.overflow-menu`
+  // runs button-reset, component-reset and a focus-outline reset, then sets its
+  // own flex box, its size from the layout size, its :focus outline and its
+  // :hover background — the whole of a ghost icon button — and app.scss emits
+  // overflow-menu (line 92) after button (line 37), so it wins the collisions
+  // anyway. Compared live 2026-08-29 against components-overflowmenu--default:
+  // background, 40x40 box, zero border, zero padding and the icon's
+  // rgb(22,22,22) fill are IDENTICAL with the btn classes absent. The one
+  // difference is the button's `color` — link-primary there, black here — and it
+  // paints nothing, because the trigger holds no text and the glyph's fill now
+  // comes from overflow-menu__icon rather than from currentColor.
+  'overflow-menu:overflow-menu__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--ghost', 'btn--icon-only'],
+    'the icon-tooltip the sink declines throughout, plus the btn classes declined on '
+    + 'measurement — see the note above this entry'],
   // Same call as ui-shell's, made once more where it is load-bearing: these
   // are the header actions of a page TEMPLATE, not a specimen. The name is
   // carried by aria-label, so a screen reader is served; what the decline
@@ -163,7 +180,9 @@ const KNOWN = {
   'templates/error-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
-  'templates/table-page:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/table-page:overflow-menu__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--ghost', 'btn--icon-only'],
+    'the icon-tooltip the sink declines throughout, plus the btn classes declined on '
+    + 'measurement — see the note above overflow-menu:overflow-menu__icon'],
   'templates/table-page:pagination__button': [[...TOOLTIP_CHROME, 'popover--top'],
     'the icon-tooltip the sink declines throughout'],
   'templates/table-page:pagination__button--no-index': [[...TOOLTIP_CHROME, 'popover--top', 'icon-tooltip--disabled'],
