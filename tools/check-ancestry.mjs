@@ -148,6 +148,7 @@ const KNOWN = {
   'templates/form-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/detail-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/empty-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu__icon': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
