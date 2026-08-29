@@ -53,9 +53,23 @@
 // was ever opened, exactly as it cannot tell whether a `rendered-dom` label is
 // true." It can only tell you nobody has claimed to run it.
 //
-// REPORTING ONLY FOR NOW. It exits 0 whatever it finds, and joins `npm run
-// verify` once the matrix is filled — the `check-tags` precedent, promoted from
-// diagnostic after every finding of its first full run was adjudicated.
+// IT FAILS ON NEVER RUN AND NOT ON STALE, promoted into `npm run verify` on
+// 2026-08-29 once the matrix was filled in both themes. The asymmetry is
+// deliberate and it is the difference between a gate people keep and a gate
+// people route around.
+//
+//   NEVER RUN is a hole. Nobody has ever pointed this gate at this page, which
+//             is exactly the state that let a bug ship nine times. It is also
+//             rare — it appears when a page is ADDED, which is a moment worth
+//             stopping for.
+//   STALE     is ordinary. Editing css/rux.css or anything in js/ invalidates
+//             every browser cell by design, so a hard failure here would turn
+//             the build red on almost every commit and stay red until someone
+//             hand-ran four tools across seven pages in two themes. That is a
+//             gate nobody would keep. It prints, loudly, and does not block.
+//
+// So the rule is: a page nobody has checked stops the build; a reading that has
+// aged tells you to re-sweep and lets you work.
 //
 //   node tools/check-gates.mjs           the matrix
 //   node tools/check-gates.mjs --gaps    only the cells that need a run
@@ -92,12 +106,19 @@ if (blocked.length && !gapsOnly) {
 }
 
 console.log();
+// This tool is NOT one of the 14. It checks the coverage of those gates, not
+// the design system, so it reads the registry rather than appearing in it.
 console.log(`  ${GATES.length} gates — ${inVerify().length} in npm run verify, `
-  + `${browserGates().length} need a browser`);
+  + `${browserGates().length} need a browser; this coverage check runs there too`);
 console.log(`  ${rows.length} sweep cells · ${rows.length - gaps.length} current · `
   + `${gaps.filter(r => r.state === 'STALE').length} stale · `
   + `${gaps.filter(r => r.state === 'NEVER RUN').length} never run`);
-if (gaps.length) console.log(`  reporting only — this gate does not fail yet`);
+const never = gaps.filter(r => r.state === 'NEVER RUN');
+const stale = gaps.filter(r => r.state !== 'NEVER RUN');
+if (stale.length) console.log(`  ${stale.length} reading${stale.length === 1 ? '' : 's'} `
+  + `no longer current — re-sweep and record; this does not fail the build`);
+if (never.length) console.log(`  ${never.length} cell${never.length === 1 ? '' : 's'} `
+  + `never run. Sweep the page and record it in docs/gate-coverage.json`);
 console.log();
 
-process.exit(0);
+process.exit(never.length ? 1 : 0);

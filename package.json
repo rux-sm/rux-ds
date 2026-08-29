@@ -16,7 +16,7 @@
     "ancestry": "node tools/check-ancestry.mjs --all",
     "coverage": "node tools/check-coverage.mjs",
     "coverage:update": "node tools/check-coverage.mjs --update",
-    "verify": "npm run build && npm run sink && npm run portal && node tools/check-classes.mjs && node tools/check-tokens.mjs && node tools/check-icons.mjs && node tools/check-co-classes.mjs && node tools/check-compound.mjs && node tools/check-tags.mjs && node tools/check-ancestry.mjs && node tools/check-coverage.mjs && node tools/check-provenance.mjs",
+    "verify": "npm run build && npm run sink && npm run portal && node tools/check-classes.mjs && node tools/check-tokens.mjs && node tools/check-icons.mjs && node tools/check-co-classes.mjs && node tools/check-compound.mjs && node tools/check-tags.mjs && node tools/check-ancestry.mjs && node tools/check-coverage.mjs && node tools/check-provenance.mjs && node tools/check-gates.mjs",
     "watch": "sass --load-path=node_modules --no-source-map --watch src/app.scss css/rux.css",
     "serve": "node tools/serve.mjs"
   },

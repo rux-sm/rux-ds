@@ -36,8 +36,16 @@ for (const file of ROOTS.flatMap(r => walk(r))) {
       if (!req) continue;
       const missing = req.filter(r => !set.has(r));
       if (missing.length) {
-        console.log(`  ${toCds(c)} used without ${missing.join(' + ')}`);
-        console.log(`    in: ${m[1].slice(0, 88)}`);
+        // NAME THE FILE. This printed the class attribute and nothing else
+        // until 2026-08-29, which was survivable while the only root was the
+        // assembled sink — one file, and the attribute identified the element
+        // well enough. It stopped being survivable when templates and the
+        // portal joined ROOTS: a finding could be in any of eight files and the
+        // output said which of them only by accident. Every other gate here
+        // prints a path you can open.
+        console.log(`  ${file}`);
+        console.log(`      ${toCds(c)} used without ${missing.join(' + ')}`);
+        console.log(`      in: ${m[1].slice(0, 88)}`);
         findings++;
       }
     }

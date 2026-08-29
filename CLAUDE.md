@@ -39,6 +39,10 @@ on every build. Roadmap §1.1.
 **Fourteen gates. Ten run in `npm run verify`; four need a browser.** `npm run gates`
 says which has been run against which page, and which have never been run at all —
 `tools/lib/gates.mjs` is the registry and the single source for those counts.
+That coverage check runs in `verify` too and **fails on a page nobody has ever
+swept**, which is the state that let one bug ship nine times. A reading that has
+merely aged prints and does not block: editing `css/rux.css` or `js/` invalidates
+every browser cell by design, and a gate red on every commit is one nobody keeps.
 **Check verify's exit code — do not grep its output**; a pipe returns the exit code of
 the last command, which has reported a pass over a failure here.
 
