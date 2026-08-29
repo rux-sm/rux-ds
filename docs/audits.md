@@ -88,7 +88,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 |---|---|---|---|
 | 1 | No LICENCE or NOTICE; Apache-2.0 material is compiled into committed output | unrecorded | **not yet filed** |
 | 2 | `tests/` is empty — 1,942 lines in `js/` have no automated regression net | unrecorded | **not yet filed** |
-| 3 | g100 never measured — every browser baseline reads theme white | unrecorded | **not yet filed** |
+| 3 | g100 never measured — every browser baseline reads theme white | **CLOSED 2026-08-29** | `docs/gate-coverage.json` — all 25 cells re-read in both themes |
 | 4 | Token value snapshot does not exist | on record, §4.8 | §4.8 — but it runs *after* §4.7 documents the values |
 | 5 | No component → fragment → template index for a consumer | on record, §4.7 | §4.7 |
 | 6 | No version, no tags, no changelog; consumers pin to a SHA | unrecorded | **not yet filed** |
@@ -111,6 +111,19 @@ recorded here rather than registered because the registry says fourteen and
 three documents agree with it. Adding a fifteenth is a decision. It earned its
 keep on its first run by catching `#i-katex`, a glyph nothing in the sprite
 defines -- the silent-blank-icon failure CLAUDE.md names.
+
+**Finding 3 is closed, and this is what closing one looks like.** On 2026-08-29
+every browser cell was re-swept in g100 as well as white, the theme asserted from
+a resolved token each time. All 25 came back with the same figures as their white
+readings and `check-a11y` found nothing in either theme. The row stays in the
+table struck through rather than deleted: a ledger that edits away its own
+history is worth less than one that shows the correction.
+
+That sweep also honoured condition 6 for the first time on record -- the
+instrument was driven red (12 findings, the predicted figure) before nineteen
+greens were written down. A green run nobody has seen go red is the same
+category of non-evidence as a gate never pointed at a target, which is the
+defect this file exists for.
 
 **The filing is itself incomplete.** Five rows have nowhere to point yet, which
 is the honest state and not a formatting gap — filing them means adding rows to

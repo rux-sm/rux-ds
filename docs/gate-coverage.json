@@ -1,12 +1,12 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
   "_triage": "check-spacing 2026-08-29: 28 divergences across all seven pages, 0 defects. Causes recorded in tools/check-spacing.js's header -- 6 are each template's deliberate 18rem nav indent, 2 the stack margin that belongs to Storybook's welcome page rather than the component, and the rest were already on the sink's list. check-spacing is a diagnostic, not a verify gate.",
-  "_measured": "2026-08-29 at 1440x900, theme white, following the six conditions in .claude/skills/sink-check/SKILL.md -- check-runtime-classes first on an untouched page, then a click for document.hasFocus(), pointer parked off content.",
+  "_measured": "2026-08-29 at 1280x720, following the six conditions in .claude/skills/sink-check/SKILL.md -- check-runtime-classes first on a freshly loaded page, then a click for document.hasFocus(), transitions suppressed, pointer parked off content, and the theme asserted from a RESOLVED token (--rux-field-hover: #e8e8e8 in white, #333333 in g100) rather than from dataset.theme. CONDITION 6 WAS HONOURED: before recording nineteen greens the instrument was driven red -- .rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important } on kitchen-sink.html returned exactly 12 findings, all 'no visible focus change', the figure SKILL.md predicts. TWO THINGS CHANGED IN THIS SWEEP. Every check-a11y cell was read in g100 as well as white; every prior reading in this file was white only, which docs/audits.md carries as finding 3. And the viewport was 1280x720 where earlier entries used 1440x900 -- every figure still matched its previous value exactly, which is more evidence for the not-viewport-dependent claim SKILL.md records at 800 and 1440.",
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 6 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 6 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
@@ -15,28 +15,28 @@
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "d896a32",
+      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
     },
     "portal.html": {
       "date": "2026-08-29",
@@ -47,8 +47,8 @@
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 stripped · 3 added"
+      "commit": "d896a32",
+      "result": "0 stripped · 3 added — data-table--selected, side-nav__overlay-active, table-sort--active"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
@@ -57,27 +57,27 @@
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "0 stripped · 1 added"
+      "commit": "d896a32",
+      "result": "0 stripped · 1 added — table-sort--active"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "0 stripped · 0 added"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "0 stripped · 0 added"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "0 stripped · 0 added"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "0 stripped · 0 added"
     },
     "portal.html": {
@@ -89,7 +89,7 @@
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 276 · matched 259 · diverges 17 · noReference 144"
     },
     "templates/app-shell.html": {
@@ -99,27 +99,27 @@
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 61 · matched 58 · diverges 3 · noReference 11"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 54 · matched 52 · diverges 2 · noReference 4"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 59 · matched 58 · diverges 1 · noReference 5"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 32 · matched 30 · diverges 2 · noReference 5"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
+      "commit": "d896a32",
       "result": "checked 29 · matched 27 · diverges 2 · noReference 4"
     },
     "portal.html": {
@@ -131,8 +131,8 @@
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6fc79b2",
-      "result": "uaStyled 0 · collapsed 0 · escaped 0 · nothingToMeasure [spacing]"
+      "commit": "d896a32",
+      "result": "33 sections · uaStyled 0 · emptySvgs 0 · collapsed none · escaped none · nothingToMeasure [spacing] · BOTH themes"
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision."
