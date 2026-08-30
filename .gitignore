@@ -17,3 +17,7 @@ m/
 
 # macOS
 .DS_Store
+
+# Agent worktrees. Transient, and each carries its own .git -- committing one
+# embeds a repository nobody can clone.
+.claude/worktrees/
