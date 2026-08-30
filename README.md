@@ -216,7 +216,7 @@ Seventeen, because none is sufficient alone — see roadmap §4.1.2 for the bug 
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
 | `check-spacing.js` | a box property that disagrees with what Carbon computes for the same class set, read from `docs/carbon-react-spacing.json` | whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders |
 | `check-behaviour.js` | a behaviour module that stops doing what its own header claims — the state a click produces | anything landing in a microtask: focus destination, focus restoration, the order two surfaces close in |
-| `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense |
+| `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense · **an ARIA role Carbon never renders** · **a page carrying no heading at all** |
 
 **`check-ancestry` was written after a defect three gates could not see.** The modal's
 close button rendered in the flow under the heading, left-aligned, because the fragment
@@ -230,6 +230,28 @@ puts above it *without exception*. Its first full run found a second instance of
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
 wrapper and never mentioned the styled one. **26 declines are recorded with reasons; 0
 findings remain.**
+
+**Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate,
+and no gate owns either.** Both shipped a page that passed all seventeen.
+
+**An ARIA role Carbon never renders.** `sink/ui-shell.html` carried `role="menu"` on the
+side nav's `ul`; the capture it cites renders that element bare, and all six templates
+already did. `role="menu"` requires `menuitem` children and these are `li > a`, so an AT
+was told it had entered a menu and then found nothing in it. Every class gate was blind
+by construction — a bare attribute is not a class — and `check-a11y` was blind by its own
+rule, which counts `[role^="menuitem"]` descendants and skips a composite with none, so
+zero items yielded neither a finding nor a note. The captures CAN answer this: they record
+attributes as `{name=value}` beside the element. Nothing reads them for roles.
+
+**A page carrying no heading at all.** `templates/table-page.html` rendered its only title
+as `div.data-table-header__title` and had no `h1`–`h6` anywhere. Heading navigation is a
+primary way an AT user moves through a page, and a template IS a page, so the page offered
+none. No gate asks. This one is not a provenance fault — Carbon renders that class as both
+`h2` and `div`, so neither was invented — which is exactly why no markup gate could have
+caught it: it is a composition question, and the gates check parts.
+
+Whether either becomes a rule is open, and the honest reason to hesitate is the same in
+both cases: a page-level assertion is not the shape the registry has. Roadmap §4.8.
 
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
