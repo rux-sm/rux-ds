@@ -166,6 +166,24 @@ many stops it exposes and not for whether the arrows move the cursor. The
 document→browser-chrome→document boundary cannot be tested in this pane at all, because
 focus wraps 244→0 directly instead of passing through the URL bar.
 
+> **Partly superseded 2026-08-30 by a second sweep at `722e7db`.** The reverse pass and
+> the arrow keys were both run: `Shift+Tab` on all seven pages against the forward cycle
+> — 0 mismatches, wrapping included — and the arrow patterns driven by real keys, where
+> tablist arrows rove and select and skip the disabled tab, a vertical list declines the
+> horizontal arrows, radio arrows move and check, and menu arrows rove with Escape
+> restoring focus to the trigger. **The rest of the boundary above still stands**:
+> default state only, white only, and the document→chrome boundary still untestable.
+> That is a later sweep's evidence, not this one's, and the paragraph above is what THIS
+> sweep covered.
+>
+> **It also found what the first sweep could not have.** Enter and Space on a focused
+> button deliver `keydown` and `keyup` with `isTrusted: true` and produce no `click` in
+> this pane, so nothing a button opens can be opened from the keyboard here. It is the
+> pane and not the page — `js/overlay.js:224` preventDefaults on Escape alone — and it
+> is filed where it will be read before the next attempt: README's §4.5 entry, whose
+> claim about key delivery was true and incomplete, and the `sink-check` skill, as its
+> seventh condition.
+
 **And one thing it structurally cannot see, demonstrated the same day.** The sweep
 walked `templates/form-page.html` and reported it clean — 19 stops, skip link first, no
 divergence from DOM order — while a 0px gap sat between its `h1` and its form, the title
