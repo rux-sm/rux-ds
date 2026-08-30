@@ -95,7 +95,26 @@
 // @use "@carbon/styles/scss/components/pagination-nav";
 @use "@carbon/styles/scss/components/popover";
 // @use "@carbon/styles/scss/components/progress-bar";
-// @use "@carbon/styles/scss/components/progress-indicator";
+// ADMITTED 2026-08-29 under §2.1, reversing its own DEFER. inventory.md deferred
+// it as "multi-step wizard; NO TARGET SHAPE HAS ONE -- measured +1.1 KB
+// gzipped", and §4.6's sixth exit attempt built exactly that shape. The
+// condition attached to the deferral has been met, so the deferral goes.
+//
+// WHAT THE SUBSTITUTE COST. Without it that page composed a step list by hand
+// out of an ordered list and `rux--tag`, and both of the traps recorded at
+// composing-pages.md §3.10 and §3.11 are consequences of it: a tag/list-item
+// pair Carbon never renders and so supplies no spacing for, and an ordered
+// list's counters escaping their own box. IBM's own guidance is explicit that
+// this is the wrong component for the job -- tags are for "categorizing,
+// labeling, or read-only situations", while progress-indicator's anatomy names
+// a "Status indicator: communicates if a step is completed, current, not
+// started, disabled or has an error". Those are the three states that page
+// needed, as a glyph rather than a pill.
+//
+// The rest of the price was already paid: all five status icons are in the
+// sprite already, quarried for shape-indicator and icon-indicator, and
+// docs/carbon-react-dom.json carries three stories for the markup.
+@use "@carbon/styles/scss/components/progress-indicator";
 @use "@carbon/styles/scss/components/radio-button";
 // @use "@carbon/styles/scss/components/resizer";
 @use "@carbon/styles/scss/components/search";

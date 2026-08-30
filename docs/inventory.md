@@ -161,7 +161,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `multiselect` | **DEFER** | 97 | 291 | 1 | add with combo-box or not at all — **measured +0.6 KB gzipped** |
 | `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads — **measured +1.1 KB gzipped** |
 | `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead — **measured +0.2 KB gzipped** |
-| `progress-indicator` | **DEFER** | 76 | 196 | 0 | multi-step wizard; no target shape has one — **measured +1.1 KB gzipped** |
+| `progress-indicator` | **KEEP** | 76 | 196 | 0 | **ADMITTED 2026-08-29, reversing its own DEFER.** The deferral read "multi-step wizard; no target shape has one"; §4.6's sixth exit attempt built that shape, so the stated condition was met. **Measured +0.9 KB gzipped** (58.0 → 58.9), against the 1.1 KB the deferral estimated. All five status icons were already in the sprite and three capture stories carry the markup, so the rest of the price was paid. IBM's guidance is explicit that the hand-composed substitute was the wrong component — `composing-pages.md` §3.10 and §3.11 are both consequences of it |
 | `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+0.3 KB gzipped marginal**, not 71 |
 | `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision — **measured +0.4 KB gzipped** |
 | `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet — **measured +1.4 KB gzipped** |

@@ -33,7 +33,7 @@ the thing you are about to change is usually the answer to your question.
 
 ## 2. Confirm the component is compiled
 
-**33 of 75.** `docs/inventory.md` has the list and the reason for each cut.
+**34 of 75.** `docs/inventory.md` has the list and the reason for each cut.
 `date-picker`, `combo-box`, `toggletip` are deferred; `page-header` is cut. A
 class for an uncompiled component resolves to nothing and **fails silently** —
 correct-looking markup, no styling.

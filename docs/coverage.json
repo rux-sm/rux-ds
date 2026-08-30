@@ -5,6 +5,10 @@
       "hit": 9,
       "own": 23
     },
+    "tooltip": {
+      "hit": 5,
+      "own": 12
+    },
     "popover": {
       "hit": 16,
       "own": 33
@@ -77,10 +81,6 @@
       "hit": 17,
       "own": 25
     },
-    "tooltip": {
-      "hit": 5,
-      "own": 7
-    },
     "notification": {
       "hit": 39,
       "own": 54
@@ -120,6 +120,10 @@
     "pagination": {
       "hit": 10,
       "own": 10
+    },
+    "progress-indicator": {
+      "hit": 7,
+      "own": 7
     },
     "skeleton-styles": {
       "hit": 7,

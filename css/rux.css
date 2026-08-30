@@ -14373,6 +14373,365 @@ span.rux--pagination__text.rux--pagination__items-count {
   border-inline-end: 1px solid var(--rux-border-subtle);
 }
 
+.rux--progress {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--progress *,
+.rux--progress *::before,
+.rux--progress *::after {
+  box-sizing: inherit;
+}
+.rux--progress {
+  display: flex;
+  list-style: none;
+}
+
+.rux--progress-step {
+  position: relative;
+  display: inline-flex;
+  overflow: visible;
+  flex-direction: row;
+  inline-size: 8rem;
+  min-inline-size: 7rem;
+}
+.rux--progress-step .rux--tooltip__label {
+  display: block;
+}
+
+.rux--progress--space-equal .rux--progress-step {
+  flex-grow: 1;
+  min-inline-size: 8rem;
+}
+
+.rux--progress-line {
+  position: absolute;
+  border: 1px inset transparent;
+  block-size: 2px;
+  inline-size: 8rem;
+  inset-inline-start: 0;
+}
+
+.rux--progress--space-equal .rux--progress-line {
+  inline-size: 100%;
+  min-inline-size: 8rem;
+}
+
+.rux--progress-step svg {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  border-radius: 50%;
+  block-size: 1rem;
+  fill: var(--rux-interactive, #0f62fe);
+  inline-size: 1rem;
+  margin-block-start: 0.625rem;
+  margin-inline-end: 0.5rem;
+}
+
+.rux--progress--space-equal .rux--progress-text {
+  overflow: hidden;
+  padding: 0.125rem;
+  margin: -0.125rem;
+}
+
+.rux--progress-label {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  display: block;
+  overflow: hidden;
+  margin: 0.5rem 0 0 0;
+  color: var(--rux-text-primary, #161616);
+  line-height: 1.45;
+  max-inline-size: 5.5rem;
+  text-overflow: ellipsis;
+  transition: box-shadow 110ms cubic-bezier(0.2, 0, 0.38, 0.9), color 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  white-space: nowrap;
+}
+.rux--progress-label::before {
+  display: block;
+  content: "";
+}
+
+@media (any-hover: hover) {
+  .rux--progress-label:hover {
+    box-shadow: 0 0.0625rem var(--rux-link-primary-hover, #0043ce);
+    color: var(--rux-link-primary-hover, #0043ce);
+    cursor: pointer;
+  }
+}
+.rux--progress--space-equal .rux--progress-label {
+  margin-inline-end: 0.75rem;
+  max-inline-size: 100%;
+}
+
+.rux--progress-step-button:focus {
+  outline: none;
+}
+.rux--progress-step-button:focus-visible .rux--progress-label {
+  color: var(--rux-focus, #0f62fe);
+  outline: 0.0625rem solid var(--rux-focus, #0f62fe);
+}
+
+.rux--progress-step-button:not(.rux--progress-step-button--unclickable) .rux--progress-label:active {
+  box-shadow: 0 0.0625rem 0 0 var(--rux-text-primary, #161616);
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--progress-label-overflow:hover ~ .rux--tooltip,
+.rux--progress-label-overflow:focus ~ .rux--tooltip {
+  visibility: inherit;
+}
+
+.rux--progress-step .rux--tooltip .rux--tooltip__caret {
+  margin-inline-start: 0.625rem;
+}
+
+.rux--tooltip__text {
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+}
+
+.rux--progress-step .rux--tooltip {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--rux-text-inverse, #ffffff);
+  inline-size: 7.8125rem;
+  margin-block-start: 2.5rem;
+  margin-inline-start: 1.375rem;
+  min-block-size: 1.5rem;
+  min-inline-size: 7.1875rem;
+  visibility: hidden;
+}
+
+.rux--progress-step .rux--tooltip_multi {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  block-size: auto;
+  color: var(--rux-text-inverse, #ffffff);
+  inline-size: 9.375rem;
+}
+
+.rux--progress-optional {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  position: absolute;
+  display: block;
+  color: var(--rux-text-secondary, #525252);
+  inset-inline-start: 0;
+  margin-block-start: 1.75rem;
+  margin-inline-start: 1.5rem;
+  text-align: start;
+}
+
+.rux--progress-step--current .rux--progress-line {
+  background-color: var(--rux-interactive, #0f62fe);
+}
+
+.rux--progress-step--incomplete svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+.rux--progress-step--incomplete .rux--progress-line {
+  background-color: var(--rux-border-subtle);
+}
+
+.rux--progress-step--complete .rux--progress-line {
+  background-color: var(--rux-interactive, #0f62fe);
+}
+
+.rux--progress-step-button {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--progress-step-button *,
+.rux--progress-step-button *::before,
+.rux--progress-step-button *::after {
+  box-sizing: inherit;
+}
+.rux--progress-step-button::-moz-focus-inner {
+  border: 0;
+}
+.rux--progress-step-button {
+  display: flex;
+  text-align: start;
+}
+
+.rux--progress-step-button--unclickable {
+  cursor: default;
+  outline: none;
+}
+
+@media (any-hover: hover) {
+  .rux--progress-step-button--unclickable .rux--progress-label:hover {
+    box-shadow: none;
+    color: var(--rux-text-primary, #161616);
+    cursor: default;
+  }
+  .rux--progress-step-button--unclickable .rux--tooltip__label:hover {
+    box-shadow: 0 0.0625rem var(--rux-link-primary, #0f62fe);
+    color: var(--rux-link-primary, #0f62fe);
+    cursor: pointer;
+  }
+}
+.rux--progress-step--disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.rux--progress-step--disabled svg {
+  cursor: not-allowed;
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+.rux--progress-step--disabled .rux--progress-label {
+  box-shadow: none;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+@media (any-hover: hover) {
+  .rux--progress-step--disabled .rux--progress-label:hover {
+    box-shadow: none;
+    color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+    cursor: not-allowed;
+  }
+}
+.rux--progress-step--disabled .rux--progress-line {
+  cursor: not-allowed;
+}
+.rux--progress-step--disabled .rux--progress-label-overflow:hover ~ .rux--tooltip--definition .rux--tooltip--definition__bottom {
+  display: none;
+}
+
+.rux--progress__warning > * {
+  fill: var(--rux-support-error, #da1e28);
+}
+
+.rux--progress.rux--skeleton .rux--progress-label {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--progress.rux--skeleton .rux--progress-label:hover, .rux--progress.rux--skeleton .rux--progress-label:focus, .rux--progress.rux--skeleton .rux--progress-label:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--progress.rux--skeleton .rux--progress-label::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--progress.rux--skeleton .rux--progress-label::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--progress.rux--skeleton .rux--progress-label {
+    background: CanvasText;
+  }
+  .rux--progress.rux--skeleton .rux--progress-label::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--progress.rux--skeleton .rux--progress-label {
+  block-size: 0.875rem;
+  inline-size: 2.5rem;
+  margin-block-start: 0.625rem;
+}
+
+.rux--progress.rux--progress--vertical.rux--skeleton .rux--progress-label {
+  margin-block-start: 0.0625rem;
+}
+
+.rux--progress--vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.rux--progress--vertical,
+.rux--progress-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.rux--progress--vertical .rux--progress-step,
+.rux--progress--vertical .rux--progress-step-button {
+  align-content: flex-start;
+  inline-size: initial;
+  min-block-size: 3.625rem;
+  min-inline-size: initial;
+}
+
+.rux--progress--vertical .rux--progress-step svg,
+.rux--progress--vertical .rux--progress-step-button svg {
+  display: inline-block;
+  margin: 0.0625rem 0.5rem 0;
+}
+
+.rux--progress--vertical .rux--progress-label {
+  display: inline-block;
+  margin: 0;
+  inline-size: initial;
+  max-inline-size: 10rem;
+  vertical-align: top;
+  white-space: initial;
+}
+
+.rux--progress--vertical .rux--progress-step .rux--tooltip {
+  margin-block-start: 0.5rem;
+}
+
+.rux--progress--vertical .rux--progress-optional {
+  position: static;
+  margin: 0 0 auto;
+  inline-size: 100%;
+}
+
+.rux--progress--vertical .rux--progress-line {
+  position: absolute;
+  block-size: 100%;
+  inline-size: 1px;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
 @keyframes ai-skeleton-animation {
   0% {
     transform: translateX(-100%);

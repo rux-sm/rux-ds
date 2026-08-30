@@ -42,7 +42,7 @@ usually the answer to the question you are about to ask.
 
 ## 2. Check the component is actually compiled
 
-**33 of 75 Carbon components are in `css/rux.css`.** `docs/inventory.md` is the
+**34 of 75 Carbon components are in `css/rux.css`.** `docs/inventory.md` is the
 list, with the reason for each cut. A class for a component that is not compiled
 resolves to nothing and fails silently — the markup looks right and the page has
 no styling on it.
