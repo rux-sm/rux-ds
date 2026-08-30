@@ -30,16 +30,16 @@ actually said, not whether it seemed fine — the wording is the finding.
 
 Keys, which is all you need:
 
-| | |
-|---|---|
-| `VO` | Control + Option, held together |
-| `VO` + A | read continuously from here |
-| `VO` + → / ← | move through everything, including text |
-| Tab / Shift-Tab | move between focusable controls only |
-| `VO` + Space | activate the thing VoiceOver is on |
-| `VO` + U | rotor — lists headings, links, form controls; Escape closes it |
-| `VO` + Shift + ↓ / ↑ | step into / out of a group (tables, toolbars) |
-| Control | stop it talking, without turning it off |
+|                      |                                                                |
+|----------------------|----------------------------------------------------------------|
+| `VO`                 | Control + Option, held together                                |
+| `VO` + A             | read continuously from here                                    |
+| `VO` + → / ←         | move through everything, including text                        |
+| Tab / Shift-Tab      | move between focusable controls only                           |
+| `VO` + Space         | activate the thing VoiceOver is on                             |
+| `VO` + U             | rotor — lists headings, links, form controls; Escape closes it |
+| `VO` + Shift + ↓ / ↑ | step into / out of a group (tables, toolbars)                  |
+| Control              | stop it talking, without turning it off                        |
 
 ## What a pass sounds like
 
@@ -94,32 +94,32 @@ with nothing in the gap, the label is broken for readers and invisible to everyo
 
 Twelve modules own the interactive set. Sections not listed here are static specimens.
 
-| # | Section | Do this | Should hear | Heard |
-|---|---|---|---|---|
-| 1 | buttons | Tab across | name + "button"; disabled says "dimmed" | |
-| 2 | links | Tab across | name + "link" | |
-| 3 | text-input | Tab in, type | label, then "edit text"; invalid reads its error | |
-| 4 | textarea | Tab in | label + "edit text, multiline" | |
-| 5 | select | Tab in, ↓ | label + "pop up button", each option as it changes | |
-| 6 | checkbox | Tab, Space | name + "checkbox" + "checked"/"unchecked" ON TOGGLE; **5 carry `aria-disabled`** — each must say so | |
-| 7 | radio | Tab, ↓ | "radio button, N of M" + group name | |
-| 8 | toggle | Tab, Space | **`role="switch"` on all 6** — "switch", not "checkbox" — plus state, and the state again when it flips | |
-| 9 | search | Type, then clear | field name; clear button has its own name | |
-| 10 | number | Tab, ↑↓ | "spin button" + value on each step | |
-| 11 | tile | Tab, Space | clickable reads as link/button; selectable reads checked | |
-| 12 | notification | — | is it announced without moving focus? (live region) | |
-| 13 | tabs | Tab in, ←→, then `VO`+→ | "tab, selected, N of M"; panel announced on change; **and prediction 1** | |
-| 14 | table | `VO`+Shift+↓, arrow cells | column AND row header per cell; sort state on headers | |
-| 15 | dropdown | Tab, Enter, ↓ | "combo box", "expanded", option + position | |
-| 16 | list-box | same | same | |
-| 17 | modal | Open it | dialog + its title on open; focus lands inside; page behind is silent | |
-| 18 | popover | Open it | content read on open, not before | |
-| 19 | tooltip | Focus trigger | description reaches you without leaving the control | |
-| 20 | menu | Open, arrow | "menu", item + position, submenu state | |
-| 21 | overflow-menu | same | trigger has a name that is not just "button" | |
-| 22 | accordion | Tab, Enter | "expanded"/"collapsed" ON TOGGLE, not only on arrival | |
-| 23 | pagination | Tab across | page field + prev/next names, and the range; **and prediction 4** | |
-| 24 | ui-shell | Tab from the top | skip link FIRST; hamburger state; nav items as a list | |
+| #  | Section       | Do this                   | Should hear                                                                                             | Heard                                    |
+|----|---------------|---------------------------|---------------------------------------------------------------------------------------------------------|------------------------------------------|
+| 1  | buttons       | Tab across                | name + "button"; disabled says "dimmed"                                                                 |                                          |
+| 2  | links         | Tab across                | name + "link"                                                                                           |                                          |
+| 3  | text-input    | Tab in, type              | label, then "edit text"; invalid reads its error                                                        |                                          |
+| 4  | textarea      | Tab in                    | label + "edit text, multiline"                                                                          |                                          |
+| 5  | select        | Tab in, ↓                 | label + "pop up button", each option as it changes                                                      |                                          |
+| 6  | checkbox      | Tab, Space                | name + "checkbox" + "checked"/"unchecked" ON TOGGLE; **5 carry `aria-disabled`** — each must say so     |                                          |
+| 7  | radio         | Tab, ↓                    | "radio button, N of M" + group name                                                                     |                                          |
+| 8  | toggle        | Tab, Space                | **`role="switch"` on all 6** — "switch", not "checkbox" — plus state, and the state again when it flips |                                          |
+| 9  | search        | Type, then clear          | field name; clear button has its own name                                                               |                                          |
+| 10 | number        | Tab, ↑↓                   | "spin button" + value on each step                                                                      |                                          |
+| 11 | tile          | Tab, Space                | clickable reads as link/button; selectable reads checked                                                |                                          |
+| 12 | notification  | —                         | is it announced without moving focus? (live region)                                                     |                                          |
+| 13 | tabs          | Tab in, ←→, then `VO`+→   | "tab, selected, N of M"; panel announced on change; **and prediction 1**                                |                                          |
+| 14 | table         | `VO`+Shift+↓, arrow cells | column AND row header per cell; sort state on headers                                                   |                                          |
+| 15 | dropdown      | Tab, Enter, ↓             | "combo box", "expanded", option + position                                                              |                                          |
+| 16 | list-box      | same                      | same                                                                                                    |                                          |
+| 17 | modal         | Open it                   | dialog + its title on open; focus lands inside; page behind is silent                                   |                                          |
+| 18 | popover       | Open it                   | content read on open, not before                                                                        |                                          |
+| 19 | tooltip       | Focus trigger             | description reaches you without leaving the control                                                     |                                          |
+| 20 | menu          | Open, arrow               | "menu", item + position, submenu state                                                                  |                                          |
+| 21 | overflow-menu | same                      | trigger has a name that is not just "button"                                                            |                                          |
+| 22 | accordion     | Tab, Enter                | "expanded"/"collapsed" ON TOGGLE, not only on arrival                                                   |                                          |
+| 23 | pagination    | Tab across                | page field + prev/next names, and the range; **and prediction 4**                                       |                                          |
+| 24 | ui-shell      | Tab from the top          | skip link FIRST; hamburger state; nav items as a list                                                   |                                          |
 
 ## Two rows that are known-awkward before you start
 
