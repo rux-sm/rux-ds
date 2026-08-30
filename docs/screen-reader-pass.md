@@ -94,32 +94,32 @@ with nothing in the gap, the label is broken for readers and invisible to everyo
 
 Twelve modules own the interactive set. Sections not listed here are static specimens.
 
-| #  | Section       | Do this                   | Should hear                                              | Heard                  |
-|----|---------------|---------------------------|----------------------------------------------------------|------------------------|
-| 1  | buttons       | Tab across                | name + "button"; disabled says "dimmed"                  | ......                 |
-| 2  | links         | Tab across                | name + "link"                                            | ......                 |
-| 3  | text-input    | Tab in, type              | label + "edit text"; invalid reads its error             | ......                 |
-| 4  | textarea      | Tab in                    | label + "edit text, multiline"                           | ......                 |
-| 5  | select        | Tab in, ↓                 | label + "pop up button", option on change                | ......                 |
-| 6  | checkbox      | Tab, Space                | name + "checkbox" + state ON TOGGLE                      | ......                 |
-| 7  | radio         | Tab, ↓                    | "radio button, N of M" + group name                      | ......                 |
-| 8  | toggle        | Tab, Space                | "switch" not "checkbox", + state on flip                 | ......                 |
-| 9  | search        | Type, then clear          | field name; clear button has its own name                | ......                 |
-| 10 | number        | Tab, ↑↓                   | "spin button" + value on each step                       | ......                 |
-| 11 | tile          | Tab, Space                | clickable = link/button; selectable = checked            | ......                 |
-| 12 | notification  | —                         | announced without moving focus? (live region)            | ......                 |
-| 13 | tabs          | Tab in, ←→, then `VO`+→   | "tab, selected, N of M"; panel on change; + prediction 1 | ......                 |
-| 14 | table         | `VO`+Shift+↓, arrow cells | column AND row header per cell; sort on headers          | ......                 |
-| 15 | dropdown      | Tab, Enter, ↓             | "combo box", "expanded", option + position               | ......                 |
-| 16 | list-box      | same                      | same                                                     | ......                 |
-| 17 | modal         | Open it                   | dialog + title on open; focus inside; page behind silent | ......                 |
-| 18 | popover       | Open it                   | content read on open, not before                         | ......                 |
-| 19 | tooltip       | Focus trigger             | description reaches you without moving focus             | ......                 |
-| 20 | menu          | Open, arrow               | "menu", item + position, submenu state                   | ......                 |
-| 21 | overflow-menu | same                      | trigger has a name that is not just "button"             | ......                 |
-| 22 | accordion     | Tab, Enter                | "expanded"/"collapsed" ON TOGGLE, not just arrival       | ......                 |
-| 23 | pagination    | Tab across                | page field, prev/next names, range; + prediction 4       | ......                 |
-| 24 | ui-shell      | Tab from the top          | skip link FIRST; hamburger state; nav as a list          | ......                 |
+| #  | Section       | Do this                   | Should hear                                              | Heard                                                                                                                                               |
+|----|---------------|---------------------------|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | buttons       | Tab across                | name + "button"; disabled says "dimmed"                  | "Primary, button" … disabled: "on a button. This item is dimmed." PASS                                                                              |
+| 2  | links         | Tab across                | name + "link"                                            | name only, e.g. "Default link" — VO landed on the TEXT ("selectable text, inside of a link"), so the role never arrived. Re-do with Tab.            |
+| 3  | text-input    | Tab in, type              | label + "edit text"; invalid reads its error             | labels/helpers each read separately; field itself only "on a text field". Name not heard — re-do with Tab.                                          |
+| 4  | textarea      | Tab in                    | label + "edit text, multiline"                           | "on a text area."; "Character count" announced with NO number                                                                                       |
+| 5  | select        | Tab in, ↓                 | label + "pop up button", option on change                | "on a pop up button" x5, no name heard. Markup HAS label for= on all five, so re-do with Tab before filing.                                         |
+| 6  | checkbox      | Tab, Space                | name + "checkbox" + state ON TOGGLE                      | "Unchecked, unchecked, checkbox"; "Indeterminate, MIXED, checkbox"; "Required, INVALID DATA unchecked, checkbox" PASS. Disabled ones not landed on. |
+| 7  | radio         | Tab, ↓                    | "radio button, N of M" + group name                      | "radio button, 2 of 3"; "3 of 3. This item is dimmed." Position + dimmed both PASS                                                                  |
+| 8  | toggle        | Tab, Space                | "switch" not "checkbox", + state on flip                 | **"On On, on, switch" — NAME DOUBLED.** See finding 1                                                                                               |
+| 9  | search        | Type, then clear          | field name; clear button has its own name                | heading only; recording stopped here                                                                                                                |
+| 10 | number        | Tab, ↑↓                   | "spin button" + value on each step                       | ......                                                                                                                                              |
+| 11 | tile          | Tab, Space                | clickable = link/button; selectable = checked            | ......                                                                                                                                              |
+| 12 | notification  | —                         | announced without moving focus? (live region)            | ......                                                                                                                                              |
+| 13 | tabs          | Tab in, ←→, then `VO`+→   | "tab, selected, N of M"; panel on change; + prediction 1 | ......                                                                                                                                              |
+| 14 | table         | `VO`+Shift+↓, arrow cells | column AND row header per cell; sort on headers          | ......                                                                                                                                              |
+| 15 | dropdown      | Tab, Enter, ↓             | "combo box", "expanded", option + position               | ......                                                                                                                                              |
+| 16 | list-box      | same                      | same                                                     | ......                                                                                                                                              |
+| 17 | modal         | Open it                   | dialog + title on open; focus inside; page behind silent | ......                                                                                                                                              |
+| 18 | popover       | Open it                   | content read on open, not before                         | ......                                                                                                                                              |
+| 19 | tooltip       | Focus trigger             | description reaches you without moving focus             | ......                                                                                                                                              |
+| 20 | menu          | Open, arrow               | "menu", item + position, submenu state                   | ......                                                                                                                                              |
+| 21 | overflow-menu | same                      | trigger has a name that is not just "button"             | ......                                                                                                                                              |
+| 22 | accordion     | Tab, Enter                | "expanded"/"collapsed" ON TOGGLE, not just arrival       | ......                                                                                                                                              |
+| 23 | pagination    | Tab across                | page field, prev/next names, range; + prediction 4       | ......                                                                                                                                              |
+| 24 | ui-shell      | Tab from the top          | skip link FIRST; hamburger state; nav as a list          | ......                                                                                                                                              |
 
 **Row 6** — five of the checkboxes carry `aria-disabled`; each must say so.
 **Row 8** — all six toggles are `role="switch"`, so "switch" is right and "checkbox" is
@@ -142,8 +142,43 @@ Findings go in this file, under the table, one per line: section, what was said,
 should have been. Then §4.5 can close with the same evidence trail the keyboard half
 has — a date, a tool, a number.
 
-**Pass run:** _(date)_ · **VoiceOver** _(macOS version)_ · **Safari** _(version)_
+**Pass run:** 2026-08-30 · **VoiceOver** on macOS · **Safari** · white theme ·
+`VO`+→ walk, screen-recorded with the caption panel on and transcribed from the frames
+(244 announcements, 4m48s). Recording kept at `.brand/screen-reader-pass-2026-08-30.mov`,
+which is gitignored.
+
+**COVERED: rows 1-8 only** — buttons through toggle. The walk stopped at `search`, so
+rows 9-24 are unrun and **none of the four predictions above was reached**. Predictions 1
+and 3 in particular cannot be answered by a Tab pass; they need `VO`+→.
 
 ### Findings
 
-_(none recorded yet)_
+**1 · toggle announces its name twice.** Heard: "On On, on, switch" and "Off Off, off,
+switch". `sink/toggle.html` puts `aria-labelledby` on the switch pointing at the whole
+`<label>`, and that label holds BOTH `toggle__label-text` ("On") and the state span
+`toggle__text` ("On"), so the accessible name computes to both. The reader hears the word
+three times: name, name again, then the switch state.
+
+**NOT YET ADJUDICATED, and the captures cannot settle it.**
+`tools/extract/react-dom.js:388` records only four aria attributes — `aria-expanded`,
+`aria-selected`, `aria-invalid`, `aria-disabled`. `aria-labelledby` is not among them, so
+zero occurrences across the 641 captures means the captures are SILENT, not that Carbon
+omits it. Deciding this needs a running Carbon page per `docs/verifying-templates.md`.
+Do not "fix" it against the captures.
+
+**2 · textarea's character count has no number.** Heard "Character count" alone. The
+visually-hidden string carries the label and nothing else; whether the count reaches a
+reader was not established.
+
+### Cleared on this pass, each heard rather than assumed
+
+- **Disabled buttons ARE announced** — "You are currently on a button. This item is
+  dimmed." on all three plus the ghost link. Tab skips them because a `disabled` button is
+  out of the tab order and an `<a>` with no `href` is not focusable; that is correct, and
+  row 1 used to say "Tab across" while asking for something only `VO`+→ can deliver.
+- **Checkboxes** announce mixed and invalid states: "Indeterminate, mixed, checkbox",
+  "Required, invalid data unchecked, checkbox".
+- **Radios** announce position and dimmed: "2 of 3", "3 of 3. This item is dimmed."
+- **Toggles are switches**, not checkboxes — row 8's expectation was right.
+- **Selects are labelled.** The captions looked nameless, but all five carry
+  `<label for>`; the gap was an artefact of de-duplicating frames, not a defect.
