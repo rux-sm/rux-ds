@@ -1,6 +1,6 @@
 ---
 name: sink-check
-description: Run the kitchen sink's browser-only gates (check-a11y.js, check-rendered.js) and any focus or contrast measurement against the running page. Use when asked to run the browser checks, verify the sink in a browser, measure focus rings or contrast, or look at the sink after a change. Encodes six conditions that each silently produce a wrong answer if skipped.
+description: Run the kitchen sink's browser-only gates (check-a11y.js, check-rendered.js) and any focus or contrast measurement against the running page. Use when asked to run the browser checks, verify the sink in a browser, measure focus rings or contrast, or look at the sink after a change. Encodes seven conditions that each silently produce a wrong answer if skipped.
 ---
 
 # Running the browser-only gates
@@ -26,7 +26,7 @@ The cache-buster matters after you edit a tool. Both tools RETURN their result o
 read the return value rather than the console. `check-a11y` returns
 `{findings, notes, byRule, focusRingChecked}`; `check-rendered` returns its own summary.
 
-## Six conditions, each of which has produced a wrong answer here
+## Seven conditions, each of which has produced a wrong answer here
 
 **1. The document must have focus.** `check-a11y` reports `focusRingChecked: false` and
 skips its focus-ring check entirely when `document.hasFocus()` is false — and a bare
@@ -78,6 +78,30 @@ checking and confirm the check fails, then restore. For focus rings:
 should produce 12 findings; radio 10, tile 2, text input 3, and stripping every outline
 and box-shadow on the page 122. If deleting a ring changes nothing, the check is
 measuring the wrong element — which is exactly the defect fixed on 2026-08-28.
+
+**7. THE PANE DELIVERS KEYS BUT DOES NOT ACTIVATE.** Enter and Space on a focused
+`<button>` arrive as `keydown` and `keyup` with `isTrusted: true` and produce NO
+`click` — the browser's default action never runs. So a menu, modal or anything else
+a button opens CANNOT be opened from the keyboard here. Open it with `.click()` and
+press keys after that.
+
+Only handlers bound to `keydown` itself are reachable by real keys: arrows, Home/End,
+Escape. Those all work, and were swept on 2026-08-30 — tablist arrows rove and select
+and skip the disabled tab, a vertical list declines the horizontal arrows, radio
+arrows move and check, menu arrows rove and Escape restores focus to the trigger.
+
+**Prove which of the two you are looking at before filing anything**, because "the
+button does nothing" reads identically to a real defect. Attach listeners and press
+the key:
+
+    const ev=[]; b.addEventListener('keydown',e=>ev.push('keydown:'+e.key+' trusted='+e.isTrusted));
+    b.addEventListener('click',e=>ev.push('click')); b.focus();
+    // press Enter, then read ev: keydown arrives, click does not
+
+Then call `b.click()` and watch the surface open. On 2026-08-30 that pair was the
+whole difference between a harness limit and a bug — and it was checked against the
+source too: `js/overlay.js:224` preventDefaults on Escape alone, and nothing in `js/`
+touches Enter or Space. This is why `check-behaviour` drives clicks rather than keys.
 
 ## Measuring rings yourself
 

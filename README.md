@@ -68,10 +68,21 @@ was verified against.
   nothing here substitutes for it. Do it in a focused window: `check-a11y.js` still
   refuses its focus-ring check when `document.hasFocus()` is false.
 
-  Two reasons this entry used to give are gone, 2026-08-28. Real key events ARE
+  One reason this entry used to give is gone, 2026-08-28: real key events ARE
   delivered in an automated pane — a focused button receives a trusted `keydown` — and
-  tabs, menus and the combobox have since been driven by hand that way. Tab ORDER has
-  still only been walked in places, never swept end to end.
+  tabs, menus and the combobox have since been driven by hand that way. Tab order is
+  no longer a gap either: swept end to end on 2026-08-30, forward AND in reverse, on
+  all seven pages, with 0 divergence from DOM order and 0 mismatches on the reverse.
+
+  **What an automated pane still cannot do is ACTIVATE, and the sentence above used
+  to imply otherwise.** Enter and Space on a focused button deliver `keydown` and
+  `keyup` with `isTrusted: true` and produce NO `click`: the browser's default action
+  never runs. So every surface a button opens must be opened with `.click()` there,
+  and only handlers bound to `keydown` itself are reachable by real keys — arrows,
+  Home/End, Escape. Measured 2026-08-30 against the menu trigger, with listeners
+  attached to see which events arrived. It is the pane and not the page:
+  `js/overlay.js:224` preventDefaults on Escape alone, and nothing in `js/` touches
+  Enter or Space. This is why `check-behaviour` drives clicks rather than keys.
 
 **Decisions waiting on you**, each recorded where it applies:
 
