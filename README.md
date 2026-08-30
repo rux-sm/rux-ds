@@ -32,7 +32,8 @@ outside press and the stack deciding which surface a press belongs to all come f
 kernel.
 
 What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports 0 findings, but it reads attributes rather than running an AT. Its focus-ring
+reports one finding on the sink, adjudicated a false positive, and nothing on the other
+seven pages — but it reads attributes rather than running an AT. Its focus-ring
 check does now run in an automated browser, once the page has focus. See "Picking this
 up".
 
@@ -114,7 +115,9 @@ lines and three corrections, and a template carries more discipline than a sampl
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`
-reports the other five and which pages each has been run against.
+reports the other five and which pages each has been run against. **All 26 browser
+cells are current as of 2026-08-30** — 0 stale, 0 never run — and
+`docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
 | | |
 |---|---|
@@ -247,18 +250,27 @@ harmless direction: the ratchet understates. Three today —
 `data-table--selected`, `table-sort--active` and `side-nav__overlay-active` — so the real
 figure is 488, not 485. They are NOT worth hardcoding into the markup to collect: that
 duplicates state a module derives from the checkbox, the sort button and the nav, and the
-copy goes stale the moment the real state moves. **0 stripped, 3 added on 2026-08-28.**
+copy goes stale the moment the real state moves. **0 stripped on all eight pages, 3
+added on the sink and 1 on `table-page.html` — `table-sort--active` again, the same
+module marking the same thing. Swept 2026-08-30.**
 
 Twelve run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**0 findings, 6 notes** on the sink; the notes are CSS specimens with no trigger, which
+**1 finding, 6 notes** on the sink and **0 findings, 0 notes** on the other seven pages;
+the notes are CSS specimens with no trigger, which
 are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
 something re-reads it.
+
+**The one finding is `progress-step-button`, and it is a false positive** — adjudicated
+2026-08-29, unchanged when re-swept 2026-08-30. Carbon draws that ring on
+`:focus-visible` on the LABEL and sets `outline: none` on plain `:focus`, which the tool
+documents as out of its reach; a real Tab press shows the ring. It is left reported
+rather than suppressed, because an exception list is not a passing check.
 
 **The sink is the wrong page to run this gate on alone.** Its bar ships ACTIVE, so the
 one state that carries the defect — a closed batch bar whose buttons are still tab stops
