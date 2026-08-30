@@ -18,9 +18,10 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import { owner, compiled, classNames } from './lib/ownership.mjs';
+import { pageFiles } from './lib/sources.mjs';
 
 const CSS = 'css/rux.css';
-const ROOTS = ['kitchen-sink.html', 'portal.html', 'templates'];
+const ROOTS = pageFiles();
 // Phase 5 put class names in JAVASCRIPT, where the same failure is available:
 // js/modal.js selects `.rux--modal-container`, and a renamed class breaks it
 // silently — no build error, no test failure, just a modal that stops trapping

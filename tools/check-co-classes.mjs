@@ -11,9 +11,10 @@
 //
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { pageFiles } from './lib/sources.mjs';
 
 const map = JSON.parse(readFileSync('docs/carbon-co-classes.json', 'utf8'));
-const ROOTS = ['kitchen-sink.html', 'portal.html', 'templates'];
+const ROOTS = pageFiles();
 
 function walk(p, out = []) {
   if (!statSync(p, { throwIfNoEntry: false })) return out;

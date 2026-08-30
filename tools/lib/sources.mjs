@@ -26,6 +26,36 @@ import { join } from 'node:path';
 
 export const ROOTS = ['sink', 'templates'];
 
+// ---------------------------------------------------------------------------
+// The ASSEMBLED targets — the other notion named at the top of this file.
+//
+// WHY THIS IS DISCOVERED AND NOT A LIST. Four gates carried
+// `['kitchen-sink.html', 'portal.html', 'templates']` as a literal, so a page
+// at the repository root that nobody had typed into four files was read by
+// none of them. `npm run verify` exited 0 and said NOTHING about it.
+//
+// That is this project's own recorded defect arriving from a new direction:
+// a check never run against a target is indistinguishable from a check that
+// passed. §4.6's fifth exit attempt hit it directly -- a fresh agent building a
+// consumer page had to re-implement four gates in scratch to get any answer,
+// and the fourth attempt's `dashboard.html` was never gated at all.
+//
+// A consumer page is the artefact Phase 6 exists to make possible, and it was
+// the one thing nothing checked. Now every `*.html` at the root is a target the
+// moment it exists.
+//
+// NOT EXTENDED TO THE PER-FILE GATES, deliberately. `check-provenance` would
+// demand a PROVENANCE label from a consumer page that owes none, and
+// `check-ancestry`'s KNOWN is keyed by file, so a root page re-earns every
+// finding already adjudicated for the template it was copied from. Those need
+// a decision about how a consumer page records its own declines; this does not.
+export function pageFiles(extra = []) {
+  const rootPages = readdirSync('.')
+    .filter(f => f.endsWith('.html'))
+    .sort();
+  return [...extra, ...rootPages, 'templates'];
+}
+
 // [{ name, path, root }] — sorted, sink first, so output order is stable.
 export function markupFiles(roots = ROOTS) {
   const out = [];
