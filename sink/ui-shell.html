@@ -19,6 +19,23 @@
     The active category carries --side-nav__item--active on the <li>, and the
     current link inside it carries aria-current="page".
 
+    NO role="menu" ON THAT <ul>, and the omission is the point. This fragment
+    carried one until 2026-08-30, when a tab-order sweep walked the three links
+    inside it. Carbon renders the element bare -- the capture named above is a
+    plain ul.cds--side-nav__menu with no attributes -- and all six templates
+    already render it bare; only this file diverged.
+
+    It is not a typo to restore. role="menu" requires menuitem children, and
+    these are li > a with no role, so an AT is told it has entered a menu and
+    then finds nothing in it. js/ui-shell.js:5 says what the widget actually is:
+    side-nav submenus are inline disclosure, like accordion, not menus. The
+    module selects them by class (ui-shell.js:181), never by role, so nothing
+    behavioural depends on the attribute.
+
+    No gate saw it. check-a11y counts [role^=menuitem] descendants and skips a
+    composite that has none, so zero items means neither a finding nor a note;
+    the class gates read classes, and this was a bare attribute.
+
     THREE CLASSES THE REACT DOM CARRIES ARE NOT REPRODUCED HERE. @carbon/styles
     has no rule behind any of them, so check-classes.mjs rejects them, and
     leaving them out changes nothing visually:
@@ -106,7 +123,7 @@
               <span class="rux--side-nav__submenu-title">Documents</span>
               <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
-            <ul class="rux--side-nav__menu" role="menu">
+            <ul class="rux--side-nav__menu">
               <li class="rux--side-nav__menu-item">
                 <a class="rux--side-nav__link" href="#ui-shell" aria-current="page"><span class="rux--side-nav__link-text">Dashboard</span></a>
               </li>
@@ -125,7 +142,7 @@
               <span class="rux--side-nav__submenu-title">Reports</span>
               <div class="rux--side-nav__icon rux--side-nav__submenu-chevron"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></div>
             </button>
-            <ul class="rux--side-nav__menu" role="menu" hidden>
+            <ul class="rux--side-nav__menu" hidden>
               <li class="rux--side-nav__menu-item">
                 <a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">Monthly</span></a>
               </li>
