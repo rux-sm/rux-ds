@@ -9,6 +9,11 @@ had the first and not the second.
 **Everything here was learned by shipping it wrong.** Each trap cites where the
 failure is recorded, so you can read the full story rather than trust a summary.
 
+**`.claude/skills/rux-ds-page/` is the ordered version for doing the work.** It
+states each trap in a line and points back here for why. This document is where
+the reasons live; keep them here rather than copying them across, since two
+copies of a rule is how the counts in README drifted before `check-gates`.
+
 ---
 
 ## 1. Start from a template, never from scratch
