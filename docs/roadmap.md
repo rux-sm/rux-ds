@@ -1638,10 +1638,15 @@ nothing defines, the silent-blank-icon failure `check-icons` exists for.
 
 It is real, it runs in `npm run verify`, and it is not in the registry. That is the
 `build-namespace` shape — a gate carried by a build tool with no `check-*` file — and
-`build-namespace` IS registered. **Decide whether this becomes the fifteenth gate.**
+`build-namespace` IS registered. **Decide whether this becomes the eighteenth gate.**
 Registering it means the count moves in `CLAUDE.md` and `README.md` as well as
 `gates.mjs`; leaving it out means the registry is knowingly incomplete, which is the
 condition that registry was built to end.
+
+This read *fifteenth* until 2026-08-29, when `check-behaviour`, `check-glyphs` and
+`check-slots` took the registry from fourteen to seventeen. The ordinal moves with
+every gate admitted, and an undecided question that needs re-numbering each time is
+one more argument for closing it.
 
 ---
 

@@ -80,8 +80,8 @@ was verified against.
 | Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 4 slots still have no capture that can answer | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
-| Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules, the 15th gate. There is no `tests/` directory at all | roadmap §4.8 |
-| `build-portal`'s icon assertion is a real check outside the registry — fifteenth gate or not | roadmap §4.8 |
+| Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 17 now. There is no `tests/` directory at all | roadmap §4.8 |
+| `build-portal`'s icon assertion is a real check outside the registry — eighteenth gate or not | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | **A SEVENTH TEMPLATE — `wizard-page.html`.** The §4.6 seventh attempt showed a multi-step flow is a real shape no template covers, and that building one takes 580 lines and three wrong turns. Its page is archived, not promoted: authoring a template means a `BEHAVIOUR:` label verified against a RUNNING Carbon page, `npm run icons` coverage, ledger cells, and source comments carrying their own reasoning — none of which that page has. **Plan below** | roadmap §4.6 |
