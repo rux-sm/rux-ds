@@ -95,7 +95,7 @@ reports the other five and which pages each has been run against.
 | Class coverage | **503 / 737 (68%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
-| Icons | 58, a 15.8 KB sprite |
+| Icons | 59, a 16.1 KB sprite |
 | Size | 608 KB raw · 548 KB min · **56.3 KB gzipped** |
 | Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
 
