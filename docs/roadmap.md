@@ -1648,6 +1648,57 @@ This read *fifteenth* until 2026-08-29, when `check-behaviour`, `check-glyphs` a
 every gate admitted, and an undecided question that needs re-numbering each time is
 one more argument for closing it.
 
+#### Two blind spots from the 2026-08-30 tab-order sweep
+
+Both shipped defects on pages that passed all seventeen gates, and both were found by
+walking the tab order by hand rather than by any gate. Neither is written as a rule yet,
+and the reason to hesitate differs in each case.
+
+**AN ARIA ROLE CARBON NEVER RENDERS.** `sink/ui-shell.html` carried `role="menu"` on the
+side nav's `ul`. The capture it cites renders that element bare, and all six templates
+already did; only the fragment diverged, while its own STRUCTURE comment listed the
+element without the role. `role="menu"` requires `menuitem` children and these are
+`li > a` with no role, so an AT was told it had entered a menu and then found nothing in
+it. Fixed at `643a20e`.
+
+Every class gate was blind by construction — a bare attribute is not a class, so
+`check-classes`, `check-tags`, `check-compound`, `check-ancestry` and `check-co-classes`
+cannot see one. `check-a11y` was blind by its own rule: it counts `[role^="menuitem"]`
+descendants and skips a composite that has none, so zero items yielded neither a finding
+nor a note.
+
+**The data for this rule already exists**, which is what makes it worth writing down. The
+captures record attributes as `{name=value}` beside the element — `check-tags` already
+reads the element half of the same line. A rule could intersect the roles our markup puts
+on a class set against the roles Carbon's captures render for it, exactly as
+`check-tags` does for element type.
+
+**The hesitation is `check-slots`' problem, not a new one.** The captures do not cover
+every state, so a role we legitimately need may have no capture that can answer, and the
+honest handling is `check-slots`' — report UNCOVERED rather than pass. That is a real
+design, not a blocker; it is simply not free.
+
+**A PAGE CARRYING NO HEADING AT ALL.** `templates/table-page.html` rendered its only
+title as `div.data-table-header__title` and had no `h1`–`h6` anywhere. Heading navigation
+is a primary way an AT user moves through a page, and §4.6 says a template IS a complete
+page, so the page offered none. Fixed at `e62850f` and `8f3d932`.
+
+**This one is not a provenance fault, and that is the point.** Carbon renders that class
+as both `h2` and `div` — `check-tags` accepts either, and running it with `h1` on that
+class fails with "Carbon renders it on `<div|h2>`", which is how the fix was chosen. No
+markup gate could have caught it, because nothing was invented. It is a composition
+question, and the gates check parts.
+
+**The hesitation here is structural.** Every gate in the registry reads a class, an
+element, or a computed property PER OCCURRENCE. "This document contains at least one
+`h1`" is an assertion about a FILE as a whole, and the only precedent is
+`check-provenance`, which asserts a file carries a label. Whether the registry grows that
+shape is the decision, not whether the heading matters.
+
+**Both, if admitted, land after the `build-portal` question above** — which is itself
+undecided, so the ordinals are provisional. That is the third time this section has had
+to re-number an open question, and the argument for closing them is the same each time.
+
 ---
 
 ## 5. Risks and one-way doors
