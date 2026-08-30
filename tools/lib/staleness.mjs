@@ -26,7 +26,7 @@ import { GATES, cells } from './gates.mjs';
 const LEDGER = 'docs/gate-coverage.json';
 
 const git = args => {
-  try { return execFileSync('git', args, { encoding: 'utf8' }).trim(); }
+  try { return execFileSync('git', args, { encoding: 'utf8' }); }
   catch { return ''; }
 };
 
@@ -34,7 +34,7 @@ const git = args => {
 // which is the only thing that makes a recorded result still current.
 function movedSince(since, path) {
   if (!existsSync(path)) return false;
-  return git(['log', '--oneline', `${since}..HEAD`, '--', path]).length > 0;
+  return git(['log', '--oneline', `${since}..HEAD`, '--', path]).trim().length > 0;
 }
 
 // [{ id, page, state, why }] for every cell the registry says a sweep must fill.
@@ -42,9 +42,20 @@ function movedSince(since, path) {
 export function cellStates() {
   const ledger = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, 'utf8')) : {};
 
+  // THE STATUS LETTERS ARE TWO COLUMNS AND THE FIRST MAY BE A SPACE, so this
+  // must not be trimmed as one blob. It was, and the leading space of the FIRST
+  // line went with it: `slice(3)` then cut a character off the path, and " M
+  // css/rux.css" was read as "ss/rux.css" — matching no declared input. The
+  // first porcelain line is the alphabetically first path, which for this
+  // repository is `css/rux.css`, the one input that invalidates every browser
+  // cell. So DIRTY was silently under-reported exactly where it mattered most.
+  // Trim per line, not across.
   const dirty = new Set(
     git(['status', '--porcelain'])
-      .split('\n').filter(Boolean).map(l => l.slice(3).trim()));
+      .split('\n').filter(Boolean)
+      // "XY path" and, for a rename, "XY old -> new"; the new name is the one
+      // on disk and the one a declared input would be matched against.
+      .map(l => l.slice(3).trim().split(' -> ').pop()));
   const isDirty = input => [...dirty].some(p => p === input || p.startsWith(input + '/'));
 
   const rows = [];
