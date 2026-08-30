@@ -21,7 +21,7 @@ on every build. Roadmap §1.1.
 | `sink/*.html` | one fragment per component; **`kitchen-sink.html` is generated, never edit it** |
 | `js/` | the behaviour layer — `js/overlay.js` is the kernel and loads first |
 | `docs/carbon-*.json` | the markup reference — 641 captured Carbon stories across four files: `carbon-react-dom` (505), `carbon-ibm-products-dom` (20) and the two `-states` recipes (116) |
-| `docs/composing-pages.md` | **how to build a PAGE**, as against what a component is — which template to copy, the eleven traps, and where IBM's own pattern guidance fits |
+| `docs/composing-pages.md` | **how to build a PAGE**, as against what a component is — which template to copy, the twelve traps, and where IBM's own pattern guidance fits |
 
 ## What MUST NOT be invented
 

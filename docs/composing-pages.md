@@ -56,10 +56,10 @@ before you write saves designing around something that is not there:
 
 ## 3. The traps
 
-Eleven. Nine shipped at least once; 3.9 is a gap the §4.6 exam found and which
-has since been closed, and 3.10 is one the exam found by LOOKING, with every
-gate green either side of it. The first four are the ones that make a page look
-*finished and wrong*, which is worse than broken.
+Twelve. Nine shipped at least once; 3.9 is a gap the §4.6 exam found and which
+has since been closed; 3.10 and 3.11 were found by LOOKING, with every gate
+green throughout. The first four are the ones that make a page look *finished
+and wrong*, which is worse than broken.
 
 ### 3.1 A tile inside `layer-two` is invisible on a plain page
 
@@ -173,49 +173,59 @@ the label's `12px / 400`.
 **A `<legend>` keeps the fieldset's accessible grouping**; an `<h2>` does not.
 Add the type class, do not swap the element.
 
-### 3.10 An unattested composition gets no spacing, and looks cramped
+### 3.10 An unattested composition inherits no spacing, and there may be no fix
 
-Putting a `rux--tag` inline after text inside a `rux--list__item` renders them
-**flush** — measured `0px` between the label and the badge on every row, and
-`0px` between rows.
+Putting a `rux--tag` inline after text inside a `rux--list__item` gives you a
+**word space, 4px** — and that is all Carbon offers. `.rux--tag` is
+`inline-flex` with no margin of its own (the margins in its SCSS belong to the
+close icon and label), `.rux--list__item` has none, and **no Carbon capture
+pairs a tag with a list item at all.** There is no reference composition to
+inherit spacing from, because Carbon never renders this one.
 
-Nothing is broken and nothing is invented: both classes are real, both resolve,
-and every gate passes. But `.rux--tag` carries no margin of its own (the margins
-in Carbon's tag SCSS are for its close icon and label), `.rux--list__item`
-carries none either, and — the part that matters — **no Carbon capture pairs a
-tag with a list item at all.** There is no reference composition to inherit
-spacing from, because Carbon never renders this one.
+**That is the general rule and it is worth more than the example.** Composing
+two components in an arrangement Carbon does not ship gives correct classes and
+whatever spacing the normal flow happens to produce — and **no gate reads it.**
+`check-spacing` compares classed elements against Carbon's computed signatures,
+and the gap between a text node and its sibling belongs to neither.
 
-**That is the general rule, and it is worth more than the example.** Composing
-two components in an arrangement Carbon does not ship gives you correct classes
-and no spacing, and **no gate reads it**: `check-spacing` compares classed
-elements against Carbon's computed signatures, and the gap between a text node
-and its sibling belongs to neither.
+> **`stack-horizontal` LOOKS LIKE THE FIX AND IS NOT. Recorded because it was
+> shipped for one commit before the regression was found.** It does give 8px,
+> but it is `inline-grid; grid-auto-flow: column`, so the row **cannot wrap**.
+> In the `lg:col-span-4` track — 155px at a 1100px viewport — the tag was
+> squeezed instead and `Complete` and `Current` both ellipsised to `Comple…`.
+> A truncated status badge is worse than a tight one. Left inline, the badge
+> wraps onto its own line and stays legible.
+>
+> Two further traps if you reach for it anyway: on the `li` itself it drops
+> `display: list-item` and flows every row onto one line; and it squeezes
+> whichever child can shrink, which is the component, not the text.
+>
+> **A wrappable inline gap needs CSS, and no Carbon utility provides one.**
+> `stack-horizontal` is for a row that is allowed to be a row.
 
-The fix is Carbon's own stack utilities, with one placement trap:
+`stack-vertical` on the `<ol>` **is** safe and worth having: it is row flow so
+it cannot squeeze anything, and an ordered list's numbers are a `::before`
+counter rather than a list marker, so they survive `display: grid`. 4px between
+rows.
 
-```html
-<ol class="rux--list--ordered rux--stack-vertical rux--stack-scale-2">
-  <li class="rux--list__item">
-    <span class="rux--stack-horizontal rux--stack-scale-3">
-      <span>Project basics</span>
-      <div class="rux--tag rux--tag--green">…</div>
-    </span>
-  </li>
-```
+*Found by looking, on the §4.6 sixth exit attempt — every gate green throughout,
+including through the regression.*
 
-**`stack-horizontal` goes on an inner span, never on the `li`.**  It is
-`inline-grid`, so on the item itself it drops `display: list-item` and flows
-every row onto one line. On the `<ol>`, `stack-vertical` is safe: an ordered
-list's numbers are a `::before` counter, not a list marker, and they survive
-`display: grid`.
+### 3.11 An ordered list's numbers render outside its own box
 
-Measured after: 8px beside each badge, 4px between rows, counters intact.
+`.rux--list--ordered` gets Carbon's `component-reset` — `margin-inline-start: 0`
+— while its counter is `position: absolute; inset-inline-start: -24px`. The
+numbers therefore sit **24px to the left of the list's content box, by design.**
 
-*Found by looking at the page, on the §4.6 sixth exit attempt. Every gate was
-green before and after.*
+Carbon gives that start margin to `.rux--list--unordered` only. An ordered list
+is expected to sit inside something already padded; `sink/list.html` gets away
+with it because `.ks-sec` supplies the room.
 
-### 3.11 There is no responsive metric-row idiom
+Placed directly at the top of a `rux--css-grid-column`, which has none, the
+numbers escape into the page gutter and sit further left than every heading on
+the page. Nothing is red: the markup is Carbon's own.
+
+### 3.12 There is no responsive metric-row idiom
 
 A four-across row of metric tiles that reflows is a shape **no template and no
 sink fragment demonstrates**. The §4.6 third attempt had to reach into
@@ -298,7 +308,7 @@ Stated so the gaps are visible rather than assumed filled:
 - **No content or writing guidance.** `carbon-website/src/pages/guidelines/content`
   exists and has not been mined.
 - **Nothing on theming a consumer page** beyond `data-theme` existing.
-- **Nothing on responsive behaviour** except 3.2's breakpoint and 3.11's gap.
+- **Nothing on responsive behaviour** except 3.2's breakpoint and 3.12's gap.
 - **This document is unenforced.** No gate reads it, and it can go stale exactly
   the way the counts in README did before `check-gates` existed. Treat a claim
   here as needing the same verification as any other — the citations are so you

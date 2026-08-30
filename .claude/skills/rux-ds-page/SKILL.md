@@ -7,7 +7,7 @@ description: Build a page out of rux-ds — a new template, a consumer page, or 
 
 `sink/*.html` says what a component **is**. This is how to put them together.
 
-**`docs/composing-pages.md` is the full procedure** — eleven traps, each citing
+**`docs/composing-pages.md` is the full procedure** — twelve traps, each citing
 where the failure is recorded. This skill is the ordered version for doing the
 work; go to the document for why any line here is true.
 
@@ -64,10 +64,12 @@ These are the ones to check *while writing*, because none of them looks broken.
    through `-7`, usually `-6`. **No gate catches this**; `portal.html` shipped
    with none and passed all seventeen.
 
-Seven more are in `docs/composing-pages.md` §3, including **an unattested
-composition getting no spacing** — a tag inline after list text renders flush at
-0px, because Carbon never renders that pair and no gate reads the gap. Also:
-specimens that are not operable,
+Eight more are in `docs/composing-pages.md` §3, including two found by LOOKING
+with every gate green: **an unattested composition inherits no spacing** — a tag
+inline after list text gets only a 4px word space, and `stack-horizontal` is NOT
+the fix, it cannot wrap and truncates the badge in a narrow column — and **an
+ordered list's numbers render 24px outside its own box**, so they escape into
+the gutter unless the container is padded. Also: specimens that are not operable,
 `aria-hidden` over focusable children, an overflow menu covering its trigger,
 the missing responsive metric-row idiom, and **the type utility classes** —
 `rux--type-*`, 73 of them, which is how a `<legend>` group name is lifted above
