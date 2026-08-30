@@ -56,8 +56,9 @@ before you write saves designing around something that is not there:
 
 ## 3. The traps
 
-Nine, all of them shipped at least once. The first four are the ones that make a
-page look *finished and wrong*, which is worse than broken.
+Ten. Nine shipped at least once; 3.9 is a gap the §4.6 exam found and which has
+since been closed. The first four are the ones that make a page look *finished
+and wrong*, which is worse than broken.
 
 ### 3.1 A tile inside `layer-two` is invisible on a plain page
 
@@ -150,7 +151,28 @@ whole reason it went unnoticed. See §5.
 Shipped nine times in `table-page.html` before anyone opened the page. No gate
 reads occlusion.
 
-### 3.9 There is no responsive metric-row idiom
+### 3.9 Type utility classes exist — use them for group headings
+
+`rux--type-*` gives 73 classes: `heading-compact-01`, `body-01`,
+`productive-heading-03` and the rest of Carbon's scale, plus weights and
+`type-italic`.
+
+**They were missing until 2026-08-29**, and the §4.6 exam is what found it.
+Carbon forwards a `type-classes` mixin and never calls it, so `@use ".../type"`
+supplied the tokens and the mixins and **zero classes**. The visible cost: a
+settings page's three `<legend>` group names rendered at
+`12px / 400 / rgb(82,82,82)` — byte-identical to the field label beside them, so
+each group name read as a label for the one field under it. There was no Carbon
+class that could lift it.
+
+`@include type.type-classes` in `src/app.scss` fixes it, at **+1.7 KB gzipped**.
+A legend with `rux--type-heading-compact-01` now measures `14px / 600` against
+the label's `12px / 400`.
+
+**A `<legend>` keeps the fieldset's accessible grouping**; an `<h2>` does not.
+Add the type class, do not swap the element.
+
+### 3.10 There is no responsive metric-row idiom
 
 A four-across row of metric tiles that reflows is a shape **no template and no
 sink fragment demonstrates**. The §4.6 third attempt had to reach into
@@ -233,7 +255,7 @@ Stated so the gaps are visible rather than assumed filled:
 - **No content or writing guidance.** `carbon-website/src/pages/guidelines/content`
   exists and has not been mined.
 - **Nothing on theming a consumer page** beyond `data-theme` existing.
-- **Nothing on responsive behaviour** except 3.2's breakpoint and 3.9's gap.
+- **Nothing on responsive behaviour** except 3.2's breakpoint and 3.10's gap.
 - **This document is unenforced.** No gate reads it, and it can go stale exactly
   the way the counts in README did before `check-gates` existed. Treat a claim
   here as needing the same verification as any other — the citations are so you

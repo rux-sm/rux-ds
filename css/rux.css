@@ -18725,6 +18725,1031 @@ em {
   font-style: italic;
 }
 
+.rux--type-mono {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+
+.rux--type-sans {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-condensed {
+  font-family: 'IBM Plex Sans Condensed', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-arabic {
+  font-family: 'IBM Plex Sans Arabic', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-devanagari {
+  font-family: 'IBM Plex Sans Devanagari', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-hebrew {
+  font-family: 'IBM Plex Sans Hebrew', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-jp {
+  font-family: 'IBM Plex Sans JP', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-kr {
+  font-family: 'IBM Plex Sans KR', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-thai-looped {
+  font-family: 'IBM Plex Sans Thai Looped', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-sans-thai {
+  font-family: 'IBM Plex Sans Thai', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+}
+
+.rux--type-serif {
+  font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', serif;
+}
+
+.rux--type-light {
+  font-weight: 300;
+}
+
+.rux--type-regular {
+  font-weight: 400;
+}
+
+.rux--type-semibold {
+  font-weight: 600;
+}
+
+.rux--type-italic {
+  font-style: italic;
+}
+
+.rux--type-caption-01 {
+  font-size: var(--rux-caption-01-font-size, 0.75rem);
+  font-weight: var(--rux-caption-01-font-weight, 400);
+  line-height: var(--rux-caption-01-line-height, 1.33333);
+  letter-spacing: var(--rux-caption-01-letter-spacing, 0.32px);
+}
+
+.rux--type-caption-02 {
+  font-size: var(--rux-caption-02-font-size, 0.875rem);
+  font-weight: var(--rux-caption-02-font-weight, 400);
+  line-height: var(--rux-caption-02-line-height, 1.28572);
+  letter-spacing: var(--rux-caption-02-letter-spacing, 0.32px);
+}
+
+.rux--type-label-01 {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+}
+
+.rux--type-label-02 {
+  font-size: var(--rux-label-02-font-size, 0.875rem);
+  font-weight: var(--rux-label-02-font-weight, 400);
+  line-height: var(--rux-label-02-line-height, 1.28572);
+  letter-spacing: var(--rux-label-02-letter-spacing, 0.16px);
+}
+
+.rux--type-helper-text-01 {
+  font-size: var(--rux-helper-text-01-font-size, 0.75rem);
+  line-height: var(--rux-helper-text-01-line-height, 1.33333);
+  letter-spacing: var(--rux-helper-text-01-letter-spacing, 0.32px);
+}
+
+.rux--type-helper-text-02 {
+  font-size: var(--rux-helper-text-02-font-size, 0.875rem);
+  font-weight: var(--rux-helper-text-02-font-weight, 400);
+  line-height: var(--rux-helper-text-02-line-height, 1.28572);
+  letter-spacing: var(--rux-helper-text-02-letter-spacing, 0.16px);
+}
+
+.rux--type-body-short-01 {
+  font-size: var(--rux-body-short-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-short-01-font-weight, 400);
+  line-height: var(--rux-body-short-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-short-01-letter-spacing, 0.16px);
+}
+
+.rux--type-body-short-02 {
+  font-size: var(--rux-body-short-02-font-size, 1rem);
+  font-weight: var(--rux-body-short-02-font-weight, 400);
+  line-height: var(--rux-body-short-02-line-height, 1.375);
+  letter-spacing: var(--rux-body-short-02-letter-spacing, 0);
+}
+
+.rux--type-body-long-01 {
+  font-size: var(--rux-body-long-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-long-01-font-weight, 400);
+  line-height: var(--rux-body-long-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-long-01-letter-spacing, 0.16px);
+}
+
+.rux--type-body-long-02 {
+  font-size: var(--rux-body-long-02-font-size, 1rem);
+  font-weight: var(--rux-body-long-02-font-weight, 400);
+  line-height: var(--rux-body-long-02-line-height, 1.5);
+  letter-spacing: var(--rux-body-long-02-letter-spacing, 0);
+}
+
+.rux--type-code-01 {
+  font-family: var(--rux-code-01-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-01-font-size, 0.75rem);
+  font-weight: var(--rux-code-01-font-weight, 400);
+  line-height: var(--rux-code-01-line-height, 1.33333);
+  letter-spacing: var(--rux-code-01-letter-spacing, 0.32px);
+}
+
+.rux--type-code-02 {
+  font-family: var(--rux-code-02-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-02-font-size, 0.875rem);
+  font-weight: var(--rux-code-02-font-weight, 400);
+  line-height: var(--rux-code-02-line-height, 1.42857);
+  letter-spacing: var(--rux-code-02-letter-spacing, 0.32px);
+}
+
+.rux--type-heading-01 {
+  font-size: var(--rux-heading-01-font-size, 0.875rem);
+  font-weight: var(--rux-heading-01-font-weight, 600);
+  line-height: var(--rux-heading-01-line-height, 1.42857);
+  letter-spacing: var(--rux-heading-01-letter-spacing, 0.16px);
+}
+
+.rux--type-heading-02 {
+  font-size: var(--rux-heading-02-font-size, 1rem);
+  font-weight: var(--rux-heading-02-font-weight, 600);
+  line-height: var(--rux-heading-02-line-height, 1.5);
+  letter-spacing: var(--rux-heading-02-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-01 {
+  font-size: var(--rux-productive-heading-01-font-size, 0.875rem);
+  font-weight: var(--rux-productive-heading-01-font-weight, 600);
+  line-height: var(--rux-productive-heading-01-line-height, 1.28572);
+  letter-spacing: var(--rux-productive-heading-01-letter-spacing, 0.16px);
+}
+
+.rux--type-productive-heading-02 {
+  font-size: var(--rux-productive-heading-02-font-size, 1rem);
+  font-weight: var(--rux-productive-heading-02-font-weight, 600);
+  line-height: var(--rux-productive-heading-02-line-height, 1.375);
+  letter-spacing: var(--rux-productive-heading-02-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-03 {
+  font-size: var(--rux-productive-heading-03-font-size, 1.25rem);
+  font-weight: var(--rux-productive-heading-03-font-weight, 400);
+  line-height: var(--rux-productive-heading-03-line-height, 1.4);
+  letter-spacing: var(--rux-productive-heading-03-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-04 {
+  font-size: var(--rux-productive-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-productive-heading-04-font-weight, 400);
+  line-height: var(--rux-productive-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-productive-heading-04-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-05 {
+  font-size: var(--rux-productive-heading-05-font-size, 2rem);
+  font-weight: var(--rux-productive-heading-05-font-weight, 400);
+  line-height: var(--rux-productive-heading-05-line-height, 1.25);
+  letter-spacing: var(--rux-productive-heading-05-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-06 {
+  font-size: var(--rux-productive-heading-06-font-size, 2.625rem);
+  font-weight: var(--rux-productive-heading-06-font-weight, 300);
+  line-height: var(--rux-productive-heading-06-line-height, 1.199);
+  letter-spacing: var(--rux-productive-heading-06-letter-spacing, 0);
+}
+
+.rux--type-productive-heading-07 {
+  font-size: var(--rux-productive-heading-07-font-size, 3.375rem);
+  font-weight: var(--rux-productive-heading-07-font-weight, 300);
+  line-height: var(--rux-productive-heading-07-line-height, 1.19);
+  letter-spacing: var(--rux-productive-heading-07-letter-spacing, 0);
+}
+
+.rux--type-expressive-paragraph-01 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.334;
+  letter-spacing: 0;
+  font-size: calc(1.5rem + 0.25 * (100vw - 20rem) / 46);
+}
+@media (min-width: 66rem) {
+  .rux--type-expressive-paragraph-01 {
+    font-size: 1.75rem;
+    line-height: 1.28572;
+    font-size: calc(1.75rem + 0.25 * (100vw - 66rem) / 33);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-expressive-paragraph-01 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-expressive-heading-01 {
+  font-size: var(--rux-expressive-heading-01-font-size, 0.875rem);
+  font-weight: var(--rux-expressive-heading-01-font-weight, 600);
+  line-height: var(--rux-expressive-heading-01-line-height, 1.42857);
+  letter-spacing: var(--rux-expressive-heading-01-letter-spacing, 0.16px);
+}
+
+.rux--type-expressive-heading-02 {
+  font-size: var(--rux-expressive-heading-02-font-size, 1rem);
+  font-weight: var(--rux-expressive-heading-02-font-weight, 600);
+  line-height: var(--rux-expressive-heading-02-line-height, 1.5);
+  letter-spacing: var(--rux-expressive-heading-02-letter-spacing, 0);
+}
+
+.rux--type-expressive-heading-03 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-size: calc(1.25rem + 0 * (100vw - 20rem) / 62);
+}
+@media (min-width: 82rem) {
+  .rux--type-expressive-heading-03 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-size: calc(1.25rem + 0.25 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-expressive-heading-03 {
+    font-size: 1.5rem;
+    line-height: 1.334;
+    font-size: 1.5rem;
+  }
+}
+
+.rux--type-expressive-heading-04 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.28572;
+  letter-spacing: 0;
+  font-size: calc(1.75rem + 0.25 * (100vw - 20rem) / 62);
+}
+@media (min-width: 82rem) {
+  .rux--type-expressive-heading-04 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 400;
+    font-size: calc(2rem + 0 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-expressive-heading-04 {
+    font-size: 2rem;
+    font-weight: 400;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-expressive-heading-05 {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-expressive-heading-05 {
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-expressive-heading-05 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-expressive-heading-05 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-expressive-heading-05 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-expressive-heading-06 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-expressive-heading-06 {
+    font-size: 2.25rem;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-expressive-heading-06 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-expressive-heading-06 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-expressive-heading-06 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-quotation-01 {
+  font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  font-size: calc(1.25rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-quotation-01 {
+    font-size: 1.25rem;
+    font-size: calc(1.25rem + 0.25 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-quotation-01 {
+    font-size: 1.5rem;
+    line-height: 1.334;
+    font-size: calc(1.5rem + 0.25 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-quotation-01 {
+    font-size: 1.75rem;
+    line-height: 1.28572;
+    font-size: calc(1.75rem + 0.25 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-quotation-01 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-quotation-02 {
+  font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-quotation-02 {
+    font-size: 2.25rem;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-quotation-02 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-quotation-02 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-quotation-02 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-display-01 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-display-01 {
+    font-size: 2.625rem;
+    font-size: calc(2.625rem + 0.75 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-display-01 {
+    font-size: 3.375rem;
+    font-size: calc(3.375rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-display-01 {
+    font-size: 3.75rem;
+    line-height: 1.17;
+    font-size: calc(3.75rem + 1 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-display-01 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    font-size: 4.75rem;
+  }
+}
+
+.rux--type-display-02 {
+  font-size: 2.625rem;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-display-02 {
+    font-size: 2.625rem;
+    font-size: calc(2.625rem + 0.75 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-display-02 {
+    font-size: 3.375rem;
+    font-size: calc(3.375rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-display-02 {
+    font-size: 3.75rem;
+    line-height: 1.16;
+    font-size: calc(3.75rem + 1 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-display-02 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    font-size: 4.75rem;
+  }
+}
+
+.rux--type-display-03 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0.75 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-display-03 {
+    font-size: 3.375rem;
+    line-height: 1.18;
+    font-size: calc(3.375rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-display-03 {
+    font-size: 3.75rem;
+    line-height: 1.16;
+    letter-spacing: -0.64px;
+    font-size: calc(3.75rem + 1 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-display-03 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    letter-spacing: -0.64px;
+    font-size: calc(4.75rem + 0.5 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-display-03 {
+    font-size: 5.25rem;
+    line-height: 1.11;
+    letter-spacing: -0.96px;
+    font-size: 5.25rem;
+  }
+}
+
+.rux--type-display-04 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 1.625 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-display-04 {
+    font-size: 4.25rem;
+    line-height: 1.15;
+    font-size: calc(4.25rem + 1.5 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-display-04 {
+    font-size: 5.75rem;
+    line-height: 1.11;
+    letter-spacing: -0.64px;
+    font-size: calc(5.75rem + 1.875 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-display-04 {
+    font-size: 7.625rem;
+    line-height: 1.07;
+    letter-spacing: -0.64px;
+    font-size: calc(7.625rem + 2.125 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-display-04 {
+    font-size: 9.75rem;
+    line-height: 1.05;
+    letter-spacing: -0.96px;
+    font-size: 9.75rem;
+  }
+}
+
+.rux--type-legal-01 {
+  font-size: var(--rux-legal-01-font-size, 0.75rem);
+  font-weight: var(--rux-legal-01-font-weight, 400);
+  line-height: var(--rux-legal-01-line-height, 1.33333);
+  letter-spacing: var(--rux-legal-01-letter-spacing, 0.32px);
+}
+
+.rux--type-legal-02 {
+  font-size: var(--rux-legal-02-font-size, 0.875rem);
+  font-weight: var(--rux-legal-02-font-weight, 400);
+  line-height: var(--rux-legal-02-line-height, 1.28572);
+  letter-spacing: var(--rux-legal-02-letter-spacing, 0.16px);
+}
+
+.rux--type-body-compact-01 {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--type-body-compact-02 {
+  font-size: var(--rux-body-compact-02-font-size, 1rem);
+  font-weight: var(--rux-body-compact-02-font-weight, 400);
+  line-height: var(--rux-body-compact-02-line-height, 1.375);
+  letter-spacing: var(--rux-body-compact-02-letter-spacing, 0);
+}
+
+.rux--type-heading-compact-01 {
+  font-size: var(--rux-heading-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-heading-compact-01-font-weight, 600);
+  line-height: var(--rux-heading-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--type-heading-compact-02 {
+  font-size: var(--rux-heading-compact-02-font-size, 1rem);
+  font-weight: var(--rux-heading-compact-02-font-weight, 600);
+  line-height: var(--rux-heading-compact-02-line-height, 1.375);
+  letter-spacing: var(--rux-heading-compact-02-letter-spacing, 0);
+}
+
+.rux--type-body-01 {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+}
+
+.rux--type-body-02 {
+  font-size: var(--rux-body-02-font-size, 1rem);
+  font-weight: var(--rux-body-02-font-weight, 400);
+  line-height: var(--rux-body-02-line-height, 1.5);
+  letter-spacing: var(--rux-body-02-letter-spacing, 0);
+}
+
+.rux--type-heading-03 {
+  font-size: var(--rux-heading-03-font-size, 1.25rem);
+  font-weight: var(--rux-heading-03-font-weight, 400);
+  line-height: var(--rux-heading-03-line-height, 1.4);
+  letter-spacing: var(--rux-heading-03-letter-spacing, 0);
+}
+
+.rux--type-heading-04 {
+  font-size: var(--rux-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-heading-04-font-weight, 400);
+  line-height: var(--rux-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-04-letter-spacing, 0);
+}
+
+.rux--type-heading-05 {
+  font-size: var(--rux-heading-05-font-size, 2rem);
+  font-weight: var(--rux-heading-05-font-weight, 400);
+  line-height: var(--rux-heading-05-line-height, 1.25);
+  letter-spacing: var(--rux-heading-05-letter-spacing, 0);
+}
+
+.rux--type-heading-06 {
+  font-size: var(--rux-heading-06-font-size, 2.625rem);
+  font-weight: var(--rux-heading-06-font-weight, 300);
+  line-height: var(--rux-heading-06-line-height, 1.199);
+  letter-spacing: var(--rux-heading-06-letter-spacing, 0);
+}
+
+.rux--type-heading-07 {
+  font-size: var(--rux-heading-07-font-size, 3.375rem);
+  font-weight: var(--rux-heading-07-font-weight, 300);
+  line-height: var(--rux-heading-07-line-height, 1.19);
+  letter-spacing: var(--rux-heading-07-letter-spacing, 0);
+}
+
+.rux--type-fluid-heading-03 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-size: calc(1.25rem + 0 * (100vw - 20rem) / 62);
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-heading-03 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-size: calc(1.25rem + 0.25 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-heading-03 {
+    font-size: 1.5rem;
+    line-height: 1.334;
+    font-size: 1.5rem;
+  }
+}
+
+.rux--type-fluid-heading-04 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.28572;
+  letter-spacing: 0;
+  font-size: calc(1.75rem + 0.25 * (100vw - 20rem) / 62);
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-heading-04 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 400;
+    font-size: calc(2rem + 0 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-heading-04 {
+    font-size: 2rem;
+    font-weight: 400;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-fluid-heading-05 {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-heading-05 {
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-heading-05 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-heading-05 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-heading-05 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-fluid-heading-06 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-heading-06 {
+    font-size: 2.25rem;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-heading-06 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-heading-06 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-heading-06 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-fluid-paragraph-01 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.334;
+  letter-spacing: 0;
+  font-size: calc(1.5rem + 0.25 * (100vw - 20rem) / 46);
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-paragraph-01 {
+    font-size: 1.75rem;
+    line-height: 1.28572;
+    font-size: calc(1.75rem + 0.25 * (100vw - 66rem) / 33);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-paragraph-01 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-fluid-quotation-01 {
+  font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  font-size: calc(1.25rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-quotation-01 {
+    font-size: 1.25rem;
+    font-size: calc(1.25rem + 0.25 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-quotation-01 {
+    font-size: 1.5rem;
+    line-height: 1.334;
+    font-size: calc(1.5rem + 0.25 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-quotation-01 {
+    font-size: 1.75rem;
+    line-height: 1.28572;
+    font-size: calc(1.75rem + 0.25 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-quotation-01 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-size: 2rem;
+  }
+}
+
+.rux--type-fluid-quotation-02 {
+  font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-quotation-02 {
+    font-size: 2.25rem;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-quotation-02 {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-quotation-02 {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-quotation-02 {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--type-fluid-display-01 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-display-01 {
+    font-size: 2.625rem;
+    font-size: calc(2.625rem + 0.75 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-display-01 {
+    font-size: 3.375rem;
+    font-size: calc(3.375rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-display-01 {
+    font-size: 3.75rem;
+    line-height: 1.17;
+    font-size: calc(3.75rem + 1 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-display-01 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    font-size: 4.75rem;
+  }
+}
+
+.rux--type-fluid-display-02 {
+  font-size: 2.625rem;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-display-02 {
+    font-size: 2.625rem;
+    font-size: calc(2.625rem + 0.75 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-display-02 {
+    font-size: 3.375rem;
+    font-size: calc(3.375rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-display-02 {
+    font-size: 3.75rem;
+    line-height: 1.16;
+    font-size: calc(3.75rem + 1 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-display-02 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    font-size: 4.75rem;
+  }
+}
+
+.rux--type-fluid-display-03 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 0.75 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-display-03 {
+    font-size: 3.375rem;
+    line-height: 1.18;
+    font-size: calc(3.375rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-display-03 {
+    font-size: 3.75rem;
+    line-height: 1.16;
+    letter-spacing: -0.64px;
+    font-size: calc(3.75rem + 1 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-display-03 {
+    font-size: 4.75rem;
+    line-height: 1.13;
+    letter-spacing: -0.64px;
+    font-size: calc(4.75rem + 0.5 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-display-03 {
+    font-size: 5.25rem;
+    line-height: 1.11;
+    letter-spacing: -0.96px;
+    font-size: 5.25rem;
+  }
+}
+
+.rux--type-fluid-display-04 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.19;
+  letter-spacing: 0;
+  font-size: calc(2.625rem + 1.625 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--type-fluid-display-04 {
+    font-size: 4.25rem;
+    line-height: 1.15;
+    font-size: calc(4.25rem + 1.5 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--type-fluid-display-04 {
+    font-size: 5.75rem;
+    line-height: 1.11;
+    letter-spacing: -0.64px;
+    font-size: calc(5.75rem + 1.875 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--type-fluid-display-04 {
+    font-size: 7.625rem;
+    line-height: 1.07;
+    letter-spacing: -0.64px;
+    font-size: calc(7.625rem + 2.125 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--type-fluid-display-04 {
+    font-size: 9.75rem;
+    line-height: 1.05;
+    letter-spacing: -0.96px;
+    font-size: 9.75rem;
+  }
+}
+
 :root {
   --rux-ai-aura-end: rgba(255, 255, 255, 0);
   --rux-ai-aura-hover-background: #edf5ff;

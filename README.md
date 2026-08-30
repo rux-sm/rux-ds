@@ -96,7 +96,7 @@ reports the other five and which pages each has been run against.
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
 | Icons | 59, a 16.1 KB sprite |
-| Size | 608 KB raw · 548 KB min · **56.3 KB gzipped** |
+| Size | 636 KB raw · 571 KB min · **58.0 KB gzipped** |
 | Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.

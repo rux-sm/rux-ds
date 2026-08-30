@@ -7,7 +7,7 @@ description: Build a page out of rux-ds — a new template, a consumer page, or 
 
 `sink/*.html` says what a component **is**. This is how to put them together.
 
-**`docs/composing-pages.md` is the full procedure** — nine traps, each citing
+**`docs/composing-pages.md` is the full procedure** — ten traps, each citing
 where the failure is recorded. This skill is the ordered version for doing the
 work; go to the document for why any line here is true.
 
@@ -64,9 +64,12 @@ These are the ones to check *while writing*, because none of them looks broken.
    through `-7`, usually `-6`. **No gate catches this**; `portal.html` shipped
    with none and passed all seventeen.
 
-Five more — specimens that are not operable, `aria-hidden` over focusable
-children, an overflow menu covering its trigger, and the missing responsive
-metric-row idiom — are in `docs/composing-pages.md` §3.
+Six more are in `docs/composing-pages.md` §3: specimens that are not operable,
+`aria-hidden` over focusable children, an overflow menu covering its trigger,
+the missing responsive metric-row idiom, and **the type utility classes** —
+`rux--type-*`, 73 of them, which is how a `<legend>` group name is lifted above
+the field label beside it. Keep the `<legend>`; an `<h2>` loses the fieldset's
+accessible grouping.
 
 ## 4. What must not be invented
 

@@ -125,6 +125,22 @@
 @include reset.reset;
 @include type.default-type;
 
+// TYPE UTILITY CLASSES. `default-type` styles the ELEMENTS -- h1..h6, p, code --
+// and emits no `.rux--type-*` at all. Those are a separate mixin that Carbon
+// forwards and never calls, so `@use ".../type"` above gave the tokens and the
+// mixins and none of the classes. Zero were in the built CSS.
+//
+// WHAT THAT COST, found by the §4.6 exam rather than by a gate. A settings page
+// with three `fieldset` groups rendered every `legend` at 12px/400/#525252 --
+// byte-identical to the field label beside it, so a group name read as a label
+// for the one field under it. There was no Carbon class that could lift it, and
+// the honest options were inventing one or dropping the fieldset's accessible
+// grouping. Carbon has the answer and this manifest was not asking for it.
+//
+// NOT A NEW RULE AND NOT AN EDIT: `type-classes` is Carbon's own mixin, called
+// from the manifest, which is exactly the §1.1 customisation surface.
+@include type.type-classes;
+
 // Themes — all four in the baseline; Phase 3 cuts to two.
 // Phase 3 pass 3, 2026-08-28 — four themes to two.
 //
