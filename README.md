@@ -193,7 +193,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Fifteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Seventeen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -249,10 +249,10 @@ figure is 488, not 485. They are NOT worth hardcoding into the markup to collect
 duplicates state a module derives from the checkbox, the sort button and the nav, and the
 copy goes stale the moment the real state moves. **0 stripped, 3 added on 2026-08-28.**
 
-The first ten run in `npm run verify`; the last five need a browser. `check-tags` was promoted from a
+Twelve run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
-its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js` and `check-spacing.js` need a browser** — paste any into the
+its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
 **0 findings, 6 notes** on the sink; the notes are CSS specimens with no trigger, which
 are not meant to be operable — four menu densities, the overflow menu's options and the
