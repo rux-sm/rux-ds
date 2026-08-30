@@ -1337,7 +1337,7 @@ alone, without inventing a class.
 > templates held the answer and were not consulted. Worth knowing that the failure mode
 > is not only a missing template — it is also a present one going unread.
 >
-> **THAT ADJUDICATION IS WRONG, and the fifth exit attempt overturned it on
+> **THAT ADJUDICATION IS WRONG, and the sixth exit attempt overturned it on
 > 2026-08-29.** `rux--fieldset` was the CORRECT class and calling it an avoidable reach
 > mislabelled a right answer as a mistake. Verified three ways: it is Carbon's own
 > FormGroup class from `components/form/_form.scss`, compiled here with 4 rules; it
@@ -1457,6 +1457,77 @@ alone, without inventing a class.
 > a metric-row. **A third reading is now on the table: whether the frame TEACHES what the
 > templates teach.** By that reading all four attempts failed until 2026-08-29, and the
 > criterion is about `app-shell.html` rather than about any sample page.
+
+> **Fifth attempt, 2026-08-29 — MET, and its finding was an ABSENCE.** A settings page:
+> three `fieldset` groups, toggles, a read-only value, a danger modal. 82 classes, 0
+> undefined. The modal markup matched `sink/modal.html` exactly, including the
+> `role="presentation"` / `role="dialog"` split corrected the same day.
+>
+> **It could not give a group a heading, and was right that it could not.** All three
+> `<legend>` names measured `12px / 400 / rgb(82,82,82)` — byte-identical to the field
+> label beside them, so a group name read as a label for the one field under it. Cause:
+> Carbon forwards a `type-classes` mixin the manifest never called, so `.rux--type-*` did
+> not exist at all. The agent refused both escapes available — inventing a class, or
+> swapping the legend for an `<h2>` and losing the fieldset's accessible grouping — and
+> said so. **No gate could have caught this**: there is no gate for a class that was
+> never written.
+>
+> Fixed the same day at `4beac65`: `@include type.type-classes`, 73 classes, **+0.9 KB
+> gzipped measured**.
+
+> **Sixth attempt, 2026-08-29 — MET, and it is the A/B for the fix above.** The same
+> prompt, a different fresh agent, one variable changed. It found
+> `rux--type-heading-compact-01` on its own through `docs/composing-pages.md` §3.9 and
+> applied it: legends `14px / 600` against the label's `12px / 400`. **The fix landed in
+> practice, not only in the stylesheet** — which is the only thing an A/B can tell you
+> and reasoning cannot.
+>
+> **It also overturned a recorded adjudication**, and that correction is above at the
+> second attempt's entry: `rux--fieldset` is Carbon's own FormGroup class in 9 captures,
+> and the `checkbox-group` that entry recommended instead carries a rule that hides
+> helper text. The reach was right; only the route to it was wrong.
+>
+> **Both attempts independently reported the same structural gap** — that no Node gate
+> read a page at the repository root, so `npm run verify` exited 0 having read nothing.
+> The sixth re-implemented four gates in scratch to get any answer at all. Fixed at
+> `9186429` and `b6c55c7`.
+
+> **Seventh attempt, 2026-08-29 — MET, and the highest-yield of the three.** A four-step
+> wizard, a shape no template covers. 83 classes, 0 undefined; `check-a11y` 0 findings
+> with its red run done; the sprite spliced and drift-free.
+>
+> **It hit a DEFER whose stated reason had expired.** `progress-indicator` was deferred
+> as "multi-step wizard; no target shape has one", and this was that shape. The agent
+> correctly did not restore it — CLAUDE.md says ask — and hand-composed a substitute from
+> an ordered list and `rux--tag` instead. **Both traps at `composing-pages.md` §3.10 and
+> §3.11 are consequences of that substitute**, and IBM's own guidance says it was the
+> wrong component: tags are for "categorizing, labeling, or read-only situations", while
+> progress-indicator's anatomy names a status indicator for exactly completed / current /
+> not started. Admitted at `2930323`, +0.9 KB gzipped, with `sink/progress-indicator.html`
+> as the 35th fragment at 100% coverage.
+>
+> **Three of its findings were fixed and one of its claims was wrong.** Fixed: the gate
+> roots, `npm run icons` skipping root pages, and the grid-row gap. Wrong: its source
+> comment recorded that no compiled class adds a row gap to `.rux--css-grid`.
+> `.rux--css-grid--with-row-gap` exists, sets `row-gap: var(--rux-grid-gutter)`, and
+> Carbon attests it in `elements-grid--with-row-gap`. The absence was not real.
+
+> **All three pages are ARCHIVED and deleted, 2026-08-29, on the same reasoning as
+> `dashboard.html`.** `~/Developer/_archive/rux-ds-exit-attempts/` holds them with a note
+> each; the two settings pages are kept as a pair because they are the A/B. Their findings
+> are extracted and fixed, these entries are the record, and a repository that sweeps
+> every page does not keep pages nobody sweeps.
+>
+> **The seventh's page was edited by the author before archiving** — the step list in it
+> is the real `progress-indicator`, put in by hand — so it is a hybrid and no longer a
+> clean sample of what a fresh reader produces. Stated because the archive is otherwise
+> easy to mistake for untouched evidence.
+>
+> **A WIZARD TEMPLATE DOES NOT EXIST AND THAT PAGE IS NOT ONE.** It carries no
+> `BEHAVIOUR:` label, was never verified against a running Carbon page, and
+> `check-provenance` never saw it. Authoring a seventh template is open work, in README's
+> decision table — written with the discipline the six have, reusing the shape rather than
+> promoting the file.
 
 **DECIDED 2026-08-28 — the kitchen sink does not use the UI shell as its own page
 chrome.** Asked directly, and recorded because the opposite is the intuitive answer:

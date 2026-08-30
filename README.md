@@ -51,8 +51,11 @@ in an editor session or a machine-local note.
 is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
-`templates/` can be built from them without inventing a class. Three attempts
-are on record at roadmap §4.6, the third by a fresh agent; the phase stays open
+`templates/` can be built from them without inventing a class. **Seven attempts
+are on record** at roadmap §4.6 — the last three all by fresh agents in clean
+worktrees, all MET, and between them they found the missing type scale, a DEFER
+whose reason had expired, and two gates that read no page at the repository
+root. The phase stays open
 until the criterion's reading is decided — the templates alone, or the repo's
 captures with them. Every gate that reads
 markup per file reads `templates/` too, and each template declares what its BEHAVIOUR
@@ -80,7 +83,34 @@ was verified against.
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules, the 15th gate. There is no `tests/` directory at all | roadmap §4.8 |
 | `build-portal`'s icon assertion is a real check outside the registry — fifteenth gate or not | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
-| Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates | roadmap §4.6 |
+| Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
+| **A SEVENTH TEMPLATE — `wizard-page.html`.** The §4.6 seventh attempt showed a multi-step flow is a real shape no template covers, and that building one takes 580 lines and three wrong turns. Its page is archived, not promoted: authoring a template means a `BEHAVIOUR:` label verified against a RUNNING Carbon page, `npm run icons` coverage, ledger cells, and source comments carrying their own reasoning — none of which that page has. **Plan below** | roadmap §4.6 |
+
+### The wizard template, if it is wanted
+
+Not started. Recorded so it is a plan rather than a memory, and so the next person
+does not re-derive the shape the seventh exit attempt already paid for.
+
+1. **Copy `form-page.html`**, which is what the attempt did and what §1 of
+   `docs/composing-pages.md` says. Not the archived page.
+2. **The shape it proved out**, all of it measured rather than guessed: a
+   `lg:col-span-4` step column beside a `lg:col-span-8` panel, `css-grid--with-row-gap`
+   so the two do not sit flush once they stack, a vertical `progress-indicator`, a
+   read-only summary of the previous step, one field in its invalid state, and Back /
+   Continue as a `btn-set` with Cancel OUTSIDE it — three buttons in one set overflow a
+   512px panel by 76px, invisibly, because empty grid to the right means no scrollbar.
+3. **Verify against a RUNNING Carbon page**, per `docs/verifying-templates.md`. Not from
+   `css/rux.css`; four wrong shell answers in one sitting came from reading it.
+4. **Write the `BEHAVIOUR:` label** naming the page as a URL, the date, and what was NOT
+   covered. `check-provenance` fails without it.
+5. **`npm run icons`**, then sweep the three browser gates and record the new cells —
+   `npm run gates` will show them as never-run, which fails the build until they exist.
+6. **Two open questions it should settle**, both currently unanswered anywhere: where a
+   modal belongs in a page (no template carries one), and whether a step column should
+   collapse to horizontal or stay vertical below `lg`.
+
+**Cost is the honest part: this is a day's work, not an afternoon.** The attempt took 580
+lines and three corrections, and a template carries more discipline than a sample page.
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`

@@ -136,7 +136,7 @@ flush. A stack *inside* a column has no say in the gap *between* rows.
 ```
 
 `row-gap: var(--rux-grid-gutter)`, attested in Carbon's `elements-grid--with-row-gap`
-story. Measured on the §4.6 sixth attempt's page: **0px before, 32px after**,
+story. Measured on the §4.6 seventh attempt's page: **0px before, 32px after**,
 with the side-by-side layout unchanged at `lg`.
 
 > **That page first recorded that no such class existed** — its source comment
@@ -145,7 +145,7 @@ with the side-by-side layout unchanged at `lg`.
 > two-grid split still stands on its own merit, because those rows want
 > different spacing from the gutter, but it was not forced.
 
-*Recorded: roadmap §4.6, fourth exit attempt; the grid-row half, sixth.*
+*Recorded: roadmap §4.6, fourth exit attempt; the grid-row half, seventh.*
 
 ### 3.6 Sink specimens are deliberately not operable
 
@@ -227,7 +227,7 @@ it cannot squeeze anything, and an ordered list's numbers are a `::before`
 counter rather than a list marker, so they survive `display: grid`. 4px between
 rows.
 
-*Found by looking, on the §4.6 sixth exit attempt — every gate green throughout,
+*Found by looking, on the §4.6 seventh exit attempt — every gate green throughout,
 including through the regression.*
 
 ### 3.11 An ordered list's numbers render outside its own box
