@@ -21,7 +21,7 @@
 // would be red on purpose. README calls restoring one a three-line operation,
 // and re-gating it is the fourth.
 //
-import { readdirSync, existsSync } from 'node:fs';
+import { readdirSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const ROOTS = ['sink', 'templates'];
@@ -54,6 +54,30 @@ export function pageFiles(extra = []) {
     .filter(f => f.endsWith('.html'))
     .sort();
   return [...extra, ...rootPages, 'templates'];
+}
+
+// ---------------------------------------------------------------------------
+// Root pages that carry their own icon sprite, for `npm run icons` to refresh
+// and for check-icons to check for drift.
+//
+// A PAGE OPTS IN BY CARRYING THE MARKERS, and that is not a convenience — it is
+// what keeps the GENERATED pages out. kitchen-sink.html and portal.html have no
+// SPRITE:BEGIN block at all: build-sink and build-portal inline assets/icons.svg
+// directly as they assemble, so those pages cannot drift and nothing else may
+// write to them. A hand-authored consumer page is the opposite case — copied
+// rather than assembled, so it carries a frozen copy that goes stale silently.
+//
+// THAT SILENCE IS THE WHOLE POINT. `npm run icons` rewrote templates/*.html and
+// nothing else, so dashboard.html's sprite was frozen at the day it was written
+// and §4.6's fifth exit attempt had to splice one by hand. A page with an
+// out-of-date sprite is fully styled and simply missing icons, in whichever
+// engines the stale symbols happen not to cover.
+export function spritePages() {
+  return readdirSync('.')
+    .filter(f => f.endsWith('.html'))
+    .sort()
+    .filter(f => readFileSync(f, 'utf8').includes('<!-- SPRITE:BEGIN'))
+    .map(f => ({ name: f.replace(/\.html$/, ''), path: f, root: '.' }));
 }
 
 // [{ name, path, root }] — sorted, sink first, so output order is stable.

@@ -71,7 +71,7 @@
 //
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, normalize } from 'node:path';
-import { markupFiles } from './lib/sources.mjs';
+import { markupFiles, spritePages } from './lib/sources.mjs';
 
 const SINK = 'sink';
 const DEFERRED = join(SINK, 'deferred');
@@ -124,7 +124,17 @@ for (const name of symbols) if (!listed.includes(name)) {
 }
 
 // ── every <use> in a fragment or a template ────────────────────────────────
-const sources = markupFiles();
+// ROOT PAGES THAT CARRY A SPRITE ARE SOURCES TOO. `npm run icons` now refreshes
+// them, so this is what says whether one has drifted from assets/icons.svg since
+// — the other half of the same gap. They take the non-sink path below, which is
+// correct: a consumer page is copied rather than assembled, so it must carry its
+// own symbols exactly as a template does.
+//
+// Selected by their markers, so the GENERATED pages stay out. kitchen-sink.html
+// and portal.html have no block and would otherwise earn a NO SPRITE fault for
+// doing the right thing — build-sink and build-portal inline the sprite as they
+// assemble, and a page with no block is a page that wants none.
+const sources = [...markupFiles(), ...spritePages()];
 const used = new Set();
 
 // A template defines its own symbols; a fragment borrows the sink's, which
@@ -211,9 +221,11 @@ for (const [tag, where, why] of faults) {
 }
 
 const frags = sources.filter(f => f.root === 'sink').length;
-const tpls = sources.length - frags;
+const pages = sources.filter(f => f.root === '.').length;
+const tpls = sources.length - frags - pages;
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
-console.log(`\n  ${shipped} <use> in ${plural(frags, 'fragment')}` + ` and ${plural(tpls, 'template')}` +
+console.log(`\n  ${shipped} <use> in ${plural(frags, 'fragment')}` + `, ${plural(tpls, 'template')}` +
+  (pages ? ` and ${plural(pages, 'page')}` : '') +
   ` · ${symbols.length} symbols · ${used.size} used` +
   ` · ${faults.length} ${faults.length === 1 ? 'fault' : 'faults'}`);
 if (unused.length) {

@@ -12,6 +12,7 @@
 // normalises it. Add an icon by adding its name below and re-running.
 //
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { spritePages } from './lib/sources.mjs';
 
 const SRC = 'node_modules/@carbon/icons/svg';
 const SIZES = ['16', '20', '32', ''];   // preference order; '' is the unsized root
@@ -73,9 +74,21 @@ console.log(`  assets/icons.svg — ${symbols.length} icons, ${(sprite.length / 
 // here is what keeps `npm run icons` the only command anyone has to remember.
 const BEGIN = /<!-- SPRITE:BEGIN[\s\S]*?-->\n/;
 const END = '<!-- SPRITE:END -->';
+// ROOT PAGES TOO, and they are the case this loop used to miss. It read
+// templates/ and nothing else, so a consumer page at the root -- exactly the
+// artefact Phase 6 exists to make possible -- carried a sprite frozen at the day
+// someone spliced it by hand. dashboard.html shipped that way and §4.6's fifth
+// exit attempt had to splice its own. `spritePages()` finds them by their
+// markers, which keeps the GENERATED pages out: kitchen-sink.html and
+// portal.html have no block, because build-sink and build-portal inline the
+// sprite as they assemble and must stay the only writers.
 let refreshed = 0;
-for (const f of (existsSync('templates') ? readdirSync('templates') : []).filter(f => f.endsWith('.html'))) {
-  const path = `templates/${f}`;
+const targets = [
+  ...(existsSync('templates') ? readdirSync('templates') : [])
+    .filter(f => f.endsWith('.html')).sort().map(f => `templates/${f}`),
+  ...spritePages().map(p => p.path),
+];
+for (const path of targets) {
   const html = readFileSync(path, 'utf8');
   const open_ = html.match(BEGIN);
   const close = html.indexOf(END);
@@ -84,5 +97,5 @@ for (const f of (existsSync('templates') ? readdirSync('templates') : []).filter
   const next = head + sprite.trim() + '\n' + html.slice(close);
   if (next !== html) { writeFileSync(path, next); refreshed++; }
 }
-console.log(`  templates refreshed: ${refreshed}`);
+console.log(`  pages refreshed: ${refreshed} of ${targets.length}`);
 console.log(`  sourced from: ${Object.entries(from).map(([k, v]) => `${k}px:${v}`).join('  ')}`);
