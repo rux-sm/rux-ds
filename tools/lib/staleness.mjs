@@ -19,6 +19,33 @@
 // /tmp comparison of `npm run gates` before and after the extraction was
 // byte-identical.
 //
+// DIRTY IS A FACT ABOUT ONE WORKING TREE, and the second reader cannot use it.
+// check-gates is run by a person against the tree in front of them, where
+// "you have modified an input since this reading" is the whole point. portal.html
+// is COMMITTED, and a committed file may not record a state no clone can
+// reproduce. It did, and here is the shape of it: css/rux.css was still
+// uncommitted when 4beac65 built its portal.html, so 26 cells were written as
+// `dirty · uncommitted: css/rux.css`; the same commit then landed that file, and
+// every clone regenerating the page got `stale · css/rux.css changed since`.
+// A 52-line diff on a clean checkout, and CI's "committed build output is up to
+// date" step red on a tree nobody had touched.
+//
+// Regenerating alone would not have fixed it. The flip is STRUCTURAL: any commit
+// that touches a gate input is, at the moment `verify` builds the page, a tree
+// where that input is uncommitted — so DIRTY is baked, and landing the commit
+// turns it STALE. The artefact could never agree with itself.
+//
+// So `cellStates({ workingTree: false })` folds an uncommitted modification into
+// the same bucket as a committed one: both mean the recorded reading is no
+// longer current, and the caller that cannot see a working tree is told the
+// thing that will still be true after the commit lands. The wording is STALE's,
+// unchanged, and the filter runs over `gate.inputs` in registry order in both
+// modes, so the string is byte-identical either side of the commit boundary —
+// which is the property that makes the page idempotent.
+//
+// It reports one state fewer, not a different rule. Nothing calls this with
+// `workingTree: false` except the generator of a committed file.
+//
 import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { GATES, cells } from './gates.mjs';
@@ -39,7 +66,10 @@ function movedSince(since, path) {
 
 // [{ id, page, state, why }] for every cell the registry says a sweep must fill.
 // state is one of: 'ok' | 'STALE' | 'DIRTY' | 'NEVER RUN' | 'NO COMMIT'.
-export function cellStates() {
+//
+// `workingTree: false` drops DIRTY from that set — see the note above. Pass it
+// when the result is going into a file that gets committed.
+export function cellStates({ workingTree = true } = {}) {
   const ledger = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, 'utf8')) : {};
 
   // THE STATUS LETTERS ARE TWO COLUMNS AND THE FIRST MAY BE A SPACE, so this
@@ -74,6 +104,17 @@ export function cellStates() {
     }
 
     const moved = gate.inputs.filter(i => movedSince(recorded.commit, i));
+
+    // One filter over gate.inputs, so the joined list is in registry order in
+    // both modes and an input that is dirty today reads exactly as it will once
+    // committed.
+    if (!workingTree) {
+      const invalid = gate.inputs.filter(i => moved.includes(i) || isDirty(i));
+      if (invalid.length) rows.push({ id, page, state: 'STALE', why: `${invalid.join(', ')} changed since` });
+      else rows.push({ id, page, state: 'ok', why: recorded.date });
+      continue;
+    }
+
     const modified = gate.inputs.filter(isDirty);
 
     if (moved.length) rows.push({ id, page, state: 'STALE', why: `${moved.join(', ')} changed since` });

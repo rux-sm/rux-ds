@@ -96,13 +96,25 @@ const covPct = Math.round((covHit / covOwn) * 100);
 // the same tree — a status page contradicting the tool it reports on. A reading
 // whose inputs have moved since is not coverage; `js/` changing invalidates
 // every browser cell, which is how 22 of them went stale in one commit.
-const matrix = cellStates().map(r => {
+//
+// `workingTree: false` BECAUSE THIS PAGE IS COMMITTED. The state check-gates
+// calls DIRTY — an input modified but not yet committed — is true of one
+// person's tree and of no clone, and 4beac65 baked 26 of them into this file:
+// every checkout regenerating the page then produced a 52-line diff turning
+// `dirty` into `stale`, and CI's committed-output step failed on a tree nobody
+// had touched. Worse, it could not be fixed by regenerating, because `verify`
+// always builds this page from the tree where the commit's own changes are
+// still uncommitted — DIRTY in, STALE out, every time. So the portal asks for
+// the state that survives the commit; tools/lib/staleness.mjs holds the rule
+// and the reasoning. DIRTY is unreachable here, which is why it appears in
+// neither STATE_TAG nor the count below.
+const matrix = cellStates({ workingTree: false }).map(r => {
   const rec = ledger[r.id]?.[r.page];
   return { gate: r.id, page: r.page, state: r.state, why: r.why,
            current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
 const currentCells = matrix.filter(c => c.current).length;
-const staleCells = matrix.filter(c => c.state === 'STALE' || c.state === 'DIRTY').length;
+const staleCells = matrix.filter(c => c.state === 'STALE').length;
 const neverRun = matrix.filter(c => c.state === 'NEVER RUN').length;
 
 // ── icons, asserted ─────────────────────────────────────────────────────────
@@ -148,8 +160,7 @@ const gateRows = GATES.map(g =>
                 </tr>`).join('\n');
 
 const STATE_TAG = { 'ok': ['current', 'green'], 'STALE': ['stale', 'red'],
-  'DIRTY': ['dirty', 'magenta'], 'NEVER RUN': ['never run', 'red'],
-  'NO COMMIT': ['no commit', 'warm-gray'] };
+  'NEVER RUN': ['never run', 'red'], 'NO COMMIT': ['no commit', 'warm-gray'] };
 const matrixRows = matrix.map(c => {
   const [label, colour] = STATE_TAG[c.state] ?? [c.state, 'cool-gray'];
   return `                <tr>
