@@ -329,7 +329,13 @@
       <section class="rux--data-table-container">
         <div class="rux--data-table-header">
           <div>
-            <div class="rux--data-table-header__title">Documents</div>
+            <!-- h2, NOT div. Carbon renders this class both ways and the div is
+                 attested, but a template is a COMPLETE page: with the div this
+                 page had no h1-h6 at all, and heading navigation is how an AT
+                 user moves around one. empty-state.html already uses h2 for the
+                 same table title. Swept 2026-08-30; computed type is identical
+                 either way, so nothing moves visually. -->
+            <h2 class="rux--data-table-header__title">Documents</h2>
             <p class="rux--data-table-header__description">Everything shared with your team.</p>
           </div>
         </div>
