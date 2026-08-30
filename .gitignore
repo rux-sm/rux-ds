@@ -15,6 +15,12 @@ data/
 *.css.map
 m/
 
+# Brand working directory -- a Linearity Curve template, a preview harness and
+# a drop folder for iPad exports. Working material, not a deliverable: the
+# finished marks belong in assets/brand/ once they are drawn. Ignored rather
+# than left untracked because git add -A would otherwise sweep it in whole.
+.brand/
+
 # macOS
 .DS_Store
 
