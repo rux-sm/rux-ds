@@ -140,3 +140,53 @@ decide and nowhere to point.
 **The earlier version of this paragraph said five rows had nowhere to point yet.** That
 was true when written and is no longer. It is replaced rather than deleted, because a
 ledger that edits away its own history is worth less than one that shows the correction.
+
+### 2026-08-30 · `c1352a1` then `643a20e` · tab-order sweep, agent-run
+
+Two commits because the sweep ran in two halves: `kitchen-sink.html` at `c1352a1`,
+then the six templates at `643a20e`, after the first half's finding had been fixed.
+
+**Swept:** markup (all eight pages walked as RENDERED pages, not as files) · coverage
+(the tab order had never been walked end to end on any page — README said so)
+**Not swept:** build · distribution · output (`css/rux.css` never opened) · docs ·
+behaviour (`js/` read only to answer whether `ui-shell.js` selects the side nav by role
+or by class — it is by class)
+
+**Method, because it decides what the result means.** Real `Tab` key presses into the
+served page, a `focusin` listener recording every landing, and the cycle closed by
+detecting the return to stop 0. Tab order was then compared against DOM order with
+`compareDocumentPosition` per transition. 245 stops on the sink; 9 to 23 on each
+template.
+
+**What the sweep did NOT look at, and it is not a small list.** Default state only —
+no modal, menu or popover was opened, so focus TRAPPING is untouched and remains
+`check-behaviour`'s. Theme white only. The `Tab` key only: no reverse `Shift+Tab` pass,
+and no arrow-key navigation inside composites, so a roving tabindex was checked for how
+many stops it exposes and not for whether the arrows move the cursor. The
+document→browser-chrome→document boundary cannot be tested in this pane at all, because
+focus wraps 244→0 directly instead of passing through the URL bar.
+
+**And one thing it structurally cannot see, demonstrated the same day.** The sweep
+walked `templates/form-page.html` and reported it clean — 19 stops, skip link first, no
+divergence from DOM order — while a 0px gap sat between its `h1` and its form, the title
+resting on the first field. A tab sweep reads the ORDER of focus and says nothing about
+the SPACE between two elements that merely touch. That one was found by rux opening the
+page.
+
+| # | Finding | Status | Filed |
+|---|---|---|---|
+| 1 | `sink/ui-shell.html` carried `role="menu"` on the side nav `ul`; Carbon renders it bare and all six templates already did. An AT was told it entered a menu containing no menu items | **CLOSED 2026-08-30** — fixed `643a20e` | Blind spot filed: `docs/roadmap.md` §4.8 · README gate table, `check-a11y` row |
+| 2 | `templates/table-page.html` had no `h1`–`h6` anywhere; its only title was a `div` | **CLOSED 2026-08-30** — fixed `e62850f`, `8f3d932` | Blind spot filed: `docs/roadmap.md` §4.8 · README gate table, `check-a11y` row |
+| 3 | `templates/form-page.html` opened its form at the `h1`'s exact bottom edge, measured 0px | **CLOSED 2026-08-30** — fixed `d58b501` | Not filed as a blind spot: no gate claims to measure this, and `app-shell.html` already carried the note recording the same fault |
+
+**Findings 1 and 2 shipped on pages that passed all seventeen gates**, which is why each
+is filed in §4.8 as a blind spot rather than only as a fix. Their decisions — whether
+either becomes a rule — are open there, with the cost of writing each recorded beside it.
+
+**Finding 3 is not a gate gap and is deliberately not filed as one.** `app-shell.html`
+already carried the note naming this exact fault, in as many words, and `form-page.html`
+was the last template still carrying it. Nothing was missing except somebody looking.
+
+**Not a finding, on record already.** That `check-a11y` declines to judge whether a tab
+order makes SENSE is stated in its own header and in README's table; this sweep is the
+manual pass that header points at, not evidence of a gap.
