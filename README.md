@@ -67,6 +67,10 @@ was verified against.
 - Run VoiceOver or NVDA over `kitchen-sink.html`. This is the ANNOUNCEMENT pass and
   nothing here substitutes for it. Do it in a focused window: `check-a11y.js` still
   refuses its focus-ring check when `document.hasFocus()` is false.
+  **`docs/screen-reader-pass.md` is the procedure** — setup, the commands, what is
+  already done and must not be re-found, the six specimens and one false positive that
+  are not bugs, a section-by-section list of what each one declares, and four specific
+  predictions to check first.
 
   One reason this entry used to give is gone, 2026-08-28: real key events ARE
   delivered in an automated pane — a focused button receives a trusted `keydown` — and
