@@ -126,7 +126,26 @@ Carbon's computed signatures, and the gap between an `h2` and the section under
 it belongs to neither element. `portal.html` shipped exactly this and passed all
 seventeen gates.
 
-*Recorded: roadmap §4.6, fourth exit attempt.*
+**Between grid ROWS it is a different class, and `stack-vertical` cannot reach
+there.** `.rux--css-grid` sets no `row-gap`, so the moment two columns stop
+sitting side by side and stack — anything below the `lg` breakpoint — they are
+flush. A stack *inside* a column has no say in the gap *between* rows.
+
+```html
+<div class="rux--css-grid rux--css-grid--with-row-gap">
+```
+
+`row-gap: var(--rux-grid-gutter)`, attested in Carbon's `elements-grid--with-row-gap`
+story. Measured on the §4.6 sixth attempt's page: **0px before, 32px after**,
+with the side-by-side layout unchanged at `lg`.
+
+> **That page first recorded that no such class existed** — its source comment
+> named `subgrid--with-row-gap` as the only row-gap rule in the build and split
+> one grid into two to work around the absence. The absence was not real. The
+> two-grid split still stands on its own merit, because those rows want
+> different spacing from the gutter, but it was not forced.
+
+*Recorded: roadmap §4.6, fourth exit attempt; the grid-row half, sixth.*
 
 ### 3.6 Sink specimens are deliberately not operable
 
