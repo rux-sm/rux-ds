@@ -326,6 +326,29 @@
            it presumes the markup is in the order it claims. Both arrows stay in
            the DOM at all times — `table-sort__icon` for the sorted column and
            `table-sort__icon-unsorted` for the rest — and CSS reveals one. -->
+      <!-- THE PAGE'S OWN HEADING, and it is not the table's.
+           This page shipped with no h1-h6 at all until 2026-08-30: the only
+           title was the table's, and a template is a COMPLETE page, so the
+           page had nothing an AT user could navigate by. The other five
+           templates each open on an h1.
+
+           IT CANNOT BE THE TABLE TITLE PROMOTED. `data-table-header__title`
+           is rendered by Carbon on div and h2 only -- check-tags was run with
+           h1 on it and fails, "Carbon renders it on <div|h2>" -- so the page
+           heading has to be its own element outside the container. That is
+           empty-state.html's composition too: a bare heading above the
+           container, with the container keeping its own.
+
+           THE TWO HEADINGS MUST NOT CARRY THE SAME STRING. h1 names the page,
+           h2 names the table inside it; identical text would announce as
+           "Documents heading level 1, Documents heading level 2" and tell the
+           reader nothing about the nesting. Replace both.
+
+           THE STACK IS WHAT SPACES THEM. stack-vertical puts its gap BETWEEN
+           children, so the h1 and the container must be siblings inside it; an
+           h1 in a stack of its own gets no gap at all and sits on the table. -->
+      <div class="rux--stack-vertical rux--stack-scale-5">
+      <h1>Documents</h1>
       <section class="rux--data-table-container">
         <div class="rux--data-table-header">
           <div>
@@ -335,7 +358,7 @@
                  user moves around one. empty-state.html already uses h2 for the
                  same table title. Swept 2026-08-30; computed type is identical
                  either way, so nothing moves visually. -->
-            <h2 class="rux--data-table-header__title">Documents</h2>
+            <h2 class="rux--data-table-header__title">All documents</h2>
             <p class="rux--data-table-header__description">Everything shared with your team.</p>
           </div>
         </div>
@@ -468,8 +491,15 @@
           </table>
         </div>
       </section>
+      </div>
 
-      <!-- REPLACE: pagination. It is a SIBLING of the container, not inside it.
+      <!-- REPLACE: pagination. It sits OUTSIDE the container, never inside it.
+           It used to be the container's DOM sibling and this comment said so;
+           since 2026-08-30 the container is wrapped in the heading stack and
+           pagination is that stack's sibling instead. What matters is
+           unchanged -- it is not inside `data-table-container` -- and it stays
+           OUT of the stack deliberately: the stack puts a gap between its
+           children, and pagination is meant to sit flush against the table.
 
            THE BUTTONS ARE BUTTONS. Carbon renders each control as
            `pagination__button` AND `btn btn--ghost btn--icon-only`, and
