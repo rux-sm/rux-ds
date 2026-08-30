@@ -1,146 +1,146 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
-  "_triage": "check-spacing 2026-08-29, second sweep at c4509d2: 31 divergences across all eight pages, 0 defects. By cause -- 7 are each page's deliberate nav indent (content paddingInlineStart 288px vs Carbon 32px), which templates/app-shell.html explains in its own head; 3 are stack-scale-5 marginBlockStart, whose \"Carbon\" 32px comes from getting-started-welcome--welcome, i.e. Storybook’s OWN page styling and not a component, the fourth time a reference figure has turned out to be that; the remaining 21 are the sink families already adjudicated in the first sweep (grid column padding, modal-header__heading, links link--disabled, form-requirement, toast close button, data-table-container, table-header-label, popover btn, header__name). TWO WERE NEW THIS SWEEP AND BOTH RESOLVED TO SAMPLING, not to us: form-page's form-item.checkbox-wrapper reads marginBlockEnd 3px against Carbon 6px because 3px is our own :last-of-type rule -- Carbon’s, compiled -- measured against a capture of a checkbox that was not last; and table-page’s tag--blue reads display inline-flex against Carbon flex, where ours is the correct pill and the captured tag was a flex item in its story’s container.",
-  "_measured": "Re-swept 2026-08-29 at commit 6137782, the fourth sweep of the day and the one following the module campaign: all twelve js/ modules driven against a running Carbon and moved from derived to verified-live, which changed js/ and sink/ and staled every cell. ALL 26 CELLS RETURNED THE NUMBERS ALREADY ON RECORD -- spacing, runtime classes, rendered sections and a11y identical on all eight pages in both themes. The only figure that moved is check-behaviour, 18 cases to 37, because nineteen were added by that campaign; every one was red-run when written. Viewport 1440x900 throughout. check-a11y ran in BOTH themes on all eight pages, asserted each time from the resolved --rux-field-hover token (#e8e8e8 white / #333333 g100). check-spacing and check-runtime-classes ran in white only, sound because neither reads a colour; check-rendered does both themes itself. CHECK-BEHAVIOUR NOW RUNS ON ITS OWN LOAD, and that matters more than it used to. It dismisses tags, toggles tiles, steps a number input and opens the side nav, so running it before another gate on the same page would hand that gate a mutated DOM. It is taken last, after a fresh navigation. THE SIX CONDITIONS: focus verified per page via document.hasFocus() and, for check-a11y, via focusRingChecked. check-runtime-classes ran first on each untouched page. The pointer was parked and the hover chain recorded with every result -- on the sink it rested on the harness nav, on the templates on nothing. TWO RED RUNS on the sink, both fired: the checkbox focus-ring recipe gave exactly the 12 findings the sink-check skill records, and a singleton class removed from the live DOM was reported stripped and cleared on restore. NOT COVERED: nobody LOOKED this sweep. The white and g100 visual passes from earlier today stand; since then the visible changes are the invalid-icon glyph, the sort arrow and the number steppers gaining down-icon/up-icon, all three of which were looked at when they were made.",
+  "_triage": "check-spacing 2026-08-29, sweep at bb3bdb9 following the progress-indicator admission: 35 divergences across all eight pages, 0 defects. FOUR ARE NEW AND ALL ARE ONE THING — progress-indicator steps report minBlockSize 58px where the reference has none, because ours demos the VERTICAL variant and components-progressindicator--overview is horizontal. Carbon’s own rule sets .progress--vertical .progress-step { min-block-size: 3.625rem } = 58px, so the value is Carbon’s and the reference simply does not cover that variant. The other 31 are the previously adjudicated set: each page’s deliberate nav indent, col-span minBlockSize from elements-grid--overview, stack-scale marginBlockStart from Storybook’s own page styling, and tag inline-flex vs flex.",
+  "_measured": "Re-swept 2026-08-29 at bb3bdb9, the sweep following progress-indicator’s admission and the type-class emission. All 26 cells. check-a11y saw its red run on kitchen-sink — stripping every outline and box-shadow gave 141 findings, restoring gave 1 — so the green is earned rather than assumed. The six conditions were followed in order: check-runtime-classes first on an untouched load, document focus confirmed true on every page, pointer parked off content, and the theme asserted from a resolved --rux-field-hover (#e8e8e8 = white) rather than from dataset.theme.",
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 6 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "1 finding · 6 notes · focusRingChecked true · the finding is progress-step-button, ADJUDICATED a false positive: Carbon draws that ring on :focus-visible on the LABEL and sets outline:none on plain :focus, which the tool documents as out of its reach. Verified by a real Tab press — focus-visible true, label outline rgb(15,98,254) solid 1px"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 findings · 0 notes · focusRingChecked true · clean in white AND g100"
+      "commit": "bb3bdb9",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 stripped · 3 added (data-table--selected, side-nav__overlay-active, table-sort--active)"
+      "commit": "bb3bdb9",
+      "result": "0 stripped · 3 added — data-table--selected, side-nav__overlay-active, table-sort--active"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "0 stripped · 1 added (table-sort--active)"
+      "commit": "bb3bdb9",
+      "result": "0 stripped · 1 added — table-sort--active"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
+      "commit": "bb3bdb9",
       "result": "0 stripped · 0 added"
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 278 · matched 261 · diverges 17 · noReference 145"
+      "commit": "bb3bdb9",
+      "result": "293 checked · 272 matched · 21 diverge, 0 defects — see _triage"
     },
     "portal.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 26 · matched 23 · diverges 3 · noReference 10"
+      "commit": "bb3bdb9",
+      "result": "26 checked · 23 matched · 3 diverge"
     },
     "templates/app-shell.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 21 · matched 20 · diverges 1 · noReference 3"
+      "commit": "bb3bdb9",
+      "result": "21 checked · 20 matched · 1 diverge"
     },
     "templates/table-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 61 · matched 58 · diverges 3 · noReference 11"
+      "commit": "bb3bdb9",
+      "result": "61 checked · 58 matched · 3 diverge"
     },
     "templates/form-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 54 · matched 52 · diverges 2 · noReference 4"
+      "commit": "bb3bdb9",
+      "result": "54 checked · 52 matched · 2 diverge"
     },
     "templates/detail-page.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 59 · matched 58 · diverges 1 · noReference 5"
+      "commit": "bb3bdb9",
+      "result": "59 checked · 58 matched · 1 diverge"
     },
     "templates/empty-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 32 · matched 30 · diverges 2 · noReference 5"
+      "commit": "bb3bdb9",
+      "result": "32 checked · 30 matched · 2 diverge"
     },
     "templates/error-state.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "checked 29 · matched 27 · diverges 2 · noReference 4"
+      "commit": "bb3bdb9",
+      "result": "29 checked · 27 matched · 2 diverge"
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "34 sections · emptySvgs 0 · uaStyled 0 · collapsed none · escaped none · nothingToMeasure [spacing] · BOTH themes"
+      "commit": "bb3bdb9",
+      "result": "35 sections · 0 collapsed · 0 escaped · 0 emptySvgs · clean in white AND g100 · the 35th is the new progress-indicator fragment"
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-29",
-      "commit": "6137782",
-      "result": "37 of 37 cases passing"
+      "commit": "bb3bdb9",
+      "result": "37 of 37 cases pass · 0 failed"
     }
   },
   "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile."
