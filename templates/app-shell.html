@@ -302,11 +302,24 @@
            and inherited the fault across six sections before anyone looked.
 
            SCALE 6 IS THE SHELL'S DEFAULT, NOT A REQUIREMENT. It is what those
-           three chose. form-page instead puts `stack-scale-7` on the form
-           element itself, and table-page has no stack at all because its two
-           children — the data-table container and its pagination — are meant
-           to sit flush. Change the scale to suit the page; do not delete the
-           wrapper without knowing which of those two cases you are in. -->
+           three chose. Two files answer differently, and both were corrected
+           on 2026-08-30 — this paragraph described them as they were before.
+
+           form-page wraps its h1 AND its form in `stack-scale-7`, matching the
+           32px rhythm of the stack that spaces the fields (that stack sits on
+           a div inside the <form>, not on the form, which takes no class).
+           Until that day the h1 was a bare child of the column and the form
+           opened at its exact bottom edge, 0px — this same fault, in the last
+           template still carrying it.
+
+           table-page wraps its h1 and the data-table container, and leaves
+           PAGINATION OUTSIDE the stack on purpose: a stack gaps its children
+           and pagination is meant to sit flush against the table. It had no
+           stack at all until it was given an h1.
+
+           Change the scale to suit the page, and put only the children that
+           should be separated inside it; do not delete the wrapper without
+           knowing which of those cases you are in. -->
       <div class="rux--stack-vertical rux--stack-scale-6">
         <h1>Dashboard</h1>
         <p>Replace this region with a page body.</p>

@@ -298,6 +298,19 @@
          preview-pageheader--default. A form wants 8 of 16 at lg, so it says 8. -->
     <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8">
 
+      <!-- THE H1 NEEDS THE STACK AS MUCH AS THE FIELDS DO. Until 2026-08-30
+           this h1 was a bare child of the grid column and the form began at
+           its exact bottom edge -- measured gap 0px, because an h1 carries
+           margin 0 here and the form's own rhythm lives on a div INSIDE the
+           form, where it cannot reach a sibling above it. It is the same
+           fault app-shell.html records for itself, in the one template that
+           was still carrying it.
+
+           SCALE 7, NOT THE SHELL'S DEFAULT 6. The stack inside the form is
+           scale-7 = 32px, so a 24px gap here would set the title CLOSER to
+           the first field than the fields are to each other and read as if it
+           belonged to that field. Equal is the floor; tighter is wrong. -->
+      <div class="rux--stack-vertical rux--stack-scale-7">
       <h1>New request</h1>
 
       <!-- REPLACE: the form. Structure is components-form--default: a <form>
@@ -427,6 +440,7 @@
 
         </div>
       </form>
+      </div>
 
     </div>
   </div>
