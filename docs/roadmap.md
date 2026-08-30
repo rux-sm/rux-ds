@@ -1337,6 +1337,22 @@ alone, without inventing a class.
 > templates held the answer and were not consulted. Worth knowing that the failure mode
 > is not only a missing template — it is also a present one going unread.
 >
+> **THAT ADJUDICATION IS WRONG, and the fifth exit attempt overturned it on
+> 2026-08-29.** `rux--fieldset` was the CORRECT class and calling it an avoidable reach
+> mislabelled a right answer as a mistake. Verified three ways: it is Carbon's own
+> FormGroup class from `components/form/_form.scss`, compiled here with 4 rules; it
+> appears in **9 capture stories** across `carbon-react-dom` and `carbon-react-spacing`;
+> and `checkbox-group` is *checkbox's* class, carrying
+> `.checkbox-group .checkbox-wrapper > .form__helper-text { display: none }` — so
+> pointing a mixed-control group at it silently deletes the helper text under every
+> field.
+>
+> **The reach was right; only the route to it was wrong.** Reaching from memory rather
+> than from the captures is still the fault worth recording — but the entry above
+> punished the destination instead of the route, and a decision log that marks a correct
+> class as a mistake will make the next reader avoid it. That is the more expensive
+> error of the two.
+>
 > **Two samples, both by the same author who knew the traps.** That is the standing
 > weakness of this test and no amount of re-running by me fixes it.
 >
