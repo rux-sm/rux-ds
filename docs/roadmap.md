@@ -1773,12 +1773,37 @@ own markup.
 Back: `btn--danger--ghost`, `btn--danger--tertiary`, `stack-scale-6`, `snippet__icon`,
 `skeleton__text--ai`, `snippet-btn--expand`, `tag--skeleton`, the tree-node label button.
 
-**STILL ABSENT, 13, AND THE CAUSE IS NOT THE SETTLE TEST.** `badge-indicator`,
-`btn-set--stacked`, `btn--primary` at xs/xl/2xl, `inline-notification--warning`,
-`dialog-scroll-content--no-fade`, three popover auto-align variants, `stack-scale-5`, and
-two ai-label toggletip buttons. Several of those are states that only exist once
-something is opened, which the plain-story harvest never does — a plausible cause, and
-plausible is not measured. **Not diagnosed. Filed rather than guessed at.**
+**THE REMAINING 13 ARE NOT A HARVEST BUG AT ALL — diagnosed 2026-08-31, and the answer
+indicts the old reference rather than the new one.**
+
+**Twelve of them had exactly one source story between them, and that story no longer
+exists.** Tracing each lost signature through its own `seen` field: `badge-indicator`,
+`btn-set--stacked` and `btn--primary` at xs/xl/2xl all came from
+`components-button--overview`; `inline-notification--warning` from
+`components-modal--overview` and `components-composedmodal--overview`; two popover
+variants from `components-popover--overview`; one from `components-copybutton--overview`;
+both ai-label toggletips from `components-ailabel--overview`; and `stack-scale-5` from
+`getting-started-welcome--welcome`.
+
+**There are zero `--overview` stories in the 1.115 index.** Not a timeout, not a settle
+failure — the harvest never attempted them, because Carbon removed the category.
+
+**And here is the part that matters: there are zero `--overview` stories in the OLD DOM
+capture either.** The old spacing file cites stories the old DOM file has never heard of.
+Those two files, which sat side by side in `docs/` being read by different gates as one
+coherent reference, were taken at different times against different Carbons. Nothing
+recorded that, and nothing could have — which is the entire argument for the `_meta`
+stamp, arriving a day late and proving itself on the first question asked of it.
+
+**The thirteenth is a class-composition change, not a loss.** The old reference held
+`layer-two.dialog-content.dialog-scroll-content.dialog-scroll-content--no-fade` as one
+four-class signature. The new one holds two three-class signatures —
+`…dialog-scroll-content` and `…dialog-scroll-content--no-fade` — so Carbon now renders
+the base and the modifier as alternatives rather than together. The element is still
+covered; the combined signature simply no longer occurs.
+
+**Nothing here needs fixing in the tool.** The settle bug was real and is fixed; these 13
+were never its doing.
 
 **One correction to the entry above.** It said 22 lost of 798. Sorted — which is how
 `check-spacing` compares, and how this should have been counted the first time — it is
