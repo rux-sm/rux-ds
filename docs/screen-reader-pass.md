@@ -193,13 +193,22 @@ Complete, dimmed, button", "Signing Current, dimmed, button", "Configuration Cur
 dimmed, button" — eight of the nine steps, including ones that are merely complete or
 current rather than unavailable.
 
-`sink/progress-indicator.html` puts `aria-disabled="true"` on nine elements. **Carbon
-does not**, and here the captures CAN answer it: Carbon renders
-`button.cds--progress-step-button.cds--progress-step-button--unclickable` with the class
-alone, and `aria-disabled` is one of the four attributes
-`tools/extract/react-dom.js:388` records — so its absence is evidence rather than
-silence, unlike the toggle above. Unclickable is not the same as disabled, and a reader
-is currently told the whole indicator is unavailable.
+`sink/progress-indicator.html` put `aria-disabled="true"` on every unclickable button.
+**Carbon puts it on exactly one.** `components-progressindicator--default` renders five
+unclickable buttons; four are bare and the fifth — the step that also carries
+`--progress-step--disabled` — is the only one with the attribute. Unclickable is not
+disabled, and a reader was being told the whole indicator was unavailable.
+
+**FIXED 2026-08-30**: stripped from the seven steps that are merely complete, current or
+incomplete; kept on the one that is genuinely `--disabled`.
+
+**Two wrong readings on the way to this, both recorded because the method is the
+lesson.** The first check sliced the first eight lines of each story and printed only
+distinct values, saw the bare form, and concluded Carbon never sets it. The second found
+`{aria-disabled=true}` in the capture and concluded the opposite — that ours was correct
+and the finding was mine to withdraw. Only reading every `progress-step-button` line
+against its own `<li>` settled it. The fragment's own note asserted the wrong rule too,
+and is corrected in place.
 
 **4 · eleven notification close buttons are all called "Close".** Heard "Close, button"
 eleven times with nothing naming which notification each one dismisses. Not obviously

@@ -3677,10 +3677,16 @@
     this project has shipped two defects from guessing which glyph a slot wants.
     Recorded rather than guessed; `check-coverage` counts no class for it.
 
-    `--unclickable` carries `aria-disabled="true"` in the capture -- the only
-    attribute the whole story records. `aria-current="step"` is NOT attested
-    anywhere in it; a consumer page adding one is making an addition, not
-    copying Carbon.
+    `aria-disabled="true"` BELONGS TO `--disabled`, NOT TO `--unclickable`, and
+    this note said the opposite until 2026-08-30. components-progressindicator
+    --default renders five unclickable buttons and puts the attribute on exactly
+    ONE of them -- the step that also carries `--progress-step--disabled`. The
+    other four are bare. Every unclickable button here carried it, so VoiceOver
+    announced "First step Complete, dimmed, button" and "Signing Current,
+    dimmed, button": a reader was told the whole indicator was unavailable.
+    Heard on 2026-08-30, then read off the capture line by line rather than
+    from the first few. `aria-current="step"` is NOT attested anywhere in the
+    story; a consumer page adding one is making an addition, not copying Carbon.
 
     The steps are buttons even when nothing navigates, because that is what
     Carbon renders. `--unclickable` is the modifier that says so.
@@ -3691,7 +3697,7 @@
       <div class="ks-label">horizontal — complete · current · incomplete · disabled</div>
       <ul class="rux--progress">
         <li class="rux--progress-step rux--progress-step--complete">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--outline"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">First step</span></div>
             <span class="rux--assistive-text">Complete</span>
@@ -3699,7 +3705,7 @@
           </button>
         </li>
         <li class="rux--progress-step rux--progress-step--current">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>
             <div class="rux--progress-text">
               <span class="rux--progress-label">Second step</span>
@@ -3710,7 +3716,7 @@
           </button>
         </li>
         <li class="rux--progress-step rux--progress-step--incomplete">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-dash"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">Third step</span></div>
             <span class="rux--assistive-text">Not started</span>
@@ -3743,7 +3749,7 @@
           </button>
         </li>
         <li class="rux--progress-step rux--progress-step--current">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">Signing</span></div>
             <span class="rux--assistive-text">Current</span>
@@ -3757,7 +3763,7 @@
       <div class="ks-label">vertical — the variant a narrow column wants</div>
       <ul class="rux--progress rux--progress--vertical">
         <li class="rux--progress-step rux--progress-step--complete">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--outline"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">Project basics</span></div>
             <span class="rux--assistive-text">Complete</span>
@@ -3765,7 +3771,7 @@
           </button>
         </li>
         <li class="rux--progress-step rux--progress-step--current">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">Configuration</span></div>
             <span class="rux--assistive-text">Current</span>
@@ -3773,7 +3779,7 @@
           </button>
         </li>
         <li class="rux--progress-step rux--progress-step--incomplete">
-          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable" aria-disabled="true">
+          <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
             <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-dash"/></svg>
             <div class="rux--progress-text"><span class="rux--progress-label">Review</span></div>
             <span class="rux--assistive-text">Not started</span>
