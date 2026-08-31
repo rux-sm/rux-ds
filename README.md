@@ -32,10 +32,10 @@ outside press and the stack deciding which surface a press belongs to all come f
 kernel.
 
 What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports one finding on the sink, adjudicated a false positive, and nothing on the other
-seven pages — but it reads attributes rather than running an AT. Its focus-ring
-check does now run in an automated browser, once the page has focus. See "Picking this
-up".
+reports eight findings on the sink — one adjudicated false positive across eight sites —
+and nothing on the other seven pages. But it reads attributes rather than running an
+AT. Its focus-ring check does now run in an automated browser, once the page has focus.
+See "Picking this up".
 
 **Phase 4 (devendor) now runs last.** Execution order
 is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
@@ -156,8 +156,8 @@ popover never opened.
 
 | What | Where |
 |---|---|
-| The 90 KB JS budget needs a unit — 86.1 KB raw is 47% comment, 45.5 KB code, 23.6 KB gzipped | roadmap §4.5 |
-| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 4 slots still have no capture that can answer | roadmap §4.5 |
+| The 90 KB JS budget needs a unit, and the unit now DECIDES it — 119.2 KB raw is over, 46.8 KB code and 34.6 KB gzipped are under. Raw grew 86.1 → 119.2 KB since 2026-08-29 while code grew 45.5 → 46.8; the growth is comment, 47% → 61% | roadmap §4.5 |
+| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 6 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 17 now. There is no `tests/` directory at all | roadmap §4.8 |
@@ -195,25 +195,25 @@ lines and three corrections, and a template carries more discipline than a sampl
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`
 reports the other five and which pages each has been run against. **All 26 browser
-cells are current as of 2026-08-30** — 0 stale, 0 never run — and
+cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
 | | |
 |---|---|
-| Components | **33 / 75 compiled** in 36 modules — `docs/inventory.md` decides all 75 |
+| Components | **34 / 75 compiled** in 37 modules — `docs/inventory.md` decides all 75 |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 611 `--rux-*` · 1,128 `.rux--*` |
-| Kitchen sink | 34 sections · **525** classes with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **503 / 737 (68%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | 611 `--rux-*` · 1,225 `.rux--*` |
+| Kitchen sink | 35 sections · **539** classes with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **510 / 751 (68%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **33 `rendered-dom` · 3 `source` · 0 `inferred`** |
+| Markup provenance | **35 `rendered-dom` · 6 `source` · 0 `inferred`** |
 | Icons | 59, a 16.1 KB sprite |
-| Size | 636 KB raw · 571 KB min · **58.0 KB gzipped** |
-| Behaviour JS | 12 modules · 86.1 KB raw, **47% of it comment** · 45.5 KB of code · **23.6 KB gzipped** |
+| Size | 649 KB raw · 582 KB min · **59.2 KB gzipped** |
+| Behaviour JS | 12 modules · 119.2 KB raw, **61% of it comment** · 46.8 KB of code · **34.6 KB gzipped** |
 
 Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.
 
-The 43 components not compiled are CUT or DEFER rows in
+The 41 components not compiled are CUT or DEFER rows in
 [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
 still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
 lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
@@ -303,7 +303,7 @@ Seventeen, because none is sufficient alone — see roadmap §4.1.2 for the bug 
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
-| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 4 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
+| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 6 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (16 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
@@ -326,7 +326,7 @@ there was invisible to all three. The new gate intersects the classed ancestors 
 occurrence of a class across all 642 captures and requires what survives — what Carbon
 puts above it *without exception*. Its first full run found a second instance of the same
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
-wrapper and never mentioned the styled one. **26 declines are recorded with reasons; 0
+wrapper and never mentioned the styled one. **30 declines are recorded with reasons; 0
 findings remain.**
 
 **Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate,
@@ -355,7 +355,7 @@ both cases: a page-level assertion is not the shape the registry has. Roadmap §
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink and templates actually achieve (**501/735, 68%**) and fails only when a
+what the sink and templates actually achieve (**510/751, 68%**) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
@@ -372,22 +372,24 @@ figure is 488, not 485. They are NOT worth hardcoding into the markup to collect
 duplicates state a module derives from the checkbox, the sort button and the nav, and the
 copy goes stale the moment the real state moves. **0 stripped on all eight pages, 3
 added on the sink and 1 on `table-page.html` — `table-sort--active` again, the same
-module marking the same thing. Swept 2026-08-30.**
+module marking the same thing. Swept 2026-08-31.**
 
 Twelve run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**1 finding, 6 notes** on the sink and **0 findings, 0 notes** on the other seven pages;
+**8 findings, 6 notes** on the sink and **0 findings, 0 notes** on the other seven pages;
 the notes are CSS specimens with no trigger, which
 are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
 something re-reads it.
 
-**The one finding is `progress-step-button`, and it is a false positive** — adjudicated
-2026-08-29, unchanged when re-swept 2026-08-30. Carbon draws that ring on
+**All eight findings are `progress-step-button`, one cause, and it is a false positive** —
+adjudicated 2026-08-29 when it was a single finding; admitting `progress-indicator` as a
+compiled component multiplied the sites, not the causes, and all eight report the same
+rule, "no visible focus change". Re-swept 2026-08-31. Carbon draws that ring on
 `:focus-visible` on the LABEL and sets `outline: none` on plain `:focus`, which the tool
 documents as out of its reach; a real Tab press shows the ring. It is left reported
 rather than suppressed, because an exception list is not a passing check.
