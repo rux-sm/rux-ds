@@ -219,6 +219,25 @@ npm run ancestry         # wrappers Carbon never omits, with the recorded declin
 npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 ```
 
+**`npm install` BEFORE `npm run verify`, after any pull that touches `package.json`.**
+`verify` BUILDS `css/rux.css` and `.min.css` from the `@carbon/styles` that is in
+`node_modules`, and never compares that against what `package.json` pins. So a stale
+install does not fail — it rewrites the committed stylesheet from the OLD Carbon and
+exits 0.
+
+Measured 2026-08-31, not hypothetical: `package.json` pinned `^1.114.0`, `node_modules`
+still held 1.113.0, and one `verify` reverted 736 lines of `css/rux.css` — dropping the
+`any-hover` media queries around the overflow-menu hover rules and a `background-color`
+on `.rux--btn--icon-only.rux--btn--ghost:focus`. Exit code 0 throughout, which is the
+part worth remembering: **the exit code cannot see this**, and this README's own advice
+to trust it over grepping output does not help here.
+
+There is a second cost. All five browser gates declare `css/rux.css` and `js` as inputs,
+so a spurious rebuild marks all 26 browser cells DIRTY. That prints and does not fail
+the build, but it destroys a `26 current · 0 stale` state that takes a browser and a
+person to re-earn. `npm install` then `npm run verify` restores `css/` byte-identically
+and the cells with it.
+
 | | |
 |---|---|
 | `npm run build` | `src/app.scss` → `css/rux.css` + `.min.css`, verifies zero `cds` |
