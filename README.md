@@ -48,41 +48,52 @@ us what it needs, not before. Roadmap §4.4.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
-**DO THIS FIRST — the two `ibm-products` captures, the last unattributed input to a
-gate.** Everything else in `docs/carbon-*.json` now records which Carbon it came from;
-these two still say `unknown`, and 2026-08-31 showed what that costs — the old spacing
-and DOM files turned out to have been taken against different Carbons, and nothing could
-have told you.
+**DONE 2026-08-31 — the two `ibm-products` captures carry provenance.** They were the
+last unattributed input to a gate; nothing in `docs/carbon-*.json` says `unknown` any
+more. Re-captured against `https://ibm-products.carbondesignsystem.com`, 21 stories and
+116 state recipes, and the aria allowlist went from 4 attributes to 13 with the rest.
 
-Go to **`https://ibm-products.carbondesignsystem.com`** — not the react origin, which is
-where two attempts have accidentally landed — and paste
-`tools/extract/react-dom.js` twice, in a fresh tab each time:
+**Carbon had not moved.** All 20 previously-captured stories are byte-identical to the
+old file once the new aria attributes are stripped, so the whole diff is the richer
+recording plus one story ibm-products has added since —
+`patterns-create-flows-createsidepanel--with-form-validation`. `check-tags` and
+`check-ancestry` read 642 where they read 641, and every other number they print is
+unchanged: 1109 classes, 35 with no reference, 5 known divergences, 0 findings; 500
+corroborated ancestries, 30 declined, 0 missing. That is the same "proved invisible"
+standard §4.8 set for the first stamping pass.
 
-| | |
-|---|---|
-| `MODE = 'stories'` | with the FILTER below → 20 stories, seconds |
-| `MODE = 'states'` | RECIPES-driven, FILTER does not apply → 116 recipes, 8 usable, the rest `(no-story)` |
+**`_meta` records named versions and NOT `carbonVersion`**, which is what
+`carbon-react-*.json` already does. `@carbon/ibm-products` 2.97.0 is the release the
+Storybook welcome page names; `ibmProductsStyles ^2.93.0`, `carbonReact ^1.111.1` and
+`carbonStyles ^1.110.1` are read from `/project.json` on that origin rather than
+assumed. They are RANGES because that is what ibm-products declares, so a `cds--` class
+here is attributable to a range and never to one build. **`carbonStyles ^1.110.1` tops
+out BELOW the 1.114.0 this repo compiles** — a `cds--` divergence between these captures
+and `carbon-react-*.json` can be Carbon moving rather than a fault here.
 
-**The FILTER is not optional on that origin.** Its default `/./` harvests all 426
-stories, and many of them fail to load with `Failed to resolve module specifier
-"chromatic/isChromatic"` — a fault in ibm-products' own Storybook. They file as `(empty)`
-and go to the retry pass, which is sequential: 134 retries at up to 12s each, and the
-download only fires when that finishes. Two attempts died there.
+**If you ever re-run it, two things about that origin.** The FILTER is still not
+optional — the default `/./` harvests all 426 stories, many of which fail on
+ibm-products' own `Failed to resolve module specifier "chromatic/isChromatic"`, file as
+`(empty)`, and feed a sequential retry the run never finishes. Two attempts died there.
 
     const FILTER = /^(components-sidepanel|patterns-create-flows-createsidepanel|preview-pageheader)/;
 
-**Leave `_meta.carbonVersion` null.** That origin's version is `@carbon/ibm-products`
-2.97.0, which is NOT a `@carbon/react` number — it peers `@carbon/react ^1.111.1`, a
-range, so the `cds--` classes in it are attributable only to that range. Record it as its
-own field rather than letting it be read as a react version.
+And **an `(empty)` on the filtered stories is timing, not that fault.** Measured
+2026-08-31, one iframe at a time: `components-sidepanel--slide-over` first paints a
+classed element at 4.4s and `preview-pageheader--default` at 6.0s, against a
+`SETTLE_MAX_MS` of 6000 with `CONCURRENCY` 3. The first pass filed 21 of 21 `(empty)`;
+the sequential retry at double the budget recovered 20, and the last was re-harvested
+alone with FILTER narrowed to it. Both notes are now in each file's `_meta`, so the
+next reader gets them without this README.
 
-**What it is worth, stated honestly:** those 20 stories are all `side-panel` and
-`page-header`, both CUT, and their entire contribution to this project is one class —
-`cds--btn--expressive`, which we do ship and which no react story emits. One class, and
-the end of the last `unknown` in the reference set.
+**What it was worth, stated honestly:** those 21 stories are all `side-panel` and
+`page-header`, both CUT, and their entire contribution is one class —
+`cds--btn--expressive`, emitted by the create-side-panel recipe, which we do ship and
+which no react story emits. One class, and the end of the last `unknown` in the
+reference set.
 
-**Then:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
-is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
+**DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
+everything before it is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
 `templates/` can be built from them without inventing a class. **Seven attempts
@@ -283,7 +294,7 @@ to the corner. `check-tags` asks which *element type* a class sits on; `check-co
 asks which classes share *one element*; `diff-fragment` says in its own header that it
 reports nesting that **disagrees**, not nesting that is **absent**. A wrapper simply not
 there was invisible to all three. The new gate intersects the classed ancestors of every
-occurrence of a class across all 641 captures and requires what survives — what Carbon
+occurrence of a class across all 642 captures and requires what survives — what Carbon
 puts above it *without exception*. Its first full run found a second instance of the same
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
 wrapper and never mentioned the styled one. **26 declines are recorded with reasons; 0

@@ -283,7 +283,7 @@ paragraphs across. The project already treats Carbon this way everywhere else:
 it diffs against captures and cites them rather than copying documentation.
 
 **And it is not a substitute for the captures.** For *markup*, `docs/carbon-*.json`
-remains the reference — 641 stories matching the compiled version, needing no
+remains the reference — 642 stories matching the compiled version, needing no
 network. `node tools/diff-fragment.mjs <name>` does it mechanically. The website
 tells you what a pattern should do; the captures tell you what the markup is.
 

@@ -41,7 +41,7 @@
 //   as parents, which keeps the rest of ancestry usable.
 //
 // DIAGNOSTIC, NOT A GATE, and unlike check-tags it should probably stay one:
-// the reference is 641 captures of the variants Carbon happens to demo, so a
+// the reference is 642 captures of the variants Carbon happens to demo, so a
 // legitimate composition nobody stories looks identical to a mistake. Read the
 // findings, confirm each against the story named, then fix or record. The
 // count is a worklist, not a score.

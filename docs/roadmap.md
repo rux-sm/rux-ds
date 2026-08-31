@@ -1874,9 +1874,49 @@ missing — and `check-spacing` reads 293/272/21 on the sink, unchanged.
 
 **RE-CAPTURED 2026-08-31.** `carbon-react-dom`, `-states` and `-spacing` now record
 `carbonReact 1.115.0` and `carbonStyles 1.114.0`, taken after `@carbon/styles` was bumped
-to match. `carbon-glyphs.json` already carried its own `version`. **Two files still say
-`unknown`: `carbon-ibm-products-dom` and `-states`**, and they are the top item in
-README's "Picking this up".
+to match. `carbon-glyphs.json` already carried its own `version`.
+
+**AND THE LAST TWO, LATER THE SAME DAY.** `carbon-ibm-products-dom` and `-states` were
+the two files still saying `unknown`; both were re-captured on 2026-08-31 and no file in
+`docs/carbon-*.json` is unattributed now. 21 stories and 116 recipes, 8 of them usable,
+aria recording up from 4 attributes to 13.
+
+**Carbon had not moved, and that is worth more than the stamp.** Strip the new aria
+attributes and all 20 previously-captured stories are byte-identical to the old file, so
+the entire diff is the richer recording plus one story ibm-products has added since,
+`patterns-create-flows-createsidepanel--with-form-validation`. `check-tags` and
+`check-ancestry` read 642 where they read 641 and every other figure is unchanged — 1109
+classes, 35 with no reference, 5 known divergences, 0 findings; 500 corroborated
+ancestries, 30 declined, 0 missing. Same proof shape as the first stamping pass above.
+
+**`carbonVersion` is NOT written for that origin**, following what `carbon-react-*.json`
+did when it replaced the field with named ones rather than leaving a null beside real
+values. `@carbon/ibm-products` 2.97.0 comes from the Storybook welcome page;
+`ibmProductsStyles ^2.93.0`, `carbonReact ^1.111.1` and `carbonStyles ^1.110.1` are read
+from `/project.json` on the same origin, not assumed from the previous capture or from
+this README. They are RANGES, which is the point — a `cds--` class captured here is
+attributable to a range and never to one build. **`carbonStyles ^1.110.1` tops out below
+the 1.114.0 this repo compiles**, so a `cds--` divergence between the two capture sets
+can be Carbon moving rather than a fault here. That is exactly the attribution the
+`unknown` could not support.
+
+**A FOURTH THING ABOUT THAT ORIGIN, MEASURED RATHER THAN INFERRED.** Its stories paint
+right at the extractor's settle ceiling: one iframe at a time and unhurried,
+`components-sidepanel--slide-over` first paints a classed element at 4.4s and
+`preview-pageheader--default` at 6.0s, against `SETTLE_MAX_MS` 6000 and `CONCURRENCY` 3.
+So the first pass filed **21 of 21 `(empty)`** and it was the sequential retry at double
+the budget that recovered 20; the last was re-harvested alone with FILTER narrowed to it,
+and came back at the same 121 lines the old capture had. **An `(empty)` on the filtered
+stories is therefore timing and not the `chromatic/isChromatic` fault below** — two
+different failures that look identical from the console, and reading the first as the
+second would send you to fix a Storybook bug that is not in your way. Both notes now live
+in each file's `_meta`, so a reader gets them without this entry.
+
+**One decision inside it.** The old `-states` file carried only its 8 usable recipes; the
+new one carries all 116, 108 of them `(no-story)`. `carbon-react-states.json` already
+keeps all 116 with its own 8 `(no-story)`, so the two files are symmetric now and the old
+shape was the anomaly. It also matches this section's own rule that a verdict is recorded
+rather than dropped.
 
 **THREE BUGS SURFACED ONLY WHEN THE SCRIPT WAS POINTED AT A SECOND ORIGIN**, none of
 which a react-only run could reach:

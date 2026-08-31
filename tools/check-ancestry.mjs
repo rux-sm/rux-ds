@@ -18,7 +18,7 @@
 // has now been right three times that only looking finds this class of defect.
 //
 // THE RULE, and it is deliberately the strongest one available. For class X,
-// take every occurrence of X across all 641 captures and intersect their sets
+// take every occurrence of X across all 642 captures and intersect their sets
 // of classed ancestors. What survives is the set of classes Carbon puts above X
 // WITHOUT EXCEPTION — not usually, not in the story we happened to copy. If one
 // of those is absent from X's ancestors here, that is the finding.
