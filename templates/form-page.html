@@ -416,14 +416,22 @@
             <div class="rux--form__helper-text">Optional.</div>
           </div>
 
-          <!-- js/form-controls.js drives this; the markup needs no script. -->
+          <!-- js/form-controls.js drives this; the markup needs no script.
+
+               `aria-hidden="true"` ON `toggle__text` IS LOAD-BEARING. Without
+               it a screen reader announces the control's name and then this
+               text again as part of it. That is the defect fixed at a5f95c8 —
+               heard on 2026-08-30 — and the fix went into sink/toggle.html and
+               NOT into this file or detail-page.html, where it was found on
+               2026-08-31 by building a third page with a toggle on it. No gate
+               reads it. -->
           <div class="rux--toggle">
             <button id="f-copy" class="rux--toggle__button" role="switch" type="button" aria-checked="false" aria-labelledby="f-copy-l"></button>
             <label class="rux--toggle__label" for="f-copy" id="f-copy-l">
               <span class="rux--toggle__label-text">Send me a copy</span>
               <div class="rux--toggle__appearance">
                 <div class="rux--toggle__switch"></div>
-                <span class="rux--toggle__text">Off</span>
+                <span class="rux--toggle__text" aria-hidden="true">Off</span>
               </div>
             </label>
           </div>
