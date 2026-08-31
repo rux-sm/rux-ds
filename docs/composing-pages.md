@@ -201,6 +201,37 @@ the label's `12px / 400`.
 **A `<legend>` keeps the fieldset's accessible grouping**; an `<h2>` does not.
 Add the type class, do not swap the element.
 
+**APPLIED IN ALL SIX TEMPLATE LEGENDS, 2026-08-31** — `form-page.html` ×2,
+`settings-page.html` ×3, `wizard-page.html` ×1. **Until then this rule was documented
+and applied nowhere**, including on the very page whose three legends are its worked
+example. §4.6's eighth exit attempt found that, and it is the ordinary failure of an
+unenforced document: the rule was written, the fix was measured, and no template was
+revisited.
+
+Measured before and after. All six read `12px / 400 / rgb(82,82,82)` bare and read
+`14px / 600` with the class; the `Account` group on `settings-page.html` was
+**byte-identical** to the `Organisation` field label beneath it — the exact defect this
+section describes, live in a shipped template. `check-spacing` reads the same
+44 · 43 · 1, 54 · 52 · 2 and 55 · 47 · 8 after as before, so no box moved.
+
+**Two things this section did not say, and both matter when you apply it:**
+
+**The numbers above are a TEXT-INPUT label**, not a checkbox or toggle row. A checkbox
+row's text is `14px / 400 / rgb(22,22,22)`, so bare, a legend was *smaller and greyer*
+than its own contents rather than identical to them. Identical is the `Account` case,
+where the group's first row is itself a `rux--label`.
+
+**THE COLOUR IS NOT FIXED AND CANNOT BE.** `rux--label` sets
+`color: var(--rux-text-secondary)`, no `rux--type-*` utility carries colour, and the
+build ships no text-colour utility at all. So a group name ends up heavier and larger
+than its rows **while staying greyer than them**. Inventing a colour class is the one
+thing this project does not do, so this is recorded rather than worked around.
+
+**`sink/*.html` DELIBERATELY DOES NOT DO THIS.** Carbon renders `legend.cds--label` in
+all 51 captures and never a type class, so `sink/checkbox.html`, `sink/radio.html` and
+`sink/tile.html` keep their legends bare. The sink answers "what is Carbon's markup";
+this section answers "how do you compose a page", and they are different questions.
+
 ### 3.10 An unattested composition inherits no spacing, and there may be no fix
 
 Putting a `rux--tag` inline after text inside a `rux--list__item` gives you a

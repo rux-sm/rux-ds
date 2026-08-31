@@ -288,9 +288,30 @@
 
                  THE INNER STACK IS REQUIRED. Carbon's own fieldset holds a
                  <legend> and then a `stack-vertical stack-scale-7`; without it
-                 these three controls are flush. -->
+                 these three controls are flush.
+
+                 THE LEGEND CARRIES A TYPE CLASS, and this page is why the rule
+                 exists (composing-pages 3.9). Bare, all three legends here
+                 measured 12px/400/rgb(82,82,82) — and the "Account" one was
+                 BYTE-IDENTICAL to the `Organisation` field label under it, so
+                 the group name read as a label for its own first field. Added
+                 2026-08-31, measured before and after: 14px/600 against the
+                 rows' 12-16px/400.
+
+                 THE COLOUR IS NOT FIXED AND CANNOT BE HERE. `rux--label` sets
+                 `color: text-secondary`, no type utility carries colour, and
+                 the build ships no text-colour utility at all — so the group
+                 name is heavier and larger than its rows while staying GREYER
+                 than them. Inventing a colour class is the one thing this
+                 project does not do. Recorded, not worked around.
+
+                 SINK FRAGMENTS DELIBERATELY DO NOT DO THIS. Carbon renders
+                 `legend.cds--label` in all 51 captures and never a type class,
+                 so sink/checkbox.html, sink/radio.html and sink/tile.html stay
+                 bare: they answer "what is Carbon's markup", and this answers
+                 "how do you compose a page". -->
             <fieldset class="rux--fieldset">
-              <legend class="rux--label">Notifications</legend>
+              <legend class="rux--label rux--type-heading-compact-01">Notifications</legend>
               <div class="rux--stack-vertical rux--stack-scale-7">
 
                 <div class="rux--form-item rux--checkbox-wrapper">
@@ -322,7 +343,7 @@
                  case that makes the class choice matter — a group holding more
                  than checkboxes is exactly what `checkbox-group` is not for. -->
             <fieldset class="rux--fieldset">
-              <legend class="rux--label">Display</legend>
+              <legend class="rux--label rux--type-heading-compact-01">Display</legend>
               <div class="rux--stack-vertical rux--stack-scale-7">
 
                 <!-- js/form-controls.js drives this; the markup needs no script.
@@ -383,7 +404,7 @@
                  `text-input__field-wrapper--readonly`. sink/text-input.html
                  has the attested shape. -->
             <fieldset class="rux--fieldset">
-              <legend class="rux--label">Account</legend>
+              <legend class="rux--label rux--type-heading-compact-01">Account</legend>
               <div class="rux--stack-vertical rux--stack-scale-7">
                 <div class="rux--form-item rux--text-input-wrapper rux--text-input-wrapper--readonly">
                   <div class="rux--text-input__label-wrapper">

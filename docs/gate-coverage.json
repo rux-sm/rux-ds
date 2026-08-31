@@ -62,8 +62,8 @@
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "526 in file · 529 in page · 0 stripped · 3 added — the same three documented classes: data-table--selected, side-nav__overlay-active, table-sort--active. 501 to 526 is sink/card.html."
+      "commit": "c0846e6",
+      "result": "526 · 529 · 0 stripped · 3 added — the three documented classes. Unchanged: the legend fix touched templates only."
     },
     "portal.html": {
       "date": "2026-08-31",
@@ -72,48 +72,48 @@
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "40 · 40 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "40 · 40 · 0 stripped · 0 added — unchanged; this template has no fieldset."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active, reproduced exactly."
+      "commit": "c0846e6",
+      "result": "102 · 103 · 0 stripped · 1 added (table-sort--active) — unchanged."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "83 · 83 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "84 · 84 · 0 stripped · 0 added — was 83 · 83; +1 is the legend type class."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "106 · 106 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "106 · 106 · 0 stripped · 0 added — unchanged."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "59 · 59 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "59 · 59 · 0 stripped · 0 added — unchanged."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "51 · 51 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "51 · 51 · 0 stripped · 0 added — unchanged."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "93 · 93 · 0 stripped · 0 added — was 92 · 92; +1 is type-heading-04 from the h3 heading fix."
+      "commit": "c0846e6",
+      "result": "94 · 94 · 0 stripped · 0 added — was 93 · 93; +1 is the legend type class."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "75 in file · 76 in page · 0 stripped · 1 added — table-sort--active, reproduced exactly."
+      "commit": "c0846e6",
+      "result": "75 · 76 · 0 stripped · 1 added (table-sort--active) — unchanged."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "72 · 72 · 0 stripped · 0 added — reproduced exactly."
+      "commit": "c0846e6",
+      "result": "73 · 73 · 0 stripped · 0 added — was 72 · 72; +1 is rux--type-heading-compact-01 on the three legends."
     }
   },
   "check-spacing": {
@@ -129,63 +129,63 @@
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "21 · 20 · 1 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "21 · 20 · 1 diverge — at 1440x900, unchanged."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "61 · 58 · 3 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "61 · 58 · 3 diverge — at 1440x900, unchanged."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "54 · 52 · 2 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "54 · 52 · 2 diverge — at 1440x900, unchanged by the legend type class."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "61 · 59 · 2 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "61 · 59 · 2 diverge — at 1440x900, unchanged."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "31 · 30 · 1 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "31 · 30 · 1 diverge — at 1440x900, unchanged."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "28 · 27 · 1 diverge — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "28 · 27 · 1 diverge — at 1440x900, unchanged."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "55 · 47 · 8 diverge, 0 defects — reproduced exactly, at 1440x900, and UNMOVED by the h3-to-p heading fix, which was the point of re-reading it."
+      "commit": "c0846e6",
+      "result": "55 · 47 · 8 diverge, 0 defects — at 1440x900, unchanged by the legend type class."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "33 · 29 · 4 diverge, 0 defects — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "33 · 29 · 4 diverge, 0 defects — at 1440x900, unchanged."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "44 · 43 · 1 diverge, 0 defects — reproduced exactly, at 1440x900."
+      "commit": "c0846e6",
+      "result": "44 · 43 · 1 diverge, 0 defects — at 1440x900, UNCHANGED by the legend type class. That was the point of re-reading it: the class changes font-size and weight and moves no box this gate measures."
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "38 sections (was 37) · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled. The new section is card."
+      "commit": "c0846e6",
+      "result": "38 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled — reproduced after the legend change."
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "349a68c",
-      "result": "37 / 37 passed · 0 failed, over 12 modules — reproduced exactly. card adds no case: it is a static container and its clickable specimen is role=button with no module, on the sink’s specimen convention."
+      "commit": "c0846e6",
+      "result": "37 / 37 passed · 0 failed, over 12 modules — reproduced after the legend change."
     }
   },
   "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
