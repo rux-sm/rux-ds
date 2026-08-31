@@ -98,6 +98,19 @@
   // a 4096MB renderer cap, in one visible tab. Comfortable, but not by so much
   // that a future Carbon could not outgrow it — if it does, harvest in slices
   // and merge, in a FRESH TAB each time. A reload does not reset the heap.
+  //
+  // ON THE ibm-products ORIGIN, /./ IS THE WRONG DEFAULT AND WILL KILL THE TAB.
+  // The reasoning above is about react.carbondesignsystem.com, where all 505
+  // stories are worth having and cost 84s. The ibm-products catalogue is far
+  // larger and this project uses three components from it, all CUT: side-panel,
+  // page-header and card. The committed carbon-ibm-products-dom.json is 20
+  // stories, sidepanel and pageheader only, so it was filtered when it was made
+  // -- and nothing recorded that, so the next run tried the lot and crashed the
+  // tab on 2026-08-31. For that origin use:
+  //
+  //   const FILTER = /^(components-sidepanel|patterns-create-flows-createsidepanel|preview-pageheader)/;
+  //
+  // which reproduces those 20 exactly and finishes in seconds.
   const FILTER = /./;                    // narrow this to re-harvest one component
   const CONCURRENCY = 3;                 // iframes at a time; 3 is polite and quick
 
