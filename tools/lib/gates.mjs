@@ -344,6 +344,30 @@ export const GATES = [
     baseline: '11 pages · 0 findings',
   },
   {
+    // THE TWENTY-FIRST, admitted 2026-08-31 (roadmap 4.8), and the first thing
+    // here that reads the captures' ATTRIBUTE data -- recorded as [role=x]{aria-y}
+    // since the first harvest and never looked at. Written for the role="menu"
+    // on the side nav's ul (643a20e), which every class gate was blind to by
+    // construction and check-a11y was blind to by its own rule.
+    // Its bound is real and named in the file: aria-live is not one of the
+    // thirteen attributes the extractor records, so anything turning on a live
+    // region is out of reach -- which is the whole of the `loading` decline.
+    id: 'check-aria-roles',
+    tool: 'tools/check-aria-roles.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a `role` on a `rux--` class that Carbon never renders that role on',
+    blindTo: 'a role on an unclassed element · a MISSING role · whether required child roles are present · anything turning on `aria-live`, which the extractor does not record',
+    reads: 'sink/, templates/ and the root pages against every capture',
+    fileTargets: ['sink', 'templates', 'kitchen-sink.html', 'portal.html'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['sink', 'templates', 'docs/carbon-react-dom.json'],
+    redRun: 'role="menu" on side-nav__items reproduces as 1 invented; 332 corroborated when clean',
+    sideEffects: null,
+    baseline: '332 corroborated · 4 declined · 0 uncovered · 0 invented',
+  },
+  {
     id: 'check-provenance',
     tool: 'tools/check-provenance.mjs',
     kind: 'node',

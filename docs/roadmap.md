@@ -2191,6 +2191,27 @@ scoping question is the only thing to get right: it reads PAGES — `templates/*
 the generated root pages — and never `sink/*.html`, whose fragments are not pages and
 must not be forced to carry an `h1`.
 
+**BOTH ARE BUILT, 2026-08-31, and both were green with nothing exempted.**
+`check-headings.mjs` reads 11 pages, 0 findings. `check-aria-roles.mjs` reads 332
+corroborated role sites, 0 uncovered, 0 invented, and one decline. The registry is 21
+gates, 16 in `npm run verify`.
+
+**Each found live defects on its first run, which is the argument for the shape.**
+check-headings found the label/value heading defect a THIRD and FOURTH time — still in
+`templates/wizard-page.html` and, worse, in `tools/build-portal.mjs`, which re-emitted
+`<h3>37 / 83</h3>` on every build — plus a real `h2 → h4` skip in the portal's template
+cards. **A fix applied to the two files where a defect was noticed is not a fixed
+defect**, and nothing here could tell the difference until something read the outline.
+check-aria-roles found `role="alert"` where Carbon renders `role="status"` on
+`inline-notification` and `toast-notification`, including one site in
+`templates/error-state.html`, and a `role="button"` on an `<a>` with no `href`.
+
+**check-headings strips comments before reading, and that is a finding rather than
+hygiene.** Its first version did not, and reported `detail-page` and `dashboard-page` as
+`h1 → h3` skips — because both carry a COMMENT explaining the `h3` they no longer
+contain. A gate that reads its own documentation as markup files findings against the
+text that fixed the bug.
+
 **The ARIA-role gate is the twenty-first and is the larger piece.** The captures can
 answer it — they record attributes as `{name=value}` beside the element — but nothing has
 ever read them for roles, so this is the first reader of that data and it generalises
@@ -2198,6 +2219,14 @@ past `role` to the other twelve recorded aria attributes. It will need a `KNOWN`
 deliberate divergences; that is the `check-tags` precedent, seven entries each with a
 reason, and NOT an open-ended allow-list. If the list cannot stay small and reasoned, the
 rule is not ready and the finding gets recorded unenforced instead — §4.8's own standard.
+
+**As built its KNOWN holds ONE entry, and that entry is a limit rather than an
+exemption.** `loading` carries `role="status"` where Carbon renders no role, and
+`role="status"` is an implicit live region — but `aria-live` is not among the thirteen
+attributes the extractor records. The capture cannot separate "Carbon announces nothing
+here" from "Carbon announces it by a means we never recorded", so the question is OUT OF
+REACH rather than adjudicated. **Widening the extractor's aria list would settle it**,
+and that is now the concrete next thing this gate wants.
 
 **What the structural hesitation was worth, since it is now overruled.** It was correct
 that these are a different shape, and the answer is that `check-provenance` already

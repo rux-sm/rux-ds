@@ -690,7 +690,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>20 gates. 15 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>21 gates. 16 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -809,6 +809,13 @@
                   <td>whether a heading says anything useful · heading ORDER against visual order · a heading that is visually a heading and marked up as a div</td>
                 </tr>
                 <tr>
+                  <td>check-aria-roles</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a `role` on a `rux--` class that Carbon never renders that role on</td>
+                  <td>a role on an unclassed element · a MISSING role · whether required child roles are present · anything turning on `aria-live`, which the extractor does not record</td>
+                </tr>
+                <tr>
                   <td>check-provenance</td>
                   <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
@@ -884,7 +891,7 @@
                   <td>kitchen-sink.html</td>
                   <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>kitchen-sink.html, css/rux.css changed since</td>
+                  <td>kitchen-sink.html, templates, css/rux.css changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -961,7 +968,7 @@
                   <td>kitchen-sink.html</td>
                   <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>kitchen-sink.html, css/rux.css changed since</td>
+                  <td>kitchen-sink.html, templates, css/rux.css changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1045,7 +1052,7 @@
                   <td>kitchen-sink.html</td>
                   <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>kitchen-sink.html, css/rux.css changed since</td>
+                  <td>kitchen-sink.html, templates, css/rux.css changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>

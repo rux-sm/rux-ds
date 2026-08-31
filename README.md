@@ -407,7 +407,7 @@ The plan as it stood before the work. Kept for its reasoning.
 lines and three corrections, and a template carries more discipline than a sample page.
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs fifteen of the twenty gates — `npm run gates`
+last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm run gates`
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
@@ -530,7 +530,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Twenty, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Twenty-one, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -548,6 +548,7 @@ Twenty, because none is sufficient alone — see roadmap §4.1.2 for the bug tha
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-inventory.mjs` | a component Carbon ships that `docs/inventory.md` has no row for · a row carrying no disposition · a component `src/app.scss` does not list at all · a disposition the manifest contradicts | whether a disposition is RIGHT — it insists one was made, not that it was wise |
 | `check-headings.mjs` | a page with no heading at all · more than one `h1` · an outline that skips a level. Pages only — `sink/*.html` fragments are specimens, not documents | whether a heading says anything useful · a heading that looks like one and is marked up as a `div` |
+| `check-aria-roles.mjs` | a `role` on a `rux--` class Carbon never renders that role on — the first gate to read the captures' attribute data | a role on an unclassed element · a MISSING role · whether required child roles exist · anything turning on `aria-live`, which the extractor does not record |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
@@ -568,17 +569,39 @@ defect, `pagination__control-buttons`, hiding behind a note that named the optio
 wrapper and never mentioned the styled one. **50 declines are recorded with reasons; 0
 findings remain.**
 
-**Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate,
-and no gate owns either.** Both shipped a page that passed all seventeen.
+**Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate.
+Both shipped a page that passed all seventeen. BOTH ARE NOW GATED, 2026-08-31.**
 
-**An ARIA role Carbon never renders.** `sink/ui-shell.html` carried `role="menu"` on the
-side nav's `ul`; the capture it cites renders that element bare, and all six templates
-already did. `role="menu"` requires `menuitem` children and these are `li > a`, so an AT
-was told it had entered a menu and then found nothing in it. Every class gate was blind
-by construction — a bare attribute is not a class — and `check-a11y` was blind by its own
-rule, which counts `[role^="menuitem"]` descendants and skips a composite with none, so
-zero items yielded neither a finding nor a note. The captures CAN answer this: they record
-attributes as `{name=value}` beside the element. Nothing reads them for roles.
+**An ARIA role Carbon never renders — now `check-aria-roles.mjs`, the twenty-first.**
+`sink/ui-shell.html` carried `role="menu"` on the side nav's `ul`; the capture it cites
+renders that element bare. `role="menu"` requires `menuitem` children and these are
+`li > a`, so an AT was told it had entered a menu and then found nothing in it. Every
+class gate was blind by construction — a bare attribute is not a class — and `check-a11y`
+was blind by its own rule, which counts `[role^="menuitem"]` descendants and skips a
+composite with none, so zero items yielded neither a finding nor a note.
+
+**It is the first thing here that reads the captures' ATTRIBUTE data**, which has been
+recorded as `[role=x]{aria-y=z}` beside every element since the first harvest and which
+nothing had ever looked at. It reads **332 corroborated role sites, 0 uncovered, 0
+invented**, and its red run reproduces the original defect exactly: put `role="menu"`
+back on `side-nav__items` and it reports one invented role against 12 captures that
+render the class bare.
+
+**Its first run found four divergences, and three were real.** `inline-notification` and
+`toast-notification` carried `role="alert"` where Carbon renders `role="status"` — six
+sites in the sink and, more to the point, one in `templates/error-state.html`, a shipped
+template. `alert` is assertive and `status` is polite, so the markup was interrupting a
+listener where Carbon chose not to; both now match Carbon, and an author who wants the
+assertive form can still say so. A disabled ghost link carried `role="button"` on an `<a>`
+with no `href`, which Carbon never does; removed.
+
+**The fourth is DECLINED, and the reason bounds the whole gate.** `loading` carries
+`role="status"` where Carbon renders no role — but `role="status"` is an implicit LIVE
+REGION, and `aria-live` is **not** among the thirteen attributes the extractor records.
+The capture cannot tell "Carbon announces nothing here" from "Carbon announces it by a
+means we never recorded", so removing the role on this evidence would be deciding the
+question the wrong way round. Widening the extractor would settle it. That is one KNOWN
+entry with a stated limit, not an allow-list.
 
 **A page carrying no heading at all — NOW GATED, 2026-08-31.**
 `templates/table-page.html` rendered its only title as `div.data-table-header__title` and
@@ -635,7 +658,7 @@ sort button and the nav, and the copy goes stale the moment the real state moves
 and `dashboard-page.html` — `table-sort--active` both times, the same module marking the
 same thing. Swept 2026-08-31; `docs/gate-coverage.json` carries every cell.**
 
-Fifteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
+Sixteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
