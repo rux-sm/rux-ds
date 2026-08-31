@@ -1,8 +1,12 @@
 {
  "_meta": {
+  "carbonReact": "1.115.0",
+  "carbonStyles": "1.114.0",
   "captured": "2026-08-31",
   "url": "https://react.carbondesignsystem.com/?path=/docs/getting-started-welcome--welcome",
   "mode": "spacing",
+  "settle": "paint + record count unchanged for one 100ms poll — the 2026-08-31 fix. The previous capture settled on \"more than one record\" and lost 22 signatures to stories with exactly one.",
+  "versionNote": "carbonReact rendered these stories; carbonStyles is what this repo compiles and what @carbon/react 1.115.0 depends on (^1.114.0). Confirmed from npm, not assumed from the previous capture.",
   "ariaRecorded": [
    "aria-expanded",
    "aria-selected",
@@ -17,10 +21,7 @@
    "aria-haspopup",
    "aria-modal",
    "tabindex"
-  ],
-  "carbonReact": "1.115.0",
-  "carbonStyles": "1.114.0",
-  "versionNote": "carbonReact is the package that RENDERED these stories, read off the Storybook masthead. carbonStyles is what this repo compiles and what @carbon/react 1.115.0 depends on (^1.114.0). They are different packages on different version lines; recording one number as \"the Carbon version\" is what made the earlier captures unattributable. Markup questions answer to carbonReact, computed-box questions to carbonStyles."
+  ]
  },
  "cds--accordion__arrow": [
   {
@@ -907,6 +908,22 @@
  "cds--btn.cds--btn--danger": [
   {
    "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "63px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--danger"
+   ]
+  },
+  {
+   "values": {
     "display": "flex",
     "paddingBlockStart": "14px",
     "paddingBlockEnd": "14px",
@@ -941,7 +958,60 @@
    ]
   }
  ],
+ "cds--btn.cds--btn--danger--ghost": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "15px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--danger-ghost"
+   ]
+  }
+ ],
+ "cds--btn.cds--btn--danger--tertiary": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "63px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--danger-tertiary"
+   ]
+  }
+ ],
  "cds--btn.cds--btn--ghost": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "15px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--ghost",
+    "preview-preview-text--usage-examples"
+   ]
+  },
   {
    "values": {
     "display": "flex",
@@ -958,22 +1028,6 @@
     "components-button-set-of-buttons--fluid",
     "components-button-set-of-buttons--fluid-four-wide-ghost",
     "components-button-set-of-buttons--fluid-one-wide-ghost"
-   ]
-  },
-  {
-   "values": {
-    "display": "inline-flex",
-    "paddingBlockStart": "14px",
-    "paddingBlockEnd": "14px",
-    "paddingInlineStart": "15px",
-    "paddingInlineEnd": "15px",
-    "minBlockSize": "48px"
-   },
-   "parents": [
-    "cds--layout"
-   ],
-   "seen": [
-    "preview-preview-text--usage-examples"
    ]
   }
  ],
@@ -1201,9 +1255,9 @@
     "cds--col-lg-13"
    ],
    "seen": [
+    "components-button--default",
     "components-composedmodal--default",
-    "components-composedmodal--full-width",
-    "components-composedmodal--passive-modal"
+    "components-composedmodal--full-width"
    ]
   },
   {
@@ -1385,6 +1439,24 @@
  "cds--btn.cds--btn--secondary": [
   {
    "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "63px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout",
+    "cds--popover-content"
+   ],
+   "seen": [
+    "components-button--secondary",
+    "components-datatable-filtering--default"
+   ]
+  },
+  {
+   "values": {
     "display": "flex",
     "paddingBlockStart": "14px",
     "paddingBlockEnd": "14px",
@@ -1420,22 +1492,6 @@
     "components-composedmodal--default",
     "components-composedmodal--full-width",
     "components-composedmodal--with-ai-label"
-   ]
-  },
-  {
-   "values": {
-    "display": "inline-flex",
-    "paddingBlockStart": "14px",
-    "paddingBlockEnd": "14px",
-    "paddingInlineStart": "15px",
-    "paddingInlineEnd": "63px",
-    "minBlockSize": "48px"
-   },
-   "parents": [
-    "cds--popover-content"
-   ],
-   "seen": [
-    "components-datatable-filtering--default"
    ]
   }
  ],
@@ -1500,6 +1556,22 @@
   }
  ],
  "cds--btn.cds--btn--tertiary": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "paddingBlockStart": "14px",
+    "paddingBlockEnd": "14px",
+    "paddingInlineStart": "15px",
+    "paddingInlineEnd": "63px",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--tertiary"
+   ]
+  },
   {
    "values": {
     "display": "flex",
@@ -3711,6 +3783,7 @@
     "cds--data-table-content"
    ],
    "seen": [
+    "components-datatable-basic--default",
     "components-datatable-batch-actions--default"
    ]
   }
@@ -5530,6 +5603,37 @@
    ]
   }
  ],
+ "cds--icon--skeleton": [
+  {
+   "values": {
+    "display": "inline-block",
+    "marginBlockStart": "50px",
+    "marginBlockEnd": "50px",
+    "marginInlineStart": "50px",
+    "marginInlineEnd": "50px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-skeleton-skeletonicon--default"
+   ]
+  }
+ ],
+ "cds--icon-chevron--down.cds--snippet__icon": [
+  {
+   "values": {
+    "marginInlineStart": "8px"
+   },
+   "parents": [
+    "cds--snippet-btn--expand.cds--btn.cds--btn--sm.cds--layout--size-sm.cds--btn--ghost"
+   ],
+   "seen": [
+    "components-codesnippet--multiline",
+    "components-codesnippet--multiline-with-layer"
+   ]
+  }
+ ],
  "cds--icon-indicator": [
   {
    "values": {
@@ -5827,6 +5931,7 @@
    ],
    "seen": [
     "components-containedlist--usage-examples",
+    "components-formlabel--default",
     "components-formlabel--with-toggletip"
    ]
   }
@@ -6213,8 +6318,9 @@
     "cds--layer-three.cds--layer__with-background"
    ],
    "seen": [
-    "components-tile--clickable-with-layer",
-    "components-tile-feature-flag--clickable-with-layer"
+    "components-tile--clickable",
+    "components-tile--clickable-with-custom-icon",
+    "components-tile--clickable-with-layer"
    ]
   }
  ],
@@ -8000,7 +8106,7 @@
    "seen": [
     "components-composedmodal--default",
     "components-composedmodal--full-width",
-    "components-composedmodal--with-ai-label"
+    "components-composedmodal--passive-modal"
    ]
   }
  ],
@@ -8028,20 +8134,6 @@
    ],
    "seen": [
     "components-iconbutton--default"
-   ]
-  }
- ],
- "cds--popover-container.cds--popover--caret.cds--popover--high-contrast.cds--popover--open.cds--popover--left.cds--tooltip.cds--icon-tooltip": [
-  {
-   "values": {
-    "display": "inline-block"
-   },
-   "parents": [
-    "cds--modal-close-button"
-   ],
-   "seen": [
-    "components-composedmodal--passive-modal",
-    "components-modal--passive-modal"
    ]
   }
  ],
@@ -8140,9 +8232,9 @@
     "cds--popover"
    ],
    "seen": [
+    "components-popover--default",
     "components-popover--experimental-auto-align",
-    "components-popover--experimental-auto-align-boundary",
-    "components-popover--tab-tip"
+    "components-popover--experimental-auto-align-boundary"
    ]
   },
   {
@@ -8216,22 +8308,6 @@
   },
   {
    "values": {
-    "paddingBlockStart": "2px",
-    "paddingBlockEnd": "2px",
-    "paddingInlineStart": "16px",
-    "paddingInlineEnd": "16px"
-   },
-   "parents": [
-    "cds--popover"
-   ],
-   "seen": [
-    "components-composedmodal--passive-modal",
-    "components-iconbutton--default",
-    "components-modal--passive-modal"
-   ]
-  },
-  {
-   "values": {
     "display": "none",
     "paddingBlockStart": "16px",
     "paddingBlockEnd": "16px",
@@ -8245,6 +8321,20 @@
     "components-fileuploader--file-uploader-item",
     "components-tabs--vertical",
     "components-tooltip--default"
+   ]
+  },
+  {
+   "values": {
+    "paddingBlockStart": "2px",
+    "paddingBlockEnd": "2px",
+    "paddingInlineStart": "16px",
+    "paddingInlineEnd": "16px"
+   },
+   "parents": [
+    "cds--popover"
+   ],
+   "seen": [
+    "components-iconbutton--default"
    ]
   },
   {
@@ -9763,10 +9853,12 @@
     "marginBlockEnd": "8px"
    },
    "parents": [
-    "cds--accordion__content"
+    "cds--accordion__content",
+    "cds--layout"
    ],
    "seen": [
-    "components-accordion--skeleton"
+    "components-accordion--skeleton",
+    "components-skeleton-skeletontext--default"
    ]
   }
  ],
@@ -9809,7 +9901,32 @@
    ]
   }
  ],
+ "cds--skeleton__text.cds--skeleton__text--ai": [
+  {
+   "values": {
+    "marginBlockEnd": "8px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-skeleton-aiskeleton--ai-skeleton-text"
+   ]
+  }
+ ],
  "cds--skeleton.cds--btn.cds--btn--lg.cds--layout--size-lg": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "minBlockSize": "48px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-button--skeleton"
+   ]
+  },
   {
    "values": {
     "display": "flex",
@@ -10634,6 +10751,25 @@
    ]
   }
  ],
+ "cds--snippet-btn--expand.cds--btn.cds--btn--sm.cds--layout--size-sm.cds--btn--ghost": [
+  {
+   "values": {
+    "display": "flex",
+    "paddingBlockStart": "8px",
+    "paddingBlockEnd": "8px",
+    "paddingInlineStart": "16px",
+    "paddingInlineEnd": "16px",
+    "minBlockSize": "32px"
+   },
+   "parents": [
+    "cds--snippet.cds--snippet--multi"
+   ],
+   "seen": [
+    "components-codesnippet--multiline",
+    "components-codesnippet--multiline-with-layer"
+   ]
+  }
+ ],
  "cds--snippet-container": [
   {
    "values": {
@@ -10746,6 +10882,21 @@
    ]
   }
  ],
+ "cds--stack-horizontal.cds--stack-scale-6": [
+  {
+   "values": {
+    "display": "inline-grid",
+    "gridAutoFlow": "column",
+    "columnGap": "24px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "layout-stack--horizontal"
+   ]
+  }
+ ],
  "cds--stack-vertical": [
   {
    "values": {
@@ -10802,6 +10953,7 @@
    ],
    "seen": [
     "components-treeview-feature-flag--default",
+    "layout-stack--default",
     "preview-preview-layout--default"
    ]
   }
@@ -12615,6 +12767,24 @@
     "components-tag--dismissible",
     "components-tag--operational",
     "components-tag--selectable"
+   ]
+  }
+ ],
+ "cds--tag.cds--skeleton.cds--tag--md.cds--layout--size-md": [
+  {
+   "values": {
+    "display": "inline-flex",
+    "marginBlockStart": "4px",
+    "marginBlockEnd": "4px",
+    "marginInlineStart": "4px",
+    "marginInlineEnd": "4px",
+    "minBlockSize": "24px"
+   },
+   "parents": [
+    "cds--layout"
+   ],
+   "seen": [
+    "components-tag--skeleton"
    ]
   }
  ],
@@ -15504,12 +15674,26 @@
     "paddingInlineStart": "4px"
    },
    "parents": [
+    "cds--tree-node__label__text-button.cds--btn.cds--btn--ghost.cds--btn--icon-only",
     "cds--tree-node__label__details"
    ],
    "seen": [
     "components-treeview--default",
     "components-treeview--with-complex-nesting",
     "components-treeview--with-controlled-expansion"
+   ]
+  }
+ ],
+ "cds--tree-node__label__text-button.cds--btn.cds--btn--ghost.cds--btn--icon-only": [
+  {
+   "values": {
+    "display": "inline-flex"
+   },
+   "parents": [
+    "cds--tooltip-trigger__wrapper"
+   ],
+   "seen": [
+    "components-treeview--default"
    ]
   }
  ],

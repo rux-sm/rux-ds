@@ -1,6 +1,6 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
-  "_triage": "check-spacing 2026-08-31 at a5f95c8, the first sweep against the RE-CAPTURED reference (Carbon react 1.115.0 / styles 1.114.0). 31 divergences across eight pages, down from 36, and 0 defects.\n\nTHE DROP IS NOT AN IMPROVEMENT AND MUST NOT BE READ AS ONE. The new spacing capture holds 777 signatures where the old held 798: 22 lost, 1 gained. Four of the five vanished divergences were the SAME adjudicated one -- stack-vertical.stack-scale-5 marginBlockStart on portal, table-page, empty-state and error-state -- and it vanished because cds--stack-vertical.cds--stack-scale-5 is no longer IN the reference. The fifth is stack-horizontal.stack-scale-6 on the sink, lost the same way. Nothing was fixed; the ruler got shorter.\n\nCAUSE, and it is the tool not Carbon. The spacing harvest settles on `lines.length > 1`, which for a DOM tree means \"has it painted\" but for spacing means \"has it produced more than one record\". A story with exactly one spacing-relevant signature can never satisfy it, so it times out as (empty) and its signatures are lost. The 2026-08-31 run reported 59 empties and recovered 0 of 59 on retry -- slow-painting stories recover, genuinely sparse ones cannot. The header describes this exact flaw for icons and special-cases it; spacing has the same flaw and no special case.\n\nWHAT WAS LOST INCLUDES THINGS WE SHIP: btn--primary at xs, md, xl and 2xl, btn--danger--ghost, btn--danger--tertiary, btn-set--stacked, stack-scale-5, stack-scale-6, badge-indicator and inline-notification--warning. Those elements now land in noReference (146 to 153 on the sink) rather than being compared. Reported here rather than papered over, and NOT fixed by merging the old file into the new -- that would mix 1.113-era and 1.115-era data in one reference and recreate exactly the provenance fault the _meta stamp was added to end.",
+  "_triage": "check-spacing 2026-08-31 at 547f976, against the third spacing capture of the day — the one taken after the settle test was fixed.\n\nTHREE CAPTURES, THREE SIGNATURE COUNTS, and comparing them is the only way any of the numbers mean anything. Sorted keys throughout, because check-spacing sorts a signature before it compares it: 797 in the 1.113-era reference, 777 with the broken settle at 1.115, 785 with the fixed settle at 1.115.\n\nTHE SETTLE FIX RECOVERED 8 OF THE 21 LOST, NOT ALL OF THEM. Back: btn--danger--ghost, btn--danger--tertiary, stack-horizontal.stack-scale-6, snippet__icon, skeleton__text--ai, snippet-btn--expand, tag--skeleton, tree-node label button. STILL ABSENT, 13: badge-indicator, btn-set--stacked, btn--primary at xs, xl and 2xl, inline-notification--warning, dialog-scroll-content--no-fade, three popover auto-align variants, stack-vertical.stack-scale-5, and two ai-label toggletip buttons. Their cause is NOT the settle test and is not diagnosed. Filed rather than guessed.\n\nDIVERGENCES 34, up from 31 and still below the 36 of the original reference, and every step of that is coverage rather than quality. They rose because recovered signatures brought their divergences back with them; they remain below 36 because stack-scale-5 is still missing and four pages carried that one divergence.\n\nONE REAL CARBON CHANGE SURFACED. btn--danger--ghost and btn--danger--tertiary compute display:inline-flex at 1.115 where the 1.113-era reference recorded flex, so those two now diverge against our flex. Read off both capture files rather than reasoned about. It joins the display inline-flex/flex family already adjudicated in this file, and is the first concrete evidence of what the version bump moved in the reference itself.\n\nThe rest of the 23 on the sink are the previously adjudicated set: col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant against a horizontal reference, modal heading padding that tracks content width, the nav indent, and a handful of display pairs.",
   "_measured": "Re-swept 2026-08-31 at a5f95c8, after the Carbon bump to styles 1.114.0 and the re-capture at react 1.115.0. All 26 cells.\n\ncheck-runtime-classes: 0 stripped on all eight pages, 3 added on the sink and 1 on table-page -- unchanged. check-behaviour 37 of 37. check-rendered clean in both themes. check-a11y 8 findings and 6 notes on the sink, 0 and 0 on the other seven; the 8 are one adjudicated cause and became visible when 17a61c2 removed the aria-disabled that had been hiding seven controls from the gate. Red run 149/8, against 148/8 before the re-capture.\n\ncheck-spacing is the only figure that moved and it moved DOWNWARD IN COVERAGE, not upward in quality -- see _triage before quoting the 31.",
   "check-a11y": {
     "kitchen-sink.html": {
@@ -89,43 +89,43 @@
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "286 checked · 266 matched · 20 diverge, 0 defects — was 293/272/21; see _triage"
+      "commit": "547f976",
+      "result": "290 checked · 267 matched · 23 diverge, 0 defects — against the SETTLE-FIXED capture; see _triage"
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "25 · 23 · 2 diverge — was 26/23/3"
+      "commit": "547f976",
+      "result": "25 · 23 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "21 · 20 · 1 diverge — unchanged"
+      "commit": "547f976",
+      "result": "21 · 20 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "61 · 58 · 3 diverge — was 62/58/4"
+      "commit": "547f976",
+      "result": "61 · 58 · 3 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "54 · 52 · 2 diverge — unchanged"
+      "commit": "547f976",
+      "result": "54 · 52 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "59 · 58 · 1 diverge — unchanged"
+      "commit": "547f976",
+      "result": "59 · 58 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "31 · 30 · 1 diverge — was 32/30/2"
+      "commit": "547f976",
+      "result": "31 · 30 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "28 · 27 · 1 diverge — was 29/27/2"
+      "commit": "547f976",
+      "result": "28 · 27 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     }
   },
   "check-rendered": {

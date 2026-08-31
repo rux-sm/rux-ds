@@ -1761,9 +1761,29 @@ lost the same way. **Nothing was fixed. The ruler got shorter.**
 That would put 1.113-era and 1.115-era records in one reference and recreate exactly the
 provenance fault `_meta` was added to end. A reference has to describe one Carbon.
 
-**The fix is a settle test that knows what mode it is in** — for `spacing`, "the harvest
-returned" rather than "the harvest returned more than one". Cheap to write, and it costs
-another capture run to take effect. Not done, and the 22 stay missing until it is.
+**FIXED 2026-08-31 at `547f976`, and it recovered 8 of the 21 — not all of them.**
+`spacing` now settles the way `icons` does, on the story having painted, plus one extra
+condition `icons` does not need: the record count must be unchanged since the previous
+poll. Icons take geometry off a sprite, which does not move; spacing reads COMPUTED BOX
+PROPERTIES, and "the first Carbon element painted" is not "layout settled". Sampling on
+the first signal would have traded missing signatures for values measured mid-layout,
+which is worse — a missing signature is honest, a wrong number reads as a defect in our
+own markup.
+
+Back: `btn--danger--ghost`, `btn--danger--tertiary`, `stack-scale-6`, `snippet__icon`,
+`skeleton__text--ai`, `snippet-btn--expand`, `tag--skeleton`, the tree-node label button.
+
+**STILL ABSENT, 13, AND THE CAUSE IS NOT THE SETTLE TEST.** `badge-indicator`,
+`btn-set--stacked`, `btn--primary` at xs/xl/2xl, `inline-notification--warning`,
+`dialog-scroll-content--no-fade`, three popover auto-align variants, `stack-scale-5`, and
+two ai-label toggletip buttons. Several of those are states that only exist once
+something is opened, which the plain-story harvest never does — a plausible cause, and
+plausible is not measured. **Not diagnosed. Filed rather than guessed at.**
+
+**One correction to the entry above.** It said 22 lost of 798. Sorted — which is how
+`check-spacing` compares, and how this should have been counted the first time — it is
+**21 lost of 797**. `btn--md--primary` was never missing; it had simply been written in a
+different class order, and comparing raw keys made it look gone.
 
 #### THE CAPTURES CARRY NO VERSION — found 2026-08-30
 
