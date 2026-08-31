@@ -1275,6 +1275,92 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > findings instead of 3 purely because the module repairs the attribute at load. A gate
 > pointed only at the reference page measures the states the reference happens to hold.
 
+#### The screen-reader pass — run 2026-08-30
+
+**The exit criterion's second half, and the only §4.5 task no tool here performs.** Four
+recordings, VoiceOver on Safari, white theme, caption panel on, transcribed from the
+frames rather than from memory: 724 announcements in 13 minutes. The recordings are in
+`.brand/` (gitignored); `docs/screen-reader-pass.md` holds the filled sheet.
+
+| Pass | Length | Covered |
+|---|---|---|
+| `VO`+→ walk | 4m48s, 244 announcements | rows 1-8, buttons to toggle |
+| Tab | 3m25s, 244 | the whole tab cycle, rows 1-24 bar modal and popover |
+| Arrow keys in tablists | 2m20s, 103 | every tablist, and table cell navigation |
+| Tabs again + progress re-check | 2m23s, 133 | the fix, verified by ear |
+
+**TWO DEFECTS, ONE FIXED.**
+
+**Progress steps announced as disabled — fixed at `17a61c2`.** Heard "First step
+Complete, dimmed, button" and "Signing Current, dimmed, button": every unclickable step
+claimed to be unavailable. Carbon puts `aria-disabled` on exactly one of the five
+unclickable buttons in `components-progressindicator--default` — the step that also
+carries `--progress-step--disabled` — and ours put it on all of them. **The fragment's
+own note asserted the wrong rule**, which is why the markup shipped, and it is corrected
+in place. Re-heard after the fix: "First step Complete, button", no "dimmed", while
+"Disabled step Disabled, dimmed, button" still says it. The first red-to-green this
+project has on a defect found by listening.
+
+It was doing a second harm nobody could see. `check-a11y.js:45` skips any element
+carrying `aria-disabled`, so those seven buttons were never examined by the focus-ring
+check at all; the sink's reading moved 1 → 8 when the attribute went, and the red run
+moved 141/1 → 148/8. **A wrong attribute can hide controls from the gate that would
+have caught it.**
+
+**Toggle announces its name twice — OPEN.** Heard "On On, on, switch" and "Off Off, off,
+switch". `aria-labelledby` on the switch points at the whole `<label>`, which holds both
+`toggle__label-text` and the state span `toggle__text`, so the name computes to both and
+a reader hears the word three times. **Not adjudicated, and the captures cannot settle
+it**: `aria-labelledby` is not among the four aria attributes
+`tools/extract/react-dom.js:388` records — the same allowlist this section already cites
+for `aria-hidden` and `tabindex`. It needs a running Carbon page, per
+`docs/verifying-templates.md`.
+
+**Three lesser findings, recorded not fixed.** Sortable column headers announce no sort
+state, because `aria-sort` sits on the `<th>` and Tab lands on the button inside it.
+Eleven notification close buttons are all just "Close", with nothing naming what each
+dismisses. The textarea's character count announces its label with no number.
+
+**A PREDICTION WAS WITHDRAWN, AND THE FAILURE IS WORTH MORE THAN THE FINDING WOULD HAVE
+BEEN.** Four buttons in `#tabs` were predicted to have no accessible name. All four carry
+`aria-label="Close tab"`. The claim came from a browser query that read the PARENT's
+`aria-label` and the button's `textContent` and never read the button's own — a check
+that could not have found what it was looking for. Three recordings were made hunting
+it, each missing it for a different true reason: Tab cannot reach a `tabindex="-1"`
+element, and arrow keys inside a tablist visit `[role="tab"]` only. Every reason was
+correct and none of them mattered. A prediction drawn from a query is worth no more than
+the query.
+
+**Cleared by ear, each heard rather than assumed:** disabled buttons say "dimmed";
+checkboxes announce mixed and invalid; radios announce position and dimmed; toggles are
+switches; live regions announce with their role; the hidden "Beginning of notification"
+strings land either side of the content; pagination reads "1 , Page of 9 pages"; tabs
+give position, selected state, group name and panel; the table gives "4 columns, 3 rows"
+and per-row select labels; dropdowns announce as combo boxes with expanded and invalid
+states. **And the side-nav fix from `643a20e` was confirmed by listening** — "Documents,
+expanded, button, list 4 items", where before it was a menu containing no menu items.
+
+**WHAT THIS PASS DID NOT COVER**, which is the half that matters:
+
+- **VoiceOver on Safari only.** No NVDA, no JAWS, no Windows. A finding here is macOS's
+  as much as ours.
+- **White theme only.** Colour cannot change an announcement, but that is reasoning, not
+  a reading.
+- **Modal and popover were never opened**, so nothing was heard about a dialog's name on
+  open, focus landing inside it, or whether the page behind goes silent. That last is a
+  common defect and remains untested.
+- **Forced colors is unmeasured**, as it was for the focus-ring sweep.
+- **The automated pane cannot activate a button by key** — Enter and Space deliver
+  `keydown` and `keyup` with no `click` — so anything that must be opened before it can
+  be heard was out of reach of the tooling, and only reachable by hand.
+
+**The criterion reads as met**: keyboard and screen-reader passes have both been run
+over every interactive component in the sink, the findings are filed, and the boundary
+above is on record. It does not require zero findings, and a clean first pass over 35
+sections would have been the result most worth doubting. **Declaring the phase closed is
+the author's call**, and the open toggle finding is the one thing that might reasonably
+delay it.
+
 ### 4.6 Phase 6 — Templates and skeleton
 
 **This is the actual goal.** Everything before it is preparation.

@@ -62,10 +62,20 @@ captures with them. Every gate that reads
 markup per file reads `templates/` too, and each template declares what its BEHAVIOUR
 was verified against.
 
-**Blocking §4.5's exit** — one human task, which cannot be automated here:
+**§4.5's exit criterion has been run, 2026-08-30.** Four VoiceOver recordings, 724
+announcements over 13 minutes, transcribed from the caption panel rather than from
+memory. Two defects: progress steps announced as disabled, **fixed** at `17a61c2` and
+re-heard after; and the toggle announcing its name twice, **open**, because
+`aria-labelledby` is not among the four aria attributes the extractor records and the
+captures cannot settle it. Three lesser findings recorded. One prediction withdrawn as
+an error of mine. Roadmap §4.5 carries the full entry and, more usefully, what the pass
+did NOT cover — Safari only, white only, and modal and popover never opened.
 
-- Run VoiceOver or NVDA over `kitchen-sink.html`. This is the ANNOUNCEMENT pass and
-  nothing here substitutes for it. Do it in a focused window: `check-a11y.js` still
+**The remaining human task**, kept because the boundary above names it:
+
+- Open a modal and a popover with an AT running. The 2026-08-30 pass never opened
+  either, so a dialog's name on open, focus landing inside it, and whether the page
+  behind goes silent are all still unheard. The last is a common defect. Do it in a focused window: `check-a11y.js` still
   refuses its focus-ring check when `document.hasFocus()` is false.
   **`docs/screen-reader-pass.md` is the procedure** — setup, the commands, what is
   already done and must not be re-found, the six specimens and one false positive that
