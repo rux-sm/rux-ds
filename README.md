@@ -194,7 +194,7 @@ popover never opened.
 | Answered 2026-08-31, one at a time with the cost measured for each: **`toggletip` and `time-picker` ADMITTED** and compiled; **`date-picker` admission AGREED** but staged, since its fragment demos no calendar and `js/date-picker.js` does not exist; **`combo-box` / `multiselect` re-affirmed DEFER** because no page shape needs them | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 18 now. There is no `tests/` directory at all | roadmap §4.8 |
-| `build-portal`'s icon assertion is a real check outside the registry — nineteenth gate or not | roadmap §4.8 |
+| Answered 2026-08-31: **it becomes the NINETEENTH gate**, registered as `build-portal-icons` in the `build-namespace` shape — a gate carried by a build tool with no `check-*` file. Consistency decided it, not merit: the identical shape was already registered and no rule distinguished them. The question had been re-numbered twice while pending | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | Answered 2026-08-31: **`templates/wizard-page.html` exists**, authored to the discipline the other six carry — `BEHAVIOUR:` verified against a running Carbon, `npm run icons`, three ledger cells, three ancestry declines recorded. It settled both questions the plan left open and found one new defect. See below | roadmap §4.6 |
@@ -365,7 +365,7 @@ The plan as it stood before the work. Kept for its reasoning.
 lines and three corrections, and a template carries more discipline than a sample page.
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs thirteen of the eighteen gates — `npm run gates`
+last push, and `npm run verify` runs fourteen of the nineteen gates — `npm run gates`
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
@@ -488,11 +488,12 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Eighteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Nineteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
+| `build-portal.mjs` icon assertion | a `#i-name` emitted into `portal.html` that the sprite has no `<symbol>` for — it caught `#i-katex` on its first run | every page it does not generate; its unit is `portal.html` alone |
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
@@ -570,7 +571,7 @@ sort button and the nav, and the copy goes stale the moment the real state moves
 and `dashboard-page.html` — `table-sort--active` both times, the same module marking the
 same thing. Swept 2026-08-31; `docs/gate-coverage.json` carries every cell.**
 
-Thirteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
+Fourteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the

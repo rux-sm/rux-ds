@@ -690,7 +690,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>18 gates. 13 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>19 gates. 14 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -716,6 +716,13 @@
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
                   <td>`cds` leakage into output</td>
                   <td>anything visual</td>
+                </tr>
+                <tr>
+                  <td>build-portal-icons</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a `#i-name` emitted into portal.html that the committed sprite has no `&lt;symbol&gt;` for</td>
+                  <td>every page it does not generate — its unit is portal.html alone</td>
                 </tr>
                 <tr>
                   <td>check-classes</td>

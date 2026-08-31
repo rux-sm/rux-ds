@@ -74,6 +74,28 @@ export const GATES = [
     baseline: 'cds leakage: none',
   },
   {
+    // REGISTERED 2026-08-31 (roadmap 4.8). It was real, ran in npm run verify, and
+    // sat outside the registry for three re-numberings of its own open question --
+    // fifteenth, then eighteenth, then nineteenth. Same shape as build-namespace
+    // above: a gate carried by a build tool with no check-* file of its own.
+    // It caught #i-katex on its first run, a glyph nothing defines, which is the
+    // silent-blank-icon failure check-icons exists for.
+    id: 'build-portal-icons',
+    tool: 'tools/build-portal.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a `#i-name` emitted into portal.html that the committed sprite has no `<symbol>` for',
+    blindTo: 'every page it does not generate — its unit is portal.html alone',
+    reads: 'the emitted portal markup against assets/icons.svg',
+    fileTargets: ['tools/build-portal.mjs'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['assets/icons.svg', 'docs/inventory.json', 'docs/coverage.json'],
+    redRun: '#i-katex on its first run — a symbol name nothing defines',
+    sideEffects: 'writes portal.html',
+    baseline: '0 unresolved sprite references',
+  },
+  {
     id: 'check-classes',
     tool: 'tools/check-classes.mjs',
     kind: 'node',

@@ -1524,6 +1524,26 @@ twice drifts.
 Exit: a page shape not in `templates/` can be built by Claude Code from the templates
 alone, without inventing a class.
 
+**THE READING IS DECIDED, 2026-08-31: the REPO reading.** Source is `templates/` plus
+`sink/*.html` plus the captures in `docs/` — which is what `CLAUDE.md` already routes a
+page author to, and holding the exit to "templates alone" would fail the system for
+using its own documented routing. Both halves are required: the classes must resolve
+AND the page must be right. The first attempt satisfied "without inventing" and still
+shipped tiles that were white on white, which is the half that costs something to check.
+
+**The two rejected readings, with what each was worth.** *Templates alone* was the
+literal text and failed twice on a missing metric-row idiom that attempts three and
+four had to fetch from `docs/carbon-react-dom.json`; `templates/dashboard-page.html`
+now carries that row, so the strict reading is newly winnable — it is rejected because
+it contradicts the routing, not because it cannot be met. *Does the frame teach* is the
+sharpest of the three and is a question about `app-shell.html`'s quality rather than
+about whether the phase exits; it is not discarded, it is simply not this criterion.
+
+**WHAT THIS DOES NOT DO IS CLOSE THE PHASE.** Seven attempts ran against nine
+templates, but the last of them predates `wizard-page.html`, `dashboard-page.html` and
+`settings-page.html`. One fresh-agent run under the decided reading is what closes
+§4.6, and it has not been done.
+
 > **First exit attempt, 2026-08-28 — NOT MET, and usefully so.** All six templates
 > existed, so the criterion was run rather than assumed: build a dashboard, a shape none
 > of the six covers, using `templates/` as the only source.
@@ -1857,11 +1877,30 @@ reading went stale; nothing can say whether the behaviour still works without a 
 re-running it. Every browser gate is load-time only — `check-runtime-classes` declares
 itself blind to anything behind an interaction.
 
-**Undecided:** whether a headless browser becomes a dependency. `check-rendered.js:2`
-refuses one on principle and `package.json` has three devDependencies, so this is a real
-change to what the project is, not a missing npm install. The alternative — keep the
-hand-run ledger and accept that behaviour regressions are caught by people — is a
-defensible answer, but it should be a recorded answer rather than the current silence.
+**DECIDED 2026-08-31 — NO. A headless browser does not become a dependency**, and the
+silence this paragraph complained about is now an answer. `check-rendered.js:2` refuses
+one on principle, `package.json` carries three devDependencies, and the five browser
+gates stay hand-run with `docs/gate-coverage.json` as their ledger.
+
+**The deciding evidence was that ledger's own `_triage`, not the principle.** That entry
+did not record numbers; it traced 13 missing spacing signatures through their `seen`
+fields to stories that no longer exist, established that two files in `docs/` were being
+read as one reference despite being captured at different times against different
+Carbons with nothing recording it, and surfaced a real Carbon change —
+`btn--danger--ghost` computing `inline-flex` at 1.115 where the 1.113-era reference had
+`flex`. A pass/fail runner prints "34 divergences" and none of that. **The expensive part
+of a browser gate is the adjudication, and the adjudication is the part worth having.**
+
+`CLAUDE.md` already states the position the other way round: the gates cannot see
+everything, and looking is not optional. Five defects have shipped past every gate here,
+including four menu specimens that were `visibility: hidden`. Automating the browser
+gates risks retiring the habit that catches those.
+
+**What is conceded:** the staleness bookkeeping is a real cost and this decision does not
+address it. 35 cells go stale on any `css/rux.css` or `js/` edit, by design. Narrowing
+that rule so a cell ages only when inputs that could affect ITS reading moved is
+available and unbuilt — it was the runner-up option and remains open work, filed here
+rather than as a separate question.
 
 **AN UNREGISTERED CHECK EXISTS** (`docs/audits.md` finding 10). `tools/build-portal.mjs`
 asserts that every `#i-name` it emits resolves to a `<symbol>` in the committed sprite,
@@ -1870,10 +1909,14 @@ nothing defines, the silent-blank-icon failure `check-icons` exists for.
 
 It is real, it runs in `npm run verify`, and it is not in the registry. That is the
 `build-namespace` shape — a gate carried by a build tool with no `check-*` file — and
-`build-namespace` IS registered. **Decide whether this becomes the nineteenth gate.**
-Registering it means the count moves in `CLAUDE.md` and `README.md` as well as
-`gates.mjs`; leaving it out means the registry is knowingly incomplete, which is the
-condition that registry was built to end.
+`build-namespace` IS registered.
+
+**DECIDED 2026-08-31 — it becomes the NINETEENTH gate.** Registered in `gates.mjs` in
+the `build-namespace` shape, with the count moved in `CLAUDE.md`, `README.md` and the
+gates table. The deciding argument is the one this section made against itself: leaving
+it out means the registry is knowingly incomplete, which is the condition the registry
+was built to end. Consistency settled it rather than merit — the identical shape was
+already registered, and no rule distinguished them.
 
 This read *fifteenth* until 2026-08-29, when `check-behaviour`, `check-glyphs` and
 `check-slots` took the registry from fourteen to seventeen, and *eighteenth* until
@@ -2139,9 +2182,28 @@ element, or a computed property PER OCCURRENCE. "This document contains at least
 `check-provenance`, which asserts a file carries a label. Whether the registry grows that
 shape is the decision, not whether the heading matters.
 
-**Both, if admitted, land after the `build-portal` question above** — which is itself
-undecided, so the ordinals are provisional. That is the third time this section has had
-to re-number an open question, and the argument for closing them is the same each time.
+**DECIDED 2026-08-31 — the registry GROWS the file-level shape, and both are admitted.**
+`build-portal`'s icon assertion took the nineteenth ordinal above, so these are the
+TWENTIETH and TWENTY-FIRST and the ordinals are no longer provisional.
+
+**Heading presence is the twentieth and is built first**, because it is cheap and its
+scoping question is the only thing to get right: it reads PAGES — `templates/*.html` and
+the generated root pages — and never `sink/*.html`, whose fragments are not pages and
+must not be forced to carry an `h1`.
+
+**The ARIA-role gate is the twenty-first and is the larger piece.** The captures can
+answer it — they record attributes as `{name=value}` beside the element — but nothing has
+ever read them for roles, so this is the first reader of that data and it generalises
+past `role` to the other twelve recorded aria attributes. It will need a `KNOWN` list for
+deliberate divergences; that is the `check-tags` precedent, seven entries each with a
+reason, and NOT an open-ended allow-list. If the list cannot stay small and reasoned, the
+rule is not ready and the finding gets recorded unenforced instead — §4.8's own standard.
+
+**What the structural hesitation was worth, since it is now overruled.** It was correct
+that these are a different shape, and the answer is that `check-provenance` already
+proved the registry tolerates a per-file assertion. The defects decided it: both shipped
+on pages that passed all seventeen gates, and both were found by a person walking tab
+order, which is not a repeatable instrument.
 
 ---
 
@@ -2315,7 +2377,19 @@ uses no longer resolves.
 **The open question is what a consumer pins to**, and the answers differ in cost: a git
 tag per release is nearly free and gives nothing to check against; a `version` field plus
 a "classes removed in" record is what would let a generated page detect its own
-staleness, and is real work. Neither has been chosen, and this section exists so the
-choice is visible rather than implicit in the absence of a tag.
+staleness, and is real work.
+
+**DEFERRED 2026-08-31, WITH A TRIGGER — decided when Phase 4 freezes the component set.**
+Consumers keep pinning to a SHA until then. The reason is sequencing rather than cost:
+execution order is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8, so devendor is still ahead, and §4.4
+says devendoring is what CLOSES the component set. A version stamped on the class
+vocabulary today prices something Phase 4 is going to rewrite.
+
+**This section's complaint is answered even though the question is not.** What it objected
+to was the choice being implicit in the absence of a tag; it is now explicit, dated, and
+carries the event that reopens it. The risk it names is unchanged and worth restating:
+additions are safe because `docs/coverage.json` ratchets upward, and REMOVAL is the
+hazard — a component leaves in three lines and a page written outside this repository
+finds out by rendering wrong, with `check-classes` unable to see it.
 
 ---
