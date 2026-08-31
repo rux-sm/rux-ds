@@ -179,8 +179,8 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <h3>2 / 32</h3>
-              <p>30 stale · 0 never run</p>
+              <h3>2 / 35</h3>
+              <p>33 stale · 0 never run</p>
             </div>
           </div>
           </div>
@@ -629,7 +629,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="templates">Templates</h2>
-          <p>8 complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
+          <p>9 complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
           <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <a class="rux--tile rux--tile--clickable" href="templates/app-shell.html">
@@ -665,6 +665,12 @@
             <a class="rux--tile rux--tile--clickable" href="templates/form-page.html">
               <h4>form-page</h4>
               <p>BEHAVIOUR verified-live · 2026-08-28</p>
+            </a>
+          </div>
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <a class="rux--tile rux--tile--clickable" href="templates/settings-page.html">
+              <h4>settings-page</h4>
+              <p>BEHAVIOUR verified-live · 2026-08-31</p>
             </a>
           </div>
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
@@ -838,7 +844,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 2 of 32 cells are current; 30 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 2 of 35 cells are current; 33 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -883,16 +889,16 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>uncommitted: templates</td>
+                  <td>templates changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -911,9 +917,16 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-runtime-classes</td>
+                  <td>templates/settings-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -953,16 +966,16 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>uncommitted: templates</td>
+                  <td>templates changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -981,9 +994,16 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-spacing</td>
+                  <td>templates/settings-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1030,16 +1050,16 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-08-31</td>
-                  <td>uncommitted: templates</td>
+                  <td>templates changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
@@ -1058,9 +1078,16 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>templates changed since</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-a11y</td>
+                  <td>templates/settings-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
+                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>

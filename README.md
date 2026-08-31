@@ -13,7 +13,7 @@ stated twice drifts — which is exactly what happened to the Status block below
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
 started** — `templates/app-shell.html` is the frame, with `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
-`wizard-page.html` and `dashboard-page.html` built on it. The kitchen sink remains the worked
+`wizard-page.html`, `dashboard-page.html` and `settings-page.html` built on it. The kitchen sink remains the worked
 example and `sink/*.html` the markup to copy for a component no template carries.
 
 ## Status
@@ -93,9 +93,9 @@ which no react story emits. One class, and the end of the last `unknown` in the
 reference set.
 
 **DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
-everything before it is preparation. **All eight exist** — `app-shell.html`, `table-page.html`,
+everything before it is preparation. **All nine exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
-`wizard-page.html` and `dashboard-page.html`.
+`wizard-page.html`, `dashboard-page.html` and `settings-page.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
 `templates/` can be built from them without inventing a class. **Seven attempts
 are on record** at roadmap §4.6 — the last three all by fresh agents in clean
@@ -166,6 +166,41 @@ popover never opened.
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | Answered 2026-08-31: **`templates/wizard-page.html` exists**, authored to the discipline the other six carry — `BEHAVIOUR:` verified against a running Carbon, `npm run icons`, three ledger cells, three ancestry declines recorded. It settled both questions the plan left open and found one new defect. See below | roadmap §4.6 |
+
+### The settings template — BUILT 2026-08-31, and it found a shipped defect
+
+`templates/settings-page.html`. Grouped preferences with a persistent action pair, and
+the page that records **`rux--fieldset` against `rux--checkbox-group`**. That choice
+matters because `checkbox-group` is CHECKBOX's class and carries
+`.rux--checkbox-group .rux--checkbox-wrapper > .rux--form__helper-text { display: none }`
+— point a mixed-control group at it and the helper text under every checkbox silently
+disappears. §4.6's second attempt got this wrong in both directions and the sixth
+overturned the adjudication; it is now written down in a template.
+
+**Verified live:** a fieldset holds a `<legend>` and then a
+`stack-vertical stack-scale-7`, and computes margin 0 and border 0 itself. So a group
+without that inner stack is flush, and consecutive groups need the OUTER stack because
+the fieldset contributes no block margin.
+
+**THE DEFECT: `templates/form-page.html` and `templates/detail-page.html` were both
+missing `aria-hidden="true"` on `span.rux--toggle__text`.** That is the fix made at
+`a5f95c8` after it was HEARD on 2026-08-30 — the toggle announcing its name twice — and
+it went into `sink/toggle.html` and nowhere else. Two shipped templates carried the bug
+for a day. It was found by building a third page with a toggle and reading the sink
+fragment to copy it properly.
+
+**No gate reads that attribute, and the re-sweep proves it rather than asserting it:**
+both pages reproduce their previous numbers exactly after the fix, and `check-a11y` was
+0 findings before and after. Both are now fixed, and `form-page.html` carries a note
+saying why the attribute is load-bearing.
+
+The settings page itself also shipped, briefly, a toggle with `aria-checked="true"` and
+no `toggle__switch--checked` — the module sets that class on interaction and never reads
+`aria-checked` at load, so it rendered OFF while saying On. Every gate passed. The
+screenshot did not.
+
+`check-a11y` 0 findings, and `check-spacing` 44 · 43 · **1 divergence**, the
+self-indent alone — the cleanest reading of any page here.
 
 ### The dashboard template — BUILT 2026-08-31
 

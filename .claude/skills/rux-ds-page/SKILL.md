@@ -1,6 +1,6 @@
 ---
 name: rux-ds-page
-description: Build a page out of rux-ds — a new template, a consumer page, or a page shape none of the eight templates covers. Use when asked to create, compose or lay out a page with these components, or when a page built from them looks wrong. Encodes which template to copy, the four failures that produce a finished-looking wrong page, and where IBM's own pattern guidance applies. Knowing the components is not knowing how to assemble them.
+description: Build a page out of rux-ds — a new template, a consumer page, or a page shape none of the nine templates covers. Use when asked to create, compose or lay out a page with these components, or when a page built from them looks wrong. Encodes which template to copy, the four failures that produce a finished-looking wrong page, and where IBM's own pattern guidance applies. Knowing the components is not knowing how to assemble them.
 ---
 
 # Building a page
@@ -13,7 +13,7 @@ work; go to the document for why any line here is true.
 
 ## 1. Copy a template — never start from scratch
 
-Eight exist, each a **complete page**, shell included.
+Nine exist, each a **complete page**, shell included.
 
 | page | start from |
 | :--- | :--- |
@@ -24,6 +24,7 @@ Eight exist, each a **complete page**, shell included.
 | nothing to show yet | `templates/empty-state.html` |
 | one step of a multi-step flow | `templates/wizard-page.html` |
 | an overview of many things | `templates/dashboard-page.html` |
+| grouped preferences | `templates/settings-page.html` |
 | something went wrong | `templates/error-state.html` |
 
 **Not `sink/ui-shell.html`** — same shell in a 22rem sandbox, positioned for a

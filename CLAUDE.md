@@ -95,7 +95,9 @@ All eight templates exist — form, detail, empty state, error state, wizard and
 dashboard included. `wizard-page.html` is the multi-step shape: a vertical progress
 indicator in a `lg:col-span-4` column beside a `lg:col-span-8` panel, and the only
 template carrying a modal. `dashboard-page.html` is the overview shape: a metric row
-over a toolbar-less table beside an activity column. Copy the nearest shape; `sink/*.html` remains the markup reference for a component no template
+over a toolbar-less table beside an activity column. `settings-page.html` is grouped
+preferences with a persistent action pair, and it is the one that records
+`rux--fieldset` against `rux--checkbox-group`. Copy the nearest shape; `sink/*.html` remains the markup reference for a component no template
 carries.
 
 **A template's behaviour is verified against a RUNNING Carbon page, never

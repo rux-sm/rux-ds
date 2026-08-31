@@ -180,6 +180,7 @@ const KNOWN = {
   'templates/error-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/wizard-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/dashboard-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/settings-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   // THE FIRST TEMPLATE TO CARRY A MODAL, so these two declines arrive in
   // templates/ for the first time. Both are the sink's own, verbatim: see
   // modal:modal-close and modal:modal-close__icon above for the measurement
