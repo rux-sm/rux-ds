@@ -178,6 +178,17 @@ const KNOWN = {
   'templates/detail-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/empty-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/error-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/wizard-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  // THE FIRST TEMPLATE TO CARRY A MODAL, so these two declines arrive in
+  // templates/ for the first time. Both are the sink's own, verbatim: see
+  // modal:modal-close and modal:modal-close__icon above for the measurement
+  // the second one rests on. The POSITIONING wrapper, modal-close-button, is
+  // present here — dropping that one is the defect this gate was written for.
+  'templates/wizard-page:modal-close': [TOOLTIP_CHROME,
+    'the icon-tooltip the sink declines throughout, exactly as modal:modal-close.'],
+  'templates/wizard-page:modal-close__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--primary', 'btn--icon-only'],
+    'the tooltip chrome as everywhere else, plus the btn classes on the close button, '
+    + 'declined on the measurement recorded at modal:modal-close__icon.'],
   'templates/table-page:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/table-page:overflow-menu__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--ghost', 'btn--icon-only'],

@@ -12,9 +12,9 @@ stated twice drifts — which is exactly what happened to the Status block below
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
 started** — `templates/app-shell.html` is the frame, with `table-page.html`,
-`form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`
-built on it. Until the rest land the kitchen sink is still the worked
-example and `sink/*.html` the markup to copy.
+`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html` and
+`wizard-page.html` built on it. The kitchen sink remains the worked
+example and `sink/*.html` the markup to copy for a component no template carries.
 
 ## Status
 
@@ -93,8 +93,9 @@ which no react story emits. One class, and the end of the last `unknown` in the
 reference set.
 
 **DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
-everything before it is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
-`form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
+everything before it is preparation. **All seven exist** — `app-shell.html`, `table-page.html`,
+`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html` and
+`wizard-page.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
 `templates/` can be built from them without inventing a class. **Seven attempts
 are on record** at roadmap §4.6 — the last three all by fresh agents in clean
@@ -164,12 +165,57 @@ popover never opened.
 | `build-portal`'s icon assertion is a real check outside the registry — nineteenth gate or not | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
-| **A SEVENTH TEMPLATE — `wizard-page.html`.** The §4.6 seventh attempt showed a multi-step flow is a real shape no template covers, and that building one takes 580 lines and three wrong turns. Its page is archived, not promoted: authoring a template means a `BEHAVIOUR:` label verified against a RUNNING Carbon page, `npm run icons` coverage, ledger cells, and source comments carrying their own reasoning — none of which that page has. **Plan below** | roadmap §4.6 |
+| Answered 2026-08-31: **`templates/wizard-page.html` exists**, authored to the discipline the other six carry — `BEHAVIOUR:` verified against a running Carbon, `npm run icons`, three ledger cells, three ancestry declines recorded. It settled both questions the plan left open and found one new defect. See below | roadmap §4.6 |
 
-### The wizard template, if it is wanted
+### The wizard template — BUILT 2026-08-31
 
-Not started. Recorded so it is a plan rather than a memory, and so the next person
-does not re-derive the shape the seventh exit attempt already paid for.
+`templates/wizard-page.html`, 568 lines. The plan below is kept because the decision
+reads better with the reasoning that produced it; what follows first is what actually
+happened against it.
+
+**Both open questions are answered, and both from a running Carbon rather than from
+`css/rux.css`.**
+
+- **A vertical progress indicator stays vertical below `lg`.** The whole Carbon
+  stylesheet was walked for media rules touching `progress`: the only three are
+  `forced-colors`, `any-hover` and `prefers-reduced-motion`. No width query touches it
+  at any breakpoint, so there is no collapse-to-horizontal to copy, and inventing one
+  is behaviour Carbon declines. Confirmed on the built page — `flex-direction: column`
+  at 1440 and at 800.
+- **A modal goes wherever the control that opens it is.** Carbon does not portal one:
+  its parent in `components-modal--default` is a plain static wrapper, and it computes
+  `position: fixed; inset: 0; z-index: 9000`, so DOM position cannot affect layout.
+  It sits at the end of `<main>` here. The one thing that would break that — an
+  ancestor with `transform`, `filter` or `will-change` becoming the containing block —
+  is recorded in the template.
+
+**A THIRD TRAP WAS FOUND, and no gate could see it.** The action row first put the
+`btn-set` and Cancel in a `stack-horizontal`. That class computes `display: GRID` with
+equal tracks, so the set was handed a 299px track while its two children are 196px each
+at `flex: 0 0 auto` with `nowrap`. They do not shrink: they overflowed by 93px and
+Continue's box ran **85px through Cancel's**. Thirteen Node gates were green, the page
+never gained a horizontal scrollbar, and a ghost button has no fill to make the
+collision visible. It was found by measuring the page, which is the sixth defect on
+this project's list of things every gate passed. Cancel now has its own line.
+
+This extends the finding the archived attempt paid for rather than repeating it: three
+buttons in one set overflow, AND a set beside a separate button overflows once the panel
+narrows — 196 + 196 + 8 + 77 is 477px against this panel's 432 at md. It fits at lg and
+breaks below, which is the worst shape a bug can have.
+
+**What it cost:** the four Node-gate rejections were all useful — `check-tags` caught a
+`radio-button-group` written on a `<div>` where Carbon renders it on `<fieldset>`, and
+`check-ancestry` caught a missing `form-item` wrapper and wanted three declines
+recorded, two of them new to `templates/` because this is the first template with a
+modal in it.
+
+**What is NOT covered**, from the template's own label: the read-only summary tile
+reuses `detail-page.html`'s verified tile idiom and was not re-read live, and no running
+wizard NAVIGATION was compared — this is one step of a flow, not the flow.
+
+---
+
+The plan as it stood before the work. Kept for its reasoning.
 
 1. **Copy `form-page.html`**, which is what the attempt did and what §1 of
    `docs/composing-pages.md` says. Not the archived page.
