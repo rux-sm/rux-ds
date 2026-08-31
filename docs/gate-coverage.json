@@ -1,148 +1,148 @@
 {
-  "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
-  "_triage": "check-spacing 2026-08-31 at 547f976, against the third spacing capture of the day — the one taken after the settle test was fixed.\n\nTHREE CAPTURES, THREE SIGNATURE COUNTS, and comparing them is the only way any of the numbers mean anything. Sorted keys throughout, because check-spacing sorts a signature before it compares it: 797 in the 1.113-era reference, 777 with the broken settle at 1.115, 785 with the fixed settle at 1.115.\n\nTHE SETTLE FIX RECOVERED 8 OF THE 21 LOST, NOT ALL OF THEM. Back: btn--danger--ghost, btn--danger--tertiary, stack-horizontal.stack-scale-6, snippet__icon, skeleton__text--ai, snippet-btn--expand, tag--skeleton, tree-node label button. STILL ABSENT, 13: badge-indicator, btn-set--stacked, btn--primary at xs, xl and 2xl, inline-notification--warning, dialog-scroll-content--no-fade, three popover auto-align variants, stack-vertical.stack-scale-5, and two ai-label toggletip buttons. DIAGNOSED 2026-08-31 and none is a harvest bug. Twelve trace through their own `seen` field to stories that no longer exist: components-button--overview, -modal--overview, -composedmodal--overview, -popover--overview, -copybutton--overview, -ailabel--overview and getting-started-welcome--welcome. There are zero --overview stories in the 1.115 index -- and zero in the OLD DOM capture either, which means the old spacing file cited stories the old DOM file had never seen: two files in docs/ read as one reference, taken at different times against different Carbons, with nothing recording it. The thirteenth is a class-composition change, not a loss -- dialog-scroll-content and --no-fade are now two signatures where they were one. Roadmap 4.8 has it in full.\n\nDIVERGENCES 34, up from 31 and still below the 36 of the original reference, and every step of that is coverage rather than quality. They rose because recovered signatures brought their divergences back with them; they remain below 36 because stack-scale-5 is still missing and four pages carried that one divergence.\n\nONE REAL CARBON CHANGE SURFACED. btn--danger--ghost and btn--danger--tertiary compute display:inline-flex at 1.115 where the 1.113-era reference recorded flex, so those two now diverge against our flex. Read off both capture files rather than reasoned about. It joins the display inline-flex/flex family already adjudicated in this file, and is the first concrete evidence of what the version bump moved in the reference itself.\n\nThe rest of the 23 on the sink are the previously adjudicated set: col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant against a horizontal reference, modal heading padding that tracks content width, the nav indent, and a handful of display pairs.",
-  "_measured": "Re-swept 2026-08-31 at a5f95c8, after the Carbon bump to styles 1.114.0 and the re-capture at react 1.115.0. All 26 cells.\n\ncheck-runtime-classes: 0 stripped on all eight pages, 3 added on the sink and 1 on table-page -- unchanged. check-behaviour 37 of 37. check-rendered clean in both themes. check-a11y 8 findings and 6 notes on the sink, 0 and 0 on the other seven; the 8 are one adjudicated cause and became visible when 17a61c2 removed the aria-disabled that had been hiding seven controls from the gate. Red run 149/8, against 148/8 before the re-capture.\n\ncheck-spacing is the only figure that moved and it moved DOWNWARD IN COVERAGE, not upward in quality -- see _triage before quoting the 31.",
-  "check-a11y": {
-    "kitchen-sink.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "8 findings · 6 notes · focusRingChecked true · all eight are the one adjudicated progress-step-button cause, visible since 17a61c2 stopped check-a11y skipping them. RED RUN: 149 with rings stripped, 8 restored"
-    },
-    "portal.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "0 findings · 0 notes · focusRingChecked true"
-    }
+ "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
+ "_triage": "check-spacing 2026-08-31 at 547f976, against the third spacing capture of the day — the one taken after the settle test was fixed.\n\nTHREE CAPTURES, THREE SIGNATURE COUNTS, and comparing them is the only way any of the numbers mean anything. Sorted keys throughout, because check-spacing sorts a signature before it compares it: 797 in the 1.113-era reference, 777 with the broken settle at 1.115, 785 with the fixed settle at 1.115.\n\nTHE SETTLE FIX RECOVERED 8 OF THE 21 LOST, NOT ALL OF THEM. Back: btn--danger--ghost, btn--danger--tertiary, stack-horizontal.stack-scale-6, snippet__icon, skeleton__text--ai, snippet-btn--expand, tag--skeleton, tree-node label button. STILL ABSENT, 13: badge-indicator, btn-set--stacked, btn--primary at xs, xl and 2xl, inline-notification--warning, dialog-scroll-content--no-fade, three popover auto-align variants, stack-vertical.stack-scale-5, and two ai-label toggletip buttons. DIAGNOSED 2026-08-31 and none is a harvest bug. Twelve trace through their own `seen` field to stories that no longer exist: components-button--overview, -modal--overview, -composedmodal--overview, -popover--overview, -copybutton--overview, -ailabel--overview and getting-started-welcome--welcome. There are zero --overview stories in the 1.115 index -- and zero in the OLD DOM capture either, which means the old spacing file cited stories the old DOM file had never seen: two files in docs/ read as one reference, taken at different times against different Carbons, with nothing recording it. The thirteenth is a class-composition change, not a loss -- dialog-scroll-content and --no-fade are now two signatures where they were one. Roadmap 4.8 has it in full.\n\nDIVERGENCES 34, up from 31 and still below the 36 of the original reference, and every step of that is coverage rather than quality. They rose because recovered signatures brought their divergences back with them; they remain below 36 because stack-scale-5 is still missing and four pages carried that one divergence.\n\nONE REAL CARBON CHANGE SURFACED. btn--danger--ghost and btn--danger--tertiary compute display:inline-flex at 1.115 where the 1.113-era reference recorded flex, so those two now diverge against our flex. Read off both capture files rather than reasoned about. It joins the display inline-flex/flex family already adjudicated in this file, and is the first concrete evidence of what the version bump moved in the reference itself.\n\nThe rest of the 23 on the sink are the previously adjudicated set: col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant against a horizontal reference, modal heading padding that tracks content width, the nav indent, and a handful of display pairs.",
+ "_measured": "Re-swept 2026-08-31 at 241feaa, after the metric row landed in templates/detail-page.html. All 26 cells, each read at an emulated 1280x900 on a FRESHLY LOADED page.\n\nTWENTY-FIVE CELLS REPRODUCED THEIR PREVIOUS VALUE EXACTLY. Only detail-page moved, and it moved by exactly what the change adds: runtime-classes 99 to 105 with 0 stripped, spacing 59/58/1 to 61/59/2. The new divergence is subgrid against Carbon story padding -- a bare div carrying only the three subgrid classes computes padding-block 0 on Carbon own page, so the 32px is the story demo styling, and portal.html already carries the same divergence in its adjudicated pair. check-a11y unchanged at 0/0.\n\nWIDTH MATTERS AND WAS NOT PREVIOUSLY WRITTEN DOWN. check-spacing measures computed box properties, so its result is viewport-dependent: the sink reads 280/252/28 at 485 against 290/267/23 at 1280, and the divergence SET changes too -- breadcrumb and pagination at the narrow width, modal-header and toast-close at the wide one. 1280 reproduces every recorded figure, so 1280 is what the earlier sweeps used; it is stated here so the next reader does not have to rediscover it.\n\nA MEASUREMENT AFTER A RESIZE IS NOT A CLEAN ONE. Resizing 485 to 1280 without reloading gave the sink 291/266/25, two divergences that a fresh load at the same width does not report. Reload after resizing, before reading. That cost a wrong conclusion here before a clean run corrected it.",
+ "check-a11y": {
+  "kitchen-sink.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "8 findings · 6 notes · focusRingChecked true — the 8 are the one adjudicated progress-step-button cause, all rule \"no visible focus change\"; the 6 notes are the CSS specimens, not operable by design. RED RUN: 192 with every outline, box-shadow and border-colour stripped, 8 restored"
   },
-  "check-runtime-classes": {
-    "kitchen-sink.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "485 in file · 488 in page · 0 stripped · 3 added"
-    },
-    "portal.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "63 · 63 · 0 stripped · 0 added"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "40 · 40 · 0 stripped · 0 added"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "83 · 83 · 0 stripped · 0 added"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "99 · 99 · 0 stripped · 0 added"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "59 · 59 · 0 stripped · 0 added"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "51 · 51 · 0 stripped · 0 added"
-    }
+  "portal.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
   },
-  "check-spacing": {
-    "kitchen-sink.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "290 checked · 267 matched · 23 diverge, 0 defects — against the SETTLE-FIXED capture; see _triage"
-    },
-    "portal.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "25 · 23 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/app-shell.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "21 · 20 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/table-page.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "61 · 58 · 3 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/form-page.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "54 · 52 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/detail-page.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "59 · 58 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/empty-state.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "31 · 30 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
-    },
-    "templates/error-state.html": {
-      "date": "2026-08-31",
-      "commit": "1e3f81e",
-      "result": "28 · 27 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
-    }
+  "templates/app-shell.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
   },
-  "check-rendered": {
-    "kitchen-sink.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "35 sections · 0 collapsed · 0 escaped · 0 emptySvgs · 0 uaStyled · clean in white AND g100"
-    }
+  "templates/table-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
   },
-  "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
-  "check-behaviour": {
-    "kitchen-sink.html": {
-      "date": "2026-08-31",
-      "commit": "a5f95c8",
-      "result": "37 of 37 cases pass · 0 failed · 12 modules driven"
-    }
+  "templates/form-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
   },
-  "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
-  "_themes": "g100 SWEPT 2026-08-30 at 3078691, for the three gates the same day's white sweep did not re-read: check-a11y, check-spacing and check-runtime-classes on all eight pages. check-rendered reads both themes itself and check-behaviour is theme-blind, so those two are not in scope here.\n\nEVERY FIGURE MATCHES ITS WHITE READING. check-a11y: 1 finding and 6 notes on the sink (the same progress-step-button false positive), 0 and 0 on the other seven, focusRingChecked true on all eight. check-spacing: 293/272/21, 26/23/3, 21/20/1, 62/58/4, 54/52/2, 59/58/1, 32/30/2, 29/27/2 -- identical. check-runtime-classes: 0 stripped everywhere, 3 added on the sink and 1 on table-page.\n\nONE NUMBER MOVED AND IT IS NOT THE THEME. portal.html reads 62 classes in file and in page where the white sweep recorded 63. portal.html RENDERS this ledger: at d58b501 it carried rux--tag--red 26 times, one per STALE cell. Recording that sweep turned all 26 green, so rux--tag--red left the file entirely and the distinct-class count fell by one. Confirmed against `git show d58b501:portal.html`. It is the `_portal` fixed-point this file already documents, showing up in a count rather than in a state.\n\nThe theme was asserted from a resolved --rux-field-hover on every page, #e8e8e8 before and #333333 after, never from dataset.theme alone -- and every page was also LOOKED AT in g100, which is how the dark render was confirmed rather than assumed. The white readings above keep their own date and commit; this is a second measurement, not a replacement."
+  "templates/detail-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true — unchanged by the metric row"
+  },
+  "templates/empty-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
+  },
+  "templates/error-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "0 findings · 0 notes · focusRingChecked true"
+  }
+ },
+ "check-runtime-classes": {
+  "kitchen-sink.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "485 in file · 488 in page · 0 stripped · 3 added"
+  },
+  "portal.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "62 · 62 · 0 stripped · 0 added"
+  },
+  "templates/app-shell.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "40 · 40 · 0 stripped · 0 added"
+  },
+  "templates/table-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active"
+  },
+  "templates/form-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "83 · 83 · 0 stripped · 0 added"
+  },
+  "templates/detail-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "105 · 105 · 0 stripped · 0 added — was 99·99, +6 from the metric row, all present at runtime"
+  },
+  "templates/empty-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "59 · 59 · 0 stripped · 0 added"
+  },
+  "templates/error-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "51 · 51 · 0 stripped · 0 added"
+  }
+ },
+ "check-spacing": {
+  "kitchen-sink.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "290 checked · 267 matched · 23 diverge, 0 defects — at 1280, unchanged"
+  },
+  "portal.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "25 · 23 · 2 diverge — unchanged"
+  },
+  "templates/app-shell.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "21 · 20 · 1 diverge — unchanged"
+  },
+  "templates/table-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "61 · 58 · 3 diverge — unchanged"
+  },
+  "templates/form-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "54 · 52 · 2 diverge — unchanged"
+  },
+  "templates/detail-page.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "61 · 59 · 2 diverge — was 59·58·1; the metric row adds subgrid, whose only divergence is the story demo padding portal.html already carries"
+  },
+  "templates/empty-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "31 · 30 · 1 diverge — unchanged"
+  },
+  "templates/error-state.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "28 · 27 · 1 diverge — unchanged"
+  }
+ },
+ "check-rendered": {
+  "kitchen-sink.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "35 sections · 0 collapsed · 0 escaped · 0 emptySvgs · 0 uaStyled · clean in white AND g100 · read at 1280x900"
+  }
+ },
+ "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
+ "check-behaviour": {
+  "kitchen-sink.html": {
+   "date": "2026-08-31",
+   "commit": "241feaa",
+   "result": "37 of 37 cases pass · 0 failed · 12 modules driven"
+  }
+ },
+ "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
+ "_themes": "g100 SWEPT 2026-08-30 at 3078691, for the three gates the same day's white sweep did not re-read: check-a11y, check-spacing and check-runtime-classes on all eight pages. check-rendered reads both themes itself and check-behaviour is theme-blind, so those two are not in scope here.\n\nEVERY FIGURE MATCHES ITS WHITE READING. check-a11y: 1 finding and 6 notes on the sink (the same progress-step-button false positive), 0 and 0 on the other seven, focusRingChecked true on all eight. check-spacing: 293/272/21, 26/23/3, 21/20/1, 62/58/4, 54/52/2, 59/58/1, 32/30/2, 29/27/2 -- identical. check-runtime-classes: 0 stripped everywhere, 3 added on the sink and 1 on table-page.\n\nONE NUMBER MOVED AND IT IS NOT THE THEME. portal.html reads 62 classes in file and in page where the white sweep recorded 63. portal.html RENDERS this ledger: at d58b501 it carried rux--tag--red 26 times, one per STALE cell. Recording that sweep turned all 26 green, so rux--tag--red left the file entirely and the distinct-class count fell by one. Confirmed against `git show d58b501:portal.html`. It is the `_portal` fixed-point this file already documents, showing up in a count rather than in a state.\n\nThe theme was asserted from a resolved --rux-field-hover on every page, #e8e8e8 before and #333333 after, never from dataset.theme alone -- and every page was also LOOKED AT in g100, which is how the dark render was confirmed rather than assumed. The white readings above keep their own date and commit; this is a second measurement, not a replacement."
 }
