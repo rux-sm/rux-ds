@@ -157,10 +157,16 @@ Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 > components, plus the type utilities the tool had been omitting.
 >
 > **§4.2's exit — "75 rows, every row decided" — is no longer met**, and this is a
-> DECISION, not a measurement. Those eight have no row in `docs/inventory.md`, no
-> disposition and no fragment. Deciding them is the author's call, flagged here exactly
-> as the KB target and the JS budget's unit were. A Carbon upgrade can now widen the
-> component set behind the inventory's back, which nothing in this plan anticipated.
+> DECISION, not a measurement. A Carbon upgrade can now widen the component set behind
+> the inventory's back, which nothing in this plan anticipated.
+>
+> **Rows were written 2026-08-31** under "The eight that arrived with Carbon 1.114" in
+> `docs/inventory.md`, with each one's standalone size, its marginal cost against the
+> shipped set, and the evidence against it. `big-number` is **DEFER** — it is the only
+> one a template shape wants, the detail-page metric row, and it is blocked on having no
+> markup reference rather than on cost. **The other seven are recorded UNDECIDED**, which
+> is a real state and not a placeholder: their reasons are filed, and the call is the
+> author's.
 >
 > **The tripwire held throughout** and was never consulted: 58.9 KB gzipped against
 > 75 KB. It correctly did not fire, since nothing structural went wrong — the growth is

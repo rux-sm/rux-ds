@@ -2,9 +2,9 @@
 
 Every one of Carbon's components, with what it costs, what it drags in, and a
 disposition. Roadmap §4.2 asks for exactly this and calls the exit "75 rows, every row
-decided." **There were 75 when that was written; Carbon 1.114 ships 83, and the eight
-new ones have no row.** The exit is not met until they are decided — see the note above
-the cost table.
+decided." **There were 75 when that was written; Carbon 1.114 ships 83.** The eight new
+ones have rows as of 2026-08-31 but seven are still undecided, so the exit is not met —
+see "The eight that arrived with Carbon 1.114".
 
 **This is a decision document, not a generated one.** It was seeded from
 `docs/inventory.json` and `tools/measure.mjs` on 2026-08-28, and is maintained by
@@ -243,9 +243,44 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 2026-08-31: `progress-indicator` reversed its own DEFER on 2026-08-29 and the row was
 changed without the tally under it.
 
-**But 75 is no longer every component.** Carbon 1.114 ships 83, and the eight named
-above the cost table have no row at all — so this line counts the rows that exist, not
-the decisions the phase owes.
+**That tally covers the original 75 only.** Carbon 1.114 ships 83. The eight new ones
+now have rows — see the section directly below — but **seven of them are UNDECIDED**, so
+the full count is **34 KEEP · 14 DEFER · 28 CUT · 7 undecided**, and §4.2's exit stays
+open until those seven are called.
+
+## The eight that arrived with Carbon 1.114
+
+Rows exist now; **seven of the eight are still yours to decide.** Sized 2026-08-31 from a
+regenerated `docs/inventory.json`; the marginal column is each one compiled ON TOP of the
+shipped set, which is the only figure that answers "what does adding this cost."
+
+**One fact applies to all eight and is not a judgement call.** `docs/carbon-react-dom.json`
+was captured 2026-08-31 against `@carbon/react` 1.115.0 / `@carbon/styles` 1.114.0 — the
+version this repo compiles — with **no filter and 505 stories**. None of the eight appears
+in it as a story, a class, a co-class, a spacing signature or a slot, and none appears in
+the ibm-products captures either. Carbon ships their CSS and renders none of them. **Any
+fragment built for one of these would be invented markup**, which §1.1 and `CLAUDE.md`
+forbid, unless a targeted ibm-products capture is taken first. That is the same evidence
+ground `card`, `page-header` and `side-panel` were cut on.
+
+`EditInPlace`, `FullPageError`, `InterstitialScreen` and `OptionsTile` are also the **only
+PascalCase directories among all 83** — ibm-products' own naming convention, surviving
+the move into `@carbon/styles`.
+
+| Component | Disposition | KB | Classes | Marginal | Reason / evidence |
+|---|---|---|---|---|---|
+| `big-number` | **DEFER** | 4 | 19 | +0.3 KB | **The only one with a real page shape.** `templates/detail-page.html`'s metric row (`241feaa`) is exactly what it styles — `__label` label-01 secondary, `__value` heading-04, `__total` body-compact-01 — against the row's hand-composed `<p>`/`<h3>`/`<p>`. Deferred, not admitted, on two counts: rule 2 currently holds (tile + type build that row, verified against a running Carbon page 2026-08-31 with measurements recorded), and there is no capture to build a fragment from. **Revisit if an ibm-products capture is taken, or if IBM guidance says the hand-composed row is wrong** — that is the `progress-indicator` path, and `progress-indicator` had three capture stories where this has none |
+| `coachmark` | **UNDECIDED** | 6 | 31 | +0.9 KB | No template shape needs an onboarding beacon. Would need a behaviour module this project has not written; pulls `button`. Dearest of the eight, and the only one over +0.5 KB |
+| `EditInPlace` | **UNDECIDED** | 3 | 27 | +0.5 KB | No template shape. Depends on `toggletip-button`, and `toggletip` is itself an undecided DEFER — admitting this decides that one by implication |
+| `FullPageError` | **UNDECIDED** | 2 | 10 | +0.2 KB | **`templates/error-state.html` already builds this shape** from `inline-notification--error` + `css-grid` + buttons. Rule 2 as written fails |
+| `InterstitialScreen` | **UNDECIDED** | 4 | 21 | +0.4 KB | No template shape. **Incomplete on arrival**: it styles `cds--carousel`, and `@carbon/styles` 1.114.0 has no `carousel` component directory at all, so part of it can never resolve |
+| `OptionsTile` | **UNDECIDED** | 5 | 37 | +0.6 KB | `tile` is compiled and serves the shape. Rule 2 as written fails |
+| `scroll-gradient` | **UNDECIDED** | 2 | 9 | +0.2 KB | No template shape. A scroll affordance, not a component a page is composed from; cheapest of the eight, which decides nothing |
+| `user-avatar` | **UNDECIDED** | 5 | 28 | +0.5 KB | The shell already answers this: `app-shell.html` and `sink/ui-shell.html` put the `user--avatar` ICON in a `header__action`, and that IS capture-corroborated (`check-slots` records the slot). This component is the sized, coloured, initials avatar — a different thing, wanted by no template. Note it also emits `rux--g10`/`g90`/`g100`/`white` theme classes |
+
+**None of these has a fragment, a disposition-driven `sink/deferred/` entry, or a
+`src/app.scss` line.** Deciding one KEEP means capturing its markup first — there is
+nothing to diff a fragment against.
 
 ---
 

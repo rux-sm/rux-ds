@@ -218,8 +218,10 @@ has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
 CUT or DEFER rows in [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
 still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
 lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
-`sink/ORDER`. The other eight arrived with Carbon 1.114 and have no row, no
-disposition and no fragment — see `docs/inventory.md`'s cost table.
+`sink/ORDER`. The other eight arrived with Carbon 1.114 and now have rows — `big-number`
+DEFER, **seven still UNDECIDED** — under "The eight that arrived with Carbon 1.114" in
+`docs/inventory.md`. None has a fragment, and none can have one until its markup is
+captured: `@carbon/react` renders none of the eight.
 
 ## Commands
 
