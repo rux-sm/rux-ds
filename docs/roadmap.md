@@ -1768,16 +1768,38 @@ screen-reader pass found. **That change does nothing until someone re-captures**
 re-capturing today would silently swap the reference for seven gates with an unknown
 Carbon and leave no record that it happened.
 
-**The obvious fix is not free, and the shape is the decision.** Stamping a `_meta` key
-into the payload is one line in the extractor and a break in every consumer:
-`check-ancestry.mjs:210` does `Object.entries(...)` over the file and would read `_meta`
-as a story. So it is either a sidecar file that nothing has to skip, or a `_`-prefix
-convention added to every reader at once. Both are small; choosing between them is not
-mine to do silently.
+**DECIDED AND IMPLEMENTED 2026-08-30: `_`-prefixed keys, not a sidecar.** A sidecar file
+was the alternative and it was rejected for one reason — the fault being fixed IS drift
+between a claim and the thing it describes, and a sidecar can drift from the file it
+describes. `_`-prefixed metadata cannot: you cannot copy the captures without copying
+their provenance.
 
-**Not decided, and worth deciding before the next capture rather than after.** A
-reference set whose version nobody recorded is the same category of gap as a gate never
-pointed at a target — `docs/audits.md` exists for exactly that shape.
+It is not even a new convention here. `carbon-slots.json` already carries `_`, `_rule`,
+`_declined` and `_states`; `carbon-co-classes.json` carries `_` and `_ignored`;
+`carbon-glyphs.json` already records a `version`. The five files the extractor produces
+were the only ones without it.
+
+Landed: `tools/extract/react-dom.js` stamps `_meta` with the Carbon version, the capture
+date, the source URL, the mode and the aria allowlist it used — and warns when the
+version is still null, because Storybook does not expose it reliably and a version
+guessed automatically is worse than one left blank honestly. The three readers of the
+DOM captures (`check-tags`, `check-ancestry`, `diff-fragment`) and `check-spacing` skip
+`_`-prefixed keys.
+
+**The five existing files are stamped `carbonVersion: "unknown"`,** which is the true
+value and is written rather than guessed. Each also records that only four aria
+attributes were captured, so a future reader knows its silence about `aria-labelledby`
+means nothing.
+
+**Proved invisible rather than argued:** `check-tags` and `check-ancestry` produce
+byte-identical output before and after — 641 stories, 1109 classes, 35 with no
+reference, 5 known divergences, 0 findings; 492 corroborated ancestries, 30 declined, 0
+missing — and `check-spacing` reads 293/272/21 on the sink, unchanged.
+
+**WHAT IS STILL OPEN is the version itself.** The shape now exists; nothing has been
+re-captured, so every current reading still rests on a reference of unknown provenance.
+The next capture closes that, and it is now safe to take because it will record what it
+was taken against.
 
 #### Two blind spots from the 2026-08-30 tab-order sweep
 

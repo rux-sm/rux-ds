@@ -197,6 +197,8 @@
   const sortSig = sig => sig.split('.').filter(Boolean).sort().join('.');
   const reference = {};
   for (const [key, variants] of Object.entries(rawReference)) {
+    // `_`-prefixed keys are provenance, not class signatures -- roadmap 4.8.
+    if (key.startsWith('_')) continue;
     const k = sortSig(key);
     // Two raw keys can normalise onto one. Concatenate rather than overwrite:
     // a signature passes on ANY recorded variant, so more variants is correct.

@@ -1,4 +1,17 @@
 {
+ "_meta": {
+  "carbonVersion": "unknown",
+  "captured": "unknown",
+  "note": "Captured before provenance was recorded. The version is genuinely unknown and is written so rather than guessed -- @carbon/styles is pinned ^1.113.0 here, the extractor runs against the live Storybook, and nothing tied the two together. Roadmap 4.8 has the reasoning and the decision this shape came from. The NEXT capture stamps a real version; until then a divergence any gate reports cannot be attributed to us or to Carbon moving.",
+  "ariaRecorded": [
+   "aria-expanded",
+   "aria-selected",
+   "aria-invalid",
+   "aria-disabled"
+  ],
+  "ariaRecordedNote": "Four only. Widened to thirteen in tools/extract/react-dom.js on 2026-08-30, which takes effect on the next capture -- so aria-labelledby, aria-hidden and tabindex are ABSENT FROM THIS FILE and its silence about them means nothing.",
+  "mode": "ibm-products-states"
+ },
  "components-sidepanel--slide-over@xs": [
   "div",
   "  div",

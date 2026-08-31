@@ -822,6 +822,34 @@
     console.log(`icons — ${Object.keys(payload).length} slots, ${single} drawing exactly one glyph`);
   }
 
+  // PROVENANCE TRAVELS WITH THE DATA. Until 2026-08-30 these files recorded
+  // nothing about where they came from: 505 stories and no version, against a
+  // @carbon/styles pinned on a caret and a Storybook that serves whatever
+  // Carbon shipped last. A divergence check-tags reported could not be
+  // attributed to us or to Carbon having moved. Roadmap 4.8 has the reasoning.
+  //
+  // A sidecar file was the alternative and was rejected: the fault being fixed
+  // IS drift between a claim and the thing it describes, and a sidecar can
+  // drift. `_`-prefixed keys are already the convention in carbon-slots.json
+  // and carbon-co-classes.json; every reader skips them.
+  //
+  // FILL IN carbonVersion BY HAND. Storybook does not expose it reliably and a
+  // wrong version recorded automatically is worse than a blank one recorded
+  // honestly -- check the version switcher in the Storybook UI.
+  payload._meta = {
+    carbonVersion: null,                       // <- SET THIS before committing
+    captured: new Date().toISOString().slice(0, 10),
+    url: location.href,
+    mode: MODE,
+    ariaRecorded: ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled',
+                   'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden',
+                   'aria-current', 'aria-sort', 'aria-haspopup', 'aria-modal', 'tabindex'],
+  };
+  if (payload._meta.carbonVersion === null)
+    console.warn('  _meta.carbonVersion is null — set it from the Storybook version'
+      + ' switcher before committing, or the capture is as unattributable as the'
+      + ' ones this replaced.');
+
   const blob = new Blob([JSON.stringify(payload, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);

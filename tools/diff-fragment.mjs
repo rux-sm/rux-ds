@@ -111,6 +111,7 @@ const STORY_CLASSES = new Map();          // story id -> Set(class), for --omiss
 let stories = 0;
 for (const path of REF_PATHS) {
   for (const [id, lines] of Object.entries(JSON.parse(readFileSync(path, 'utf8')))) {
+    if (id.startsWith('_')) continue;           // `_meta` is provenance, not a story
     if (lines[0]?.startsWith('(')) continue;
     stories++;
     STORY_CLASSES.set(id, new Set());
