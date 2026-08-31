@@ -38,14 +38,25 @@
 // tool states nothing, the value is `null` — which is a finding about the tool,
 // not a blank to fill in with a guess.
 //
-import { ROOTS, markupFiles } from './sources.mjs';
+import { ROOTS, markupFiles, pageFiles } from './sources.mjs';
 
 // The pages a BROWSER gate runs against. Not the same set as the FILES a Node
 // gate reads: `sources.mjs` enumerates `sink/*.html` fragments, and no browser
 // ever loads a fragment — it loads the assembled sink, or one template. Keeping
 // these apart stops the registry claiming a shared target that does not exist.
+//
+// EVERY ROOT PAGE IS A TARGET, DISCOVERED RATHER THAN LISTED. This function
+// carried the literal ['kitchen-sink.html', 'portal.html', ...templates] until
+// 2026-08-31, which is precisely the defect `sources.mjs` was written to end --
+// its own comment says a check never run against a target is indistinguishable
+// from a check that passed, and four NODE gates had already been fixed for it.
+// The browser half was missed, so a consumer page at the root -- the artefact
+// Phase 6 exists to make possible -- could never become a sweep cell, and
+// `npm run gates` would report a full green matrix without ever having named it.
+// Found by §4.6's eighth exit attempt, which ran all five browser gates on its
+// own page BY HAND and observed that nothing would have complained if it had not.
 export function pageTargets() {
-  return ['kitchen-sink.html', 'portal.html',
+  return [...pageFiles().filter(p => p.endsWith('.html')),
     ...markupFiles(['templates']).map(f => f.path)];
 }
 

@@ -18,7 +18,7 @@ copies of a rule is how the counts in README drifted before `check-gates`.
 
 ## 1. Start from a template, never from scratch
 
-Six exist, each a **complete page** — shell included, because §4.6 asks for
+Nine exist, each a **complete page** — shell included, because §4.6 asks for
 runnable skeletons. Copy the nearest shape and delete what you do not need.
 
 | your page | start from |
@@ -34,7 +34,7 @@ runnable skeletons. Copy the nearest shape and delete what you do not need.
 sandbox, so its header and nav are positioned for a specimen rather than a page.
 
 **Read the source comments in the template you copied.** They are not decoration —
-between them the six carry roughly 2,650 lines, most of it recording an approach
+between them the nine carry roughly 4,300 lines, most of it recording an approach
 that was tried and failed. The comment above the thing you are about to change is
 usually the answer to the question you are about to ask.
 
@@ -42,7 +42,7 @@ usually the answer to the question you are about to ask.
 
 ## 2. Check the component is actually compiled
 
-**34 of 75 Carbon components are in `css/rux.css`.** `docs/inventory.md` is the
+**37 of 83 Carbon components are in `css/rux.css`.** `docs/inventory.md` is the
 list, with the reason for each cut. A class for a component that is not compiled
 resolves to nothing and fails silently — the markup looks right and the page has
 no styling on it.
@@ -107,10 +107,19 @@ ordinary cases**: WebKit has never supported a cross-document `<use>`, so every
 icon is blank in Safari, and `file://` blocks the fetch in every engine. You get
 a fully styled page with no icons on it.
 
-`npm run icons` rewrites the block in every template between `SPRITE:BEGIN` and
-`SPRITE:END`, and `check-icons` fails if one drifts. **A page outside
-`templates/` is not covered** — `icons.mjs` reads that directory only, so a
-consumer page splices by hand and will drift silently.
+`npm run icons` rewrites the block between `SPRITE:BEGIN` and `SPRITE:END` in every
+template **and in any page at the repository root that carries those markers**, and
+`check-icons` fails if one drifts. **A ROOT PAGE OPTS IN BY CARRYING THE MARKERS** —
+copy them with the rest of the template and you are covered; `tools/lib/sources.mjs`
+`spritePages()` finds it from then on.
+
+*This paragraph said the opposite until 2026-08-31* — that `icons.mjs` read
+`templates/` only and a consumer page would drift silently. That was true when it was
+written and `spritePages()` has since fixed it. §4.6's eighth exit attempt copied the
+sprite from `table-page.html`, ran `npm run icons`, and got `pages refreshed: 0 of 10`
+with `check-icons` reporting "38 fragments, 9 templates and 1 page" — already current.
+**A doc that warns about a fixed problem sends the reader to do unnecessary work by
+hand**, which is the failure mode of an unenforced document.
 
 ### 3.5 Without `stack-vertical`, everything is flush
 
@@ -252,6 +261,29 @@ sink fragment demonstrates**. The §4.6 third attempt had to reach into
 source, but it means the templates alone cannot teach this shape — a known gap
 rather than a trap, recorded here so the next person does not hunt for it.
 
+`templates/dashboard-page.html` now carries a four-tile metric row, so the reach is no
+longer forced. The row is fixed-width rather than reflowing; the responsive half of
+this gap is still open.
+
+### 3.13 Pagination silently drops half its controls below 42rem
+
+`.rux--pagination` sets `container-type: inline-size`, and
+`@container pagination (max-width: 42rem)` sets `display: none` on
+`pagination__text` and on every `> .rux--form-item`. **Under 672px the page-size
+select, the page-number select and both text labels vanish**, leaving the range and
+two arrows. No class is wrong, nothing is red, and the page gains no scrollbar.
+
+Measured 2026-08-31 by §4.6's eighth exit attempt, which put pagination in a
+`lg:col-span-12` track beside a filter column: 783px at a 1440 viewport shows the full
+bar, and **528px at 1100 shows the stripped one** — a width at which nothing else on
+the page changes.
+
+**No template can surface this.** `table-page.html` is the only page with pagination
+and it sits at `col-span-100`, which is never under 672px. Put pagination in any
+narrower column — beside a filter panel, in a split view, inside a modal — and check it
+at your narrowest breakpoint. This is Carbon's own responsive behaviour, not a defect,
+and it is exactly the kind of thing that looks finished until someone resizes.
+
 ---
 
 ## 4. Where IBM's own guidance fits
@@ -283,7 +315,7 @@ paragraphs across. The project already treats Carbon this way everywhere else:
 it diffs against captures and cites them rather than copying documentation.
 
 **And it is not a substitute for the captures.** For *markup*, `docs/carbon-*.json`
-remains the reference — 642 stories matching the compiled version, needing no
+remains the reference — 667 stories matching the compiled version, needing no
 network. `node tools/diff-fragment.mjs <name>` does it mechanically. The website
 tells you what a pattern should do; the captures tell you what the markup is.
 

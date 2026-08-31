@@ -129,15 +129,27 @@ everything before it is preparation. **All nine exist** — `app-shell.html`, `t
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
 `wizard-page.html`, `dashboard-page.html` and `settings-page.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
-`templates/` can be built from them without inventing a class. **Seven attempts
-are on record** at roadmap §4.6 — the last three all by fresh agents in clean
-worktrees, all MET, and between them they found the missing type scale, a DEFER
-whose reason had expired, and two gates that read no page at the repository
-root. The phase stays open
-until the criterion's reading is decided — the templates alone, or the repo's
-captures with them. Every gate that reads
-markup per file reads `templates/` too, and each template declares what its BEHAVIOUR
-was verified against.
+`templates/` can be built without inventing a class.
+
+**THE READING WAS DECIDED 2026-08-31 — the REPO reading**: `templates/` plus
+`sink/*.html` plus the captures in `docs/`, which is what `CLAUDE.md` already routes a
+page author to. Holding the exit to "templates alone" would fail the system for using
+its own documented routing.
+
+**AND THE CRITERION IS NOW MET.** §4.6's **eighth** attempt, the same day, by a fresh
+agent in a clean worktree with no session context: a search results page — filled
+search, a filter column, six results, count and sort, pagination — **588 lines, 0
+invented classes, `verify` exit 0**, `check-a11y` 0 findings with its focus-ring check
+run. It reached outside `templates/` seven times and every reach was a sanctioned
+source; under the rejected strict reading it would have failed at the first filter
+checkbox, which is the clearest argument that the strict reading tested the wrong
+thing.
+
+**It found four repo faults, all verified before acting** — a `composing-pages.md`
+section that warned about a problem already fixed, three stale counts in the same file,
+`pageTargets()` still hardcoded so a consumer page could never become a sweep cell, and
+a documented `<legend>` rule applied in none of the nine templates. The first three are
+fixed. Roadmap §4.6 carries the entry.
 
 **§4.5's exit criterion has been run, 2026-08-30.** Four VoiceOver recordings, 724
 announcements over 13 minutes, transcribed from the caption panel rather than from

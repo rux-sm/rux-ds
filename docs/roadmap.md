@@ -1542,7 +1542,71 @@ about whether the phase exits; it is not discarded, it is simply not this criter
 **WHAT THIS DOES NOT DO IS CLOSE THE PHASE.** Seven attempts ran against nine
 templates, but the last of them predates `wizard-page.html`, `dashboard-page.html` and
 `settings-page.html`. One fresh-agent run under the decided reading is what closes
-§4.6, and it has not been done.
+§4.6.
+
+> **EIGHTH ATTEMPT, 2026-08-31 — MET, and §4.6's EXIT CRITERION IS SATISFIED.** The
+> first run under the reading decided the same day. A search results page — filled
+> search, a filter column of checkbox and radio groups, six results, count and sort,
+> pagination — a shape none of the nine templates covers. **588 lines, 0 invented
+> classes, `npm run verify` exit 0.** Run by a fresh agent in a clean worktree with no
+> session context.
+>
+> Browser gates on its own page: `check-a11y` **0 findings, 0 notes, focus-ring check
+> RAN** — it had a focused window, which this session's automated pane did not;
+> `check-runtime-classes` 0 stripped; `check-spacing` 54 · 52 · 2, both divergences the
+> already-recorded self-indent and a grid demo artifact.
+>
+> **It reached outside `templates/` seven times, and that list is the phase's real
+> output.** `sink/search.html` for the FILLED search state, which no template ships;
+> `sink/checkbox.html` and `sink/radio.html` because **no template carries a checkbox or
+> radio group at all** — `settings-page.html` deliberately uses `rux--fieldset` for mixed
+> groups; `sink/dropdown.html` for the sort control, no template having a dropdown, where
+> `--inline` needs the modifier on THREE elements; `sink/tile.html` for the selectable
+> tile; `css/rux.css` and the captures to settle which element `tile--is-selected` may sit
+> on. **Every one of those is a sanctioned source under the repo reading, which is the
+> reading being tested.** Under the rejected "templates alone" reading this attempt fails
+> at the first filter checkbox — which is the clearest argument yet that the strict
+> reading was testing the wrong thing.
+>
+> **The design decision it got wrong first is worth more than the page.** It planned the
+> result list as radio tiles, on the captures' evidence, and abandoned that for two
+> reasons it verified rather than guessed: `label`'s content model is phrasing-only so a
+> title/description/metadata block cannot legally sit inside one, and `stack-vertical` is
+> attested on `div` and nothing else. What put it right was reading `js/tile.js:173`,
+> which syncs `tile--is-selected` from `aria-checked` AT ADOPTION. **This is the exact
+> inverse of the settings-page defect** (§4.6, 2026-08-31), where a toggle shipped
+> `aria-checked="true"` and rendered OFF because `js/form-controls.js:133` reads the
+> attribute only on interaction. **The two modules differ and NOTHING in the repository
+> says which adopt load-time state.** That is a real documentation gap, found by someone
+> having to read both.
+>
+> **Not one of the twelve documented traps caught it out** — §3.1, §3.2, §3.3, §3.4,
+> §3.5 and §3.10 all fired before the markup was written rather than after. The traps
+> that bit were the undocumented ones, and they are now §3.13 and the corrections below.
+>
+> **The page is ARCHIVED and not committed**, on the same reasoning as the five before
+> it: `~/Developer/_archive/rux-ds-exit-attempts/search-page-attempt-eight.html`.
+
+**FOUR REPO FAULTS THE ATTEMPT FOUND, all four verified independently before acting:**
+
+1. **`docs/composing-pages.md` §3.4 was FALSE.** It warned that `icons.mjs` reads
+   `templates/` only and a consumer page drifts silently. `spritePages()` has since
+   covered any root page carrying the markers; the attempt copied the sprite, ran
+   `npm run icons`, and got `0 of 10` refreshed because it was already current. **A doc
+   that warns about a fixed problem sends the reader to do unnecessary work by hand.**
+2. **`docs/composing-pages.md` counts were stale** — "Six exist" for nine templates,
+   "34 of 75" for 37 of 83, "642 stories" for 667. Exactly the drift the document
+   predicts about itself in its own closing section.
+3. **`gates.mjs pageTargets()` still carried the hardcoded page list** that
+   `sources.mjs` exists to have ended — so a consumer page at the root, THE ARTEFACT
+   THIS PHASE EXISTS TO MAKE POSSIBLE, could never become a sweep cell, and
+   `npm run gates` would report a full green matrix without ever naming it. Four NODE
+   gates had been fixed for this at `9186429`; the browser half was missed. Now
+   discovered, and proved: a root page nobody has swept takes `check-gates` to exit 1.
+4. **§3.9's `<legend>` type-class rule is documented and applied in NO template** —
+   all nine use a bare `<legend class="rux--label">`, `settings-page.html` included,
+   which is the page whose three legends are the rule's own worked example. NOT FIXED
+   here; it changes four shipped templates and wants its own decision.
 
 > **First exit attempt, 2026-08-28 — NOT MET, and usefully so.** All six templates
 > existed, so the criterion was run rather than assumed: build a dashboard, a shape none
