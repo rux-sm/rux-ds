@@ -108,14 +108,24 @@ was verified against.
 
 **§4.5's exit criterion has been run, 2026-08-30.** Four VoiceOver recordings, 724
 announcements over 13 minutes, transcribed from the caption panel rather than from
-memory. Two defects: progress steps announced as disabled, **fixed** at `17a61c2` and
-re-heard after; and the toggle announcing its name twice, **open**, because
-`aria-labelledby` is not among the four aria attributes the extractor records and the
-captures cannot settle it. Three lesser findings recorded. One prediction withdrawn as
-an error of mine. Roadmap §4.5 carries the full entry and, more usefully, what the pass
-did NOT cover — Safari only, white only, and modal and popover never opened.
+memory. Two defects, **both now fixed**: progress steps announced as disabled, fixed at
+`17a61c2` and re-heard after; and the toggle announcing its name twice, fixed at
+`a5f95c8`. The toggle was recorded here as OPEN and unsettleable until 2026-08-31,
+because `aria-labelledby` was not among the four aria attributes the extractor then
+recorded — widening that list to thirteen and re-capturing showed Carbon renders
+`span.cds--toggle__text{aria-hidden=true}`, which is what stops its own `aria-labelledby`
+doubling the name. **The toggle fix has not been re-heard**, only corroborated by the
+reference; the progress-step one was confirmed by ear. Three lesser findings recorded.
+One prediction withdrawn as an error of mine. Roadmap §4.5 carries the full entry and,
+more usefully, what the pass did NOT cover — Safari only, white only, and modal and
+popover never opened.
 
-**The remaining human task**, kept because the boundary above names it:
+**The remaining human tasks**, kept because the boundary above names it:
+
+- Flip a toggle with an AT running, to close the `a5f95c8` fix by ear. It is
+  corroborated by the reference and by nothing else, and this project has one
+  red-to-green on record precisely because that one WAS re-heard. Cheap, and it rides
+  along with the pass below.
 
 - Open a modal and a popover with an AT running. The 2026-08-30 pass never opened
   either, so a dialog's name on open, focus landing inside it, and whether the page

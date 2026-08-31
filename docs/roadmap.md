@@ -1289,7 +1289,7 @@ frames rather than from memory: 724 announcements in 13 minutes. The recordings 
 | Arrow keys in tablists | 2m20s, 103 | every tablist, and table cell navigation |
 | Tabs again + progress re-check | 2m23s, 133 | the fix, verified by ear |
 
-**TWO DEFECTS, ONE FIXED.**
+**TWO DEFECTS, BOTH NOW FIXED** — the second after this entry was first written.
 
 **Progress steps announced as disabled — fixed at `17a61c2`.** Heard "First step
 Complete, dimmed, button" and "Signing Current, dimmed, button": every unclickable step
@@ -1307,14 +1307,29 @@ check at all; the sink's reading moved 1 → 8 when the attribute went, and the 
 moved 141/1 → 148/8. **A wrong attribute can hide controls from the gate that would
 have caught it.**
 
-**Toggle announces its name twice — OPEN.** Heard "On On, on, switch" and "Off Off, off,
-switch". `aria-labelledby` on the switch points at the whole `<label>`, which holds both
-`toggle__label-text` and the state span `toggle__text`, so the name computes to both and
-a reader hears the word three times. **Not adjudicated, and the captures cannot settle
-it**: `aria-labelledby` is not among the four aria attributes
-`tools/extract/react-dom.js:388` records — the same allowlist this section already cites
-for `aria-hidden` and `tabindex`. It needs a running Carbon page, per
-`docs/verifying-templates.md`.
+**Toggle announced its name twice — fixed at `a5f95c8`.** Heard "On On, on, switch" and
+"Off Off, off, switch". `aria-labelledby` on the switch points at the whole `<label>`,
+which holds both `toggle__label-text` and the state span `toggle__text`, so the name
+computes to both and a reader hears the word three times.
+
+**On the day it was heard this could not be settled, and that is the part worth
+keeping.** `aria-labelledby` was not among the four aria attributes
+`tools/extract/react-dom.js` then recorded — the same allowlist this section already
+cites for `aria-hidden` and `tabindex` — so zero occurrences across the captures meant
+they were SILENT, not that Carbon omits it. The entry said so and said it needed a
+running Carbon page.
+
+**The re-capture answered it instead.** Widening that allowlist to thirteen and
+re-capturing at Carbon 1.115.0 rendered
+`span.cds--toggle__text{aria-hidden=true}` — Carbon hides the state span, which is why
+its own `aria-labelledby` does not double. The label still holds both spans; only one is
+readable. Ours had no `aria-hidden`, so both counted. Four spans in `sink/toggle.html`
+carry it now and the fragment records why, so it is not stripped later as noise.
+
+**It has NOT been re-heard.** The progress-step fix above was confirmed by ear; this one
+is corroborated by the reference and by nothing else. Flipping a toggle with an AT
+running belongs with the modal and popover pass that §4.5 still owes — see
+`docs/screen-reader-pass.md`, which carries this finding in full.
 
 **Three lesser findings, recorded not fixed.** Sortable column headers announce no sort
 state, because `aria-sort` sits on the `<th>` and Tab lands on the button inside it.
