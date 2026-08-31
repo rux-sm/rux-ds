@@ -156,9 +156,18 @@ frames.** Recordings are in `.brand/`, which is gitignored.
    whole tab cycle, which is rows 1-24 except modal and popover, since neither opens
    from a Tab stop alone.
 
-**STILL UNRUN: prediction 1.** Those four buttons carry `tabindex="-1"`, so a Tab pass
-cannot reach them by definition, and the `VO`+→ walk stopped nine sections short of
-`tabs`. It needs one more short `VO`+→ pass over that section alone.
+3. **Arrow-key pass over `tabs`**, 103 announcements, 2m20s —
+   `tabs-vo-pass-2026-08-30.mov`. Every tablist answered: "Details, tab, 2 of 4",
+   "Disabled, **dimmed**, tab, 4 of 4", selection following focus, and each list naming
+   its group — "Vertical tabs, tab group", "Icon tabs, tab group". Table cell navigation
+   works too: "gateway, cell", "Service, button" inside the cell.
+
+**STILL UNRUN AFTER THREE PASSES: prediction 1**, and the third pass explains why.
+Arrow keys inside a tablist visit `[role="tab"]` ONLY — that is what the roving tabindex
+is for — so they step over the close buttons exactly as Tab does. Reaching those four
+needs `VO`+→ stepping element by element through the tabs section, not arrow keys inside
+a tablist and not Tab. Put VoiceOver on the `Tabs` heading and press `VO`+→ about thirty
+times without touching a plain arrow key.
 
 ### Findings
 
