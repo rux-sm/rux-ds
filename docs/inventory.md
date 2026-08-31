@@ -217,7 +217,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `fluid-combo-box` | **CUT** | 107 | 307 | 1 | fluid-* family: a duplicate input treatment (§4.2) |
 | `fluid-dropdown` | **CUT** | 107 | 307 | 0 | fluid-* family |
 | `ai-label` | **CUT** | 99 | 242 | 0 | AI affordance — one decision with slug and chat-button (§4.2) |
-| `slug` | **CUT** | 99 | 242 | 1 | superseded by ai-label; nothing in 642 captures emits it |
+| `slug` | **CUT** | 99 | 242 | 1 | superseded by ai-label; nothing in 667 captures emits it |
 | `content-switcher` | **CUT** | 93 | 220 | 0 | overlaps tabs — **CONFIRMED BY SUBSTITUTION**: the §4.6 exit attempts reached for it twice and contained tabs served both times, correctly. Measured +1.7 KB gzipped, not 93; cost was never the reason and is not now |
 | `code-snippet` | **CUT** | 86 | 211 | 0 | documentation component, not an application one |
 | `contained-list` | **CUT** | 86 | 232 | 0 | overlaps list and data-table |
