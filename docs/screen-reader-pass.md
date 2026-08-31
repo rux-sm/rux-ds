@@ -70,14 +70,20 @@ declares. Each is specific, and **none can be reached with Tab**, which is why n
 so far has caught them. Do these before the table; if one is real it is worth knowing
 early.
 
-**1. Four buttons in `tabs` with no accessible name.** `#tabs` holds four `<button>`
-elements with no text, no `aria-label`, and only an SVG child — the close buttons on
-non-dismissible tabs, 1x1 inside `.rux--tabs__nav-item--close--hidden`. They carry
-`tabindex="-1"`, so Tab never reaches them and the tab sweep never saw them. **That
-removes an element from the tab order, not from the accessibility tree**, so `VO`+→
-should walk straight into them. Listen for a button announced with no name. If it is
-there, it is a real defect, and `check-a11y` is blind to it by construction — its
-unnamed-control rule only inspects tabbable elements.
+**1. ~~Four buttons in `tabs` with no accessible name.~~ WITHDRAWN 2026-08-30 — my
+error, and it cost four recordings.** All four carry `aria-label="Close tab"`
+(`sink/tabs.html:69, 77, 85, 93`). The claim came from a browser query that printed the
+PARENT's `aria-label` and the button's `textContent` and never read the button's own
+`aria-label` — a check that could not have found the name it was looking for. The
+structure is Carbon's as well: `div.cds--tabs__nav-item--close--hidden` holding
+`button.cds--visually-hidden.cds--tabs__nav-item--close-icon--selected` is attested in
+fourteen tab stories.
+
+**Kept rather than deleted, because the failure mode is the lesson.** Three passes were
+recorded hunting this, each missing it for a different real reason — Tab cannot reach a
+`tabindex="-1"` element, and arrow keys inside a tablist visit `[role="tab"]` only — and
+all three reasons were true and none of them mattered, because there was nothing to
+find. A prediction drawn from a query is worth no more than the query.
 
 **2. Eleven live regions in `notification`,** 6 `role="alert"` and 5 `role="status"`,
 all present at load. See the known-awkward note below before filing anything.
@@ -156,18 +162,22 @@ frames.** Recordings are in `.brand/`, which is gitignored.
    whole tab cycle, which is rows 1-24 except modal and popover, since neither opens
    from a Tab stop alone.
 
+4. **Second tabs pass plus progress re-check**, 133 announcements, 2m23s —
+   `tabs-vo-pass2-2026-08-30.mov`. **The progress fix is confirmed by ear**: "First step
+   Complete, button", "Second step Optional Current, button", "Third step Not started,
+   button" — no "dimmed" on any of them — while "Disabled step Disabled, **dimmed**,
+   button" still says it. That is a red-to-green on a defect found by listening, which
+   is the first this project has.
+
 3. **Arrow-key pass over `tabs`**, 103 announcements, 2m20s —
    `tabs-vo-pass-2026-08-30.mov`. Every tablist answered: "Details, tab, 2 of 4",
    "Disabled, **dimmed**, tab, 4 of 4", selection following focus, and each list naming
    its group — "Vertical tabs, tab group", "Icon tabs, tab group". Table cell navigation
    works too: "gateway, cell", "Service, button" inside the cell.
 
-**STILL UNRUN AFTER THREE PASSES: prediction 1**, and the third pass explains why.
-Arrow keys inside a tablist visit `[role="tab"]` ONLY — that is what the roving tabindex
-is for — so they step over the close buttons exactly as Tab does. Reaching those four
-needs `VO`+→ stepping element by element through the tabs section, not arrow keys inside
-a tablist and not Tab. Put VoiceOver on the `Tabs` heading and press `VO`+→ about thirty
-times without touching a plain arrow key.
+**ALL FOUR PREDICTIONS ARE NOW CLOSED** — three cleared by listening, and the first
+withdrawn as my own error. Tabs themselves came back clean on every pass: position,
+selected state, group name, panel, and "Disabled, dimmed, tab, 4 of 4".
 
 ### Findings
 
