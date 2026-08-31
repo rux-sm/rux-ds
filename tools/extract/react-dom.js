@@ -569,27 +569,59 @@
     };
     f.onload = () => {
       const t0 = performance.now();
+      let lastCount = -1;              // spacing: record count at the previous poll
       poll = setInterval(() => {
         try {
           const doc = f.contentDocument;
           if (missing(doc)) return finish(['(missing)']);
           const elapsed = performance.now() - t0;
           if (elapsed < SETTLE_MIN_MS) return;
-          // 'icons' NEEDS A DIFFERENT SETTLE SIGNAL, and using the shared one
-          // would have quietly ruined the harvest. The test below is "more than
-          // one record yet?", which suits a tree or a spacing table because both
-          // are dense. Icons are sparse: a story with exactly one icon would
-          // poll until maxMs and be filed (empty), and the many stories with NO
-          // icon — a legitimate, common answer — would each burn the full 6s
-          // and then be recorded as a failure. So icons settles on the story
-          // having PAINTED, which is the thing actually being waited for, and
-          // then takes however many icons there are, zero included.
-          if (MODE === 'icons') {
+          // 'icons' AND 'spacing' NEED A DIFFERENT SETTLE SIGNAL, and using the
+          // shared one quietly ruins the harvest. The test below is "more than
+          // one record yet?", which suits a DOM TREE because a tree is dense.
+          // Icons are sparse: a story with exactly one icon would poll until
+          // maxMs and be filed (empty), and the many stories with NO icon — a
+          // legitimate, common answer — would each burn the full 6s and then be
+          // recorded as a failure.
+          //
+          // SPACING IS SPARSE THE SAME WAY, and this branch did not cover it
+          // until 2026-08-31. The comment above used to claim a spacing table is
+          // dense; it is not. A story whose only spacing-relevant element is one
+          // signature — button--default, link--default, layout-stack--default,
+          // the skeletons, every IBM Plex type specimen — can never satisfy
+          // "more than one" and is filed (empty) after six seconds. The
+          // 2026-08-31 capture lost 22 of 798 signatures that way, among them
+          // btn--primary at four sizes, both danger variants, stack-scale-5 and
+          // -6, badge-indicator and inline-notification--warning. 59 stories
+          // came back empty and 0 of 59 recovered on retry, which is the tell: a
+          // slow-painting story recovers on a longer timeout, a genuinely sparse
+          // one never can.
+          //
+          // Both settle on the story having PAINTED, which is the thing actually
+          // being waited for, and then take however many records there are —
+          // one, or zero, included.
+          //
+          // SPACING WAITS ONE POLL LONGER THAN ICONS, and the reason is what it
+          // reads. Icons take geometry off the sprite, which does not move once
+          // the symbol is there. Spacing reads COMPUTED BOX PROPERTIES, and
+          // "the first Carbon element has painted" is not "layout has settled" —
+          // sampling on the first signal would trade 22 missing signatures for
+          // values measured mid-layout, which is far worse than missing: a wrong
+          // number reads as a defect in our markup. So spacing also requires the
+          // record count to be UNCHANGED since the previous poll, 100ms earlier.
+          // A story still laying out is still gaining records; one that has
+          // settled is not.
+          if (MODE === 'icons' || MODE === 'spacing') {
             if (!doc.querySelector('[class*="cds--"], [class*="c4p--"]')) {
               if (elapsed >= maxMs) finish(['(empty)']);
               return;
             }
-            return finish(capture(doc));
+            const records = capture(doc);
+            if (MODE === 'icons') return finish(records);
+            if (lastCount === records.length) return finish(records);
+            lastCount = records.length;
+            if (elapsed >= maxMs) return finish(records);   // stop waiting, take what settled
+            return;
           }
           const lines = capture(doc);
           if (lines.length > 1) return finish(lines);
