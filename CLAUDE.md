@@ -94,8 +94,8 @@ and is wrong, as is a margin; the template says why.
 table, a toolbar, batch actions and pagination. **Each template is a COMPLETE page**,
 shell included — §4.6 asks for runnable skeletons, so they duplicate rather than nest.
 
-All eight templates exist — form, detail, empty state, error state, wizard and
-dashboard included. `wizard-page.html` is the multi-step shape: a vertical progress
+All nine templates exist — form, detail, empty state, error state, wizard, dashboard
+and settings included. `wizard-page.html` is the multi-step shape: a vertical progress
 indicator in a `lg:col-span-4` column beside a `lg:col-span-8` panel, and the only
 template carrying a modal. `dashboard-page.html` is the overview shape: a metric row
 over a toolbar-less table beside an activity column. `settings-page.html` is grouped

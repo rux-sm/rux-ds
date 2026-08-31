@@ -25,8 +25,8 @@ Lean rows still read 2026-08-28 and are understated — see the third note below
 | Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **6.6 KB** | — |
 | Foundation only — 2 themes | 71 KB | **7.9 KB** | — |
 | Lean — 22 components, 2 themes | 375 KB | **~39 KB** | see note |
-| **Shipped — 34 components / 37 modules, 2 themes** | 582 KB | **58.9 KB** | 1,225 |
-| Shipped set — 4 themes | 626 KB | **59.6 KB** | 1,225 |
+| **Shipped — 36 components / 39 modules, 2 themes** | 586 KB | **59.4 KB** | 1,237 |
+| Shipped set — 4 themes | 631 KB | **60.2 KB** | 1,237 |
 | Full Carbon — 83 components / 87 modules, 4 themes | 939 KB | **94.0 KB** | 1,862 |
 
 > **THE SHIPPED ROW WAS UNDERSTATED, and the tool was the reason.** It read 548 KB /
@@ -38,11 +38,14 @@ Lean rows still read 2026-08-28 and are understated — see the third note below
 > that commit until 2026-08-31. A hardcoded include list is the same second copy the
 > theme pair was, and failed the same way; it is now read from the manifest, and the
 > shipped row matches the built artifact to the 599-byte attribution banner
-> (58.9 KB here, 59.2 KB with the banner `build.mjs` prepends).
+> (59.4 KB here, 59.7 KB with the banner `build.mjs` prepends; the figures in this
+> table were re-measured 2026-08-31 after `toggletip` and `time-picker` were admitted,
+> and the relationship still holds).
 >
 > One symptom is worth naming because it was visible in this table all along: the
 > 4-theme row read **1,112 classes against the 2-theme row's 1,128**. Themes cannot
-> remove classes. Both now read 1,225.
+> remove classes. Both read 1,225 once that was fixed, and 1,237 since `toggletip`
+> and `time-picker` were admitted — the point is that they AGREE, not the figure.
 >
 > **CARBON 1.114 SHIPS 83 COMPONENTS, NOT 75, and eight of them have no row here.**
 > `big-number`, `coachmark`, `EditInPlace`, `FullPageError`, `InterstitialScreen`,

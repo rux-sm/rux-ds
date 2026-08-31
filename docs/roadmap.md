@@ -166,9 +166,9 @@ Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 | Configuration | Minified | **Gzipped** | Classes |
 |---|---|---|---|
 | Full Carbon — 83 components / 87 modules, 4 themes | 939 KB | 94.0 KB | 1,862 |
-| **Shipped — 34 components / 37 modules, 2 themes** | 582 KB | **58.9 KB** | 1,225 |
-| Shipped set — 1 theme | 559 KB | 57.3 KB | 1,225 |
-| Shipped set — 4 themes | 626 KB | 59.6 KB | 1,225 |
+| **Shipped — 36 components / 39 modules, 2 themes** | 586 KB | **59.4 KB** | 1,237 |
+| Shipped set — 1 theme | 564 KB | 57.8 KB | 1,237 |
+| Shipped set — 4 themes | 631 KB | 60.2 KB | 1,237 |
 
 > **Amended 2026-08-31, and the previous reading of this table was wrong rather than
 > merely old.** It said 31 components / 34 modules / 546 KB / 55.6 KB, and the sentence
@@ -182,7 +182,9 @@ Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 > `docs/inventory.md` inherited that. This is the SAME failure as the theme pair
 > recorded below — a second copy of the manifest, drifting — and it now has the same
 > fix: the emit-includes are read from `src/app.scss`. The shipped row matches the built
-> artifact to the 599-byte attribution banner (58.9 KB here, 59.2 KB with it).
+> artifact to the 599-byte attribution banner (59.4 KB here, 59.7 KB with it).
+> Re-measured 2026-08-31 after `toggletip` and `time-picker` were admitted; the row
+> moved with the set, which is the behaviour the fix was for.
 >
 > **A symptom was visible, though not in this table.** This one read 1,112 classes for
 > the shipped set at one, two and four themes — self-consistent, and wrong only in being
@@ -221,7 +223,7 @@ Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 > which changed no CSS and closed a hole nothing could see: a component `src/app.scss`
 > does not name can be neither kept nor cut. `check-inventory` now requires it.
 >
-> **The tripwire held throughout** and was never consulted: 58.9 KB gzipped against
+> **The tripwire held throughout** and was never consulted: 59.4 KB gzipped against
 > 75 KB. It correctly did not fire, since nothing structural went wrong — the growth is
 > one admitted component and a deliberate type-utility emit.
 

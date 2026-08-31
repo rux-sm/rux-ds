@@ -334,21 +334,28 @@ lines and three corrections, and a template carries more discipline than a sampl
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
 last push, and `npm run verify` runs thirteen of the eighteen gates — `npm run gates`
-reports the other five and which pages each has been run against. **All 26 browser
-cells are current as of 2026-08-31** — 0 stale, 0 never run — and
+reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
+
+**There are now 35 browser cells, 0 never run and 35 stale** — and the staleness is
+expected rather than neglect. Three templates were added and two sink sections admitted
+on 2026-08-31, and the ledger invalidates a browser reading when its inputs move. Every
+page that CHANGED was swept and recorded the same day; what is stale is the untouched
+pages' readings against a moved stylesheet. **`npm run gates` prints this and does not
+fail the build**, by design — a gate red on every commit is one nobody keeps. A full
+re-sweep is a sitting's work and is the honest next step before Phase 4.
 
 | | |
 |---|---|
 | Components | **36 / 83 compiled** in 39 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 611 `--rux-*` · 1,225 `.rux--*` |
-| Kitchen sink | 35 sections · **539** classes with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **510 / 751 (68%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | 611 `--rux-*` · 1,237 `.rux--*` |
+| Kitchen sink | 37 sections · **572** classes with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **526 / 769 (68%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **35 `rendered-dom` · 6 `source` · 0 `inferred`** |
+| Markup provenance | **40 `rendered-dom` · 6 `source` · 0 `inferred`** across 46 files |
 | Icons | 59, a 16.1 KB sprite |
-| Size | 649 KB raw · 582 KB min · **59.2 KB gzipped** |
+| Size | 654 KB raw · 587 KB min · **59.7 KB gzipped** |
 | Behaviour JS | 12 modules · **34.6 KB gzipped**, against a 60 KB tripwire · 119.2 KB raw, 61% of it comment · 46.7 KB of code |
 
 Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
@@ -394,7 +401,7 @@ part worth remembering: **the exit code cannot see this**, and this README's own
 to trust it over grepping output does not help here.
 
 There is a second cost. All five browser gates declare `css/rux.css` and `js` as inputs,
-so a spurious rebuild marks all 26 browser cells DIRTY. That prints and does not fail
+so a spurious rebuild marks all 35 browser cells DIRTY. That prints and does not fail
 the build, but it destroys a `26 current · 0 stale` state that takes a browser and a
 person to re-earn. `npm install` then `npm run verify` restores `css/` byte-identically
 and the cells with it.
