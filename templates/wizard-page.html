@@ -375,13 +375,21 @@
              rgb(244,244,244) here. -->
         <div class="rux--tile">
           <div class="rux--stack-vertical rux--stack-scale-5">
+            <!-- THE VALUE IS NOT A SECTION HEADING. `<h3>` here put "Bilbao ->
+                 Toulouse" into the page's heading outline as a bare value with its
+                 label left behind in the <p> above, and skipped h2 to do it. Same
+                 defect and same fix as detail-page.html and dashboard-page.html
+                 (241feaa); it shipped a THIRD time here because no gate read the
+                 outline until check-headings. `type-heading-04` IS WHAT h3 ALREADY
+                 WAS -- Carbon styles the h3 element from the heading-04 tokens, so
+                 the utility emits the identical four declarations. -->
             <div>
               <p>Route</p>
-              <h3>Bilbao → Toulouse</h3>
+              <p class="rux--type-heading-04">Bilbao → Toulouse</p>
             </div>
             <div>
               <p>Vehicle</p>
-              <h3>Coach 14 · 53 seats</h3>
+              <p class="rux--type-heading-04">Coach 14 · 53 seats</p>
             </div>
           </div>
         </div>

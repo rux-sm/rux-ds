@@ -322,6 +322,28 @@ export const GATES = [
     knownGap: 'cannot recognise a rename as a rename',
   },
   {
+    // THE TWENTIETH, admitted 2026-08-31 (roadmap 4.8) -- the first gate whose
+    // unit is the FILE rather than an occurrence. table-page.html shipped with
+    // no h1-h6 at all and passed all seventeen gates that existed; a person
+    // walking the tab order found it. Its first run found the label/value
+    // heading defect a THIRD and FOURTH time, in wizard-page.html and in the
+    // portal generator.
+    id: 'check-headings',
+    tool: 'tools/check-headings.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a page with no heading at all · more than one `h1` · an outline that skips a level',
+    blindTo: 'whether a heading says anything useful · heading ORDER against visual order · a heading that is visually a heading and marked up as a div',
+    reads: 'every page — templates/ and the generated root pages, comments stripped',
+    fileTargets: ['templates', 'kitchen-sink.html', 'portal.html'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['templates', 'sink'],
+    redRun: 'wizard-page h1->h3 and portal h1->h3 / h2->h4, on its first run',
+    sideEffects: null,
+    baseline: '11 pages · 0 findings',
+  },
+  {
     id: 'check-provenance',
     tool: 'tools/check-provenance.mjs',
     kind: 'node',

@@ -407,7 +407,7 @@ The plan as it stood before the work. Kept for its reasoning.
 lines and three corrections, and a template carries more discipline than a sample page.
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs fourteen of the nineteen gates — `npm run gates`
+last push, and `npm run verify` runs fifteen of the twenty gates — `npm run gates`
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
@@ -530,7 +530,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Nineteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Twenty, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -547,6 +547,7 @@ Nineteen, because none is sufficient alone — see roadmap §4.1.2 for the bug t
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
 | `check-inventory.mjs` | a component Carbon ships that `docs/inventory.md` has no row for · a row carrying no disposition · a component `src/app.scss` does not list at all · a disposition the manifest contradicts | whether a disposition is RIGHT — it insists one was made, not that it was wise |
+| `check-headings.mjs` | a page with no heading at all · more than one `h1` · an outline that skips a level. Pages only — `sink/*.html` fragments are specimens, not documents | whether a heading says anything useful · a heading that looks like one and is marked up as a `div` |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
@@ -579,15 +580,36 @@ rule, which counts `[role^="menuitem"]` descendants and skips a composite with n
 zero items yielded neither a finding nor a note. The captures CAN answer this: they record
 attributes as `{name=value}` beside the element. Nothing reads them for roles.
 
-**A page carrying no heading at all.** `templates/table-page.html` rendered its only title
-as `div.data-table-header__title` and had no `h1`–`h6` anywhere. Heading navigation is a
-primary way an AT user moves through a page, and a template IS a page, so the page offered
-none. No gate asks. This one is not a provenance fault — Carbon renders that class as both
-`h2` and `div`, so neither was invented — which is exactly why no markup gate could have
-caught it: it is a composition question, and the gates check parts.
+**A page carrying no heading at all — NOW GATED, 2026-08-31.**
+`templates/table-page.html` rendered its only title as `div.data-table-header__title` and
+had no `h1`–`h6` anywhere. Heading navigation is a primary way an AT user moves through a
+page, and a template IS a page, so the page offered none. Not a provenance fault — Carbon
+renders that class as both `h2` and `div`, so neither was invented — which is exactly why
+no markup gate could have caught it: it is a composition question, and the gates check
+parts.
 
-Whether either becomes a rule is open, and the honest reason to hesitate is the same in
-both cases: a page-level assertion is not the shape the registry has. Roadmap §4.8.
+`check-headings.mjs` is the twentieth gate and closes this one. Every page carries exactly
+one `h1` and skips no level; `sink/*.html` is excluded by design, because a fragment is a
+specimen and fifty `h1`s in the assembled sink is the opposite of the point.
+
+**ITS FIRST RUN FOUND THE SAME DEFECT TWO MORE TIMES.** The label/value shape fixed on
+`detail-page.html` and `dashboard-page.html` at `241feaa` — a bare value promoted into
+the outline with its label left behind in the `<p>` above — was still live in
+`templates/wizard-page.html` ("Bilbao → Toulouse" as an `h3` under `h1`) and in
+`tools/build-portal.mjs`, whose stat tile emitted `<h3>37 / 83</h3>` on every build. A
+fourth occurrence was `portal.html`'s template cards at `h4` under `<h2>Templates</h2>`, a
+real level skip. **A fix applied to the two files where a defect was noticed is not a
+fixed defect**, and nothing here could tell the difference until something read the
+outline.
+
+All three are fixed the way `241feaa` fixed the first two, and the swap is invisible by
+construction rather than by measurement: `h3` and `.rux--type-heading-04` emit the same
+four declarations from the same tokens, and `h3` and `p` share one reset rule, so margins
+match too. The portal's template card keeps `h4`'s appearance with
+`h3.rux--type-heading-03`.
+
+**The ARIA-role blind spot above is admitted as the twenty-first and is NOT yet built.**
+Roadmap §4.8.
 
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
@@ -613,7 +635,7 @@ sort button and the nav, and the copy goes stale the moment the real state moves
 and `dashboard-page.html` — `table-sort--active` both times, the same module marking the
 same thing. Swept 2026-08-31; `docs/gate-coverage.json` carries every cell.**
 
-Fourteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
+Fifteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the

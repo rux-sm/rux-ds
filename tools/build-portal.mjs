@@ -117,11 +117,17 @@ const icon = (name, size = 16, box = 32) => {
 };
 
 // ── page pieces ─────────────────────────────────────────────────────────────
+// The VALUE is not a section heading. It was an <h3>, which put bare numbers --
+// "37 / 83", "69%" -- into the outline under h1 with the label left behind, and
+// skipped h2 to do it. Same defect as detail-page, dashboard-page and
+// wizard-page; type-heading-04 is exactly what the h3 element already computed.
+// The template card below was an <h4> under <h2>Templates</h2>, a real skip;
+// h3 + type-heading-03 keeps h4's appearance and fixes the level.
 const tile = (label, value, note) =>
 `          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>${esc(label)}</p>
-              <h3>${esc(value)}</h3>
+              <p class="rux--type-heading-04">${esc(value)}</p>
               <p>${esc(note)}</p>
             </div>
           </div>`;
@@ -164,7 +170,7 @@ const matrixRows = matrix.map(c => {
 const templateCards = templates.map(t =>
 `          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <a class="rux--tile rux--tile--clickable" href="${esc(t.path)}">
-              <h4>${esc(t.name)}</h4>
+              <h3 class="rux--type-heading-03">${esc(t.name)}</h3>
               <p>BEHAVIOUR ${esc(t.label)} · ${esc(t.date)}</p>
             </a>
           </div>`).join('\n');
