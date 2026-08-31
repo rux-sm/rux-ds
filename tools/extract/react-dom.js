@@ -385,7 +385,21 @@
     if (!el || el.nodeType !== 1) return out;
     const cls = [...el.classList].filter(c => PREFIX.test(c)).join('.');
     const role = el.getAttribute('role');
-    const aria = ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled']
+    // WIDENED 2026-08-30, from four attributes to thirteen. The old list --
+    // expanded, selected, invalid, disabled -- had blocked adjudication three
+    // times on record: aria-hidden and tabindex in roadmap 4.5's batch-actions
+    // finding, and aria-labelledby for the toggle defect the screen-reader pass
+    // found. Each time the capture's silence was indistinguishable from Carbon
+    // not setting the attribute, and one of those nearly shipped as a wrong
+    // conclusion. `role` was always recorded, which is why an invented ROLE was
+    // answerable and invented anything-else was not.
+    //
+    // THIS CHANGES NOTHING UNTIL A RE-CAPTURE, and re-capturing is not currently
+    // safe -- see roadmap 4.8, "the captures carry no version". Read that before
+    // running this script.
+    const aria = ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled',
+                  'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden',
+                  'aria-current', 'aria-sort', 'aria-haspopup', 'aria-modal', 'tabindex']
       .filter(a => el.hasAttribute(a)).map(a => `${a}=${el.getAttribute(a)}`).join(',');
     out.push('  '.repeat(depth) + el.tagName.toLowerCase()
       + (cls ? '.' + cls : '') + (role ? `[role=${role}]` : '') + (aria ? `{${aria}}` : ''));
