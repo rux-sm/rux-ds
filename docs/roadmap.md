@@ -2209,7 +2209,7 @@ Four things landed together:
 | `LICENSE` | The Apache-2.0 text, copied verbatim from `@carbon/styles`'s own copy so it is not transcribed from memory. Byte-identical to it apart from the appendix copyright line, which reads `Copyright 2026 rux` |
 | `NOTICE` | Names every artefact carrying Carbon-derived material and what was changed in each, per §4(b) |
 | Banner in `css/rux.css` and `css/rux.min.css` | Written by `tools/build.mjs`, so it survives every rebuild rather than being a one-time edit |
-| Attribution in `assets/icons.svg` | Written by `tools/icons.mjs`, and `npm run icons` inlines it into all seven templates; `build-sink` and `build-portal` carry it into the two generated pages |
+| Attribution in `assets/icons.svg` | Written by `tools/icons.mjs`, and `npm run icons` inlines it into all eight templates; `build-sink` and `build-portal` carry it into the two generated pages |
 
 **Apache-2.0 was chosen because it matches upstream.** MIT is compatible but would leave
 Carbon's Apache-2.0 material needing separate attribution anyway, so it buys nothing and

@@ -12,8 +12,8 @@ stated twice drifts — which is exactly what happened to the Status block below
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
 started** — `templates/app-shell.html` is the frame, with `table-page.html`,
-`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html` and
-`wizard-page.html` built on it. The kitchen sink remains the worked
+`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
+`wizard-page.html` and `dashboard-page.html` built on it. The kitchen sink remains the worked
 example and `sink/*.html` the markup to copy for a component no template carries.
 
 ## Status
@@ -93,9 +93,9 @@ which no react story emits. One class, and the end of the last `unknown` in the
 reference set.
 
 **DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
-everything before it is preparation. **All seven exist** — `app-shell.html`, `table-page.html`,
-`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html` and
-`wizard-page.html`.
+everything before it is preparation. **All eight exist** — `app-shell.html`, `table-page.html`,
+`form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
+`wizard-page.html` and `dashboard-page.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
 `templates/` can be built from them without inventing a class. **Seven attempts
 are on record** at roadmap §4.6 — the last three all by fresh agents in clean
@@ -166,6 +166,34 @@ popover never opened.
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | Answered 2026-08-31: **`templates/wizard-page.html` exists**, authored to the discipline the other six carry — `BEHAVIOUR:` verified against a running Carbon, `npm run icons`, three ledger cells, three ancestry declines recorded. It settled both questions the plan left open and found one new defect. See below | roadmap §4.6 |
+
+### The dashboard template — BUILT 2026-08-31
+
+`templates/dashboard-page.html`. The overview shape: a four-tile metric row over a
+toolbar-less table beside an activity column. **This is the shape §4.6's FIRST exit
+attempt got wrong**, and the reason it is a template now — that attempt shipped tiles
+that were invisible, white on white, by copying `layer-two > tile` out of
+`detail-page.html` where the idiom is correct only inside something already painting
+`layer`. The tiles here are bare and the source comment states the condition.
+
+**Verified live:** 14 of the 25 datatable captures render a `data-table-container` with
+a header and NO toolbar, so the compact table is Carbon's own shape rather than
+`table-page.html` with parts removed. Its header computes 24px of block-end padding and
+the table's top edge sits at exactly the header's bottom — a 0px gap — so nothing should
+be added between them. `data-table-header__content` is deliberately absent: Carbon
+renders that div in 23 captures and defines no rule for it, so `check-classes` rejects
+it, the same call already recorded for `cds--form`.
+
+**No new defect, and that was established rather than assumed.** The page reports four
+spacing divergences; `table-page.html` was re-run in the same session, reproduced its
+recorded 61 · 58 · 3 exactly, and two of its three are byte-identical to two of these.
+The third is `detail-page.html`'s subgrid divergence and the fourth is the self-indent
+every template carries. `check-a11y` reads **0 findings, 0 notes**.
+
+Two gate rejections, both useful: there is no bare `rux--list` class — Carbon defines
+`list--unordered`, `list--ordered` and `list--nested` and nothing named just `list` —
+and `check-tags` caught tag colours written on a `<span>` where Carbon renders them on
+a `<div>`.
 
 ### The wizard template — BUILT 2026-08-31
 
