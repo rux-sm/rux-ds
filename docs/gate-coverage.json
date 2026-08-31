@@ -89,42 +89,42 @@
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "290 checked · 267 matched · 23 diverge, 0 defects — against the SETTLE-FIXED capture; see _triage"
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "25 · 23 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "21 · 20 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "61 · 58 · 3 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "54 · 52 · 2 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "59 · 58 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "31 · 30 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "547f976",
+      "commit": "1e3f81e",
       "result": "28 · 27 · 1 diverge — against the SETTLE-FIXED capture; see _triage"
     }
   },
