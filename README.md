@@ -411,13 +411,28 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**There are now 35 browser cells, 0 never run and 35 stale** — and the staleness is
-expected rather than neglect. Three templates were added and two sink sections admitted
-on 2026-08-31, and the ledger invalidates a browser reading when its inputs move. Every
-page that CHANGED was swept and recorded the same day; what is stale is the untouched
-pages' readings against a moved stylesheet. **`npm run gates` prints this and does not
-fail the build**, by design — a gate red on every commit is one nobody keeps. A full
-re-sweep is a sitting's work and is the honest next step before Phase 4.
+**35 browser cells — 24 current, 11 stale, 0 never run.** Swept 2026-08-31 at
+`349a68c`. **Every one of the 24 either reproduced its recorded value exactly or moved by
+an amount traceable to a change made the same day** — `sink/card.html`, and the
+`h3`-to-`p` heading fix in `wizard-page.html` and the portal generator. Nothing moved
+that should not have, which is the only reason a sweep is worth taking.
+
+**The eleven `check-a11y` cells were NOT swept and are honestly still stale.** An
+automated pane reports `document.visibilityState` `"hidden"` and `document.hasFocus()`
+false, and neither can be changed from inside the page — `window.focus()` and
+`body.focus()` do not move it. `check-a11y` refuses its focus-ring half in that state BY
+DESIGN, and `gates.mjs` records the precondition: **a 0 with `focusRingChecked:false` is
+not a pass.** Recording one would produce a cell that looks swept and is not, which is
+the exact failure this ledger exists to prevent. They need a human with a focused window,
+and they ride along with the AT pass below.
+
+**The other four gates ARE sound in a hidden pane, and that is evidenced rather than
+assumed:** layout computes normally, and eleven independent readings reproduced values a
+person had taken in a visible browser. Where a gate depends on a state a hidden pane
+cannot reach, it says so itself — which is why `check-a11y` is the only one missing.
+
+**`npm run gates` prints this and does not fail the build**, by design — a gate red on
+every commit is one nobody keeps.
 
 | | |
 |---|---|

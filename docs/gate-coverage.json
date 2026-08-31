@@ -1,193 +1,193 @@
 {
- "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
- "_triage": "check-spacing 2026-08-31 at 547f976, against the third spacing capture of the day — the one taken after the settle test was fixed.\n\nTHREE CAPTURES, THREE SIGNATURE COUNTS, and comparing them is the only way any of the numbers mean anything. Sorted keys throughout, because check-spacing sorts a signature before it compares it: 797 in the 1.113-era reference, 777 with the broken settle at 1.115, 785 with the fixed settle at 1.115.\n\nTHE SETTLE FIX RECOVERED 8 OF THE 21 LOST, NOT ALL OF THEM. Back: btn--danger--ghost, btn--danger--tertiary, stack-horizontal.stack-scale-6, snippet__icon, skeleton__text--ai, snippet-btn--expand, tag--skeleton, tree-node label button. STILL ABSENT, 13: badge-indicator, btn-set--stacked, btn--primary at xs, xl and 2xl, inline-notification--warning, dialog-scroll-content--no-fade, three popover auto-align variants, stack-vertical.stack-scale-5, and two ai-label toggletip buttons. DIAGNOSED 2026-08-31 and none is a harvest bug. Twelve trace through their own `seen` field to stories that no longer exist: components-button--overview, -modal--overview, -composedmodal--overview, -popover--overview, -copybutton--overview, -ailabel--overview and getting-started-welcome--welcome. There are zero --overview stories in the 1.115 index -- and zero in the OLD DOM capture either, which means the old spacing file cited stories the old DOM file had never seen: two files in docs/ read as one reference, taken at different times against different Carbons, with nothing recording it. The thirteenth is a class-composition change, not a loss -- dialog-scroll-content and --no-fade are now two signatures where they were one. Roadmap 4.8 has it in full.\n\nDIVERGENCES 34, up from 31 and still below the 36 of the original reference, and every step of that is coverage rather than quality. They rose because recovered signatures brought their divergences back with them; they remain below 36 because stack-scale-5 is still missing and four pages carried that one divergence.\n\nONE REAL CARBON CHANGE SURFACED. btn--danger--ghost and btn--danger--tertiary compute display:inline-flex at 1.115 where the 1.113-era reference recorded flex, so those two now diverge against our flex. Read off both capture files rather than reasoned about. It joins the display inline-flex/flex family already adjudicated in this file, and is the first concrete evidence of what the version bump moved in the reference itself.\n\nThe rest of the 23 on the sink are the previously adjudicated set: col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant against a horizontal reference, modal heading padding that tracks content width, the nav indent, and a handful of display pairs.",
- "_measured": "Re-swept 2026-08-31 at 241feaa, after the metric row landed in templates/detail-page.html. All 26 cells, each read at an emulated 1280x900 on a FRESHLY LOADED page.\n\nTWENTY-FIVE CELLS REPRODUCED THEIR PREVIOUS VALUE EXACTLY. Only detail-page moved, and it moved by exactly what the change adds: runtime-classes 99 to 105 with 0 stripped, spacing 59/58/1 to 61/59/2. The new divergence is subgrid against Carbon story padding -- a bare div carrying only the three subgrid classes computes padding-block 0 on Carbon own page, so the 32px is the story demo styling, and portal.html already carries the same divergence in its adjudicated pair. check-a11y unchanged at 0/0.\n\nWIDTH MATTERS AND WAS NOT PREVIOUSLY WRITTEN DOWN. check-spacing measures computed box properties, so its result is viewport-dependent: the sink reads 280/252/28 at 485 against 290/267/23 at 1280, and the divergence SET changes too -- breadcrumb and pagination at the narrow width, modal-header and toast-close at the wide one. 1280 reproduces every recorded figure, so 1280 is what the earlier sweeps used; it is stated here so the next reader does not have to rediscover it.\n\nA MEASUREMENT AFTER A RESIZE IS NOT A CLEAN ONE. Resizing 485 to 1280 without reloading gave the sink 291/266/25, two divergences that a fresh load at the same width does not report. Reload after resizing, before reading. That cost a wrong conclusion here before a clean run corrected it.\n\nWIZARD PAGE ADDED 2026-08-31 at b1953be, three new cells, read at 1440x900 on a\nfreshly loaded page. check-runtime-classes was run BEFORE any click, per the\ncondition that a touched page reports interaction state as markup drift.\n\nTHE SWEEP FOUND A DEFECT THE NODE GATES COULD NOT. The action row first put the\nbtn-set and Cancel in a stack-horizontal; that class computes display:GRID with\nequal tracks, so the set got a 299px track while its two children are 196px each\nat flex:0 0 auto with nowrap. They overflowed by 93px and Continue's box ran 85px\nTHROUGH Cancel's. Every Node gate was green, the page never gained a horizontal\nscrollbar, and a ghost button has no fill to make the collision visible. Cancel\nnow has its own line and both widths measure clean: at 1440 the panel is 512px\nand the set ends exactly on its right edge; at 800 the columns stack, the panel\nis 672px and nothing overflows. The vertical progress indicator stays\nflex-direction:column at both, which is what the live Carbon read predicted.\n\nDASHBOARD PAGE ADDED 2026-08-31 at b160e50, three new cells at 1440x900,\ncheck-runtime-classes first on a freshly loaded page.\n\nNO NEW DEFECT, and the way that was established is worth keeping. Its four\nspacing divergences were not adjudicated by inspection: templates/table-page.html\nwas re-run in the same session and reproduced its recorded 61 - 58 - 3 exactly,\nand two of its three divergences are byte-identical to two of the dashboard's.\nSo the compact table -- container and header with no toolbar, which 14 of the 25\ndatatable captures render -- introduces nothing. The remaining two are\ndetail-page's subgrid divergence and the self-indent every template carries.\n\nThe tile rule held: bare tiles on a plain page, visible. That is the defect\n4.6's FIRST exit attempt shipped, and this is the first template to carry the\nshape that produced it.\n\nSETTINGS PAGE ADDED 2026-08-31 at 58be97a, and it found a defect in two\ntemplates that were already shipped.\n\ntemplates/form-page.html and templates/detail-page.html were both missing\naria-hidden=\"true\" on span.rux--toggle__text. That is the defect fixed at\na5f95c8 and heard by ear on 2026-08-30 -- the toggle announcing its own name\ntwice -- and the fix went into sink/toggle.html and NOWHERE ELSE. It was found\nby building a third page with a toggle on it and reading sink/toggle.html to\ncopy the markup properly.\n\nNO GATE READS IT, and the re-sweep proves that rather than asserting it: both\npages reproduce their previous numbers exactly after the fix -- form-page\n83/83 and 54-52-2, detail-page 105/105 -- and check-a11y was 0 findings before\nand after. An attribute no instrument reads is one only a person copying from\nthe right source will get right.\n\nThe settings page also shipped, briefly, a toggle with aria-checked=\"true\" and\nno toggle__switch--checked: the module sets that class on interaction and never\nreads aria-checked at load, so it rendered OFF while saying On. Every gate\npassed. The screenshot did not.\n\nMETRIC-ROW HEADING FIX, 2026-08-31 at 3448844. Both pages re-swept at\n1440x900.\n\nTHE DEFECT NO GATE SAW. The metric value was an <h3>, so detail-page's outline\nread h1 then four h3 and dashboard-page's read h1, four h3, then BACKWARDS to\nh2. A listener navigating by heading heard bare numbers -- \"6 / 6\", \"12.4k\" --\nwith the label left behind in the <p> above, and the level skipped h2 entirely.\n\ncheck-a11y read 0 findings on both pages before the fix and 0 after. It does\nnot inspect heading structure. The defect was found by capturing big-number's\nreal markup, which uses figure/figcaption and no heading at all, and diffing\nthe hand-composed row against it. That is the capture paying for itself on the\nday it was taken.\n\nTHE FIX IS INVISIBLE, measured rather than assumed: Carbon styles the h3\nELEMENT from the heading-04 tokens, so p.rux--type-heading-04 emits the\nidentical four declarations. Compared on the running page, identical on all\nnine computed properties and the same 133x36 box. Screenshots before and after\nare indistinguishable.\n\nTOGGLETIP AND TIME-PICKER ADMITTED 2026-08-31 at d3663f7. All five sink cells\nre-swept at 1280x900, check-runtime-classes and check-rendered first on an\nuntouched page.\n\nRESTORING TWO DEFERRED FRAGMENTS FOUND TWO LATENT DEFECTS, and that is the\nfinding worth keeping. sink/time-picker.html carried #i-error--filled in a\ncheckbox__invalid-icon slot where Carbon draws warning--filled, corroborated\nacross 6 sibling slots. sink/toggletip.html was missing\npopover--high-contrast on its container, which Carbon renders in ALL 55\ncaptures that draw a toggletip-button and which is what makes a toggletip dark.\n\nBOTH ROTTED FOR THE SAME REASON: sink/deferred/ is outside every gate's target\nset. The fragments were quarried 2026-08-27 and 2026-08-28; check-slots and\ncheck-ancestry landed after them. A deferred fragment silently falls out of\nstep with gates that arrive later, and RESTORING ONE IS THE ONLY THING THAT\nFINDS OUT. Both defects were caught by npm run verify within seconds of the\nrestore, so the gates work -- they were simply never pointed at these files.",
- "check-a11y": {
-  "kitchen-sink.html": {
-   "date": "2026-08-31",
-   "commit": "d3663f7",
-   "result": "8 findings · 6 notes · focusRingChecked true — reproduces the recorded baseline exactly. The two new sections added no finding and no note: toggletip is operable, so it is not a specimen"
+  "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
+  "_triage": "SWEPT 2026-08-31 at 349a68c, 24 of 35 cells. Every reading either reproduced its recorded value EXACTLY or moved by an amount traceable to a change made the same day -- sink/card.html, and the h3-to-p heading fix in wizard-page and the portal generator. Nothing moved that should not have.\n\nTHE ELEVEN check-a11y CELLS WERE NOT SWEPT AND ARE STILL STALE. The automated pane reports document.visibilityState \"hidden\" and document.hasFocus() false, and neither can be changed from inside the page -- window.focus() and body.focus() do not move it. check-a11y refuses its focus-ring half in that state BY DESIGN, and gates.mjs records the precondition: a 0 with focusRingChecked:false is not a pass. Recording one would have produced a cell that looks swept and is not, which is the exact failure this ledger exists to prevent. They need a human with a focused window.\n\nTHE OTHER FOUR GATES ARE SOUND IN A HIDDEN PANE, and that is evidenced rather than assumed: layout computes normally (card measured 297x212 with a real background), and eleven independent readings reproduced values a person had taken in a visible browser. Where a gate depends on a state a hidden pane cannot reach, it says so itself -- which is why only check-a11y is missing.\n\ncheck-spacing 2026-08-31 at 547f976, against the third spacing capture of the day — the one taken after the settle test was fixed.\n\nTHREE CAPTURES, THREE SIGNATURE COUNTS, and comparing them is the only way any of the numbers mean anything. Sorted keys throughout, because check-spacing sorts a signature before it compares it: 797 in the 1.113-era reference, 777 with the broken settle at 1.115, 785 with the fixed settle at 1.115.\n\nTHE SETTLE FIX RECOVERED 8 OF THE 21 LOST, NOT ALL OF THEM. Back: btn--danger--ghost, btn--danger--tertiary, stack-horizontal.stack-scale-6, snippet__icon, skeleton__text--ai, snippet-btn--expand, tag--skeleton, tree-node label button. STILL ABSENT, 13: badge-indicator, btn-set--stacked, btn--primary at xs, xl and 2xl, inline-notification--warning, dialog-scroll-content--no-fade, three popover auto-align variants, stack-vertical.stack-scale-5, and two ai-label toggletip buttons. DIAGNOSED 2026-08-31 and none is a harvest bug. Twelve trace through their own `seen` field to stories that no longer exist: components-button--overview, -modal--overview, -composedmodal--overview, -popover--overview, -copybutton--overview, -ailabel--overview and getting-started-welcome--welcome. There are zero --overview stories in the 1.115 index -- and zero in the OLD DOM capture either, which means the old spacing file cited stories the old DOM file had never seen: two files in docs/ read as one reference, taken at different times against different Carbons, with nothing recording it. The thirteenth is a class-composition change, not a loss -- dialog-scroll-content and --no-fade are now two signatures where they were one. Roadmap 4.8 has it in full.\n\nDIVERGENCES 34, up from 31 and still below the 36 of the original reference, and every step of that is coverage rather than quality. They rose because recovered signatures brought their divergences back with them; they remain below 36 because stack-scale-5 is still missing and four pages carried that one divergence.\n\nONE REAL CARBON CHANGE SURFACED. btn--danger--ghost and btn--danger--tertiary compute display:inline-flex at 1.115 where the 1.113-era reference recorded flex, so those two now diverge against our flex. Read off both capture files rather than reasoned about. It joins the display inline-flex/flex family already adjudicated in this file, and is the first concrete evidence of what the version bump moved in the reference itself.\n\nThe rest of the 23 on the sink are the previously adjudicated set: col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant against a horizontal reference, modal heading padding that tracks content width, the nav indent, and a handful of display pairs.",
+  "_measured": "Re-swept 2026-08-31 at 241feaa, after the metric row landed in templates/detail-page.html. All 26 cells, each read at an emulated 1280x900 on a FRESHLY LOADED page.\n\nTWENTY-FIVE CELLS REPRODUCED THEIR PREVIOUS VALUE EXACTLY. Only detail-page moved, and it moved by exactly what the change adds: runtime-classes 99 to 105 with 0 stripped, spacing 59/58/1 to 61/59/2. The new divergence is subgrid against Carbon story padding -- a bare div carrying only the three subgrid classes computes padding-block 0 on Carbon own page, so the 32px is the story demo styling, and portal.html already carries the same divergence in its adjudicated pair. check-a11y unchanged at 0/0.\n\nWIDTH MATTERS AND WAS NOT PREVIOUSLY WRITTEN DOWN. check-spacing measures computed box properties, so its result is viewport-dependent: the sink reads 280/252/28 at 485 against 290/267/23 at 1280, and the divergence SET changes too -- breadcrumb and pagination at the narrow width, modal-header and toast-close at the wide one. 1280 reproduces every recorded figure, so 1280 is what the earlier sweeps used; it is stated here so the next reader does not have to rediscover it.\n\nA MEASUREMENT AFTER A RESIZE IS NOT A CLEAN ONE. Resizing 485 to 1280 without reloading gave the sink 291/266/25, two divergences that a fresh load at the same width does not report. Reload after resizing, before reading. That cost a wrong conclusion here before a clean run corrected it.\n\nWIZARD PAGE ADDED 2026-08-31 at b1953be, three new cells, read at 1440x900 on a\nfreshly loaded page. check-runtime-classes was run BEFORE any click, per the\ncondition that a touched page reports interaction state as markup drift.\n\nTHE SWEEP FOUND A DEFECT THE NODE GATES COULD NOT. The action row first put the\nbtn-set and Cancel in a stack-horizontal; that class computes display:GRID with\nequal tracks, so the set got a 299px track while its two children are 196px each\nat flex:0 0 auto with nowrap. They overflowed by 93px and Continue's box ran 85px\nTHROUGH Cancel's. Every Node gate was green, the page never gained a horizontal\nscrollbar, and a ghost button has no fill to make the collision visible. Cancel\nnow has its own line and both widths measure clean: at 1440 the panel is 512px\nand the set ends exactly on its right edge; at 800 the columns stack, the panel\nis 672px and nothing overflows. The vertical progress indicator stays\nflex-direction:column at both, which is what the live Carbon read predicted.\n\nDASHBOARD PAGE ADDED 2026-08-31 at b160e50, three new cells at 1440x900,\ncheck-runtime-classes first on a freshly loaded page.\n\nNO NEW DEFECT, and the way that was established is worth keeping. Its four\nspacing divergences were not adjudicated by inspection: templates/table-page.html\nwas re-run in the same session and reproduced its recorded 61 - 58 - 3 exactly,\nand two of its three divergences are byte-identical to two of the dashboard's.\nSo the compact table -- container and header with no toolbar, which 14 of the 25\ndatatable captures render -- introduces nothing. The remaining two are\ndetail-page's subgrid divergence and the self-indent every template carries.\n\nThe tile rule held: bare tiles on a plain page, visible. That is the defect\n4.6's FIRST exit attempt shipped, and this is the first template to carry the\nshape that produced it.\n\nSETTINGS PAGE ADDED 2026-08-31 at 58be97a, and it found a defect in two\ntemplates that were already shipped.\n\ntemplates/form-page.html and templates/detail-page.html were both missing\naria-hidden=\"true\" on span.rux--toggle__text. That is the defect fixed at\na5f95c8 and heard by ear on 2026-08-30 -- the toggle announcing its own name\ntwice -- and the fix went into sink/toggle.html and NOWHERE ELSE. It was found\nby building a third page with a toggle on it and reading sink/toggle.html to\ncopy the markup properly.\n\nNO GATE READS IT, and the re-sweep proves that rather than asserting it: both\npages reproduce their previous numbers exactly after the fix -- form-page\n83/83 and 54-52-2, detail-page 105/105 -- and check-a11y was 0 findings before\nand after. An attribute no instrument reads is one only a person copying from\nthe right source will get right.\n\nThe settings page also shipped, briefly, a toggle with aria-checked=\"true\" and\nno toggle__switch--checked: the module sets that class on interaction and never\nreads aria-checked at load, so it rendered OFF while saying On. Every gate\npassed. The screenshot did not.\n\nMETRIC-ROW HEADING FIX, 2026-08-31 at 3448844. Both pages re-swept at\n1440x900.\n\nTHE DEFECT NO GATE SAW. The metric value was an <h3>, so detail-page's outline\nread h1 then four h3 and dashboard-page's read h1, four h3, then BACKWARDS to\nh2. A listener navigating by heading heard bare numbers -- \"6 / 6\", \"12.4k\" --\nwith the label left behind in the <p> above, and the level skipped h2 entirely.\n\ncheck-a11y read 0 findings on both pages before the fix and 0 after. It does\nnot inspect heading structure. The defect was found by capturing big-number's\nreal markup, which uses figure/figcaption and no heading at all, and diffing\nthe hand-composed row against it. That is the capture paying for itself on the\nday it was taken.\n\nTHE FIX IS INVISIBLE, measured rather than assumed: Carbon styles the h3\nELEMENT from the heading-04 tokens, so p.rux--type-heading-04 emits the\nidentical four declarations. Compared on the running page, identical on all\nnine computed properties and the same 133x36 box. Screenshots before and after\nare indistinguishable.\n\nTOGGLETIP AND TIME-PICKER ADMITTED 2026-08-31 at d3663f7. All five sink cells\nre-swept at 1280x900, check-runtime-classes and check-rendered first on an\nuntouched page.\n\nRESTORING TWO DEFERRED FRAGMENTS FOUND TWO LATENT DEFECTS, and that is the\nfinding worth keeping. sink/time-picker.html carried #i-error--filled in a\ncheckbox__invalid-icon slot where Carbon draws warning--filled, corroborated\nacross 6 sibling slots. sink/toggletip.html was missing\npopover--high-contrast on its container, which Carbon renders in ALL 55\ncaptures that draw a toggletip-button and which is what makes a toggletip dark.\n\nBOTH ROTTED FOR THE SAME REASON: sink/deferred/ is outside every gate's target\nset. The fragments were quarried 2026-08-27 and 2026-08-28; check-slots and\ncheck-ancestry landed after them. A deferred fragment silently falls out of\nstep with gates that arrive later, and RESTORING ONE IS THE ONLY THING THAT\nFINDS OUT. Both defects were caught by npm run verify within seconds of the\nrestore, so the gates work -- they were simply never pointed at these files.",
+  "check-a11y": {
+    "kitchen-sink.html": {
+      "date": "2026-08-31",
+      "commit": "d3663f7",
+      "result": "8 findings · 6 notes · focusRingChecked true — reproduces the recorded baseline exactly. The two new sections added no finding and no note: toggletip is operable, so it is not a specimen"
+    },
+    "portal.html": {
+      "date": "2026-08-31",
+      "commit": "241feaa",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-31",
+      "commit": "241feaa",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-31",
+      "commit": "241feaa",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-31",
+      "commit": "58be97a",
+      "result": "0 findings · 0 notes · focusRingChecked true — unchanged"
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-31",
+      "commit": "3448844",
+      "result": "0 findings · 0 notes · focusRingChecked true — unchanged, and it was 0 while the heading defect was live, which is the point"
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-31",
+      "commit": "241feaa",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-31",
+      "commit": "241feaa",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/wizard-page.html": {
+      "date": "2026-08-31",
+      "commit": "b1953be",
+      "result": "4 findings · 0 notes · focusRingChecked true — all 4 are the one adjudicated progress-step-button false positive, one per step; same rule and same cause as the sink’s 8"
+    },
+    "templates/dashboard-page.html": {
+      "date": "2026-08-31",
+      "commit": "3448844",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/settings-page.html": {
+      "date": "2026-08-31",
+      "commit": "58be97a",
+      "result": "0 findings · 0 notes · focusRingChecked true"
+    }
   },
-  "portal.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "0 findings · 0 notes · focusRingChecked true"
+  "check-runtime-classes": {
+    "kitchen-sink.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "526 in file · 529 in page · 0 stripped · 3 added — the same three documented classes: data-table--selected, side-nav__overlay-active, table-sort--active. 501 to 526 is sink/card.html."
+    },
+    "portal.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "65 · 65 · 0 stripped · 0 added — was 62 · 62; +3 is the heading fix, which put type-heading-04 and type-heading-03 into the generated markup."
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "40 · 40 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active, reproduced exactly."
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "83 · 83 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "106 · 106 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "59 · 59 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "51 · 51 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/wizard-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "93 · 93 · 0 stripped · 0 added — was 92 · 92; +1 is type-heading-04 from the h3 heading fix."
+    },
+    "templates/dashboard-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "75 in file · 76 in page · 0 stripped · 1 added — table-sort--active, reproduced exactly."
+    },
+    "templates/settings-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "72 · 72 · 0 stripped · 0 added — reproduced exactly."
+    }
   },
-  "templates/app-shell.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "0 findings · 0 notes · focusRingChecked true"
+  "check-spacing": {
+    "kitchen-sink.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "312 · 287 · 25 diverge, 0 defects — at 1280x900, was 298 · 274 · 24. The ONE new divergence is card’s icon-only action button, display ours flex / Carbon inline-flex, which joins the inline-flex family already adjudicated in _triage. +14 checked and +13 matched are sink/card.html."
+    },
+    "portal.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "25 · 23 · 2 diverge — unchanged, at 1440x900."
+    },
+    "templates/app-shell.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "21 · 20 · 1 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/table-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "61 · 58 · 3 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/form-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "54 · 52 · 2 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/detail-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "61 · 59 · 2 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/empty-state.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "31 · 30 · 1 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/error-state.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "28 · 27 · 1 diverge — reproduced exactly, at 1440x900."
+    },
+    "templates/wizard-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "55 · 47 · 8 diverge, 0 defects — reproduced exactly, at 1440x900, and UNMOVED by the h3-to-p heading fix, which was the point of re-reading it."
+    },
+    "templates/dashboard-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "33 · 29 · 4 diverge, 0 defects — reproduced exactly, at 1440x900."
+    },
+    "templates/settings-page.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "44 · 43 · 1 diverge, 0 defects — reproduced exactly, at 1440x900."
+    }
   },
-  "templates/table-page.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "0 findings · 0 notes · focusRingChecked true"
+  "check-rendered": {
+    "kitchen-sink.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "38 sections (was 37) · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled. The new section is card."
+    }
   },
-  "templates/form-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "0 findings · 0 notes · focusRingChecked true — unchanged"
+  "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
+  "check-behaviour": {
+    "kitchen-sink.html": {
+      "date": "2026-08-31",
+      "commit": "349a68c",
+      "result": "37 / 37 passed · 0 failed, over 12 modules — reproduced exactly. card adds no case: it is a static container and its clickable specimen is role=button with no module, on the sink’s specimen convention."
+    }
   },
-  "templates/detail-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "0 findings · 0 notes · focusRingChecked true — unchanged, and it was 0 while the heading defect was live, which is the point"
-  },
-  "templates/empty-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "0 findings · 0 notes · focusRingChecked true"
-  },
-  "templates/error-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "0 findings · 0 notes · focusRingChecked true"
-  },
-  "templates/wizard-page.html": {
-   "date": "2026-08-31",
-   "commit": "b1953be",
-   "result": "4 findings · 0 notes · focusRingChecked true — all 4 are the one adjudicated progress-step-button false positive, one per step; same rule and same cause as the sink’s 8"
-  },
-  "templates/dashboard-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "0 findings · 0 notes · focusRingChecked true"
-  },
-  "templates/settings-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "0 findings · 0 notes · focusRingChecked true"
-  }
- },
- "check-runtime-classes": {
-  "kitchen-sink.html": {
-   "date": "2026-08-31",
-   "commit": "d3663f7",
-   "result": "501 in file · 504 in page · 0 stripped · 3 added — the same three documented classes; toggletip and time-picker added none"
-  },
-  "portal.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "62 · 62 · 0 stripped · 0 added"
-  },
-  "templates/app-shell.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "40 · 40 · 0 stripped · 0 added"
-  },
-  "templates/table-page.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active"
-  },
-  "templates/form-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "83 · 83 · 0 stripped · 0 added — unchanged by the aria-hidden fix, as expected: no gate reads that attribute"
-  },
-  "templates/detail-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "106 · 106 · 0 stripped · 0 added — was 105, +1 for rux--type-heading-04 replacing the h3"
-  },
-  "templates/empty-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "59 · 59 · 0 stripped · 0 added"
-  },
-  "templates/error-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "51 · 51 · 0 stripped · 0 added"
-  },
-  "templates/wizard-page.html": {
-   "date": "2026-08-31",
-   "commit": "b1953be",
-   "result": "92 · 92 · 0 stripped · 0 added — read FIRST on a freshly loaded page, before any click"
-  },
-  "templates/dashboard-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "75 in file · 76 in page · 0 stripped · 1 added — table-sort--active, as table-page records"
-  },
-  "templates/settings-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "72 · 72 · 0 stripped · 0 added"
-  }
- },
- "check-spacing": {
-  "kitchen-sink.html": {
-   "date": "2026-08-31",
-   "commit": "d3663f7",
-   "result": "298 · 274 · 24 diverge, 0 defects — at 1280x900, was 290 · 267 · 23. The one new divergence is toggletip-label display at 1 of 2 variants, the sampling-artifact shape already adjudicated elsewhere in this file"
-  },
-  "portal.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "25 · 23 · 2 diverge — unchanged"
-  },
-  "templates/app-shell.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "21 · 20 · 1 diverge — unchanged"
-  },
-  "templates/table-page.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "61 · 58 · 3 diverge — unchanged"
-  },
-  "templates/form-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "54 · 52 · 2 diverge — reproduced its recorded value exactly, at 1440x900"
-  },
-  "templates/detail-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "61 · 59 · 2 diverge — at 1440x900. Back to its long-recorded 61 · 59 · 2: the two elements that dropped out at this width are the ones the type class now classes"
-  },
-  "templates/empty-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "31 · 30 · 1 diverge — unchanged"
-  },
-  "templates/error-state.html": {
-   "date": "2026-08-31",
-   "commit": "241feaa",
-   "result": "28 · 27 · 1 diverge — unchanged"
-  },
-  "templates/wizard-page.html": {
-   "date": "2026-08-31",
-   "commit": "b1953be",
-   "result": "55 · 47 · 8 diverge, 0 defects — at 1440x900. 1 is the template’s own 288px self-indent on rux--content, as on every template; 5 are progress vertical-vs-horizontal, and the vertical numbers were confirmed against a RUNNING Carbon (min-block-size 58px, read 2026-08-31); 1 is a 1/4 grid-column sampling artifact; 1 is modal-header__heading padding-inline-end 7.9 vs 92.4, which is the --xs container sizing its header grid cell to stop at the close button rather than padding past it — measured, heading box ends at 844 and the close button starts at 844, text ends at 757, no collision"
-  },
-  "templates/dashboard-page.html": {
-   "date": "2026-08-31",
-   "commit": "3448844",
-   "result": "33 · 29 · 4 diverge, 0 defects — unchanged by the heading fix; all four inherited, see the earlier entry"
-  },
-  "templates/settings-page.html": {
-   "date": "2026-08-31",
-   "commit": "58be97a",
-   "result": "44 · 43 · 1 diverge, 0 defects — at 1440x900. The single divergence is the template’s own 288px self-indent on rux--content, which every template carries. The cleanest reading of any page here"
-  }
- },
- "check-rendered": {
-  "kitchen-sink.html": {
-   "date": "2026-08-31",
-   "commit": "d3663f7",
-   "result": "37 sections (was 35) · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled, in BOTH themes"
-  }
- },
- "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
- "check-behaviour": {
-  "kitchen-sink.html": {
-   "date": "2026-08-31",
-   "commit": "d3663f7",
-   "result": "37 / 37 passed · 0 failed, over 12 modules. The toggletip was additionally driven by hand: clicking toggletip-button sets aria-expanded true and opens the popover, with NO new code — js/popover.js claims .rux--popover-container on click, which is what a toggletip is"
-  }
- },
- "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
- "_themes": "g100 SWEPT 2026-08-30 at 3078691, for the three gates the same day's white sweep did not re-read: check-a11y, check-spacing and check-runtime-classes on all eight pages. check-rendered reads both themes itself and check-behaviour is theme-blind, so those two are not in scope here.\n\nEVERY FIGURE MATCHES ITS WHITE READING. check-a11y: 1 finding and 6 notes on the sink (the same progress-step-button false positive), 0 and 0 on the other seven, focusRingChecked true on all eight. check-spacing: 293/272/21, 26/23/3, 21/20/1, 62/58/4, 54/52/2, 59/58/1, 32/30/2, 29/27/2 -- identical. check-runtime-classes: 0 stripped everywhere, 3 added on the sink and 1 on table-page.\n\nONE NUMBER MOVED AND IT IS NOT THE THEME. portal.html reads 62 classes in file and in page where the white sweep recorded 63. portal.html RENDERS this ledger: at d58b501 it carried rux--tag--red 26 times, one per STALE cell. Recording that sweep turned all 26 green, so rux--tag--red left the file entirely and the distinct-class count fell by one. Confirmed against `git show d58b501:portal.html`. It is the `_portal` fixed-point this file already documents, showing up in a count rather than in a state.\n\nThe theme was asserted from a resolved --rux-field-hover on every page, #e8e8e8 before and #333333 after, never from dataset.theme alone -- and every page was also LOOKED AT in g100, which is how the dark render was confirmed rather than assumed. The white readings above keep their own date and commit; this is a second measurement, not a replacement."
+  "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
+  "_themes": "g100 SWEPT 2026-08-30 at 3078691, for the three gates the same day's white sweep did not re-read: check-a11y, check-spacing and check-runtime-classes on all eight pages. check-rendered reads both themes itself and check-behaviour is theme-blind, so those two are not in scope here.\n\nEVERY FIGURE MATCHES ITS WHITE READING. check-a11y: 1 finding and 6 notes on the sink (the same progress-step-button false positive), 0 and 0 on the other seven, focusRingChecked true on all eight. check-spacing: 293/272/21, 26/23/3, 21/20/1, 62/58/4, 54/52/2, 59/58/1, 32/30/2, 29/27/2 -- identical. check-runtime-classes: 0 stripped everywhere, 3 added on the sink and 1 on table-page.\n\nONE NUMBER MOVED AND IT IS NOT THE THEME. portal.html reads 62 classes in file and in page where the white sweep recorded 63. portal.html RENDERS this ledger: at d58b501 it carried rux--tag--red 26 times, one per STALE cell. Recording that sweep turned all 26 green, so rux--tag--red left the file entirely and the distinct-class count fell by one. Confirmed against `git show d58b501:portal.html`. It is the `_portal` fixed-point this file already documents, showing up in a count rather than in a state.\n\nThe theme was asserted from a resolved --rux-field-hover on every page, #e8e8e8 before and #333333 after, never from dataset.theme alone -- and every page was also LOOKED AT in g100, which is how the dark render was confirmed rather than assumed. The white readings above keep their own date and commit; this is a second measurement, not a replacement."
 }
