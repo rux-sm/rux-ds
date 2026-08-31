@@ -297,30 +297,62 @@
              one of them invisible. -->
         <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <!-- THE VALUE IS A <p>, NOT AN <h3>, AND THAT IS THE POINT OF THIS
+                 COMMENT. It was an h3 until 2026-08-31 and the heading outline
+                 read h1 then four h3s -- a screen-reader user navigating by
+                 heading heard bare numbers, "6 / 6" and "12.4k", with the label
+                 left behind in the <p> above. It also skipped h2 entirely, and
+                 on dashboard-page.html it then went BACKWARDS to h2. A metric
+                 is not a section heading.
+
+                 check-a11y reads 0 findings on this page and always did; it
+                 does not inspect heading structure. Found by capturing
+                 big-number's real markup, which uses figure/figcaption and NO
+                 heading at all.
+
+                 `type-heading-04` IS WHAT h3 ALREADY WAS. Carbon styles the h3
+                 ELEMENT from the heading-04 tokens, so the utility class emits
+                 the identical four declarations -- measured on the running page
+                 2026-08-31, identical on all nine computed properties and the
+                 same 133x36 box. This change is invisible.
+
+                 WHY NOT figure/figcaption, which is what Carbon does: those two
+                 elements appear ONCE in all 667 captured stories, inside
+                 big-number. Composing them here without big-number's classes is
+                 an unattested composition that inherits no spacing, and
+                 `rux--tile` on a <figure> would be a check-tags fault -- Carbon
+                 renders that class on div, a, button and label only. Two new
+                 problems to fix one.
+
+                 WHAT THIS DOES NOT FIX: a screen reader still reads three
+                 sequential paragraphs with no programmatic pairing of label to
+                 value. That pairing is the only thing admitting `big-number`
+                 would buy. See its row in docs/inventory.md for the two
+                 conditions that would reopen it. -->
             <div class="rux--tile">
               <p>Departures today</p>
-              <h3>18</h3>
+              <p class="rux--type-heading-04">18</p>
               <p>3 awaiting a driver</p>
             </div>
           </div>
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Seats sold</p>
-              <h3>1,204</h3>
+              <p class="rux--type-heading-04">1,204</p>
               <p>Up 6% on last week</p>
             </div>
           </div>
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Fleet in service</p>
-              <h3>22 / 24</h3>
+              <p class="rux--type-heading-04">22 / 24</p>
               <p>2 in maintenance</p>
             </div>
           </div>
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>On-time rate</p>
-              <h3>96.2%</h3>
+              <p class="rux--type-heading-04">96.2%</p>
               <p>Rolling 30 days</p>
             </div>
           </div>

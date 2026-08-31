@@ -167,6 +167,37 @@ popover never opened.
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | Answered 2026-08-31: **`templates/wizard-page.html` exists**, authored to the discipline the other six carry — `BEHAVIOUR:` verified against a running Carbon, `npm run icons`, three ledger cells, three ancestry declines recorded. It settled both questions the plan left open and found one new defect. See below | roadmap §4.6 |
 
+### The metric row was putting bare numbers in the heading outline
+
+**Found 2026-08-31 by the ibm-products capture, on the day it was taken.** The metric
+value in `detail-page.html` and `dashboard-page.html` was an `<h3>`, so the outlines read
+`h1` then four `h3` — and on the dashboard then went BACKWARDS to `h2`. A listener
+navigating by heading heard bare numbers, "6 / 6" and "12.4k", with the label left behind
+in the `<p>` above.
+
+**`check-a11y` read 0 findings on both pages before the fix and 0 after.** It does not
+inspect heading structure. What found it was capturing `big-number`'s real markup —
+`figure` > `figcaption` for the label, `span[role=math]` > `span` for the value, and **no
+heading anywhere** — and diffing the hand-composed row against it.
+
+**The fix is `<p class="rux--type-heading-04">` and it is invisible.** Carbon styles the
+`h3` ELEMENT from the heading-04 tokens, so the utility emits the identical four
+declarations; measured on the running page, identical on all nine computed properties and
+the same 133×36 box.
+
+**`figure`/`figcaption` were NOT copied, deliberately.** They appear once in all 667
+stories, inside `big-number` itself, so composing them without its classes is unattested
+and inherits no spacing — and `rux--tile` on a `<figure>` is a `check-tags` fault, since
+Carbon renders that class on `div`, `a`, `button` and `label` only. Two new problems to
+fix one. `role="math"` was not copied either: its effect on a real screen reader is
+unheard, and this project has twice been wrong reasoning about ARIA from markup alone.
+
+**`big-number` stays DEFER, and the deferral is now honest.** It rested on "tile + type
+build that row", which was true visually and false semantically. It is true both ways
+now. What admitting the component would still buy is the one thing this fix does not:
+`figcaption` naming its `figure`, so label and value are programmatically paired instead
+of read as three sequential paragraphs. Its row records the two conditions that reopen it.
+
 ### The settings template — BUILT 2026-08-31, and it found a shipped defect
 
 `templates/settings-page.html`. Grouped preferences with a persistent action pair, and
