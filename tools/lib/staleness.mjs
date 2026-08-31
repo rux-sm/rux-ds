@@ -30,6 +30,32 @@ const git = args => {
   catch { return ''; }
 };
 
+// PORCELAIN IS COLUMN-ORIENTED AND `git()` TRIMS, WHICH IS A ONE-CHARACTER BUG
+// WITH A SILENT FAILURE. `--porcelain` writes a two-column status field then a
+// space then the path, so an UNSTAGED modification is " M path" with a leading
+// space. `git()` trims the whole output, which strips that space from the FIRST
+// line only; `slice(3)` then eats a character of the path and yields
+// "emplates/detail-page.html". isDirty() compares that against the declared
+// input and never matches.
+//
+// So exactly one file — whichever git happens to list first, and only when its
+// change is unstaged — was exempt from the DIRTY state, and there is always a
+// first line. Found 2026-08-31 by editing templates/detail-page.html, the only
+// dirty file in the tree, and watching all three of its browser cells go on
+// reporting `ok`. That is the precise thing this module exists to prevent: a
+// recorded reading presented as current against a file that has since moved.
+// Staged changes never showed it, because "M  path" has no leading space to
+// lose.
+//
+// Not trimmed, therefore. Split first, drop the trailing empty line, and take
+// the path from column 3 of each line as porcelain actually writes it.
+const gitStatusPaths = () => {
+  let raw;
+  try { raw = execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }); }
+  catch { return []; }
+  return raw.split('\n').filter(Boolean).map(l => l.slice(3).trim()).filter(Boolean);
+};
+
 // Commits touching `path` since `since`. Empty means the input has not moved,
 // which is the only thing that makes a recorded result still current.
 function movedSince(since, path) {
@@ -42,9 +68,7 @@ function movedSince(since, path) {
 export function cellStates() {
   const ledger = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, 'utf8')) : {};
 
-  const dirty = new Set(
-    git(['status', '--porcelain'])
-      .split('\n').filter(Boolean).map(l => l.slice(3).trim()));
+  const dirty = new Set(gitStatusPaths());
   const isDirty = input => [...dirty].some(p => p === input || p.startsWith(input + '/'));
 
   const rows = [];
