@@ -73,6 +73,26 @@ function shippedThemes() {
 
 const SHIPPED = shippedThemes();
 const themeList = n => n <= SHIPPED.length ? SHIPPED.slice(0, n) : CANONICAL.slice(0, n);
+
+// THE EMIT-INCLUDES COME FROM THE MANIFEST TOO, for the reason directly above.
+//
+// This list was hardcoded as reset + default-type, and drifted the moment
+// src/app.scss admitted `type.type-classes` (4beac65). The tool then priced a
+// configuration the project does not ship: 558 KB min / 1152 classes against a
+// real 582 KB / 1225, so docs/inventory.md's Shipped row and the note under it
+// claiming this output "matches css/rux.min.css byte for byte" were both false
+// for as long as the utility classes had been shipping. A hardcoded include list
+// is the same second copy the theme pair was, and fails the same way.
+//
+// Only the ORDER-INDEPENDENT emit includes are mirrored. `theme.theme` is not:
+// it is per-selector and themeList already owns it above.
+function shippedEmits() {
+  const body = readFileSync('src/app.scss', 'utf8')
+    .split('\n').filter(l => !l.trim().startsWith('//')).join('\n');
+  return [...body.matchAll(/@include ((?:reset|type)\.[a-z-]+);/g)].map(m => m[1]);
+}
+
+const EMITS = shippedEmits();
 const work = mkdtempSync(join(tmpdir(), 'ruxds-measure-'));
 
 function build(comps, themeCount) {
@@ -86,8 +106,7 @@ function build(comps, themeCount) {
     '@use "@carbon/styles/scss/grid";',
     '@use "@carbon/styles/scss/layout";',
     ...comps.map(c => `@use "@carbon/styles/scss/components/${c}";`),
-    '@include reset.reset;',
-    '@include type.default-type;',
+    ...EMITS.map(e => `@include ${e};`),
     `:root { @include theme.theme(themes.$${themes[0]}); }`,
     ...themes.slice(1).map(t => `[data-theme="${t}"] { @include theme.theme(themes.$${t}); }`),
   ].join('\n');

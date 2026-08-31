@@ -1,8 +1,10 @@
 # Phase 2 — Inventory
 
-Every one of Carbon's 75 components, with what it costs, what it drags in, and a
+Every one of Carbon's components, with what it costs, what it drags in, and a
 disposition. Roadmap §4.2 asks for exactly this and calls the exit "75 rows, every row
-decided."
+decided." **There were 75 when that was written; Carbon 1.114 ships 83, and the eight
+new ones have no row.** The exit is not met until they are decided — see the note above
+the cost table.
 
 **This is a decision document, not a generated one.** It was seeded from
 `docs/inventory.json` and `tools/measure.mjs` on 2026-08-28, and is maintained by
@@ -15,16 +17,49 @@ hand from here. Regenerating it would overwrite the decisions, which are the poi
 Per-component sizes cannot be added up. Roadmap §2 measured the sum at 3,534 KB against a
 real 837 KB bundle — a 4.2× overcount — because every component drags its transitive
 `@use` graph and those graphs overlap. `tools/measure.mjs` exists to price a real subset
-by compiling it. Measured 2026-08-28:
+by compiling it. **Shipped and Full Carbon re-measured 2026-08-31**; the Foundation and
+Lean rows still read 2026-08-28 and are understated — see the third note below.
 
 | Configuration | Minified | **Gzipped** | Classes |
 |---|---|---|---|
 | Foundation only (reset, type, grid, layout, tokens) — 1 theme | 51 KB | **6.6 KB** | — |
 | Foundation only — 2 themes | 71 KB | **7.9 KB** | — |
 | Lean — 22 components, 2 themes | 375 KB | **~39 KB** | see note |
-| **Shipped — 33 components / 36 modules, 2 themes** | 548 KB | **56.3 KB** | 1,128 |
-| Shipped set — 4 themes | 590 KB | **56.4 KB** | 1,112 |
-| Full Carbon — 75 components / 79 modules, 4 themes | 881 KB | **87.6 KB** | 1,644 |
+| **Shipped — 34 components / 37 modules, 2 themes** | 582 KB | **58.9 KB** | 1,225 |
+| Shipped set — 4 themes | 626 KB | **59.6 KB** | 1,225 |
+| Full Carbon — 83 components / 87 modules, 4 themes | 939 KB | **94.0 KB** | 1,862 |
+
+> **THE SHIPPED ROW WAS UNDERSTATED, and the tool was the reason.** It read 548 KB /
+> 56.3 KB / 1,128 classes against a real 582 KB / 1,225. `measure.mjs` built its
+> synthetic stylesheet from a HARDCODED include list — `reset.reset` and
+> `type.default-type` — and `src/app.scss` admitted `type.type-classes` at `4beac65`.
+> The tool went on pricing a configuration this project does not ship, and the note
+> below claiming its output "matches `css/rux.min.css` byte for byte" was false from
+> that commit until 2026-08-31. A hardcoded include list is the same second copy the
+> theme pair was, and failed the same way; it is now read from the manifest, and the
+> shipped row matches the built artifact to the 599-byte attribution banner
+> (58.9 KB here, 59.2 KB with the banner `build.mjs` prepends).
+>
+> One symptom is worth naming because it was visible in this table all along: the
+> 4-theme row read **1,112 classes against the 2-theme row's 1,128**. Themes cannot
+> remove classes. Both now read 1,225.
+>
+> **CARBON 1.114 SHIPS 83 COMPONENTS, NOT 75, and eight of them have no row here.**
+> `big-number`, `coachmark`, `EditInPlace`, `FullPageError`, `InterstitialScreen`,
+> `OptionsTile`, `scroll-gradient` and `user-avatar` — names this project first met in
+> the `ibm-products` captures, now absorbed into `@carbon/styles` itself. So the full
+> baseline moved for TWO reasons at once, 881 → 939 KB: eight new components, and the
+> type utilities the tool had been omitting. **This document's own exit criterion — "75
+> rows, every row decided" — is no longer met at 83.** Those eight are undecided, and
+> deciding them is not a measurement; nobody has made that call. Roadmap §4.2.
+>
+> **The Foundation and Lean rows were NOT re-measured.** Foundation has no mode in
+> `measure.mjs` — the tool prices full, shipped, or an ad-hoc component list, and a
+> zero-component set is none of those — so re-running it would have meant hand-rolling
+> a second copy of the build path to measure the cost of a copy-drift bug, which is the
+> joke telling itself. Both Foundation rows predate `type.type-classes` and are
+> understated by roughly its cost. The Lean-22 row cannot be recompiled at all, for the
+> reason already recorded below.
 
 > **A COMPONENT CAN BE SEVERAL MODULES, and this table now counts both.** Carbon
 > splits `data-table` into a base plus `sort`, `expandable` and `action`, and
@@ -45,7 +80,8 @@ by compiling it. Measured 2026-08-28:
 > g100** since Phase 3 pass 3 chose "the furthest point from" white. g10 is a
 > near-neighbour of white and compresses against it far better, so these rows ran
 > ~1.3 KB optimistic for the configuration that actually ships. The tool now reads the
-> pair from the manifest and its output matches `css/rux.min.css` byte for byte.
+> pair from the manifest. Its output matched `css/rux.min.css` byte for byte when this
+> was written and stopped doing so at `4beac65` — see the correction above the table.
 > **The shipped floor is 52.7 KB gzipped, not 51.** Figures now carry one decimal:
 > integer KB straddling a boundary made a 1.3 KB difference read as 2 KB.
 >

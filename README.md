@@ -200,7 +200,7 @@ cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 
 | | |
 |---|---|
-| Components | **34 / 75 compiled** in 37 modules — `docs/inventory.md` decides all 75 |
+| Components | **34 / 83 compiled** in 37 modules — `docs/inventory.md` decides 75 of the 83; Carbon 1.114 added eight it has never seen |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 611 `--rux-*` · 1,225 `.rux--*` |
 | Kitchen sink | 35 sections · **539** classes with `templates/` and `js/` · 0 unresolved |
@@ -211,13 +211,15 @@ cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 | Size | 649 KB raw · 582 KB min · **59.2 KB gzipped** |
 | Behaviour JS | 12 modules · 119.2 KB raw, **61% of it comment** · 46.8 KB of code · **34.6 KB gzipped** |
 
-Before the strip: 75 components, 4 themes, 881 KB min, **87.6 KB gzipped**.
+Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
+has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
 
-The 41 components not compiled are CUT or DEFER rows in
-[`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
+**49 components are not compiled, and only 41 of them have been decided.** Those 41 are
+CUT or DEFER rows in [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
 still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
 lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
-`sink/ORDER`.
+`sink/ORDER`. The other eight arrived with Carbon 1.114 and have no row, no
+disposition and no fragment — see `docs/inventory.md`'s cost table.
 
 ## Commands
 
