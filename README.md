@@ -160,8 +160,8 @@ popover never opened.
 | Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 6 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
-| Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 17 now. There is no `tests/` directory at all | roadmap §4.8 |
-| `build-portal`'s icon assertion is a real check outside the registry — eighteenth gate or not | roadmap §4.8 |
+| Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 18 now. There is no `tests/` directory at all | roadmap §4.8 |
+| `build-portal`'s icon assertion is a real check outside the registry — nineteenth gate or not | roadmap §4.8 |
 | The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 | Answered 2026-08-29: `dashboard.html` is archived outside the repository and deleted from it. §4.6's entry is the record and stands alone; `portal.html` holds the living-evidence role, committed and swept by four gates. The fifth, sixth and seventh attempts' pages went the same way the same day | roadmap §4.6 |
 | **A SEVENTH TEMPLATE — `wizard-page.html`.** The §4.6 seventh attempt showed a multi-step flow is a real shape no template covers, and that building one takes 580 lines and three wrong turns. Its page is archived, not promoted: authoring a template means a `BEHAVIOUR:` label verified against a RUNNING Carbon page, `npm run icons` coverage, ledger cells, and source comments carrying their own reasoning — none of which that page has. **Plan below** | roadmap §4.6 |
@@ -193,14 +193,14 @@ does not re-derive the shape the seventh exit attempt already paid for.
 lines and three corrections, and a template carries more discipline than a sample page.
 
 **Nothing else is pending.** The working tree, `main` and `origin/main` were level at the
-last push, and `npm run verify` runs twelve of the seventeen gates — `npm run gates`
+last push, and `npm run verify` runs thirteen of the eighteen gates — `npm run gates`
 reports the other five and which pages each has been run against. **All 26 browser
 cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
 | | |
 |---|---|
-| Components | **34 / 83 compiled** in 37 modules — `docs/inventory.md` decides 75 of the 83; Carbon 1.114 added eight it has never seen |
+| Components | **34 / 83 compiled** in 37 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 611 `--rux-*` · 1,225 `.rux--*` |
 | Kitchen sink | 35 sections · **539** classes with `templates/` and `js/` · 0 unresolved |
@@ -214,14 +214,21 @@ cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
 has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
 
-**49 components are not compiled, and only 41 of them have been decided.** Those 41 are
-CUT or DEFER rows in [`docs/inventory.md`](docs/inventory.md); their fragments live in `sink/deferred/`,
-still carrying the provenance the Phase 1 sweep gave them. Restoring one is three
-lines: uncomment its `@use` in `src/app.scss`, move the fragment back, add it to
-`sink/ORDER`. The other eight arrived with Carbon 1.114 and now have rows — `big-number`
-DEFER, **seven still UNDECIDED** — under "The eight that arrived with Carbon 1.114" in
-`docs/inventory.md`. None has a fragment, and none can have one until its markup is
-captured: `@carbon/react` renders none of the eight.
+**49 components are not compiled, and all 49 are decided.** Forty-one are CUT or DEFER
+rows in [`docs/inventory.md`](docs/inventory.md) from the Phase 3 strip; their fragments
+live in `sink/deferred/`, still carrying the provenance the Phase 1 sweep gave them.
+Restoring one is three lines: uncomment its `@use` in `src/app.scss`, move the fragment
+back, add it to `sink/ORDER`.
+
+**The other eight arrived with Carbon 1.114 and were decided 2026-08-31** — `big-number`
+DEFER, the other seven CUT — under "The eight that arrived with Carbon 1.114" in
+`docs/inventory.md`. Five fail the admission rule's first test and two its second; not
+one was decided on bytes. None has a fragment and none can have one until its markup is
+captured, because `@carbon/react` renders none of the eight — the same evidence ground
+`card`, `page-header` and `side-panel` were cut on. All eight now carry a commented
+`@use` line, which they had lacked: **the manifest listed 75 of the 83**, so eight
+components sat outside the strip where no gate could see them. `check-inventory` is what
+closes that, and §4.2's exit is met again at 83.
 
 ## Commands
 
@@ -298,7 +305,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Seventeen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+Eighteen, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -313,6 +320,7 @@ Seventeen, because none is sufficient alone — see roadmap §4.1.2 for the bug 
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
+| `check-inventory.mjs` | a component Carbon ships that `docs/inventory.md` has no row for · a row carrying no disposition · a component `src/app.scss` does not list at all · a disposition the manifest contradicts | whether a disposition is RIGHT — it insists one was made, not that it was wise |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
@@ -378,7 +386,7 @@ copy goes stale the moment the real state moves. **0 stripped on all eight pages
 added on the sink and 1 on `table-page.html` — `table-sort--active` again, the same
 module marking the same thing. Swept 2026-08-31.**
 
-Twelve run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
+Thirteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
 diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the

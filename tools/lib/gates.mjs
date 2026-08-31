@@ -280,6 +280,26 @@ export const GATES = [
     knownGap: 'no per-file axis; reads templates but cannot report on one',
   },
   {
+    id: 'check-inventory',
+    tool: 'tools/check-inventory.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a component Carbon ships that docs/inventory.md has no row for · a row carrying no disposition · a row Carbon no longer ships · a component src/app.scss does not list at all · a disposition the manifest contradicts',
+    blindTo: 'whether a disposition is RIGHT — it insists one was made, not that it was wise',
+    reads: 'the manifest, the inventory and Carbon\'s own component directory',
+    fileTargets: ['src/app.scss', 'docs/inventory.md'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['src/app.scss', 'docs/inventory.md', 'node_modules/@carbon/styles'],
+    redRun: 'change any row\'s disposition to UNDECIDED, or comment out a KEEP component\'s @use',
+    sideEffects: null,
+    baseline: '83 carbon · 83 rows · 34 KEEP · 14 DEFER · 35 CUT · 83 listed · 34 compiling',
+    // A RENAME arrives as one phantom and one unrowed with nothing tying them
+    // together. Both are findings, so nothing is missed; the gate just cannot
+    // say they are the same component under a new name.
+    knownGap: 'cannot recognise a rename as a rename',
+  },
+  {
     id: 'check-provenance',
     tool: 'tools/check-provenance.mjs',
     kind: 'node',

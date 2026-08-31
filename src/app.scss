@@ -28,16 +28,33 @@
 // CUT or DEFER row in docs/inventory.md; uncommenting it is the whole of
 // restoring a component, because no Carbon file is edited (§1.1). The set here
 // and the PROPOSED list in tools/measure.mjs are the same list.
+//
+// EIGHT LINES ADDED 2026-08-31, all commented, all emitting nothing. Carbon
+// 1.114 took the component set from 75 to 83 -- big-number, coachmark,
+// EditInPlace, FullPageError, InterstitialScreen, OptionsTile, scroll-gradient
+// and user-avatar, absorbed out of ibm-products -- and this file listed none of
+// them. That is worse than it sounds: THIS FILE IS THE CENSUS, and a component
+// it does not name can be neither kept nor cut, because commenting the line is
+// the whole of cutting one. Eight components were outside the strip entirely
+// and no gate could see it, since every other check reads the built CSS and an
+// undecided component is absent from it exactly like a cut one.
+//
+// tools/check-inventory.mjs now holds the three sources together: Carbon's own
+// component directory, docs/inventory.md's disposition, and this list. It fails
+// on a component with no line here, and on a line whose state disagrees with
+// its row. Roadmap §4.2.
 @use "@carbon/styles/scss/components/accordion";
 // @use "@carbon/styles/scss/components/action-set";
 // @use "@carbon/styles/scss/components/ai-label";
 // @use "@carbon/styles/scss/components/aspect-ratio";
 @use "@carbon/styles/scss/components/badge-indicator";
+// @use "@carbon/styles/scss/components/big-number";
 @use "@carbon/styles/scss/components/breadcrumb";
 @use "@carbon/styles/scss/components/button";
 // @use "@carbon/styles/scss/components/card";
 // @use "@carbon/styles/scss/components/chat-button";
 @use "@carbon/styles/scss/components/checkbox";
+// @use "@carbon/styles/scss/components/coachmark";
 // @use "@carbon/styles/scss/components/code-snippet";
 // @use "@carbon/styles/scss/components/combo-box";
 // @use "@carbon/styles/scss/components/combo-button";
@@ -64,6 +81,7 @@
 // @use "@carbon/styles/scss/components/date-picker";
 // @use "@carbon/styles/scss/components/dialog";
 @use "@carbon/styles/scss/components/dropdown";
+// @use "@carbon/styles/scss/components/EditInPlace";
 // @use "@carbon/styles/scss/components/file-uploader";
 // @use "@carbon/styles/scss/components/fluid-combo-box";
 // @use "@carbon/styles/scss/components/fluid-date-picker";
@@ -77,8 +95,10 @@
 // @use "@carbon/styles/scss/components/fluid-text-input";
 // @use "@carbon/styles/scss/components/fluid-time-picker";
 @use "@carbon/styles/scss/components/form";
+// @use "@carbon/styles/scss/components/FullPageError";
 // @use "@carbon/styles/scss/components/icon-indicator";
 @use "@carbon/styles/scss/components/inline-loading";
+// @use "@carbon/styles/scss/components/InterstitialScreen";
 @use "@carbon/styles/scss/components/link";
 @use "@carbon/styles/scss/components/list";
 @use "@carbon/styles/scss/components/list-box";
@@ -89,6 +109,7 @@
 // @use "@carbon/styles/scss/components/multiselect";
 @use "@carbon/styles/scss/components/notification";
 @use "@carbon/styles/scss/components/number-input";
+// @use "@carbon/styles/scss/components/OptionsTile";
 @use "@carbon/styles/scss/components/overflow-menu";
 // @use "@carbon/styles/scss/components/page-header";
 @use "@carbon/styles/scss/components/pagination";
@@ -117,6 +138,7 @@
 @use "@carbon/styles/scss/components/progress-indicator";
 @use "@carbon/styles/scss/components/radio-button";
 // @use "@carbon/styles/scss/components/resizer";
+// @use "@carbon/styles/scss/components/scroll-gradient";
 @use "@carbon/styles/scss/components/search";
 @use "@carbon/styles/scss/components/select";
 // @use "@carbon/styles/scss/components/shape-indicator";
@@ -138,6 +160,7 @@
 // @use "@carbon/styles/scss/components/treeview";
 // @use "@carbon/styles/scss/components/truncated-text";
 @use "@carbon/styles/scss/components/ui-shell";
+// @use "@carbon/styles/scss/components/user-avatar";
 
 // ---------------------------------------------------------------------------
 // Emit. Reset and type do NOT arrive with the components; see roadmap §4.1.1.

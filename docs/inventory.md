@@ -244,9 +244,10 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 changed without the tally under it.
 
 **That tally covers the original 75 only.** Carbon 1.114 ships 83. The eight new ones
-now have rows — see the section directly below — but **seven of them are UNDECIDED**, so
-the full count is **34 KEEP · 14 DEFER · 28 CUT · 7 undecided**, and §4.2's exit stays
-open until those seven are called.
+have rows in the section directly below, and all eight are now decided — one DEFER and
+seven CUT, 2026-08-31 — so the full count is **34 KEEP · 14 DEFER · 35 CUT**, 83 rows,
+every row decided. `npm run verify` holds it there: `check-inventory` fails on a Carbon
+component with no row, and on a row that carries no disposition.
 
 ## The eight that arrived with Carbon 1.114
 
@@ -267,20 +268,50 @@ ground `card`, `page-header` and `side-panel` were cut on.
 PascalCase directories among all 83** — ibm-products' own naming convention, surviving
 the move into `@carbon/styles`.
 
+**Decided 2026-08-31: seven CUT, `big-number` DEFER.** The admission rule settles all
+seven without needing a byte of the size column — five fail rule 1 (no named page shape
+in `templates/` requires them) and two fail rule 2 (`error-state.html` and `tile`
+already serve the shape). Cost decided nothing here, which is the pattern §2.1 recorded
+when it removed the KB target: not one of the CUT rows in this document was decided on
+bytes, and the whole of this table is under 1 KB gzipped a component.
+
+**CUT rather than DEFER, and for these eight the two are operationally identical.** DEFER
+normally means a fragment parked in `sink/deferred/` that three lines restore. None of
+these can have a fragment — nothing renders them, so there is nothing to diff against and
+anything written would be invented markup. Neither disposition compiles anything, neither
+creates a file, and the choice is therefore bookkeeping rather than a purchase. CUT is the
+word this document already uses for that state: it is the ground `card`, `page-header`
+and `side-panel` were cut on. **Re-opening one costs a sentence**, and the two worth
+watching are named below.
+
+**Two are likelier than the rest to come back.** `user-avatar` is the one a real
+application asks for soonest, and it fails rule 1 only because no template has an account
+or profile shape yet — write one and the row is live again. `EditInPlace` is held by a
+dependency rather than by its own merits: cutting it also declines `toggletip`, which is
+an open DEFER under "What needs your call", so a decision to take `toggletip` should
+re-read this row rather than assume it settled.
+
 | Component | Disposition | KB | Classes | Marginal | Reason / evidence |
 |---|---|---|---|---|---|
 | `big-number` | **DEFER** | 4 | 19 | +0.3 KB | **The only one with a real page shape.** `templates/detail-page.html`'s metric row (`241feaa`) is exactly what it styles — `__label` label-01 secondary, `__value` heading-04, `__total` body-compact-01 — against the row's hand-composed `<p>`/`<h3>`/`<p>`. Deferred, not admitted, on two counts: rule 2 currently holds (tile + type build that row, verified against a running Carbon page 2026-08-31 with measurements recorded), and there is no capture to build a fragment from. **Revisit if an ibm-products capture is taken, or if IBM guidance says the hand-composed row is wrong** — that is the `progress-indicator` path, and `progress-indicator` had three capture stories where this has none |
-| `coachmark` | **UNDECIDED** | 6 | 31 | +0.9 KB | No template shape needs an onboarding beacon. Would need a behaviour module this project has not written; pulls `button`. Dearest of the eight, and the only one over +0.5 KB |
-| `EditInPlace` | **UNDECIDED** | 3 | 27 | +0.5 KB | No template shape. Depends on `toggletip-button`, and `toggletip` is itself an undecided DEFER — admitting this decides that one by implication |
-| `FullPageError` | **UNDECIDED** | 2 | 10 | +0.2 KB | **`templates/error-state.html` already builds this shape** from `inline-notification--error` + `css-grid` + buttons. Rule 2 as written fails |
-| `InterstitialScreen` | **UNDECIDED** | 4 | 21 | +0.4 KB | No template shape. **Incomplete on arrival**: it styles `cds--carousel`, and `@carbon/styles` 1.114.0 has no `carousel` component directory at all, so part of it can never resolve |
-| `OptionsTile` | **UNDECIDED** | 5 | 37 | +0.6 KB | `tile` is compiled and serves the shape. Rule 2 as written fails |
-| `scroll-gradient` | **UNDECIDED** | 2 | 9 | +0.2 KB | No template shape. A scroll affordance, not a component a page is composed from; cheapest of the eight, which decides nothing |
-| `user-avatar` | **UNDECIDED** | 5 | 28 | +0.5 KB | The shell already answers this: `app-shell.html` and `sink/ui-shell.html` put the `user--avatar` ICON in a `header__action`, and that IS capture-corroborated (`check-slots` records the slot). This component is the sized, coloured, initials avatar — a different thing, wanted by no template. Note it also emits `rux--g10`/`g90`/`g100`/`white` theme classes |
+| `coachmark` | **CUT** | 6 | 31 | +0.9 KB | No template shape needs an onboarding beacon. Would need a behaviour module this project has not written; pulls `button`. Dearest of the eight, and the only one over +0.5 KB. **Rule 1 fails** |
+| `EditInPlace` | **CUT** | 3 | 27 | +0.5 KB | No template shape. Depends on `toggletip-button`, and `toggletip` is itself an undecided DEFER — admitting this decides that one by implication. **Rule 1 fails** |
+| `FullPageError` | **CUT** | 2 | 10 | +0.2 KB | **`templates/error-state.html` already builds this shape** from `inline-notification--error` + `css-grid` + buttons. Rule 2 as written fails |
+| `InterstitialScreen` | **CUT** | 4 | 21 | +0.4 KB | No template shape. **Incomplete on arrival**: it styles `cds--carousel`, and `@carbon/styles` 1.114.0 has no `carousel` component directory at all, so part of it can never resolve. **Rule 1 fails** |
+| `OptionsTile` | **CUT** | 5 | 37 | +0.6 KB | `tile` is compiled and serves the shape. Rule 2 as written fails |
+| `scroll-gradient` | **CUT** | 2 | 9 | +0.2 KB | No template shape. A scroll affordance, not a component a page is composed from; cheapest of the eight, which decides nothing. **Rule 1 fails** |
+| `user-avatar` | **CUT** | 5 | 28 | +0.5 KB | The shell already answers this: `app-shell.html` and `sink/ui-shell.html` put the `user--avatar` ICON in a `header__action`, and that IS capture-corroborated (`check-slots` records the slot). This component is the sized, coloured, initials avatar — a different thing, wanted by no template. Note it also emits `rux--g10`/`g90`/`g100`/`white` theme classes. **Rule 1 fails** |
 
-**None of these has a fragment, a disposition-driven `sink/deferred/` entry, or a
-`src/app.scss` line.** Deciding one KEEP means capturing its markup first — there is
-nothing to diff a fragment against.
+**None of these has a fragment or a `sink/deferred/` entry, and none can until its markup
+is captured.** Deciding one KEEP means capturing it first — there is nothing to diff a
+fragment against.
+
+**All eight now carry a commented `@use` line in `src/app.scss`**, added 2026-08-31.
+They had none, which meant the build manifest did not list them at all: a component absent
+from that file can be neither kept nor cut, because commenting the line is the whole of
+cutting one. A commented line emits nothing, so this changed no CSS — it is what makes the
+manifest a complete census of the 83 rather than of the 75 it was written against.
+`check-inventory` now requires it.
 
 ---
 

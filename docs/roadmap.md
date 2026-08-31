@@ -164,9 +164,21 @@ Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 > `docs/inventory.md`, with each one's standalone size, its marginal cost against the
 > shipped set, and the evidence against it. `big-number` is **DEFER** — it is the only
 > one a template shape wants, the detail-page metric row, and it is blocked on having no
-> markup reference rather than on cost. **The other seven are recorded UNDECIDED**, which
-> is a real state and not a placeholder: their reasons are filed, and the call is the
-> author's.
+> markup reference rather than on cost.
+>
+> **The other seven were decided CUT the same day.** Five fail the admission rule's first
+> test — no named page shape in `templates/` requires them — and `FullPageError` and
+> `OptionsTile` fail the second, since `error-state.html` and `tile` already serve
+> those shapes. **Not one was decided on bytes**, which is the pattern this section
+> recorded when it removed the KB target. For these eight CUT and DEFER are
+> operationally identical — neither compiles, and none can have a `sink/deferred/`
+> fragment while nothing renders them — so the word chosen is the one this document
+> already uses for "declined on evidence". `user-avatar` and `EditInPlace` are flagged
+> in `docs/inventory.md` as the two likeliest to come back.
+>
+> **The manifest had listed 75 of the 83.** All eight now carry a commented `@use` line,
+> which changed no CSS and closed a hole nothing could see: a component `src/app.scss`
+> does not name can be neither kept nor cut. `check-inventory` now requires it.
 >
 > **The tripwire held throughout** and was never consulted: 58.9 KB gzipped against
 > 75 KB. It correctly did not fire, since nothing structural went wrong — the growth is
@@ -1030,10 +1042,19 @@ Whole families that are likely single decisions rather than 10 decisions:
 - `*-skeleton` states, `expressive` variants, `compat/`, `feature-flags`
 
 Exit: `docs/inventory.md`, a row for every Carbon component, every row decided. **This
-read "75 rows" and was met at 75; Carbon 1.114 ships 83.** The eight new components
-have no row, so the exit has re-opened — see the 2026-08-31 amendment in §2.1. The
-wording is now the count-free one, because pinning an exit to a number a dependency
-controls is what let this close while incomplete.
+read "75 rows" and was met at 75; Carbon 1.114 ships 83.** The wording is now the
+count-free one, because pinning an exit to a number a dependency controls is what let
+this close while incomplete.
+
+**Re-opened and re-closed on 2026-08-31.** The eight new components were rowed, then
+decided — `big-number` DEFER, the other seven CUT, five on rule 1 and two on rule 2.
+**The exit is no longer defended by prose.** `tools/check-inventory.mjs` is the
+eighteenth gate and runs in `npm run verify`: it reads Carbon's own component directory,
+`docs/inventory.md` and `src/app.scss`, and fails on a component with no row, a row with
+no disposition, a row Carbon no longer ships, a component the manifest does not list, or
+a disposition the manifest contradicts. The next Carbon bump that widens the set fails
+the build that installs it, which is the only reading of this exit that a dependency
+cannot quietly invalidate.
 
 ### 4.3 Phase 3 — The strip
 
@@ -1800,15 +1821,17 @@ nothing defines, the silent-blank-icon failure `check-icons` exists for.
 
 It is real, it runs in `npm run verify`, and it is not in the registry. That is the
 `build-namespace` shape — a gate carried by a build tool with no `check-*` file — and
-`build-namespace` IS registered. **Decide whether this becomes the eighteenth gate.**
+`build-namespace` IS registered. **Decide whether this becomes the nineteenth gate.**
 Registering it means the count moves in `CLAUDE.md` and `README.md` as well as
 `gates.mjs`; leaving it out means the registry is knowingly incomplete, which is the
 condition that registry was built to end.
 
 This read *fifteenth* until 2026-08-29, when `check-behaviour`, `check-glyphs` and
-`check-slots` took the registry from fourteen to seventeen. The ordinal moves with
+`check-slots` took the registry from fourteen to seventeen, and *eighteenth* until
+2026-08-31, when `check-inventory` took it to eighteen. The ordinal moves with
 every gate admitted, and an undecided question that needs re-numbering each time is
-one more argument for closing it.
+one more argument for closing it. **It has now been re-numbered twice**, which is the
+argument making itself.
 
 #### The spacing harvest cannot see a story with one signature — 2026-08-31
 

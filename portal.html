@@ -179,8 +179,8 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <h3>26 / 26</h3>
-              <p>0 stale · 0 never run</p>
+              <h3>2 / 29</h3>
+              <p>27 stale · 0 never run</p>
             </div>
           </div>
           </div>
@@ -629,7 +629,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="templates">Templates</h2>
-          <p>6 complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
+          <p>7 complete pages. Each carries the shell and declares what its behaviour was verified against.</p>
           <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <a class="rux--tile rux--tile--clickable" href="templates/app-shell.html">
@@ -667,12 +667,18 @@
               <p>BEHAVIOUR verified-live · 2026-08-28</p>
             </a>
           </div>
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <a class="rux--tile rux--tile--clickable" href="templates/wizard-page.html">
+              <h4>wizard-page</h4>
+              <p>BEHAVIOUR verified-live · 2026-08-31</p>
+            </a>
+          </div>
           </div>
         </div>
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>17 gates. 12 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>18 gates. 13 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -770,6 +776,13 @@
                   <td>standing still — it ratchets, it does not set a floor</td>
                 </tr>
                 <tr>
+                  <td>check-inventory</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a component Carbon ships that docs/inventory.md has no row for · a row carrying no disposition · a row Carbon no longer ships · a component src/app.scss does not list at all · a disposition the manifest contradicts</td>
+                  <td>whether a disposition is RIGHT — it insists one was made, not that it was wise</td>
+                </tr>
+                <tr>
                   <td>check-provenance</td>
                   <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
@@ -819,7 +832,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 26 of 26 cells are current; 0 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. 2 of 29 cells are current; 27 stale, 0 never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -843,114 +856,128 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-runtime-classes</td>
+                  <td>templates/wizard-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-spacing</td>
+                  <td>templates/wizard-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-behaviour</td>
@@ -962,58 +989,65 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>portal.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
-                  <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
+                </tr>
+                <tr>
+                  <td>check-a11y</td>
+                  <td>templates/wizard-page.html</td>
+                  <td><span class="rux--tag rux--tag--magenta rux--tag--sm"><span class="rux--tag__label">dirty</span></span></td>
                   <td>2026-08-31</td>
+                  <td>uncommitted: templates</td>
                 </tr>
                 </tbody>
               </table>
