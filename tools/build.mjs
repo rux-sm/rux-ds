@@ -7,7 +7,8 @@
 // `-i` with the suffix attached on GNU, and neither parses the other's form.
 //
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { classNames, compiled } from './lib/ownership.mjs';
 
@@ -95,6 +96,35 @@ const classes = classNames(raw).size;
 // Unique component names — data-table is four @use lines and one component.
 const comps = compiled().size;
 
+// THE BEHAVIOUR LAYER IS MEASURED HERE TOO, and it did not used to be.
+//
+// Roadmap 4.5 carried a "<=90 KB of behaviour JS" budget from the start and
+// NOTHING EVER MEASURED IT. The figure lived in prose, was re-derived by hand
+// each time somebody wondered, and drifted: it read 83.5 KB at finding 14 and
+// 119.2 KB when it was next checked, with the whole difference being comment.
+// A number nobody computes is the failure this repository keeps re-learning.
+//
+// It is now a TRIPWIRE rather than a budget, on 4.5's own terms and by the same
+// argument 2.1 used to delete the CSS target: the budget never decided
+// anything. Not one module was cut, deferred or shaped by it. What decides what
+// goes in js/ is the scope rule in CLAUDE.md -- modules make Carbon's
+// components work, they do not add interactions Carbon declines -- and that is
+// a judgement about what belongs, not about bytes.
+//
+// GZIPPED, because it is what a browser receives and it is the unit 2.1's CSS
+// tripwire already uses. Raw bytes would count comments, and this layer is 61%
+// comment on purpose; a rule whose only route to compliance is deleting the
+// reasoning is a rule working against itself.
+//
+// 60 KB against today's ~35 is deliberately wide. Writing more modules does not
+// reach it. What reaches it is somebody vendoring a library into js/, which is
+// the one growth the scope rule would not already have caught.
+const JS_TRIPWIRE_KB = 60;
+const jsFiles = readdirSync('js').filter(f => f.endsWith('.js')).sort();
+const jsRaw = jsFiles.map(f => readFileSync(join('js', f)));
+const jsGzip = gzipSync(Buffer.concat(jsRaw), { level: 9 }).length / 1024;
+const jsRawKb = jsRaw.reduce((n, b) => n + b.length, 0) / 1024;
+
 console.log(`
   components   ${comps}
   tokens       ${tokens} unique --rux-*
@@ -105,4 +135,15 @@ console.log(`
   unminified   ${kb(statSync(OUT).size)}
   minified     ${kb(min.length)}
   gzipped      ${(gzipSync(min, { level: 9 }).length / 1024).toFixed(1)} KB
+
+  js modules   ${jsFiles.length}
+  js raw       ${jsRawKb.toFixed(1)} KB
+  js gzipped   ${jsGzip.toFixed(1)} KB  (tripwire ${JS_TRIPWIRE_KB} KB)
 `);
+
+if (jsGzip > JS_TRIPWIRE_KB) {
+  console.error(`  TRIPWIRE: js/ is ${jsGzip.toFixed(1)} KB gzipped, over ${JS_TRIPWIRE_KB}.`);
+  console.error('  This is a smoke alarm, not a thermostat. Something structural has');
+  console.error('  changed -- most likely a library vendored into js/. Roadmap 4.5.');
+  process.exit(1);
+}

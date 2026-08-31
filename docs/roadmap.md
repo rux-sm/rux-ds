@@ -106,9 +106,44 @@ it sits where no legitimate sequence of admissions reaches it.
 > decided it; the tripwire was never consulted, which is the division of labour
 > this section is arguing for.
 
-**The JS budget stands: ≤90 KB of behavior JS**, and it is a real constraint — Phase 5
-writes that code rather than selecting it, so every module is a cost someone pays for
-in maintenance as well as bytes.
+**THE JS BUDGET IS DELETED, 2026-08-31, and replaced by a tripwire.** It read
+"≤90 KB of behavior JS" from the start.
+
+**It is deleted on §2.1's argument, not on a new one.** §2.1 removed the CSS KB target
+after establishing that across three revisions it decided no component either way. The
+same three tests apply here and the JS budget fails all three:
+
+- **It never decided anything.** Not one module in `js/` was cut, deferred, shaped or
+  declined because of it. All twelve exist because a Carbon component needed behaviour.
+- **It was questioned every time it was measured.** Finding 14 below said so when the
+  files were 83.5 KB, and proposed "gzipped or nothing"; the 2026-08-31 re-measure said
+  so again at 119.2 KB. A number amended each time it is tested was never the constraint.
+- **Something else was already doing the job.** `CLAUDE.md`'s scope rule — modules make
+  Carbon's components work, they do not add interactions Carbon declines — is what
+  actually bounds this layer. The accordion's note on arrow keys is that rule working.
+  It is a judgement about what belongs, which is the shape the admission rule has too.
+
+**One asymmetry is real and is why something replaces it rather than nothing.** CSS is
+SELECTED from Carbon and therefore bounded upstream at 83 components. JS is WRITTEN, so
+nothing outside the repository bounds it. That argues for a smoke alarm, exactly as
+§2.1 concluded for CSS — not for a budget.
+
+**Tripwire: if `js/` exceeds 60 KB GZIPPED, something structural has changed.** Most
+likely a library vendored into `js/`, which is the one growth the scope rule would not
+already have caught. Re-open the layer. Against today's 34.6 KB it is deliberately wide;
+writing more modules does not reach it.
+
+**Gzipped, and the unit is now settled rather than missing.** It is what a browser
+receives and it is the unit §2.1's CSS tripwire already uses. Raw bytes would count
+comment, and this layer is 61% comment on purpose — a rule whose only route to
+compliance is deleting the reasoning is a rule working against itself.
+
+**AND IT IS MEASURED, which the budget never was.** `tools/build.mjs` prints js modules,
+raw and gzipped on every build beside the stylesheet's figures, and EXITS NON-ZERO over
+the tripwire. The old budget lived only in this sentence, was re-derived by hand
+whenever somebody wondered, and drifted 83.5 → 119.2 KB unnoticed. Note that §2.1's CSS
+tripwire is still prose-only and consulted by eye; that inconsistency is left as the
+author's call rather than fixed here, since §2.1 is a recorded decision.
 
 > **The missing unit now decides the outcome, 2026-08-31.** Finding 14 below flagged
 > that ≤90 KB names no unit, when all three readings agreed and the point was academic.
@@ -116,7 +151,13 @@ in maintenance as well as bytes.
 > and 34.6 KB gzipped, both comfortably under.** The growth since is almost entirely
 > comment: raw went 86.1 → 119.2 KB while code went 45.5 → 46.8, and the comment share
 > went 47% → 61%. Whichever unit is chosen, choosing it now flips a verdict rather than
-> tidying a sentence. Still the author's call; still flagged rather than amended.
+> tidying a sentence.
+>
+> **RESOLVED THE SAME DAY, and not by choosing a unit.** The question "which of three
+> readings does the rule mean" turned out to be the wrong one: the rule had never bound
+> anything under ANY reading, so the budget was deleted and a 60 KB gzipped tripwire put
+> in its place. See the top of this section. The measurement above stands as the reading
+> that prompted it.
 
 Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
 `tools/measure.mjs`, which reads the theme pair AND the emit-includes from
@@ -1308,7 +1349,13 @@ Exit: keyboard and screen-reader passes on every interactive component in the si
 > WRITTEN.** What is left of §4.5 is its exit criterion, which is not code: a keyboard
 > and screen-reader pass over every interactive component in the sink.
 >
-> **14. The 90 KB JS budget needs a unit before it can bind.** The files measure 83.5 KB
+> **14. The 90 KB JS budget needs a unit before it can bind. ANSWERED 2026-08-31 — the
+> budget was deleted instead, and this entry's own "or say nothing" is what happened.**
+> See §4.5 above: a 60 KB gzipped tripwire replaces it, `tools/build.mjs` measures it on
+> every build, and the scope rule in `CLAUDE.md` is what actually bounds the layer.
+> The original finding follows.
+>
+> **14. The 90 KB JS budget needs a unit before it can bind.** The files measure 83.5 KB
 > raw — close enough to look alarming — but **46% of that is comment**, the code alone
 > is 45 KB, and gzipped the whole set is 22.7 KB. §2.1 removed the CSS target after
 > establishing that a number nobody downloads is the wrong thing to measure; the same

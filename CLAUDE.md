@@ -34,7 +34,10 @@ on every build. Roadmap §1.1.
 - **Decisions.** Roadmap §1.1, §2.1, §4.4 and §4.6 record choices *with their rejected
   alternatives*. Ask before reopening one; do not re-derive it.
 - **Behaviour Carbon does not have.** Modules make Carbon's components work; they do not
-  add interactions Carbon declines (see accordion's note on arrow keys).
+  add interactions Carbon declines (see accordion's note on arrow keys). **This rule is
+  what bounds `js/`** — roadmap §4.5 deleted the KB budget on 2026-08-31 because it had
+  never decided anything, leaving a wide 60 KB gzipped tripwire that `npm run build`
+  measures and fails on.
 
 ## Verifying
 

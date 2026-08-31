@@ -157,7 +157,7 @@ popover never opened.
 
 | What | Where |
 |---|---|
-| The 90 KB JS budget needs a unit, and the unit now DECIDES it — 119.2 KB raw is over, 46.8 KB code and 34.6 KB gzipped are under. Raw grew 86.1 → 119.2 KB since 2026-08-29 while code grew 45.5 → 46.8; the growth is comment, 47% → 61% | roadmap §4.5 |
+| Answered 2026-08-31: **the 90 KB JS budget is deleted**, not given a unit. It had never cut, deferred or shaped a single module under any reading, which is the test §2.1 used to remove the CSS target. A **60 KB gzipped tripwire** replaces it, `tools/build.mjs` measures it on every build and exits non-zero over it, and `CLAUDE.md`'s scope rule is what actually bounds the layer | roadmap §4.5 |
 | Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 6 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
 | `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
@@ -318,7 +318,7 @@ cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 | Markup provenance | **35 `rendered-dom` · 6 `source` · 0 `inferred`** |
 | Icons | 59, a 16.1 KB sprite |
 | Size | 649 KB raw · 582 KB min · **59.2 KB gzipped** |
-| Behaviour JS | 12 modules · 119.2 KB raw, **61% of it comment** · 46.8 KB of code · **34.6 KB gzipped** |
+| Behaviour JS | 12 modules · **34.6 KB gzipped**, against a 60 KB tripwire · 119.2 KB raw, 61% of it comment · 46.7 KB of code |
 
 Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
 has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
