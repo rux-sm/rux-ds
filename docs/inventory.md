@@ -198,10 +198,10 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `file-uploader` | **DEFER** | 91 | 258 | 0 | add when a form template needs uploads — **measured +1.1 KB gzipped** |
 | `combo-box` | **DEFER** | 83 | 249 | 0 | filterable dropdown; add if a template needs type-ahead — **measured +0.2 KB gzipped** |
 | `progress-indicator` | **KEEP** | 76 | 196 | 0 | **ADMITTED 2026-08-29, reversing its own DEFER.** The deferral read "multi-step wizard; no target shape has one"; §4.6's seventh exit attempt built that shape, so the stated condition was met. **Measured +0.9 KB gzipped** (58.0 → 58.9), against the 1.1 KB the deferral estimated. All five status icons were already in the sprite and three capture stories carry the markup, so the rest of the price was paid. IBM's guidance is explicit that the hand-composed substitute was the wrong component — `composing-pages.md` §3.10 and §3.11 are both consequences of it |
-| `toggletip` | **DEFER** | 71 | 173 | 2 | tooltip covers the common case; **+0.3 KB gzipped marginal**, not 71 |
-| `time-picker` | **DEFER** | 47 | 167 | 0 | pairs with date-picker; same decision — **measured +0.4 KB gzipped** |
+| `toggletip` | **KEEP** | 71 | 173 | 2 | **ADMITTED 2026-08-31, with the picker work.** +0.2 KB gzipped and 3 classes measured against the shipped set: a toggletip is a `popover-container` plus `toggletip`, `toggletip-button` and `toggletip-content`. **No behaviour to write** — `js/popover.js` already claims `.rux--popover-container` on click and keeps `aria-expanded` in step, which is what a toggletip is. 46 stories reference it. Admitted WITH the pickers rather than on its own cheapness, which §2.1 is explicit has never decided anything here |
+| `time-picker` | **KEEP** | 47 | 167 | 0 | **ADMITTED 2026-08-31. It does NOT pair with date-picker, and this row said it did.** Measured separately: +0.4 KB gzipped and 9 classes, against date-picker's +3.4 KB and 41. Its whole markup is `time-picker__input-field` over `text-input` plus two NATIVE `<select>`s, both already compiled, so there is **no calendar, no popover, no keyboard model and no module to write**. Bundling the two hid that for three revisions |
 | `slider` | **DEFER** | 45 | 176 | 0 | no target shape needs it yet — **measured +1.4 KB gzipped** |
-| `date-picker` | **DEFER** | 43 | 120 | 1 | needs flatpickr reproduced in Phase 5 — real cost, decide then — **measured +3.3 KB gzipped** |
+| `date-picker` | **DEFER** | 43 | 120 | 1 | **ADMISSION AGREED 2026-08-31; the row stays DEFER until the work lands, because this column describes what the BUILD does and the build does not have it yet.** +3.4 KB gzipped, 41 classes. The evidence is NOT the blocker and this row used to imply it was: six stories capture a fully populated calendar, 43–129 `__day` nodes, and every calendar class is `date-picker__*` — there are no flatpickr class names in the compiled CSS, so the stylesheet is self-contained. Three things gate KEEP. (1) `sink/deferred/date-picker.html` is `source` provenance from the superseded shadow-DOM reference and must be re-diffed against `carbon-react-dom.json`. (2) It demos the INPUT ONLY — **zero `__day` nodes** — so the 17 calendar classes are undemoed and `check-coverage` would ratchet in a low figure. (3) `js/date-picker.js` does not exist: day-grid generation, month nav, range selection, arrow movement across days and weeks, min/max, placement. Carbon does not write this either — it uses flatpickr, and **vendoring flatpickr would trip the 60 KB JS tripwire §4.5 added the same day**, which is what that alarm is for |
 | `treeview` | **DEFER** | 20 | 86 | 0 | no target shape needs it yet — **measured +0.7 KB gzipped** |
 | `progress-bar` | **DEFER** | 8 | 21 | 0 | 8 KB; cheap to add back when something reports progress — **measured +0.6 KB gzipped** |
 | `icon-indicator` | **DEFER** | 3 | 18 | 1 | status vocabulary; tag covers most of it — **measured +0.4 KB gzipped** |
@@ -239,13 +239,14 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
 
-**34 KEEP · 13 DEFER · 28 CUT** — 75 rows, every row decided. It read 33/14/28 until
-2026-08-31: `progress-indicator` reversed its own DEFER on 2026-08-29 and the row was
-changed without the tally under it.
+**36 KEEP · 11 DEFER · 28 CUT** — 75 rows, every row decided. It read 33/14/28 until
+2026-08-31, when `progress-indicator`'s own DEFER reversal was finally tallied and
+`toggletip`, `time-picker` and `date-picker` were admitted. A row changed without the
+tally under it is how this drifted before; both move together now.
 
 **That tally covers the original 75 only.** Carbon 1.114 ships 83. The eight new ones
 have rows in the section directly below, and all eight are now decided — one DEFER and
-seven CUT, 2026-08-31 — so the full count is **34 KEEP · 14 DEFER · 35 CUT**, 83 rows,
+seven CUT, 2026-08-31 — so the full count is **36 KEEP · 12 DEFER · 35 CUT**, 83 rows,
 every row decided. `npm run verify` holds it there: `check-inventory` fails on a Carbon
 component with no row, and on a row that carries no disposition.
 
@@ -356,16 +357,25 @@ rather than amending it to ≤55 KB as this document originally recommended. The
 floor for a set that builds all six page shapes is 52.7 KB, and the reason the number
 went rather than moved is recorded in §2.1 and above.
 
-1. **`date-picker` / `time-picker` — DEFER.** Both need a calendar reproduced in vanilla
-   JS in Phase 5, which is the single largest behaviour cost in the catalogue. Keeping
-   them is defensible; it should be a conscious purchase.
-2. **`combo-box` / `multiselect` — DEFER.** Type-ahead and multi-select are common in
+1. **`date-picker` / `time-picker` — ANSWERED 2026-08-31: BOTH ADMITTED, and the
+   pairing in this entry was wrong.** Measured separately they are not one decision:
+   time-picker is +0.4 KB with no module to write, date-picker is +3.4 KB plus the
+   calendar. The calendar was bought as a conscious purchase, which is what this entry
+   asked for. See both rows above.
+2. **`combo-box` / `multiselect` — RE-AFFIRMED DEFER, 2026-08-31.** Put to the author
+   with the measured cost and the capture count; deferred again because no page shape
+   needs them, which is the only ground that would admit them. Type-ahead and
+   multi-select are common in
    real forms. They are out because no target shape names them, not because they are bad
    — and the KB column overstates them the same way: **together they add 7 KB minified /
    0.8 KB gzipped**, since both are built from `list-box`, `text-input`, `checkbox` and
    `tag`, all of which already ship. For scale, the seven sub-8 KB DEFER rows together
    add 14 KB minified / 1.9 KB gzipped.
-3. **`toggletip` — DEFER, but NOT on cost.** This entry read "out on cost at 71 KB",
+3. **`toggletip` — ANSWERED 2026-08-31: ADMITTED with the picker work**, not on its own
+   cheapness. The entry below already had the cost right; what it lacked was a reason to
+   buy, and the pickers supply one. Original entry follows.
+
+   **`toggletip` — DEFER, but NOT on cost.** This entry read "out on cost at 71 KB",
    which is this document's own warning ignored two sections above where it is written:
    71 KB is the standalone-with-dependencies figure, and toggletip shares popover,
    button and tooltip with the keep-set. **Measured marginal cost is 3 KB minified /

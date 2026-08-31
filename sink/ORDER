@@ -10,6 +10,7 @@ tags
 text-input
 textarea
 select
+time-picker
 checkbox
 radio
 toggle
@@ -32,6 +33,7 @@ list-box
 modal
 popover
 tooltip
+toggletip
 menu
 overflow-menu
 accordion

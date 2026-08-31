@@ -3,8 +3,21 @@
   <!-- PROVENANCE: rendered-dom · components-toggletip--default for the popover
        and components-dropdown--with-toggletip-label for the label form,
        2026-08-27 -->
+  <!--
+    `popover--high-contrast` ADDED ON RESTORE, 2026-08-31, and it is not
+    decoration: it is what makes a toggletip dark. Carbon renders it on the
+    container in ALL 55 captures that draw a toggletip-button, and
+    check-ancestry says so the moment this file is read.
+
+    IT WAS MISSING BECAUSE NO GATE READ THIS FILE. The fragment was quarried
+    2026-08-27; check-ancestry landed after it, and sink/deferred/ is outside
+    every gate's target set. A deferred fragment rots silently against gates
+    that arrive after it, and restoring one is the only thing that finds out.
+    This was the SECOND such defect in two fragments restored the same day --
+    sink/time-picker.html carried a wrong glyph for the same reason.
+  -->
   <div class="ks-row" style="padding:3rem 0 6rem 8rem">
-    <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret">
+    <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
       <button type="button" class="rux--toggletip-button" aria-expanded="false">More information</button>
       <span class="rux--popover">
         <!-- popover-content and toggletip-content are NESTED, not compounded:
@@ -34,7 +47,7 @@
       <label class="rux--label" id="tt-dd-label">
         <div>
           <span class="rux--toggletip-label">Region</span>
-          <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret">
+          <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
             <button type="button" class="rux--toggletip-button" aria-label="More information" aria-expanded="false">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-information--filled"/></svg>
             </button>

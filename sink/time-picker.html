@@ -16,6 +16,14 @@
         never emits here — an inline select is a different component, and the
         note claiming the pairing was required has gone with it.
       - the invalid field pairs `__input-field-error` with a
+      WRONG GLYPH FIXED ON RESTORE, 2026-08-31. This carried
+      `#i-error--filled` in the `checkbox__invalid-icon` slot; Carbon draws
+      `warning--filled` there, corroborated across 6 sibling __invalid-icon
+      slots. The fragment was written before check-slots existed (2026-08-29)
+      and then sat in sink/deferred/, which NO GATE READS -- so a deferred
+      fragment can rot against a gate that arrived after it, and restoring one
+      is the only thing that finds out.
+
         `__error__icon` holding a `checkbox__invalid-icon` svg, which this
         fragment drew nowhere.
   -->
@@ -68,7 +76,7 @@
         <div class="rux--time-picker__input">
           <input id="tp-2" class="rux--text-input rux--time-picker__input-field rux--time-picker__input-field-error" type="text" value="99:99" data-invalid aria-invalid="true">
           <div class="rux--time-picker__error__icon">
-            <svg class="rux--checkbox__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+            <svg class="rux--checkbox__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg>
           </div>
         </div>
       </div>

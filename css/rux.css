@@ -16637,6 +16637,107 @@ span.rux--pagination__text.rux--pagination__items-count {
   border-end-end-radius: 0.5rem;
 }
 
+.rux--time-picker {
+  display: flex;
+  align-items: flex-end;
+}
+
+.rux--time-picker__select {
+  justify-content: center;
+  margin-inline-start: 0.125rem;
+}
+
+.rux--time-picker__input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.rux--time-picker__error__icon {
+  position: absolute;
+  display: flex;
+  block-size: 100%;
+  inset-block-start: 50%;
+  inset-inline-end: 1rem;
+  place-items: center;
+  transform: translateY(-50%);
+}
+
+.rux--time-picker__error__icon .rux--checkbox__invalid-icon {
+  fill: var(--rux-support-error, #da1e28);
+}
+
+.rux--time-picker .rux--select-input {
+  margin: 0;
+  inline-size: auto;
+  line-height: 1;
+  min-inline-size: auto;
+  padding-inline-end: 3rem;
+}
+
+.rux--time-picker__input-field {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  font-family: var(--rux-code-02-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-02-font-size, 0.875rem);
+  font-weight: var(--rux-code-02-font-weight, 400);
+  line-height: var(--rux-code-02-line-height, 1.42857);
+  letter-spacing: var(--rux-code-02-letter-spacing, 0.32px);
+  display: flex;
+  align-items: center;
+  block-size: 2.5rem;
+  inline-size: 4.875rem;
+  transition: outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9), background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.rux--time-picker__input-field::placeholder {
+  color: var(--rux-text-placeholder, rgba(22, 22, 22, 0.4));
+  opacity: 1;
+}
+
+.rux--time-picker__input-field-error {
+  inline-size: 6.175rem;
+}
+
+.rux--time-picker--light .rux--select-input {
+  background-color: var(--rux-field-02, #ffffff);
+}
+.rux--time-picker--light .rux--select-input:hover {
+  background-color: var(--rux-field-hover);
+}
+.rux--time-picker--light .rux--select-input:disabled, .rux--time-picker--light .rux--select-input:hover:disabled {
+  background-color: transparent;
+  border-block-end: 1px solid transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--time-picker--sm .rux--select-input,
+.rux--time-picker--sm .rux--time-picker__input-field {
+  block-size: 2rem;
+  max-block-size: 2rem;
+}
+
+.rux--time-picker--lg .rux--select-input,
+.rux--time-picker--lg .rux--time-picker__input-field {
+  block-size: 3rem;
+  max-block-size: 3rem;
+}
+
+.rux--time-picker--readonly .rux--time-picker__input-field {
+  background-color: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--time-picker--readonly .rux--select-input {
+  background-color: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+  cursor: default;
+}
+
+.rux--time-picker--readonly .rux--select-input + .rux--select__arrow {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
 .rux--toggle {
   display: inline-block;
   user-select: none;
@@ -16907,6 +17008,110 @@ span.rux--pagination__text.rux--pagination__items-count {
 
 [dir=rtl] .rux--toggle__appearance--sm .rux--toggle__switch--checked::before {
   transform: translateX(-1rem);
+}
+
+.rux--toggletip-label {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  color: var(--rux-text-secondary, #525252);
+  margin-inline-end: 0.5rem;
+}
+
+:host([slot=label-text]) .rux--toggletip-label {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+}
+
+.rux--toggletip-button {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--toggletip-button *,
+.rux--toggletip-button *::before,
+.rux--toggletip-button *::after {
+  box-sizing: inherit;
+}
+.rux--toggletip-button::-moz-focus-inner {
+  border: 0;
+}
+.rux--toggletip-button {
+  display: flex;
+  align-items: center;
+}
+
+.rux--toggletip-button svg {
+  fill: var(--rux-icon-secondary, #525252);
+}
+
+.rux--toggletip-button:hover svg,
+.rux--toggletip--open .rux--toggletip-button svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--toggletip-button:hover svg,
+  .rux--toggletip--open .rux--toggletip-button svg {
+    fill: Highlight;
+  }
+}
+.rux--toggletip-button:focus {
+  outline: 1px solid var(--rux-focus, #0f62fe);
+}
+@media screen and (prefers-contrast) {
+  .rux--toggletip-button:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--toggletip {
+  --rux-popover-offset: 0.8125rem;
+}
+
+.rux--toggletip-content {
+  --rux-button-focus-color: var(--rux-focus-inverse, #ffffff);
+  --rux-link-text-color: var(--rux-link-inverse, #78a9ff);
+  --rux-link-hover-text-color: var(--rux-link-inverse-hover, #a6c8ff);
+  --rux-link-visited-text-color: var(--rux-link-inverse-visited, #be95ff);
+  --rux-link-focus-text-color: var(--rux-focus-inverse, #ffffff);
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  display: grid;
+  padding: 1rem;
+  max-inline-size: 18rem;
+  row-gap: 1rem;
+}
+
+.rux--toggletip-content p {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+}
+
+.rux--toggletip-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1rem;
 }
 
 .rux--content {

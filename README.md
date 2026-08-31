@@ -159,7 +159,7 @@ popover never opened.
 |---|---|
 | Answered 2026-08-31: **the 90 KB JS budget is deleted**, not given a unit. It had never cut, deferred or shaped a single module under any reading, which is the test §2.1 used to remove the CSS target. A **60 KB gzipped tripwire** replaces it, `tools/build.mjs` measures it on every build and exits non-zero over it, and `CLAUDE.md`'s scope rule is what actually bounds the layer | roadmap §4.5 |
 | Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 6 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
-| `date-picker` / `time-picker`, `combo-box` / `multiselect`, `toggletip` — all DEFER, none decided | `docs/inventory.md`, "What needs your call" |
+| Answered 2026-08-31, one at a time with the cost measured for each: **`toggletip` and `time-picker` ADMITTED** and compiled; **`date-picker` admission AGREED** but staged, since its fragment demos no calendar and `js/date-picker.js` does not exist; **`combo-box` / `multiselect` re-affirmed DEFER** because no page shape needs them | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 18 now. There is no `tests/` directory at all | roadmap §4.8 |
 | `build-portal`'s icon assertion is a real check outside the registry — nineteenth gate or not | roadmap §4.8 |
@@ -340,7 +340,7 @@ cells are current as of 2026-08-31** — 0 stale, 0 never run — and
 
 | | |
 |---|---|
-| Components | **34 / 83 compiled** in 37 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
+| Components | **36 / 83 compiled** in 39 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
 | Tokens · classes | 611 `--rux-*` · 1,225 `.rux--*` |
 | Kitchen sink | 35 sections · **539** classes with `templates/` and `js/` · 0 unresolved |

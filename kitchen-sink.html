@@ -77,7 +77,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">35 sections</div>
+  <div class="ks-count">37 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#links">Links</a>
@@ -85,6 +85,7 @@
     <a href="#text-input">Text input</a>
     <a href="#textarea">Text area</a>
     <a href="#select">Select</a>
+    <a href="#time-picker">Time picker</a>
     <a href="#checkbox">Checkbox</a>
     <a href="#radio">Radio button</a>
     <a href="#toggle">Toggle</a>
@@ -107,6 +108,7 @@
     <a href="#modal">Modal</a>
     <a href="#popover">Popover</a>
     <a href="#tooltip">Tooltip</a>
+    <a href="#toggletip">Toggletip</a>
     <a href="#menu">Menu</a>
     <a href="#overflow-menu">Overflow menu</a>
     <a href="#accordion">Accordion</a>
@@ -646,6 +648,93 @@
         </div>
         <div class="rux--form__helper-text rux--form__helper-text--disabled">Set by your administrator</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="time-picker">
+  <h2>Time picker</h2><p>time field plus period and zone selects · invalid</p>
+  <!-- PROVENANCE: rendered-dom · components-timepicker--default with its
+       invalid, readonly, sm and lg recipes, plus --with-layer, 2026-08-28 -->
+  <!--
+    `.rux--time-picker__input-field` is a modifier over `.rux--text-input`; alone
+    the browser default shows through.
+
+    Rebuilt against the reference 2026-08-28, three ways:
+      - the LABEL sits in the form-item, BEFORE .rux--time-picker — not inside
+        __input beside the field, which is where this fragment had it. The
+        requirement goes in the form-item too, after the picker.
+      - the selects are plain: `select time-picker__select` wrapping a bare
+        select-input and the arrow. This fragment wrapped each in
+        `select--inline` + `select-input--inline__wrapper`, which the reference
+        never emits here — an inline select is a different component, and the
+        note claiming the pairing was required has gone with it.
+      - the invalid field pairs `__input-field-error` with a
+      WRONG GLYPH FIXED ON RESTORE, 2026-08-31. This carried
+      `#i-error--filled` in the `checkbox__invalid-icon` slot; Carbon draws
+      `warning--filled` there, corroborated across 6 sibling __invalid-icon
+      slots. The fragment was written before check-slots existed (2026-08-29)
+      and then sat in sink/deferred/, which NO GATE READS -- so a deferred
+      fragment can rot against a gate that arrived after it, and restoring one
+      is the only thing that finds out.
+
+        `__error__icon` holding a `checkbox__invalid-icon` svg, which this
+        fragment drew nowhere.
+  -->
+  <div class="ks-row" style="gap:3rem">
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-1">Time</label>
+      <div class="rux--time-picker rux--time-picker--lg">
+        <div class="rux--time-picker__input">
+          <input id="tp-1" class="rux--text-input rux--time-picker__input-field" type="text" value="09:30" maxlength="5">
+        </div>
+        <div class="rux--select rux--time-picker__select">
+          <select class="rux--select-input" aria-label="Period">
+            <option class="rux--select-option" value="am">AM</option>
+            <option class="rux--select-option" value="pm">PM</option>
+          </select>
+          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        </div>
+        <div class="rux--select rux--time-picker__select">
+          <select class="rux--select-input" aria-label="Time zone">
+            <option class="rux--select-option" value="utc">UTC</option>
+            <option class="rux--select-option" value="cet">CET</option>
+          </select>
+          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-4">Warning</label>
+      <div class="rux--time-picker rux--time-picker--lg rux--time-picker--warning">
+        <div class="rux--time-picker__input">
+          <input id="tp-4" class="rux--text-input rux--time-picker__input-field" type="text" value="03:00" maxlength="5">
+        </div>
+      </div>
+      <div class="rux--form-requirement">Outside business hours</div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-5">Read-only</label>
+      <div class="rux--time-picker rux--time-picker--lg rux--time-picker--readonly">
+        <div class="rux--time-picker__input">
+          <input id="tp-5" class="rux--text-input rux--time-picker__input-field" type="text" value="12:00" maxlength="5" readonly>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="tp-2">Invalid · small</label>
+      <div class="rux--time-picker rux--time-picker--sm rux--time-picker--invalid" data-invalid>
+        <div class="rux--time-picker__input">
+          <input id="tp-2" class="rux--text-input rux--time-picker__input-field rux--time-picker__input-field-error" type="text" value="99:99" data-invalid aria-invalid="true">
+          <div class="rux--time-picker__error__icon">
+            <svg class="rux--checkbox__invalid-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-requirement">Not a valid time</div>
     </div>
   </div>
 </section>
@@ -3357,6 +3446,82 @@
         <span class="rux--popover-caret"></span>
       </span>
     </span>
+  </div>
+</section>
+
+<section class="ks-sec" id="toggletip">
+  <h2>Toggletip</h2><p>click-triggered, open state · labelled field — click a trigger</p>
+  <!-- PROVENANCE: rendered-dom · components-toggletip--default for the popover
+       and components-dropdown--with-toggletip-label for the label form,
+       2026-08-27 -->
+  <!--
+    `popover--high-contrast` ADDED ON RESTORE, 2026-08-31, and it is not
+    decoration: it is what makes a toggletip dark. Carbon renders it on the
+    container in ALL 55 captures that draw a toggletip-button, and
+    check-ancestry says so the moment this file is read.
+
+    IT WAS MISSING BECAUSE NO GATE READ THIS FILE. The fragment was quarried
+    2026-08-27; check-ancestry landed after it, and sink/deferred/ is outside
+    every gate's target set. A deferred fragment rots silently against gates
+    that arrive after it, and restoring one is the only thing that finds out.
+    This was the SECOND such defect in two fragments restored the same day --
+    sink/time-picker.html carried a wrong glyph for the same reason.
+  -->
+  <div class="ks-row" style="padding:3rem 0 6rem 8rem">
+    <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
+      <button type="button" class="rux--toggletip-button" aria-expanded="false">More information</button>
+      <span class="rux--popover">
+        <!-- popover-content and toggletip-content are NESTED, not compounded:
+             Carbon renders span.popover-content > div.toggletip-content
+             (components-toggletip--default). -->
+        <span class="rux--popover-content">
+          <div class="rux--toggletip-content">
+            <p>Toggletips stay open until dismissed, so their content can be interactive.</p>
+            <div class="rux--toggletip-actions">
+              <a class="rux--link" href="#toggletip">Learn more</a>
+            </div>
+          </div>
+        </span>
+        <span class="rux--popover-caret"></span>
+      </span>
+    </span>
+
+    <!--
+      __toggletip-label is NOT a heading inside the popover, which is where this
+      fragment had it. Carbon renders it in a field's <label>, as the label text
+      that sits beside the toggletip trigger — `label.rux--label > span.
+      rux--toggletip-label + span.rux--toggletip` (components-dropdown--with-
+      toggletip-label). Demoed in that position instead, on the field it
+      belongs to.
+    -->
+    <div class="rux--list-box__wrapper" style="inline-size:16rem">
+      <label class="rux--label" id="tt-dd-label">
+        <div>
+          <span class="rux--toggletip-label">Region</span>
+          <span class="rux--toggletip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
+            <button type="button" class="rux--toggletip-button" aria-label="More information" aria-expanded="false">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-information--filled"/></svg>
+            </button>
+            <span class="rux--popover">
+              <span class="rux--popover-content">
+                <div class="rux--toggletip-content">
+                  <p>Region sets where the data is stored, and cannot be changed later.</p>
+                </div>
+              </span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+      </label>
+      <div class="rux--dropdown rux--list-box rux--dropdown--lg rux--layout--size-lg">
+        <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="tt-dd-label" aria-expanded="false" aria-haspopup="listbox">
+          <span class="rux--list-box__label">Frankfurt</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 

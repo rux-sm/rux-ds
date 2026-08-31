@@ -109,17 +109,25 @@
       "hit": 5,
       "own": 6
     },
+    "pagination": {
+      "hit": 10,
+      "own": 12
+    },
+    "toggletip": {
+      "hit": 5,
+      "own": 6
+    },
     "menu": {
       "hit": 19,
       "own": 21
     },
+    "time-picker": {
+      "hit": 11,
+      "own": 12
+    },
     "badge-indicator": {
       "hit": 2,
       "own": 2
-    },
-    "pagination": {
-      "hit": 10,
-      "own": 10
     },
     "progress-indicator": {
       "hit": 7,
