@@ -1736,11 +1736,19 @@ one more argument for closing it.
 
 #### THE CAPTURES CARRY NO VERSION — found 2026-08-30
 
-**Six gates read `docs/carbon-*.json` as their reference, and not one of those files
-records which Carbon it came from.** 505 stories in `carbon-react-dom.json`, zero
-metadata keys. `check-tags`, `check-ancestry`, `check-compound`, `check-co-classes`,
-`check-slots` and `check-glyphs` all measure this project against a reference whose
-provenance is unknown.
+**Seven gates read a Carbon-derived reference file, and not one of those files records
+which Carbon it came from.** 505 stories in `carbon-react-dom.json`, zero metadata keys.
+
+| Reads | Gates |
+|---|---|
+| the four DOM/states captures | `check-tags`, `check-ancestry` (and `diff-fragment`, a diagnostic) |
+| `carbon-react-spacing.json` | `check-spacing` |
+| `carbon-co-classes.json` | `check-co-classes`, `check-tokens` |
+| `carbon-glyphs.json` | `check-glyphs` |
+| `carbon-slots.json` | `check-slots` |
+
+An earlier version of this entry said six and named `check-compound`, which reads
+`css/rux.css` and the HTML and no capture at all. Corrected 2026-08-30.
 
 Three facts make that worse than untidy:
 
@@ -1757,14 +1765,14 @@ allowlist in that extractor was widened on 2026-08-30 from four attributes to th
 because the old list had blocked adjudication three times — `aria-hidden` and `tabindex`
 in the batch-actions finding above, and `aria-labelledby` for the toggle defect the
 screen-reader pass found. **That change does nothing until someone re-captures**, and
-re-capturing today would silently swap the reference for six gates with an unknown
+re-capturing today would silently swap the reference for seven gates with an unknown
 Carbon and leave no record that it happened.
 
 **The obvious fix is not free, and the shape is the decision.** Stamping a `_meta` key
 into the payload is one line in the extractor and a break in every consumer:
 `check-ancestry.mjs:210` does `Object.entries(...)` over the file and would read `_meta`
 as a story. So it is either a sidecar file that nothing has to skip, or a `_`-prefix
-convention added to six readers at once. Both are small; choosing between them is not
+convention added to every reader at once. Both are small; choosing between them is not
 mine to do silently.
 
 **Not decided, and worth deciding before the next capture rather than after.** A
