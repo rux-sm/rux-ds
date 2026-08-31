@@ -239,7 +239,13 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
 
-**33 KEEP · 14 DEFER · 28 CUT** — 75 rows, every row decided.
+**34 KEEP · 13 DEFER · 28 CUT** — 75 rows, every row decided. It read 33/14/28 until
+2026-08-31: `progress-indicator` reversed its own DEFER on 2026-08-29 and the row was
+changed without the tally under it.
+
+**But 75 is no longer every component.** Carbon 1.114 ships 83, and the eight named
+above the cost table have no row at all — so this line counts the rows that exist, not
+the decisions the phase owes.
 
 ---
 

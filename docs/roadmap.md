@@ -61,6 +61,11 @@ rux-ui's `docs/foundations/` is the obvious quarry for the rewrite.
 All figures minified, Sass-compiled from `@carbon/styles@1.113.0` on 2026-08-26.
 Reproduce with `tools/measure.mjs` (Phase 2).
 
+**These are 1.113.0 numbers and are left as recorded.** The project has since moved to
+1.114.0, where Carbon ships **83 components rather than 75** — so "Full Carbon" below
+names a smaller set than the same phrase does in §2.1. The current figures live there;
+this table is the baseline the strip was decided against, not a live reading.
+
 | Configuration | Size |
 |---|---|
 | Full Carbon — 75 components, 4 themes | **837 KB** |
@@ -105,15 +110,61 @@ it sits where no legitimate sequence of admissions reaches it.
 writes that code rather than selecting it, so every module is a cost someone pays for
 in maintenance as well as bytes.
 
-Measured 2026-08-28. Reproduce with `tools/measure.mjs`, which reads the theme pair
-from `src/app.scss` and whose output matches `css/rux.min.css` byte for byte:
+> **The missing unit now decides the outcome, 2026-08-31.** Finding 14 below flagged
+> that ≤90 KB names no unit, when all three readings agreed and the point was academic.
+> They no longer agree: `js/` measures **119.2 KB raw — over — against 46.8 KB of code
+> and 34.6 KB gzipped, both comfortably under.** The growth since is almost entirely
+> comment: raw went 86.1 → 119.2 KB while code went 45.5 → 46.8, and the comment share
+> went 47% → 61%. Whichever unit is chosen, choosing it now flips a verdict rather than
+> tidying a sentence. Still the author's call; still flagged rather than amended.
+
+Re-measured 2026-08-31 against `@carbon/styles@1.114.0`. Reproduce with
+`tools/measure.mjs`, which reads the theme pair AND the emit-includes from
+`src/app.scss`:
 
 | Configuration | Minified | **Gzipped** | Classes |
 |---|---|---|---|
-| Full Carbon — 75 components / 79 modules, 4 themes | 881 KB | 87.6 KB | 1,644 |
-| **Shipped — 31 components / 34 modules, 2 themes** | 546 KB | **55.6 KB** | 1,112 |
-| Shipped set — 1 theme | 523 KB | 54.0 KB | 1,112 |
-| Shipped set — 4 themes | 590 KB | 56.4 KB | 1,112 |
+| Full Carbon — 83 components / 87 modules, 4 themes | 939 KB | 94.0 KB | 1,862 |
+| **Shipped — 34 components / 37 modules, 2 themes** | 582 KB | **58.9 KB** | 1,225 |
+| Shipped set — 1 theme | 559 KB | 57.3 KB | 1,225 |
+| Shipped set — 4 themes | 626 KB | 59.6 KB | 1,225 |
+
+> **Amended 2026-08-31, and the previous reading of this table was wrong rather than
+> merely old.** It said 31 components / 34 modules / 546 KB / 55.6 KB, and the sentence
+> above it promised `tools/measure.mjs` "matches `css/rux.min.css` byte for byte". That
+> promise stopped being true at `4beac65`.
+>
+> **The tool built its synthetic stylesheet from a HARDCODED include list** — `reset.reset`
+> and `type.default-type` — while `src/app.scss` had admitted `type.type-classes`. So it
+> priced a configuration this project does not ship, understating the shipped set by
+> 24 KB minified and 73 classes, and every figure it fed into this section and
+> `docs/inventory.md` inherited that. This is the SAME failure as the theme pair
+> recorded below — a second copy of the manifest, drifting — and it now has the same
+> fix: the emit-includes are read from `src/app.scss`. The shipped row matches the built
+> artifact to the 599-byte attribution banner (58.9 KB here, 59.2 KB with it).
+>
+> **A symptom was visible, though not in this table.** This one read 1,112 classes for
+> the shipped set at one, two and four themes — self-consistent, and wrong only in being
+> stale. `docs/inventory.md`'s copy read **1,128 at two themes and 1,112 at four**, and a
+> theme cannot remove a class. That contradiction sat in a published table across three
+> revisions of this section with nobody reading the column.
+>
+> **CARBON 1.114 SHIPS 83 COMPONENTS, NOT 75.** `big-number`, `coachmark`, `EditInPlace`,
+> `FullPageError`, `InterstitialScreen`, `OptionsTile`, `scroll-gradient` and
+> `user-avatar` — names this project first met in the `ibm-products` captures, now
+> absorbed into `@carbon/styles` itself. The full baseline therefore moved 881 → 939 KB
+> for two independent reasons at once, and separating them matters: eight new
+> components, plus the type utilities the tool had been omitting.
+>
+> **§4.2's exit — "75 rows, every row decided" — is no longer met**, and this is a
+> DECISION, not a measurement. Those eight have no row in `docs/inventory.md`, no
+> disposition and no fragment. Deciding them is the author's call, flagged here exactly
+> as the KB target and the JS budget's unit were. A Carbon upgrade can now widen the
+> component set behind the inventory's back, which nothing in this plan anticipated.
+>
+> **The tripwire held throughout** and was never consulted: 58.9 KB gzipped against
+> 75 KB. It correctly did not fire, since nothing structural went wrong — the growth is
+> one admitted component and a deliberate type-utility emit.
 
 **A component can be several modules.** Carbon splits `data-table` into four —
 the base plus `sort`, `expandable` and `action` — and `@use`s them separately in
@@ -972,7 +1023,11 @@ Whole families that are likely single decisions rather than 10 decisions:
 - `ai-label`, `slug`, `chat-button` — AI affordances
 - `*-skeleton` states, `expressive` variants, `compat/`, `feature-flags`
 
-Exit: `docs/inventory.md`, 75 rows, every row decided.
+Exit: `docs/inventory.md`, a row for every Carbon component, every row decided. **This
+read "75 rows" and was met at 75; Carbon 1.114 ships 83.** The eight new components
+have no row, so the exit has re-opened — see the 2026-08-31 amendment in §2.1. The
+wording is now the count-free one, because pinning an exit to a number a dependency
+controls is what let this close while incomplete.
 
 ### 4.3 Phase 3 — The strip
 
