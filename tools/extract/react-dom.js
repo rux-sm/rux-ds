@@ -735,6 +735,19 @@
   // dead id and (unreadable) is a cross-origin problem that a second look will
   // not solve. Sequential and patient on purpose: contention is what caused
   // these, so retrying them three-up would just reproduce it.
+
+  // A VERDICT IS A STRING FIRST ELEMENT. 'spacing' mode fills the array with
+  // record objects, and `v[0].startsWith` on one of those throws — the check has
+  // to ask what it is holding before it asks what it says.
+  //
+  // DECLARED HERE, ABOVE THE RETRY LOOP THAT USES IT. It sat below, and the
+  // retry loop called it from inside the temporal dead zone: a ReferenceError
+  // that fires only on a run WITH retries, which is exactly the run worth
+  // keeping. The 2026-08-31 spacing capture hit 59 retries after eight minutes
+  // of harvesting and would have thrown away the lot. Found by the operator of
+  // that run, not by this file.
+  const verdictOf = v => (typeof v?.[0] === 'string' && v[0].startsWith('(')) ? v[0] : null;
+
   const retryable = Object.entries(out)
     .filter(([, v]) => v[0] === '(empty)' || v[0] === '(timeout)')
     .map(([id]) => id);
@@ -749,10 +762,6 @@
     console.log(`  recovered ${recovered}/${retryable.length}`);
   }
 
-  // A VERDICT IS A STRING FIRST ELEMENT. 'spacing' mode fills the array with
-  // record objects, and `v[0].startsWith` on one of those throws — the check has
-  // to ask what it is holding before it asks what it says.
-  const verdictOf = v => (typeof v?.[0] === 'string' && v[0].startsWith('(')) ? v[0] : null;
   const bad = Object.entries(out).filter(([, v]) => verdictOf(v));
   const by = k => bad.filter(([, v]) => verdictOf(v) === k).map(([id]) => id);
   console.log(`done — ${Object.keys(out).length} stories, ${Object.keys(out).length - bad.length} usable`);

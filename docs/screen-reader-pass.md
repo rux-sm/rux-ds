@@ -109,7 +109,7 @@ Twelve modules own the interactive set. Sections not listed here are static spec
 | 5  | select        | Tab in, ↓                 | label + "pop up button", option on change                | "on a pop up button" x5, no name heard. Markup HAS label for= on all five, so re-do with Tab before filing.                                                                       |
 | 6  | checkbox      | Tab, Space                | name + "checkbox" + state ON TOGGLE                      | "Unchecked, unchecked, checkbox"; "Indeterminate, MIXED, checkbox"; "Required, INVALID DATA unchecked, checkbox" PASS. Disabled ones not landed on.                               |
 | 7  | radio         | Tab, ↓                    | "radio button, N of M" + group name                      | "radio button, 2 of 3"; "3 of 3. This item is dimmed." Position + dimmed both PASS                                                                                                |
-| 8  | toggle        | Tab, Space                | "switch" not "checkbox", + state on flip                 | **"On On, on, switch" — NAME DOUBLED.** See finding 1                                                                                                                             |
+| 8  | toggle        | Tab, Space                | "switch" not "checkbox", + state on flip                 | **"On On, on, switch" — NAME DOUBLED.** FIXED 2026-08-31, finding 1                                                                                                                             |
 | 9  | search        | Type, then clear          | field name; clear button has its own name                | "Search records Search..., search text field, search" PASS                                                                                                                        |
 | 10 | number        | Tab, ↑↓                   | "spin button" + value on each step                       | ......                                                                                                                                                                            |
 | 11 | tile          | Tab, Space                | clickable = link/button; selectable = checked            | "Cluster status ... button"; selectable tiles read as checkbox PASS                                                                                                               |
@@ -181,18 +181,26 @@ selected state, group name, panel, and "Disabled, dimmed, tab, 4 of 4".
 
 ### Findings
 
-**1 · toggle announces its name twice.** Heard: "On On, on, switch" and "Off Off, off,
+**1 · toggle announced its name twice — FIXED 2026-08-31.** Heard: "On On, on, switch" and "Off Off, off,
 switch". `sink/toggle.html` puts `aria-labelledby` on the switch pointing at the whole
 `<label>`, and that label holds BOTH `toggle__label-text` ("On") and the state span
 `toggle__text` ("On"), so the accessible name computes to both. The reader hears the word
 three times: name, name again, then the switch state.
 
-**NOT YET ADJUDICATED, and the captures cannot settle it.**
-`tools/extract/react-dom.js:388` records only four aria attributes — `aria-expanded`,
-`aria-selected`, `aria-invalid`, `aria-disabled`. `aria-labelledby` is not among them, so
-zero occurrences across the 641 captures means the captures are SILENT, not that Carbon
-omits it. Deciding this needs a running Carbon page per `docs/verifying-templates.md`.
-Do not "fix" it against the captures.
+**Settled 2026-08-31 by the re-capture, and it was ours.** Carbon renders
+
+    span.cds--toggle__text{aria-hidden=true}
+
+— it hides the state span from the accessibility tree, and that is what stops its own
+`aria-labelledby` doubling the name. The label still holds both spans; only one of them
+is readable. Ours had no `aria-hidden`, so both counted. Four spans in `sink/toggle.html`
+now carry it, and the fragment records why so it is not stripped later as noise.
+
+**This one finding is the whole case for the re-capture.** It was heard on 2026-08-30 and
+could not be attributed that day, because the extractor recorded four aria attributes and
+`aria-labelledby` was not one of them — the capture's silence meant nothing. Widening
+that list to thirteen and re-capturing at Carbon 1.115.0 answered it in a single line of
+reference data.
 
 **2 · textarea's character count has no number.** Heard "Character count" alone. The
 visually-hidden string carries the label and nothing else; whether the count reaches a

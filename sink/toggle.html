@@ -8,6 +8,16 @@
     (web-components/toggle/toggle.js). The checkmark belongs to the SMALL toggle
     only; .rux--toggle__check is positioned for that variant, so putting it on the
     default size lands it off-centre. SVG is Carbon's own: 6x5, viewBox 0 0 6 5.
+
+    `toggle__text` IS aria-hidden, AND THAT IS WHAT STOPS THE NAME DOUBLING.
+    `aria-labelledby` on the switch points at the whole <label>, which holds the
+    label text AND this state span, so without the attribute the accessible name
+    computes to both and VoiceOver says "On On, on, switch" -- heard on
+    2026-08-30, fixed on 2026-08-31. Carbon renders
+    `span.cds--toggle__text{aria-hidden=true}`, which the captures could not show
+    until the extractor's aria allowlist widened from four attributes to
+    thirteen; the finding sat open for a day for exactly that reason. Roadmap
+    4.8.
   -->
   <div class="ks-row" style="gap:3rem">
     <div class="rux--toggle">
@@ -16,7 +26,7 @@
         <span class="rux--toggle__label-text">On</span>
         <div class="rux--toggle__appearance">
           <div class="rux--toggle__switch rux--toggle__switch--checked"></div>
-          <span class="rux--toggle__text">On</span>
+          <span class="rux--toggle__text" aria-hidden="true">On</span>
         </div>
       </label>
     </div>
@@ -27,7 +37,7 @@
         <span class="rux--toggle__label-text">Off</span>
         <div class="rux--toggle__appearance">
           <div class="rux--toggle__switch"></div>
-          <span class="rux--toggle__text">Off</span>
+          <span class="rux--toggle__text" aria-hidden="true">Off</span>
         </div>
       </label>
     </div>
@@ -60,7 +70,7 @@
         <span class="rux--toggle__label-text">Disabled</span>
         <div class="rux--toggle__appearance">
           <div class="rux--toggle__switch"></div>
-          <span class="rux--toggle__text">Off</span>
+          <span class="rux--toggle__text" aria-hidden="true">Off</span>
         </div>
       </label>
     </div>
@@ -71,7 +81,7 @@
         <span class="rux--toggle__label-text">Read-only</span>
         <div class="rux--toggle__appearance">
           <div class="rux--toggle__switch rux--toggle__switch--checked"></div>
-          <span class="rux--toggle__text">On</span>
+          <span class="rux--toggle__text" aria-hidden="true">On</span>
         </div>
       </label>
     </div>
