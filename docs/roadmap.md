@@ -1734,6 +1734,37 @@ This read *fifteenth* until 2026-08-29, when `check-behaviour`, `check-glyphs` a
 every gate admitted, and an undecided question that needs re-numbering each time is
 one more argument for closing it.
 
+#### The spacing harvest cannot see a story with one signature — 2026-08-31
+
+**`check-spacing`'s reference lost 22 of 798 signatures in the re-capture, and the ones
+it lost include components this project ships**: `btn--primary` at xs, md, xl and 2xl,
+`btn--danger--ghost`, `btn--danger--tertiary`, `btn-set--stacked`, `stack-scale-5`,
+`stack-scale-6`, `badge-indicator`, `inline-notification--warning`.
+
+**The cause is the harvest, not Carbon.** `tools/extract/react-dom.js` settles a story on
+`lines.length > 1`. For a DOM tree that means "has it painted". For spacing it means "has
+it produced more than one record" — so a story with exactly ONE spacing-relevant
+signature can never satisfy it, times out as `(empty)`, and takes its signatures with it.
+The 2026-08-31 run reported 59 empties and recovered **0 of 59** on retry, which is the
+tell: a slow-painting story recovers on a longer timeout, a genuinely sparse one never
+can. The script's own header describes this failure for `icons` and adds a special case;
+`spacing` has the same flaw and never got one.
+
+**It cost real verification, and the arithmetic hid it.** Divergences fell from 36 to 31
+across the eight pages — which reads like an improvement and is not one. Four of the five
+that vanished were the same adjudicated `stack-vertical.stack-scale-5` marginBlockStart
+on portal, table-page, empty-state and error-state; it vanished because the signature is
+no longer in the reference. The fifth was `stack-horizontal.stack-scale-6` on the sink,
+lost the same way. **Nothing was fixed. The ruler got shorter.**
+
+**NOT fixed by merging the old file into the new**, which was the obvious temptation.
+That would put 1.113-era and 1.115-era records in one reference and recreate exactly the
+provenance fault `_meta` was added to end. A reference has to describe one Carbon.
+
+**The fix is a settle test that knows what mode it is in** — for `spacing`, "the harvest
+returned" rather than "the harvest returned more than one". Cheap to write, and it costs
+another capture run to take effect. Not done, and the 22 stay missing until it is.
+
 #### THE CAPTURES CARRY NO VERSION — found 2026-08-30
 
 **Seven gates read a Carbon-derived reference file, and not one of those files records

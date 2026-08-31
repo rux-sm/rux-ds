@@ -1,145 +1,145 @@
 {
   "_": "Which browser gate has been run against which page, and what it returned. Written by hand from a real run; tools/check-gates.mjs reads it and reports never-run and stale cells. It cannot verify a result is honest -- the same limit check-provenance accepts by name. Node gates are not here: they read their whole target set on every npm run verify.",
-  "_triage": "check-spacing 2026-08-30, sweep at d58b501 following the side-nav role removal and the three heading/spacing fixes: 36 divergences across all eight pages, 0 defects. They are six groups, not thirty-six problems. SEVEN are one per shelled page -- `content` paddingInlineStart 288px against Carbon 32px -- which is the deliberate nav indent each template declares in its own <head> and explains there. FOUR are `stack-vertical stack-scale-5` marginBlockStart, ours none against Carbon 32px, on portal, table-page, empty-state and error-state: the reference value is Storybook page styling around the stack, not the stack rule. table-page is NEW to that group this sweep and for a known reason -- it gained a stack when it gained an h1 (d58b501), so it now reports the divergence the other three already did. The remaining twenty-five are the previously adjudicated set: the sink 21 (col-span minBlockSize from elements-grid--overview, four progress-indicator minBlockSize where ours demos the VERTICAL variant and the reference is horizontal, modal heading padding that tracks content width, and a handful of inline-flex/flex display pairs), table-page 2 (table-header-label padding, tag display), form-page 1 (checkbox-wrapper marginBlockEnd 3px against 6px) and portal 1 (subgrid padding).",
-  "_measured": "Re-swept 2026-08-30 at eefcc80, the third sweep that day. All 26 cells. Prompted by 17a61c2, which stripped aria-disabled from seven progress-step buttons after a screen-reader pass heard them announced as \"dimmed\".\n\nTHE ONLY FIGURE THAT MOVED IS check-a11y ON THE SINK, 1 to 8, and it moved because of the fix. check-a11y.js:45 defines enabled as \"not disabled and not aria-disabled\", so the seven buttons were being skipped entirely; removing the attribute exposed them to the focus-ring check, which they fail for the single cause already adjudicated on 2026-08-29. Every other figure is identical to the sweeps earlier in the day.\n\nThe red run was taken again and moved with it: 148 findings with every outline and box-shadow stripped, 8 on restore, against 141 and 1 before the fix. The six conditions were followed in order, and the seventh — that this pane delivers keys but never activates a button — did not arise, since the gates are driven by script.",
+  "_triage": "check-spacing 2026-08-31 at a5f95c8, the first sweep against the RE-CAPTURED reference (Carbon react 1.115.0 / styles 1.114.0). 31 divergences across eight pages, down from 36, and 0 defects.\n\nTHE DROP IS NOT AN IMPROVEMENT AND MUST NOT BE READ AS ONE. The new spacing capture holds 777 signatures where the old held 798: 22 lost, 1 gained. Four of the five vanished divergences were the SAME adjudicated one -- stack-vertical.stack-scale-5 marginBlockStart on portal, table-page, empty-state and error-state -- and it vanished because cds--stack-vertical.cds--stack-scale-5 is no longer IN the reference. The fifth is stack-horizontal.stack-scale-6 on the sink, lost the same way. Nothing was fixed; the ruler got shorter.\n\nCAUSE, and it is the tool not Carbon. The spacing harvest settles on `lines.length > 1`, which for a DOM tree means \"has it painted\" but for spacing means \"has it produced more than one record\". A story with exactly one spacing-relevant signature can never satisfy it, so it times out as (empty) and its signatures are lost. The 2026-08-31 run reported 59 empties and recovered 0 of 59 on retry -- slow-painting stories recover, genuinely sparse ones cannot. The header describes this exact flaw for icons and special-cases it; spacing has the same flaw and no special case.\n\nWHAT WAS LOST INCLUDES THINGS WE SHIP: btn--primary at xs, md, xl and 2xl, btn--danger--ghost, btn--danger--tertiary, btn-set--stacked, stack-scale-5, stack-scale-6, badge-indicator and inline-notification--warning. Those elements now land in noReference (146 to 153 on the sink) rather than being compared. Reported here rather than papered over, and NOT fixed by merging the old file into the new -- that would mix 1.113-era and 1.115-era data in one reference and recreate exactly the provenance fault the _meta stamp was added to end.",
+  "_measured": "Re-swept 2026-08-31 at a5f95c8, after the Carbon bump to styles 1.114.0 and the re-capture at react 1.115.0. All 26 cells.\n\ncheck-runtime-classes: 0 stripped on all eight pages, 3 added on the sink and 1 on table-page -- unchanged. check-behaviour 37 of 37. check-rendered clean in both themes. check-a11y 8 findings and 6 notes on the sink, 0 and 0 on the other seven; the 8 are one adjudicated cause and became visible when 17a61c2 removed the aria-disabled that had been hiding seven controls from the gate. Red run 149/8, against 148/8 before the re-capture.\n\ncheck-spacing is the only figure that moved and it moved DOWNWARD IN COVERAGE, not upward in quality -- see _triage before quoting the 31.",
   "check-a11y": {
     "kitchen-sink.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "8 findings · 6 notes · focusRingChecked true. ALL EIGHT ARE ONE ADJUDICATED CAUSE, and the count rose from 1 because of a fix rather than a regression: 17a61c2 removed aria-disabled from seven progress-step buttons, and check-a11y.js:45 skips any element carrying it, so seven controls it had never examined became visible to the focus-ring check. They fail it for the same reason the one before them did — Carbon draws that ring on :focus-visible on the LABEL and sets outline:none on plain :focus, which the tool documents as out of its reach. The wrong attribute was hiding seven controls from this gate as well as mis-announcing them. RED RUN: stripping every outline and box-shadow gave 148, restoring gave 8 back."
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "8 findings · 6 notes · focusRingChecked true · all eight are the one adjudicated progress-step-button cause, visible since 17a61c2 stopped check-a11y skipping them. RED RUN: 149 with rings stripped, 8 restored"
     },
     "portal.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/app-shell.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/table-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/form-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/detail-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/empty-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/error-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "0 findings · 0 notes · focusRingChecked true"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "485 in file · 488 in page · 0 stripped · 3 added — data-table--selected, side-nav__overlay-active, table-sort--active"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "485 in file · 488 in page · 0 stripped · 3 added"
     },
     "portal.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "63 in file · 63 in page · 0 stripped · 0 added"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "63 · 63 · 0 stripped · 0 added"
     },
     "templates/app-shell.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "40 · 40 · 0 stripped · 0 added"
     },
     "templates/table-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "102 in file · 103 in page · 0 stripped · 1 added — table-sort--active"
     },
     "templates/form-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "83 · 83 · 0 stripped · 0 added"
     },
     "templates/detail-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "99 · 99 · 0 stripped · 0 added"
     },
     "templates/empty-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "59 · 59 · 0 stripped · 0 added"
     },
     "templates/error-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "51 · 51 · 0 stripped · 0 added"
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "293 checked · 272 matched · 21 diverge, 0 defects — see _triage"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "286 checked · 266 matched · 20 diverge, 0 defects — was 293/272/21; see _triage"
     },
     "portal.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "26 · 23 · 3 diverge, 0 defects"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "25 · 23 · 2 diverge — was 26/23/3"
     },
     "templates/app-shell.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "21 · 20 · 1 diverge, 0 defects — the nav indent"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "21 · 20 · 1 diverge — unchanged"
     },
     "templates/table-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "62 · 58 · 4 diverge, 0 defects"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "61 · 58 · 3 diverge — was 62/58/4"
     },
     "templates/form-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "54 · 52 · 2 diverge, 0 defects"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "54 · 52 · 2 diverge — unchanged"
     },
     "templates/detail-page.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "59 · 58 · 1 diverge, 0 defects — the nav indent"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "59 · 58 · 1 diverge — unchanged"
     },
     "templates/empty-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "32 · 30 · 2 diverge, 0 defects"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "31 · 30 · 1 diverge — was 32/30/2"
     },
     "templates/error-state.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
-      "result": "29 · 27 · 2 diverge, 0 defects"
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
+      "result": "28 · 27 · 1 diverge — was 29/27/2"
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "35 sections · 0 collapsed · 0 escaped · 0 emptySvgs · 0 uaStyled · clean in white AND g100"
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
   "check-behaviour": {
     "kitchen-sink.html": {
-      "date": "2026-08-30",
-      "commit": "eefcc80",
+      "date": "2026-08-31",
+      "commit": "a5f95c8",
       "result": "37 of 37 cases pass · 0 failed · 12 modules driven"
     }
   },
