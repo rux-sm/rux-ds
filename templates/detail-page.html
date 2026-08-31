@@ -41,7 +41,22 @@
      driven in this page — arrows move the tab cursor, the panel follows, headings
      expand — but no running Carbon page was opened to compare them against. They
      are the same modules the kitchen sink exercises, which is evidence and not the
-     same thing as a live comparison. Treat them as the weaker claim in this file. -->
+     same thing as a live comparison. Treat them as the weaker claim in this file.
+
+     BEHAVIOUR: verified-live · https://react.carbondesignsystem.com/iframe.html?id=elements-grid--with-row-gap
+     and ?id=elements-grid--subgrid-with-row-gap, read 2026-08-31 at emulated
+     widths 1280, 900 and 500 — the METRIC ROW only.
+     Compared: --cds-grid-columns (16 / 8 / 4), children per row (4 / 2 / 1),
+     child width (259 / 360 / 384px), row-gap (32px at all three), and the
+     subgrid's margin-inline (-16px) against its parent column's (+16px).
+     Alignment was read as CONTENT edges, not border boxes: outer grid content
+     58, its column's content 74, subgrid pulled back to 58, subgrid column's
+     content 74 — equal, which is the claim the comment below makes.
+     NOT COVERED: `subgrid--narrow` and `--condensed`, neither of which this row
+     uses; RTL, where the negative margin flips and `[dir=rtl] .rux--subgrid`
+     has its own rule that was never exercised; and whether four tiles is the
+     right count for any real page, which is a design question and not a
+     behaviour one. -->
 <!--
   THE TABLE PAGE. A complete page: the app-shell frame with a sortable,
   selectable table in it. Copy this file, replace the marked regions, delete
@@ -340,6 +355,75 @@
         <div class="rux--btn-set">
           <button type="button" class="rux--btn rux--btn--secondary">Roll back</button>
           <button type="button" class="rux--btn rux--btn--primary">Deploy</button>
+        </div>
+
+        <!-- REPLACE: the metric row. FOUR THINGS BESIDE EACH OTHER, which is the
+             one page shape none of the six templates held until 2026-08-31 — and
+             the gap that sent §4.6's third and fourth exit attempts out to
+             `docs/carbon-react-dom.json` for an idiom no template demoed.
+
+             A NESTED `css-grid` IS THE WRONG ANSWER HERE AND LOOKS RIGHT. This
+             row sits inside a `css-grid-column`, and that column carries
+             `margin-inline: 16px` — the gutter. Open a fresh `css-grid` inside
+             it and the new grid's tracks start 16px in from the page grid's,
+             so every tile below is a gutter's width out of step with the
+             heading above it. Nothing reports that: the classes all resolve,
+             `check-spacing` compares a class set against Carbon and this one
+             matches, and 16px is small enough to read as intentional.
+
+             `subgrid` IS THE MECHANISM, and it is a negative margin. It sets
+             `margin-inline: -16px` to cancel the parent column's gutter, then
+             re-declares the SAME 16 tracks, and its own columns re-apply the
+             16px. Measured on Carbon 2026-08-31 (below): outer grid content
+             edge 58, its column's content 74; subgrid pulled back to 58, its
+             column's content 74. The two rows line up because the subgrid
+             undoes the column it lives in.
+
+             THE SPANS ARE PER-BREAKPOINT AND ALL THREE ARE REQUIRED. `col-span-4`
+             means four of however many columns the breakpoint has — 16 at lg,
+             8 at md, 4 at sm — so ONE span class gives 4-across, 2-across and
+             1-across for free. That is Carbon's own responsive row and not an
+             arithmetic trick: `elements-grid--with-row-gap` renders exactly
+             these three classes on every child.
+
+             `--with-row-gap` IS NOT OPTIONAL ONCE THE ROW WRAPS. Below lg these
+             four tiles become two rows, then four; without it the rows butt
+             together into one unbroken slab of `layer` with no seam between
+             tiles. Row gap is 32px and column gap comes from the gutter.
+
+             BARE `rux--tile`, NO `layer-two` WRAPPER — the rule stated further
+             down this file. This row sits on the page, not inside a panel
+             already painting `layer`, so the tile paints `layer` against white
+             and is visible on its own. -->
+        <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <div class="rux--tile">
+              <p>Replicas</p>
+              <h3>6 / 6</h3>
+              <p>All reporting</p>
+            </div>
+          </div>
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <div class="rux--tile">
+              <p>Requests / min</p>
+              <h3>12.4k</h3>
+              <p>Up 3% on last hour</p>
+            </div>
+          </div>
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <div class="rux--tile">
+              <p>Error rate</p>
+              <h3>0.02%</h3>
+              <p>Within budget</p>
+            </div>
+          </div>
+          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
+            <div class="rux--tile">
+              <p>p99 latency</p>
+              <h3>142 ms</h3>
+              <p>No restarts in 24h</p>
+            </div>
+          </div>
         </div>
 
         <!-- REPLACE: the tabs. A detail page is one subject seen several ways,
