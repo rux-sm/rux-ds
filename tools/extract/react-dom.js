@@ -528,6 +528,13 @@
     if (MODE === 'icons') return iconCapture(doc);
     const root = doc.querySelector('#storybook-root, #root');
     const lines = tree(root);
+    // doc.body CAN BE NULL when the iframe document has not finished parsing.
+    // It threw exactly once on 2026-08-31 -- one ibm-products side-panel recipe
+    // came back "(unreadable: Cannot read properties of null (reading
+    // 'children'))" and took its capture with it. An unguarded read here turns a
+    // one-poll timing gap into a permanent verdict, and (unreadable) is not
+    // retried, so the recipe was lost for the run.
+    if (!doc.body) return lines;
     for (const el of doc.body.children) {
       if (el === root || el.contains(root)) continue;
       if (![...el.classList].some(c => PREFIX.test(c))
@@ -634,6 +641,28 @@
     loadTimer = setTimeout(() => finish(['(timeout)']), LOAD_TIMEOUT_MS);
     document.body.appendChild(f);
   });
+
+  // PROVENANCE TRAVELS WITH THE DATA, AND states MODE USED TO MISS IT.
+  // The stamp lived at the bottom of the file, after the common download; the
+  // states branch builds its own blob and returns before ever reaching it, so
+  // every states capture shipped unattributed. Found on 2026-08-31 when an
+  // ibm-products states run came back with no `_meta` at all. It is a function
+  // now, called from both paths.
+  const stamp = payload => {
+    payload._meta = {
+      carbonVersion: null,                     // <- SET THIS before committing
+      captured: new Date().toISOString().slice(0, 10),
+      url: location.href,
+      mode: MODE,
+      ariaRecorded: ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled',
+                     'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden',
+                     'aria-current', 'aria-sort', 'aria-haspopup', 'aria-modal', 'tabindex'],
+    };
+    console.warn('  _meta.carbonVersion is null — set it from the Storybook version'
+      + ' switcher before committing, or the capture is as unattributable as the'
+      + ' ones this replaced. On the ibm-products origin that is the'
+      + ' @carbon/ibm-products version, which is NOT a @carbon/react number.');
+  };
 
   if (MODE === 'states') {
     const catalogue = new Set(every.map(e => e.id));
@@ -747,6 +776,7 @@
     const failed = Object.entries(out).filter(([, v]) => v[0].startsWith('('));
     console.log(`done — ${Object.keys(out).length} recipes, ${Object.keys(out).length - failed.length} usable`);
     for (const [k, v] of failed) console.log(`  ${k}  ${v[0]}`);
+    stamp(out);
     const blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -863,33 +893,14 @@
     console.log(`icons — ${Object.keys(payload).length} slots, ${single} drawing exactly one glyph`);
   }
 
-  // PROVENANCE TRAVELS WITH THE DATA. Until 2026-08-30 these files recorded
-  // nothing about where they came from: 505 stories and no version, against a
-  // @carbon/styles pinned on a caret and a Storybook that serves whatever
-  // Carbon shipped last. A divergence check-tags reported could not be
-  // attributed to us or to Carbon having moved. Roadmap 4.8 has the reasoning.
-  //
-  // A sidecar file was the alternative and was rejected: the fault being fixed
-  // IS drift between a claim and the thing it describes, and a sidecar can
-  // drift. `_`-prefixed keys are already the convention in carbon-slots.json
-  // and carbon-co-classes.json; every reader skips them.
-  //
-  // FILL IN carbonVersion BY HAND. Storybook does not expose it reliably and a
-  // wrong version recorded automatically is worse than a blank one recorded
-  // honestly -- check the version switcher in the Storybook UI.
-  payload._meta = {
-    carbonVersion: null,                       // <- SET THIS before committing
-    captured: new Date().toISOString().slice(0, 10),
-    url: location.href,
-    mode: MODE,
-    ariaRecorded: ['aria-expanded', 'aria-selected', 'aria-invalid', 'aria-disabled',
-                   'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden',
-                   'aria-current', 'aria-sort', 'aria-haspopup', 'aria-modal', 'tabindex'],
-  };
-  if (payload._meta.carbonVersion === null)
-    console.warn('  _meta.carbonVersion is null — set it from the Storybook version'
-      + ' switcher before committing, or the capture is as unattributable as the'
-      + ' ones this replaced.');
+  // Until 2026-08-30 these files recorded nothing about where they came from:
+  // 505 stories and no version, against a @carbon/styles pinned on a caret and a
+  // Storybook that serves whatever Carbon shipped last. A divergence check-tags
+  // reported could not be attributed to us or to Carbon having moved. A sidecar
+  // file was the alternative and was rejected: the fault being fixed IS drift
+  // between a claim and the thing it describes, and a sidecar can drift.
+  // Roadmap 4.8 has the reasoning.
+  stamp(payload);
 
   const blob = new Blob([JSON.stringify(payload, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
