@@ -48,7 +48,40 @@ us what it needs, not before. Roadmap §4.4.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
-**Next:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
+**DO THIS FIRST — the two `ibm-products` captures, the last unattributed input to a
+gate.** Everything else in `docs/carbon-*.json` now records which Carbon it came from;
+these two still say `unknown`, and 2026-08-31 showed what that costs — the old spacing
+and DOM files turned out to have been taken against different Carbons, and nothing could
+have told you.
+
+Go to **`https://ibm-products.carbondesignsystem.com`** — not the react origin, which is
+where two attempts have accidentally landed — and paste
+`tools/extract/react-dom.js` twice, in a fresh tab each time:
+
+| | |
+|---|---|
+| `MODE = 'stories'` | with the FILTER below → 20 stories, seconds |
+| `MODE = 'states'` | RECIPES-driven, FILTER does not apply → 116 recipes, 8 usable, the rest `(no-story)` |
+
+**The FILTER is not optional on that origin.** Its default `/./` harvests all 426
+stories, and many of them fail to load with `Failed to resolve module specifier
+"chromatic/isChromatic"` — a fault in ibm-products' own Storybook. They file as `(empty)`
+and go to the retry pass, which is sequential: 134 retries at up to 12s each, and the
+download only fires when that finishes. Two attempts died there.
+
+    const FILTER = /^(components-sidepanel|patterns-create-flows-createsidepanel|preview-pageheader)/;
+
+**Leave `_meta.carbonVersion` null.** That origin's version is `@carbon/ibm-products`
+2.97.0, which is NOT a `@carbon/react` number — it peers `@carbon/react ^1.111.1`, a
+range, so the `cds--` classes in it are attributable only to that range. Record it as its
+own field rather than letting it be read as a react version.
+
+**What it is worth, stated honestly:** those 20 stories are all `side-panel` and
+`page-header`, both CUT, and their entire contribution to this project is one class —
+`cds--btn--expressive`, which we do ship and which no react story emits. One class, and
+the end of the last `unknown` in the reference set.
+
+**Then:** Phase 6, templates. Roadmap §4.6 calls it the actual goal; everything before it
 is preparation. **All six exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html` and `error-state.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in

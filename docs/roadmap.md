@@ -1872,10 +1872,37 @@ byte-identical output before and after — 641 stories, 1109 classes, 35 with no
 reference, 5 known divergences, 0 findings; 492 corroborated ancestries, 30 declined, 0
 missing — and `check-spacing` reads 293/272/21 on the sink, unchanged.
 
-**WHAT IS STILL OPEN is the version itself.** The shape now exists; nothing has been
-re-captured, so every current reading still rests on a reference of unknown provenance.
-The next capture closes that, and it is now safe to take because it will record what it
-was taken against.
+**RE-CAPTURED 2026-08-31.** `carbon-react-dom`, `-states` and `-spacing` now record
+`carbonReact 1.115.0` and `carbonStyles 1.114.0`, taken after `@carbon/styles` was bumped
+to match. `carbon-glyphs.json` already carried its own `version`. **Two files still say
+`unknown`: `carbon-ibm-products-dom` and `-states`**, and they are the top item in
+README's "Picking this up".
+
+**THREE BUGS SURFACED ONLY WHEN THE SCRIPT WAS POINTED AT A SECOND ORIGIN**, none of
+which a react-only run could reach:
+
+- `verdictOf` was called from inside its own temporal dead zone, so any run WITH retries
+  threw and wrote nothing. Found by the operator of the run that hit 59 retries.
+- The states branch returns before the `_meta` stamp, so every states capture shipped
+  unattributed. The stamp is a shared function now.
+- `capture()` read `doc.body` unguarded; it is null while an iframe document is still
+  parsing, and one side-panel recipe was lost to `(unreadable)`, which is not retried.
+
+**AND ONE THAT IS NOT OURS.** Many ibm-products stories fail with `Failed to resolve
+module specifier "chromatic/isChromatic"` — their Storybook, not this script. They paint
+nothing, file as `(empty)`, and go to the retry pass. **The retry pass cannot tell "slow
+to paint" from "broken by a module error"**, so 134 permanently-dead stories were retried
+one at a time at up to 12s each, and the download never fired. This header already argues
+that `(missing)` should not be retried for exactly this reason; a story whose JS failed to
+load is the same category and is not yet recognised. **Not fixed** — the FILTER avoids it
+on that origin, and a real fix wants a way to see the failure, which from outside the
+iframe is not obvious.
+
+**Captures are non-deterministic in three ways**, recorded in each file's `_meta` after
+two captures of the same Carbon differed in 66 stories: React `useId` values churn every
+run and accounted for 46 of them, popover auto-align picks placement from position, and
+date-dependent content moves — the datepicker's `aria-current=date` crossed midnight
+mid-session. Normalise those before diffing two captures or the diff is unreadable.
 
 #### Two blind spots from the 2026-08-30 tab-order sweep
 
