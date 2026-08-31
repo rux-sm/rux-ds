@@ -95,7 +95,38 @@ const TOOLTIP_CHROME = ['popover-container', 'popover--caret', 'popover--high-co
 // two of this gate's first-run findings — modal's close button and pagination's
 // control buttons — were exactly that, sitting behind notes that named the
 // optional wrapper and never mentioned the load-bearing one.
+// EVERY card story mounts its cards in a css-grid, so the intersection hands
+// every card class the grid as a required ancestor. Measured 2026-08-31: 17 of
+// 17 stories that render a card do it inside `cds--css-grid`, and NO rule in
+// css/rux.css scopes any card class to the grid or to a column. It is the
+// `links:link--disabled` shape — a sampling artifact of how the component is
+// demoed upstream, not an anatomy Carbon requires. The sink lays its cards out
+// with `ks-grid`, the harness class every other fragment uses.
+const CARD_STORY_GRID = ['css-grid', 'css-grid--with-row-gap', 'sm:col-span-4',
+  'md:col-span-4', 'lg:col-span-4', 'lg:col-span-8', 'css-grid-column'];
+const CARD_GRID_REASON = 'the story layout, not the component. All 17 card stories mount '
+  + 'the card in a css-grid column, so the intersection keeps the grid above every card '
+  + 'class; nothing in css/rux.css scopes one to it. Same shape as links:link--disabled.';
+
 const KNOWN = {
+  'card:card': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card--productive': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card--expressive': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__header': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__title': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__label': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__title-text-row': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__title-text-row--truncate-multi': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__description': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__body': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__footer': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__actions': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__action': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:card__header-media': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card:btn--icon-only': [TOOLTIP_CHROME,
+    'the icon-tooltip the sink declines throughout. The reference wraps each '
+    + '`card__action` button in one; the fragment demos the component rather than the '
+    + "story's hover hint, on the combo-button precedent."],
   'buttons:btn--expressive': [['content', 'btn-set'],
     'the sink demos a standalone expressive button. `btn-set` contributes only '
     + '`max-inline-size: 20rem` to buttons inside a group, and `content` is the shell '

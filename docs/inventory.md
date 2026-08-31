@@ -237,7 +237,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `side-panel` | **CUT** | 19 | 86 | 0 | ibm-products; modal covers the overlay need |
 | `fluid-list-box` | **CUT** | 14 | 62 | 3 | fluid-* family |
 | `structured-list` | **CUT** | 11 | 31 | 0 | overlaps data-table — **CONFIRMED BY SUBSTITUTION** 2026-08-29: the full-width modal wanted the shape Carbon fills with a structured-list, and a `rux--data-table` filled it, bleeding edge to edge as the variant intends. Measured +0.8 KB gzipped, not 11 |
-| `card` | **CUT** | 9 | 56 | 0 | Carbon has no Card — it is an ibm-products preview (§4.1.14) |
+| `card` | **KEEP** | 9 | 56 | 0 | **ADMITTED 2026-08-31, AGAINST RULE 1 RATHER THAN UNDER IT, and recorded that way on purpose.** No page shape in `templates/` requires a card and `tile` serves the container shape, so both admission tests point the other way; it was taken as the author's call at a **measured +1.2 KB gzipped and 34 classes** (59.7 → 60.9). **The row it replaced said "Carbon has no Card — it is an ibm-products preview (§4.1.14)", and that had become false.** True when §4.1.14 wrote it, when card's markup was to be sourced from `components-tile--*`; since then Carbon promoted the component — `@carbon/styles` 1.114 ships a 474-line `components/card`, `src/app.scss` has carried a commented `@use` for it all along, and `docs/carbon-react-dom.json` renders **17 `preview-preview-card--*` stories emitting `cds--card` 475 times**. Being `preview-*` is not itself disqualifying here: `icon-indicator` and `shape-indicator` are both `preview-*` and both DEFER. Nothing re-reads a CUT row's evidence, which is why a false ground survived. `sink/card.html` is the 38th fragment at 74%; the six unexercised classes are the media family, which needs an `<img>` the sink has never carried, plus the two `--truncate-multi` siblings no story emits and the ai-label pair Phase 3 cut |
 | `page-header` | **CUT** | 4 | 32 | 0 | deprecated upstream; an ibm-products component, not @carbon/react — **CONFIRMED BY SUBSTITUTION**: the §4.6 dashboard used the title-stack idiom instead. Measured +0.5 KB gzipped, but deprecation is the reason and price does not move it |
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
@@ -284,8 +284,11 @@ normally means a fragment parked in `sink/deferred/` that three lines restore. N
 these can have a fragment — nothing renders them, so there is nothing to diff against and
 anything written would be invented markup. Neither disposition compiles anything, neither
 creates a file, and the choice is therefore bookkeeping rather than a purchase. CUT is the
-word this document already uses for that state: it is the ground `card`, `page-header`
-and `side-panel` were cut on. **Re-opening one costs a sentence**, and the two worth
+word this document already uses for that state: it is the ground `page-header` and
+`side-panel` were cut on. **The sentence here named `card` as a third example until
+2026-08-31 and no longer can** — card has 17 stories to diff against, was admitted that
+day, and was never in the state this paragraph describes. `page-header` and `side-panel`
+are unaffected: both really are `c4p--` and neither is rendered by `@carbon/react`. **Re-opening one costs a sentence**, and the two worth
 watching are named below.
 
 **Two are likelier than the rest to come back.** `user-avatar` is the one a real
@@ -411,10 +414,17 @@ went rather than moved is recorded in §2.1 and above.
    **Price: 1 KB, 15 classes, 0 tokens** — the cheapest row in this table, and the
    §2.1 KB target that would have argued against it no longer exists.
 
-Rows marked CUT with an evidence reason — `slug`, `resizer`, `truncated-text`, `card`,
+Rows marked CUT with an evidence reason — `slug`, `resizer`, `truncated-text`,
 `page-header`, `side-panel` — came out of the Phase 1 markup sweep and are not judgement
-calls: nothing in the 642 captured stories emits them, or they belong to
+calls: nothing in the 667 captured stories emits them, or they belong to
 `@carbon/ibm-products` rather than Carbon proper.
+
+**`card` was in that list until 2026-08-31 and was the one entry it got wrong.** The
+sweep's reading was right when taken; Carbon has since promoted Card out of
+`ibm-products`, and 17 react stories emit `cds--card` 475 times. **An evidence reason
+ages like any other figure, and nothing in this repository re-reads one** — a disposition
+whose ground has expired looks identical to one whose ground still holds. That is the
+general finding; the row is only where it surfaced.
 
 ---
 

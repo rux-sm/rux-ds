@@ -4733,6 +4733,417 @@ a.rux--overflow-menu-options__btn::before {
   block-size: 1.25rem;
 }
 
+.rux--card {
+  position: relative;
+  background-color: var(--rux-layer);
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--card--clickable {
+  display: block;
+  border: 1px solid var(--rux-border-tile-01, #c6c6c6);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.rux--card--clickable:hover {
+  background-color: var(--rux-layer-hover);
+}
+.rux--card--clickable:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--card--clickable:focus {
+    outline-style: dotted;
+  }
+}
+.rux--card--clickable:focus {
+  outline-offset: 0;
+}
+.rux--card--clickable:active {
+  background-color: var(--rux-layer-active);
+}
+
+.rux--card__clickable-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  color: var(--rux-icon-interactive, #0f62fe);
+}
+
+.rux--card--disabled .rux--card__clickable-footer {
+  color: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--card--disabled {
+  border-color: var(--rux-border-disabled, #c6c6c6);
+  background-color: var(--rux-layer);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.rux--card__header {
+  position: relative;
+  display: grid;
+  column-gap: 1rem;
+  grid-template-columns: auto 1fr;
+  row-gap: 0;
+}
+
+.rux--card__body {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  padding-block: 1rem;
+  padding-inline: 1rem;
+}
+
+.rux--card__body--flush {
+  padding: 0;
+}
+
+.rux--card__footer {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.rux--card__footer:has(> .rux--card__action) {
+  overflow: hidden;
+  padding: 0;
+  border-block-start: 1px solid var(--rux-border-subtle);
+  gap: 1px;
+}
+
+.rux--card__footer > .rux--card__action:not(:has(.rux--btn--icon-only)) {
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+.rux--card__footer > .rux--card__action:not(:has(.rux--btn--icon-only)) > .rux--btn,
+.rux--card__footer > .rux--card__action:not(:has(.rux--btn--icon-only)) > * > .rux--btn {
+  inline-size: 100%;
+  max-inline-size: none;
+}
+
+.rux--card__footer > .rux--card__action:has(.rux--btn--icon-only) {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+
+.rux--card__footer > .rux--card__action:has(.rux--btn--icon-only) + .rux--card__action:has(.rux--btn--icon-only) {
+  margin-inline-start: 0;
+}
+
+.rux--card__action {
+  display: inline-flex;
+}
+
+.rux--card__header-media {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  grid-column: 1/-1;
+  margin-block: 1rem;
+  margin-inline: 1rem;
+  max-block-size: 4rem;
+}
+
+.rux--card__media {
+  grid-column: 1/-1;
+  inline-size: 100%;
+}
+.rux--card__media::before, .rux--card__media::after {
+  display: none;
+}
+
+.rux--card__media.rux--aspect-ratio--16x9 {
+  aspect-ratio: 16/9;
+}
+
+.rux--card__media.rux--aspect-ratio--9x16 {
+  aspect-ratio: 9/16;
+}
+
+.rux--card__media.rux--aspect-ratio--2x1 {
+  aspect-ratio: 2/1;
+}
+
+.rux--card__media.rux--aspect-ratio--1x2 {
+  aspect-ratio: 1/2;
+}
+
+.rux--card__media.rux--aspect-ratio--4x3 {
+  aspect-ratio: 4/3;
+}
+
+.rux--card__media.rux--aspect-ratio--3x4 {
+  aspect-ratio: 3/4;
+}
+
+.rux--card__media.rux--aspect-ratio--3x2 {
+  aspect-ratio: 3/2;
+}
+
+.rux--card__media.rux--aspect-ratio--2x3 {
+  aspect-ratio: 2/3;
+}
+
+.rux--card__media.rux--aspect-ratio--1x1 {
+  aspect-ratio: 1/1;
+}
+
+.rux--card__media > * {
+  position: static;
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.rux--card--horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.rux--card__media--horizontal {
+  overflow: hidden;
+  flex-basis: var(--rux--card--media-width, 33.33%);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.rux--card--horizontal > .rux--card__content {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.rux--card--horizontal > .rux--card__content > .rux--card__body {
+  flex: 1 0 auto;
+}
+
+.rux--card--horizontal > .rux--card__content > .rux--card__footer {
+  margin-block-start: auto;
+}
+
+.rux--card__title > .rux--card__label {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  color: var(--rux-text-secondary, #525252);
+}
+
+.rux--card--disabled .rux--card__label {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--card__label--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--card__label--truncate-multi {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--rux--card--label-line-clamp);
+  text-overflow: ellipsis;
+}
+
+.rux--card__title {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-inline: 1rem;
+  min-inline-size: 0;
+}
+
+.rux--card__header > .rux--card__title {
+  margin-block: 1rem;
+}
+
+.rux--card--expressive .rux--card__title-text-row {
+  font-size: var(--rux-heading-03-font-size, 1.25rem);
+  font-weight: var(--rux-heading-03-font-weight, 400);
+  line-height: var(--rux-heading-03-line-height, 1.4);
+  letter-spacing: var(--rux-heading-03-letter-spacing, 0);
+}
+
+.rux--card--productive .rux--card__title-text-row {
+  font-size: var(--rux-heading-compact-02-font-size, 1rem);
+  font-weight: var(--rux-heading-compact-02-font-weight, 600);
+  line-height: var(--rux-heading-compact-02-line-height, 1.375);
+  letter-spacing: var(--rux-heading-compact-02-letter-spacing, 0);
+}
+
+.rux--card__title-text-row {
+  display: block;
+}
+
+.rux--card__title-text-row--truncate {
+  overflow: hidden;
+  max-inline-size: var(--rux--card--title-max-width, 100%);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--card__title-text-row--truncate-multi {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--rux--card--title-line-clamp);
+  max-inline-size: var(--rux--card--title-max-width, 100%);
+  text-overflow: ellipsis;
+}
+
+.rux--card__title-text-row--with-start-icon {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.rux--card__title-text-row--with-end-icon {
+  display: block;
+}
+
+.rux--card__title-start-icon {
+  display: flex;
+  flex-shrink: 0;
+  margin-block-start: 0.125rem;
+}
+
+.rux--card__title-end-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 0.5rem;
+  vertical-align: middle;
+}
+
+.rux--card__title > .rux--card__description {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  color: var(--rux-text-secondary, #525252);
+}
+
+.rux--card--disabled .rux--card__description {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--card__description--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--card__description--truncate-multi {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--rux--card--description-line-clamp);
+  text-overflow: ellipsis;
+}
+
+.rux--card__title-media {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: center;
+  grid-column: 1;
+  margin-block-start: 1rem;
+  margin-inline-start: 1rem;
+  max-block-size: 4rem;
+}
+
+.rux--card__header:has(> .rux--card__title-media) > .rux--card__title {
+  grid-column: 2;
+  margin-inline-start: 0;
+}
+
+.rux--card__actions {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  block-size: 2rem;
+  gap: 0.25rem;
+  inline-size: 50%;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  max-inline-size: 50%;
+}
+
+.rux--card--has-ai-label {
+  background: linear-gradient(to top, var(--rux-layer, var(--rux-ai-popover-background, #ffffff)) 0%, var(--rux-ai-aura-start, rgba(69, 137, 255, 0.1)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%) padding-box, linear-gradient(to top, var(--rux-layer, var(--rux-ai-popover-background, #ffffff)), var(--rux-layer, var(--rux-ai-popover-background, #ffffff))) padding-box, linear-gradient(to bottom, var(--rux-ai-border-start, rgba(166, 200, 255, 0.64)), var(--rux-ai-border-end, #78a9ff)) border-box, linear-gradient(to top, var(--rux-layer, var(--rux-ai-popover-background, #ffffff)), var(--rux-layer, var(--rux-ai-popover-background, #ffffff))) border-box;
+  border: 1px solid transparent;
+  box-shadow: inset 0 -80px 70px -65px var(--rux-ai-inner-shadow, rgba(69, 137, 255, 0.1)), 0 4px 10px 2px var(--rux-ai-drop-shadow, rgba(15, 98, 254, 0.1));
+}
+
+.rux--card__decorator {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  block-size: 2rem;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+}
+
+.rux--card--has-ai-label .rux--card__title {
+  padding-inline-end: 3rem;
+}
+
+.rux--card--has-ai-label:has(.rux--card__actions) .rux--card__title {
+  padding-inline-end: 10rem;
+}
+
+.rux--card--has-ai-label .rux--card__label {
+  padding-inline-end: 3rem;
+}
+
+.rux--card--has-ai-label:has(.rux--card__actions) .rux--card__label {
+  padding-inline-end: 10rem;
+}
+
+.rux--card--has-ai-label .rux--card__description {
+  padding-inline-end: 3rem;
+}
+
+.rux--card--has-ai-label:has(.rux--card__actions) .rux--card__description {
+  padding-inline-end: 10rem;
+}
+
+.rux--card--has-ai-label .rux--card__actions {
+  inset-inline-end: 2.5rem;
+}
+
+.rux--card--clickable.rux--card--has-ai-label::before {
+  background: linear-gradient(to top, var(--rux-ai-aura-hover-start, rgba(69, 137, 255, 0.32)) 0%, 15%, var(--rux-ai-aura-hover-end, rgba(255, 255, 255, 0)) 50%) padding-box, linear-gradient(to top, var(--rux-ai-aura-hover-background, #edf5ff), var(--rux-ai-aura-hover-background, #edf5ff)) padding-box, linear-gradient(to bottom, var(--rux-ai-border-start, rgba(166, 200, 255, 0.64)), var(--rux-ai-border-end, #78a9ff)) border-box, linear-gradient(to top, var(--rux-ai-aura-hover-background, #edf5ff), var(--rux-ai-aura-hover-background, #edf5ff)) border-box;
+  position: absolute;
+  display: block;
+  block-size: 100%;
+  box-shadow: inset 0 -80px 70px -65px var(--rux-ai-inner-shadow, rgba(69, 137, 255, 0.1));
+  content: "";
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  opacity: 0;
+  transition: opacity 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--card--clickable.rux--card--has-ai-label:hover::before {
+  opacity: 1;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

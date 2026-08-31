@@ -190,7 +190,7 @@ popover never opened.
 | What | Where |
 |---|---|
 | Answered 2026-08-31: **the 90 KB JS budget is deleted**, not given a unit. It had never cut, deferred or shaped a single module under any reading, which is the test §2.1 used to remove the CSS target. A **60 KB gzipped tripwire** replaces it, `tools/build.mjs` measures it on every build and exits non-zero over it, and `CLAUDE.md`'s scope rule is what actually bounds the layer | roadmap §4.5 |
-| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 7 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
+| Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 11 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
 | Answered 2026-08-31, one at a time with the cost measured for each: **`toggletip` and `time-picker` ADMITTED** and compiled; **`date-picker` admission AGREED** but staged, since its fragment demos no calendar and `js/date-picker.js` does not exist; **`combo-box` / `multiselect` re-affirmed DEFER** because no page shape needs them | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 18 now. There is no `tests/` directory at all | roadmap §4.8 |
@@ -229,6 +229,48 @@ build that row", which was true visually and false semantically. It is true both
 now. What admitting the component would still buy is the one thing this fix does not:
 `figcaption` naming its `figure`, so label and value are programmatically paired instead
 of read as three sequential paragraphs. Its row records the two conditions that reopen it.
+
+### `card` admitted 2026-08-31 — and the reason it replaced had expired
+
+**`card` is compiled**, `sink/card.html` is the 38th fragment at 74% coverage, and the
+cost was **measured at +1.2 KB gzipped and 34 classes** (59.7 → 60.9).
+
+**It was admitted AGAINST the admission rule, not under it, and the row says so.** No
+page shape in `templates/` requires a card, and `tile` serves the container shape — both
+tests point the other way. It is an author's call, recorded as one.
+
+**What made it worth reopening is that its CUT reason had become false.** The row read
+"Carbon has no Card — it is an ibm-products preview". That was true when §4.1.14 wrote
+it. Since then Carbon promoted the component: `@carbon/styles` 1.114 ships a 474-line
+`components/card`, `src/app.scss` had carried a commented `@use` for it all along, and
+`docs/carbon-react-dom.json` renders **17 `preview-preview-card--*` stories emitting
+`cds--card` 475 times**. Being `preview-*` is not disqualifying here either —
+`icon-indicator` and `shape-indicator` are both `preview-*` and both DEFER.
+
+**The general finding is worth more than the row.** An evidence reason ages exactly like
+a figure, and nothing in this repository re-reads one. A disposition whose ground has
+expired looks identical to one whose ground still holds — `check-inventory` insists a
+decision was made, never that it is still true. This one surfaced only because a README
+audit happened to grep the captures for it.
+
+**It also corrected a paragraph that cited card as precedent.** The 2026-08-31 decision
+on the eight new components justified CUT-over-DEFER with "it is the ground `card`,
+`page-header` and `side-panel` were cut on". That holds for the other two, which really
+are `c4p--`; it never held for card, which has 17 stories to diff against.
+
+**Fourteen ancestry declines were recorded, one cause.** All 17 card stories mount the
+card in a `css-grid` column, so the intersection handed every card class the grid as a
+required ancestor. Measured: no rule in `css/rux.css` scopes any card class to the grid.
+It is the `links:link--disabled` shape — a sampling artifact of how the component is
+demoed upstream. The fifteenth is `btn--icon-only` wanting the icon-tooltip chrome the
+sink declines throughout.
+
+**Six classes are unexercised and each has a reason in the fragment.** The media family
+— `card__media`, `card__media--horizontal`, `card__title-media`, and with them
+`card--horizontal` and `card__content` — needs an `<img>`, and the sink has never carried
+a raster image in its life: 59 sprite symbols and nothing else. `card__header-media` IS
+exercised, because that one renders an `svg`. The two `--truncate-multi` siblings appear
+in no story at all.
 
 ### The settings template — BUILT 2026-08-31, and it found a shipped defect
 
@@ -379,22 +421,22 @@ re-sweep is a sitting's work and is the honest next step before Phase 4.
 
 | | |
 |---|---|
-| Components | **36 / 83 compiled** in 39 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
+| Components | **37 / 83 compiled** in 40 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 611 `--rux-*` · 1,237 `.rux--*` |
-| Kitchen sink | 37 sections · **561** classes with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **526 / 769 (68%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | 616 `--rux-*` · 1,280 `.rux--*` |
+| Kitchen sink | 38 sections · **586** classes with `templates/` and `js/` · 0 unresolved |
+| Class coverage | **551 / 803 (69%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **40 `rendered-dom` · 6 `source` · 0 `inferred`** across 46 files |
+| Markup provenance | **41 `rendered-dom` · 6 `source` · 0 `inferred`** across 47 files |
 | Icons | 59, a 16.1 KB sprite |
-| Size | 654 KB raw · 587 KB min · **59.7 KB gzipped** |
+| Size | 665 KB raw · 596 KB min · **60.9 KB gzipped** |
 | Behaviour JS | 12 modules · **34.6 KB gzipped**, against a 60 KB tripwire · 119.2 KB raw, 61% of it comment · 46.7 KB of code |
 
 Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
 has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
 
-**47 components are not compiled, and all 47 are decided** — 12 DEFER and 35 CUT, which
-is what `check-inventory` prints. Thirty-nine are rows in
+**46 components are not compiled, and all 46 are decided** — 12 DEFER and 34 CUT, which
+is what `check-inventory` prints. Thirty-eight are rows in
 [`docs/inventory.md`](docs/inventory.md) from the Phase 3 strip; 30 of those have a
 fragment in `sink/deferred/`, still carrying the provenance the Phase 1 sweep gave them,
 and the rest were cut before one was ever written. Restoring one is three lines:
@@ -498,7 +540,7 @@ Nineteen, because none is sufficient alone — see roadmap §4.1.2 for the bug t
 | `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
-| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 7 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
+| `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 11 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
 | `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (44 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
@@ -522,7 +564,7 @@ there was invisible to all three. The new gate intersects the classed ancestors 
 occurrence of a class across all 667 captures and requires what survives — what Carbon
 puts above it *without exception*. Its first full run found a second instance of the same
 defect, `pagination__control-buttons`, hiding behind a note that named the optional
-wrapper and never mentioned the styled one. **35 declines are recorded with reasons; 0
+wrapper and never mentioned the styled one. **50 declines are recorded with reasons; 0
 findings remain.**
 
 **Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate,
@@ -551,7 +593,7 @@ both cases: a page-level assertion is not the shape the registry has. Roadmap §
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
 It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink and templates actually achieve (**526/769, 68%**) and fails only when a
+what the sink and templates actually achieve (**551/803, 69%**) and fails only when a
 component exercises fewer classes than before. A threshold high enough to mean something
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
