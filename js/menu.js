@@ -84,7 +84,12 @@
   function anchor(surface, trigger) {
     if (!trigger) return;
     if (getComputedStyle(surface).position !== 'fixed') return;
-    const t = trigger.getBoundingClientRect();
+    // ALIGN TO THE COMBO CONTAINER WHERE THERE IS ONE. Carbon calls the
+    // surface `combo-button__bottom` -- it sits under the WHOLE control, not
+    // under the chevron that opens it, and anchoring to the trigger left the
+    // menu starting at the chevron's left edge with the primary action beside
+    // it. Every other menu anchors to its own trigger, which is unchanged.
+    const t = (comboContainer(trigger) ?? trigger).getBoundingClientRect();
     const box = surface.getBoundingClientRect();
     const below = window.innerHeight - t.bottom;
     const top = below >= box.height || t.top < box.height ? t.bottom : t.top - box.height;

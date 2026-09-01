@@ -1663,19 +1663,25 @@
          item and the fluid box fills it exactly — measured 64px after, against
          the fluid text input's 64px beside it.
 
-         THE INPUT IS `type="text"`, NOT `type="number"`, and that is not
-         cosmetic: every fluid rule for this control is written
-         `.rux--number-input--fluid input[type=text]`. With `type="number"` the
-         element matched NONE of them — verified with `matches()` before and
-         after — so the field was unstyled inside a styled box. The default
-         style's own fragment uses `type="number"` and is unaffected; only the
-         fluid form scopes on the type. -->
+         THE INPUT IS `type="number"`, AND A CORRECTION IS RECORDED HERE
+         RATHER THAN QUIETLY UNDONE. It was briefly changed to `type="text"`
+         on the reading that the fluid rules are written
+         `.rux--number-input--fluid input[type=text]`. They are — and they are
+         ALSO written `input[type=number]`, in the same selector lists: every
+         one of these rules appears exactly twice in `css/rux.css`, once per
+         type, because Carbon writes the pair. The `matches()` test that
+         "proved" the mismatch only asked about the `[type=text]` half.
+
+         The change styled nothing new and BROKE THE STEPPERS, because
+         `js/form-controls.js` finds the field with
+         `root.querySelector('input[type="number"]')`. Reported from looking:
+         the buttons did nothing. -->
     <div>
     <div class="rux--form-item rux--number-input--fluid">
       <div class="rux--number rux--number--md">
         <label class="rux--label" for="fl-number">Replicas</label>
         <div class="rux--number__input-wrapper">
-          <input id="fl-number" type="text" inputmode="numeric" value="3">
+          <input id="fl-number" type="number" value="3" min="1" max="12">
           <div class="rux--number__controls">
             <button type="button" class="rux--number__control-btn down-icon" aria-label="Decrement">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
@@ -1722,6 +1728,23 @@
 
   <div class="ks-label" style="margin-block-start:1.5rem">compound controls</div>
   <!--
+    EACH CONTROL SITS IN A PLAIN WRAPPER, and that is load-bearing for the
+    same reason the number input's is: `.rux--form-item` computes
+    `flex: 1 1 auto`, so in a flex row the FLUID BOX grows to fill while the
+    control inside keeps Carbon's set width. Measured before: a 336px box
+    around a 144px date picker, and a 188px box around a 47px time field. The
+    wrapper gives the row an item that shrinks to content.
+
+    A ROW, NOT A GRID, and for the reason the date-picker section records:
+    Carbon gives these controls SET WIDTHS and the fluid box around them fills
+    whatever it is given. In a 244px grid cell the date picker's 144px input
+    and the time picker's 61px one sat inside a full-width field, so the
+    underline stopped a third of the way across the box. IBM's own guidance
+    says the pickers have set widths and that a form may widen them to match
+    its other inputs; what it does not say is that the BOX should be wider
+    than the control. A flex row lets each take the width Carbon gives it.
+  -->
+  <!--
     THESE THREE EXIST BECAUSE check-coverage REFUSED THE ALTERNATIVE. They were
     first left undemoed with a note saying so, and the gate answered
     `EXERCISES NOTHING — add markup, or strip the component` and failed the
@@ -1732,10 +1755,11 @@
     components: `list-box__wrapper--fluid` is owned by `fluid-dropdown` AND
     `fluid-list-box`, and the two pickers own one class each.
   -->
-  <div class="ks-grid" style="align-items:start">
+  <div class="ks-row" style="gap:2.5rem;align-items:flex-start">
 
     <!-- DROPDOWN. The fluid class goes on the WRAPPER, beside the two the
          default style already uses. `js/list-box.js` drives it unchanged. -->
+    <div>
     <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid">
       <label class="rux--label" id="fl-dd-label" for="fl-dd">Environment</label>
       <div class="rux--dropdown rux--list-box">
@@ -1755,10 +1779,12 @@
         </ul>
       </div>
     </div>
+    </div>
 
     <!-- DATE PICKER, simple. `date-picker--fluid` goes on the form-item and
          the component keeps its own root inside. The reference wraps its label
          in a toggletip; that is the story explaining itself, not the style. -->
+    <div>
     <div class="rux--form-item rux--date-picker--fluid">
       <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
         <div class="rux--date-picker-container rux--date-picker-container--simple">
@@ -1771,10 +1797,19 @@
         </div>
       </div>
     </div>
+    </div>
 
     <!-- TIME PICKER. The fluid form has its own `__wrapper`, and the field
          inside is a FLUID TEXT INPUT rather than the bare input the default
          style uses — read off components-fluid-components-fluidtimepicker--default.
+
+         THE TWO SELECTS ARE NOT OPTIONAL FURNITURE, and leaving them out is
+         what made this specimen look broken. `time-picker__input` computes
+         `flex: 0 1 25%`: Carbon sizes the time field to a QUARTER of the
+         wrapper because the wrapper holds three children — the field, a
+         period select and a zone select. With only the field written, 47px of
+         control sat in a 188px box and three quarters of it was empty ground.
+         Reported from looking, then read off the capture.
 
          THE INPUT CARRIES NO `time-picker__input-field`, and that is the
          reference rather than an omission. The default style puts that
@@ -1782,6 +1817,7 @@
          text-input instead, whose own classes do the work. Writing it here
          cost a check-ancestry finding — `time-picker__input-field` requires
          `.rux--time-picker` above it, which the fluid root is not. -->
+    <div>
     <div class="rux--time-picker--fluid">
       <div class="rux--time-picker--fluid__wrapper">
         <div class="rux--time-picker__input">
@@ -1792,11 +1828,39 @@
             <div class="rux--text-input__field-outer-wrapper">
               <div class="rux--text-input__field-wrapper">
                 <input id="fl-time" class="rux--text-input" type="text" value="02:30" maxlength="5">
+                <hr class="rux--text-input__divider">
               </div>
             </div>
           </div>
         </div>
+        <div class="rux--form-item rux--select--fluid">
+          <div class="rux--select">
+            <label class="rux--label" for="fl-period">Period</label>
+            <div class="rux--select-input__wrapper">
+              <select id="fl-period" class="rux--select-input">
+                <option class="rux--select-option" value="am">AM</option>
+                <option class="rux--select-option" value="pm">PM</option>
+              </select>
+              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              <hr class="rux--select__divider">
+            </div>
+          </div>
+        </div>
+        <div class="rux--form-item rux--select--fluid">
+          <div class="rux--select">
+            <label class="rux--label" for="fl-zone">Time zone</label>
+            <div class="rux--select-input__wrapper">
+              <select id="fl-zone" class="rux--select-input">
+                <option class="rux--select-option" value="cet">CET</option>
+                <option class="rux--select-option" value="utc">UTC</option>
+              </select>
+              <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              <hr class="rux--select__divider">
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
     </div>
 
   </div>

@@ -31,8 +31,8 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
    modal is the one thing that must win: left in the root stacking context at
    9000 it outranks every isolated section, whatever their DOM order. Anything
    added later that must cover the whole page belongs outside this rule too. */
-.ks-sec:not(#modal):not(#date-picker) { isolation: isolate; }
-/* #date-picker JOINS #modal OUTSIDE THE RULE, on the sentence above: its
+.ks-sec:not(#modal):not(#date-picker):not(#combo-button) { isolation: isolate; }
+/* #date-picker AND #combo-button JOIN #modal OUTSIDE THE RULE, on the sentence above: its
    calendar must cover what follows it. Unlike the permanently-open specimens
    this rule was written for, the calendar OPENS ON A PRESS and is absent from
    the DOM until then, so it cannot paint over a reader who has not asked for
@@ -40,7 +40,13 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
    the Checkbox section below painted straight through the open calendar --
    reported and measured 2026-08-31, elementFromPoint at the calendar's
    midpoint returned `ks-nav`. Modal still wins over it: both sit at 9000 in
-   the root context and #modal comes later in sink/ORDER. */
+   the root context and #modal comes later in sink/ORDER.
+
+   #combo-button is the same case and was found the same way: its menu is
+   PORTALED, opens on a press, and was painting under the Copy button section
+   below it. Its menu is z-index 9100 -- Carbon puts dropdown above modal
+   deliberately -- so outside the rule it wins over both, which is correct on a
+   real page and is why sink/ORDER puts modal last among the three. */
 /* ROOM FOR A SPECIMEN THAT IS PERMANENTLY OPEN. An absolutely-positioned menu
    reserves no height, which is right on a real page — an open dropdown should
    overlay what follows it — but wrong for a specimen that never closes: the
