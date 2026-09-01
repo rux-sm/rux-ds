@@ -74,14 +74,43 @@
   const isDisabled = el => el.getAttribute('aria-disabled') === 'true' || el.disabled === true;
 
   /* ── expandable ────────────────────────────────────────────────────────── */
+  //
+  // COLLAPSED IS THE ABOVE-THE-FOLD'S EXTENT, NOT `full - hidden`.
+  //
+  // This read `full - hidden` until 2026-08-31 and reproduced Carbon exactly,
+  // because the two agree whenever the gap between the fold halves is ZERO --
+  // and Carbon's is zero. Measured on the running story: the gap between
+  // `__above-the-fold` and `__below-the-fold` is 0px, both compute margin 0
+  // and padding 0, and Carbon's own demos supply their spacing with inline
+  // styles INSIDE the fold content.
+  //
+  // The moment a page puts real spacing between the halves the proxy breaks:
+  // the gap sits above the hidden fold, so subtracting only the fold leaves
+  // the gap in the collapsed height and the tile carries dead space under its
+  // last visible element. sink/tile.html hit exactly that -- 132px became
+  // 148px when its two halves were given 16px of rhythm.
+  //
+  // Measuring what the name means fixes it and STILL REPRODUCES CARBON. Their
+  // collapsed tile is 232px: 16px padding + a 200px above-the-fold + 16px
+  // padding. Ours is 132px: 16 + 100 + 16, with the 16px gap correctly
+  // excluded because it falls below the above-the-fold.
+  //
+  // The first `.rux--tile-content` is the above-the-fold block. The fragments
+  // do not carry `__above-the-fold` itself -- @carbon/styles defines no rule
+  // for it, so check-classes rejects it (§4.1.12) -- and the wrapper is what
+  // survives, which is why this selects the content block rather than the
+  // class Carbon's DOM shows.
   function measure(tile) {
     const below = belowOf(tile);
-    if (!below) return;
+    const above = tile.querySelector('.rux--tile-content');
+    if (!below || !above) return;
     const was = tile.style.maxHeight;
     tile.style.maxHeight = '';                       // measure unconstrained
-    const full = tile.getBoundingClientRect().height;
-    const hidden = below.getBoundingClientRect().height;
-    collapsedHeights.set(tile, Math.round(full - hidden));
+    const cs = getComputedStyle(tile);
+    const collapsed = above.getBoundingClientRect().bottom
+      - tile.getBoundingClientRect().top
+      + parseFloat(cs.paddingBlockEnd) + parseFloat(cs.borderBlockEndWidth);
+    collapsedHeights.set(tile, Math.round(collapsed));
     tile.style.maxHeight = was;
   }
 
