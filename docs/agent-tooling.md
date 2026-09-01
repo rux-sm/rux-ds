@@ -18,7 +18,7 @@ top of and the answer is 21, 16 and 5. The prose describing the state file went
 stale while the state file stayed correct — which is the whole argument for
 having a state file at all.
 
-## The five instruments
+## The six instruments
 
 | | answers | fails when | costs |
 |---|---|---|---|
@@ -27,9 +27,10 @@ having a state file at all.
 | **Test** | "does this code do the right thing on known input?" | behaviour changes | maintenance of fixtures |
 | **Pin** | "how far has upstream moved since we looked?" | drift becomes visible | one file, updated by hand |
 | **State file** | "what is true right now?" | prose disagrees with it | a generator script |
+| **CI** | "does it still pass where nobody can skip it?" | any of the above fails | minutes per push |
 
 They are not interchangeable and they fail in different directions. Adding a
-sixth gate when the problem was stale prose buys nothing.
+gate when the problem was stale prose buys nothing.
 
 ---
 
@@ -197,6 +198,36 @@ have the prose point at it.
 
 ---
 
+## 6. CI
+
+**Also called:** continuous integration, the pipeline. Here:
+`.github/workflows/gates.yml`.
+
+**What it is.** The same gates, run somewhere nobody can skip them. A hook can
+be bypassed with `--no-verify` and a local run can be forgotten; a push cannot
+avoid CI. That is its only real advantage, and it is enough.
+
+**When it earns its place.** The moment the repo is pushed anywhere — which this
+one is, to `rux-sm/rux-ds`. It stops mattering less as a project gets smaller;
+it stops mattering when nothing leaves your disk.
+
+**Two things this workflow does that are worth copying:**
+
+- **It pins the Node floor, not the dev version.** `node-version: '22'` is the
+  bound declared in `package.json` engines, while development happens on 26.x.
+  CI proving the floor is honest is something local runs structurally cannot do.
+- **It checks the committed build output is not stale.** `verify` writes
+  `css/rux.css`, `kitchen-sink.html` and `portal.html`; a dirty tree afterwards
+  means someone edited a source and shipped the old artefact. This is the CI form
+  of a golden test, and it is the one check that catches an agent editing SCSS
+  and forgetting the generated file — a silent, entirely plausible-looking miss.
+
+**The one list it deliberately does not keep.** The gates are named once, in
+`package.json`'s `verify` script, and CI just runs it. A second list in the
+workflow file would be a second thing to drift.
+
+---
+
 ## Two traps specific to working with an agent
 
 **An agent optimises for the check turning green, not for the invariant
@@ -212,10 +243,8 @@ Those two sections do more to keep an agent on course than any gate here.
 
 ## What this document does not cover
 
-- **CI.** Deliberately absent. A hook is proportionate for a private solo repo,
-  and CI's one real advantage — being unbypassable — does not pay for itself
-  until someone else commits.
-- **Which gate catches what.** That is README's gate table and the registry.
+- **The individual gates.** Which one catches what is README's gate table and
+  `tools/lib/gates.mjs`. This page is about the kinds, not the instances.
 - **The one thing no instrument here does.** The screen-reader announcement
   pass: `docs/screen-reader-pass.md`. Five defects have shipped past every gate
   in this repo — two wrong base glyphs, a missing positioning wrapper, a missing

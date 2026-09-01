@@ -205,6 +205,7 @@ const KNOWN = {
   // table: and overflow-menu:. `--no-index` additionally wants
   // `icon-tooltip--disabled`, which is the same wrapper in its disabled form.
   'templates/form-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'templates/schedule-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout — the shell header\'s buttons, inherited with the frame'],
   'templates/table-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/detail-page:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'templates/empty-state:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
