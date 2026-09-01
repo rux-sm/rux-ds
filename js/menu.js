@@ -193,6 +193,11 @@
       element: surface,
       anchor: trigger,
       close: opts => close(surface, opts),
+      // The kernel calls this on resize and on scroll. anchor() is a no-op for
+      // anything not `position: fixed`, so the pinned sink specimens and the
+      // overflow menu -- which is positioned inside its own container and
+      // scrolls with it -- are unaffected.
+      reposition: () => anchor(surface, trigger),
     });
 
     kind.show(surface, trigger);

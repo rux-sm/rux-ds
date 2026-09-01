@@ -26,7 +26,8 @@
      record.anchor         the trigger, if any — used for nesting and for
                            deciding whether a press landed "inside"
      record.close(opts)    called to dismiss; receives { restoreFocus }
-     record.reposition()   optional; called on resize while registered
+     record.reposition()   optional; called on resize AND on scroll (capture)
+                           while registered
      record.dismissOn      optional { outside = true, escape = true }
      record.dismissOthers  optional; false means "opening me closes nothing".
                            A hover tooltip needs this: it appears because a
@@ -230,7 +231,22 @@
     top.close?.({ restoreFocus: true });
   });
 
-  window.addEventListener('resize', () => stack.forEach(record => record.reposition?.()));
+  // RESIZE AND SCROLL BOTH MOVE AN ANCHORED SURFACE, and until 2026-08-31 only
+  // resize was heard. A surface positioned against its trigger's VIEWPORT rect
+  // -- which is what a `position: fixed` menu is -- drifts away from that
+  // trigger the moment the page scrolls, and the combo button's menu did:
+  // reported from looking, it floated off up the page while its button stayed
+  // put. Nothing had noticed because the only surface with a reposition() was
+  // the overflow menu, which is absolutely positioned INSIDE its trigger's
+  // container and therefore scrolls with it.
+  //
+  // CAPTURE PHASE, because scroll does not bubble: a surface anchored to
+  // something inside a scrolling panel would otherwise never hear it. Passive,
+  // because none of these handlers calls preventDefault and a non-passive
+  // scroll listener costs the browser its fast path.
+  const replace = () => stack.forEach(record => record.reposition?.());
+  window.addEventListener('resize', replace);
+  window.addEventListener('scroll', replace, { capture: true, passive: true });
 
   window.Rux = window.Rux || {};
   window.Rux.overlay = { register, autoId, focusables, trapFocus };

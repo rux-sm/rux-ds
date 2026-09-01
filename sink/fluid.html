@@ -232,6 +232,12 @@
          control sat in a 188px box and three quarters of it was empty ground.
          Reported from looking, then read off the capture.
 
+         AND THE LABEL HAS TO BE SHORT. At `flex: 0 1 25%` the field is 84px
+         wide and `.rux--label` does not wrap, so "Cutover time" was clipped
+         mid-word against the period select. That is the component's shape
+         rather than a fault to fix — a quarter of the box is what Carbon
+         gives the field, so the label has to fit it.
+
          THE INPUT CARRIES NO `time-picker__input-field`, and that is the
          reference rather than an omission. The default style puts that
          modifier on a bare input; the fluid form nests a whole fluid
@@ -244,7 +250,7 @@
         <div class="rux--time-picker__input">
           <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
             <div class="rux--text-input__label-wrapper">
-              <label class="rux--label" for="fl-time">Cutover time</label>
+              <label class="rux--label" for="fl-time">Time</label>
             </div>
             <div class="rux--text-input__field-outer-wrapper">
               <div class="rux--text-input__field-wrapper">

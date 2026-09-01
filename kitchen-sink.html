@@ -361,7 +361,7 @@
     beside a code block is usually ghost; the reference renders primary, and a
     fragment follows the reference.
   -->
-  <div class="ks-row" style="gap:4rem;padding-block:2rem">
+  <div class="ks-row" style="gap:4rem;padding-block:2rem;align-items:center">
 
     <span class="rux--tooltip rux--icon-tooltip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
       <div class="rux--tooltip-trigger__wrapper">
@@ -379,7 +379,14 @@
     </span>
 
     <!-- COPYING ANOTHER ELEMENT'S TEXT, which is the shape a code block wants:
-         `data-rux-copy-from` names the id whose textContent is copied. -->
+         `data-rux-copy-from` names the id whose textContent is copied.
+
+         IT SITS BESIDE WHAT IT COPIES. Written with the row's 4rem gap between
+         them, the button and its `<code>` read as two unrelated things and the
+         section looked like it was missing a third button — it was reported
+         exactly that way, twice. A copy button is always adjacent to its
+         subject, so the pair is its own inline group. -->
+    <span style="display:inline-flex;align-items:center;gap:.75rem">
     <span class="rux--tooltip rux--icon-tooltip rux--popover-container rux--popover--bottom rux--popover--caret rux--popover--high-contrast">
       <div class="rux--tooltip-trigger__wrapper">
         <button type="button"
@@ -394,7 +401,8 @@
         <span class="rux--popover-caret"></span>
       </span>
     </span>
-    <code id="ks-copy-source" style="align-self:center">cl-7f3a-9d21</code>
+    <code id="ks-copy-source">cl-7f3a-9d21</code>
+    </span>
 
   </div>
 </section>
@@ -1811,6 +1819,12 @@
          control sat in a 188px box and three quarters of it was empty ground.
          Reported from looking, then read off the capture.
 
+         AND THE LABEL HAS TO BE SHORT. At `flex: 0 1 25%` the field is 84px
+         wide and `.rux--label` does not wrap, so "Cutover time" was clipped
+         mid-word against the period select. That is the component's shape
+         rather than a fault to fix — a quarter of the box is what Carbon
+         gives the field, so the label has to fit it.
+
          THE INPUT CARRIES NO `time-picker__input-field`, and that is the
          reference rather than an omission. The default style puts that
          modifier on a bare input; the fluid form nests a whole fluid
@@ -1823,7 +1837,7 @@
         <div class="rux--time-picker__input">
           <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
             <div class="rux--text-input__label-wrapper">
-              <label class="rux--label" for="fl-time">Cutover time</label>
+              <label class="rux--label" for="fl-time">Time</label>
             </div>
             <div class="rux--text-input__field-outer-wrapper">
               <div class="rux--text-input__field-wrapper">
