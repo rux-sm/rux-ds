@@ -162,6 +162,11 @@ const KNOWN = {
     'the icon-tooltip the sink declines throughout. The trigger is the component; the '
     + 'hover hint is the story. sink/tooltip.html records the standing call.'],
   'combo-button:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'fluid:number-input__divider': [['number--helpertext'],
+    '`number--helpertext` is the one ancestor class not written, and it is the §4.1.12 call '
+    + 'sink/number.html already records: the reference puts it on the root when helper text is '
+    + 'present, @carbon/styles defines NO rule for it, so check-classes would reject it. The two '
+    + 'ancestors that DO carry rules, `number` and `number--md`, are both present.'],
   'pagination:pagination__button': [TOOLTIP_CHROME,
     'the icon-tooltip the sink declines throughout. `pagination__control-buttons`, the '
     + 'STYLED wrapper the same note used to omit, is present as of 2026-08-28.'],

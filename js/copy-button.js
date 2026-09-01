@@ -58,10 +58,13 @@
   var SHOW_MS = 2000;   // Carbon's feedbackTimeout default
   var FADE_MS = 240;    // long enough for the stylesheet's own fade
 
+  var OPEN = 'rux--popover--open';
   var timers = new WeakMap();
 
+  function containerOf(btn) { return btn.closest('.rux--popover-container'); }
+
   function tooltipTextOf(btn) {
-    var container = btn.closest('.rux--popover-container');
+    var container = containerOf(btn);
     return container && container.querySelector('.rux--tooltip-content');
   }
 
@@ -74,12 +77,22 @@
 
   function feedback(btn) {
     var text = tooltipTextOf(btn);
+    var container = containerOf(btn);
     var previous = timers.get(btn);
     if (previous) { clearTimeout(previous.show); clearTimeout(previous.out); }
     if (text && !text.dataset.ruxCopyIdle) text.dataset.ruxCopyIdle = text.textContent;
 
     btn.classList.add(ANIMATING, FADE_IN);
     btn.classList.remove(FADE_OUT);
+    // THE MODULE OPENS THE POPOVER, because nothing else does. Measured
+    // 2026-08-31: the tooltip content is 0x0 until its container carries
+    // `popover--open` -- sink/tooltip.html records that the visibility comes
+    // from `.rux--popover--open > .rux--popover > .rux--popover-content` and
+    // that `tooltip--visible` styles nothing. js/popover.js claims a container
+    // on click, but a copy button's click is its own, so the feedback text was
+    // changing inside a box of zero size. Keeping the tooltip chrome is only
+    // justified if the chrome actually opens.
+    if (container) container.classList.add(OPEN);
     if (text) text.textContent = btn.getAttribute('data-rux-copy-feedback') || 'Copied!';
 
     var show = setTimeout(function () {
@@ -89,6 +102,7 @@
         // ANIMATING LAST: it gates both fade rules, so dropping it first would
         // cut the fade-out mid-transition.
         btn.classList.remove(FADE_OUT, ANIMATING);
+        if (container) container.classList.remove(OPEN);
         if (text && text.dataset.ruxCopyIdle) text.textContent = text.dataset.ruxCopyIdle;
         timers.delete(btn);
       }, FADE_MS);

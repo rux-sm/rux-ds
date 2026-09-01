@@ -59,6 +59,44 @@
   // `overflow-menu--open` on ITS trigger; the combo button's state simply lives
   // one element further out. It is a no-op for every other menu trigger,
   // because closest() finds nothing.
+  // A PORTALED MENU IS `position: fixed` AND CARBON POSITIONS IT WITH JS.
+  // `.rux--menu` carries no inset of its own, so a menu rendered at the top
+  // level -- which is where Carbon's capture puts a combo button's -- opens
+  // wherever the viewport's origin leaves it. Measured 2026-08-31: the combo
+  // button's menu landed at top 796px, left 300px, three sections down the
+  // page and nowhere near its trigger.
+  //
+  // sink/menu.html avoids the question a different way, and says so: its
+  // specimens are pinned in flow with `style="position:relative;inset:auto"`
+  // because they are permanently-open demos, not menus anyone opens. A combo
+  // button is opened, so it needs the real answer.
+  //
+  // THIS IS AN ANCHOR, NOT A POSITIONING ENGINE. js/overlay.js states the
+  // project ships none, and this does not become one: it reads the trigger's
+  // viewport rect and writes it to a `fixed` surface, which needs no scroll
+  // maths because fixed coordinates ARE viewport coordinates. It flips above
+  // the trigger when there is no room below, and clamps to the right edge.
+  // Anything cleverer -- collision against arbitrary ancestors, auto-align --
+  // is the engine overlay.js declines until a template asks.
+  //
+  // ONLY A `fixed` SURFACE IS TOUCHED, so the pinned sink specimens and any
+  // page that positions its own menu are left exactly as they are.
+  function anchor(surface, trigger) {
+    if (!trigger) return;
+    if (getComputedStyle(surface).position !== 'fixed') return;
+    const t = trigger.getBoundingClientRect();
+    const box = surface.getBoundingClientRect();
+    const below = window.innerHeight - t.bottom;
+    const top = below >= box.height || t.top < box.height ? t.bottom : t.top - box.height;
+    const left = Math.max(0, Math.min(t.left, window.innerWidth - box.width));
+    surface.style.insetBlockStart = `${Math.round(top)}px`;
+    surface.style.insetInlineStart = `${Math.round(left)}px`;
+  }
+  function unanchor(surface) {
+    surface.style.insetBlockStart = '';
+    surface.style.insetInlineStart = '';
+  }
+
   const COMBO_OPEN = 'rux--combo-button__container--open';
   const comboContainer = trigger => trigger?.closest('.rux--combo-button__container');
 
@@ -70,11 +108,13 @@
         surface.classList.add('rux--menu--open', 'rux--menu--shown');
         trigger?.setAttribute('aria-expanded', 'true');
         comboContainer(trigger)?.classList.add(COMBO_OPEN);
+        anchor(surface, trigger);
       },
       hide: (surface, trigger) => {
         surface.classList.remove('rux--menu--open', 'rux--menu--shown');
         trigger?.setAttribute('aria-expanded', 'false');
         comboContainer(trigger)?.classList.remove(COMBO_OPEN);
+        unanchor(surface);
       },
     },
     overflow: {

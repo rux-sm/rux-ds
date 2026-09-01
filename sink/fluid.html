@@ -25,13 +25,21 @@
     component is not compiled. `docs/inventory.md`'s `fluid-list-box` row
     already said to check the dependents; this is that check, applied.
 
+    THE GRID MUST NOT STRETCH, and `align-items:start` is why it says so.
+    `ks-grid` defaults to stretching every cell to the tallest in the row, and
+    a fluid input paints a 64px field on a background that then filled the
+    whole cell — the number input read 106px of form-item against a 64px
+    control, and beside a text area it grew to the text area's height with
+    hundreds of pixels of empty ground under it. Reported from looking; the
+    control was always 64px, and the box around it was the harness.
+
     THE SIZE IS NOT A CHOICE HERE. A fluid input has ONE height — IBM's
     guidance says 64px against the default style's 32/40/48 — so there are no
     `--sm`/`--lg` specimens to demo, which is most of why this section is
     shorter than its default-style counterparts.
   -->
 
-  <div class="ks-grid">
+  <div class="ks-grid" style="align-items:start">
 
     <!-- TEXT INPUT. `form-item` and `text-input-wrapper` are the same wrappers
          the default style uses; `text-input--fluid` is the whole difference. -->
@@ -66,12 +74,29 @@
 
     <!-- NUMBER INPUT. `number-input--fluid` on the form-item; the component
          keeps its own `number number--md` root inside, and the steppers are
-         driven by js/form-controls.js exactly as in the default style. -->
+         driven by js/form-controls.js exactly as in the default style.
+
+         THE WRAPPER DIV IS LOAD-BEARING, and it is Carbon's rule that makes it
+         so: `.rux--number-input--fluid` sets `block-size: 100%`. In a grid cell
+         that resolves against the ROW's height, so beside a text area the
+         64px control painted a 106px box with 42px of empty field under it.
+         Reported from looking. The plain wrapper gives the grid an auto-height
+         item and the fluid box fills it exactly — measured 64px after, against
+         the fluid text input's 64px beside it.
+
+         THE INPUT IS `type="text"`, NOT `type="number"`, and that is not
+         cosmetic: every fluid rule for this control is written
+         `.rux--number-input--fluid input[type=text]`. With `type="number"` the
+         element matched NONE of them — verified with `matches()` before and
+         after — so the field was unstyled inside a styled box. The default
+         style's own fragment uses `type="number"` and is unaffected; only the
+         fluid form scopes on the type. -->
+    <div>
     <div class="rux--form-item rux--number-input--fluid">
       <div class="rux--number rux--number--md">
         <label class="rux--label" for="fl-number">Replicas</label>
         <div class="rux--number__input-wrapper">
-          <input id="fl-number" type="number" value="3" min="1" max="12">
+          <input id="fl-number" type="text" inputmode="numeric" value="3">
           <div class="rux--number__controls">
             <button type="button" class="rux--number__control-btn down-icon" aria-label="Decrement">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
@@ -83,7 +108,9 @@
             <div class="rux--number__rule-divider"></div>
           </div>
         </div>
+        <hr class="rux--number-input__divider">
       </div>
+    </div>
     </div>
 
     <!-- TEXT AREA. Same shape as the fluid text input, with the component's
@@ -126,7 +153,7 @@
     components: `list-box__wrapper--fluid` is owned by `fluid-dropdown` AND
     `fluid-list-box`, and the two pickers own one class each.
   -->
-  <div class="ks-grid">
+  <div class="ks-grid" style="align-items:start">
 
     <!-- DROPDOWN. The fluid class goes on the WRAPPER, beside the two the
          default style already uses. `js/list-box.js` drives it unchanged. -->
