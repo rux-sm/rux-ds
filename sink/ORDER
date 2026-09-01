@@ -6,6 +6,7 @@
 # it finds in sink/ precisely so a fragment cannot go missing unnoticed.
 buttons
 combo-button
+copy-button
 links
 tags
 text-input

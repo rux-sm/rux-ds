@@ -6108,6 +6108,128 @@ fieldset[disabled] .rux--form__helper-text {
   transform: translate(0, calc(-100% - var(--rux-popover-offset, 3rem)));
 }
 
+.rux--copy-btn html {
+  font-size: 100%;
+}
+.rux--copy-btn body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--copy-btn code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--copy-btn strong {
+  font-weight: 600;
+}
+.rux--copy-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background-color: var(--rux-layer);
+  cursor: pointer;
+}
+@media (any-hover: hover) {
+  .rux--copy-btn:hover {
+    background-color: var(--rux-layer-hover);
+  }
+}
+.rux--copy-btn:active {
+  background-color: var(--rux-layer-active);
+}
+.rux--copy-btn::before {
+  position: absolute;
+  z-index: 6000;
+  border-style: solid;
+  block-size: 0;
+  content: "";
+  inline-size: 0;
+  display: none;
+}
+.rux--copy-btn .rux--copy-btn__feedback {
+  box-shadow: 0 2px 6px var(--rux-shadow, rgba(0, 0, 0, 0.3));
+  z-index: 6000;
+  padding: 0.1875rem 1rem;
+  border-radius: 0.125rem;
+  background-color: var(--rux-background-inverse, #393939);
+  block-size: auto;
+  color: var(--rux-text-inverse, #ffffff);
+  font-weight: 400;
+  inline-size: max-content;
+  max-inline-size: 13rem;
+  min-inline-size: 1.5rem;
+  text-align: start;
+  transform: translateX(-50%);
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-accelerator: true) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-ime-align: auto) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    border: 1px solid transparent;
+  }
+}
+.rux--copy-btn .rux--copy-btn__feedback {
+  display: none;
+  overflow: visible;
+  box-sizing: content-box;
+  margin: auto;
+  clip: auto;
+}
+.rux--copy-btn:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--copy-btn:focus {
+    outline-style: dotted;
+  }
+}
+.rux--copy-btn:focus {
+  outline-color: var(--rux-focus, #0f62fe);
+}
+.rux--copy-btn.rux--copy-btn--animating::before, .rux--copy-btn.rux--copy-btn--animating .rux--copy-btn__feedback {
+  display: block;
+}
+.rux--copy-btn.rux--copy-btn--animating::before {
+  border: none;
+}
+.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--hide-feedback;
+}
+.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--show-feedback;
+}
+
+.rux--copy-btn svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--copy {
+  font-size: 0;
+}
+
 .rux--radio-button-group {
   box-sizing: border-box;
   padding: 0;

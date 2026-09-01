@@ -1,6 +1,10 @@
 {
   "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here, so this file only ever moves up. Regenerate deliberately with `npm run coverage:update` after adding sink markup — never to make a red gate green.",
   "components": {
+    "copy-button": {
+      "hit": 2,
+      "own": 6
+    },
     "dropdown": {
       "hit": 9,
       "own": 23

@@ -60,7 +60,7 @@
 @use "@carbon/styles/scss/components/combo-button";
 // @use "@carbon/styles/scss/components/contained-list";
 // @use "@carbon/styles/scss/components/content-switcher";
-// @use "@carbon/styles/scss/components/copy-button";
+@use "@carbon/styles/scss/components/copy-button";
 @use "@carbon/styles/scss/components/data-table";
 // DATA-TABLE IS FOUR MODULES, NOT ONE. Carbon's own components/_index.scss @uses
 // `data-table/action`, `data-table/expandable` and `data-table/sort` separately
