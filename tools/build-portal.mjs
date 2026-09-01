@@ -48,6 +48,7 @@ import { GATES, browserGates } from './lib/gates.mjs';
 import { markupFiles } from './lib/sources.mjs';
 import { cellStates } from './lib/staleness.mjs';
 import { compiled } from './lib/ownership.mjs';
+import { stats } from './lib/stats.mjs';
 
 const read = p => readFileSync(p, 'utf8');
 const json = p => JSON.parse(read(p));
@@ -62,21 +63,35 @@ const css = read('css/rux.css');
 
 const COMPILED = compiled();
 const allComponents = Object.values(inventory.components).map(c => c.component).sort();
-const tokenCount = new Set(css.match(/--rux-[a-z0-9-]+(?=\s*:)/g) ?? []).size;
-const classCount = new Set(css.match(/\.rux--[A-Za-z0-9_\\:-]+/g) ?? []).size;
-const cssSize = statSync('css/rux.css').size;
-const minSize = existsSync('css/rux.min.css') ? statSync('css/rux.min.css').size : 0;
-// LEVEL 9, NOT THE DEFAULT. README records 55.8 KB gzipped and node's zlib
-// defaults to level 6, which returns 56.5 — a figure that would disagree with
-// README on this page's first render, which is the exact drift this generator
-// exists to avoid. `gzip -9` is what the recorded measurement used.
-const gzipSize = gzipSync(read('css/rux.min.css') ?? css, { level: 9 }).length;
 
-const jsFiles = markupFiles(['js']); // none — js is .js; counted directly below
-const jsBytes = ['overlay', 'popover', 'menu', 'list-box', 'tabs', 'accordion', 'data-table',
-  'form-controls', 'ui-shell', 'dismiss', 'tile', 'modal']
-  .filter(n => existsSync(`js/${n}.js`))
-  .reduce((a, n) => a + statSync(`js/${n}.js`).size, 0);
+// EVERY SHARED FIGURE COMES FROM tools/lib/stats.mjs, and the names below are
+// kept only so the markup that reads them does not have to change.
+//
+// They used to be computed here, correctly, which was still the wrong shape:
+// README published the same figures from a hand-typed table and the two
+// disagreed for eleven commits -- this page said 50/83 while README said 37/83.
+// A second correct copy is still a second copy. One module now answers for
+// both, so they cannot drift apart again.
+const S = stats();
+const tokenCount = S.tokensDefined;
+const classCount = S.classes;
+const cssSize = S.css.rawBytes;
+const minSize = S.css.minBytes;
+// Level 9 is pinned in stats.mjs, for the reason this comment used to carry:
+// node's zlib defaults to 6 and returns a figure ~0.7 KB higher, which would
+// disagree with the recorded measurement on this page's first render.
+const gzipSize = S.css.gzipBytes;
+
+// THE MODULE LIST WAS HARDCODED HERE AND IT DRIFTED, which is the finding that
+// produced stats.mjs. This read a twelve-name array and the paragraph below it
+// read the literal "12 modules"; copy-button and date-picker were admitted on
+// 2026-08-31 and added to neither, so a GENERATED page that CI checks for
+// staleness published "12 modules, 127.4 KB raw" against a real 14 and 149.6 KB.
+// CI could not see it: the file regenerated cleanly, because the generator's own
+// input was wrong. Generation is not enough if a list inside the generator is
+// typed by hand. This now reads the directory.
+const jsModules = S.js.modules;
+const jsBytes = S.js.rawBytes;
 
 const templates = markupFiles(['templates']).map(f => {
   const src = read(f.path);
@@ -361,7 +376,7 @@ ${matrixRows}
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2>Behaviour</h2>
-          <p>12 modules, ${kb(jsBytes)} raw. The markup is the API — a page built from a template needs no script of its own.</p>
+          <p>${jsModules} modules, ${kb(jsBytes)} raw. The markup is the API — a page built from a template needs no script of its own.</p>
           <ul class="rux--list--unordered">
             <li class="rux--list__item"><a class="rux--link" href="kitchen-sink.html">Kitchen sink</a> — ${COMPILED.size} compiled components as live specimens</li>
             <li class="rux--list__item"><a class="rux--link" href="templates/app-shell.html">App shell</a> — the frame every template is built on</li>

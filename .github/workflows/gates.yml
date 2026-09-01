@@ -77,8 +77,8 @@ jobs:
       # the sprite to compare against.
       - name: Committed build output is up to date
         run: |
-          if ! git diff --quiet -- css kitchen-sink.html portal.html; then
+          if ! git diff --quiet -- css kitchen-sink.html portal.html README.md; then
             echo "::error::Committed build output is stale — run 'npm run verify' and commit the result."
-            git diff --stat -- css kitchen-sink.html portal.html
+            git diff --stat -- css kitchen-sink.html portal.html README.md
             exit 1
           fi

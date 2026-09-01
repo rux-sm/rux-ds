@@ -559,6 +559,12 @@ export const CONTROL_FILES = [
   'tools/lib/gates.mjs', 'tools/lib/ownership.mjs', 'tools/lib/sources.mjs',
   'tools/lib/staleness.mjs', 'tools/check-controls.mjs',
 
+  // The figure generators. tools/lib/stats.mjs answers for every number README
+  // and portal.html publish, and build-readme.mjs writes one of the files CI
+  // diffs for staleness -- so a change to either changes what that check is
+  // comparing against, exactly as build-portal.mjs does.
+  'tools/lib/stats.mjs', 'tools/build-readme.mjs',
+
   // The expected results. A gate is only as honest as the file it compares
   // against, and check-coverage's baseline is the one that had to be taught to
   // refuse a downgrade.

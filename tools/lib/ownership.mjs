@@ -94,3 +94,32 @@ const CLASS_RE = /\.rux--(?:[a-zA-Z0-9_-]|\\:)+/g;
 export function classNames(css) {
   return new Set((css.match(CLASS_RE) ?? []).map(s => s.slice(1)));
 }
+
+// The same question asked of MARKUP and of JS, which is not the same regex.
+//
+// WHY THEY LIVE HERE. This file is where "what counts as a class name" is
+// defined once so the gates cannot disagree, and until now that promise covered
+// only the CSS side: check-classes carried the markup and JS patterns inline,
+// so anything else wanting the used-class count had to copy them. tools/lib/
+// stats.mjs now wants exactly that count for a figure README publishes, and a
+// second copy of a regex is how the count in a document starts disagreeing with
+// the count in a gate.
+//
+// THEY RETURN ARRAYS, NOT SETS, AND THAT IS LOAD-BEARING. check-classes prints
+// one line per OCCURRENCE, so a class used twice in one file names both sites.
+// Deduplicating here would silently drop the second, which is the kind of help
+// a gate does not want. Callers that want uniqueness build their own Set.
+export function classesInMarkup(html) {
+  const out = [];
+  for (const m of html.matchAll(/class="([^"]*)"/g)) {
+    for (const cls of m[1].split(/\s+/).filter(c => c.startsWith('rux--'))) out.push(cls);
+  }
+  return out;
+}
+
+// Class names in JS live in string literals, so the match is the bare name
+// rather than a `class="..."` attribute. Only rux-- names are found; a state
+// hook like `is-visible` is Carbon's own and carries no prefix to find.
+export function classesInJs(src) {
+  return [...src.matchAll(/['"`.]((?:rux--)[a-zA-Z0-9_-]+)/g)].map(m => m[1]);
+}

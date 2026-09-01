@@ -23,9 +23,10 @@ example and `sink/*.html` the markup to copy for a component no template carries
 shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
 now the keep-set rather than all of Carbon.
 
-**Phase 5 (behaviors) — every module written, exit criterion still open.** Twelve
+**Phase 5 (behaviors) — every module written, exit criterion still open.** Fourteen
 modules in `js/`: an overlay kernel plus popover, menu, list-box, tabs, accordion,
-data-table, form-controls, ui-shell, dismiss, tile and modal. **The markup is the API** —
+data-table, form-controls, ui-shell, dismiss, tile, modal, copy-button and
+date-picker. **The markup is the API** —
 a page built from a template needs no script of its own. An attribute appears only when
 trigger and surface are too far apart for the markup to relate them (`data-rux-open` on
 modal and menu); a popover, tooltip or overflow menu needs none. Focus trapping, Escape,
@@ -33,16 +34,25 @@ outside press and the stack deciding which surface a press belongs to all come f
 kernel.
 
 What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports eight findings on the sink and four on `templates/wizard-page.html` — one
-adjudicated false positive across twelve sites — and nothing on the other nine pages. But it reads attributes rather than running an
+reports nine findings and six notes on the sink and four on
+`templates/wizard-page.html` — two adjudicated false positives across thirteen sites —
+and nothing on the other ten pages. But it reads attributes rather than running an
 AT. Its focus-ring check does now run in an automated browser, once the page has focus.
 See "Picking this up".
 
-**Phase 4 (devendor) now runs last.** Execution order
-is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8; the phase numbers are names, not positions. Devendoring
-closes the component set, and `data-table` shipped unable to sort or expand until the
-sink tried to demo it — so the set is frozen after the templates have finished teaching
-us what it needs, not before. Roadmap §4.4.
+**Phase 4 (devendor) is DECLINED while admissions are open, decided 2026-08-31.** It
+closes as met-by-measurement rather than met-by-deletion: `css/rux.css` carries zero
+`cds`, there are no `dependencies` at all, and a consumer fetches the committed
+stylesheet and installs nothing — so the runtime half of the goal already holds. What
+steps 1–2 would still buy is tidiness of this repository, at the price §4.4 lists: no
+admitting a component, no new icon, no theme change, no version bump. §2.1's amendment
+of the same day made admissions the project's job, and the door's price is exactly the
+ability to admit.
+
+**Revisit on an explicit freeze**, not on quiet — and that freeze, however it arrives, is
+now what triggers §8.2's versioning deferral too, since Phase 4 may never run. The
+execution order it used to end — 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8 — stands for the rest;
+the phase numbers are names, not positions. Roadmap §4.4.
 
 ### Picking this up
 
@@ -67,14 +77,20 @@ standard §4.8 set for the first stamping pass.
 capture was widened the same day** — `3448844`, because the eight components Carbon
 1.114 added had rows in `docs/inventory.md` and no markup to diff a fragment against,
 and a filter limited to side-panel and page-header had never looked for them. **46
-stories now, a superset of the 21**, and the reference goes 642 to 667. **Measured
-2026-08-31, this is what the gates print today:**
+stories now, a superset of the 21**, and the reference goes 642 to 667. Still 0 findings
+on both gates after it, so widening produced no new fault.
 
-    check-tags      667 stories · 1393 classes · 44 with no reference · 5 known · 0 on a different element
-    check-ancestry  667 stories · 548 corroborated ancestries · 35 declined · 0 missing
+**That number has moved again, and so has everything the gates count.** `date-picker`'s
+admission added two state recipes, so the reference is 669; the sixteen admissions of
+2026-08-31 roughly doubled what there is to check. **Re-measured 2026-09-01, this is what
+the gates print today:**
 
-Still 0 findings on both, so widening produced no new fault — but the numbers moved and
-the ones in the record above are no longer what you will see.
+    check-tags      669 stories · 1648 classes · 67 with no reference · 5 known · 0 on a different element
+    check-ancestry  669 stories · 550 corroborated ancestries · 53 declined · 0 missing
+
+Still 0 findings on both. Every figure quoted above this line is the record of a pass and
+not the current state — which is the whole reason this README re-measures rather than
+carrying numbers forward.
 
 **The widening's own finding is the one worth keeping: the old capture was silently
 INCOMPLETE, and nothing reported it.** 14 of the 21 previous stories are byte-identical
@@ -205,7 +221,7 @@ popover never opened.
 |---|---|
 | Answered 2026-08-31: **the 90 KB JS budget is deleted**, not given a unit. It had never cut, deferred or shaped a single module under any reading, which is the test §2.1 used to remove the CSS target. A **60 KB gzipped tripwire** replaces it, `tools/build.mjs` measures it on every build and exits non-zero over it, and `CLAUDE.md`'s scope rule is what actually bounds the layer | roadmap §4.5 |
 | Answered 2026-08-29 by `check-glyphs` (the symbol draws its name) and `check-slots` (the right glyph is in the slot). What remains: 24 of 64 icon slots have no Carbon capture, and the `__invalid-icon` family is now covered by ICON_STATES and the sibling rule; 11 slots still have no capture that can answer, two of them the progress-step sites that arrived with the component | roadmap §4.5 |
-| Answered 2026-08-31, one at a time with the cost measured for each: **`toggletip` and `time-picker` ADMITTED** and compiled; **`date-picker` admission AGREED** but staged, since its fragment demos no calendar and `js/date-picker.js` does not exist; **`combo-box` / `multiselect` re-affirmed DEFER** because no page shape needs them | `docs/inventory.md`, "What needs your call" |
+| Answered 2026-08-31, one at a time with the cost measured for each: **`toggletip` and `time-picker` ADMITTED** and compiled; **`date-picker` ADMITTED** and no longer staged — `sink/date-picker.html`, `js/date-picker.js` and `templates/schedule-page.html` all shipped the same day; **`combo-box` / `multiselect` re-affirmed DEFER** because no page shape needs them | `docs/inventory.md`, "What needs your call" |
 | No version, no tags, no changelog — a consumer pins to a SHA | roadmap §8.2 |
 | Answered 2026-08-29 by `check-behaviour`, 18 cases over 9 modules — the 15th gate when it landed, of 18 now. There is no `tests/` directory at all | roadmap §4.8 |
 | Answered 2026-08-31: **it becomes the NINETEENTH gate**, registered as `build-portal-icons` in the `build-namespace` shape — a gate carried by a build tool with no `check-*` file. Consistency decided it, not merit: the identical shape was already registered and no rule distinguished them. The question had been re-numbered twice while pending | roadmap §4.8 |
@@ -458,31 +474,50 @@ indicator, and **0 on the other ten pages**.
 **`npm run gates` prints this and does not fail the build**, by design — a gate red on
 every commit is one nobody keeps.
 
+<!-- STATS:BEGIN -->
 | | |
 |---|---|
-| Components | **37 / 83 compiled** in 40 modules — `docs/inventory.md` decides all 83, and `check-inventory` fails if it stops |
+| Components | **50 / 83 compiled** in 53 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
-| Tokens · classes | 616 `--rux-*` · 1,280 `.rux--*` |
-| Kitchen sink | 38 sections · **586** classes with `templates/` and `js/` · 0 unresolved |
-| Class coverage | **551 / 803 (69%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | **607** `--rux-*` defined, 9 more read through a fallback · **1,400** `.rux--*` |
+| Kitchen sink | **43** sections · **654** classes with `templates/` and `js/` |
+| Class coverage | **619 / 937 (66%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **41 `rendered-dom` · 6 `source` · 0 `inferred`** across 47 files |
-| Icons | 59, a 16.1 KB sprite |
-| Size | 665 KB raw · 596 KB min · **60.9 KB gzipped** |
-| Behaviour JS | 12 modules · **34.6 KB gzipped**, against a 60 KB tripwire · 119.2 KB raw, 61% of it comment · 46.7 KB of code |
+| Markup provenance | **47 `rendered-dom` · 6 `source` · 0 `inferred`** across 53 files |
+| Icons | 59 symbols in a 16.1 KB sprite — 36 referenced, 23 nothing points at |
+| Size | 772.9 KB raw · 694.6 KB min · **70.4 KB gzipped** |
+| Behaviour JS | **14** modules · **44.4 KB gzipped** · 149.6 KB raw, 61% of it comment · 58.8 KB of code |
 
-Before the strip: **83 components** (Carbon 1.114 added eight, and `docs/inventory.md`
-has decided only 75 of them), 4 themes, 939 KB min, **94.0 KB gzipped**.
+**Every figure above is generated** by `tools/build-readme.mjs` from
+`tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the
+committed copy is stale — the same contract `css/`, `kitchen-sink.html` and
+`portal.html` are already under. Do not edit the table by hand; the next build
+overwrites it. The gzipped figures are read at level 9 and are sensitive to the
+zlib the running Node bundles, which is why CI pins one. The tripwires those
+sizes run against — 85 KB for `css/`, 60 KB for `js/` — are decisions rather
+than measurements and live with their reasoning in `tools/build.mjs`.
+<!-- STATS:END -->
 
-**46 components are not compiled, and all 46 are decided** — 12 DEFER and 34 CUT, which
-is what `check-inventory` prints. Thirty-eight are rows in
-[`docs/inventory.md`](docs/inventory.md) from the Phase 3 strip; 30 of those have a
-fragment in `sink/deferred/`, still carrying the provenance the Phase 1 sweep gave them,
-and the rest were cut before one was ever written. Restoring one is three lines:
-uncomment its `@use` in `src/app.scss`, move the fragment back, add it to `sink/ORDER`.
-**Move it, do not copy it** — `sink/deferred/progress-indicator.html` sat there for two
-days after the component was admitted at `2930323`, a 51-line stub shadowing the
-140-line fragment that actually ships, and no gate reads `sink/deferred/`.
+Before the strip: **83 components** — Carbon 1.114 added eight to the 75 this project
+first stripped, and `docs/inventory.md` has since decided all 83 — 4 themes, 939 KB min,
+**94.0 KB gzipped**.
+
+**33 components are not compiled, and all 33 are decided** — 11 DEFER and 22 CUT, which
+is what `check-inventory` prints. Their rows are in
+[`docs/inventory.md`](docs/inventory.md), and `sink/deferred/` holds 29 fragments still
+carrying the provenance the Phase 1 sweep gave them; the rest were cut before one was
+ever written. Restoring one is three lines: uncomment its `@use` in `src/app.scss`, move
+the fragment back, add it to `sink/ORDER`.
+
+**Move it, do not copy it — and SIX stubs in `sink/deferred/` are copies right now.**
+`card`, `combo-button`, `copy-button`, `date-picker`, `fluid` and `stack` are compiled,
+each has a shipped fragment, and each still has its deferred stub sitting there: 80 lines
+shadowing `card`'s 240, 29 shadowing `stack`'s 153. That is the defect `2930323` already
+paid for once — `sink/deferred/progress-indicator.html` sat for two days after the
+component was admitted, a 51-line stub shadowing the 140-line fragment that ships — now
+standing six times over. **No gate reads `sink/deferred/`**, so nothing here can tell a
+live deferral from a leftover, and the sixteen admissions of 2026-08-31 left six.
+Listed 2026-09-01 by diffing the directory against `sink/`.
 
 **The other eight arrived with Carbon 1.114 and were decided 2026-08-31** — `big-number`
 DEFER, the other seven CUT — under "The eight that arrived with Carbon 1.114" in
@@ -541,16 +576,17 @@ and the cells with it.
 | Path | What |
 |---|---|
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
-| `css/` | Build output; becomes the source at Phase 4 |
+| `css/` | Build output, generated-and-committed. It was to BECOME the source at Phase 4; that devendor is declined while admissions are open — roadmap §4.4 |
 | `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
 | `templates/` | **Runnable page skeletons — Phase 6's deliverable.** Ten of them. Each is a COMPLETE page carrying the shell, not a fragment. Roadmap §4.6 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
-| `tools/` | `build` · `build-sink` · `build-portal` · `icons` · `glyphs` · `inventory` · `measure` · `states` · `check-classes` · `check-tokens` · `check-icons` · `check-glyphs` · `check-slots` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-inventory` · `check-provenance` · `check-gates` · `diff-fragment` · `serve` · and five browser-only: `check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js`, `check-behaviour.js` |
+| `tools/` | `build` · `build-sink` · `build-portal` · `icons` · `glyphs` · `inventory` · `measure` · `states` · `check-classes` · `check-tokens` · `check-icons` · `check-glyphs` · `check-slots` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-inventory` · `check-headings` · `check-aria-roles` · `check-provenance` · `check-gates` · `check-controls` · `diff-fragment` · `serve` · and five browser-only: `check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js`, `check-behaviour.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
 | `docs/carbon-react-spacing.json` | **What Carbon COMPUTES, harvested 2026-08-28** — 798 class signatures → box properties → the nearest classed ancestor → the stories each was seen in. The markup captures record structure and say nothing about space; this is the other half. 133 signatures compute more than one way and all variants are kept |
+| `AGENTS.md` | **The policy, and it binds every agent.** It classifies every artifact into three tiers before you create or modify it, and lists what to stop on. `CLAUDE.md` routes; this decides. `tools/check-controls.mjs` reports which control files a diff touched, and is deliberately NOT a gate — it asserts nothing about the repository |
 | `LICENSE` · `NOTICE` | **Apache-2.0**, decided 2026-08-29. `LICENSE` is upstream's own copy of the text; `NOTICE` names each artefact carrying Carbon-derived material. The attribution in `css/` and `assets/` is written by the BUILD tools, so it survives a rebuild — roadmap §8.1 |
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
@@ -670,9 +706,6 @@ four declarations from the same tokens, and `h3` and `p` share one reset rule, s
 match too. The portal's template card keeps `h4`'s appearance with
 `h3.rux--type-heading-03`.
 
-**The ARIA-role blind spot above is admitted as the twenty-first and is NOT yet built.**
-Roadmap §4.8.
-
 **Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
 COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
 it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
@@ -711,16 +744,17 @@ diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**8 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
-**0 findings, 0 notes** on the other nine pages. The wizard's four are the same
-adjudicated `progress-step-button` false positive as the sink's eight — it is the only
-template carrying a progress indicator. The sink's notes are CSS specimens with no trigger, which
-are not meant to be operable — four menu densities, the overflow menu's options and the
+**9 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
+**0 findings, 0 notes** on the other ten pages. The wizard's four are the same
+adjudicated `progress-step-button` false positive as eight of the sink's nine — it is the
+only template carrying a progress indicator. The sink's ninth is the fluid list box,
+adjudicated separately and for a different reason. The sink's notes are CSS specimens
+with no trigger, which are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
 something re-reads it.
 
-**All twelve findings are `progress-step-button`, one cause, and it is a false
+**Twelve of the thirteen are `progress-step-button`, one cause, and it is a false
 positive** — adjudicated 2026-08-29 when it was a single finding; admitting
 `progress-indicator` as a compiled component multiplied the sites, not the causes, and
 `wizard-page.html` then multiplied them again by being the one template that carries the

@@ -17,7 +17,7 @@
 //
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
-import { owner, compiled, classNames } from './lib/ownership.mjs';
+import { owner, compiled, classNames, classesInMarkup, classesInJs } from './lib/ownership.mjs';
 import { pageFiles } from './lib/sources.mjs';
 
 const CSS = 'css/rux.css';
@@ -43,8 +43,12 @@ const COMPILED = compiled();
 let bad = 0, stripped = 0, used = new Set();
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
-  for (const m of html.matchAll(/class="([^"]*)"/g)) {
-    for (const cls of m[1].split(/\s+/).filter(c => c.startsWith('rux--'))) {
+  // The pattern itself is in tools/lib/ownership.mjs, so this gate and the
+  // figures README publishes count the same thing. It yields one entry per
+  // OCCURRENCE, which is what lets the loop below name both sites of a class
+  // used twice in one file.
+  {
+    for (const cls of classesInMarkup(html)) {
       used.add(cls);
       // strip the responsive-grid escape form (rux--md:col-span-4 -> rux--md\:col-span-4)
       const esc = cls.replace(/:/g, '\\:');
@@ -63,13 +67,11 @@ for (const f of files) {
     }
   }
 }
-// Class names in JS live in string literals, so the match is the bare name
-// rather than a `class="..."` attribute. Only rux-- names are checked; a state
-// hook like `is-visible` is Carbon's own and carries no prefix to find.
+// Class names in JS are found by classesInJs; ownership.mjs carries the reason
+// the pattern differs from the markup one.
 const jsFiles = JS_ROOTS.flatMap(r => walk(r, [], ['.js']));
 for (const f of jsFiles) {
-  for (const m of readFileSync(f, 'utf8').matchAll(/['"`.]((?:rux--)[a-zA-Z0-9_-]+)/g)) {
-    const cls = m[1];
+  for (const cls of classesInJs(readFileSync(f, 'utf8'))) {
     used.add(cls);
     if (!defined.has(cls)) { console.log(`  UNDEFINED  ${cls.padEnd(42)} ${f}`); bad++; continue; }
     const own = owner(cls);
