@@ -441,8 +441,8 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, re-swept 2026-09-01 after the
-fluid and date-picker specimens landed. Every template reproduced its previous reading
+**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, swept twice on 2026-09-01: once
+after the fluid and date-picker specimens landed, and again after IBM Plex was served. Every template reproduced its previous reading
 exactly, at a DIFFERENT width than it was recorded at, which is the first evidence those
 readings are not viewport-sensitive. The sink is the only page whose numbers moved, and
 both moves are decomposed in `docs/gate-coverage.json`: two spacing divergences are the
@@ -473,11 +473,26 @@ its ring on the WRAPPER and Carbon sets `outline: none` on the field itself, so
 the wrapper goes from `outline: none` to `rgb(15,98,254) solid 2px`. Same family as
 `progress-step-button`, and left reported for the same reason.
 
-**`check-a11y` reads 11 findings and 6 notes on the sink** — 8 progress-step-button, 3
-fluid list box — **4 on `wizard-page.html`**, the only template carrying a progress
-indicator, and **0 on the other ten pages**. The fluid figure went 1 to 3 on 2026-09-01
-because two fluid dropdown state specimens landed; the same false positive at more sites,
-not a new one.
+**`check-a11y` reads 12 findings and 6 notes on the sink** — 8 progress-step-button, 3
+fluid list box, **1 date-picker calendar** — **4 on `wizard-page.html`**, the only
+template carrying a progress indicator, and **0 on the other ten pages**. The fluid figure
+went 1 to 3 because two fluid dropdown state specimens landed: the same false positive at
+more sites, not a new one.
+
+**The twelfth is NOT adjudicated, and it had been hiding behind the sweep method.**
+`date-picker__calendar` is `role="grid"` with `tabindex="0"`, computes `outline-style:
+none` focused and unfocused, and does NOT hand focus to a day when it receives it — the
+active element stays the grid. Its day buttons are `tabindex="-1"` and DO paint a
+`solid 2px #0f62fe` ring, so the indicator exists one level down and a Tab press lands
+short of it. Whether Carbon's `--next` picker delegates is unverified: the captures carry
+markup, not behaviour. Left reported until somebody reads a running Carbon.
+
+**Why no earlier sweep saw it: the focus CLICK was deleting the calendar.** A press on
+empty page is an outside press, and the kernel removes a markup-declared-open surface on
+one — measured, present before the click and absent after. So the 9 recorded on
+2026-08-31 and an 11 read earlier the same day are both understated. The sweep now takes
+focus with `Tab` and then blurs, which is written up in the `sink-check` skill along with
+the phantom `skip-to-content` finding a bare `Tab` produces.
 
 **`npm run gates` prints this and does not fail the build**, by design — a gate red on
 every commit is one nobody keeps.
@@ -592,6 +607,7 @@ and the cells with it.
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
+| `assets/fonts/` | **IBM Plex Sans, self-hosted and OPT-IN.** Two woff2 files (Latin1, weights 400 and 600, ~42 KB) plus `plex.css`, which nothing in `css/rux.css` references — a consumer who does not link it gets Carbon's fallback stack exactly as before. The sink, `portal.html` and all ten templates link it. Roadmap §4.1.1 left Carbon's `$css--font-face` off because it emits 90 rules at a bundler path that 404s, and named this as the way out; no Carbon file is edited and no flag is flipped. OFL-1.1, licence beside the files |
 | `tools/` | `build` · `build-sink` · `build-portal` · `icons` · `glyphs` · `inventory` · `measure` · `states` · `check-classes` · `check-tokens` · `check-icons` · `check-glyphs` · `check-slots` · `check-compound` · `check-tags` · `check-ancestry` · `check-coverage` · `check-co-classes` · `check-inventory` · `check-headings` · `check-aria-roles` · `check-provenance` · `check-gates` · `check-controls` · `diff-fragment` · `serve` · and five browser-only: `check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js`, `check-behaviour.js` |
 | `tools/lib/ownership.mjs` | Which component owns a class, which are compiled, what counts as a class name — shared by the gates so there is one definition |
 | `tools/lib/sources.mjs` | Which files a gate reads PER FILE — `sink/*.html` + `templates/*.html`, `sink/deferred/` excluded — so a finding names a file you can edit |
@@ -754,17 +770,18 @@ diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**11 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
+**12 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
 **0 findings, 0 notes** on the other ten pages. The wizard's four are the same
-adjudicated `progress-step-button` false positive as eight of the sink's eleven — it is
-the only template carrying a progress indicator. The sink's other three are the fluid
-list box, adjudicated separately and for a different reason. The sink's notes are CSS specimens
+adjudicated `progress-step-button` false positive as eight of the sink's twelve — it is
+the only template carrying a progress indicator. Three more are the fluid list box,
+adjudicated separately and for a different reason. The twelfth is the date-picker
+calendar and is a live finding, not an adjudicated one. The sink's notes are CSS specimens
 with no trigger, which are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
 something re-reads it.
 
-**Twelve of the fifteen are `progress-step-button`, one cause, and it is a false
+**Twelve of the sixteen are `progress-step-button`, one cause, and it is a false
 positive** — adjudicated 2026-08-29 when it was a single finding; admitting
 `progress-indicator` as a compiled component multiplied the sites, not the causes, and
 `wizard-page.html` then multiplied them again by being the one template that carries the

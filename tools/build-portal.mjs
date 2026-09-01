@@ -216,6 +216,7 @@ const page = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rux-ds — portal</title>
+<link rel="stylesheet" href="assets/fonts/plex.css">
 <link rel="stylesheet" href="css/rux.css">
 <style>
 /* Copied from templates/app-shell.html, which records why this is a fixed
