@@ -5,8 +5,8 @@
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "12 findings · 6 notes · focusRingChecked true. 8 progress-step-button and 3 fluid list box are the two adjudicated false positives. THE TWELFTH IS NEW AND IS NOT ADJUDICATED: date-picker__calendar carries role=grid and tabindex=0, computes outline-style NONE in both states, and does NOT delegate focus to a day when it receives it — measured, activeElement stays the grid. Its day buttons are tabindex=-1 and DO paint solid 2px rgb(15,98,254) on focus, so the ring exists one level down and a Tab lands short of it. Whether Carbon --next delegates is unverified: the captures carry markup, not behaviour, and a running Carbon was not reachable offline. Left as a finding rather than a false positive for that reason. IT WAS NEVER NEW: earlier sweeps missed it because the focus click they used to satisfy document.hasFocus() is an OUTSIDE PRESS, and the overlay kernel removes the markup-declared-open calendar from the DOM on it — measured, calendar present before the click and absent after. The 9 of 2026-08-31 and the 11 earlier today are both understated."
+      "commit": "f75ee18",
+      "result": "12 findings · 6 notes · focusRingChecked true. ALL TWELVE ARE NOW ADJUDICATED FALSE POSITIVES: 8 progress-step-button, 3 fluid list box, and the date-picker calendar, settled 2026-09-01 against the RUNNING Carbon at react.carbondesignsystem.com, story preview-preview-datepicker--single-with-calendar. Carbon own --next calendar is byte-for-byte our shape on every point the finding turns on: role=grid, tabindex=0, aria-label=Calendar, computed outline-style NONE in both states, 42 days at tabindex=-1, and focusing the grid leaves activeElement ON THE GRID -- it does not delegate either. So js/date-picker.js matches Carbon and MUST NOT be changed; inventing focus delegation would be behaviour Carbon declines, which CLAUDE.md puts out of scope. ONE PLACE WE ARE AHEAD OF CARBON: our day buttons paint solid 2px rgb(15,98,254) on focus where Carbons paint nothing at all in either state. Whether Carbon moves focus on an arrow key is UNVERIFIED -- the probe used a synthetic KeyboardEvent and that is not evidence. The finding stays reported rather than suppressed, per the standing rule that an exception list is not a passing check."
     },
     "portal.html": {
       "date": "2026-09-01",
@@ -191,8 +191,8 @@
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "43 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled, white and g100 at 1280x900. Unchanged by adopting IBM Plex. NOT DRIVEN RED this sweep, so the zero rests on the gate rather than a demonstration."
+      "commit": "f75ee18",
+      "result": "43 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled, white and g100 at 1280x900, with IBM Plex serving. ALL THREE RULES DRIVEN RED AND RESTORED, which this cell could not claim before: an inset border on a button in main takes uaStyled 0 to 1; display:none on every classed element of the buttons section takes collapsed [] to [buttons] IN BOTH THEMES; position:absolute left:-600px takes escaped [] to [buttons]. Each returns to clean on restore. NOTE FOR THE NEXT SWEEP: shrinking elements does NOT drive collapsed red — height/min-height !important still measured 29.97px on rux--btn, because Carbon own layout holds the box. display:none is the shape that works."
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",

@@ -479,13 +479,23 @@ template carrying a progress indicator, and **0 on the other ten pages**. The fl
 went 1 to 3 because two fluid dropdown state specimens landed: the same false positive at
 more sites, not a new one.
 
-**The twelfth is NOT adjudicated, and it had been hiding behind the sweep method.**
+**The twelfth was settled against a RUNNING Carbon, and it is a false positive.**
 `date-picker__calendar` is `role="grid"` with `tabindex="0"`, computes `outline-style:
-none` focused and unfocused, and does NOT hand focus to a day when it receives it — the
-active element stays the grid. Its day buttons are `tabindex="-1"` and DO paint a
-`solid 2px #0f62fe` ring, so the indicator exists one level down and a Tab press lands
-short of it. Whether Carbon's `--next` picker delegates is unverified: the captures carry
-markup, not behaviour. Left reported until somebody reads a running Carbon.
+none` in both states, and does NOT hand focus to a day when it receives it. Every one of
+those is **exactly what Carbon does** — measured 2026-09-01 on
+`preview-preview-datepicker--single-with-calendar` at `react.carbondesignsystem.com`:
+same role, same tabindex, same `aria-label`, same computed `outline-style: none`, 42 days
+at `tabindex="-1"`, and focusing the grid leaves the active element on the grid there too.
+
+**So `js/date-picker.js` matches Carbon and must NOT be changed.** Adding focus
+delegation would be inventing behaviour Carbon declines, which this project puts out of
+scope. **One point where we are AHEAD of Carbon:** our day buttons paint a
+`solid 2px #0f62fe` ring on focus where Carbon's paint nothing in either state. Whether
+Carbon moves focus on an arrow key is still unverified — that probe used a synthetic
+`KeyboardEvent`, which is not evidence.
+
+This is the procedure `docs/verifying-templates.md` prescribes, and it is the only thing
+that could have answered the question: the captures carry markup, not behaviour.
 
 **Why no earlier sweep saw it: the focus CLICK was deleting the calendar.** A press on
 empty page is an outside press, and the kernel removes a markup-declared-open surface on
@@ -773,9 +783,9 @@ kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and rep
 **12 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
 **0 findings, 0 notes** on the other ten pages. The wizard's four are the same
 adjudicated `progress-step-button` false positive as eight of the sink's twelve — it is
-the only template carrying a progress indicator. Three more are the fluid list box,
-adjudicated separately and for a different reason. The twelfth is the date-picker
-calendar and is a live finding, not an adjudicated one. The sink's notes are CSS specimens
+the only template carrying a progress indicator. Three more are the fluid list box, and
+the twelfth is the date-picker calendar; all three causes are adjudicated, each against
+different evidence and each left reported rather than suppressed. The sink's notes are CSS specimens
 with no trigger, which are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
@@ -830,6 +840,14 @@ arithmetic over computed colours, not a judgement that a ring reads at a glance.
 button ring is two-tone — blue outer, white inner — so scoring one layer against the
 surface beneath it says nothing; a first pass did exactly that and called 27 controls
 1:1 before the edges were measured separately.
+
+**All three of `check-rendered`'s rules were driven RED and restored on 2026-09-01**, so
+its zero is demonstrated rather than assumed: an inset border takes `uaStyled` 0 to 1,
+`display: none` on every classed element of a section takes `collapsed` to that section
+in BOTH themes, and `position: absolute; left: -600px` takes `escaped` to it. Worth
+knowing for the next attempt: **shrinking elements does not work** — `height` and
+`min-height` at `!important` still measured 29.97px on a `rux--btn`, because Carbon's own
+layout holds the box. `display: none` is the shape that fires it.
 
 **`check-rendered.js` needs a browser** — paste
 it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
