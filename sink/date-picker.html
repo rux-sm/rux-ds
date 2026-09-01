@@ -66,6 +66,91 @@
       </div>
     </div>
 
+    <!-- SIMPLE, INVALID AND WARN. Recovered 2026-09-01 from
+         sink/deferred/date-picker.html, which shadowed this fragment after
+         date-picker was admitted, and REBUILT rather than copied: the stub was
+         classic-variant markup and carried two classes no capture renders.
+
+         WHAT BACKS THEM. `components-datepicker--simple@invalid` and `@warn`
+         in docs/carbon-react-states.json give the structure, and css/rux.css
+         scopes the pair to exactly what is written here --
+         `.rux--date-picker--next .rux--date-picker-container--simple
+         .rux--date-picker__input--invalid` and its `--warn` sibling, plus
+         `.rux--date-picker.rux--date-picker--simple
+         .rux--date-picker-input__wrapper--invalid ~ .rux--form-requirement`,
+         which is why the requirement is a SIBLING of the wrapper and not a
+         child of it.
+
+         WHAT WAS DROPPED, AND WHY. The stub's `date-picker-container--invalid`
+         and `date-picker-container--short` are rendered by NONE of the 669
+         captures; they have rules in css/rux.css and that is not the same as
+         being markup Carbon writes. And `__icon--invalid` / `__icon--warn` are
+         attested only on the CLASSIC picker, which renders the icon as an
+         <svg>; `--next` simple has no icon at all, so placing one here would be
+         inventing the combination. Four classes left unexercised on purpose. -->
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-invalid">Expiry (yyyy-mm-dd)</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--invalid">
+          <span>
+            <input id="dp-invalid" class="rux--date-picker__input rux--date-picker__input--invalid" type="text" value="2026-31-31" aria-invalid="true" aria-describedby="dp-invalid-msg">
+          </span>
+        </div>
+        <div id="dp-invalid-msg" class="rux--form-requirement">Not a valid date</div>
+      </div>
+    </div>
+
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-warn">Renewal (yyyy-mm-dd)</label>
+        <div class="rux--date-picker-input__wrapper rux--date-picker-input__wrapper--warn">
+          <span>
+            <input id="dp-warn" class="rux--date-picker__input rux--date-picker__input--warn" type="text" value="2020-01-01" aria-describedby="dp-warn-msg">
+          </span>
+        </div>
+        <div id="dp-warn-msg" class="rux--form-requirement">That date is in the past</div>
+      </div>
+    </div>
+
+    <!-- SIZES AND --short. `__input--sm` and `__input--lg` are unscoped rules,
+         so they need no variant above them; `--short` is scoped to
+         `.rux--date-picker.rux--date-picker--simple.rux--date-picker--short`
+         and narrows the FIELD, with the container left bare -- which is what
+         `components-datepicker--simple@short` renders and what the stub got
+         wrong by modifying the container too. -->
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-sm">Small</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-sm" class="rux--date-picker__input rux--date-picker__input--sm" type="text" value="2026-09-01">
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-lg">Large</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-lg" class="rux--date-picker__input rux--date-picker__input--lg" type="text" value="2026-09-01">
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple rux--date-picker--short">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-short">Short</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-short" class="rux--date-picker__input" type="text" value="09/26">
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- SINGLE WITH CALENDAR. The icon is a <button>, not the classic
          picker's <svg> — the reference renders `button.cds--date-picker__icon`
          with aria-label="Open calendar" and tabindex="-1". -->

@@ -9,10 +9,6 @@
       "hit": 9,
       "own": 23
     },
-    "date-picker": {
-      "hit": 22,
-      "own": 52
-    },
     "tooltip": {
       "hit": 5,
       "own": 12
@@ -24,14 +20,6 @@
     "data-table": {
       "hit": 41,
       "own": 80
-    },
-    "number-input": {
-      "hit": 14,
-      "own": 26
-    },
-    "list-box": {
-      "hit": 19,
-      "own": 33
     },
     "text-area": {
       "hit": 11,
@@ -53,9 +41,9 @@
       "hit": 14,
       "own": 23
     },
-    "list": {
-      "hit": 24,
-      "own": 39
+    "number-input": {
+      "hit": 16,
+      "own": 26
     },
     "search": {
       "hit": 8,
@@ -64,6 +52,10 @@
     "time-picker": {
       "hit": 13,
       "own": 21
+    },
+    "date-picker": {
+      "hit": 33,
+      "own": 52
     },
     "inline-loading": {
       "hit": 5,
@@ -85,6 +77,10 @@
       "hit": 4,
       "own": 6
     },
+    "list-box": {
+      "hit": 22,
+      "own": 33
+    },
     "select": {
       "hit": 16,
       "own": 24
@@ -96,6 +92,10 @@
     "modal": {
       "hit": 17,
       "own": 25
+    },
+    "list": {
+      "hit": 27,
+      "own": 39
     },
     "user-avatar": {
       "hit": 17,

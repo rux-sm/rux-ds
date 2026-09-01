@@ -480,8 +480,8 @@ every commit is one nobody keeps.
 | Components | **50 / 83 compiled** in 53 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
 | Tokens · classes | **607** `--rux-*` defined, 9 more read through a fallback · **1,400** `.rux--*` |
-| Kitchen sink | **43** sections · **654** classes with `templates/` and `js/` |
-| Class coverage | **619 / 937 (66%)** — ratcheted in `docs/coverage.json` |
+| Kitchen sink | **43** sections · **670** classes with `templates/` and `js/` |
+| Class coverage | **638 / 937 (68%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **47 `rendered-dom` · 6 `source` · 0 `inferred`** across 53 files |
 | Icons | 59 symbols in a 16.1 KB sprite — 36 referenced, 23 nothing points at |
