@@ -178,6 +178,65 @@ sequence of admissions reaches it.
 > target and §4.5 used to delete the JS budget. This raise is on record precisely so
 > the next one has to answer it.
 
+> **DECIDED 2026-09-01, by rux: THE DEFER SET IS ADMITTED AS CAPACITY ALLOWS, and the
+> capacity was measured before deciding rather than after.** The ask is that components
+> and icons be available as OPTIONS even when nothing currently uses them, which is the
+> direct continuation of §2.1's amendment of 2026-08-31 — the job is to be a library
+> components are picked from, and a library that makes you edit the manifest first is
+> not offering an option, it is offering a chore.
+>
+> **The three measurements that decide it**, taken by compiling each set and reading
+> `tools/build.mjs`:
+>
+>     50 components, today          70.4 KB gzipped     14.6 under the tripwire
+>     61 components, + all 11 DEFER 77.4 KB gzipped      7.6 under
+>     83 components, everything     93.2 KB gzipped      8.2 OVER — trips
+>
+> **So the whole DEFER set fits and the whole catalogue does not.** Eleven components —
+> `multiselect`, `combo-box`, `file-uploader`, `slider`, `treeview`, `progress-bar`,
+> `action-set`, `aspect-ratio`, `big-number`, `icon-indicator`, `shape-indicator` — cost
+> **+7.0 KB gzipped between them** and land 7.6 KB below a limit this section says no
+> legitimate sequence of admissions should reach. That is the answer to whether the
+> tripwire and the amended job are in conflict: they are not, and nothing here needs
+> raising. The 22 CUT components are the ones that do not fit, and they are also the
+> ones already judged unwanted, which is a coincidence worth noticing rather than
+> engineering around.
+>
+> **ADMITTED A FEW AT A TIME, NOT IN ONE SWEEP, and the reason is the discipline rather
+> than the bytes.** Admitting a component here is a row in `docs/inventory.md` with a
+> measured cost and a stated reason, a fragment carrying `PROVENANCE` diffed against the
+> captures, a line in `sink/ORDER`, a coverage ratchet, and the gates re-run. `card`
+> took a session on its own. Eleven at once produces eleven components no worked example
+> can be pointed at, which is the state `check-coverage` exists to refuse.
+>
+> **Two consequences, stated so neither reads as a regression later.** Class coverage
+> falls as a PERCENTAGE the moment a component compiles, because it brings classes
+> nothing exercises yet — `check-coverage` ratchets per component so it will not fail,
+> but 638/937 becomes 638 over a larger denominator and the headline drops. And **three
+> of the eleven cannot have a fragment yet**: `big-number`, `icon-indicator` and
+> `shape-indicator` have no captured markup, because `@carbon/react` renders none of
+> them. They wait on the ibm-products capture; the other eight do not.
+>
+> **The icon question folds into this and mostly dissolves.** 23 of the sprite's 59
+> symbols are referenced by nothing today, and twelve of those are the severity family
+> belonging to `icon-indicator` and `shape-indicator`. Admitting those two makes most of
+> the dead weight live. What remains is the sharper half — icons for components that
+> SHIP whose states the sink never demos, `i-time` first, since `time-picker` was
+> admitted on 2026-08-31 and its icon is on no page. That is a sink gap, not sprite
+> bloat, and deleting the icon would have hidden it.
+>
+> **Icons are kept regardless, and the cost of keeping them was measured too**: the 23
+> unreferenced symbols are 6,457 raw bytes but **1,717 gzipped per page, 2.5% of a
+> page** — far too little to trade against an author reaching for `#i-time` and finding
+> nothing. What they need is not deletion but a recorded reason each, so that "kept on
+> purpose" stops being indistinguishable from "left behind"; `check-icons` has no such
+> list today, which is why 23 accidental symbols would look exactly like these 23.
+>
+> **The rejected alternative**, stated so it is a choice: compile all 83 and raise the
+> tripwire. Declined on this section's own terms — a tripwire amended each time it is
+> tested was never a constraint — and unnecessary, since the set that was actually asked
+> for fits under it.
+
 > First use of the admission rule, 2026-08-28: `data-table/sort`, `/expandable`
 > and `/action` were admitted at +2.9 KB gzipped, because the table page is a
 > named Phase 6 shape and sorting and row selection are what it is for. The rule

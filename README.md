@@ -555,7 +555,19 @@ first stripped, and `docs/inventory.md` has since decided all 83 — 4 themes, 9
 **94.0 KB gzipped**.
 
 **33 components are not compiled, and all 33 are decided** — 11 DEFER and 22 CUT, which
-is what `check-inventory` prints. Their rows are in
+is what `check-inventory` prints.
+
+**The 11 DEFER are admitted as capacity allows, decided 2026-09-01** — components and
+icons should be available as OPTIONS even when nothing uses them yet, which is where
+§2.1's amended job leads. **The capacity was measured before deciding:** all eleven cost
+**+7.0 KB gzipped between them** and land at **77.4 KB, still 7.6 KB under the 85 KB
+tripwire**. Compiling all 83 reads **93.2 KB and trips it**, so the set that was asked for
+fits and the whole catalogue does not — and the 22 that do not fit are the ones already
+judged unwanted. **A few at a time, not one sweep**, because admitting a component is a
+row, a fragment with provenance, a `sink/ORDER` line, a ratchet and a re-run, not an
+uncommented `@use`. Two things not to misread later: class coverage drops as a PERCENTAGE
+the moment a component compiles, and `big-number`, `icon-indicator` and `shape-indicator`
+cannot have a fragment until their markup is captured. Roadmap §2.1. Their rows are in
 [`docs/inventory.md`](docs/inventory.md), and `sink/deferred/` holds 29 fragments still
 carrying the provenance the Phase 1 sweep gave them; the rest were cut before one was
 ever written. Restoring one is three lines: uncomment its `@use` in `src/app.scss`, move
