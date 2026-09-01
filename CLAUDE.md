@@ -49,6 +49,22 @@ on every build. Roadmap §1.1.
   never decided anything, leaving a wide 60 KB gzipped tripwire that `npm run build`
   measures and fails on.
 
+  **A module MAY reimplement behaviour Carbon implements in its REACT layer**, when the
+  CSS is compiled and the markup is captured. It must say so in its `BEHAVIOUR:` label
+  and name what it did NOT reimplement. Added 2026-08-31 because the rule above had
+  stopped describing this layer: `js/date-picker.js` generates a 42-cell grid, drives
+  month navigation and implements an ARIA grid keyboard model, and `js/copy-button.js`
+  runs a feedback cycle — none of which is "making markup work", and all of which Carbon
+  ships in React. The rule neither forbade nor authorised it, which is the state that
+  makes the next reader guess.
+
+  **The boundary that did NOT move**: behaviour Carbon DECLINES is still out. Reimplementing
+  what Carbon does is in scope; inventing what it chose not to do is not. And the third
+  case is neither — where Carbon reaches for a third-party library, as the classic date
+  picker does with flatpickr, the answer is to decline the variant rather than vendor the
+  library (§1's no-runtime-dependency goal). `date-picker` ships the `--next` variant for
+  exactly that reason.
+
 ## Verifying
 
 **Twenty-one gates. Sixteen run in `npm run verify`; five need a browser.** `npm run gates`
