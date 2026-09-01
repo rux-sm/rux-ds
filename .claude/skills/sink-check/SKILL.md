@@ -28,10 +28,33 @@ read the return value rather than the console. `check-a11y` returns
 
 ## Seven conditions, each of which has produced a wrong answer here
 
-**1. The document must have focus.** `check-a11y` reports `focusRingChecked: false` and
-skips its focus-ring check entirely when `document.hasFocus()` is false — and a bare
-`javascript_tool` call often leaves it false. Click the page first, then run in the SAME
-batch. Verify `focusRingChecked: true` in the result before believing a 0.
+**1. The document must have focus — GET IT WITH Tab, THEN BLUR. Not with a click.**
+`check-a11y` reports `focusRingChecked: false` and skips its focus-ring check entirely
+when `document.hasFocus()` is false, and a bare `javascript_tool` call often leaves it
+false. Verify `focusRingChecked: true` in the result before believing a 0.
+
+    computer { action: "key", text: "Tab" }        // gives the document focus
+    document.activeElement && document.activeElement.blur()
+
+**BOTH HALVES ARE PAID FOR, 2026-09-01, and each hid a different answer.** This
+instruction used to say "click the page first", which is where the first half comes from.
+
+*A CLICK DISMISSES WHAT YOU CAME TO MEASURE.* The kernel treats a press on the page as an
+OUTSIDE PRESS. Measured on the sink: `.rux--date-picker__calendar.open` is present before
+a click on an empty spot and **gone from the DOM after it**. Every sweep that clicked to
+get focus therefore checked a page with no calendar on it — `check-a11y` read 9 on
+2026-08-31 and 11 earlier on 2026-09-01 where the honest figure is 12. Condition 5 below
+already says a click perturbs `check-runtime-classes`; it perturbs THIS gate too, by
+deleting surfaces before they can be checked, and that was written down nowhere.
+
+*A BARE Tab LEAVES THE FIRST CONTROL FOCUSED,* and the check then compares a focused
+control against itself and reports "no visible focus change" on it. That is where four
+templates each grew a phantom finding on `rux--skip-to-content`, the first tab stop on
+every page carrying the shell. Blurring afterwards keeps `document.hasFocus()` true with
+nothing focused, and all four go back to 0.
+
+Neither failure looks like a measurement error in the output. One reads as a clean page;
+the other reads as a real accessibility defect.
 
 **2. Park the pointer off content.** The pane's pointer keeps whatever it is resting on in
 `:hover`, and a hover background silently becomes the background you measure a ring
