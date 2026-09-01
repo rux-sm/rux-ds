@@ -425,22 +425,35 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**38 browser cells — 38 CURRENT, 0 stale, 0 never run.** Swept 2026-08-31 at
-`759d236`, and the first fully green matrix this ledger has had.
+**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, swept 2026-08-31 after twelve
+admissions, five new sink sections and three modules touched.
 
-**The eleven `check-a11y` cells were blocked all day and are not any more.** An
-automated pane reports `document.hasFocus()` false, and `check-a11y` refuses its
-focus-ring half in that state by design — `gates.mjs` records the precondition, and a 0
-with `focusRingChecked: false` is not a pass. **A REAL CLICK FIXES IT**:
-`computer{left_click}` on the page, addressed by `ref` so no screenshot is needed, gives
-`hasFocus` true and the check runs. Focus does NOT survive navigation, so every page
-needs its own click, and `window.focus()` and `element.focus()` do not substitute. The
-same thing explains the blank screenshots: the pane reports `visibilityState: "hidden"`
-until something clicks into it.
+**The sweep earned its keep, which is the argument for keeping the ledger at all.** It
+found a real defect and two real accessibility gaps that nothing else had.
 
-All twelve read with `focusRingChecked: true` — kitchen-sink **8 findings, 6 notes**
-reproducing its baseline exactly, `wizard-page` **4**, the same adjudicated
-`progress-step-button` cause, and **0 findings, 0 notes on the other ten**.
+**The defect.** `check-runtime-classes` reported `dropdown--open`,
+`list-box__menu-item--highlighted` and `side-nav--expanded` **STRIPPED at load** — all
+three still in the file, `check-coverage` still counting them, and the page showing a
+closed dropdown. `js/date-picker.js` adopted a markup-declared-open calendar and
+registered it **without `dismissOthers: false`**, so it tore down every surface already
+adopted. `js/list-box.js` documents that exact trap in a comment written 2026-08-28, and
+a module authored after it walked straight in.
+
+**The gaps.** Three fluid selects reported "no visible focus change" and were **right**:
+Carbon gates a fluid control's ring on a class React adds on focus — `select--fluid--focus`
+and its siblings — and nothing here applied it, so a fluid select took focus and painted
+nothing at all. `js/form-controls.js` now applies all three, on the three different hosts
+the selectors name.
+
+**One new false positive, adjudicated rather than suppressed.** The fluid list box draws
+its ring on the WRAPPER and Carbon sets `outline: none` on the field itself, so
+`check-a11y` — which reads the control and its label — cannot see it. Measured on focus:
+the wrapper goes from `outline: none` to `rgb(15,98,254) solid 2px`. Same family as
+`progress-step-button`, and left reported for the same reason.
+
+**`check-a11y` reads 9 findings and 6 notes on the sink** — 8 progress-step-button, 1
+fluid list box — **4 on `wizard-page.html`**, the only template carrying a progress
+indicator, and **0 on the other ten pages**.
 
 **`npm run gates` prints this and does not fail the build**, by design — a gate red on
 every commit is one nobody keeps.
