@@ -230,8 +230,51 @@
   }
 
   const by = findings.reduce((m, f) => (m[f.rule] = (m[f.rule] || 0) + 1, m), {});
-  console.log(`\n  check-a11y — ${findings.length} findings, ${notes.length} notes\n`);
-  if (findings.length) { console.table(by); console.table(findings); }
+  // ADJUDICATED FINDINGS ARE SEPARATED FROM NEW ONES, AND NOT SUPPRESSED.
+  //
+  // Added 2026-08-31. By 2026-08-31 every one of the 13 findings this tool
+  // reports across all 12 pages was a KNOWN false positive: 8 progress-step
+  // buttons and 1 fluid list box on the sink, 4 progress steps on wizard-page.
+  // A fourteenth, real finding would have arrived as "10 findings" instead of
+  // "9" and been indistinguishable. That nearly happened: three genuine fluid
+  // focus defects were found only because every finding was read one at a time.
+  //
+  // THIS IS NOT AN ALLOW-LIST, and the distinction is the whole point. An
+  // allow-list makes a red gate green, which this repository refuses -- the
+  // rule is that a check needing entries to pass is measuring the entries.
+  // Nothing here is removed, hidden, or subtracted from the count. The tool
+  // still reports every finding and still says 13; it just says which 13 have
+  // already been argued about, so a NEW one is visible on the first line
+  // instead of on the fourteenth.
+  //
+  // AN ENTRY EARNS ITS PLACE BY A MEASUREMENT, recorded where the adjudication
+  // happened -- README's gate section for progress-step-button, and
+  // docs/gate-coverage.json for the fluid list box, whose ring was measured
+  // moving from `outline: none` to `rgb(15,98,254) solid 2px` on the WRAPPER,
+  // where this tool cannot look. If an entry cannot name that measurement it
+  // does not belong here.
+  const ADJUDICATED = [
+    { rule: 'no visible focus change', what: 'rux--progress-step-button',
+      why: 'Carbon draws the ring on :focus-visible on the LABEL and sets outline:none on plain :focus; a real Tab press shows it. README, gates section.' },
+    { rule: 'no visible focus change', what: 'rux--list-box__field', where: 'fluid',
+      why: 'the fluid list box rings its WRAPPER and Carbon sets outline:none on the field. Measured: wrapper outline none -> rgb(15,98,254) solid 2px on focus.' },
+  ];
+  const isAdjudicated = f => ADJUDICATED.some(a =>
+    a.rule === f.rule
+    && (!a.what || String(f.what || '').includes(a.what))
+    && (!a.where || a.where === f.where));
+
+  const settled = findings.filter(isAdjudicated);
+  const fresh = findings.filter(f => !isAdjudicated(f));
+
+  console.log(`\n  check-a11y — ${findings.length} findings `
+    + `(${fresh.length} NEW, ${settled.length} adjudicated), ${notes.length} notes\n`);
+  if (!fresh.length && settled.length)
+    console.log('  Nothing new. Every finding matches an adjudicated entry — which is not the\n'
+      + '  same as nothing being wrong, only that nothing has changed since it was argued.\n');
+  if (fresh.length) { console.log('  NEW:'); console.table(fresh); }
+  if (settled.length) { console.log('  ADJUDICATED (reported, never suppressed):'); console.table(settled); }
+  if (findings.length) console.table(by);
   if (notes.length) console.table(notes);
   console.log('\n  NOT CHECKED: screen-reader announcement, focus-ring contrast, tab-order sense.'
     + (canTestFocus ? '\n  The focus-ring check ran with transitions suppressed, so it reads the'
@@ -240,5 +283,5 @@
         + '\n  default ring, so a hidden input cannot pass on UA chrome.'
       : '\n  NOT RUN: the focus-ring check, because this document does not have focus.')
     + '\n  Those need a human with an AT. See the header.\n');
-  return { findings, notes, byRule: by, focusRingChecked: canTestFocus };
+  return { findings, notes, fresh, adjudicated: settled, byRule: by, focusRingChecked: canTestFocus };
 })();
