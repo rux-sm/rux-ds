@@ -1517,14 +1517,28 @@
     <div class="ks-label" style="margin-block-start:1.5rem">expandable with interactive content</div>
     <!-- components-tile--expandable-with-interactive. The tile becomes a <div>
          and the CHEVRON becomes the button, because the fold now contains its
-         own controls and a button cannot nest inside a button. -->
+         own controls and a button cannot nest inside a button.
+
+         THE FOLD HAS NO SPACING OF ITS OWN, AND CARBON'S DOES NOT EITHER.
+         Measured on the running story 2026-08-31: `tile-content`,
+         `__above-the-fold` and `__below-the-fold` all compute margin 0 and
+         padding 0. Carbon's own story papers over it with an INLINE STYLE --
+         its button sits in `<div style="padding-top: 1rem">` -- so the
+         component genuinely ships no rhythm and the demo supplies it.
+
+         This specimen puts a HEADING beside a BUTTON, which Carbon's story
+         never does (it renders bare divs and no heading at all), so the two
+         were flush: h3 36px hard against a 48px button with 0 between them,
+         reported from looking. `stack-vertical stack-scale-5` is 1rem, which
+         is the same 1rem Carbon's story writes by hand -- the documented
+         idiom instead of an inline style, per composing-pages §3.5. -->
     <div class="ks-grid">
       <div class="rux--tile rux--tile--expandable rux--tile--expandable--interactive">
         <div>
           <div class="rux--tile-content">
-            <div>
+            <div class="rux--stack-vertical rux--stack-scale-5">
               <h3>Scale the deployment</h3>
-              <button type="button" class="rux--btn rux--btn--primary">Apply</button>
+              <div><button type="button" class="rux--btn rux--btn--primary">Apply</button></div>
             </div>
           </div>
           <button type="button" class="rux--tile__chevron rux--tile__chevron--interactive" aria-expanded="false" aria-label="Expand">
