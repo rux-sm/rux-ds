@@ -67,6 +67,53 @@ An entry says which of these it swept. Naming them in advance is what makes
 
 ## Ledger
 
+### 2026-09-01 · `380537f`..`23bf792` · agent-run, conversational
+
+**Swept:** docs (every figure README quotes, re-measured) · enforcement (all 21 gates
+run, three of them changed) · browser (all 38 cells swept TWICE — once after the sink
+changed, once after the webfont) · markup (`sink/deferred/` listed against `sink/`) ·
+output (`css/`, `portal.html`, `README.md` regenerated and diffed) · type
+**Not swept:** behaviour internals (`check-behaviour` was RUN, 37/37, but no module was
+read) · the screen-reader pass, which still needs a human · `docs/inventory.md`'s 83
+rows were not re-read one by one, only counted · CUT dispositions were not re-examined
+
+**What it started as:** "pull and check readme". The README's figure table was eleven
+commits stale — 37 components against 50, 60.9 KB against 70.4, twelve JS modules
+against fourteen.
+
+**Six findings, all closed.**
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | README's figure table was typed by hand and every figure was wrong | **CLOSED** — generated from `tools/lib/stats.mjs`, CI-diffed, `380537f` |
+| 2 | `portal.html` was generated AND CI-gated and still published `12 modules, 127.4 KB` and `2059 classes` — a hardcoded name array and a stale copy of a class regex `ownership.mjs` had already fixed | **CLOSED** — same commit, generator reads the directory |
+| 3 | Six stubs in `sink/deferred/` shadowed fragments that ship; no gate reads that directory | **CLOSED** — `1f3da4d` resolved them, `4727b08` added the `shadowed` fault to `check-inventory` |
+| 4 | The gzipped figure is not reproducible across Node versions and broke CI once, on the very check it had just been wired into | **CLOSED** — `0299867`, published floored to whole KB, margins recorded |
+| 5 | The sweep method itself was wrong in both directions: a focus CLICK deletes markup-declared-open surfaces before they are measured, and a bare `Tab` leaves the first control focused and reports it as ringless | **CLOSED** — `f75ee18`, `Tab` then blur, written into the `sink-check` skill |
+| 6 | `check-spacing` reported a COUNT, which is the one part of its output that neither travels between machines nor can be investigated | **CLOSED** — `1296840`, `KNOWN` list on `check-tags`' precedent, headline is now known/unknown |
+
+**Two false positives were settled rather than carried.** The date-picker calendar
+finding was measured against a RUNNING Carbon — `preview-preview-datepicker--single-with-calendar`
+— which is what `docs/verifying-templates.md` prescribes and the only thing that could
+answer it, since the captures carry markup and not behaviour. Carbon's own `--next`
+calendar matches ours on every point the finding turns on, including not delegating focus
+to a day, so `js/date-picker.js` was NOT changed. The 22 adjudicated spacing rows were
+each traced to a cause: blockification by the sink's own wrapper, demo styling on both
+sides of the grid comparison, a classic-against-`--next` reference, and values derived
+from the text beside them.
+
+**`check-rendered`'s zero is now demonstrated rather than assumed** — all three rules
+driven red and restored. Recorded for whoever tries next: shrinking elements does NOT
+fire `collapsed`, because Carbon's own layout holds the box at ~30px through
+`height: 1px !important`; `display: none` is the shape that works.
+
+**What was measured and NOT acted on**, so the next reader does not re-derive it: 23 of
+the sprite's 59 symbols are referenced by nothing, costing 1,717 bytes gzipped per page.
+Kept deliberately (roadmap §2.1, 2026-09-01), and `check-icons` still has no list that
+distinguishes a kept symbol from an accidental one. Thirteen spacing rows on the sink
+remain unknown. `docs/roadmap.md:2011` still gates Phase 7 on a Phase 4 that was declined
+and may never run.
+
 ### 2026-08-29 · `f726cf1` · agent-run, conversational
 
 **Swept:** build · enforcement · docs · distribution · coverage

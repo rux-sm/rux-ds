@@ -30,9 +30,12 @@ on every build. Roadmap §1.1.
 | `src/app.scss` | the build manifest — commenting a `@use` line is the whole of cutting a component |
 | `sink/*.html` | one fragment per component; **`kitchen-sink.html` is generated, never edit it** |
 | `js/` | the behaviour layer — `js/overlay.js` is the kernel and loads first |
+| `assets/fonts/` | **IBM Plex Sans, self-hosted and OPT-IN.** `plex.css` plus two woff2; nothing in `css/rux.css` references it and every page LINKS it. Carbon's type scale is metric-tuned for this face. Roadmap §4.1.1 left Carbon's own `$css--font-face` off — it emits 90 rules at a path that 404s — and named a self-hosted subset as the way out, so no Carbon file is edited. Adding display/expressive/fluid type needs Light; a `code-01` face needs Mono |
 | `docs/carbon-*.json` | the markup reference — **785 entries across four files, 669 of which carry DOM**, and 669 is what every gate prints: `carbon-react-dom` 505, `carbon-ibm-products-dom` 46, `carbon-react-states` 110 of 118, `carbon-ibm-products-states` 8 of 116. The other 116 are honest markers — mostly `(no-story)`, where that origin does not host a story the recipe asks for — and every reader skips them. The two `-states` files share all 116 keys and are NOT in conflict: the gates flatten values, never key a map, so nothing shadows anything |
 | `docs/composing-pages.md` | **how to build a PAGE**, as against what a component is — which template to copy, the twelve traps, and where IBM's own pattern guidance fits |
 | `docs/screen-reader-pass.md` | **the announcement pass** — the one §4.5 task no tool here does. Setup, commands, what is already covered, and what must not be filed twice |
+| `docs/audits.md` | **which whole-project sweeps have been run, and what each did NOT look at.** Read it before starting one, so a finding already closed is not re-found |
+| `.claude/skills/sink-check` | **how to run the five browser gates without getting a confident wrong answer.** Take focus with `Tab` then blur — a CLICK deletes markup-declared-open surfaces before they are measured, and a bare `Tab` leaves the first control focused and reports it ringless. Both cost real findings |
 
 ## What MUST NOT be invented
 
@@ -76,7 +79,10 @@ on every build. Roadmap §1.1.
 
 ## Verifying
 
-**Twenty-one gates. Sixteen run in `npm run verify`; five need a browser.** `npm run gates`
+**Twenty-one gates. Sixteen run in `npm run verify`; five need a browser.** Three carry
+an adjudicated list rather than a bare count — `check-tags`' KNOWN, `check-ancestry`'s
+declines and, from 2026-09-01, `check-spacing`'s, whose headline is **known / unknown**
+because a count was the one part of its output that did not travel between machines. `npm run gates`
 says which has been run against which page, and which have never been run at all —
 `tools/lib/gates.mjs` is the registry and the single source for those counts.
 That coverage check runs in `verify` too and **fails on a page nobody has ever
