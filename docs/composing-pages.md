@@ -18,7 +18,7 @@ copies of a rule is how the counts in README drifted before `check-gates`.
 
 ## 1. Start from a template, never from scratch
 
-Nine exist, each a **complete page** — shell included, because §4.6 asks for
+Ten exist, each a **complete page** — shell included, because §4.6 asks for
 runnable skeletons. Copy the nearest shape and delete what you do not need.
 
 | your page | start from |

@@ -67,57 +67,57 @@
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "526 · 529 · 0 stripped · 3 added — the three documented classes."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "65 · 65 · 0 stripped · 0 added — read LAST, after every other cell was written and the portal rebuilt: 89 tag--green, 0 tag--magenta. See the fixed-point note in _triage."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "40 · 40 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "102 · 103 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "84 · 84 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "106 · 106 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "59 · 59 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "51 · 51 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "94 · 94 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "75 · 76 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "73 · 73 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/schedule-page.html": {
@@ -129,57 +129,57 @@
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "312 · 287 · 25 diverge, 0 defects — at 1440x900."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "25 · 23 · 2 diverge — at 1440x900, unchanged."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "21 · 20 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "61 · 58 · 3 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "54 · 52 · 2 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "61 · 59 · 2 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "31 · 30 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "28 · 27 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "55 · 47 · 8 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "33 · 29 · 4 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "44 · 43 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/schedule-page.html": {
@@ -191,7 +191,7 @@
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "38 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled."
     }
   },
@@ -199,7 +199,7 @@
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "759d236",
       "result": "37 / 37 passed · 0 failed, over 12 modules."
     }
   },

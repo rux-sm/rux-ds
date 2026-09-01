@@ -94,8 +94,11 @@ and is wrong, as is a margin; the template says why.
 table, a toolbar, batch actions and pagination. **Each template is a COMPLETE page**,
 shell included — §4.6 asks for runnable skeletons, so they duplicate rather than nest.
 
-All nine templates exist — form, detail, empty state, error state, wizard, dashboard
-and settings included. `wizard-page.html` is the multi-step shape: a vertical progress
+All ten templates exist — form, schedule, detail, empty state, error state, wizard,
+dashboard and settings included. **`schedule-page.html` is the one that places
+time-picker, dropdown, number-input and inline-loading**, none of which any other
+template carries, and its BEHAVIOUR label records the finding: those three controls put
+their label in three DIFFERENT places, and every gate passes the wrong one. `wizard-page.html` is the multi-step shape: a vertical progress
 indicator in a `lg:col-span-4` column beside a `lg:col-span-8` panel, and the only
 template carrying a modal. `dashboard-page.html` is the overview shape: a metric row
 over a toolbar-less table beside an activity column. `settings-page.html` is grouped

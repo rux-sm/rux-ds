@@ -13,7 +13,8 @@ stated twice drifts — which is exactly what happened to the Status block below
 below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
 started** — `templates/app-shell.html` is the frame, with `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
-`wizard-page.html`, `dashboard-page.html` and `settings-page.html` built on it. The kitchen sink remains the worked
+`wizard-page.html`, `dashboard-page.html`, `settings-page.html` and `schedule-page.html`
+built on it. The kitchen sink remains the worked
 example and `sink/*.html` the markup to copy for a component no template carries.
 
 ## Status
@@ -125,9 +126,10 @@ on evidence; it did not buy a second class. One class, and the end of the last `
 in the reference set.
 
 **DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
-everything before it is preparation. **All nine exist** — `app-shell.html`, `table-page.html`,
+everything before it is preparation. **All ten exist** — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
-`wizard-page.html`, `dashboard-page.html` and `settings-page.html`.
+`wizard-page.html`, `dashboard-page.html`, `settings-page.html` and
+`schedule-page.html`.
 That is the FILE list, not the exit: §4.6 closes when a page shape NOT in
 `templates/` can be built without inventing a class.
 
@@ -423,25 +425,22 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**35 browser cells — 24 current, 11 stale, 0 never run.** Swept 2026-08-31 at
-`349a68c`. **Every one of the 24 either reproduced its recorded value exactly or moved by
-an amount traceable to a change made the same day** — `sink/card.html`, and the
-`h3`-to-`p` heading fix in `wizard-page.html` and the portal generator. Nothing moved
-that should not have, which is the only reason a sweep is worth taking.
+**38 browser cells — 38 CURRENT, 0 stale, 0 never run.** Swept 2026-08-31 at
+`759d236`, and the first fully green matrix this ledger has had.
 
-**The eleven `check-a11y` cells were NOT swept and are honestly still stale.** An
-automated pane reports `document.visibilityState` `"hidden"` and `document.hasFocus()`
-false, and neither can be changed from inside the page — `window.focus()` and
-`body.focus()` do not move it. `check-a11y` refuses its focus-ring half in that state BY
-DESIGN, and `gates.mjs` records the precondition: **a 0 with `focusRingChecked:false` is
-not a pass.** Recording one would produce a cell that looks swept and is not, which is
-the exact failure this ledger exists to prevent. They need a human with a focused window,
-and they ride along with the AT pass below.
+**The eleven `check-a11y` cells were blocked all day and are not any more.** An
+automated pane reports `document.hasFocus()` false, and `check-a11y` refuses its
+focus-ring half in that state by design — `gates.mjs` records the precondition, and a 0
+with `focusRingChecked: false` is not a pass. **A REAL CLICK FIXES IT**:
+`computer{left_click}` on the page, addressed by `ref` so no screenshot is needed, gives
+`hasFocus` true and the check runs. Focus does NOT survive navigation, so every page
+needs its own click, and `window.focus()` and `element.focus()` do not substitute. The
+same thing explains the blank screenshots: the pane reports `visibilityState: "hidden"`
+until something clicks into it.
 
-**The other four gates ARE sound in a hidden pane, and that is evidenced rather than
-assumed:** layout computes normally, and eleven independent readings reproduced values a
-person had taken in a visible browser. Where a gate depends on a state a hidden pane
-cannot reach, it says so itself — which is why `check-a11y` is the only one missing.
+All twelve read with `focusRingChecked: true` — kitchen-sink **8 findings, 6 notes**
+reproducing its baseline exactly, `wizard-page` **4**, the same adjudicated
+`progress-step-button` cause, and **0 findings, 0 notes on the other ten**.
 
 **`npm run gates` prints this and does not fail the build**, by design — a gate red on
 every commit is one nobody keeps.
@@ -531,7 +530,7 @@ and the cells with it.
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
 | `css/` | Build output; becomes the source at Phase 4 |
 | `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
-| `templates/` | **Runnable page skeletons — Phase 6's deliverable.** Each is a COMPLETE page carrying the shell, not a fragment. Roadmap §4.6 |
+| `templates/` | **Runnable page skeletons — Phase 6's deliverable.** Ten of them. Each is a COMPLETE page carrying the shell, not a fragment. Roadmap §4.6 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
 | `assets/icons.svg` | Generated sprite, committed |
