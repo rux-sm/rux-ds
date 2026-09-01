@@ -120,9 +120,42 @@ const comps = compiled().size;
 // reach it. What reaches it is somebody vendoring a library into js/, which is
 // the one growth the scope rule would not already have caught.
 const JS_TRIPWIRE_KB = 60;
+
+// THE CSS TRIPWIRE, 2.1's, AND IT IS ENFORCED HERE FROM 2026-08-31. It read
+// 75 KB and lived in PROSE ONLY -- nothing computed it, which is the exact
+// failure the paragraph above says this repository keeps re-learning, and it
+// went unnoticed because the JS tripwire beside it looked like the pair was
+// covered. Admitting the fluid family took the stylesheet from 66.4 to 70.5 KB
+// and NOTHING would have stopped it at 75.
+//
+// RAISED TO 85 KB. The ceiling is full Carbon at 94.0 KB gzipped with four
+// themes (README's before-the-strip row), so 85 sits 14.5 KB above today and
+// 9 KB below everything.
+//
+// A THEME ACCIDENT DOES NOT REACH IT, AND NEVER REACHED 75 EITHER. 2.1 names
+// two accidents this tripwire is for -- "a theme added by accident, a
+// component family re-enabled" -- and the first one was checked rather than
+// assumed: adding BOTH remaining themes, g10 and g90, moves the stylesheet
+// from 70.5 to 73.4 KB. +2.9 KB for two whole themes, because a theme is ~600
+// custom-property VALUES and gzip dedupes them against the two already there.
+// The old 75 would not have caught it either; the rationale was never
+// measured. Roadmap 2.1 carries the correction.
+//
+// SO WHAT THIS ACTUALLY CATCHES IS THE COMPONENT SET, which is the term that
+// dominates: 23.5 KB separates today's keep-set from all of Carbon. 85 trips
+// on roughly two thirds of the remaining components coming back at once, and
+// leaves room for the deliberate admissions 75 no longer had room for -- the
+// fluid family alone was +5.04 KB.
+//
+// IF THIS TRIPS, DO NOT RAISE IT AGAIN WITHOUT READING 2.1. The honest response
+// to a tripwire is to re-open the set, and a number amended each time it is
+// tested was never a constraint -- which is the argument 2.1 used to delete the
+// KB target and 4.5 used to delete the JS budget.
+const CSS_TRIPWIRE_KB = 85;
 const jsFiles = readdirSync('js').filter(f => f.endsWith('.js')).sort();
 const jsRaw = jsFiles.map(f => readFileSync(join('js', f)));
 const jsGzip = gzipSync(Buffer.concat(jsRaw), { level: 9 }).length / 1024;
+const cssGzip = gzipSync(min, { level: 9 }).length / 1024;
 const jsRawKb = jsRaw.reduce((n, b) => n + b.length, 0) / 1024;
 
 console.log(`
@@ -134,13 +167,21 @@ console.log(`
 
   unminified   ${kb(statSync(OUT).size)}
   minified     ${kb(min.length)}
-  gzipped      ${(gzipSync(min, { level: 9 }).length / 1024).toFixed(1)} KB
+  gzipped      ${cssGzip.toFixed(1)} KB  (tripwire ${CSS_TRIPWIRE_KB} KB)
 
   js modules   ${jsFiles.length}
   js raw       ${jsRawKb.toFixed(1)} KB
   js gzipped   ${jsGzip.toFixed(1)} KB  (tripwire ${JS_TRIPWIRE_KB} KB)
 `);
 
+if (cssGzip > CSS_TRIPWIRE_KB) {
+  console.error(`  TRIPWIRE: css/ is ${cssGzip.toFixed(1)} KB gzipped, over ${CSS_TRIPWIRE_KB}.`);
+  console.error('  This is a smoke alarm, not a thermostat. Something structural has');
+  console.error('  changed -- most likely a component family re-enabled. A theme');
+  console.error('  does NOT reach this; see the note above. Re-open the set rather');
+  console.error('  than the number. Roadmap 2.1.');
+  process.exit(1);
+}
 if (jsGzip > JS_TRIPWIRE_KB) {
   console.error(`  TRIPWIRE: js/ is ${jsGzip.toFixed(1)} KB gzipped, over ${JS_TRIPWIRE_KB}.`);
   console.error('  This is a smoke alarm, not a thermostat. Something structural has');

@@ -95,10 +95,37 @@ recorded in `docs/inventory.md`:
 1. A named page shape in `templates/` requires it.
 2. Nothing already in the set serves that shape.
 
-**Tripwire.** If the built stylesheet exceeds **75 KB gzipped**, something has gone
-wrong structurally — a theme added by accident, a component family re-enabled, an
-opt-in layer switched on. Re-open the set. This is a smoke alarm, not a thermostat:
-it sits where no legitimate sequence of admissions reaches it.
+**Tripwire.** If the built stylesheet exceeds **85 KB gzipped**, something has gone
+wrong structurally — a component family re-enabled, an opt-in layer switched on.
+Re-open the set. This is a smoke alarm, not a thermostat: it sits where no legitimate
+sequence of admissions reaches it.
+
+> **RAISED FROM 75 TO 85 ON 2026-08-31, AND ENFORCED FOR THE FIRST TIME.** Both halves
+> matter. The number read 75 and lived in PROSE ONLY — nothing computed it — so
+> admitting the fluid family took the stylesheet from 66.4 to 70.5 KB with nothing
+> standing between it and the limit. `tools/build.mjs` now measures it on every build
+> and exits non-zero over it, beside the JS tripwire that was already enforced.
+>
+> **AND THE ORIGINAL RATIONALE WAS WRONG, which is why this is a correction and not
+> just a raise.** This paragraph named "a theme added by accident" as one of the two
+> things the tripwire catches. It does not, and 75 never did: measured 2026-08-31,
+> adding BOTH remaining themes — g10 and g90 — moves the stylesheet from 70.5 to
+> **73.4 KB**. Two entire themes cost **+2.9 KB**, because a theme is ~600
+> custom-property VALUES and gzip dedupes them against the two already compiled. The
+> claim had never been measured; §2's own baseline row, which reads 51 KB at one theme
+> and 71 KB at two, was taken against the FOUNDATION before the strip and does not
+> describe a keep-set of fifty components.
+>
+> **What the tripwire actually watches is the component set**, which is the term that
+> dominates: 23.5 KB separates today's keep-set from all of Carbon at 94.0 KB. 85 trips
+> on roughly two thirds of the remaining components coming back at once, and leaves
+> room for the deliberate admissions 75 no longer had room for — the fluid family alone
+> was +5.04 KB.
+>
+> **If it trips, re-open the set and not the number.** A tripwire amended each time it
+> is tested was never a constraint, which is the argument §2.1 used to delete the KB
+> target and §4.5 used to delete the JS budget. This raise is on record precisely so
+> the next one has to answer it.
 
 > First use of the admission rule, 2026-08-28: `data-table/sort`, `/expandable`
 > and `/action` were admitted at +2.9 KB gzipped, because the table page is a

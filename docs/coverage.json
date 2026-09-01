@@ -9,33 +9,37 @@
       "hit": 9,
       "own": 23
     },
+    "date-picker": {
+      "hit": 22,
+      "own": 52
+    },
     "tooltip": {
       "hit": 5,
       "own": 12
-    },
-    "date-picker": {
-      "hit": 21,
-      "own": 45
     },
     "popover": {
       "hit": 16,
       "own": 33
     },
+    "number-input": {
+      "hit": 13,
+      "own": 26
+    },
     "data-table": {
       "hit": 41,
       "own": 80
     },
-    "search": {
-      "hit": 7,
-      "own": 13
-    },
-    "text-input": {
-      "hit": 14,
-      "own": 25
+    "list-box": {
+      "hit": 19,
+      "own": 33
     },
     "text-area": {
-      "hit": 10,
-      "own": 17
+      "hit": 11,
+      "own": 19
+    },
+    "text-input": {
+      "hit": 16,
+      "own": 27
     },
     "combo-button": {
       "hit": 6,
@@ -49,6 +53,18 @@
       "hit": 14,
       "own": 23
     },
+    "list": {
+      "hit": 24,
+      "own": 39
+    },
+    "search": {
+      "hit": 8,
+      "own": 13
+    },
+    "time-picker": {
+      "hit": 13,
+      "own": 21
+    },
     "inline-loading": {
       "hit": 5,
       "own": 8
@@ -56,14 +72,6 @@
     "loading": {
       "hit": 5,
       "own": 8
-    },
-    "number-input": {
-      "hit": 12,
-      "own": 19
-    },
-    "list-box": {
-      "hit": 18,
-      "own": 28
     },
     "tile": {
       "hit": 17,
@@ -78,16 +86,12 @@
       "own": 6
     },
     "select": {
-      "hit": 14,
-      "own": 21
+      "hit": 16,
+      "own": 24
     },
     "checkbox": {
       "hit": 17,
       "own": 25
-    },
-    "list": {
-      "hit": 23,
-      "own": 34
     },
     "modal": {
       "hit": 17,
@@ -141,13 +145,45 @@
       "hit": 19,
       "own": 21
     },
-    "time-picker": {
-      "hit": 11,
-      "own": 12
-    },
     "badge-indicator": {
       "hit": 2,
       "own": 2
+    },
+    "fluid-date-picker": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-dropdown": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-list-box": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-number-input": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-search": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-select": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-text-area": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-text-input": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-time-picker": {
+      "hit": 1,
+      "own": 1
     },
     "progress-indicator": {
       "hit": 7,

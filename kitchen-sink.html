@@ -77,7 +77,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">42 sections</div>
+  <div class="ks-count">43 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#combo-button">Combo button</a>
@@ -94,6 +94,7 @@
     <a href="#toggle">Toggle</a>
     <a href="#search">Search</a>
     <a href="#number">Number input</a>
+    <a href="#fluid">Fluid inputs</a>
     <a href="#tile">Tile</a>
     <a href="#card">Card</a>
     <a href="#notification">Notification</a>
@@ -1573,6 +1574,204 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="fluid">
+  <h2>Fluid inputs</h2><p>the label inside the field · text input · select · number · text area · search</p>
+  <!-- PROVENANCE: rendered-dom · components-fluid-components-fluidtextinput--default,
+       --fluidselect--default, --fluidnumberinput--default, --fluidtextarea--default
+       and --fluidsearch--default, 2026-08-31 -->
+  <!--
+    FLUID IS A STYLE, NOT A COMPONENT. Carbon ships eleven `fluid-*` partials
+    and none of them is a new control: each restates an input this build
+    already has, with the label INSIDE the field box and a rule under it.
+    IBM's own guidance puts default and fluid side by side as two styles —
+    default "where space is at a premium", fluid "in expressive moments, fluid
+    forms, contained spaces, or attached to complex components, like a
+    toolbar".
+
+    THE MARKER IS THE `<hr>`. Every fluid variant renders a divider element —
+    `text-input__divider`, `select__divider` and their siblings — between the
+    field and whatever sits under it. It is a real element in the capture, not
+    a border, which is why it is written here rather than assumed away.
+
+    NINE OF ELEVEN ARE COMPILED, and the two that are not are held by their
+    BASES rather than by cost. `fluid-combo-box` needs `combo-box` and
+    `fluid-multiselect` needs `multiselect`; both bases are DEFER, so shipping
+    their fluid variants would put rules in the stylesheet whose markup cannot
+    legally be written — check-classes reports STRIPPED on any class whose
+    component is not compiled. `docs/inventory.md`'s `fluid-list-box` row
+    already said to check the dependents; this is that check, applied.
+
+    THE SIZE IS NOT A CHOICE HERE. A fluid input has ONE height — IBM's
+    guidance says 64px against the default style's 32/40/48 — so there are no
+    `--sm`/`--lg` specimens to demo, which is most of why this section is
+    shorter than its default-style counterparts.
+  -->
+
+  <div class="ks-grid">
+
+    <!-- TEXT INPUT. `form-item` and `text-input-wrapper` are the same wrappers
+         the default style uses; `text-input--fluid` is the whole difference. -->
+    <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
+      <div class="rux--text-input__label-wrapper">
+        <label class="rux--label" for="fl-text">Cluster name</label>
+      </div>
+      <div class="rux--text-input__field-outer-wrapper">
+        <div class="rux--text-input__field-wrapper">
+          <input id="fl-text" class="rux--text-input" type="text" value="eu-west-prod">
+          <hr class="rux--text-input__divider">
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECT. The label sits INSIDE `.rux--select`, above the native
+         control, and the arrow and divider are siblings of the <select>. -->
+    <div class="rux--form-item rux--select--fluid">
+      <div class="rux--select">
+        <label class="rux--label" for="fl-select">Region</label>
+        <div class="rux--select-input__wrapper">
+          <select id="fl-select" class="rux--select-input">
+            <option class="rux--select-option" value="eu">Europe</option>
+            <option class="rux--select-option" value="us">North America</option>
+            <option class="rux--select-option" value="ap">Asia Pacific</option>
+          </select>
+          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          <hr class="rux--select__divider">
+        </div>
+      </div>
+    </div>
+
+    <!-- NUMBER INPUT. `number-input--fluid` on the form-item; the component
+         keeps its own `number number--md` root inside, and the steppers are
+         driven by js/form-controls.js exactly as in the default style. -->
+    <div class="rux--form-item rux--number-input--fluid">
+      <div class="rux--number rux--number--md">
+        <label class="rux--label" for="fl-number">Replicas</label>
+        <div class="rux--number__input-wrapper">
+          <input id="fl-number" type="number" value="3" min="1" max="12">
+          <div class="rux--number__controls">
+            <button type="button" class="rux--number__control-btn down-icon" aria-label="Decrement">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-subtract"/></svg>
+            </button>
+            <div class="rux--number__rule-divider"></div>
+            <button type="button" class="rux--number__control-btn up-icon" aria-label="Increment">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-add"/></svg>
+            </button>
+            <div class="rux--number__rule-divider"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT AREA. Same shape as the fluid text input, with the component's
+         own wrapper in place of the input's. -->
+    <div class="rux--form-item rux--text-area--fluid">
+      <div class="rux--text-area__label-wrapper">
+        <label class="rux--label" for="fl-area">Change note</label>
+      </div>
+      <div class="rux--text-area__wrapper">
+        <textarea id="fl-area" class="rux--text-area" rows="3">Rolled the gateway to 1.14.2.</textarea>
+      </div>
+    </div>
+
+    <!-- SEARCH. The fluid search has NO wrapper form-item: `search--fluid`
+         sits on the search root itself, and the label is a sibling of the
+         input rather than living in a label-wrapper. Read off
+         components-fluid-components-fluidsearch--default. -->
+    <div class="rux--search rux--search--fluid" role="search" aria-labelledby="fl-search-label">
+      <div class="rux--search-magnifier" tabindex="-1">
+        <svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg>
+      </div>
+      <label class="rux--label" id="fl-search-label" for="fl-search">Find a cluster</label>
+      <input id="fl-search" class="rux--search-input" type="text" role="searchbox" value="prod">
+      <button type="button" class="rux--search-close" aria-label="Clear search input">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">compound controls</div>
+  <!--
+    THESE THREE EXIST BECAUSE check-coverage REFUSED THE ALTERNATIVE. They were
+    first left undemoed with a note saying so, and the gate answered
+    `EXERCISES NOTHING — add markup, or strip the component` and failed the
+    build. It is right: a component that renders nowhere is CSS nobody has
+    seen, which is the defect check-coverage was rewritten to catch.
+
+    EACH NEEDS EXACTLY ONE CLASS, which is why three specimens close four
+    components: `list-box__wrapper--fluid` is owned by `fluid-dropdown` AND
+    `fluid-list-box`, and the two pickers own one class each.
+  -->
+  <div class="ks-grid">
+
+    <!-- DROPDOWN. The fluid class goes on the WRAPPER, beside the two the
+         default style already uses. `js/list-box.js` drives it unchanged. -->
+    <div class="rux--list-box__wrapper rux--list-box__wrapper--fluid">
+      <label class="rux--label" id="fl-dd-label" for="fl-dd">Environment</label>
+      <div class="rux--dropdown rux--list-box">
+        <button type="button" id="fl-dd" class="rux--list-box__field" role="combobox" aria-labelledby="fl-dd-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="fl-dd-menu">
+          <span class="rux--list-box__label">Production</span>
+          <div class="rux--list-box__menu-icon">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </div>
+        </button>
+        <ul id="fl-dd-menu" class="rux--list-box__menu" role="listbox" hidden>
+          <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+            <div class="rux--list-box__menu-item__option">Production</div>
+          </li>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Staging</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DATE PICKER, simple. `date-picker--fluid` goes on the form-item and
+         the component keeps its own root inside. The reference wraps its label
+         in a toggletip; that is the story explaining itself, not the style. -->
+    <div class="rux--form-item rux--date-picker--fluid">
+      <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+        <div class="rux--date-picker-container rux--date-picker-container--simple">
+          <label class="rux--label" for="fl-date">Expiry date</label>
+          <div class="rux--date-picker-input__wrapper">
+            <span>
+              <input id="fl-date" class="rux--date-picker__input" type="text" value="2026-12-01">
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIME PICKER. The fluid form has its own `__wrapper`, and the field
+         inside is a FLUID TEXT INPUT rather than the bare input the default
+         style uses — read off components-fluid-components-fluidtimepicker--default.
+
+         THE INPUT CARRIES NO `time-picker__input-field`, and that is the
+         reference rather than an omission. The default style puts that
+         modifier on a bare input; the fluid form nests a whole fluid
+         text-input instead, whose own classes do the work. Writing it here
+         cost a check-ancestry finding — `time-picker__input-field` requires
+         `.rux--time-picker` above it, which the fluid root is not. -->
+    <div class="rux--time-picker--fluid">
+      <div class="rux--time-picker--fluid__wrapper">
+        <div class="rux--time-picker__input">
+          <div class="rux--form-item rux--text-input--fluid rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="fl-time">Cutover time</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="fl-time" class="rux--text-input" type="text" value="02:30" maxlength="5">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 

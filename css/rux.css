@@ -12906,6 +12906,2981 @@ button.rux--dropdown-text:focus {
   fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
 }
 
+.rux--date-picker--fluid {
+  display: inline-flex;
+  background: var(--rux-field);
+}
+
+.rux--date-picker--fluid .rux--date-picker {
+  position: relative;
+  block-size: 100%;
+  inline-size: 100%;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--date-picker--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid .rux--label::-webkit-scrollbar,
+.rux--date-picker--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--date-picker--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--date-picker--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper > span {
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper .rux--date-picker__input {
+  padding: 2rem 1rem 0.8125rem;
+  background: transparent;
+  border-block-end: none;
+  min-block-size: 4rem;
+  min-inline-size: 9rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__icon {
+  display: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__input:not(.rux--date-picker__input--invalid):not(.rux--date-picker__input--warn),
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid .rux--date-picker__icon {
+  inset-block-start: 2.6875rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input {
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single {
+  border-block-end: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input:not(.rux--date-picker__input--invalid),
+.rux--date-picker--single .rux--date-picker--fluid--warn {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range .rux--date-picker-container:not(.rux--date-picker--fluid--invalid) {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker-container {
+  inline-size: 100%;
+  min-block-size: 3.9375rem;
+  min-inline-size: 9rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:first-child {
+  margin-inline-end: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+.rux--date-picker-container.rux--date-picker--fluid--invalid {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+  .rux--date-picker-container.rux--date-picker--fluid--invalid {
+    outline-style: dotted;
+  }
+}
+
+.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid {
+  outline: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker-container:last-child.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid,
+.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid + .rux--date-picker-container .rux--date-picker__input {
+  border-inline-start: none;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--form-requirement,
+.rux--date-picker-container.rux--date-picker--fluid--warn .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker--fluid--warn .rux--date-picker__input,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range .rux--date-picker-container {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--fluid--warn + .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start: 1px solid transparent;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
+  position: absolute;
+  display: block;
+  background: var(--rux-border-strong);
+  block-size: calc(100% - 1rem);
+  content: "";
+  inline-size: 1px;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
+  inset-inline-start: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker__divider {
+  border-style: solid;
+  border-color: var(--rux-border-subtle);
+  margin: 0 1rem;
+  border-block-end: none;
+  inline-size: calc(100% - 2rem);
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
+.rux--date-picker-container.rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
+  inset-block-start: 5rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
+  display: block;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range ~ .rux--form-requirement {
+  display: block;
+  overflow: visible;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin-block-start: 0;
+  max-block-size: 100%;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement {
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn {
+  position: relative;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range + .rux--date-picker__icon,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range + .rux--date-picker__icon {
+  inset-block-start: 5rem;
+}
+
+.rux--date-picker--fluid__skeleton {
+  background: var(--rux-skeleton-background, #e8e8e8);
+  block-size: 4rem;
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--date-picker--fluid__skeleton--container {
+  position: relative;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid__skeleton .rux--skeleton {
+  position: absolute;
+  block-size: 0.5rem;
+  inline-size: 25%;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid__skeleton .rux--label {
+  margin-block-end: 0.25rem;
+}
+
+.rux--date-picker--fluid__skeleton .rux--text-input {
+  position: absolute;
+  padding: 0;
+  block-size: 0.5rem;
+  inline-size: 50%;
+  inset-block-start: 2.25rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
+  inset-block: auto 0.5rem;
+}
+
+.rux--date-picker--fluid__skeleton--range {
+  display: flex;
+  flex-direction: row;
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container {
+  display: flex;
+  flex-direction: column;
+  inline-size: 50%;
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container:first-of-type {
+  border-inline-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
+  inset-block-end: 0.5rem;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker > .rux--date-picker-container,
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker .rux--date-picker__input {
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start-color: var(--rux-border-subtle);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker-input-inner-wrapper--decorator > *,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--ai-label,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--slug {
+  inset-block-start: 2.6875rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--slug):not(:has(~ .rux--slug--revert)) {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--ai-label):not(:has(.rux--ai-label--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid),
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--slug):not(:has(.rux--slug--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid) {
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
+.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
+.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--slug .rux--date-picker__input {
+  padding-inline-end: 4rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper {
+  position: relative;
+  background: var(--rux-field);
+  block-size: 100%;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box {
+  padding: 0;
+  min-block-size: 4rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--label::-webkit-scrollbar,
+.rux--list-box__wrapper--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--list-box__wrapper--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--list-box__wrapper--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box__field {
+  padding-block: 2.0625rem 0.8125rem;
+  padding-inline-start: 1rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box__menu-icon {
+  block-size: 1rem;
+  inline-size: 1rem;
+}
+
+.rux--list-box__wrapper--fluid:not(.rux--list-box__wrapper--fluid--condensed) .rux--list-box__menu-item {
+  block-size: 4rem;
+}
+
+.rux--list-box__wrapper--fluid:not(.rux--list-box__wrapper--fluid--condensed) .rux--list-box__menu-item__selected-icon {
+  inset-block-start: 1.25rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--label--disabled .rux--toggletip-label {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--list-box__wrapper--fluid .rux--label--disabled .rux--toggletip-button {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.rux--list-box__wrapper--fluid .rux--label--disabled .rux--toggletip-button svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus {
+    outline-style: dotted;
+  }
+}
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus {
+  z-index: 2;
+  outline-offset: 0;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus:has(.rux--list-box--expanded.rux--multi-select--selected) {
+  outline-width: 0.0625rem;
+}
+
+.rux--list-box__wrapper--fluid--focus .rux--list-box__field:focus {
+  outline: none;
+  outline-offset: 0;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid:not(.rux--list-box__wrapper--fluid--focus) {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid:not(.rux--list-box__wrapper--fluid--focus) {
+    outline-style: dotted;
+  }
+}
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid:not(.rux--list-box__wrapper--fluid--focus) {
+  z-index: 2;
+  outline-offset: 0;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus .rux--list-box:not(.rux--list-box--invalid),
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--focus .rux--list-box .rux--text-input,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box .rux--text-input,
+.rux--list-box__wrapper--fluid .rux--combo-box.rux--list-box--warning .rux--text-input {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box__field:focus,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--combo-box[data-invalid] .rux--text-input {
+  outline: none;
+  outline-offset: 0;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid:focus-within {
+  outline-offset: 0;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box,
+.rux--list-box__wrapper--fluid .rux--list-box--warning {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--form-requirement,
+.rux--list-box__wrapper--fluid .rux--list-box--warning ~ .rux--form-requirement {
+  padding: 0.5rem 4rem 0.5rem 1rem;
+  margin-block-start: 0;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box--warning ~ .rux--form-requirement {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--form-requirement:empty,
+.rux--list-box__wrapper--fluid .rux--list-box--warning ~ .rux--form-requirement:empty {
+  block-size: 2rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box[data-invalid] .rux--list-box__invalid-icon,
+.rux--list-box__wrapper--fluid .rux--list-box.rux--list-box--warning .rux--list-box__invalid-icon {
+  inset-block-start: 5.0625rem;
+  inset-inline-end: 1rem;
+  pointer-events: none;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box[data-invalid]:not(.rux--combo-box) .rux--list-box__field {
+  padding-inline-end: 3rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid .rux--list-box[data-invalid].rux--combo-box .rux--text-input {
+  padding-inline-end: 4rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box__divider {
+  display: none;
+  transition: border-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box--invalid ~ .rux--list-box__divider,
+.rux--list-box__wrapper--fluid .rux--list-box--warning ~ .rux--list-box__divider {
+  display: block;
+  border: none;
+  margin: 0 1rem;
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box--invalid:hover:not(.rux--combo-box) ~ .rux--list-box__divider,
+.rux--list-box__wrapper--fluid .rux--list-box--warning:hover:not(.rux--combo-box) ~ .rux--list-box__divider {
+  border-color: transparent;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box--up .rux--list-box__menu {
+  inset-block-end: 4rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--skeleton {
+  background: var(--rux-skeleton-background, #e8e8e8);
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field:hover, .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field:focus, .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field {
+    background: CanvasText;
+  }
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__field {
+  position: absolute;
+  padding: 0;
+  block-size: 0.5rem;
+  inline-size: 50%;
+  inset-block-start: 2.25rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label:hover, .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label:focus, .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label {
+    background: CanvasText;
+  }
+  .rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--list-box__wrapper--fluid .rux--skeleton .rux--list-box__label {
+  position: absolute;
+  block-size: 0.5rem;
+  inline-size: 25%;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box__inner-wrapper--decorator > *,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--slug {
+  inset-block-start: 2.625rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--warning .rux--list-box__wrapper--decorator-inner > *,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--invalid .rux--list-box__wrapper--decorator-inner > *,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--slug,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--slug {
+  inset-inline-end: 2.5rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--warning button.rux--list-box__field,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid.rux--list-box__wrapper--decorator .rux--list-box--invalid[data-invalid] button.rux--list-box__field,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning button.rux--list-box__field,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--fluid--invalid.rux--list-box__wrapper--slug .rux--list-box--invalid[data-invalid] button.rux--list-box__field {
+  padding-inline-end: 4rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--warning .rux--text-input:not(.rux--text-input--empty),
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator.rux--list-box__wrapper--fluid--invalid .rux--list-box--invalid .rux--text-input:not(.rux--text-input--empty),
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--text-input:not(.rux--text-input--empty),
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug.rux--list-box__wrapper--fluid--invalid .rux--list-box--invalid .rux--text-input:not(.rux--text-input--empty) {
+  padding-inline-end: 5.5rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--warning .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--list-box__wrapper--decorator-inner > *,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--invalid .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--list-box__wrapper--decorator-inner > *,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--ai-label,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--warning .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--slug,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid .rux--list-box__field:has(.rux--text-input:not(.rux--text-input--empty)) ~ .rux--slug {
+  inset-inline-end: 4rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--text-input:not(.rux--text-input--empty),
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--text-input:not(.rux--text-input--empty) {
+  padding-inline-end: 6rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box__selection {
+  inset-inline-end: 2.5625rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box--warning .rux--list-box__field:has(.rux--list-box__menu-icon) .rux--list-box__selection::before,
+.rux--list-box__wrapper--fluid .rux--list-box--invalid[data-invalid] .rux--list-box__field:has(.rux--list-box__menu-icon) .rux--list-box__selection::before {
+  position: absolute;
+  background-color: transparent;
+  block-size: 1rem;
+  content: "";
+  inline-size: 0.0625rem;
+  margin-inline-end: 2.0625rem;
+}
+
+.rux--list-box__wrapper--fluid:has(.rux--multi-select) .rux--list-box__menu-icon {
+  inset-inline-end: 0.75rem;
+}
+
+.rux--list-box__wrapper--fluid:has(.rux--dropdown) .rux--list-box__menu-icon {
+  inset-inline-end: 1rem;
+}
+
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--decorator .rux--list-box--invalid[data-invalid] .rux--list-box__wrapper--decorator-inner > *::before,
+.rux--list-box__wrapper--decorator .rux--list-box--warning .rux--list-box__wrapper--decorator-inner > *::before,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid[data-invalid] .rux--ai-label::before,
+.rux--list-box__wrapper--slug .rux--list-box--warning .rux--ai-label::before,
+.rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid[data-invalid] .rux--slug::before,
+.rux--list-box__wrapper--slug .rux--list-box--warning .rux--slug::before {
+  display: none;
+}
+
+.rux--number__controls:hover .rux--number__control-btn::after {
+  display: none;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__rule-divider,
+.rux--number__input-wrapper--slug .rux--number__rule-divider {
+  display: none;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__control-btn:hover,
+.rux--number__input-wrapper--slug .rux--number__control-btn:hover {
+  box-shadow: 0 -1px 0 var(--rux-ai-border-strong, #4589ff) inset;
+}
+
+.rux--number__controls:focus-within .rux--number__control-btn::after {
+  display: none;
+}
+
+.rux--number html {
+  font-size: 100%;
+}
+.rux--number body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--number code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--number strong {
+  font-weight: 600;
+}
+.rux--number {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+}
+
+.rux--number .rux--number__input-wrapper--warning input[type=number],
+.rux--number .rux--number__input-wrapper--warning input[type=text] {
+  padding-inline-end: 8rem;
+}
+
+.rux--number input[type=number],
+.rux--number input[type=text] {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  display: inline-flex;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  background-color: var(--rux-field);
+  block-size: 2.5rem;
+  border-block-end: 0.0625rem solid var(--rux-border-strong);
+  color: var(--rux-text-primary, #161616);
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  font-weight: 400;
+  inline-size: 100%;
+  min-inline-size: 9.375rem;
+  padding-inline: 1rem 6rem;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.rux--number input[type=number]:focus,
+.rux--number input[type=text]:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--number input[type=number]:focus,
+  .rux--number input[type=text]:focus {
+    outline-style: dotted;
+  }
+}
+.rux--number input[type=number]:disabled ~ .rux--number__controls,
+.rux--number input[type=text]:disabled ~ .rux--number__controls {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.rux--number input[type=number]:disabled ~ .rux--number__controls svg,
+.rux--number input[type=text]:disabled ~ .rux--number__controls svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+.rux--number input[type=number]::-ms-clear,
+.rux--number input[type=text]::-ms-clear {
+  display: none;
+}
+.rux--number input[type=number]::-webkit-inner-spin-button,
+.rux--number input[type=text]::-webkit-inner-spin-button {
+  appearance: none;
+}
+.rux--number input[type=number][data-invalid],
+.rux--number input[type=text][data-invalid] {
+  padding-inline-end: 8rem;
+}
+
+.rux--number--lg.rux--number input[type=number],
+.rux--number--lg.rux--number input[type=text] {
+  padding-inline-end: 7rem;
+}
+.rux--number--lg.rux--number input[type=number][data-invalid],
+.rux--number--lg.rux--number input[type=text][data-invalid] {
+  padding-inline-end: 9rem;
+}
+.rux--number--lg.rux--number .rux--number__input-wrapper--warning input[type=number],
+.rux--number--lg.rux--number .rux--number__input-wrapper--warning input[type=text] {
+  padding-inline-end: 9rem;
+}
+
+.rux--number--sm.rux--number input[type=number],
+.rux--number--sm.rux--number input[type=text] {
+  padding-inline-end: 5rem;
+}
+.rux--number--sm.rux--number input[type=number][data-invalid],
+.rux--number--sm.rux--number input[type=text][data-invalid] {
+  padding-inline-end: 7rem;
+}
+.rux--number--sm.rux--number .rux--number__input-wrapper--warning input[type=number],
+.rux--number--sm.rux--number .rux--number__input-wrapper--warning input[type=text] {
+  padding-inline-end: 7rem;
+}
+
+.rux--number input[type=number]:disabled,
+.rux--number input[type=text]:disabled {
+  background-color: var(--rux-field);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--number__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.rux--number__controls html {
+  font-size: 100%;
+}
+.rux--number__controls body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--number__controls code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--number__controls strong {
+  font-weight: 600;
+}
+.rux--number__controls {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  inline-size: 5rem;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  transform: translateY(-50%);
+}
+
+.rux--number__control-btn {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--number__control-btn *,
+.rux--number__control-btn *::before,
+.rux--number__control-btn *::after {
+  box-sizing: inherit;
+}
+.rux--number__control-btn::-moz-focus-inner {
+  border: 0;
+}
+.rux--number__control-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  color: var(--rux-icon-primary, #161616);
+}
+.rux--number__control-btn svg {
+  fill: currentColor;
+}
+.rux--number__control-btn:focus {
+  outline: 1px solid var(--rux-focus, #0f62fe);
+}
+@media screen and (prefers-contrast) {
+  .rux--number__control-btn:focus {
+    outline-style: dotted;
+  }
+}
+.rux--number__control-btn:focus {
+  color: var(--rux-icon-primary, #161616);
+  outline-offset: -2px;
+  outline-width: 2px;
+}
+.rux--number__control-btn:hover {
+  background-color: var(--rux-field-hover);
+  box-shadow: 0 -1px 0 var(--rux-border-strong) inset;
+  color: var(--rux-icon-primary, #161616);
+  cursor: pointer;
+}
+.rux--number__control-btn:disabled {
+  border-block-end-color: transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--number__control-btn.down-icon {
+  order: 1;
+}
+
+.rux--number__control-btn.up-icon {
+  order: 2;
+}
+
+.rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn {
+  border-block-end-color: var(--rux-support-error, #da1e28);
+}
+
+.rux--number input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn,
+.rux--number input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn {
+  border-width: 2px 0;
+  border-style: solid;
+  border-color: var(--rux-focus, #0f62fe);
+  box-shadow: none;
+  outline-offset: -2px;
+}
+
+.rux--number input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover,
+.rux--number input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover {
+  box-shadow: -4px 0 0 -2px var(--rux-focus, #0f62fe) inset;
+}
+
+.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover,
+.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover {
+  box-shadow: -4px 0 0 -2px var(--rux-support-error, #da1e28) inset;
+}
+
+.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover {
+  border-width: 2px 0;
+  border-style: solid;
+  border-color: var(--rux-support-error, #da1e28);
+  box-shadow: none;
+  outline-offset: -2px;
+}
+
+.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover,
+.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover,
+  .rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover {
+    outline-style: dotted;
+  }
+}
+
+.rux--number__rule-divider {
+  position: absolute;
+  z-index: 6000;
+  background-color: var(--rux-border-subtle);
+  block-size: 1rem;
+  inline-size: 0.0625rem;
+}
+.rux--number__rule-divider:first-of-type {
+  order: 0;
+}
+
+.rux--number__controls .rux--number__rule-divider:first-of-type {
+  background-color: transparent;
+  inset-inline-start: 0;
+}
+
+.rux--number__invalid + .rux--number__controls .rux--number__rule-divider:first-of-type {
+  background-color: var(--rux-border-subtle);
+}
+
+.rux--number--light .rux--number__rule-divider,
+.rux--number--light .rux--number__invalid + .rux--number__controls .rux--number__rule-divider:first-of-type {
+  background-color: var(--rux-border-subtle-02, #e0e0e0);
+}
+
+.rux--number input[type=number]:disabled + .rux--number__controls .rux--number__rule-divider:first-of-type,
+.rux--number input[type=text]:disabled + .rux--number__controls .rux--number__rule-divider:first-of-type {
+  background-color: transparent;
+}
+
+.rux--number input[type=number]:disabled + .rux--number__controls .rux--number__rule-divider,
+.rux--number input[type=text]:disabled + .rux--number__controls .rux--number__rule-divider {
+  background-color: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--number__control-btn:focus ~ .rux--number__rule-divider {
+  background-color: transparent;
+}
+
+.rux--number__invalid {
+  position: absolute;
+  fill: var(--rux-support-error, #da1e28);
+  inset-inline-end: 6rem;
+}
+
+.rux--number--lg .rux--number__invalid {
+  inset-inline-end: 7rem;
+}
+
+.rux--number--sm .rux--number__invalid {
+  inset-inline-end: 5rem;
+}
+
+.rux--number__invalid + .rux--number__rule-divider {
+  position: absolute;
+  inset-inline-end: 5rem;
+}
+
+.rux--number--lg .rux--number__invalid + .rux--number__rule-divider {
+  inset-inline-end: 6rem;
+}
+
+.rux--number--sm .rux--number__invalid + .rux--number__rule-divider {
+  inset-inline-end: 4rem;
+}
+
+.rux--number__control-btn.down-icon:hover ~ .rux--number__rule-divider,
+.rux--number__control-btn.up-icon:hover + .rux--number__rule-divider,
+.rux--number__control-btn.down-icon:focus ~ .rux--number__rule-divider,
+.rux--number__control-btn.up-icon:focus + .rux--number__rule-divider {
+  background-color: transparent;
+}
+
+.rux--number__invalid--warning {
+  fill: var(--rux-support-warning, #f1c21b);
+}
+
+.rux--number__invalid--warning path:first-of-type {
+  fill: #000000;
+  opacity: 1;
+}
+
+.rux--number--lg input[type=number],
+.rux--number--lg input[type=text] {
+  block-size: 3rem;
+}
+
+.rux--number--lg .rux--number__controls {
+  inline-size: 6rem;
+}
+
+.rux--number--lg .rux--number__control-btn {
+  inline-size: 3rem;
+}
+
+.rux--number--sm input[type=number],
+.rux--number--sm input[type=text] {
+  block-size: 2rem;
+}
+
+.rux--number--sm .rux--number__controls {
+  inline-size: 4rem;
+}
+
+.rux--number--sm .rux--number__control-btn {
+  inline-size: 2rem;
+}
+
+.rux--number--nolabel .rux--label + .rux--form__helper-text {
+  margin-block-start: 0;
+}
+
+.rux--number--nosteppers input[type=number],
+.rux--number--nosteppers input[type=text] {
+  padding-inline-end: 0;
+}
+
+.rux--number--nosteppers input[type=number][data-invalid],
+.rux--number--nosteppers input[type=text][data-invalid],
+.rux--number--nosteppers .rux--number__input-wrapper--warning input[type=number],
+.rux--number--nosteppers .rux--number__input-wrapper--warning input[type=text] {
+  padding-inline-end: 3rem;
+}
+
+.rux--number--nosteppers .rux--number__invalid {
+  inset-inline-end: 1rem;
+}
+
+.rux--number--readonly input[type=number],
+.rux--number--readonly input[type=text] {
+  background: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--number--readonly .rux--number__control-btn {
+  color: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+  pointer-events: none;
+}
+.rux--number--readonly .rux--number__control-btn:hover {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.rux--number--readonly input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number--readonly input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:hover {
+  outline: none;
+}
+
+.rux--number--readonly .rux--number__controls:hover .rux--number__rule-divider:not(:first-of-type) {
+  background-color: var(--rux-border-subtle);
+}
+
+.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *,
+.rux--number__input-wrapper--slug .rux--ai-label,
+.rux--number__input-wrapper--slug .rux--slug {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 6rem;
+  transform: translateY(-50%);
+}
+
+.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator:not(:has(.rux--ai-label)) > * {
+  block-size: 1rem;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *::before,
+.rux--number__input-wrapper--decorator .rux--number__control-btn::before,
+.rux--number__input-wrapper--decorator .rux--number__control-btn::after,
+.rux--number__input-wrapper--slug .rux--ai-label::before,
+.rux--number__input-wrapper--slug .rux--slug::before,
+.rux--number__input-wrapper--slug .rux--number__control-btn::before,
+.rux--number__input-wrapper--slug .rux--number__control-btn::after {
+  position: absolute;
+  background-color: var(--rux-border-subtle);
+  block-size: 1rem;
+  content: "";
+  inline-size: 0.0625rem;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *::before,
+.rux--number__input-wrapper--slug .rux--ai-label::before,
+.rux--number__input-wrapper--slug .rux--slug::before {
+  display: none;
+  inset-inline-start: -1rem;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert::before,
+.rux--number__input-wrapper--slug .rux--ai-label--revert::before,
+.rux--number__input-wrapper--slug .rux--slug--revert::before {
+  inset-block-start: 0.5rem;
+  inset-inline-start: -0.5rem;
+}
+
+.rux--number__control-btn::after {
+  display: block;
+  inset-inline-end: 0;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__control-btn::before,
+.rux--number__input-wrapper--slug .rux--number__control-btn::before {
+  display: block;
+  inset-inline-end: 2.5rem;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__control-btn:focus::before,
+.rux--number__input-wrapper--slug .rux--number__control-btn:focus::before {
+  display: none;
+}
+
+.rux--number__control-btn:hover::after,
+.rux--number__control-btn:hover::before {
+  display: none;
+  inset-inline-end: 0;
+}
+
+.rux--number__input-wrapper:has(.rux--number__control-btn:hover) ~ .rux--number__input-wrapper--decorator::after,
+.rux--number__input-wrapper:has(.rux--number__control-btn:hover) ~ .rux--number__input-wrapper--slug::after {
+  display: none;
+}
+
+.rux--number__control-btn:has(.up-icon)::after,
+.rux--number__control-btn:has(.up-icon)::before {
+  display: none;
+}
+
+.rux--number__input-wrapper--decorator .rux--number__invalid,
+.rux--number__input-wrapper--slug .rux--number__invalid {
+  inset-inline-end: 9rem;
+}
+
+.rux--number__input-wrapper--decorator:has(.rux--number__invalid) .rux--number__input-inner-wrapper--decorator > *::before,
+.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--ai-label::before,
+.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--ai-label::before,
+.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--slug::before {
+  display: block;
+}
+
+.rux--number .rux--number__input-wrapper--decorator input[data-invalid],
+.rux--number .rux--number__input-wrapper--decorator.rux--number__input-wrapper--warning input,
+.rux--number .rux--number__input-wrapper--slug input[data-invalid],
+.rux--number .rux--number__input-wrapper--slug.rux--number__input-wrapper--warning input {
+  padding-inline-end: 9rem;
+}
+
+.rux--number__input-wrapper--decorator input[type=number]:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert)),
+.rux--number__input-wrapper--slug input[type=number]:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--number__input-wrapper--slug input[type=number]:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
+.rux--number__input-wrapper--slug input[type=number]:disabled,
+.rux--number__input-wrapper--decorator input[type=text]:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert)),
+.rux--number__input-wrapper--slug input[type=text]:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--number__input-wrapper--slug input[type=text]:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
+.rux--number__input-wrapper--slug input[type=text]:disabled {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+  padding-inline-end: 9.0625rem;
+}
+
+.rux--number.rux--skeleton {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--number.rux--skeleton:hover, .rux--number.rux--skeleton:focus, .rux--number.rux--skeleton:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--number.rux--skeleton::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--number.rux--skeleton::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--number.rux--skeleton {
+    background: CanvasText;
+  }
+  .rux--number.rux--skeleton::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--number.rux--skeleton {
+  inline-size: 100%;
+}
+.rux--number.rux--skeleton input[type=number],
+.rux--number.rux--skeleton input[type=text] {
+  display: none;
+}
+
+.rux--number.rux--skeleton.rux--number--sm {
+  block-size: 2rem;
+}
+
+.rux--number.rux--skeleton.rux--number--md {
+  block-size: 2.5rem;
+}
+
+.rux--number.rux--skeleton.rux--number--lg {
+  block-size: 3rem;
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--number__control-btn:hover,
+  .rux--number__control-btn:focus {
+    color: Highlight;
+    outline: 1px solid Highlight;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--number__control-btn {
+    outline: 1px solid transparent;
+  }
+}
+
+.rux--number-input--fluid {
+  position: relative;
+  background: var(--rux-field);
+  block-size: 100%;
+}
+
+.rux--number-input--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--number-input--fluid .rux--label::-webkit-scrollbar,
+.rux--number-input--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--number-input--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--number-input--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper {
+  position: initial;
+}
+
+.rux--number-input--fluid input[type=number],
+.rux--number-input--fluid input[type=text] {
+  padding: 2rem 5rem 0.8125rem 1rem;
+  background: transparent;
+  min-block-size: 4rem;
+  outline: none;
+}
+
+.rux--number-input--fluid .rux--number__controls {
+  block-size: 2.5rem;
+  inset-block-start: 1.4375rem;
+  transform: translate(0);
+}
+
+.rux--number-input--fluid input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn {
+  border-block-end-color: var(--rux-focus, #0f62fe);
+  box-shadow: inset 0 -1px var(--rux-focus, #0f62fe);
+}
+
+.rux--number-input--fluid input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type,
+.rux--number-input--fluid input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type {
+  box-shadow: inset 0 -1px var(--rux-focus, #0f62fe), inset -2px 0 var(--rux-focus, #0f62fe);
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid--invalid input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid--invalid input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn {
+  border-block-end-color: transparent;
+  box-shadow: none;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type,
+.rux--number-input--fluid--invalid input[type=number][data-invalid]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type,
+.rux--number-input--fluid--invalid input[type=text][data-invalid]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type {
+  box-shadow: inset -2px 0 var(--rux-focus, #0f62fe);
+}
+
+.rux--number-input--fluid--invalid input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover,
+.rux--number-input--fluid--invalid input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover {
+  box-shadow: inset -2px 0 var(--rux-support-error, #da1e28);
+}
+
+.rux--number-input--fluid--invalid input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number-input--fluid--invalid input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover {
+  box-shadow: none;
+}
+
+.rux--number-input--fluid.rux--number-input--fluid--focus .rux--number {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--number-input--fluid.rux--number-input--fluid--focus .rux--number {
+    outline-style: dotted;
+  }
+}
+
+.rux--number-input--fluid:not(.rux--number-input--fluid--invalid) .rux--number-input-wrapper:not(.rux--number-input-wrapper__warning) input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number-input--fluid:not(.rux--number-input--fluid--invalid) .rux--number-input-wrapper:not(.rux--number-input-wrapper__warning) input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:hover {
+  border-block-end: 1px solid var(--rux-focus, #0f62fe);
+  outline: none;
+}
+
+.rux--number-input--fluid--invalid input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus,
+.rux--number-input--fluid--invalid .rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus:hover,
+.rux--number-input--fluid--invalid input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus,
+.rux--number-input--fluid--invalid .rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus:hover {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--number-input--fluid--invalid input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus,
+  .rux--number-input--fluid--invalid .rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus:hover,
+  .rux--number-input--fluid--invalid input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus,
+  .rux--number-input--fluid--invalid .rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn:focus:hover {
+    outline-style: dotted;
+  }
+}
+
+.rux--number-input--fluid .rux--number-input__divider {
+  display: none;
+}
+
+.rux--number-input--fluid .rux--number__invalid {
+  inset-block-start: 4.5625rem;
+  inset-inline-end: 1rem;
+  pointer-events: none;
+}
+
+.rux--number-input--fluid .rux--number__controls .rux--number__rule-divider:first-of-type {
+  display: none;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number],
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text] {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number]:focus,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text]:focus {
+  outline: none;
+}
+
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number-input__divider,
+.rux--number-input--fluid .rux--number__input-wrapper--warning + .rux--number-input__divider {
+  position: absolute;
+  display: block;
+  border: none;
+  margin: 0 1rem;
+  block-size: 0.0625rem;
+  border-block-end: 1px solid var(--rux-border-subtle);
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 3.9375rem;
+}
+
+.rux--number-input--fluid .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+}
+
+.rux--number-input--fluid.rux--number-input--fluid--invalid:not(.rux--number-input--fluid--focus) .rux--number {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--number-input--fluid.rux--number-input--fluid--invalid:not(.rux--number-input--fluid--focus) .rux--number {
+    outline-style: dotted;
+  }
+}
+
+.rux--number-input--fluid--invalid .rux--number[data-invalid] input[type=number],
+.rux--number-input--fluid--invalid .rux--number[data-invalid] input[type=text] {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--number-input--fluid--invalid .rux--number[data-invalid] input[type=number],
+.rux--number-input--fluid--invalid .rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number] ~ .rux--number__controls .rux--number__control-btn:hover:not(:focus),
+.rux--number-input--fluid--invalid .rux--number[data-invalid] input[type=text],
+.rux--number-input--fluid--invalid .rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn:hover,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text] ~ .rux--number__controls .rux--number__control-btn:hover:not(:focus) {
+  outline: none;
+}
+
+.rux--number-input--fluid.rux--number-input--invalid .rux--number__input-wrapper input[type=number] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=number] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid.rux--number-input--invalid .rux--number__input-wrapper input[type=text] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid .rux--number__input-wrapper--warning input[type=text] ~ .rux--number__controls .rux--number__control-btn {
+  border-block-end: none;
+}
+
+.rux--number-input--fluid--invalid .rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid .rux--number input[type=number] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid--invalid .rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn,
+.rux--number-input--fluid .rux--number input[type=text] ~ .rux--number__controls .rux--number__control-btn {
+  border: initial;
+  border-block-end-width: 0.0625rem;
+}
+
+.rux--number-input--fluid--disabled:not(.rux--number-input--fluid--invalid) .rux--number {
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--number-input--fluid--disabled.rux--number-input--fluid--invalid .rux--number input[type=number]:disabled,
+.rux--number-input--fluid--disabled.rux--number-input--fluid--invalid .rux--number input[type=text]:disabled {
+  background-color: transparent;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *,
+.rux--number-input--fluid .rux--number__input-wrapper--slug .rux--ai-label,
+.rux--number-input--fluid .rux--number__input-wrapper--slug .rux--slug {
+  inset-block-start: 2.6875rem;
+}
+
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *,
+.rux--number-input--fluid .rux--number__input-wrapper--decorator.rux--number__input-wrapper--warning .rux--number__input-inner-wrapper--decorator > *,
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number__input-wrapper--slug .rux--ai-label,
+.rux--number-input--fluid .rux--number__input-wrapper--slug.rux--number__input-wrapper--warning .rux--ai-label,
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number__input-wrapper--slug .rux--slug,
+.rux--number-input--fluid .rux--number__input-wrapper--slug.rux--number__input-wrapper--warning .rux--slug {
+  inset-inline-end: 5.5rem;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--decorator input,
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number__input-wrapper--decorator input[data-invalid],
+.rux--number-input--fluid .rux--number__input-wrapper--decorator.rux--number__input-wrapper--warning input,
+.rux--number-input--fluid .rux--number__input-wrapper--slug input,
+.rux--number-input--fluid.rux--number-input--fluid--invalid .rux--number__input-wrapper--slug input[data-invalid],
+.rux--number-input--fluid .rux--number__input-wrapper--slug.rux--number__input-wrapper--warning input {
+  padding-inline-end: 7.5rem;
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--decorator:has(.rux--ai-label):not(:has(.rux--ai-label--revert)),
+.rux--number-input--fluid .rux--number__input-wrapper--slug:has(.rux--ai-label):not(:has(.rux--ai-label--revert)),
+.rux--number-input--fluid .rux--number__input-wrapper--slug:has(.rux--slug):not(:has(.rux--slug--revert)) {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--number-input--fluid .rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *::before,
+.rux--number-input--fluid .rux--number__input-wrapper--slug .rux--ai-label::before,
+.rux--number-input--fluid .rux--number__input-wrapper--slug .rux--slug::before {
+  display: none;
+}
+
+.rux--search--fluid {
+  block-size: 4rem;
+}
+
+.rux--search--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  overflow: initial;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  clip: initial;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+  white-space: initial;
+}
+
+.rux--search--fluid .rux--label::-webkit-scrollbar,
+.rux--search--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--search--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--search--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--search--fluid .rux--search-input {
+  padding: 2rem 5.5rem 0.8125rem 1rem;
+  block-size: 100%;
+}
+
+.rux--search--fluid .rux--search-magnifier-icon {
+  color: var(--rux-icon-primary, #161616);
+  inset: auto 1rem 0.8125rem auto;
+  transform: none;
+}
+
+.rux--search--fluid .rux--search-close {
+  border: none;
+  block-size: 2.5rem;
+  inline-size: 2.5rem;
+  inset: auto 3rem 0 auto;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--search--fluid .rux--search-input:focus ~ .rux--search-close:hover {
+  outline: none;
+}
+
+.rux--search--fluid .rux--search-close::after {
+  position: absolute;
+  display: block;
+  block-size: 0.125rem;
+  content: "";
+  inline-size: 100%;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+}
+
+.rux--search--fluid .rux--search-input:focus ~ .rux--search-close::after {
+  background: var(--rux-focus, #0f62fe);
+}
+
+.rux--search--fluid .rux--search-input:not(:focus) ~ .rux--search-close:not([disabled])::after {
+  background: var(--rux-border-strong);
+  block-size: 0.0625rem;
+}
+
+.rux--search--fluid .rux--search-close svg {
+  margin-block-end: 0.125rem;
+}
+
+.rux--search--fluid .rux--search-input:disabled ~ .rux--search-close:hover::before {
+  background: var(--rux-border-subtle);
+}
+
+.rux--search--fluid.rux--search--disabled .rux--label {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--search--fluid.rux--search--disabled .rux--search-input[disabled] {
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--select {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--select *,
+.rux--select *::before,
+.rux--select *::after {
+  box-sizing: inherit;
+}
+.rux--select {
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-xs)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  inline-size: 100%;
+}
+
+.rux--select-input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+}
+
+.rux--select-input {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-xs)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
+  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
+  display: block;
+  border: none;
+  border-radius: 0;
+  appearance: none;
+  background-color: var(--rux-field);
+  block-size: var(--rux-layout-size-height-local);
+  border-block-end: 1px solid var(--rux-border-strong);
+  color: var(--rux-text-primary, #161616);
+  cursor: pointer;
+  font-family: inherit;
+  inline-size: 100%;
+  opacity: 1;
+  padding-block: 0;
+  padding-inline: 1rem 3rem;
+  text-overflow: ellipsis;
+  transition: outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.rux--select-input:hover {
+  background-color: var(--rux-field-hover);
+}
+.rux--select-input::-ms-expand {
+  display: none;
+}
+.rux--select-input {
+  /* This is for targeting styles specific to firefox */
+  /* Removes dotted inner focus */
+  /* https://sass-lang.com/documentation/breaking-changes/moz-document/ */
+  /* stylelint-disable-next-line at-rule-no-vendor-prefix */
+}
+@-moz-document url-prefix() {
+  .rux--select-input:-moz-focusring, .rux--select-input::-moz-focus-inner {
+    background-image: none;
+    color: transparent;
+    text-shadow: 0 0 0 #000000;
+  }
+}
+.rux--select-input:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--select-input:focus {
+    outline-style: dotted;
+  }
+}
+.rux--select-input:focus {
+  color: var(--rux-text-primary, #161616);
+}
+.rux--select-input:disabled, .rux--select-input:hover:disabled {
+  background-color: var(--rux-field);
+  border-block-end-color: transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--select--disabled .rux--label,
+.rux--select--disabled .rux--form__helper-text {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select-input__wrapper[data-invalid] .rux--select-input,
+.rux--select--warning .rux--select-input {
+  padding-inline-end: 4rem;
+}
+
+.rux--select-input:disabled ~ .rux--select__arrow {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select--light .rux--select-input {
+  background-color: var(--rux-field-02, #ffffff);
+}
+.rux--select--light .rux--select-input:hover {
+  background-color: var(--rux-field-hover);
+}
+.rux--select--light .rux--select-input:disabled, .rux--select--light .rux--select-input:hover:disabled {
+  background-color: var(--rux-field-02, #ffffff);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--select__arrow {
+  position: absolute;
+  block-size: 100%;
+  fill: var(--rux-icon-primary, #161616);
+  inset-block-start: 0;
+  inset-inline-end: 1rem;
+  pointer-events: none;
+}
+@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
+  .rux--select__arrow path {
+    fill: ButtonText;
+  }
+}
+
+.rux--select__invalid-icon {
+  position: absolute;
+  inset-inline-end: 2.5rem;
+}
+
+.rux--select-input__wrapper[data-invalid] .rux--select-input ~ .rux--select__invalid-icon {
+  fill: var(--rux-support-error, #da1e28);
+}
+
+.rux--select-input--inline__wrapper[data-invalid] .rux--select__invalid-icon {
+  fill: var(--rux-support-error, #da1e28);
+}
+
+.rux--select__invalid-icon--warning {
+  fill: var(--rux-support-warning, #f1c21b);
+}
+
+.rux--select__invalid-icon--warning path[fill] {
+  fill: #000000;
+  opacity: 1;
+}
+
+optgroup.rux--select-optgroup,
+.rux--select-option {
+  background-color: var(--rux-layer-hover);
+  color: var(--rux-text-primary, #161616);
+}
+optgroup.rux--select-optgroup:disabled,
+.rux--select-option:disabled {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select--inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.rux--select--inline .rux--form__helper-text {
+  margin-block-end: 0;
+  margin-inline-start: 0.5rem;
+}
+
+.rux--select--inline .rux--label {
+  margin: 0 0.5rem 0 0;
+  white-space: nowrap;
+}
+
+.rux--select--inline .rux--select-input {
+  background-color: transparent;
+  border-block-end: none;
+  color: var(--rux-text-primary, #161616);
+  inline-size: 100%;
+  padding-inline: 0.5rem 3rem;
+}
+.rux--select--inline .rux--select-input:hover {
+  background-color: var(--rux-field-hover);
+}
+
+.rux--select--inline .rux--select-input:focus,
+.rux--select--inline .rux--select-input:focus option,
+.rux--select--inline .rux--select-input:focus optgroup {
+  background-color: var(--rux-background, #ffffff);
+}
+.rux--select--inline .rux--select-input:focus:hover,
+.rux--select--inline .rux--select-input:focus option:hover,
+.rux--select--inline .rux--select-input:focus optgroup:hover {
+  background-color: var(--rux-field-hover);
+}
+
+.rux--select--inline .rux--select-input[disabled],
+.rux--select--inline .rux--select-input[disabled]:hover {
+  background-color: var(--rux-background, #ffffff);
+}
+
+.rux--select--inline .rux--select__arrow {
+  inset-inline-end: 0.5rem;
+}
+
+.rux--select--inline.rux--select--invalid .rux--select-input {
+  padding-inline-end: 3.5rem;
+}
+
+.rux--select--inline.rux--select--invalid .rux--select-input ~ .rux--select__invalid-icon,
+.rux--select--inline.rux--select--warning .rux--select-input ~ .rux--select__invalid-icon--warning {
+  inset-inline-end: 2rem;
+}
+
+.rux--select--inline .rux--select-input:disabled {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+.rux--select--inline .rux--select-input:disabled ~ * {
+  cursor: not-allowed;
+}
+
+.rux--select--readonly .rux--select-input {
+  background-color: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+  cursor: default;
+}
+
+.rux--select--readonly .rux--select__arrow {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select--readonly.rux--select--inline .rux--select-input:hover {
+  background-color: transparent;
+}
+
+.rux--select.rux--skeleton {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--select.rux--skeleton:hover, .rux--select.rux--skeleton:focus, .rux--select.rux--skeleton:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--select.rux--skeleton::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--select.rux--skeleton::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--select.rux--skeleton {
+    background: CanvasText;
+  }
+  .rux--select.rux--skeleton::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--select.rux--skeleton {
+  block-size: 2.5rem;
+  inline-size: 100%;
+}
+
+.rux--select.rux--skeleton .rux--select-input {
+  display: none;
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > *,
+.rux--select--slug .rux--ai-label,
+.rux--select--slug .rux--slug {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: calc(2.5rem + 8px + 1px);
+  margin-block-start: 0.03125rem;
+  transform: translateY(-50%);
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > *::after,
+.rux--select--decorator .rux--select__inner-wrapper--decorator > *::before,
+.rux--select--slug .rux--ai-label::after,
+.rux--select--slug .rux--ai-label::before,
+.rux--select--slug .rux--slug::after,
+.rux--select--slug .rux--slug::before {
+  position: absolute;
+  background-color: var(--rux-border-subtle-01, #c6c6c6);
+  block-size: 1rem;
+  content: "";
+  inline-size: 0.0625rem;
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > *::before,
+.rux--select--slug .rux--ai-label::before,
+.rux--select--slug .rux--slug::before {
+  display: none;
+  inset-inline-start: calc(-0.5rem - 1px);
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > *::after,
+.rux--select--slug .rux--ai-label::after,
+.rux--select--slug .rux--slug::after {
+  display: block;
+  inset-block-start: 0;
+  inset-inline-end: calc(-0.5rem - 1px);
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > .rux--ai-label--revert::before,
+.rux--select--slug .rux--ai-label--revert::before,
+.rux--select--slug .rux--slug--revert::before {
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0;
+}
+
+.rux--select--decorator .rux--select__inner-wrapper--decorator > .rux--ai-label--revert,
+.rux--select--slug .rux--ai-label--revert {
+  inset-inline-end: 2.5625rem;
+}
+
+.rux--select--decorator .rux--ai-label--revert::after,
+.rux--select--slug .rux--ai-label--revert::after,
+.rux--select--slug .rux--slug--revert::after {
+  inset-block-start: 0.5rem;
+  inset-inline-end: -1px;
+}
+
+.rux--select--decorator .rux--select-input__wrapper .rux--select-input ~ .rux--select__invalid-icon,
+.rux--select--slug .rux--select-input__wrapper[data-invalid] .rux--select-input ~ .rux--select__invalid-icon,
+.rux--select--slug .rux--select-input__wrapper .rux--select-input ~ .rux--select__invalid-icon {
+  inset-inline-end: 5rem;
+}
+
+.rux--select--decorator .rux--select-input:has(~ .rux--select__inner-wrapper--decorator),
+.rux--select--slug .rux--select-input:has(~ .rux--ai-label),
+.rux--select--slug .rux--select-input:has(~ .rux--slug) {
+  padding-inline-end: 4rem;
+}
+
+.rux--select--decorator:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--select__inner-wrapper--decorator),
+.rux--select--slug:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--ai-label),
+.rux--select--slug:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--slug) {
+  padding-inline-end: 6rem;
+}
+
+.rux--select--decorator .rux--select-input:has(~ .rux--select__inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--select__inner-wrapper--decorator .rux--ai-label--revert)),
+.rux--select--slug .rux--select-input:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--select--slug .rux--select-input:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
+.rux--select-input-has--ai-label {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--select--decorator:has(.rux--select__invalid-icon) .rux--select__inner-wrapper--decorator > *::before,
+.rux--select--slug:has(.rux--select__invalid-icon) .rux--ai-label::before,
+.rux--select--slug:has(.rux--select__invalid-icon) .rux--slug::before {
+  display: block;
+}
+
+.rux--select--fluid .rux--select {
+  position: relative;
+  background: var(--rux-field);
+  block-size: 100%;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--select--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--select--fluid .rux--label::-webkit-scrollbar,
+.rux--select--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--select--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--select--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--select--fluid .rux--select-input {
+  padding: 2rem 2rem 0.8125rem 1rem;
+  min-block-size: 4rem;
+  outline: none;
+  text-overflow: ellipsis;
+}
+
+.rux--select--fluid .rux--select__arrow {
+  block-size: 1rem;
+  inset-block-start: 2.125rem;
+  inset-inline-end: 0.75rem;
+}
+
+.rux--select--fluid .rux--select__divider {
+  display: none;
+  transition: border-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--select--fluid .rux--select--invalid .rux--select-input__wrapper {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--select--fluid .rux--select--invalid .rux--select-input__wrapper {
+    outline-style: dotted;
+  }
+}
+
+.rux--select--fluid .rux--select--invalid .rux--select__divider,
+.rux--select--fluid .rux--select--warning .rux--select__divider {
+  display: block;
+  border: none;
+  margin: 0 1rem;
+  border-block-end: 1px solid var(--rux-border-subtle);
+  inline-size: calc(100% - 2rem);
+}
+
+.rux--select--fluid .rux--select-input__wrapper[data-invalid] .rux--select-input,
+.rux--select--fluid .rux--select--warning .rux--select-input {
+  border-block-end: 1px solid transparent;
+  padding-inline-end: 2rem;
+}
+
+.rux--select--fluid .rux--select--warning {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--select--fluid .rux--select-input__wrapper {
+  display: block;
+}
+
+.rux--select--fluid .rux--select-input__wrapper[data-invalid] .rux--select-input:not(:focus),
+.rux--select--fluid .rux--select--warning .rux--select-input:not(:focus) {
+  outline: none;
+}
+
+.rux--select--fluid .rux--select-input__wrapper[data-invalid] .rux--form-requirement,
+.rux--select--fluid .rux--select--warning .rux--form-requirement {
+  display: block;
+  overflow: visible;
+  max-block-size: 100%;
+}
+
+.rux--select--fluid .rux--select-input__wrapper[data-invalid] .rux--form-requirement {
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--select--fluid .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+}
+
+.rux--select--fluid .rux--select-input__wrapper[data-invalid]:hover + .rux--select__divider,
+.rux--select--fluid .rux--select--warning .rux--select-input__wrapper:hover + .rux--select__divider {
+  border-color: transparent;
+}
+
+.rux--select--fluid .rux--select--invalid .rux--select-input__wrapper[data-invalid] .rux--select__invalid-icon,
+.rux--select--fluid .rux--select--warning .rux--select-input__wrapper .rux--select__invalid-icon {
+  inset-block-start: 4.5625rem;
+  inset-inline-end: 1rem;
+  pointer-events: none;
+}
+
+.rux--select--fluid .rux--select--fluid--focus .rux--select-input__wrapper {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--select--fluid .rux--select--fluid--focus .rux--select-input__wrapper {
+    outline-style: dotted;
+  }
+}
+
+.rux--select--fluid .rux--select--fluid--focus .rux--select-input,
+.rux--select--fluid .rux--select--fluid--focus.rux--select--warning {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--select--fluid .rux--select--disabled .rux--toggletip-label {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select--fluid .rux--select--disabled .rux--toggletip-button {
+  pointer-events: none;
+}
+
+.rux--select--fluid .rux--select--disabled .rux--toggletip-button svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--select--fluid .rux--select--decorator .rux--select__inner-wrapper--decorator > *,
+.rux--select--fluid .rux--select--slug .rux--ai-label,
+.rux--select--fluid .rux--select--slug .rux--slug {
+  inset-block-start: 2.625rem;
+  inset-inline-end: 3rem;
+}
+
+.rux--select--fluid .rux--select--slug .rux--select-input {
+  padding-inline-end: 4rem;
+}
+
+.rux--select--fluid .rux--select--decorator .rux--select__inner-wrapper--decorator > .rux--ai-label::before,
+.rux--select--fluid .rux--select--slug:has(.rux--select__invalid-icon) .rux--ai-label::before,
+.rux--select--fluid .rux--select--slug:has(.rux--select__invalid-icon) .rux--slug::before {
+  display: none;
+}
+
+.rux--select--fluid__skeleton {
+  position: relative;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  block-size: 4rem;
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--select--fluid__skeleton .rux--skeleton {
+  position: absolute;
+  block-size: 0.5rem;
+  inline-size: 25%;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--select--fluid__skeleton .rux--label {
+  position: absolute;
+  padding: 0;
+  block-size: 0.5rem;
+  inline-size: 50%;
+  inset-block-start: 2.25rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--text-area {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--text-area *,
+.rux--text-area *::before,
+.rux--text-area *::after {
+  box-sizing: inherit;
+}
+.rux--text-area {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  padding: 0.6875rem var(--rux-layout-density-padding-inline-local);
+  border: none;
+  background-color: var(--rux-field);
+  block-size: 100%;
+  border-block-end: 1px solid var(--rux-border-strong);
+  color: var(--rux-text-primary, #161616);
+  font-family: inherit;
+  min-block-size: 2.5rem;
+  min-inline-size: 10rem;
+  resize: vertical;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--text-area:focus,
+.rux--text-area:active {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--text-area:focus,
+  .rux--text-area:active {
+    outline-style: dotted;
+  }
+}
+
+.rux--text-area::placeholder {
+  color: var(--rux-text-placeholder, rgba(22, 22, 22, 0.4));
+  opacity: 1;
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+}
+
+.rux--text-area--light {
+  background-color: var(--rux-field-02, #ffffff);
+}
+
+.rux--text-area__wrapper {
+  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
+  position: relative;
+  display: flex;
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+
+.rux--text-area__wrapper--cols {
+  inline-size: auto;
+}
+
+.rux--text-area__invalid-icon {
+  position: absolute;
+  fill: var(--rux-support-error, #da1e28);
+  inset-block-start: 0.75rem;
+  inset-inline-end: var(--rux-layout-density-padding-inline-local);
+}
+
+.rux--text-area__invalid-icon--warning {
+  fill: var(--rux-support-warning, #f1c21b);
+}
+
+.rux--text-area__invalid-icon--warning path[fill] {
+  fill: #000000;
+  opacity: 1;
+}
+
+.rux--text-area__counter-alert {
+  position: absolute;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+}
+
+.rux--form-item:has(.rux--text-area__wrapper--cols) {
+  inline-size: fit-content;
+}
+
+.rux--text-area:disabled {
+  background-color: var(--rux-field);
+  border-block-end: 1px solid transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+  outline: none;
+  resize: none;
+}
+
+.rux--text-area:disabled::placeholder {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--text-area__wrapper--readonly .rux--text-area {
+  background: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--text-area__wrapper--decorator .rux--text-area__inner-wrapper--decorator > *,
+.rux--text-area__wrapper--slug .rux--ai-label,
+.rux--text-area__wrapper--slug .rux--slug {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 1rem;
+}
+
+.rux--text-area__wrapper--decorator .rux--ai-label.rux--ai-label--revert,
+.rux--text-area__wrapper--slug .rux--ai-label.rux--ai-label--revert,
+.rux--text-area__wrapper--slug .rux--slug.rux--slug--revert {
+  inset-block-start: 0.25rem;
+  inset-inline-end: 0.5rem;
+  transform: translate(0);
+}
+
+.rux--text-area__wrapper--decorator .rux--text-area:has(~ .rux--text-area__inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--text-area__inner-wrapper--decorator .rux--ai-label--revert)),
+.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--slug):not(:has(~ .rux--slug--revert)) {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--text-area__wrapper--decorator .rux--text-area:has(~ .rux--text-area__inner-wrapper--decorator > *),
+.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--ai-label),
+.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--slug) {
+  padding-inline-end: 2.5rem;
+}
+
+.rux--text-area--invalid:has(~ .rux--text-area__inner-wrapper--decorator > *),
+.rux--text-area--warn:has(~ .rux--text-area__inner-wrapper--decorator > *),
+.rux--text-area--invalid:has(~ .rux--ai-label),
+.rux--text-area--warn:has(~ .rux--ai-label),
+.rux--text-area--invalid:has(~ .rux--slug),
+.rux--text-area--warn:has(~ .rux--slug) {
+  padding-inline-end: 4rem;
+}
+
+.rux--text-area--invalid ~ .rux--text-area__inner-wrapper--decorator > *,
+.rux--text-area--warn ~ .rux--text-area__inner-wrapper--decorator > *,
+.rux--text-area--invalid ~ .rux--ai-label,
+.rux--text-area--warn ~ .rux--ai-label,
+.rux--text-area--invalid ~ .rux--slug,
+.rux--text-area--warn ~ .rux--slug {
+  inset-inline-end: 2.5rem;
+}
+
+.rux--text-area--invalid ~ .rux--text-area__inner-wrapper--decorator > .rux--ai-label.rux--ai-label--revert,
+.rux--text-area--warn ~ .rux--text-area__inner-wrapper--decorator > .rux--ai-label.rux--ai-label--revert,
+.rux--text-area--invalid ~ .rux--ai-label.rux--ai-label--revert,
+.rux--text-area--warn ~ .rux--ai-label.rux--ai-label--revert,
+.rux--text-area--invalid ~ .rux--slug.rux--slug--revert,
+.rux--text-area--warn ~ .rux--slug.rux--slug--revert {
+  inset-inline-end: 2rem;
+}
+
+.rux--text-area.rux--skeleton {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--text-area.rux--skeleton:hover, .rux--text-area.rux--skeleton:focus, .rux--text-area.rux--skeleton:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--text-area.rux--skeleton::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--text-area.rux--skeleton::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--text-area.rux--skeleton {
+    background: CanvasText;
+  }
+  .rux--text-area.rux--skeleton::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--text-area.rux--skeleton {
+  block-size: 6.25rem;
+  inline-size: 100%;
+}
+.rux--text-area.rux--skeleton::placeholder {
+  color: transparent;
+}
+
+.rux--text-area__label-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  inline-size: 100%;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper {
+  position: relative;
+  flex-direction: column;
+  background: var(--rux-field);
+  block-size: 100%;
+}
+
+.rux--modal .rux--text-area--fluid .rux--text-area__wrapper {
+  background: var(--rux-field-02, #ffffff);
+}
+
+.rux--text-area--fluid .rux--text-area__label-wrapper {
+  position: relative;
+  block-size: 100%;
+}
+
+.rux--text-area--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inset-block-start: 0.8125rem;
+}
+.rux--text-area--fluid .rux--label:not(.rux--text-area__label-counter) {
+  inline-size: auto;
+  inset-inline-end: auto;
+  inset-inline-start: 1rem;
+}
+.rux--text-area--fluid .rux--label.rux--text-area__label-counter {
+  inline-size: auto;
+  inset-inline-end: 1rem;
+  inset-inline-start: auto;
+}
+.rux--text-area--fluid .rux--label .rux--toggletip-button {
+  padding: 0.25rem;
+  margin-inline-start: -0.25rem;
+  min-block-size: 1.5rem;
+  min-inline-size: 1.5rem;
+}
+
+.rux--text-area--fluid .rux--label::-webkit-scrollbar,
+.rux--text-area--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--text-area--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--text-area--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--text-area--fluid div.rux--label {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rux--text-area--fluid .rux--text-area {
+  padding: 0 1rem 0.8125rem;
+  margin-block-start: 2rem;
+  min-block-size: 4rem;
+  outline: none;
+}
+
+.rux--text-area--fluid .rux--form__helper-text {
+  display: none;
+}
+
+.rux--text-area--fluid .rux--text-area--invalid,
+.rux--text-area--fluid .rux--text-area:focus {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--text-area__divider,
+.rux--text-area--fluid .rux--text-area__divider {
+  display: none;
+}
+
+.rux--text-area--fluid .rux--text-area--invalid,
+.rux--text-area--fluid .rux--text-area--warn {
+  resize: none;
+}
+
+.rux--text-area--fluid .rux--text-area--invalid {
+  padding: 0 0.875rem 0.8125rem;
+  margin-block-start: 1.875rem;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid] .rux--text-area__divider,
+.rux--text-area--fluid .rux--text-area__wrapper--warn .rux--text-area__divider {
+  display: block;
+  border-style: solid;
+  border-color: var(--rux-border-subtle);
+  margin: 0 1rem;
+  border-block-end: none;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid] .rux--form-requirement.rux--form-requirement,
+.rux--text-area--fluid .rux--text-area__wrapper--warn .rux--form-requirement.rux--form-requirement {
+  position: relative;
+  display: block;
+  overflow: visible;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+  background: var(--rux-field);
+  max-block-size: 12.5rem;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper--warn .rux--form-requirement.rux--form-requirement {
+  border-block-end: 1px solid var(--rux-border-strong);
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid] .rux--form-requirement.rux--form-requirement {
+  border-block-end: none;
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--text-area--fluid .rux--text-area--warn {
+  border-block-end: none;
+}
+
+.rux--modal .rux--text-area--fluid .rux--text-area__wrapper[data-invalid] .rux--text-area__divider + .rux--form-requirement {
+  background: var(--rux-field-02, #ffffff);
+}
+
+.rux--text-area--fluid .rux--text-area__invalid-icon {
+  inset-block-start: 0.5rem;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid]:not(:focus) {
+  border: 2px solid var(--rux-support-error, #da1e28);
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid]:focus-within,
+.rux--text-area--fluid .rux--text-area__wrapper:focus-within {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--text-area--fluid .rux--text-area__wrapper[data-invalid]:focus-within,
+  .rux--text-area--fluid .rux--text-area__wrapper:focus-within {
+    outline-style: dotted;
+  }
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid] > .rux--text-area--invalid:focus,
+.rux--text-area--fluid .rux--text-area__wrapper > .rux--text-area:focus,
+.rux--text-area--fluid .rux--text-area__wrapper > .rux--text-area:active,
+.rux--text-area--fluid .rux--text-area__wrapper[data-invalid] > .rux--text-area--invalid {
+  outline: none;
+  transition: none;
+}
+
+.rux--text-area--fluid__skeleton {
+  padding: 1rem;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--text-area--fluid__skeleton .rux--skeleton,
+.rux--text-area--fluid__skeleton .rux--text-area.rux--skeleton::before {
+  block-size: 0.5rem;
+}
+
+.rux--text-area--fluid__skeleton .rux--label {
+  margin-block-end: 0.75rem;
+}
+
+.rux--text-area--fluid__skeleton .rux--text-area.rux--skeleton {
+  block-size: 4rem;
+  inline-size: 80%;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper--decorator:has(.rux--text-area__inner-wrapper--decorator .rux--ai-label):not(:has(.rux--text-area__inner-wrapper--decorator .rux--ai-label--revert)),
+.rux--text-area--fluid .rux--text-area__wrapper--slug:has(.rux--ai-label):not(:has(.rux--ai-label--revert)),
+.rux--text-area--fluid .rux--text-area__wrapper--slug:has(.rux--slug):not(:has(.rux--slug--revert)) {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper--decorator .rux--text-area--invalid ~ .rux--text-area__inner-wrapper--decorator > *,
+.rux--text-area--fluid .rux--text-area__wrapper--decorator .rux--text-area--warn ~ .rux--text-area__inner-wrapper--decorator > *,
+.rux--text-area--fluid .rux--text-area__wrapper--slug .rux--text-area--invalid ~ .rux--ai-label,
+.rux--text-area--fluid .rux--text-area__wrapper--slug .rux--text-area--warn ~ .rux--ai-label,
+.rux--text-area--fluid .rux--text-area__wrapper--slug .rux--text-area--invalid ~ .rux--slug,
+.rux--text-area--fluid .rux--text-area__wrapper--slug .rux--text-area--warn ~ .rux--slug {
+  inset-inline-end: 1rem;
+}
+
+.rux--text-area--fluid .rux--text-area__wrapper--decorator .rux--text-area--invalid,
+.rux--text-area--fluid .rux--text-area__wrapper--slug .rux--text-area--invalid {
+  border-block-end-color: transparent;
+}
+
+.rux--text-input--fluid.rux--text-input-wrapper {
+  position: relative;
+  background: var(--rux-field);
+  block-size: 100%;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--text-input--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inset-block-start: 0.8125rem;
+}
+.rux--text-input--fluid .rux--label:not(.rux--text-input__label-counter) {
+  inline-size: auto;
+  inset-inline-end: auto;
+  inset-inline-start: 1rem;
+}
+.rux--text-input--fluid .rux--label.rux--text-input__label-counter {
+  inline-size: auto;
+  inset-inline-end: 1rem;
+  inset-inline-start: auto;
+}
+
+.rux--text-input--fluid.rux--text-input-wrapper--readonly .rux--text-input__field-wrapper .rux--text-input {
+  color: var(--rux-text-secondary, #525252);
+}
+
+.rux--text-input--fluid .rux--label::-webkit-scrollbar,
+.rux--text-input--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--text-input--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--text-input--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--text-input--fluid .rux--form__helper-text {
+  display: none;
+}
+
+.rux--text-input--fluid .rux--text-input {
+  padding: 2rem 1rem 0.8125rem;
+  min-block-size: 4rem;
+}
+
+.rux--text-input__divider,
+.rux--text-input--fluid .rux--text-input__divider {
+  display: none;
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid],
+.rux--text-input--fluid .rux--text-input__field-wrapper--warning {
+  display: block;
+}
+
+.rux--text-input--fluid input[data-invalid] {
+  outline: none;
+}
+
+.rux--text-input--fluid .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+}
+
+.rux--text-input--fluid .rux--text-input--invalid,
+.rux--text-input--fluid .rux--text-input--warning {
+  border-block-end: none;
+}
+
+.rux--text-input--fluid .rux--text-input--invalid ~ .rux--text-input__divider,
+.rux--text-input--fluid .rux--text-input--warning ~ .rux--text-input__divider {
+  display: block;
+  border-style: solid;
+  border-color: var(--rux-border-subtle);
+  margin: 0 1rem;
+  border-block-end: none;
+}
+
+.rux--text-input--fluid .rux--text-input__invalid-icon {
+  inset-block-start: 5rem;
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid] > .rux--text-input--invalid,
+.rux--text-input--fluid .rux--text-input__field-wrapper--warning > .rux--text-input--warning {
+  outline: none;
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper--warning {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid]:not(:focus) {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid]:not(:focus) {
+    outline-style: dotted;
+  }
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid]:focus-within,
+.rux--text-input--fluid .rux--text-input__field-wrapper--warning:focus-within {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid]:focus-within,
+  .rux--text-input--fluid .rux--text-input__field-wrapper--warning:focus-within {
+    outline-style: dotted;
+  }
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper[data-invalid] > .rux--text-input--invalid:focus,
+.rux--text-input--fluid .rux--text-input__field-wrapper--warning > .rux--text-input--warning:focus {
+  outline: none;
+}
+
+.rux--text-input--fluid .rux--text-input.rux--password-input {
+  padding-inline-end: 2.5rem;
+}
+
+.rux--text-input--fluid.rux--password-input-wrapper .rux--text-input__invalid-icon {
+  inset-inline-end: 1rem;
+}
+
+.rux--text-input--fluid .rux--toggle-password-tooltip {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  position: absolute;
+  block-size: 4rem;
+  cursor: pointer;
+  inline-size: 3rem;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  transition: outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--text-input--fluid .rux--toggle-password-tooltip .rux--popover {
+  inset-inline-start: 0;
+}
+
+.rux--text-input--fluid .rux--btn.rux--text-input--password__visibility__toggle.rux--tooltip__trigger {
+  block-size: 2rem;
+  inline-size: 2rem;
+  inset-block-start: 1.625rem;
+  inset-inline-end: 0.5rem;
+}
+
+.rux--text-input--fluid__skeleton {
+  position: relative;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  block-size: 4rem;
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--text-input--fluid__skeleton .rux--skeleton {
+  position: absolute;
+  block-size: 0.5rem;
+  inline-size: 25%;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--text-input--fluid__skeleton .rux--label {
+  position: absolute;
+  padding: 0;
+  block-size: 0.5rem;
+  inline-size: 50%;
+  inset-block-start: 2.25rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper--decorator .rux--text-input__field-inner-wrapper--decorator > *,
+.rux--text-input--fluid .rux--text-input__field-wrapper--slug .rux--ai-label,
+.rux--text-input--fluid .rux--text-input__field-wrapper--slug .rux--slug {
+  inset-block-start: 2.625rem;
+}
+
+.rux--text-input--fluid .rux--text-input--invalid ~ .rux--text-input__field-inner-wrapper--decorator > *,
+.rux--text-input--fluid .rux--text-input--warning ~ .rux--text-input__field-inner-wrapper--decorator > *,
+.rux--text-input--fluid .rux--text-input--invalid ~ .rux--ai-label,
+.rux--text-input--fluid .rux--text-input--warning ~ .rux--ai-label,
+.rux--text-input--fluid .rux--text-input--invalid ~ .rux--slug,
+.rux--text-input--fluid .rux--text-input--warning ~ .rux--slug {
+  inset-inline-end: 1rem;
+}
+
+.rux--text-input--fluid .rux--text-input__field-wrapper--decorator .rux--text-input,
+.rux--text-input--fluid .rux--text-input__field-wrapper--decorator .rux--text-input--invalid,
+.rux--text-input--fluid .rux--text-input__field-wrapper--decorator .rux--text-input--warning,
+.rux--text-input--fluid .rux--text-input__field-wrapper--slug .rux--text-input,
+.rux--text-input--fluid .rux--text-input__field-wrapper--slug .rux--text-input--invalid,
+.rux--text-input--fluid .rux--text-input__field-wrapper--slug .rux--text-input--warning {
+  padding-inline-end: 2.5rem;
+}
+
+.rux--time-picker--fluid {
+  background: var(--rux-field);
+}
+
+.rux--time-picker--fluid .rux--time-picker--fluid__wrapper {
+  display: flex;
+}
+
+.rux--time-picker--fluid__wrapper > *:nth-child(1),
+.rux--time-picker--fluid__wrapper > *:nth-child(2) {
+  flex-basis: 25%;
+}
+
+.rux--time-picker--equal-width .rux--time-picker--fluid__wrapper > * {
+  flex-basis: 50%;
+}
+
+.rux--time-picker--fluid__wrapper > *:nth-child(2):not(:last-child) .rux--select-input__wrapper::before,
+.rux--time-picker--fluid__wrapper > *:last-child .rux--select-input__wrapper::before {
+  position: absolute;
+  display: block;
+  background-color: var(--rux-border-strong);
+  block-size: calc(100% - 1px);
+  content: "";
+  inline-size: 1px;
+  opacity: 1;
+  transition: opacity 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--select--readonly .rux--select-input__wrapper::before {
+  background-color: var(--rux-border-subtle) !important; /* stylelint-disable-line declaration-no-important */
+  opacity: 1 !important; /* stylelint-disable-line declaration-no-important */
+  transition: none;
+}
+
+.rux--time-picker--fluid__wrapper .rux--select-input__wrapper::after {
+  inset-inline-end: 0;
+}
+
+.rux--time-picker--fluid__wrapper .rux--select-input__wrapper::before {
+  inset-inline-start: 0;
+}
+
+.rux--time-picker--fluid:not(.rux--time-picker--fluid--disabled) .rux--time-picker--fluid__wrapper > *:nth-child(2):not(:last-child):hover .rux--select-input__wrapper::before,
+.rux--time-picker--fluid:not(.rux--time-picker--fluid--disabled) .rux--time-picker--fluid__wrapper > *:nth-child(2):hover:not(:last-child) ~ * .rux--select-input__wrapper::before,
+.rux--time-picker--fluid:not(.rux--time-picker--fluid--disabled) .rux--time-picker--fluid__wrapper > *:last-child:hover .rux--select-input__wrapper::before {
+  opacity: 0;
+}
+
+.rux--time-picker--fluid--disabled .rux--time-picker--fluid__wrapper .rux--select--disabled .rux--select-input__wrapper::before {
+  background: var(--rux-border-disabled, #c6c6c6);
+}
+
+.rux--time-picker--fluid .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+  background: var(--rux-field);
+}
+
+.rux--time-picker--fluid--invalid {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--time-picker--fluid--invalid {
+    outline-style: dotted;
+  }
+}
+.rux--time-picker--fluid--invalid {
+  position: relative;
+}
+
+.rux--time-picker--fluid--invalid .rux--text-input,
+.rux--time-picker--fluid--invalid .rux--text-input-wrapper,
+.rux--time-picker--fluid--invalid .rux--select-input,
+.rux--time-picker--fluid--invalid .rux--select {
+  background: transparent;
+}
+
+.rux--time-picker--fluid--invalid .rux--select-input {
+  border-block-start: 2px solid transparent;
+  padding-block-start: 1.875rem;
+}
+
+.rux--time-picker--fluid .rux--select--fluid:last-of-type .rux--select-input {
+  border-inline-end: 2px solid transparent;
+}
+
+.rux--time-picker--fluid--invalid .rux--select-input:hover:not([disabled]) {
+  background: var(--rux-field-hover);
+}
+
+.rux--time-picker--fluid--invalid .rux--select-input:hover {
+  border-block-start: 2px solid var(--rux-support-error, #da1e28);
+}
+
+.rux--time-picker--fluid--invalid .rux--select--fluid:last-of-type .rux--select-input:hover {
+  border-inline-end: 2px solid var(--rux-support-error, #da1e28);
+}
+
+.rux--time-picker--fluid--warning {
+  position: relative;
+}
+
+.rux--time-picker__icon {
+  display: none;
+}
+
+.rux--time-picker--fluid--invalid .rux--time-picker__icon,
+.rux--time-picker--fluid--warning .rux--time-picker__icon {
+  position: absolute;
+  display: block;
+  inset-block-start: 4.5rem;
+  inset-inline-end: 1rem;
+}
+
+.rux--time-picker--fluid--invalid .rux--time-picker__icon {
+  fill: var(--rux-support-error, #da1e28);
+}
+
+.rux--time-picker--fluid--warning .rux--time-picker__icon {
+  fill: var(--rux-support-warning, #f1c21b);
+}
+
+.rux--time-picker--fluid--warning .rux--time-picker__icon path:first-of-type {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--time-picker--fluid--invalid .rux--form-requirement,
+.rux--time-picker--fluid--warning .rux--form-requirement {
+  display: block;
+  overflow: visible;
+  max-block-size: 100%;
+}
+
+.rux--time-picker--fluid--invalid .rux--form-requirement {
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--time-picker--fluid--invalid .rux--time-picker--fluid__wrapper > *:nth-child(2):not(:last-child) .rux--select-input__wrapper::before,
+.rux--time-picker--fluid--invalid .rux--time-picker--fluid__wrapper > *:last-child .rux--select-input__wrapper::before,
+.rux--time-picker--fluid--warning .rux--time-picker--fluid__wrapper > *:nth-child(2):not(:last-child) .rux--select-input__wrapper::before,
+.rux--time-picker--fluid--warning .rux--time-picker--fluid__wrapper > *:last-child .rux--select-input__wrapper::before {
+  block-size: calc(100% - 1rem);
+  inset-block-start: 8px;
+}
+
+.rux--time-picker--fluid--invalid .rux--text-input,
+.rux--time-picker--fluid--warning .rux--text-input,
+.rux--time-picker--fluid--invalid .rux--select-input,
+.rux--time-picker--fluid--warning .rux--select-input {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--time-picker--fluid.rux--time-picker--fluid--invalid .rux--time-picker__divider,
+.rux--time-picker--fluid.rux--time-picker--fluid--warning .rux--time-picker__divider {
+  border-style: solid;
+  border-color: var(--rux-border-subtle);
+  margin: 0 1rem;
+  border-block-end: none;
+  inline-size: calc(100% - 2rem);
+}
+
+.rux--time-picker--fluid--skeleton {
+  display: flex;
+  block-size: 4rem;
+  inline-size: 100%;
+}
+
+.rux--time-picker--fluid--skeleton > * {
+  block-size: 100%;
+  inline-size: auto;
+}
+
+.rux--time-picker--fluid--skeleton > *:nth-child(1),
+.rux--time-picker--fluid--skeleton > *:nth-child(2) {
+  inline-size: 25%;
+}
+
+.rux--time-picker--fluid--skeleton > *:last-child,
+.rux--time-picker--fluid--skeleton.rux--time-picker--equal-width > *:first-child {
+  inline-size: 50%;
+}
+
 @keyframes prefix--stroke {
   100% {
     stroke-dashoffset: 0;
@@ -14829,999 +17804,6 @@ button.rux--dropdown-text:focus {
   }
 }
 
-.rux--number__controls:hover .rux--number__control-btn::after {
-  display: none;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__rule-divider,
-.rux--number__input-wrapper--slug .rux--number__rule-divider {
-  display: none;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__control-btn:hover,
-.rux--number__input-wrapper--slug .rux--number__control-btn:hover {
-  box-shadow: 0 -1px 0 var(--rux-ai-border-strong, #4589ff) inset;
-}
-
-.rux--number__controls:focus-within .rux--number__control-btn::after {
-  display: none;
-}
-
-.rux--number html {
-  font-size: 100%;
-}
-.rux--number body {
-  font-weight: 400;
-  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-.rux--number code {
-  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
-}
-.rux--number strong {
-  font-weight: 600;
-}
-.rux--number {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-}
-
-.rux--number .rux--number__input-wrapper--warning input[type=number],
-.rux--number .rux--number__input-wrapper--warning input[type=text] {
-  padding-inline-end: 8rem;
-}
-
-.rux--number input[type=number],
-.rux--number input[type=text] {
-  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
-  font-weight: var(--rux-body-compact-01-font-weight, 400);
-  line-height: var(--rux-body-compact-01-line-height, 1.28572);
-  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  display: inline-flex;
-  box-sizing: border-box;
-  border: 0;
-  border-radius: 0;
-  -moz-appearance: textfield;
-  appearance: textfield;
-  background-color: var(--rux-field);
-  block-size: 2.5rem;
-  border-block-end: 0.0625rem solid var(--rux-border-strong);
-  color: var(--rux-text-primary, #161616);
-  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
-  font-weight: 400;
-  inline-size: 100%;
-  min-inline-size: 9.375rem;
-  padding-inline: 1rem 6rem;
-  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
-}
-.rux--number input[type=number]:focus,
-.rux--number input[type=text]:focus {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--number input[type=number]:focus,
-  .rux--number input[type=text]:focus {
-    outline-style: dotted;
-  }
-}
-.rux--number input[type=number]:disabled ~ .rux--number__controls,
-.rux--number input[type=text]:disabled ~ .rux--number__controls {
-  cursor: not-allowed;
-  pointer-events: none;
-}
-.rux--number input[type=number]:disabled ~ .rux--number__controls svg,
-.rux--number input[type=text]:disabled ~ .rux--number__controls svg {
-  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-.rux--number input[type=number]::-ms-clear,
-.rux--number input[type=text]::-ms-clear {
-  display: none;
-}
-.rux--number input[type=number]::-webkit-inner-spin-button,
-.rux--number input[type=text]::-webkit-inner-spin-button {
-  appearance: none;
-}
-.rux--number input[type=number][data-invalid],
-.rux--number input[type=text][data-invalid] {
-  padding-inline-end: 8rem;
-}
-
-.rux--number--lg.rux--number input[type=number],
-.rux--number--lg.rux--number input[type=text] {
-  padding-inline-end: 7rem;
-}
-.rux--number--lg.rux--number input[type=number][data-invalid],
-.rux--number--lg.rux--number input[type=text][data-invalid] {
-  padding-inline-end: 9rem;
-}
-.rux--number--lg.rux--number .rux--number__input-wrapper--warning input[type=number],
-.rux--number--lg.rux--number .rux--number__input-wrapper--warning input[type=text] {
-  padding-inline-end: 9rem;
-}
-
-.rux--number--sm.rux--number input[type=number],
-.rux--number--sm.rux--number input[type=text] {
-  padding-inline-end: 5rem;
-}
-.rux--number--sm.rux--number input[type=number][data-invalid],
-.rux--number--sm.rux--number input[type=text][data-invalid] {
-  padding-inline-end: 7rem;
-}
-.rux--number--sm.rux--number .rux--number__input-wrapper--warning input[type=number],
-.rux--number--sm.rux--number .rux--number__input-wrapper--warning input[type=text] {
-  padding-inline-end: 7rem;
-}
-
-.rux--number input[type=number]:disabled,
-.rux--number input[type=text]:disabled {
-  background-color: var(--rux-field);
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-}
-
-.rux--number__input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.rux--number__controls html {
-  font-size: 100%;
-}
-.rux--number__controls body {
-  font-weight: 400;
-  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-.rux--number__controls code {
-  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
-}
-.rux--number__controls strong {
-  font-weight: 600;
-}
-.rux--number__controls {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  block-size: 100%;
-  inline-size: 5rem;
-  inset-block-start: 50%;
-  inset-inline-end: 0;
-  transform: translateY(-50%);
-}
-
-.rux--number__control-btn {
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  appearance: none;
-  background: none;
-  cursor: pointer;
-  text-align: start;
-  inline-size: 100%;
-  box-sizing: border-box;
-  padding: 0;
-  border: 0;
-  margin: 0;
-  font-family: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-.rux--number__control-btn *,
-.rux--number__control-btn *::before,
-.rux--number__control-btn *::after {
-  box-sizing: inherit;
-}
-.rux--number__control-btn::-moz-focus-inner {
-  border: 0;
-}
-.rux--number__control-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  block-size: 100%;
-  color: var(--rux-icon-primary, #161616);
-}
-.rux--number__control-btn svg {
-  fill: currentColor;
-}
-.rux--number__control-btn:focus {
-  outline: 1px solid var(--rux-focus, #0f62fe);
-}
-@media screen and (prefers-contrast) {
-  .rux--number__control-btn:focus {
-    outline-style: dotted;
-  }
-}
-.rux--number__control-btn:focus {
-  color: var(--rux-icon-primary, #161616);
-  outline-offset: -2px;
-  outline-width: 2px;
-}
-.rux--number__control-btn:hover {
-  background-color: var(--rux-field-hover);
-  box-shadow: 0 -1px 0 var(--rux-border-strong) inset;
-  color: var(--rux-icon-primary, #161616);
-  cursor: pointer;
-}
-.rux--number__control-btn:disabled {
-  border-block-end-color: transparent;
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-}
-
-.rux--number__control-btn.down-icon {
-  order: 1;
-}
-
-.rux--number__control-btn.up-icon {
-  order: 2;
-}
-
-.rux--number input[type=number][data-invalid] ~ .rux--number__controls .rux--number__control-btn,
-.rux--number input[type=text][data-invalid] ~ .rux--number__controls .rux--number__control-btn {
-  border-block-end-color: var(--rux-support-error, #da1e28);
-}
-
-.rux--number input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn,
-.rux--number input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn {
-  border-width: 2px 0;
-  border-style: solid;
-  border-color: var(--rux-focus, #0f62fe);
-  box-shadow: none;
-  outline-offset: -2px;
-}
-
-.rux--number input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover,
-.rux--number input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover {
-  box-shadow: -4px 0 0 -2px var(--rux-focus, #0f62fe) inset;
-}
-
-.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover,
-.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:last-of-type:hover {
-  box-shadow: -4px 0 0 -2px var(--rux-support-error, #da1e28) inset;
-}
-
-.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover,
-.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:hover {
-  border-width: 2px 0;
-  border-style: solid;
-  border-color: var(--rux-support-error, #da1e28);
-  box-shadow: none;
-  outline-offset: -2px;
-}
-
-.rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover,
-.rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--number input[type=number][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover,
-  .rux--number input[type=text][data-invalid]:not(:focus) ~ .rux--number__controls .rux--number__control-btn:focus:hover {
-    outline-style: dotted;
-  }
-}
-
-.rux--number__rule-divider {
-  position: absolute;
-  z-index: 6000;
-  background-color: var(--rux-border-subtle);
-  block-size: 1rem;
-  inline-size: 0.0625rem;
-}
-.rux--number__rule-divider:first-of-type {
-  order: 0;
-}
-
-.rux--number__controls .rux--number__rule-divider:first-of-type {
-  background-color: transparent;
-  inset-inline-start: 0;
-}
-
-.rux--number__invalid + .rux--number__controls .rux--number__rule-divider:first-of-type {
-  background-color: var(--rux-border-subtle);
-}
-
-.rux--number--light .rux--number__rule-divider,
-.rux--number--light .rux--number__invalid + .rux--number__controls .rux--number__rule-divider:first-of-type {
-  background-color: var(--rux-border-subtle-02, #e0e0e0);
-}
-
-.rux--number input[type=number]:disabled + .rux--number__controls .rux--number__rule-divider:first-of-type,
-.rux--number input[type=text]:disabled + .rux--number__controls .rux--number__rule-divider:first-of-type {
-  background-color: transparent;
-}
-
-.rux--number input[type=number]:disabled + .rux--number__controls .rux--number__rule-divider,
-.rux--number input[type=text]:disabled + .rux--number__controls .rux--number__rule-divider {
-  background-color: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--number__control-btn:focus ~ .rux--number__rule-divider {
-  background-color: transparent;
-}
-
-.rux--number__invalid {
-  position: absolute;
-  fill: var(--rux-support-error, #da1e28);
-  inset-inline-end: 6rem;
-}
-
-.rux--number--lg .rux--number__invalid {
-  inset-inline-end: 7rem;
-}
-
-.rux--number--sm .rux--number__invalid {
-  inset-inline-end: 5rem;
-}
-
-.rux--number__invalid + .rux--number__rule-divider {
-  position: absolute;
-  inset-inline-end: 5rem;
-}
-
-.rux--number--lg .rux--number__invalid + .rux--number__rule-divider {
-  inset-inline-end: 6rem;
-}
-
-.rux--number--sm .rux--number__invalid + .rux--number__rule-divider {
-  inset-inline-end: 4rem;
-}
-
-.rux--number__control-btn.down-icon:hover ~ .rux--number__rule-divider,
-.rux--number__control-btn.up-icon:hover + .rux--number__rule-divider,
-.rux--number__control-btn.down-icon:focus ~ .rux--number__rule-divider,
-.rux--number__control-btn.up-icon:focus + .rux--number__rule-divider {
-  background-color: transparent;
-}
-
-.rux--number__invalid--warning {
-  fill: var(--rux-support-warning, #f1c21b);
-}
-
-.rux--number__invalid--warning path:first-of-type {
-  fill: #000000;
-  opacity: 1;
-}
-
-.rux--number--lg input[type=number],
-.rux--number--lg input[type=text] {
-  block-size: 3rem;
-}
-
-.rux--number--lg .rux--number__controls {
-  inline-size: 6rem;
-}
-
-.rux--number--lg .rux--number__control-btn {
-  inline-size: 3rem;
-}
-
-.rux--number--sm input[type=number],
-.rux--number--sm input[type=text] {
-  block-size: 2rem;
-}
-
-.rux--number--sm .rux--number__controls {
-  inline-size: 4rem;
-}
-
-.rux--number--sm .rux--number__control-btn {
-  inline-size: 2rem;
-}
-
-.rux--number--nolabel .rux--label + .rux--form__helper-text {
-  margin-block-start: 0;
-}
-
-.rux--number--nosteppers input[type=number],
-.rux--number--nosteppers input[type=text] {
-  padding-inline-end: 0;
-}
-
-.rux--number--nosteppers input[type=number][data-invalid],
-.rux--number--nosteppers input[type=text][data-invalid],
-.rux--number--nosteppers .rux--number__input-wrapper--warning input[type=number],
-.rux--number--nosteppers .rux--number__input-wrapper--warning input[type=text] {
-  padding-inline-end: 3rem;
-}
-
-.rux--number--nosteppers .rux--number__invalid {
-  inset-inline-end: 1rem;
-}
-
-.rux--number--readonly input[type=number],
-.rux--number--readonly input[type=text] {
-  background: transparent;
-  border-block-end-color: var(--rux-border-subtle);
-}
-
-.rux--number--readonly .rux--number__control-btn {
-  color: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-  pointer-events: none;
-}
-.rux--number--readonly .rux--number__control-btn:hover {
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.rux--number--readonly input[type=number]:focus ~ .rux--number__controls .rux--number__control-btn:hover,
-.rux--number--readonly input[type=text]:focus ~ .rux--number__controls .rux--number__control-btn:hover {
-  outline: none;
-}
-
-.rux--number--readonly .rux--number__controls:hover .rux--number__rule-divider:not(:first-of-type) {
-  background-color: var(--rux-border-subtle);
-}
-
-.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *,
-.rux--number__input-wrapper--slug .rux--ai-label,
-.rux--number__input-wrapper--slug .rux--slug {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: 6rem;
-  transform: translateY(-50%);
-}
-
-.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator:not(:has(.rux--ai-label)) > * {
-  block-size: 1rem;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *::before,
-.rux--number__input-wrapper--decorator .rux--number__control-btn::before,
-.rux--number__input-wrapper--decorator .rux--number__control-btn::after,
-.rux--number__input-wrapper--slug .rux--ai-label::before,
-.rux--number__input-wrapper--slug .rux--slug::before,
-.rux--number__input-wrapper--slug .rux--number__control-btn::before,
-.rux--number__input-wrapper--slug .rux--number__control-btn::after {
-  position: absolute;
-  background-color: var(--rux-border-subtle);
-  block-size: 1rem;
-  content: "";
-  inline-size: 0.0625rem;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator > *::before,
-.rux--number__input-wrapper--slug .rux--ai-label::before,
-.rux--number__input-wrapper--slug .rux--slug::before {
-  display: none;
-  inset-inline-start: -1rem;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert::before,
-.rux--number__input-wrapper--slug .rux--ai-label--revert::before,
-.rux--number__input-wrapper--slug .rux--slug--revert::before {
-  inset-block-start: 0.5rem;
-  inset-inline-start: -0.5rem;
-}
-
-.rux--number__control-btn::after {
-  display: block;
-  inset-inline-end: 0;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__control-btn::before,
-.rux--number__input-wrapper--slug .rux--number__control-btn::before {
-  display: block;
-  inset-inline-end: 2.5rem;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__control-btn:focus::before,
-.rux--number__input-wrapper--slug .rux--number__control-btn:focus::before {
-  display: none;
-}
-
-.rux--number__control-btn:hover::after,
-.rux--number__control-btn:hover::before {
-  display: none;
-  inset-inline-end: 0;
-}
-
-.rux--number__input-wrapper:has(.rux--number__control-btn:hover) ~ .rux--number__input-wrapper--decorator::after,
-.rux--number__input-wrapper:has(.rux--number__control-btn:hover) ~ .rux--number__input-wrapper--slug::after {
-  display: none;
-}
-
-.rux--number__control-btn:has(.up-icon)::after,
-.rux--number__control-btn:has(.up-icon)::before {
-  display: none;
-}
-
-.rux--number__input-wrapper--decorator .rux--number__invalid,
-.rux--number__input-wrapper--slug .rux--number__invalid {
-  inset-inline-end: 9rem;
-}
-
-.rux--number__input-wrapper--decorator:has(.rux--number__invalid) .rux--number__input-inner-wrapper--decorator > *::before,
-.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--ai-label::before,
-.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--ai-label::before,
-.rux--number__input-wrapper--slug:has(.rux--number__invalid) .rux--slug::before {
-  display: block;
-}
-
-.rux--number .rux--number__input-wrapper--decorator input[data-invalid],
-.rux--number .rux--number__input-wrapper--decorator.rux--number__input-wrapper--warning input,
-.rux--number .rux--number__input-wrapper--slug input[data-invalid],
-.rux--number .rux--number__input-wrapper--slug.rux--number__input-wrapper--warning input {
-  padding-inline-end: 9rem;
-}
-
-.rux--number__input-wrapper--decorator input[type=number]:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert)),
-.rux--number__input-wrapper--slug input[type=number]:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
-.rux--number__input-wrapper--slug input[type=number]:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
-.rux--number__input-wrapper--slug input[type=number]:disabled,
-.rux--number__input-wrapper--decorator input[type=text]:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--number__input-inner-wrapper--decorator .rux--ai-label--revert)),
-.rux--number__input-wrapper--slug input[type=text]:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
-.rux--number__input-wrapper--slug input[type=text]:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
-.rux--number__input-wrapper--slug input[type=text]:disabled {
-  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
-  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
-  padding-inline-end: 9.0625rem;
-}
-
-.rux--number.rux--skeleton {
-  position: relative;
-  padding: 0;
-  border: none;
-  background: var(--rux-skeleton-background, #e8e8e8);
-  box-shadow: none;
-  pointer-events: none;
-}
-.rux--number.rux--skeleton:hover, .rux--number.rux--skeleton:focus, .rux--number.rux--skeleton:active {
-  border: none;
-  cursor: default;
-  outline: none;
-}
-.rux--number.rux--skeleton::before {
-  position: absolute;
-  animation: 3000ms ease-in-out rux--skeleton infinite;
-  background: var(--rux-skeleton-element, #c6c6c6);
-  block-size: 100%;
-  content: "";
-  inline-size: 100%;
-  inset-inline-start: 0;
-  will-change: transform-origin, transform, opacity;
-}
-@media (prefers-reduced-motion: reduce) {
-  .rux--number.rux--skeleton::before {
-    animation: none;
-  }
-}
-@media screen and (-ms-high-contrast: active), (forced-colors: active) {
-  .rux--number.rux--skeleton {
-    background: CanvasText;
-  }
-  .rux--number.rux--skeleton::before {
-    background: Canvas;
-    forced-color-adjust: none;
-  }
-}
-.rux--number.rux--skeleton {
-  inline-size: 100%;
-}
-.rux--number.rux--skeleton input[type=number],
-.rux--number.rux--skeleton input[type=text] {
-  display: none;
-}
-
-.rux--number.rux--skeleton.rux--number--sm {
-  block-size: 2rem;
-}
-
-.rux--number.rux--skeleton.rux--number--md {
-  block-size: 2.5rem;
-}
-
-.rux--number.rux--skeleton.rux--number--lg {
-  block-size: 3rem;
-}
-
-@media screen and (-ms-high-contrast: active), (forced-colors: active) {
-  .rux--number__control-btn:hover,
-  .rux--number__control-btn:focus {
-    color: Highlight;
-    outline: 1px solid Highlight;
-  }
-}
-
-@media screen and (-ms-high-contrast: active), (forced-colors: active) {
-  .rux--number__control-btn {
-    outline: 1px solid transparent;
-  }
-}
-
-.rux--select {
-  box-sizing: border-box;
-  padding: 0;
-  border: 0;
-  margin: 0;
-  font-family: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-.rux--select *,
-.rux--select *::before,
-.rux--select *::after {
-  box-sizing: inherit;
-}
-.rux--select {
-  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-xs)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  inline-size: 100%;
-}
-
-.rux--select-input__wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  inline-size: 100%;
-}
-
-.rux--select-input {
-  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
-  font-weight: var(--rux-body-compact-01-font-weight, 400);
-  line-height: var(--rux-body-compact-01-line-height, 1.28572);
-  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-xs)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
-  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
-  display: block;
-  border: none;
-  border-radius: 0;
-  appearance: none;
-  background-color: var(--rux-field);
-  block-size: var(--rux-layout-size-height-local);
-  border-block-end: 1px solid var(--rux-border-strong);
-  color: var(--rux-text-primary, #161616);
-  cursor: pointer;
-  font-family: inherit;
-  inline-size: 100%;
-  opacity: 1;
-  padding-block: 0;
-  padding-inline: 1rem 3rem;
-  text-overflow: ellipsis;
-  transition: outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
-}
-.rux--select-input:hover {
-  background-color: var(--rux-field-hover);
-}
-.rux--select-input::-ms-expand {
-  display: none;
-}
-.rux--select-input {
-  /* This is for targeting styles specific to firefox */
-  /* Removes dotted inner focus */
-  /* https://sass-lang.com/documentation/breaking-changes/moz-document/ */
-  /* stylelint-disable-next-line at-rule-no-vendor-prefix */
-}
-@-moz-document url-prefix() {
-  .rux--select-input:-moz-focusring, .rux--select-input::-moz-focus-inner {
-    background-image: none;
-    color: transparent;
-    text-shadow: 0 0 0 #000000;
-  }
-}
-.rux--select-input:focus {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--select-input:focus {
-    outline-style: dotted;
-  }
-}
-.rux--select-input:focus {
-  color: var(--rux-text-primary, #161616);
-}
-.rux--select-input:disabled, .rux--select-input:hover:disabled {
-  background-color: var(--rux-field);
-  border-block-end-color: transparent;
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-}
-
-.rux--select--disabled .rux--label,
-.rux--select--disabled .rux--form__helper-text {
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--select-input__wrapper[data-invalid] .rux--select-input,
-.rux--select--warning .rux--select-input {
-  padding-inline-end: 4rem;
-}
-
-.rux--select-input:disabled ~ .rux--select__arrow {
-  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--select--light .rux--select-input {
-  background-color: var(--rux-field-02, #ffffff);
-}
-.rux--select--light .rux--select-input:hover {
-  background-color: var(--rux-field-hover);
-}
-.rux--select--light .rux--select-input:disabled, .rux--select--light .rux--select-input:hover:disabled {
-  background-color: var(--rux-field-02, #ffffff);
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-}
-
-.rux--select__arrow {
-  position: absolute;
-  block-size: 100%;
-  fill: var(--rux-icon-primary, #161616);
-  inset-block-start: 0;
-  inset-inline-end: 1rem;
-  pointer-events: none;
-}
-@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
-  .rux--select__arrow path {
-    fill: ButtonText;
-  }
-}
-
-.rux--select__invalid-icon {
-  position: absolute;
-  inset-inline-end: 2.5rem;
-}
-
-.rux--select-input__wrapper[data-invalid] .rux--select-input ~ .rux--select__invalid-icon {
-  fill: var(--rux-support-error, #da1e28);
-}
-
-.rux--select-input--inline__wrapper[data-invalid] .rux--select__invalid-icon {
-  fill: var(--rux-support-error, #da1e28);
-}
-
-.rux--select__invalid-icon--warning {
-  fill: var(--rux-support-warning, #f1c21b);
-}
-
-.rux--select__invalid-icon--warning path[fill] {
-  fill: #000000;
-  opacity: 1;
-}
-
-optgroup.rux--select-optgroup,
-.rux--select-option {
-  background-color: var(--rux-layer-hover);
-  color: var(--rux-text-primary, #161616);
-}
-optgroup.rux--select-optgroup:disabled,
-.rux--select-option:disabled {
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--select--inline {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.rux--select--inline .rux--form__helper-text {
-  margin-block-end: 0;
-  margin-inline-start: 0.5rem;
-}
-
-.rux--select--inline .rux--label {
-  margin: 0 0.5rem 0 0;
-  white-space: nowrap;
-}
-
-.rux--select--inline .rux--select-input {
-  background-color: transparent;
-  border-block-end: none;
-  color: var(--rux-text-primary, #161616);
-  inline-size: 100%;
-  padding-inline: 0.5rem 3rem;
-}
-.rux--select--inline .rux--select-input:hover {
-  background-color: var(--rux-field-hover);
-}
-
-.rux--select--inline .rux--select-input:focus,
-.rux--select--inline .rux--select-input:focus option,
-.rux--select--inline .rux--select-input:focus optgroup {
-  background-color: var(--rux-background, #ffffff);
-}
-.rux--select--inline .rux--select-input:focus:hover,
-.rux--select--inline .rux--select-input:focus option:hover,
-.rux--select--inline .rux--select-input:focus optgroup:hover {
-  background-color: var(--rux-field-hover);
-}
-
-.rux--select--inline .rux--select-input[disabled],
-.rux--select--inline .rux--select-input[disabled]:hover {
-  background-color: var(--rux-background, #ffffff);
-}
-
-.rux--select--inline .rux--select__arrow {
-  inset-inline-end: 0.5rem;
-}
-
-.rux--select--inline.rux--select--invalid .rux--select-input {
-  padding-inline-end: 3.5rem;
-}
-
-.rux--select--inline.rux--select--invalid .rux--select-input ~ .rux--select__invalid-icon,
-.rux--select--inline.rux--select--warning .rux--select-input ~ .rux--select__invalid-icon--warning {
-  inset-inline-end: 2rem;
-}
-
-.rux--select--inline .rux--select-input:disabled {
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-}
-.rux--select--inline .rux--select-input:disabled ~ * {
-  cursor: not-allowed;
-}
-
-.rux--select--readonly .rux--select-input {
-  background-color: transparent;
-  border-block-end-color: var(--rux-border-subtle);
-  cursor: default;
-}
-
-.rux--select--readonly .rux--select__arrow {
-  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--select--readonly.rux--select--inline .rux--select-input:hover {
-  background-color: transparent;
-}
-
-.rux--select.rux--skeleton {
-  position: relative;
-  padding: 0;
-  border: none;
-  background: var(--rux-skeleton-background, #e8e8e8);
-  box-shadow: none;
-  pointer-events: none;
-}
-.rux--select.rux--skeleton:hover, .rux--select.rux--skeleton:focus, .rux--select.rux--skeleton:active {
-  border: none;
-  cursor: default;
-  outline: none;
-}
-.rux--select.rux--skeleton::before {
-  position: absolute;
-  animation: 3000ms ease-in-out rux--skeleton infinite;
-  background: var(--rux-skeleton-element, #c6c6c6);
-  block-size: 100%;
-  content: "";
-  inline-size: 100%;
-  inset-inline-start: 0;
-  will-change: transform-origin, transform, opacity;
-}
-@media (prefers-reduced-motion: reduce) {
-  .rux--select.rux--skeleton::before {
-    animation: none;
-  }
-}
-@media screen and (-ms-high-contrast: active), (forced-colors: active) {
-  .rux--select.rux--skeleton {
-    background: CanvasText;
-  }
-  .rux--select.rux--skeleton::before {
-    background: Canvas;
-    forced-color-adjust: none;
-  }
-}
-.rux--select.rux--skeleton {
-  block-size: 2.5rem;
-  inline-size: 100%;
-}
-
-.rux--select.rux--skeleton .rux--select-input {
-  display: none;
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > *,
-.rux--select--slug .rux--ai-label,
-.rux--select--slug .rux--slug {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: calc(2.5rem + 8px + 1px);
-  margin-block-start: 0.03125rem;
-  transform: translateY(-50%);
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > *::after,
-.rux--select--decorator .rux--select__inner-wrapper--decorator > *::before,
-.rux--select--slug .rux--ai-label::after,
-.rux--select--slug .rux--ai-label::before,
-.rux--select--slug .rux--slug::after,
-.rux--select--slug .rux--slug::before {
-  position: absolute;
-  background-color: var(--rux-border-subtle-01, #c6c6c6);
-  block-size: 1rem;
-  content: "";
-  inline-size: 0.0625rem;
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > *::before,
-.rux--select--slug .rux--ai-label::before,
-.rux--select--slug .rux--slug::before {
-  display: none;
-  inset-inline-start: calc(-0.5rem - 1px);
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > *::after,
-.rux--select--slug .rux--ai-label::after,
-.rux--select--slug .rux--slug::after {
-  display: block;
-  inset-block-start: 0;
-  inset-inline-end: calc(-0.5rem - 1px);
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > .rux--ai-label--revert::before,
-.rux--select--slug .rux--ai-label--revert::before,
-.rux--select--slug .rux--slug--revert::before {
-  inset-block-start: 0.5rem;
-  inset-inline-start: 0;
-}
-
-.rux--select--decorator .rux--select__inner-wrapper--decorator > .rux--ai-label--revert,
-.rux--select--slug .rux--ai-label--revert {
-  inset-inline-end: 2.5625rem;
-}
-
-.rux--select--decorator .rux--ai-label--revert::after,
-.rux--select--slug .rux--ai-label--revert::after,
-.rux--select--slug .rux--slug--revert::after {
-  inset-block-start: 0.5rem;
-  inset-inline-end: -1px;
-}
-
-.rux--select--decorator .rux--select-input__wrapper .rux--select-input ~ .rux--select__invalid-icon,
-.rux--select--slug .rux--select-input__wrapper[data-invalid] .rux--select-input ~ .rux--select__invalid-icon,
-.rux--select--slug .rux--select-input__wrapper .rux--select-input ~ .rux--select__invalid-icon {
-  inset-inline-end: 5rem;
-}
-
-.rux--select--decorator .rux--select-input:has(~ .rux--select__inner-wrapper--decorator),
-.rux--select--slug .rux--select-input:has(~ .rux--ai-label),
-.rux--select--slug .rux--select-input:has(~ .rux--slug) {
-  padding-inline-end: 4rem;
-}
-
-.rux--select--decorator:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--select__inner-wrapper--decorator),
-.rux--select--slug:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--ai-label),
-.rux--select--slug:has(.rux--select__invalid-icon) .rux--select-input:has(~ .rux--slug) {
-  padding-inline-end: 6rem;
-}
-
-.rux--select--decorator .rux--select-input:has(~ .rux--select__inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--select__inner-wrapper--decorator .rux--ai-label--revert)),
-.rux--select--slug .rux--select-input:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
-.rux--select--slug .rux--select-input:has(~ .rux--slug):not(:has(~ .rux--slug--revert)),
-.rux--select-input-has--ai-label {
-  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
-  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
-}
-
-.rux--select--decorator:has(.rux--select__invalid-icon) .rux--select__inner-wrapper--decorator > *::before,
-.rux--select--slug:has(.rux--select__invalid-icon) .rux--ai-label::before,
-.rux--select--slug:has(.rux--select__invalid-icon) .rux--slug::before {
-  display: block;
-}
-
 .rux--data-table-container + .rux--pagination {
   border-block-start: 0;
 }
@@ -17659,234 +19641,6 @@ span.rux--pagination__text.rux--pagination__items-count {
     color: GrayText;
     fill: GrayText;
   }
-}
-
-.rux--text-area {
-  box-sizing: border-box;
-  padding: 0;
-  border: 0;
-  margin: 0;
-  font-family: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-.rux--text-area *,
-.rux--text-area *::before,
-.rux--text-area *::after {
-  box-sizing: inherit;
-}
-.rux--text-area {
-  font-size: var(--rux-body-01-font-size, 0.875rem);
-  font-weight: var(--rux-body-01-font-weight, 400);
-  line-height: var(--rux-body-01-line-height, 1.42857);
-  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  padding: 0.6875rem var(--rux-layout-density-padding-inline-local);
-  border: none;
-  background-color: var(--rux-field);
-  block-size: 100%;
-  border-block-end: 1px solid var(--rux-border-strong);
-  color: var(--rux-text-primary, #161616);
-  font-family: inherit;
-  min-block-size: 2.5rem;
-  min-inline-size: 10rem;
-  resize: vertical;
-  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
-}
-
-.rux--text-area:focus,
-.rux--text-area:active {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--text-area:focus,
-  .rux--text-area:active {
-    outline-style: dotted;
-  }
-}
-
-.rux--text-area::placeholder {
-  color: var(--rux-text-placeholder, rgba(22, 22, 22, 0.4));
-  opacity: 1;
-  font-size: var(--rux-body-01-font-size, 0.875rem);
-  font-weight: var(--rux-body-01-font-weight, 400);
-  line-height: var(--rux-body-01-line-height, 1.42857);
-  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
-}
-
-.rux--text-area--light {
-  background-color: var(--rux-field-02, #ffffff);
-}
-
-.rux--text-area__wrapper {
-  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
-  position: relative;
-  display: flex;
-  inline-size: 100%;
-  max-inline-size: 100%;
-}
-
-.rux--text-area__wrapper--cols {
-  inline-size: auto;
-}
-
-.rux--text-area__invalid-icon {
-  position: absolute;
-  fill: var(--rux-support-error, #da1e28);
-  inset-block-start: 0.75rem;
-  inset-inline-end: var(--rux-layout-density-padding-inline-local);
-}
-
-.rux--text-area__invalid-icon--warning {
-  fill: var(--rux-support-warning, #f1c21b);
-}
-
-.rux--text-area__invalid-icon--warning path[fill] {
-  fill: #000000;
-  opacity: 1;
-}
-
-.rux--text-area__counter-alert {
-  position: absolute;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
-  margin: -1px;
-  block-size: 1px;
-  clip: rect(0, 0, 0, 0);
-  inline-size: 1px;
-}
-
-.rux--form-item:has(.rux--text-area__wrapper--cols) {
-  inline-size: fit-content;
-}
-
-.rux--text-area:disabled {
-  background-color: var(--rux-field);
-  border-block-end: 1px solid transparent;
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-  cursor: not-allowed;
-  outline: none;
-  resize: none;
-}
-
-.rux--text-area:disabled::placeholder {
-  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--text-area__wrapper--readonly .rux--text-area {
-  background: transparent;
-  border-block-end-color: var(--rux-border-subtle);
-}
-
-.rux--text-area__wrapper--decorator .rux--text-area__inner-wrapper--decorator > *,
-.rux--text-area__wrapper--slug .rux--ai-label,
-.rux--text-area__wrapper--slug .rux--slug {
-  position: absolute;
-  inset-block-start: 0.75rem;
-  inset-inline-end: 1rem;
-}
-
-.rux--text-area__wrapper--decorator .rux--ai-label.rux--ai-label--revert,
-.rux--text-area__wrapper--slug .rux--ai-label.rux--ai-label--revert,
-.rux--text-area__wrapper--slug .rux--slug.rux--slug--revert {
-  inset-block-start: 0.25rem;
-  inset-inline-end: 0.5rem;
-  transform: translate(0);
-}
-
-.rux--text-area__wrapper--decorator .rux--text-area:has(~ .rux--text-area__inner-wrapper--decorator .rux--ai-label):not(:has(~ .rux--text-area__inner-wrapper--decorator .rux--ai-label--revert)),
-.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
-.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--slug):not(:has(~ .rux--slug--revert)) {
-  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
-  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
-}
-
-.rux--text-area__wrapper--decorator .rux--text-area:has(~ .rux--text-area__inner-wrapper--decorator > *),
-.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--ai-label),
-.rux--text-area__wrapper--slug .rux--text-area:has(~ .rux--slug) {
-  padding-inline-end: 2.5rem;
-}
-
-.rux--text-area--invalid:has(~ .rux--text-area__inner-wrapper--decorator > *),
-.rux--text-area--warn:has(~ .rux--text-area__inner-wrapper--decorator > *),
-.rux--text-area--invalid:has(~ .rux--ai-label),
-.rux--text-area--warn:has(~ .rux--ai-label),
-.rux--text-area--invalid:has(~ .rux--slug),
-.rux--text-area--warn:has(~ .rux--slug) {
-  padding-inline-end: 4rem;
-}
-
-.rux--text-area--invalid ~ .rux--text-area__inner-wrapper--decorator > *,
-.rux--text-area--warn ~ .rux--text-area__inner-wrapper--decorator > *,
-.rux--text-area--invalid ~ .rux--ai-label,
-.rux--text-area--warn ~ .rux--ai-label,
-.rux--text-area--invalid ~ .rux--slug,
-.rux--text-area--warn ~ .rux--slug {
-  inset-inline-end: 2.5rem;
-}
-
-.rux--text-area--invalid ~ .rux--text-area__inner-wrapper--decorator > .rux--ai-label.rux--ai-label--revert,
-.rux--text-area--warn ~ .rux--text-area__inner-wrapper--decorator > .rux--ai-label.rux--ai-label--revert,
-.rux--text-area--invalid ~ .rux--ai-label.rux--ai-label--revert,
-.rux--text-area--warn ~ .rux--ai-label.rux--ai-label--revert,
-.rux--text-area--invalid ~ .rux--slug.rux--slug--revert,
-.rux--text-area--warn ~ .rux--slug.rux--slug--revert {
-  inset-inline-end: 2rem;
-}
-
-.rux--text-area.rux--skeleton {
-  position: relative;
-  padding: 0;
-  border: none;
-  background: var(--rux-skeleton-background, #e8e8e8);
-  box-shadow: none;
-  pointer-events: none;
-}
-.rux--text-area.rux--skeleton:hover, .rux--text-area.rux--skeleton:focus, .rux--text-area.rux--skeleton:active {
-  border: none;
-  cursor: default;
-  outline: none;
-}
-.rux--text-area.rux--skeleton::before {
-  position: absolute;
-  animation: 3000ms ease-in-out rux--skeleton infinite;
-  background: var(--rux-skeleton-element, #c6c6c6);
-  block-size: 100%;
-  content: "";
-  inline-size: 100%;
-  inset-inline-start: 0;
-  will-change: transform-origin, transform, opacity;
-}
-@media (prefers-reduced-motion: reduce) {
-  .rux--text-area.rux--skeleton::before {
-    animation: none;
-  }
-}
-@media screen and (-ms-high-contrast: active), (forced-colors: active) {
-  .rux--text-area.rux--skeleton {
-    background: CanvasText;
-  }
-  .rux--text-area.rux--skeleton::before {
-    background: Canvas;
-    forced-color-adjust: none;
-  }
-}
-.rux--text-area.rux--skeleton {
-  block-size: 6.25rem;
-  inline-size: 100%;
-}
-.rux--text-area.rux--skeleton::placeholder {
-  color: transparent;
-}
-
-.rux--text-area__label-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  inline-size: 100%;
 }
 
 .rux--tile-group html {
