@@ -77,7 +77,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">38 sections</div>
+  <div class="ks-count">39 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#links">Links</a>
@@ -86,6 +86,7 @@
     <a href="#textarea">Text area</a>
     <a href="#select">Select</a>
     <a href="#time-picker">Time picker</a>
+    <a href="#date-picker">Date picker</a>
     <a href="#checkbox">Checkbox</a>
     <a href="#radio">Radio button</a>
     <a href="#toggle">Toggle</a>
@@ -737,6 +738,162 @@
       </div>
       <div class="rux--form-requirement">Not a valid time</div>
     </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="date-picker">
+  <h2>Date picker</h2><p>simple · single with calendar · range with calendar</p>
+  <!-- PROVENANCE: rendered-dom · preview-preview-datepicker--simple,
+       --single-with-calendar and --range-with-calendar, the last two captured
+       with the calendar OPEN as
+       `preview-preview-datepicker--*-with-calendar@open` in
+       docs/carbon-react-states.json, 2026-08-31 -->
+  <!--
+    THIS IS THE `--next` VARIANT, AND THAT IS THE WHOLE REASON THIS FRAGMENT
+    EXISTS. Carbon ships two date pickers. Measured 2026-08-31 on the running
+    Storybook:
+
+      CLASSIC (components-datepicker--*) renders its calendar through
+      FLATPICKR. Every calendar element carries BOTH `flatpickr-*` and
+      `cds--date-picker__*`, and the open calendar matches 4 rules via
+      flatpickr selectors and ZERO via the cds ones. `cds--date-picker__calendar`
+      is a marker that styles nothing there. Copying that markup gives an
+      unstyled list of spans.
+
+      `--next` (preview-preview-datepicker--*) renders ZERO flatpickr
+      elements. Days are real <button type=button>, the calendar is
+      `role=grid`, and all 64 calendar rules key on `.rux--date-picker--next`
+      plus Carbon's own classes.
+
+    THE COMMITTED CAPTURE COULD NOT HAVE TOLD YOU THAT. `react-dom.js` filters
+    classes to the `cds--` prefix, so the classic capture records clean Carbon
+    markup with its dependency invisible — 70 lines that look rebuildable and
+    are not. Two recipes were added to the RECIPES table and the `--next`
+    stories captured with the calendar open; those entries are what this
+    fragment is diffed against.
+
+    THE DAY STATE CLASSES ARE UNPREFIXED and therefore in NO capture:
+    `selected`, `today`, `inRange`, `prevMonthDay`, `nextMonthDay`, `disabled`,
+    `focused`. They were read off css/rux.css, where all seven appear as
+    `.rux--date-picker--next .rux--date-picker__day.<state>`, and confirmed on
+    the running page, where a day reads `cds--date-picker__day prevMonthDay`.
+    A gate cannot check them; this note is the record.
+
+    THE CALENDARS HERE SHIP CLOSED. js/date-picker.js fills `__days` on load
+    and opens on the `__icon` button — so the day cells below are generated,
+    not written. That is deliberate: 42 hand-written buttons would be a copy
+    of state the module derives, and the copy goes stale the moment the month
+    does. The same call sink/tile.html records for its selected state.
+
+    `--simple` HAS NO CALENDAR AND NO ICON, and is the variant Carbon
+    recommends when the date is one the user can remember. It needs no
+    JavaScript at all.
+  -->
+  <div class="ks-grid">
+
+    <!-- SIMPLE. Input only. No __icon, no calendar-container, no module. -->
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">
+      <div class="rux--date-picker-container rux--date-picker-container--simple">
+        <label class="rux--label" for="dp-simple">Date of birth (yyyy-mm-dd)</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-simple" class="rux--date-picker__input" type="text" value="1994-03-02">
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SINGLE WITH CALENDAR. The icon is a <button>, not the classic
+         picker's <svg> — the reference renders `button.cds--date-picker__icon`
+         with aria-label="Open calendar" and tabindex="-1". -->
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--single">
+      <div class="rux--date-picker-container rux--date-picker-container--single">
+        <label class="rux--label" for="dp-single">Departure date</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-single" class="rux--date-picker__input" type="text" value="2026-09-14">
+            <button class="rux--date-picker__icon" type="button" aria-label="Open calendar" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="rux--date-picker__calendar-container" hidden>
+        <div class="rux--date-picker__calendar" role="grid" aria-label="Calendar" tabindex="0">
+          <div class="rux--date-picker__month">
+            <button class="rux--date-picker__month-nav" type="button" aria-label="Previous month">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+            </button>
+            <div class="rux--date-picker__current-month"></div>
+            <button class="rux--date-picker__month-nav" type="button" aria-label="Next month">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+            </button>
+          </div>
+          <div class="rux--date-picker__weekdays">
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+          </div>
+          <div class="rux--date-picker__days"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RANGE. TWO containers, `--from` and `--to`, sharing ONE calendar —
+         that is the reference's shape, and the `inRange` day state is what
+         makes it read as a range rather than two pickers. -->
+    <div class="rux--date-picker rux--date-picker--next rux--date-picker--range">
+      <div class="rux--date-picker-container rux--date-picker-container--from">
+        <label class="rux--label" for="dp-from">From</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-from" class="rux--date-picker__input" type="text" value="2026-09-14">
+            <button class="rux--date-picker__icon" type="button" aria-label="Open calendar" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="rux--date-picker-container rux--date-picker-container--to">
+        <label class="rux--label" for="dp-to">To</label>
+        <div class="rux--date-picker-input__wrapper">
+          <span>
+            <input id="dp-to" class="rux--date-picker__input" type="text" value="2026-09-21">
+            <button class="rux--date-picker__icon" type="button" aria-label="Open calendar" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="rux--date-picker__calendar-container" hidden>
+        <div class="rux--date-picker__calendar" role="grid" aria-label="Calendar" tabindex="0">
+          <div class="rux--date-picker__month">
+            <button class="rux--date-picker__month-nav" type="button" aria-label="Previous month">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+            </button>
+            <div class="rux--date-picker__current-month"></div>
+            <button class="rux--date-picker__month-nav" type="button" aria-label="Next month">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+            </button>
+          </div>
+          <div class="rux--date-picker__weekdays">
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+            <div class="rux--date-picker__weekday"></div>
+          </div>
+          <div class="rux--date-picker__days"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -4565,6 +4722,7 @@
 <script src="js/popover.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/list-box.js"></script>
+<script src="js/date-picker.js"></script>
 <script src="js/tabs.js"></script>
 <script src="js/accordion.js"></script>
 <script src="js/data-table.js"></script>

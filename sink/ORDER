@@ -11,6 +11,7 @@ text-input
 textarea
 select
 time-picker
+date-picker
 checkbox
 radio
 toggle

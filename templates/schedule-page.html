@@ -65,9 +65,10 @@
 
      NOT COVERED, and each of these is a real gap rather than an oversight:
 
-       - The DATE field is a plain text input. `date-picker` is DEFER with its
-         admission agreed and staged; no calendar was opened, compared or
-         copied, because there is nothing here to compare against yet.
+       - The date picker's KEYBOARD model. `js/date-picker.js` follows the
+         ARIA grid pattern for arrows, Home/End and PageUp/PageDown; no key was
+         pressed on the running Carbon picker to compare it against, and the
+         module's own header says so.
        - The dropdown was not OPENED against a running Carbon dropdown. The
          closed markup is diffed; `js/list-box.js` opens it here and the
          reference's open state, its scroll behaviour and its
@@ -431,27 +432,57 @@
             </div>
           </div>
 
-          <!-- THE DATE IS A PLAIN TEXT INPUT, AND THAT IS THE HONEST STATE.
-               `date-picker` is DEFER in docs/inventory.md with its admission
-               AGREED and staged: +3.4 KB and 41 classes, its fragment demos no
-               calendar, and `js/date-picker.js` DOES NOT EXIST. Admitting it
-               today buys a field that looks like a date picker and opens
-               nothing, which is worse than a text field that is honest about
-               itself.
+          <!-- DATE PICKER, single with calendar. This was a plain text
+               input until 2026-08-31, because `date-picker` was DEFER: its
+               admission was agreed and staged, and this page is the named page
+               shape rule 1 wanted. Admitted at +3.4 KB.
 
-               THIS PAGE IS THE NAMED SHAPE THAT ROW WAS WAITING FOR. When the
-               calendar markup is captured and the module written, this control
-               is what gets replaced -- and the row can then be admitted under
-               rule 1 rather than against it. -->
-          <div class="rux--form-item rux--text-input-wrapper">
-            <div class="rux--text-input__label-wrapper">
+               IT IS THE `--next` VARIANT AND THAT IS NOT COSMETIC. Carbon's
+               CLASSIC date picker renders its calendar through FLATPICKR --
+               measured, the open calendar matches 4 rules via `flatpickr-*`
+               selectors and ZERO via `cds--`. `--next` uses Carbon's own
+               classes throughout and needs no third-party library, which is
+               the only reason this control could be built here at all.
+
+               THE CALENDAR SHIPS `hidden`. Nothing in Carbon's CSS hides a
+               closed calendar -- React simply does not mount it -- so the
+               attribute is the closed state, the same mechanism
+               sink/dropdown.html uses for its menu. js/date-picker.js clears
+               it on open and generates the 42 day cells. -->
+          <div class="rux--date-picker rux--date-picker--next rux--date-picker--single">
+            <div class="rux--date-picker-container rux--date-picker-container--single">
               <label class="rux--label" for="s-date">Departure date</label>
-            </div>
-            <div class="rux--text-input__field-outer-wrapper">
-              <div class="rux--text-input__field-wrapper">
-                <input id="s-date" class="rux--text-input" type="text" value="2026-09-14" inputmode="numeric" placeholder="yyyy-mm-dd">
+              <div class="rux--date-picker-input__wrapper">
+                <span>
+                  <input id="s-date" class="rux--date-picker__input" type="text" value="2026-09-14">
+                  <button class="rux--date-picker__icon" type="button" aria-label="Open calendar" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg>
+                  </button>
+                </span>
               </div>
-              <div class="rux--form__helper-text">A calendar replaces this when date-picker lands.</div>
+            </div>
+            <div class="rux--date-picker__calendar-container" hidden>
+              <div class="rux--date-picker__calendar" role="grid" aria-label="Calendar" tabindex="0">
+                <div class="rux--date-picker__month">
+                  <button class="rux--date-picker__month-nav" type="button" aria-label="Previous month">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+                  </button>
+                  <div class="rux--date-picker__current-month"></div>
+                  <button class="rux--date-picker__month-nav" type="button" aria-label="Next month">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                  </button>
+                </div>
+                <div class="rux--date-picker__weekdays">
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                  <div class="rux--date-picker__weekday"></div>
+                </div>
+                <div class="rux--date-picker__days"></div>
+              </div>
             </div>
           </div>
 

@@ -145,6 +145,19 @@
   //   mode; it matches the `story@name` key.
   const RECIPE_FILTER = /./;
   const RECIPES = [
+    // ---- date picker, the --next variant: it is the ONLY one whose calendar
+    // is styled by Carbon's own classes. The CLASSIC picker renders its
+    // calendar through flatpickr, and every calendar element carries BOTH
+    // `flatpickr-*` and `cds--date-picker__*` -- measured 2026-08-31, the open
+    // calendar matches 4 rules via flatpickr selectors and ZERO via cds ones,
+    // so `cds--date-picker__calendar` is a marker that styles nothing there.
+    // This capture filters classes to the prefix (see the note at the class
+    // filter), so the committed classic capture shows clean Carbon markup with
+    // its real dependency invisible. These two recipes record the variant that
+    // can actually be rebuilt: 0 flatpickr elements on the page, days as real
+    // <button type=button>, calendar as role=grid.
+    { story: 'preview-preview-datepicker--single-with-calendar', name: 'open', steps: [{ click: '.cds--date-picker__icon' }] },
+    { story: 'preview-preview-datepicker--range-with-calendar',  name: 'open', steps: [{ click: '.cds--date-picker__icon' }] },
     // ---- open list boxes: expanded, menu-icon--open, menu-item, --active, __option, __selected-icon
     { story: 'components-dropdown--default',    name: 'open',          steps: [{ click: '[role="combobox"]' }] },
     { story: 'components-combobox--default',    name: 'open',          steps: [{ click: '.cds--list-box__menu-icon' }] },
