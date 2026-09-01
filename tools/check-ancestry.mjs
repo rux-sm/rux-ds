@@ -86,6 +86,7 @@ const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input'
 // floating-ui — Phase 5 behaviour the sink has not written. Declining it is a
 // standing decision with its own note in overflow-menu.html, combo-button and
 // the table's overflow trigger; this is the same call, listed once.
+const TOOLTIP_REASON = 'the icon-tooltip the sink declines throughout';
 const TOOLTIP_CHROME = ['popover-container', 'popover--caret', 'popover--high-contrast',
   'popover--top', 'popover--bottom', 'popover--left', 'tooltip', 'icon-tooltip',
   'tooltip-trigger__wrapper'];
@@ -109,20 +110,6 @@ const CARD_GRID_REASON = 'the story layout, not the component. All 17 card stori
   + 'class; nothing in css/rux.css scopes one to it. Same shape as links:link--disabled.';
 
 const KNOWN = {
-  'card:card': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card--productive': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card--expressive': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__header': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__title': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__label': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__title-text-row': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__title-text-row--truncate-multi': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__description': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__body': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__footer': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__actions': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__action': [CARD_STORY_GRID, CARD_GRID_REASON],
-  'card:card__header-media': [CARD_STORY_GRID, CARD_GRID_REASON],
   'card:btn--icon-only': [TOOLTIP_CHROME,
     'the icon-tooltip the sink declines throughout. The reference wraps each '
     + '`card__action` button in one; the fragment demos the component rather than the '
@@ -157,11 +144,9 @@ const KNOWN = {
     + 'manifest, so they add nothing but a chance for the cascade to move on a bump. '
     + 'The POSITIONING wrapper, modal-close-button, is present — dropping that one was '
     + 'the defect this gate was written for.'],
-  'overflow-menu:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'combo-button:combo-button__trigger': [TOOLTIP_CHROME,
     'the icon-tooltip the sink declines throughout. The trigger is the component; the '
     + 'hover hint is the story. sink/tooltip.html records the standing call.'],
-  'combo-button:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'fluid:number-input__divider': [['number--helpertext'],
     '`number--helpertext` is the one ancestor class not written, and it is the §4.1.12 call '
     + 'sink/number.html already records: the reference puts it on the root when helper text is '
@@ -171,13 +156,11 @@ const KNOWN = {
     'the icon-tooltip the sink declines throughout. `pagination__control-buttons`, the '
     + 'STYLED wrapper the same note used to omit, is present as of 2026-08-28.'],
   'table:toolbar-action': [['popover-container'], 'the icon-tooltip the sink declines throughout'],
-  'table:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   // Restored 2026-08-29. Carbon only ever renders a badge on an icon button
   // that also carries a hover hint, so all four captures wrap the pair in the
   // tooltip chrome. The fragment declines it for the reason the sink declines it
   // everywhere — the popover is positioned by floating-ui, which is Phase 5
   // behaviour this project has not written — and says so in its own comment.
-  'badge-indicator:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'badge-indicator:badge-indicator': [TOOLTIP_CHROME,
     'the badge sits inside the same declined icon-tooltip; the BUTTON that gives it its '
     + 'containing block is present, which is the ancestor that positions it'],
@@ -187,7 +170,6 @@ const KNOWN = {
   'table:overflow-menu__icon': [[...TOOLTIP_CHROME, 'btn', 'btn--ghost', 'btn--icon-only'],
     'the icon-tooltip the sink declines throughout, plus the btn classes declined on '
     + 'measurement — see the note above overflow-menu:overflow-menu__icon'],
-  'ui-shell:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   // THE BTN CLASSES ON AN OVERFLOW-MENU TRIGGER, declined on the same grounds as
   // modal-close__icon above and measured rather than argued. `.overflow-menu`
   // runs button-reset, component-reset and a focus-outline reset, then sets its
@@ -316,10 +298,81 @@ function occurrences(html) {
   return out;
 }
 
+// DECLINES THAT ARE ABOUT THE CLASS, NOT THE FRAGMENT.
+// KNOWN is keyed `fragment:class`, which is right for a judgement that turns on
+// what one fragment does. These two do not: every card story mounts its cards in
+// a css-grid column, and Carbon gives every icon-only button a hover hint built
+// from a popover this project declines because floating-ui behaviour was never
+// written. Neither fact changes with the file, and both were already being
+// restated per file -- 26 entries over 21 classes, every one of them the same
+// two lists.
+//
+// Keying them by CLASS is what makes them travel. A `fragment:class` entry
+// cannot match a file this repository does not own, so `check-ancestry.mjs
+// <consumer>` reported 0 declined and handed back every adjudicated divergence
+// as a finding: measured on rux-ln-notes 2026-09-01, two findings whose reasons
+// were already sitting in this file.
+//
+// A file-keyed entry still WINS, and four are kept for that reason -- modal's
+// close button, pagination's control buttons and card's action button each
+// record that the load-bearing wrapper IS present, which is the distinction
+// this gate exists to make and is not a property of the class.
+//
+// WHAT THIS GIVES UP: a new fragment using one of these 21 classes inherits the
+// decline instead of being adjudicated on its own. That is the trade -- the
+// judgement is genuinely about the class, and restating it per file was
+// producing drift, not rigour.
+const CLASS_DECLINES = {
+  'card': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card--productive': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card--expressive': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__header': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__title': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__label': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__title-text-row': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__title-text-row--truncate-multi': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__description': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__body': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__footer': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__actions': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__action': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'card__header-media': [CARD_STORY_GRID, CARD_GRID_REASON],
+  'btn--icon-only': [TOOLTIP_CHROME, TOOLTIP_REASON],
+  'overflow-menu': [TOOLTIP_CHROME, TOOLTIP_REASON],
+  'badge-indicator--count': [TOOLTIP_CHROME, TOOLTIP_REASON],
+  'combo-button__trigger': [TOOLTIP_CHROME, TOOLTIP_REASON],
+  'badge-indicator': [TOOLTIP_CHROME, TOOLTIP_REASON],
+};
+
 const showAll = process.argv.includes('--all');
+
+// ROOTS MAY COME FROM THE COMMAND LINE, so this gate can be pointed at a
+// CONSUMER's pages without those pages ever entering this repository.
+//
+// WHY THAT MATTERS AND WHY IT IS NOT A CONVENIENCE. A wrapper that is simply
+// absent is the defect class nothing else catches -- see the header -- and it
+// is the one a consumer is most likely to introduce, because a consumer
+// vendors css/, assets/ and js/ and inherits none of the enforcement. rux-ln-guides
+// has hit it: a missing `__icon` class that flexbox squashed from 20px to 5px,
+// which its own two gates could not see and a person found by looking.
+//
+// The captures are 1.8 MB and live here. Vendoring them into every consumer to
+// run a second copy of a rule this repository owns is the wrong trade -- and it
+// is the trade check-structure.mjs there already refused for the same reason.
+// Pointing this gate at the pages instead costs one argument, and nothing
+// crosses: the consumer's markup is read from disk on the same machine and
+// never committed, quoted or copied here.
+//
+//   node tools/check-ancestry.mjs                          # sink + templates
+//   node tools/check-ancestry.mjs ../rux-ln-guides/guides  # a consumer's pages
+//
+// This is the same fix `pageTargets()` took for the browser gates, and that
+// four node gates took at 9186429: a hardcoded page list is a gate that cannot
+// be asked about anything it was not written for.
+const roots = process.argv.slice(2).filter(a => !a.startsWith('--'));
 const findings = [], accepted = [];
 
-for (const file of markupFiles()) {       // sink/*.html + templates/*.html
+for (const file of markupFiles(roots.length ? roots : undefined)) {
   const name = file.name;
   const seen = new Map();   // class -> Set(missing ancestors)
   for (const { cls, chain } of occurrences(readFileSync(file.path, 'utf8'))) {
@@ -339,7 +392,7 @@ for (const file of markupFiles()) {       // sink/*.html + templates/*.html
     }
   }
   for (const [cls, missing] of seen) {
-    const known = KNOWN[`${name}:${cls}`];
+    const known = KNOWN[`${name}:${cls}`] ?? CLASS_DECLINES[cls];
     const declined = new Set(known?.[0] ?? []);
     const real = [...missing].filter(a => !declined.has(a));
     const row = { name, cls, missing: [...missing], real, reason: known?.[1],
