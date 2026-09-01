@@ -5,193 +5,193 @@
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "9 findings · 6 notes · focusRingChecked true. 8 are the adjudicated progress-step-button false positive. THE NINTH IS A NEW FALSE POSITIVE OF THE SAME FAMILY: the fluid list box draws its ring on the WRAPPER — measured, outline none to rgb(15,98,254) solid 2px on focus — and Carbon sets outline:none on the field itself, so check-a11y, which reads the control and its label, cannot see it. Three MORE fluid findings in this sweep were REAL and are fixed: no module applied Carbon’s JS-gated fluid focus classes."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "4 findings · 0 notes · focusRingChecked true — all 4 the adjudicated progress-step-button false positive; the only template carrying the component"
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/schedule-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "0 findings · 0 notes · focusRingChecked true"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "584 in file · 588 in page · 0 stripped · 4 added — data-table--selected, side-nav__overlay-active, table-sort--active and date-picker__day, the 42 day cells the module generates. THREE STRIPPED WERE FOUND AND FIXED IN THIS SWEEP: js/date-picker.js adopted a declared-open calendar without dismissOthers:false and tore down the dropdown and side-nav specimens (f10e3ae)."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "65 · 65 · 0 stripped · 0 added — read last, after every other cell was written and the portal rebuilt: 66 tag--green, 0 tag--magenta."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "40 · 40 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "102 · 103 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "84 · 84 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "106 · 106 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "59 · 59 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "51 · 51 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "94 · 94 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "75 · 76 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "73 · 73 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/schedule-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "102 in file · 94 in page · 8 stripped · 0 added. THE EIGHT ARE THE CALENDAR, AND THEY ARE HONEST: a template ships its date picker CLOSED, which is right for a page, and js/date-picker.js detaches a closed calendar exactly as React declines to mount one. They are not counted unseen — sink/date-picker.html now ships one calendar OPEN so check-coverage sees them rendered."
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "345 · 312 · 33 diverge, 0 defects — at 1280x900, was 312 · 287 · 25. The growth is the five new sections; no new class of divergence."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "25 · 23 · 2 diverge — at 1440x900, unchanged."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "21 · 20 · 1 diverge — at 1440x900, reproduced exactly."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "61 · 58 · 3 diverge — at 1440x900, reproduced exactly."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "54 · 52 · 2 diverge — at 1440x900, reproduced exactly."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "61 · 59 · 2 diverge — at 1440x900, reproduced exactly."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "31 · 30 · 1 diverge — at 1440x900, reproduced exactly."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "28 · 27 · 1 diverge — at 1440x900, reproduced exactly."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "55 · 47 · 8 diverge — at 1440x900, reproduced exactly."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "33 · 29 · 4 diverge — at 1440x900, reproduced exactly."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "44 · 43 · 1 diverge — at 1440x900, reproduced exactly."
     },
     "templates/schedule-page.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "56 · 54 · 2 diverge, 0 defects — at 1440x900. Both byte-identical to form-page.html’s: the 288px self-indent and the checkbox-wrapper margin."
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "43 sections (was 38) · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled. The five new sections are combo-button, copy-button, user-avatar, date-picker and fluid."
     }
   },
@@ -199,7 +199,7 @@
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "PENDING",
+      "commit": "b00ee79",
       "result": "37 / 37 passed · 0 failed, over 14 modules. Unchanged: date-picker and copy-button add no case, having no driver in the suite yet."
     }
   },
