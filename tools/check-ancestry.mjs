@@ -235,6 +235,42 @@ const KNOWN = {
 const COMPILED = compiled();
 
 // --- reference: class -> intersection of its classed-ancestor sets -----------
+// LOWERING THIS TO 2 WAS TRIED AND REJECTED, 2026-09-01. It admits 148 more
+// classes (550 -> 698) and produces 26 findings over 14 classes. All 26 were
+// triaged and NONE is a defect; three groups are worth not rediscovering:
+//
+//   * `date-picker__input--invalid/--warn` wanting `form-item`. Read per FILE,
+//     `components-datepicker--*` is the CLASSIC picker and wraps in form-item;
+//     `preview-preview-datepicker--*` is `--next` and does not. This build ships
+//     `--next`. Merging the four capture files into one map hides this, because
+//     `components-datepicker--simple@invalid` exists in two of them and the
+//     later silently wins -- the same classic-vs-`--next` trap README records
+//     against check-spacing's calendar row.
+//   * `dropdown--inline/--invalid` and `list-box--invalid` wanting
+//     `dropdown__wrapper`. @carbon/styles defines that class only in its
+//     `--inline` form, so the bare class has NO rule and check-classes would
+//     reject it; `list-box__wrapper` is the styled wrapper and is present, and
+//     the inline specimen already carries `dropdown__wrapper--inline`. Written
+//     up in sink/dropdown.html and sink/fluid.html.
+//   * `header__menu-item--current` wanting `header__submenu`, in all ten
+//     templates and ui-shell. Carbon's two capture stories both mark the current
+//     item inside a submenu, so the intersection demands it -- but css/rux.css
+//     styles the modifier UNSCOPED and the submenu rules only override the
+//     `::after`. Measured on templates/app-shell.html: outside any submenu the
+//     indicator computes content "" at 3px tall, against `none` for a plain
+//     item. A flat menu bar is the normal case and Carbon simply never captured
+//     one.
+//
+// `overflow-menu--open` wanting `overflow-menu__wrapper` is the fourth and the
+// only one where the class exists here: it is `line-height: 0` and nothing else.
+// Measured on the sink, the fragment has no wrapper and the open list still sits
+// flush at gap 0, which is what Carbon does. Adding one is also not free --
+// the wrapper must enclose the trigger AND the surface, and wrapping only the
+// button moved the open list 413px off target in the same measurement.
+//
+// The pattern across all 26: at 2 the corroborating captures are one or two
+// stories from a single component, which describes that story rather than the
+// component. 3 is doing real work.
 const MIN_STORIES = 3;
 
 const required = new Map();   // class -> Set | null  (null once intersected empty)
