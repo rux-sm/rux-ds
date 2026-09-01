@@ -431,9 +431,12 @@ The plan as it stood before the work. Kept for its reasoning.
    covered. `check-provenance` fails without it.
 5. **`npm run icons`**, then sweep the three browser gates and record the new cells —
    `npm run gates` will show them as never-run, which fails the build until they exist.
-6. **Two open questions it should settle**, both currently unanswered anywhere: where a
-   modal belongs in a page (no template carries one), and whether a step column should
-   collapse to horizontal or stay vertical below `lg`.
+6. **Two open questions it should settle** — where a modal belongs in a page, and
+   whether a step column should collapse to horizontal or stay vertical below `lg`.
+   *Both were settled by the template and are recorded above: the modal sits at the end
+   of `<main>`, and the column stays vertical. "No template carries one" was true when
+   this plan was written and stopped being true at `58be97a`; corrected 2026-09-01 after
+   `CLAUDE.md` and this line disagreed.*
 
 **Cost is the honest part: this is a day's work, not an afternoon.** The attempt took 580
 lines and three corrections, and a template carries more discipline than a sample page.
