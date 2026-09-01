@@ -34,11 +34,13 @@ outside press and the stack deciding which surface a press belongs to all come f
 kernel.
 
 What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports nine findings and six notes on the sink and four on
-`templates/wizard-page.html` — two adjudicated false positives across thirteen sites —
-and nothing on the other ten pages. But it reads attributes rather than running an
-AT. Its focus-ring check does now run in an automated browser, once the page has focus.
-See "Picking this up".
+reports twelve findings and six notes on the sink and four on
+`templates/wizard-page.html` — three adjudicated false positives across sixteen sites —
+and nothing on the other ten pages. It read nine here until 2026-09-01: the sweep took
+focus with a CLICK, which is an outside press, and the kernel removed the calendar the
+tool then could not find. The cause is the method, not the markup. But it reads
+attributes rather than running an AT. Its focus-ring check does now run in an
+automated browser, once the page has focus. See "Picking this up".
 
 **Phase 4 (devendor) is DECLINED while admissions are open, decided 2026-08-31.** It
 closes as met-by-measurement rather than met-by-deletion: `css/rux.css` carries zero
