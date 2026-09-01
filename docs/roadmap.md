@@ -18,6 +18,22 @@ Three properties define done:
 
 - **No Carbon at runtime or in the tree.** No `@carbon/*` dependency, no `--cds-*`, no
   SCSS, no telemetry. Carbon is the quarry, not a dependency.
+
+  > **The RUNTIME half is already met, measured 2026-08-31, and saying so changes what
+  > Phase 4 is for.** `css/rux.css` contains zero `cds`, `@carbon/*` appears only in
+  > `devDependencies` — there are no `dependencies` at all — and the built stylesheet is
+  > committed, so a consumer fetches it from a raw URL and installs nothing. The TREE
+  > half is also nearer than it reads: `node_modules/` is gitignored and **git tracks
+  > zero Carbon files**; what names Carbon in the repository is three lines of
+  > `package.json` and `src/app.scss`'s `@use` list.
+  >
+  > So Phase 4's remaining value is tidiness of this repository, not a property of the
+  > thing it ships — and §4.4 already prices what it costs: no admitting a component, no
+  > adding an icon, no theme change, no pricing a subset, no Carbon version bump. Worth
+  > weighing against a devendor that KEEPS `src/app.scss` and `package-lock.json` as the
+  > record of what was built from, and treats `css/rux.css` as generated-and-committed.
+  > Not decided here; §4.4 is where it is decided — and later the same day it was:
+  > declined while admissions are open, revisited only on an explicit freeze.
 - **A page is composed, not authored.** A new page starts from a template in
   `templates/`, not from a blank file. Consistency comes from there being one obvious
   way to build each page shape.

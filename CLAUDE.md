@@ -38,7 +38,16 @@ on every build. Roadmap §1.1.
 
 - **Classes.** Every `rux--*` comes from Carbon. `npm run verify` fails on one that does
   not resolve, or whose component is not compiled.
-- **Markup structure.** Diff against the captures in `docs/`, not against a guess and not
+- **Markup structure.** A HAND-WRITTEN capture entry must be declared HERE and in the
+  admitting commit, naming what it was read from — the entry itself cannot carry the
+  note, because the gates parse these files and `tools/extract/` would drop it on the
+  next re-capture. `tools/extract/` writes these files, and an entry that appears
+  by any other route is the one worth naming. Two exist, both in
+  `carbon-react-states.json` for the `--next` date picker, added 2026-08-31 and matching
+  the running story line for line. The eight capture files are in `CONTROL_FILES` for
+  this reason: a gate is only as honest as the file it compares against, and editing one
+  until a gate agrees is the move `check-coverage`'s baseline was taught to refuse.
+  Diff against the captures in `docs/`, not against a guess and not
   against the live Storybook — the captures match the compiled Carbon version and need no
   network. `node tools/diff-fragment.mjs <name>` does it mechanically.
 - **Decisions.** Roadmap §1.1, §2.1, §4.4 and §4.6 record choices *with their rejected
