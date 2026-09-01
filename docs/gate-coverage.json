@@ -129,63 +129,63 @@
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "346 · 311 · 35 diverge — at 1280x900, WITH IBM Plex Sans now served, and stable over three consecutive runs. Was 347 · 311 · 36. EXACTLY ONE DIVERGENCE RESOLVED, a toast-notification__close-button variant, and the survivors moved closer without matching: that button reads marginInlineStart 32.2656px against Carbon 27.0312px, where it read 45.8672px in system-ui. THE RESIDUE IS CONTENT, NOT FONT. modal-header__heading computes three different paddingInlineEnd values for three modals, and the close button auto-margin follows the width of the text beside it, so the specimen would have to carry Carbon story copy word for word to agree. No font fixes that. WHAT THE FONT DOES FIX is the machine question: plex.css carries no local() source, so every machine loads the same woff2 and these text-derived values stop depending on which system font was installed. Not provable from one machine; the mechanism is now sound."
+      "commit": "32e7eb1",
+      "result": "346 · 311 · 22 known · 13 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: copy-btn, form-requirement (checkbox), label (fluid), date-picker__input (fluid), form-requirement (fluid), data-table-container, table-header-label, toggletip-label, progress-step x3, progress-step-button, header__name. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "portal.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "25 · 23 · 2 diverge — at 1280x900 with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "25 · 23 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/app-shell.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "21 · 20 · 1 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "21 · 20 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/table-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "61 · 58 · 3 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "61 · 58 · 1 known · 2 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/form-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "54 · 52 · 2 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "54 · 52 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/detail-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "61 · 59 · 2 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "61 · 59 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/empty-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "31 · 30 · 1 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "31 · 30 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/error-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "28 · 27 · 1 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "28 · 27 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/wizard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "55 · 47 · 8 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "55 · 47 · 2 known · 6 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: css-grid-column.sm:col-span-4.md:col-span-8.lg:col-span-16, progress-step x3, progress-step-button, progress-optional. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/dashboard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "33 · 29 · 4 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "33 · 29 · 1 known · 3 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap, table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/settings-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "44 · 43 · 1 diverge — with Plex. Unchanged."
+      "commit": "32e7eb1",
+      "result": "44 · 43 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/schedule-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "56 · 54 · 2 diverge — with Plex. Unchanged. Ten of eleven pages reproduce exactly, which says the font moved one measurement and nothing else."
+      "commit": "32e7eb1",
+      "result": "56 · 54 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     }
   },
   "check-rendered": {

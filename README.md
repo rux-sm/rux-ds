@@ -445,10 +445,27 @@ reports the other five and which pages each has been run against.
 after the fluid and date-picker specimens landed, and again after IBM Plex was served. Every template reproduced its previous reading
 exactly, at a DIFFERENT width than it was recorded at, which is the first evidence those
 readings are not viewport-sensitive. The sink is the only page whose numbers moved, and
-both moves are decomposed in `docs/gate-coverage.json`: two spacing divergences are the
-MACHINE rather than the markup — the byte-identical pre-change file reads 346 · 311 · 35
-here against the 345 · 312 · 33 recorded elsewhere, so this gate's fractional-margin
-classes do not carry between machines — and the rest is the new markup.
+both moves are decomposed in `docs/gate-coverage.json`.
+
+**`check-spacing` stopped reporting a COUNT on 2026-09-01, and that was the fix.** The
+same tree read 345 · 312 · 33 on one machine and 346 · 311 · 35 on another with nothing
+changed, because a few rows carry values derived from text metrics — so the integer moved
+while the SET of disagreements did not, and a ledger entry reading "35 diverge" was
+unfalsifiable by the next reader. It now carries a **`KNOWN` list on `check-tags`'
+precedent**, keyed `signature|property` with a reason for each, and the number to watch is
+**unknown**. A known row stays known whether it computes 45.87px or 32.27px.
+
+**Six of the twelve pages now read 0 unknown.** The sink reads 22 known · 13 unknown, and
+those thirteen are the honest residue of one pass — `check-tags` took fifty findings to
+triage, and this is not finished. Four causes are adjudicated: specimens **blockified** by
+the sink's own `.ks-row` (declared `inline-flex`, computing `flex` because the wrapper is
+a flex container — the stylesheets agree); **demo styling on both sides** of the grid
+comparison, where Carbon's story adds `min-block-size: 80px` that `@carbon/styles`' own
+`_css-grid.scss` never sets and the sink adds inline padding; a **classic-vs-`--next`
+reference** for the date-picker calendar, which are two components sharing a class name;
+and values **derived from the text beside them**, which can only agree if a specimen
+carries Carbon's story copy verbatim. Plus the `content` self-indent every template sets
+in its own `<head>`, which was the single most common row in the set.
 
 **The sweep earned its keep, which is the argument for keeping the ledger at all.** It
 found a real defect and two real accessibility gaps that nothing else had.
@@ -663,7 +680,7 @@ Twenty-one, because none is sufficient alone — see roadmap §4.1.2 for the bug
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |
-| `check-spacing.js` | a box property that disagrees with what Carbon computes for the same class set, read from `docs/carbon-react-spacing.json` | whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders |
+| `check-spacing.js` | a box property that disagrees with what Carbon computes for the same class set, read from `docs/carbon-react-spacing.json`, reported as **known vs unknown** against an adjudicated list | whether the value is RIGHT — only whether it matches Carbon; a class set neither side renders; and it cannot express POSITION, so a `:last-of-type` element measured against a recorded non-last one is a sampling artifact, not a disagreement |
 | `check-behaviour.js` | a behaviour module that stops doing what its own header claims — the state a click produces | anything landing in a microtask: focus destination, focus restoration, the order two surfaces close in |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense · **an ARIA role Carbon never renders** · **a page carrying no heading at all** |
 

@@ -274,7 +274,139 @@
       .map(k => `${k}: ours ${ours[k] ?? '—'} · Carbon ${theirs[k] ?? '—'}`);
   };
 
+
+// ── KNOWN ───────────────────────────────────────────────────────────────────
+//
+// ADJUDICATED DIVERGENCES, EACH WITH A REASON. This follows check-tags, which
+// stayed a diagnostic until every finding of its first full run had been
+// triaged, and check-ancestry, which records 53 declines the same way. This tool
+// had no such list, so its headline was a COUNT -- and a count is the one part
+// of this output that neither travels between machines nor can be investigated.
+//
+// WHY THE COUNT WAS THE WRONG UNIT. The same tree measured 345 - 312 - 33 on one
+// machine and 346 - 311 - 35 on another with no change to the repository: a few
+// rows carry values derived from text metrics, so the integer moves while the
+// SET of disagreements does not. A ledger entry reading "35 diverge" is
+// therefore unfalsifiable by the next reader. With this list the headline is
+// `known / unknown`, and a known row stays known whether it computes 45.87px or
+// 32.27px.
+//
+// A KEY IS `signature|property`, DELIBERATELY. If a known signature starts
+// diverging on a NEW property, that property is unknown and gets reported. An
+// adjudication covers what was examined, not the class forever.
+//
+// NOTHING IS SUPPRESSED. Known rows stay counted and stay in the return value;
+// they are only kept out of the printed table, so the short list is the one
+// worth reading -- which the header above argues is this tool's whole value.
+//
+// THIRTEEN ROWS ARE STILL UNKNOWN and print. That is the honest state after one
+// pass, not a finished job: check-tags took fifty findings to triage.
+
+// Blockification, verified 2026-09-01. The sink lays specimens out in `.ks-row`
+// and `.ks-grid`, and a flex or grid ITEM is blockified -- `inline-flex` computes
+// as `flex`, `inline-grid` as `grid`. Measured: the rule for `.rux--btn` asks for
+// inline-flex and the parent `.ks-row` computes `display: flex`, so the element
+// this tool reads computes `flex` while Carbon, sampling it outside such a
+// wrapper, recorded `inline-flex`. The stylesheets agree; the demo harness is the
+// whole difference, and it is on OUR side of the comparison.
+const BLOCKIFIED = 'blockified by the sink demo wrapper: declared inline-flex/inline-grid, '
+  + 'computes flex/grid because .ks-row is a flex container. Stylesheets agree (2026-09-01)';
+
+// Carbon's STORY styling, on Carbon's side. `elements-grid--mixed-gutter-modes`
+// paints its columns so they are visible in the demo; @carbon/styles' own
+// scss/grid/_css-grid.scss sets neither min-block-size nor block padding, grepped
+// 2026-09-01 with no match. The sink's inline `padding:.5rem 0` is the same move
+// on our side, which is why these rows disagree in both directions at once.
+const GRID_DEMO = 'demo styling on both sides: the Carbon story adds min-block-size 80px, '
+  + 'the sink adds inline padding; @carbon/styles _css-grid.scss sets neither (2026-09-01)';
+
+// The sink writes `style="margin-block-end:1.5rem"` on its grid specimens so the
+// rows do not butt together. 1.5rem is the 24px reported. sink/grid.html:37.
+const GRID_MARGIN = 'the sink own inline style="margin-block-end:1.5rem" on the specimen, '
+  + 'which is the 24px reported; Carbon sets none (sink/grid.html:37)';
+
+// The reference for these is the CLASSIC picker and this fragment is `--next`.
+// `components-datepicker--default` renders its calendar through flatpickr, where
+// sink/date-picker.html records that `cds--date-picker__calendar` matches ZERO
+// cds rules and styles nothing. Comparing our --next calendar against it compares
+// two different components that happen to share a class name.
+const DP_CLASSIC = 'reference is the CLASSIC flatpickr picker (components-datepicker--default) '
+  + 'and this fragment is --next; those calendar classes style nothing there';
+
+// Values derived from the TEXT BESIDE THEM, so they can only agree if the
+// specimen carries Carbon story copy word for word. The close button margin is an
+// auto margin following the message width, and modal-header__heading computes
+// three different paddings for the three modals on this page. Measured
+// 2026-09-01: serving IBM Plex moved the close button from 45.87px to 32.27px
+// against Carbon's 27.03px -- closer, and still content rather than font.
+const CONTENT = 'derived from the width of the text beside it, so it can only agree if the '
+  + 'specimen carries Carbon story copy verbatim (2026-09-01)';
+
+
+// The template indents ITSELF. `.rux--content` is only ever offset by a SIBLING
+// side nav, and the shell puts the nav inside the header, so none of Carbon's
+// three rules match -- each template sets breakpoint-scoped fixed padding in its
+// own <head> instead, which README and templates/app-shell.html both record. The
+// 288px reported is that padding; Carbon's 32px is the un-offset story. This is
+// the single most common row in the set: it appears on all ten templates and on
+// portal.html, and it is deliberate on our side.
+const SELF_INDENT = 'the template indents itself: a nav INSIDE the header matches none of '
+  + "Carbon's three .rux--content rules, so each template sets its own breakpoint-scoped "
+  + 'padding (README, templates/app-shell.html)';
+
+// POSITION IS A DIMENSION THE KEY CANNOT HOLD, and the header records the find:
+// `.form-item.checkbox-wrapper` is 0.375rem and its `:last-of-type` is 0.1875rem,
+// both Carbon's own. The page reported its LAST wrapper against a recorded
+// non-last one -- 3px against 6px. Neither the class set nor the parent can say
+// "the last of its kind", so this is a sampling artifact, not a disagreement.
+const LAST_OF_TYPE = 'the page measured its :last-of-type wrapper against a recorded '
+  + 'non-last one; 0.1875rem vs 0.375rem are both Carbon own, and the key cannot '
+  + 'express position (check-spacing header, 2026-08-28)';
+
+const KNOWN = {
+  'rux--btn.rux--btn--danger--tertiary|display': BLOCKIFIED,
+  'rux--btn.rux--btn--danger--ghost|display': BLOCKIFIED,
+  'rux--btn.rux--btn--md.rux--layout--size-md.rux--btn--primary|display': BLOCKIFIED,
+  'rux--btn.rux--btn--sm.rux--layout--size-sm.rux--btn--primary|display': BLOCKIFIED,
+  'rux--link.rux--link--disabled|display': BLOCKIFIED,
+  'rux--btn.rux--btn--sm.rux--layout--size-sm.rux--btn--ghost.rux--btn--icon-only|display': BLOCKIFIED,
+  'rux--btn.rux--btn--tertiary.rux--btn--sm.rux--layout--size-sm|display': BLOCKIFIED,
+  'rux--stack-horizontal.rux--stack-scale-6|display': BLOCKIFIED,
+
+  'rux--css-grid|marginBlockEnd': GRID_MARGIN,
+  'rux--css-grid.rux--css-grid--condensed|marginBlockEnd': GRID_MARGIN,
+  'rux--css-grid-column.rux--col-span-4|minBlockSize': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-4|paddingBlockEnd': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-4|paddingBlockStart': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-4|paddingInlineEnd': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-4|paddingInlineStart': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|minBlockSize': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|paddingBlockEnd': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|paddingBlockStart': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|paddingInlineEnd': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|paddingInlineStart': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|marginInlineEnd': GRID_DEMO,
+  'rux--css-grid-column.rux--col-span-8|marginInlineStart': GRID_DEMO,
+
+  'rux--date-picker__month|marginBlockEnd': DP_CLASSIC,
+  'rux--date-picker__weekdays|columnGap': DP_CLASSIC,
+  'rux--date-picker__weekdays|display': DP_CLASSIC,
+  'rux--date-picker__weekdays|marginBlockEnd': DP_CLASSIC,
+  'rux--date-picker__weekdays|rowGap': DP_CLASSIC,
+  'rux--date-picker__day|paddingBlockEnd': DP_CLASSIC,
+  'rux--date-picker__day|paddingBlockStart': DP_CLASSIC,
+  'rux--date-picker__day|paddingInlineEnd': DP_CLASSIC,
+  'rux--date-picker__day|paddingInlineStart': DP_CLASSIC,
+
+  'rux--toast-notification__close-button|marginInlineStart': CONTENT,
+  'rux--modal-header__heading|paddingInlineEnd': CONTENT,
+
+  'rux--content|paddingInlineStart': SELF_INDENT,
+  'rux--form-item.rux--checkbox-wrapper|marginBlockEnd': LAST_OF_TYPE,
+};
+
   const diverges = [], notComparable = [], noReference = new Map();
+  const known = [];
   let matched = 0, checked = 0;
   const seen = new Set();
   for (const el of document.querySelectorAll('[class*="rux--"]')) {
@@ -312,7 +444,7 @@
       .filter(k => !isPercent(ours[k]) && !compare.some(v => isPercent(v.values[k])))
       .filter(k => !compare.some(v => sameValue(ours[k], v.values[k])));
     if (!perProperty.length) { matched++; continue; }   // every property matches some variant
-    diverges.push({
+    const row = {
       class: sig,
       where: el.closest('.ks-sec')?.id ?? '(page)',
       differs: perProperty.map(k => `${k}: ours ${ours[k] ?? '—'} · Carbon `
@@ -320,15 +452,21 @@
       context: inContext.length ? mine || '(root)' : 'unmatched',
       variants: `${compare.length}/${variants.length}`,
       seen: compare[0].seen[0] ?? '?',
-    });
+    };
+    // KNOWN only when EVERY diverging property is adjudicated for this signature.
+    const reasons = perProperty.map(k => KNOWN[`${sig}|${k}`]);
+    if (reasons.every(Boolean)) known.push({ ...row, reason: [...new Set(reasons)].join(' · ') });
+    else diverges.push(row);
   }
 
   console.log(`\n  check-spacing — ${checked} signatures with a reference, `
-    + `${matched} matching, ${diverges.length} diverging`);
+    + `${matched} matching, ${known.length} known, ${diverges.length} unknown`);
+  console.log(`  KNOWN is adjudicated, not suppressed — each row carries a reason and `
+    + `stays in the return value. The number to watch is UNKNOWN.`);
   console.log(`  ${noReference.size} class sets Carbon does not render, `
     + `${notComparable.length} not comparable — neither is a fault, see the header\n`);
   if (diverges.length) console.table(diverges);
   console.log('\n  NOT CHECKED: whether the value is RIGHT, only whether it matches Carbon.'
     + '\n  Anything behind an interaction is out of reach — this reads the settled page.\n');
-  return { checked, matched, diverges, notComparable, noReference: [...noReference.keys()].sort() };
+  return { checked, matched, known, diverges, notComparable, noReference: [...noReference.keys()].sort() };
 })();
