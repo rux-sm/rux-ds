@@ -20892,6 +20892,258 @@ a.rux--side-nav__link--current::before {
   color: var(--rux-text-primary, #161616);
 }
 
+.rux--user-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid transparent;
+  border-radius: 100%;
+  block-size: 4rem;
+  color: var(--rux-text-inverse, #ffffff);
+  inline-size: 4rem;
+  outline: none;
+  outline-offset: 3px;
+}
+
+.rux--user-avatar svg {
+  color: var(--rux-icon-inverse, #ffffff);
+}
+
+.rux--user-avatar__tooltip-trigger {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  appearance: none;
+  background: none;
+  block-size: 100%;
+  cursor: pointer;
+  inline-size: 100%;
+  outline: none;
+}
+
+.rux--user-avatar__tooltip:focus-within .rux--user-avatar {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: 1px;
+}
+
+.rux--user-avatar__photo {
+  border-radius: 100%;
+  object-fit: contain;
+}
+
+.rux--user-avatar--xl {
+  block-size: 4rem;
+  inline-size: 4rem;
+}
+
+.rux--user-avatar--lg {
+  block-size: 3rem;
+  inline-size: 3rem;
+}
+
+.rux--user-avatar--md {
+  block-size: 2rem;
+  inline-size: 2rem;
+}
+
+.rux--user-avatar--sm {
+  block-size: 1.5rem;
+  inline-size: 1.5rem;
+}
+
+.rux--user-avatar--xl {
+  font-size: var(--rux-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-heading-04-font-weight, 400);
+  line-height: var(--rux-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-04-letter-spacing, 0);
+}
+
+.rux--user-avatar--lg {
+  font-size: var(--rux-heading-03-font-size, 1.25rem);
+  font-weight: var(--rux-heading-03-font-weight, 400);
+  line-height: var(--rux-heading-03-line-height, 1.4);
+  letter-spacing: var(--rux-heading-03-letter-spacing, 0);
+}
+
+.rux--user-avatar--md {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--user-avatar--sm {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+}
+
+.rux--user-avatar__photo--xl {
+  border-radius: 100%;
+  block-size: 4rem;
+  inline-size: 4rem;
+  object-fit: fill;
+}
+
+.rux--user-avatar__photo--lg {
+  border-radius: 100%;
+  block-size: 3rem;
+  inline-size: 3rem;
+  object-fit: fill;
+}
+
+.rux--user-avatar__photo--md {
+  border-radius: 100%;
+  block-size: 2rem;
+  inline-size: 2rem;
+  object-fit: fill;
+}
+
+.rux--user-avatar__photo--sm {
+  border-radius: 100%;
+  block-size: 1.5rem;
+  inline-size: 1.5rem;
+  object-fit: fill;
+}
+
+:root .rux--user-avatar--order-1-cyan,
+.rux--g10 .rux--user-avatar--order-1-cyan,
+.rux--white .rux--user-avatar--order-1-cyan {
+  background-color: #0072c3;
+}
+
+:root .rux--user-avatar--order-2-gray,
+.rux--g10 .rux--user-avatar--order-2-gray,
+.rux--white .rux--user-avatar--order-2-gray {
+  background-color: #6f6f6f;
+}
+
+:root .rux--user-avatar--order-3-green,
+.rux--g10 .rux--user-avatar--order-3-green,
+.rux--white .rux--user-avatar--order-3-green {
+  background-color: #198038;
+}
+
+:root .rux--user-avatar--order-4-magenta,
+.rux--g10 .rux--user-avatar--order-4-magenta,
+.rux--white .rux--user-avatar--order-4-magenta {
+  background-color: #d02670;
+}
+
+:root .rux--user-avatar--order-5-purple,
+.rux--g10 .rux--user-avatar--order-5-purple,
+.rux--white .rux--user-avatar--order-5-purple {
+  background-color: #8a3ffc;
+}
+
+:root .rux--user-avatar--order-6-teal,
+.rux--g10 .rux--user-avatar--order-6-teal,
+.rux--white .rux--user-avatar--order-6-teal {
+  background-color: #007d79;
+}
+
+:root .rux--user-avatar--order-7-cyan,
+.rux--g10 .rux--user-avatar--order-7-cyan,
+.rux--white .rux--user-avatar--order-7-cyan {
+  background-color: #003a6d;
+}
+
+:root .rux--user-avatar--order-8-gray,
+.rux--g10 .rux--user-avatar--order-8-gray,
+.rux--white .rux--user-avatar--order-8-gray {
+  background-color: #393939;
+}
+
+:root .rux--user-avatar--order-9-green,
+.rux--g10 .rux--user-avatar--order-9-green,
+.rux--white .rux--user-avatar--order-9-green {
+  background-color: #044317;
+}
+
+:root .rux--user-avatar--order-10-magenta,
+.rux--g10 .rux--user-avatar--order-10-magenta,
+.rux--white .rux--user-avatar--order-10-magenta {
+  background-color: #740937;
+}
+
+:root .rux--user-avatar--order-11-purple,
+.rux--g10 .rux--user-avatar--order-11-purple,
+.rux--white .rux--user-avatar--order-11-purple {
+  background-color: #491d8b;
+}
+
+:root .rux--user-avatar--order-12-teal,
+.rux--g10 .rux--user-avatar--order-12-teal,
+.rux--white .rux--user-avatar--order-12-teal {
+  background-color: #004144;
+}
+
+.rux--g90 .rux--user-avatar--order-1-cyan,
+.rux--g100 .rux--user-avatar--order-1-cyan {
+  background-color: #1192e8;
+}
+
+.rux--g90 .rux--user-avatar--order-2-gray,
+.rux--g100 .rux--user-avatar--order-2-gray {
+  background-color: #8d8d8d;
+}
+
+.rux--g90 .rux--user-avatar--order-3-green,
+.rux--g100 .rux--user-avatar--order-3-green {
+  background-color: #24a148;
+}
+
+.rux--g90 .rux--user-avatar--order-4-magenta,
+.rux--g100 .rux--user-avatar--order-4-magenta {
+  background-color: #ee5396;
+}
+
+.rux--g90 .rux--user-avatar--order-5-purple,
+.rux--g100 .rux--user-avatar--order-5-purple {
+  background-color: #a56eff;
+}
+
+.rux--g90 .rux--user-avatar--order-6-teal,
+.rux--g100 .rux--user-avatar--order-6-teal {
+  background-color: #009d9a;
+}
+
+.rux--g90 .rux--user-avatar--order-7-cyan,
+.rux--g100 .rux--user-avatar--order-7-cyan {
+  background-color: #82cfff;
+}
+
+.rux--g90 .rux--user-avatar--order-8-gray,
+.rux--g100 .rux--user-avatar--order-8-gray {
+  background-color: #c6c6c6;
+}
+
+.rux--g90 .rux--user-avatar--order-9-green,
+.rux--g100 .rux--user-avatar--order-9-green {
+  background-color: #6fdc8c;
+}
+
+.rux--g90 .rux--user-avatar--order-10-magenta,
+.rux--g100 .rux--user-avatar--order-10-magenta {
+  background-color: #ffafd2;
+}
+
+.rux--g90 .rux--user-avatar--order-11-purple,
+.rux--g100 .rux--user-avatar--order-11-purple {
+  background-color: #d4bbff;
+}
+
+.rux--g90 .rux--user-avatar--order-12-teal,
+.rux--g100 .rux--user-avatar--order-12-teal {
+  background-color: #3ddbd9;
+}
+
 html,
 body,
 div,
