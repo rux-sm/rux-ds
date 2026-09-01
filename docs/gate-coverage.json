@@ -5,187 +5,187 @@
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "f75ee18",
-      "result": "12 findings · 6 notes · focusRingChecked true. ALL TWELVE ARE NOW ADJUDICATED FALSE POSITIVES: 8 progress-step-button, 3 fluid list box, and the date-picker calendar, settled 2026-09-01 against the RUNNING Carbon at react.carbondesignsystem.com, story preview-preview-datepicker--single-with-calendar. Carbon own --next calendar is byte-for-byte our shape on every point the finding turns on: role=grid, tabindex=0, aria-label=Calendar, computed outline-style NONE in both states, 42 days at tabindex=-1, and focusing the grid leaves activeElement ON THE GRID -- it does not delegate either. So js/date-picker.js matches Carbon and MUST NOT be changed; inventing focus delegation would be behaviour Carbon declines, which CLAUDE.md puts out of scope. ONE PLACE WE ARE AHEAD OF CARBON: our day buttons paint solid 2px rgb(15,98,254) on focus where Carbons paint nothing at all in either state. Whether Carbon moves focus on an arrow key is UNVERIFIED -- the probe used a synthetic KeyboardEvent and that is not evidence. The finding stays reported rather than suppressed, per the standing rule that an exception list is not a passing check."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below — 12 findings, 6 notes, focusRingChecked true, calendar OPEN at measurement, and the tool itself now splits them 11 adjudicated + 1 fresh, the fresh one being the date-picker calendar the text below says stays reported (previously at f75ee18), which is kept for its adjudication. 12 findings · 6 notes · focusRingChecked true. ALL TWELVE ARE NOW ADJUDICATED FALSE POSITIVES: 8 progress-step-button, 3 fluid list box, and the date-picker calendar, settled 2026-09-01 against the RUNNING Carbon at react.carbondesignsystem.com, story preview-preview-datepicker--single-with-calendar. Carbon own --next calendar is byte-for-byte our shape on every point the finding turns on: role=grid, tabindex=0, aria-label=Calendar, computed outline-style NONE in both states, 42 days at tabindex=-1, and focusing the grid leaves activeElement ON THE GRID -- it does not delegate either. So js/date-picker.js matches Carbon and MUST NOT be changed; inventing focus delegation would be behaviour Carbon declines, which CLAUDE.md puts out of scope. ONE PLACE WE ARE AHEAD OF CARBON: our day buttons paint solid 2px rgb(15,98,254) on focus where Carbons paint nothing at all in either state. Whether Carbon moves focus on an arrow key is UNVERIFIED -- the probe used a synthetic KeyboardEvent and that is not evidence. The finding stays reported rather than suppressed, per the standing rule that an exception list is not a passing check."
     },
     "portal.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/app-shell.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/table-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/form-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/detail-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/empty-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/error-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/wizard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "4 findings · 0 notes · focusRingChecked true — all 4 the adjudicated progress-step-button false positive."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 4 findings · 0 notes · focusRingChecked true — all 4 the adjudicated progress-step-button false positive."
     },
     "templates/dashboard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/settings-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     },
     "templates/schedule-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "0 findings · 0 notes · focusRingChecked true"
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 0 findings · 0 notes · focusRingChecked true"
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "598/602 · 0 stripped · 4 added — data-table--selected, date-picker__day, side-nav__overlay-active, table-sort--active. Byte-for-byte the pre-Plex reading: a webfont changes metrics, not classes."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 598/602 · 0 stripped · 4 added — data-table--selected, date-picker__day, side-nav__overlay-active, table-sort--active. Byte-for-byte the pre-Plex reading: a webfont changes metrics, not classes."
     },
     "portal.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "65/65 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 65/65 · 0 stripped · 0 added. Unchanged."
     },
     "templates/app-shell.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "40/40 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 40/40 · 0 stripped · 0 added. Unchanged."
     },
     "templates/table-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "102/103 · 0 stripped · 1 added — table-sort--active. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 102/103 · 0 stripped · 1 added — table-sort--active. Unchanged."
     },
     "templates/form-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "84/84 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 84/84 · 0 stripped · 0 added. Unchanged."
     },
     "templates/detail-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "106/106 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 106/106 · 0 stripped · 0 added. Unchanged."
     },
     "templates/empty-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "59/59 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 59/59 · 0 stripped · 0 added. Unchanged."
     },
     "templates/error-state.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "51/51 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 51/51 · 0 stripped · 0 added. Unchanged."
     },
     "templates/wizard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "94/94 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 94/94 · 0 stripped · 0 added. Unchanged."
     },
     "templates/dashboard-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "75/76 · 0 stripped · 1 added — table-sort--active. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 75/76 · 0 stripped · 1 added — table-sort--active. Unchanged."
     },
     "templates/settings-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "73/73 · 0 stripped · 0 added. Unchanged."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 73/73 · 0 stripped · 0 added. Unchanged."
     },
     "templates/schedule-page.html": {
       "date": "2026-09-01",
-      "commit": "81e6cb3",
-      "result": "102/94 · 8 stripped · 0 added. Unchanged, including the adjudicated calendar eight."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883 after ecf5ab6 put the mark in every template header, viewport 1280x900, white, IBM Plex serving, focus taken with Tab then blurred: identical to the reading below (previously at 81e6cb3), which is kept for its adjudication. 102/94 · 8 stripped · 0 added. Unchanged, including the adjudicated calendar eight."
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "346 · 311 · 22 known · 13 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: copy-btn, form-requirement (checkbox), label (fluid), date-picker__input (fluid), form-requirement (fluid), data-table-container, table-header-label, toggletip-label, progress-step x3, progress-step-button, header__name. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 346 · 311 · 22 known · 13 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: copy-btn, form-requirement (checkbox), label (fluid), date-picker__input (fluid), form-requirement (fluid), data-table-container, table-header-label, toggletip-label, progress-step x3, progress-step-button, header__name. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "portal.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "25 · 23 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 25 · 23 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/app-shell.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "21 · 20 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 21 · 20 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/table-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "61 · 58 · 1 known · 2 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 61 · 58 · 1 known · 2 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/form-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "54 · 52 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 54 · 52 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/detail-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "61 · 59 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 61 · 59 · 1 known · 1 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/empty-state.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "31 · 30 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 31 · 30 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/error-state.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "28 · 27 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 28 · 27 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/wizard-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "55 · 47 · 2 known · 6 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: css-grid-column.sm:col-span-4.md:col-span-8.lg:col-span-16, progress-step x3, progress-step-button, progress-optional. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 55 · 47 · 2 known · 6 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: css-grid-column.sm:col-span-4.md:col-span-8.lg:col-span-16, progress-step x3, progress-step-button, progress-optional. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/dashboard-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "33 · 29 · 1 known · 3 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap, table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 33 · 29 · 1 known · 3 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: subgrid.subgrid--wide.subgrid--with-row-gap, table-header-label, tag.tag--blue. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/settings-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "44 · 43 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 44 · 43 · 1 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     },
     "templates/schedule-page.html": {
       "date": "2026-09-01",
-      "commit": "32e7eb1",
-      "result": "56 · 54 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
+      "commit": "0f8c883",
+      "result": "RE-SWEPT 2026-09-01 at 0f8c883, viewport 1280x900, white, IBM Plex serving: identical figures and identical UNKNOWN set to the reading below (previously at 32e7eb1). That reading was recorded against 32e7eb1, a commit that exists in no clone of this repository, which is why this cell reported ok for a day while nothing could age it; 0f8c883 is the first commit these figures can be aged against. 56 · 54 · 2 known · 0 unknown — at 1280x900 with IBM Plex serving. UNKNOWN: none. THE UNIT CHANGED, 2026-09-01: this cell used to record a COUNT of divergences, which is the one part of this output that does not travel — the same tree read 345·312·33 on one machine and 346·311·35 on another with nothing changed, because some rows carry text-derived values. check-spacing now carries a KNOWN list on check-tags precedent, keyed signature|property with a reason each, and the number to watch is UNKNOWN. A known row stays known whether it computes 45.87px or 32.27px. The unknown SIGNATURES are listed here so the next reader compares sets, not integers."
     }
   },
   "check-rendered": {
