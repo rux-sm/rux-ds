@@ -33,6 +33,8 @@
 //              neither `@use`d nor commented, so it can be neither kept nor cut
 //   mismatch   the disposition and the manifest disagree: KEEP is commented
 //              out, or CUT/DEFER is compiling
+//   shadowed   a stub in sink/deferred/ has the same name as a fragment that
+//              ships, so two files answer for one component and one is dead
 //
 // WHAT IT IS BLIND TO. Whether a disposition is RIGHT. CUT and DEFER are
 // judgements and this gate cannot grade one; it only insists that somebody made
@@ -42,7 +44,7 @@
 //
 // Roadmap §4.2. Its exit is now count-free for the reason this gate enforces.
 //
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
 const COMP_DIR = 'node_modules/@carbon/styles/scss/components';
 
@@ -101,6 +103,39 @@ for (const name of shipped) {
 for (const { name } of rows) {
   if (!shipped.includes(name)) {
     faults.push(['phantom', name, `row exists; ${COMP_DIR} has no such component`]);
+  }
+}
+
+// SHADOWED. Restoring a deferred component is documented in README as three
+// lines -- uncomment its @use, MOVE the fragment back, add it to sink/ORDER --
+// and the word doing the work is MOVE. Copy it instead and two files answer the
+// same question with one of them dead.
+//
+// THIS IS THIS GATE'S OWN FOUNDING DEFECT IN A SECOND PLACE. The header above
+// says a component nobody has decided is indistinguishable from one decided
+// CUT, because absence is what every other gate reads. A leftover stub is the
+// same shape: A DEAD STUB IS INDISTINGUISHABLE FROM A LIVE DEFERRAL, because
+// sitting in sink/deferred/ is what both look like.
+//
+// NOTHING ELSE CAN SEE IT. tools/lib/sources.mjs excludes sink/deferred/ by
+// design -- a finding must name a file you can edit, and a deferred fragment is
+// not in the build -- so every per-file gate is blind there by construction.
+// `2930323` paid for this once: progress-indicator's 51-line stub sat for two
+// days after the component was admitted, shadowing the 140-line fragment that
+// ships. The sixteen admissions of 2026-08-31 left six more, found on
+// 2026-09-01 by listing the directory rather than by any gate.
+//
+// THE RULE IS FILENAME COLLISION, NOT DISPOSITION, and that is deliberate.
+// `fluid` and `stack` are fragment names rather than Carbon component names, so
+// resolving through the inventory would miss exactly the two hardest to reason
+// about. Two files with one name is the defect, whatever either is called.
+const DEFERRED_DIR = 'sink/deferred';
+const htmlIn = dir => (existsSync(dir) ? readdirSync(dir).filter(f => f.endsWith('.html')) : []);
+const shipping = new Set(htmlIn('sink'));
+for (const f of htmlIn(DEFERRED_DIR).sort()) {
+  if (shipping.has(f)) {
+    faults.push(['shadowed', f.replace(/\.html$/, ''),
+      `${DEFERRED_DIR}/${f} shadows the sink/${f} that ships — move it, do not copy it`]);
   }
 }
 
