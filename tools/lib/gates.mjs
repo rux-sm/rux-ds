@@ -523,6 +523,57 @@ export const byId = id => GATES.find(g => g.id === id) ?? null;
 export const inVerify = () => GATES.filter(g => g.inVerify);
 export const browserGates = () => GATES.filter(g => g.kind === 'browser');
 
+// THE CONTROLS — the files that decide whether anything else passes.
+//
+// WHY A LIST AND NOT A GATE. Nothing here can be enforced by this repository
+// against itself: CI runs the gates from the same commit that changed them, so
+// a weakened gate certifies itself and the run is green. The reference
+// architecture's answer is a digest-verified baseline held outside the
+// workspace, which is shared platform work and is deliberately NOT built here
+// (`adoption-audit.md`, "what not to adopt"). With one maintainer there is also
+// no independent reviewer to route an approval to.
+//
+// So this list buys VISIBILITY, not approval. `tools/check-controls.mjs` reads
+// it, and CI prints a warning naming any control a push touched. That is the
+// whole of the mechanism, it blocks nothing, and it is worth having only
+// because a control changed by accident and a control changed on purpose look
+// identical in a diff summary.
+//
+// THE CATEGORIES GOVERN, NOT THE LIST. A file is not ordinary work merely
+// because this array forgot to name it. If something judges a change — a gate,
+// the registry it sits in, a baseline it compares against, the CI that runs it,
+// the hook that guards a commit, or the instruction file that establishes
+// policy — then it is a control and an omission here is a bug to report.
+export const CONTROL_FILES = [
+  // The gates themselves, and the two build tools that carry one.
+  'tools/check-a11y.js', 'tools/check-ancestry.mjs', 'tools/check-aria-roles.mjs',
+  'tools/check-behaviour.js', 'tools/check-classes.mjs', 'tools/check-co-classes.mjs',
+  'tools/check-compound.mjs', 'tools/check-coverage.mjs', 'tools/check-gates.mjs',
+  'tools/check-glyphs.mjs', 'tools/check-headings.mjs', 'tools/check-icons.mjs',
+  'tools/check-inventory.mjs', 'tools/check-provenance.mjs', 'tools/check-rendered.js',
+  'tools/check-runtime-classes.js', 'tools/check-slots.mjs', 'tools/check-spacing.js',
+  'tools/check-tags.mjs', 'tools/check-tokens.mjs',
+  'tools/build.mjs', 'tools/build-portal.mjs',
+
+  // The registry and the libraries every gate reads through.
+  'tools/lib/gates.mjs', 'tools/lib/ownership.mjs', 'tools/lib/sources.mjs',
+  'tools/lib/staleness.mjs', 'tools/check-controls.mjs',
+
+  // The expected results. A gate is only as honest as the file it compares
+  // against, and check-coverage's baseline is the one that had to be taught to
+  // refuse a downgrade.
+  'docs/coverage.json', 'docs/inventory.json', 'docs/gate-coverage.json',
+
+  // What runs the gates where nobody can skip them, and what guards a commit.
+  // The hook is enabled per clone with `git config core.hooksPath .githooks`,
+  // so it is one unversioned setting away from silently absent.
+  '.github/workflows/gates.yml', '.githooks/commit-msg', 'package.json',
+
+  // The instruction files. Under the reference these are the only repository
+  // content that may establish policy; everything else is data.
+  'AGENTS.md', 'CLAUDE.md',
+];
+
 // The cells a full sweep has to fill: every browser gate against every page it
 // declares it can run on. Node gates are not a matrix — they read their whole
 // target set on every run, so "has it been run" is answered by `npm run verify`.

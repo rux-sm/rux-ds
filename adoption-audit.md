@@ -9,6 +9,39 @@ only one created.
 
 ---
 
+## Acted on, same day
+
+The four verdict items were implemented on 2026-08-31, after the audit was
+written. **The findings below are left exactly as written** — a ledger that edits
+away its own history is worth less than one that shows the correction, which is
+`docs/audits.md`'s rule and applies to this file too. This section is the status
+column.
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | Coverage ratchet is prose, not code | **CLOSED** — `tools/check-coverage.mjs` refuses to lower a baseline and names the components; `--update --force` is the deliberate escape, with no npm script in front of it. All three paths probed in a copy of the tree: refuse (exit 1, wrote nothing), force (wrote, printed what it lowered), ordinary update (unchanged). README's ratchet paragraph now says what the code does |
+| 2 | No control-integrity check | **PARTLY CLOSED, by design** — `CONTROL_FILES` in `tools/lib/gates.mjs` (35 paths), read by the new `tools/check-controls.mjs`, printed as non-blocking `::warning::` lines by a new CI step. Visibility, not approval. The digest-verified baseline is still absent and still deliberately unbuilt |
+| 3 | `Bash(node -e ' *)` auto-approved | **CLOSED** — removed from `.claude/settings.local.json`, 20 entries down to 19. **The Supabase JWTs in `~/.claude/settings.json` were NOT touched**: that file is outside this repository, and removing an allowlist entry does not un-expose a token. Rotation is rux's, and it is the only fix |
+| 4 | Every browser reading uncurrent | **OPEN, unchanged** — still 0 of 38 current. Not a defect to fix in code; it needs a sweep |
+| 5 | `agent-tooling.md` says the repo has no commit hook | **OPEN** — not in the verdict, so not touched. `docs/agent-tooling.md:90` still states a falsehood about a control, and the smaller real gap under it (nothing verifies `core.hooksPath` is set in a fresh clone) is still open |
+| 6 | No `AGENTS.md`, no untrusted-data policy, no tiers | **CLOSED** — `AGENTS.md` carries `reference/tier-rules-block.md` with both placeholders resolved, plus two paragraphs this repository needed and the block does not have: tier 1 does not exist here and must not be built per-project, and tier 2 has no independent reviewer. `CLAUDE.md` points at it and carries the untrusted-data sentence inline |
+
+**One deliberate divergence from the reference, recorded because it is a
+judgement call.** §5 says keep the policy in `AGENTS.md` and make each vendor
+file a pointer. The tier block's own argument cuts the other way — policy that
+binds only when an agent chooses to open a file does not reliably bind, and
+`CLAUDE.md` is what loads automatically. Duplicating the table into both would
+violate this repository's older rule that a rule stated twice drifts. So the
+table lives once, in `AGENTS.md`, and `CLAUDE.md` carries an imperative pointer
+naming the paths that trigger it plus the one sentence too valuable to indirect.
+If an agent ignores that pointer, the tiers do not bind. That is the residual
+risk, and it is accepted rather than solved.
+
+`npm run verify` exits 0 after all of it. Its exit code was read directly, not
+through a pipe.
+
+---
+
 ## What this audit did not cover
 
 Stated first, because it is the payload — the same rule `docs/audits.md` runs on.

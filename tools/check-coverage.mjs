@@ -112,17 +112,62 @@ if (flag === '--own' && arg) {
 const base = statSync(BASELINE, { throwIfNoEntry: false })
   ? JSON.parse(readFileSync(BASELINE, 'utf8')).components ?? {} : {};
 
+// THE RATCHET WAS PROSE, NOT CODE, AND THE PROSE WAS ADDRESSED TO WHOEVER READ
+// IT. Until 2026-08-31 this block wrote the CURRENT measurement unconditionally.
+// README said "a ratchet can only be moved up"; the note field below said "never
+// to make a red gate green"; both were instructions to a reader and neither was a
+// check. Probed in a copy of the tree: raise a recorded `hit`, the gate goes red
+// (exit 1), run `npm run coverage:update`, the gate goes green and the baseline
+// has been lowered. One command, matched by an allowlist entry, and the only
+// trace is a diff nothing flags.
+//
+// That is the precise failure the gates exist to prevent — an agent optimises for
+// the check turning green, and rewriting the expected result was the cheapest
+// route there. So the refusal lives here now, and the sentence in README is true
+// because of this block rather than in spite of it.
+//
+// IT REFUSES RATHER THAN SILENTLY KEEPING THE HIGHER NUMBER. Keeping max() would
+// leave the gate red after a `--update` that reported success, which is its own
+// confusing lie. Naming the components and exiting 1 says what happened.
+//
+// `--force` EXISTS AND IS DELIBERATELY INCONVENIENT. A component can legitimately
+// lose classes — Carbon drops one upstream, or a component is stripped from
+// src/app.scss — and a baseline that can never come down would eventually be a
+// permanent red with no honest action available, which is the threshold failure
+// this file already rejected once. So the escape hatch stays, with no npm script
+// in front of it, printing what it lowered. It has to be typed in full and it
+// shows up in a shell history and a diff.
 if (flag === '--update') {
+  const forced = arg === '--force';
+  const lowered = rows.filter(r => base[r.component] && r.hit < base[r.component].hit);
+
+  if (lowered.length && !forced) {
+    console.log(`\n  REFUSED — ${lowered.length} component${lowered.length > 1 ? 's' : ''} `
+      + `would be recorded LOWER than the current baseline:`);
+    for (const r of lowered)
+      console.log(`             ${r.component.padEnd(18)}${base[r.component].hit} -> ${r.hit} of ${r.own}`);
+    console.log('\n             The baseline only moves up. Restore the markup that exercised'
+      + '\n             those classes, or — if the loss is real and intended —'
+      + '\n             `node tools/check-coverage.mjs --update --force`\n');
+    process.exit(1);
+  }
+
   const components = Object.fromEntries(rows.map(r => [r.component, { hit: r.hit, own: r.own }]));
   writeFileSync(BASELINE, JSON.stringify({
     note: 'Per-component class coverage of the kitchen sink, as achieved. check-coverage '
-        + 'fails when a component exercises fewer classes than recorded here, so this '
-        + 'file only ever moves up. Regenerate deliberately with `npm run coverage:update` '
-        + 'after adding sink markup — never to make a red gate green.',
+        + 'fails when a component exercises fewer classes than recorded here. `--update` '
+        + 'REFUSES to lower any entry, so this file only ever moves up; the refusal is in '
+        + 'tools/check-coverage.mjs and is not advice. Regenerate with '
+        + '`npm run coverage:update` after adding sink markup. A real loss — a component '
+        + 'stripped, or a class gone upstream — needs `--update --force`, which prints '
+        + 'what it lowered.',
     components,
   }, null, 2) + '\n');
   console.log(`\n  BASELINE written — ${rows.length} components, `
-    + `${rows.reduce((n, r) => n + r.hit, 0)} classes exercised\n`);
+    + `${rows.reduce((n, r) => n + r.hit, 0)} classes exercised`
+    + (lowered.length ? `\n  FORCED — ${lowered.length} lowered: `
+        + lowered.map(r => `${r.component} ${base[r.component].hit}->${r.hit}`).join(' ') : '')
+    + '\n');
   process.exit(0);
 }
 

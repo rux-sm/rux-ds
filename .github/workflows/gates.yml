@@ -19,7 +19,11 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
+      # fetch-depth: 0 so the control-file notice below has a base commit to
+      # diff against. A shallow clone has HEAD and nothing to compare it with.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       # The floor declared in package.json engines, not the version this is
       # developed on (26.x). CI proves the lower bound is honest; developing
@@ -43,6 +47,25 @@ jobs:
       # than reporting all of them. That is deliberate: the gates are ordered by
       # dependency, and a failed build makes every later checker meaningless.
       - run: npm run verify
+
+      # Names any control this push or PR touched — a gate, the registry, a
+      # baseline, this workflow, the commit hook, an instruction file.
+      #
+      # IT DOES NOT BLOCK, AND THAT IS THE DESIGN. CI runs the gates from the
+      # same commit that changed them, so a weakened gate certifies itself here;
+      # a blocking check would be a claim this repository cannot honour, and one
+      # maintainer has nowhere to escalate to. See tools/lib/gates.mjs
+      # CONTROL_FILES and adoption-audit.md. `continue-on-error` covers the
+      # first commit on a branch, where the base ref does not resolve.
+      - name: Control files touched
+        continue-on-error: true
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            echo "No base commit to diff against — skipping the control notice."
+          else
+            node tools/check-controls.mjs "$BASE"
+          fi
 
       # The build writes tracked files. css/rux.css, css/rux.min.css,
       # kitchen-sink.html and portal.html are committed so the system is

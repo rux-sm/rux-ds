@@ -1,5 +1,5 @@
 {
-  "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here, so this file only ever moves up. Regenerate deliberately with `npm run coverage:update` after adding sink markup — never to make a red gate green.",
+  "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here. `--update` REFUSES to lower any entry, so this file only ever moves up; the refusal is in tools/check-coverage.mjs and is not advice. Regenerate with `npm run coverage:update` after adding sink markup. A real loss — a component stripped, or a class gone upstream — needs `--update --force`, which prints what it lowered.",
   "components": {
     "copy-button": {
       "hit": 2,
@@ -21,13 +21,13 @@
       "hit": 16,
       "own": 33
     },
-    "number-input": {
-      "hit": 13,
-      "own": 26
-    },
     "data-table": {
       "hit": 41,
       "own": 80
+    },
+    "number-input": {
+      "hit": 14,
+      "own": 26
     },
     "list-box": {
       "hit": 19,

@@ -669,6 +669,15 @@ component exercises fewer classes than before. A threshold high enough to mean s
 would be red today with no action available; a ratchet can only be moved up, and moving
 it is deliberate.
 
+**That sentence was prose until 2026-08-31, and prose is not a ratchet.** `--update`
+wrote the current measurement unconditionally, so lowering the baseline — the cheapest
+possible route from a red gate to a green one — took one command and left a diff nothing
+flagged. `tools/check-coverage.mjs` now REFUSES to record a lower number and names the
+components; a real loss, a component stripped or a class gone upstream, needs
+`node tools/check-coverage.mjs --update --force`, which has no npm script in front of it
+and prints what it lowered. Found by the adoption audit and confirmed by probing a copy
+of the tree; `adoption-audit.md` carries the transcript.
+
 **It counts the FILE, and the file is not what the reader sees.** `check-coverage` is a
 Node tool, so it parses `kitchen-sink.html`; modules then run. `check-runtime-classes.js`
 compares the two and the directions are not symmetric. A class STRIPPED at load is
