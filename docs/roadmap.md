@@ -1307,6 +1307,34 @@ Phase 3 screenshots.
 > spacing. **Not decided here — this is rux's call**, and `docs/inventory.md` item 4
 > carries the same entry from the catalogue's side.
 
+> **DECIDED 2026-08-31, by rux: the devendor is DECLINED while admissions are open,
+> and Phase 4 closes as met-by-measurement rather than met-by-deletion.** §1's note of
+> the same date carries the measurement: the runtime half of the goal already holds —
+> zero `cds` in `css/rux.css`, no `dependencies` at all, a consumer fetches the
+> committed stylesheet and installs nothing — so the only thing steps 1–2 still buy is
+> tidiness of this repository, and their price is everything this section lists: no
+> admitting a component, no adding an icon, no theme change, no pricing a subset, no
+> version bump.
+>
+> **What tipped it is §2.1's amendment of the same day.** The project's job changed
+> from proving a small set can build pages to being a library components are picked
+> from, which means MORE admissions, and the door's price is exactly the ability to
+> admit. Buying repo tidiness by selling the project's new job is the trade declined.
+>
+> **The shape kept is the one the repository already has**: `src/app.scss` and
+> `package-lock.json` stay as the record of what was built from, `css/rux.css` is
+> generated-and-committed, `@carbon/*` stays in `devDependencies` only.
+>
+> **The rejected alternative**, stated so it is a choice: run steps 1–2 as written and
+> freeze the set now. Nothing above argues it can never be right — only that it is
+> wrong while the admission ground of §2.1 is live.
+>
+> **Trigger to revisit: the set freezes** — an explicit freeze decision, not mere
+> quiet. If that day comes, steps 1–2 stand as written. One knock-on, corrected in
+> place at §8.2: the versioning deferral's trigger read "when Phase 4 freezes the
+> component set"; since Phase 4 may now never run, that trigger is the freeze itself,
+> however it arrives.
+
 ### 4.5 Phase 5 — Behaviors
 
 Write vanilla modules against the DOM and ARIA contracts read out of the Lit templates.
@@ -2550,7 +2578,11 @@ tag per release is nearly free and gives nothing to check against; a `version` f
 a "classes removed in" record is what would let a generated page detect its own
 staleness, and is real work.
 
-**DEFERRED 2026-08-31, WITH A TRIGGER — decided when Phase 4 freezes the component set.**
+**DEFERRED 2026-08-31, WITH A TRIGGER — decided when the component set freezes.**
+*Trigger corrected later the same day: it read "when Phase 4 freezes the component
+set", and §4.4 then declined the devendor while admissions are open, so Phase 4 may
+never run. The event is the freeze itself, however it arrives; nothing else here
+changes.*
 Consumers keep pinning to a SHA until then. The reason is sequencing rather than cost:
 execution order is 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8, so devendor is still ahead, and §4.4
 says devendoring is what CLOSES the component set. A version stamped on the class
