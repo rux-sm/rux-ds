@@ -120,7 +120,10 @@ const matrix = cellStates().map(r => {
            current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
 const currentCells = matrix.filter(c => c.current).length;
-const staleCells = matrix.filter(c => c.state === 'STALE' || c.state === 'DIRTY').length;
+// "Stale" here is everything that is neither current nor never run, which is
+// the set `npm run gates` tells you to re-sweep. NO COMMIT and UNKNOWN COMMIT
+// used to fall into no bucket at all and vanished from the tile.
+const staleCells = matrix.filter(c => !c.current && c.state !== 'NEVER RUN').length;
 const neverRun = matrix.filter(c => c.state === 'NEVER RUN').length;
 
 // ── icons, asserted ─────────────────────────────────────────────────────────
@@ -173,7 +176,7 @@ const gateRows = GATES.map(g =>
 
 const STATE_TAG = { 'ok': ['current', 'green'], 'STALE': ['stale', 'red'],
   'DIRTY': ['dirty', 'magenta'], 'NEVER RUN': ['never run', 'red'],
-  'NO COMMIT': ['no commit', 'warm-gray'] };
+  'NO COMMIT': ['no commit', 'warm-gray'], 'UNKNOWN COMMIT': ['unknown commit', 'warm-gray'] };
 const matrixRows = matrix.map(c => {
   const [label, colour] = STATE_TAG[c.state] ?? [c.state, 'cool-gray'];
   return `                <tr>
@@ -287,7 +290,7 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
 ${tile('Components compiled', `${COMPILED.size} / ${allComponents.length}`, `${allComponents.length - COMPILED.size} cut or deferred`)}
 ${tile('Class coverage', `${covPct}%`, `${covHit} of ${covOwn} classes exercised`)}
 ${tile('Stylesheet', kbz(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
-${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCells} stale · ${neverRun} never run`)}
+${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCells} not current · ${neverRun} never run`)}
           </div>
         </div>
 
@@ -357,7 +360,7 @@ ${gateRows}
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. ${currentCells} of ${matrix.length} cells are current; ${staleCells} stale, ${neverRun} never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. ${currentCells} of ${matrix.length} cells are current; ${staleCells} not current, ${neverRun} never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -410,4 +413,4 @@ ${matrixRows}
 `;
 
 writeFileSync('portal.html', page);
-console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${currentCells}/${matrix.length} browser cells current, ${staleCells} stale, ${neverRun} never run`);
+console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${currentCells}/${matrix.length} browser cells current, ${staleCells} not current, ${neverRun} never run`);

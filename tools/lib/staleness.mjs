@@ -25,9 +25,23 @@ import { GATES, cells } from './gates.mjs';
 
 const LEDGER = 'docs/gate-coverage.json';
 
-const git = args => {
-  try { return execFileSync('git', args, { encoding: 'utf8' }).trim(); }
-  catch { return ''; }
+// A GIT FAILURE IS NOT "HAS NOT MOVED". The first version of this helper
+// caught every error and returned '', and movedSince read '' as "no commits
+// since" — so any recorded commit git could not resolve aged to `ok`. Found
+// 2026-09-01: all twelve check-spacing cells recorded `32e7eb1`, a commit that
+// exists in no clone of this repository (it was rewritten before the ledger
+// was pushed), and every one of them printed `ok` while `templates/` had moved
+// twice underneath them. That is the exact reading this module exists to
+// refuse. The commit is now resolved FIRST and reported as its own state, and
+// a git failure after that is thrown, because there is no honest value to
+// substitute for it.
+const git = args => execFileSync('git', args, { encoding: 'utf8' }).trim();
+
+// Whether `sha` names a commit this clone can see. Nothing can be aged against
+// a commit that is not here, whatever the ledger says.
+const commitKnown = sha => {
+  try { execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { stdio: 'ignore' }); return true; }
+  catch { return false; }
 };
 
 // PORCELAIN IS COLUMN-ORIENTED AND `git()` TRIMS, WHICH IS A ONE-CHARACTER BUG
@@ -64,7 +78,7 @@ function movedSince(since, path) {
 }
 
 // [{ id, page, state, why }] for every cell the registry says a sweep must fill.
-// state is one of: 'ok' | 'STALE' | 'DIRTY' | 'NEVER RUN' | 'NO COMMIT'.
+// state is one of: 'ok' | 'STALE' | 'DIRTY' | 'NEVER RUN' | 'NO COMMIT' | 'UNKNOWN COMMIT'.
 export function cellStates() {
   const ledger = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, 'utf8')) : {};
 
@@ -83,6 +97,10 @@ export function cellStates() {
     // finding.
     if (!recorded.commit) {
       rows.push({ id, page, state: 'NO COMMIT', why: 'ledger entry records no commit to age against' });
+      continue;
+    }
+    if (!commitKnown(recorded.commit)) {
+      rows.push({ id, page, state: 'UNKNOWN COMMIT', why: `recorded commit ${recorded.commit} is not in this repository` });
       continue;
     }
 

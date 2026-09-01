@@ -446,8 +446,20 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, swept twice on 2026-09-01: once
-after the fluid and date-picker specimens landed, and again after IBM Plex was served. Every template reproduced its previous reading
+**38 browser cells — 2 CURRENT, 36 not, 0 never run, re-measured 2026-09-01.** The
+line here read "38 CURRENT, 0 stale" until the same day, and it was wrong twice over.
+Twenty-four cells — every `check-a11y` and `check-runtime-classes` reading — went stale
+at `ecf5ab6`, which put the mark in every template header after they were recorded at
+`81e6cb3`. The other twelve, all of `check-spacing`, record commit `32e7eb1`, which is
+in no clone of this repository: it was rewritten before the ledger was pushed. Until
+2026-09-01 `tools/lib/staleness.mjs` swallowed the git error that produced and read the
+empty result as "nothing has moved", so all twelve printed `ok` — a silent pass on the
+one gate whose whole job is refusing one. It now reports `UNKNOWN COMMIT`, which prints
+and does not block, like `NO COMMIT`. **All 36 need a browser re-sweep**, and this
+paragraph should not be rewritten to say they are current until one has been run.
+
+The sweep those figures replaced was the second of 2026-09-01: once after the fluid
+and date-picker specimens landed, and again after IBM Plex was served. Every template reproduced its previous reading
 exactly, at a DIFFERENT width than it was recorded at, which is the first evidence those
 readings are not viewport-sensitive. The sink is the only page whose numbers moved, and
 both moves are decomposed in `docs/gate-coverage.json`.

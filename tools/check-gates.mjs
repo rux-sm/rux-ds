@@ -16,6 +16,12 @@
 //   DIRTY       an input has uncommitted changes, so the result is not
 //               reconstructable by anyone else
 //   NO COMMIT   a ledger entry with nothing to age against — its own finding
+//   UNKNOWN COMMIT
+//               the ledger names a commit this clone does not have, so the
+//               reading cannot be aged by anyone. Added 2026-09-01 after twelve
+//               check-spacing cells recorded a rewritten commit and read `ok`
+//               for it — see tools/lib/staleness.mjs. Like NO COMMIT it prints
+//               and does not block: the fix is a re-sweep, the same as STALE.
 //
 // WHY THIS ONE MAY BE PROMOTED WHEN TWO OTHERS COULD NOT. Two candidate rules
 // were tested on 2026-08-29 and both failed this project's standard: a
@@ -92,7 +98,7 @@ const width = Math.max(...rows.map(r => r.id.length));
 
 console.log();
 for (const r of (gapsOnly ? gaps : rows)) {
-  const tag = r.state === "ok" ? "  ok       " : `  ${r.state.padEnd(9)}`;
+  const tag = r.state === "ok" ? "  ok            " : `  ${r.state.padEnd(14)}`;
   console.log(`${tag} ${r.id.padEnd(width)}  ${r.page}${r.why ? '  ·  ' + r.why : ''}`);
 }
 
@@ -110,9 +116,13 @@ console.log();
 // the design system, so it reads the registry rather than appearing in it.
 console.log(`  ${GATES.length} gates — ${inVerify().length} in npm run verify, `
   + `${browserGates().length} need a browser; this coverage check runs there too`);
+// Every non-ok state gets its own figure. The line used to print STALE alone,
+// so twelve UNKNOWN COMMIT cells would have read "24 stale" here against
+// "36 not current" on the portal — two readers, two numbers, same tree.
+const byState = [...new Set(gaps.map(r => r.state))].filter(st => st !== 'NEVER RUN')
+  .map(st => `${gaps.filter(r => r.state === st).length} ${st.toLowerCase()}`);
 console.log(`  ${rows.length} sweep cells · ${rows.length - gaps.length} current · `
-  + `${gaps.filter(r => r.state === 'STALE').length} stale · `
-  + `${gaps.filter(r => r.state === 'NEVER RUN').length} never run`);
+  + byState.concat(`${gaps.filter(r => r.state === 'NEVER RUN').length} never run`).join(' · '));
 const never = gaps.filter(r => r.state === 'NEVER RUN');
 const stale = gaps.filter(r => r.state !== 'NEVER RUN');
 if (stale.length) console.log(`  ${stale.length} reading${stale.length === 1 ? '' : 's'} `
