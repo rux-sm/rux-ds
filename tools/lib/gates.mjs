@@ -564,6 +564,32 @@ export const CONTROL_FILES = [
   // refuse a downgrade.
   'docs/coverage.json', 'docs/inventory.json', 'docs/gate-coverage.json',
 
+  // THE CAPTURES ARE EXPECTED RESULTS TOO, and the sentence above always
+  // covered them -- they were simply not listed. Seven gates decide pass or
+  // fail by comparing this repository's markup against these files:
+  // check-tags, check-ancestry and check-aria-roles read the four DOM and
+  // state captures; check-spacing reads the spacing table; check-slots and
+  // check-glyphs read the icon snapshots; check-co-classes and check-tokens
+  // read the co-class table. Edit one and the gate that consults it agrees
+  // with whatever it now says.
+  //
+  // ADDED 2026-08-31 AFTER A REAL EDIT WENT UNFLAGGED. Admitting date-picker
+  // needed two `preview-preview-datepicker--*@open` entries in
+  // carbon-react-states.json, because check-tags faulted `__day` on a <button>
+  // against a reference that only had it on a <span>. The entries were taken
+  // from the running story and match it line for line -- and that is exactly
+  // the point: nothing about the edit looked different from an edit that
+  // simply made a gate stop complaining, which is the move check-coverage's
+  // baseline was just taught to refuse.
+  //
+  // These are NOT hand-maintained files. `tools/extract/` writes them, so a
+  // legitimate change is a re-capture and shows up as one; a hand edit is the
+  // case worth naming.
+  'docs/carbon-react-dom.json', 'docs/carbon-react-states.json',
+  'docs/carbon-ibm-products-dom.json', 'docs/carbon-ibm-products-states.json',
+  'docs/carbon-react-spacing.json', 'docs/carbon-slots.json',
+  'docs/carbon-glyphs.json', 'docs/carbon-co-classes.json',
+
   // What runs the gates where nobody can skip them, and what guards a commit.
   // The hook is enabled per clone with `git config core.hooksPath .githooks`,
   // so it is one unversioned setting away from silently absent.
