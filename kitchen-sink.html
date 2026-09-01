@@ -789,7 +789,13 @@
     recommends when the date is one the user can remember. It needs no
     JavaScript at all.
   -->
-  <div class="ks-grid">
+  <!-- ks-ROW, NOT ks-grid. Carbon gives each variant its own fixed width —
+       measured 2026-08-31: the container is 120px for `--simple`, 288px for
+       `--single`, and 2 x 144px for `--range`. In a `ks-grid` those sit in
+       equal 356px tracks, so simple showed 236px of dead space beside itself
+       and range was squeezed at narrower widths. A flex row that wraps lets
+       each take the width Carbon gives it. -->
+  <div class="ks-row" style="gap:2.5rem">
 
     <!-- SIMPLE. Input only. No __icon, no calendar-container, no module. -->
     <div class="rux--date-picker rux--date-picker--next rux--date-picker--simple">

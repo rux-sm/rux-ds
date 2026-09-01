@@ -49,16 +49,33 @@
    root, which Carbon sets `position: relative`. Carbon portals only the
    classic (flatpickr) calendar.
 
-   NOTHING IN CARBON'S CSS HIDES A CLOSED CALENDAR, and that is a real finding
-   rather than a gap in this file. `.rux--date-picker__calendar` is
+   NOTHING IN CARBON'S CSS HIDES A CLOSED CALENDAR, and the first two attempts
+   at a closed state both failed. `.rux--date-picker__calendar` is
    `display: block` unconditionally and `.open` sets only
-   `margin-block-start: 0`. React never needs a hiding rule because it MOUNTS
-   the container only while open. A markup-is-the-API layer cannot do that, so
-   the closed state is the `hidden` ATTRIBUTE — the same mechanism
-   sink/dropdown.html already uses for `<ul class="rux--list-box__menu" hidden>`.
-   Ship the container `hidden`; this module clears it on open and sets it on
-   close. Written without it, the fragment showed all three calendars
-   permanently — measured, not predicted.
+   `margin-block-start: 0`. React needs no hiding rule because it MOUNTS the
+   container only while open.
+
+   THE `hidden` ATTRIBUTE DOES NOT WORK HERE, and that is worth stating
+   because it works everywhere else in this repository.
+   `sink/dropdown.html` hides its menu with `<ul ... hidden>` and that is
+   correct — the UA rule `[hidden] { display: none }` is unopposed there. It
+   is OPPOSED here: `.rux--date-picker--next .rux--date-picker__calendar-container`
+   sets `display: block` at specificity (0,2,0), which beats a UA rule, so the
+   attribute is inert and the calendar shows regardless. Measured on the
+   built page — `hidden` true, computed display `block`, box 288x348.
+
+   SO THE MODULE DETACHES IT, which is what React does rather than a
+   workaround for it. On claim the container is removed from the DOM and held
+   on the closure; opening re-inserts it, closing removes it again. That also
+   gets the AT behaviour right for free: a closed calendar is absent from the
+   accessibility tree rather than merely invisible.
+
+   THE CONSEQUENCE IS WORTH KNOWING: this component REQUIRES its module in a
+   way most of the layer does not. Without `js/date-picker.js` the markup
+   renders a permanently open calendar, because Carbon ships no closed state
+   for a page to copy. The fragment and the templates carry the container so
+   there is something to diff and something to attach; the module owns whether
+   it is in the document.
 
    NOT DONE, and deliberately: no locale, no date parsing beyond ISO
    yyyy-mm-dd, no min/max, no disabled-date predicate. Carbon takes those as
@@ -139,6 +156,14 @@
       });
     }
 
+    // Where the container lives while closed. Carbon's CSS has no closed
+    // state (see the header), so absence from the DOM IS the closed state.
+    var slot = container.parentNode;
+    var next = container.nextSibling;
+    var attached = true;
+    function attach() { if (!attached) { slot.insertBefore(container, next); attached = true; } }
+    function detach() { if (attached) { container.remove(); attached = false; } }
+
     var today = new Date(); today.setHours(0, 0, 0, 0);
     var view = parse(inputs[0].value) || today;
     view = new Date(view.getFullYear(), view.getMonth(), 1);
@@ -182,6 +207,7 @@
       active = which || 0;
       if (open) { render(); return; }
       open = true;
+      attach();
       container.hidden = false;
       calendar.classList.add(OPEN);
       var sel = selection();
@@ -202,6 +228,7 @@
       open = false;
       calendar.classList.remove(OPEN);
       container.hidden = true;
+      detach();
       if (release) { release(); release = null; }
       if (!opts || opts.restoreFocus !== false) (inputs[active] || inputs[0]).focus();
     }
@@ -283,8 +310,10 @@
 
     // A page may ship the calendar open, the way sink/date-picker.html does.
     // Adopt that state rather than fighting it — the rule tile.js follows.
-    if (calendar.classList.contains(OPEN) || !container.hidden) { open = false; show(0); }
-    else { container.hidden = true; render(); }
+    // A page may ship it open on purpose; otherwise render once so the grid is
+    // built, then take it out of the document.
+    if (calendar.classList.contains(OPEN)) { open = false; show(0); }
+    else { render(); container.hidden = true; detach(); }
   }
 
   function init(scope) {
