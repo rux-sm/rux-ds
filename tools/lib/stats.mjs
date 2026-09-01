@@ -28,16 +28,32 @@
 // belongs beside its reasoning. Splitting the 85 from the argument for 85 to
 // fill a table cell would be the trade this repository keeps declining.
 //
-// ONE FIGURE IS ENVIRONMENT-SENSITIVE and says so where it is used: gzip size
-// depends on the zlib the running Node bundles. Level 9 is pinned here because
-// level 6 already produced a disagreeing figure once (build-portal records it),
-// but a newer Node still reads css/ 0.1 KB smaller than Node 22 does, and CI
-// pins 22 (.github/workflows/gates.yml). So a contributor on a newer Node
-// regenerates portal.html and README to a figure CI then disagrees with, and
-// the staleness check fails on a file nobody edited. Measured 2026-09-01:
-// Node 26.7 reads 70.4 KB where the committed figure, made on 22, read 70.5.
-// Rounding the published figure to whole KB would end it; that is a decision
-// this file does not get to make on its own.
+// GZIP SIZE IS ENVIRONMENT-SENSITIVE, AND IT BROKE THE BUILD ONCE. Level 9 is
+// pinned here because level 6 already produced a disagreeing figure (build-
+// portal records that one), but the LEVEL is not the whole problem: the zlib
+// the running Node bundles decides the last hundred bytes. Measured 2026-09-01,
+// on byte-identical css/rux.min.css: Node 26.7 reads 70.4 KB where Node 22
+// reads 70.5. CI pins 22 (.github/workflows/gates.yml), regenerates, and diffs
+// the committed pages -- so a contributor on a newer Node commits a figure CI
+// cannot reproduce and the build fails on a file nobody edited. That is exactly
+// what happened at 59bcffd, on the very check this module had just been wired
+// into.
+//
+// SO THE PUBLISHED FIGURE IS WHOLE KB, FLOORED, and the exact byte count stays
+// here for callers that want it.
+//
+// FLOOR RATHER THAN ROUND, AND THE MARGINS ARE THE ARGUMENT. Measured
+// 2026-09-01: css/ is 72125 B and js/ is 45507 B. Rounding leaves only 67 B and
+// 61 B before the published figure changes -- SMALLER than the ~100 B the two
+// Node versions already differ by, so round would have failed again on the very
+// next push. Flooring leaves 579 B and 573 B, about six times the observed
+// variance.
+//
+// It is a mitigation and not a proof. If a measurement ever lands within ~100 B
+// of a whole KB the fix is not a third rounding rule: it is to stop publishing a
+// COMPRESSED size from a committed file at all. Raw and minified are byte-exact
+// and carry between machines. tools/build.mjs keeps measuring the exact value
+// against the tripwire, where it belongs -- read at build time, never committed.
 //
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';

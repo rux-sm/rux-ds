@@ -493,15 +493,17 @@ every commit is one nobody keeps.
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **47 `rendered-dom` · 6 `source` · 0 `inferred`** across 53 files |
 | Icons | 59 symbols in a 16.1 KB sprite — 36 referenced, 23 nothing points at |
-| Size | 772.9 KB raw · 694.6 KB min · **70.4 KB gzipped** |
-| Behaviour JS | **14** modules · **44.4 KB gzipped** · 149.6 KB raw, 61% of it comment · 58.8 KB of code |
+| Size | 772.9 KB raw · 694.6 KB min · **70 KB gzipped** |
+| Behaviour JS | **14** modules · **44 KB gzipped** · 149.6 KB raw, 61% of it comment · 58.8 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from
 `tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the
 committed copy is stale — the same contract `css/`, `kitchen-sink.html` and
 `portal.html` are already under. Do not edit the table by hand; the next build
-overwrites it. The gzipped figures are read at level 9 and are sensitive to the
-zlib the running Node bundles, which is why CI pins one. The tripwires those
+overwrites it. The gzipped figures are whole KB on purpose: they are read at
+level 9 and the last hundred bytes still depend on the zlib the running Node
+bundles, so an exact figure makes the build fail on whichever machine did not
+generate it. The tripwires those
 sizes run against — 85 KB for `css/`, 60 KB for `js/` — are decisions rather
 than measurements and live with their reasoning in `tools/build.mjs`.
 <!-- STATS:END -->

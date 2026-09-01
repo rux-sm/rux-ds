@@ -54,6 +54,9 @@ const read = p => readFileSync(p, 'utf8');
 const json = p => JSON.parse(read(p));
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const kb = n => `${(n / 1024).toFixed(1)} KB`;
+// Whole KB, FLOORED, for anything gzipped — see the header of tools/lib/stats.mjs
+// for why it is not exact and why floor rather than round.
+const kbz = n => `${Math.floor(n / 1024)} KB`;
 
 // ── the facts, all read ─────────────────────────────────────────────────────
 const inventory = json('docs/inventory.json');
@@ -282,7 +285,7 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
           <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
 ${tile('Components compiled', `${COMPILED.size} / ${allComponents.length}`, `${allComponents.length - COMPILED.size} cut or deferred`)}
 ${tile('Class coverage', `${covPct}%`, `${covHit} of ${covOwn} classes exercised`)}
-${tile('Stylesheet', kb(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
+${tile('Stylesheet', kbz(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
 ${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCells} stale · ${neverRun} never run`)}
           </div>
         </div>

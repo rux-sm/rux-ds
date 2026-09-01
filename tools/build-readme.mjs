@@ -30,6 +30,9 @@ const END = '<!-- STATS:END -->';
 const FILE = 'README.md';
 
 const kb = n => `${(n / 1024).toFixed(1)} KB`;
+// Whole KB, FLOORED, for anything gzipped — see the header of tools/lib/stats.mjs
+// for why it is not exact and why floor rather than round.
+const kbz = n => `${Math.floor(n / 1024)} KB`;
 const n = x => x.toLocaleString('en-US');
 
 const s = stats();
@@ -52,9 +55,9 @@ const rows = [
   ['Icons',
    `${s.icons.symbols} symbols in a ${kb(s.icons.spriteBytes)} sprite — ${s.icons.referenced} referenced, ${s.icons.unreferenced} nothing points at`],
   ['Size',
-   `${kb(s.css.rawBytes)} raw · ${kb(s.css.minBytes)} min · **${kb(s.css.gzipBytes)} gzipped**`],
+   `${kb(s.css.rawBytes)} raw · ${kb(s.css.minBytes)} min · **${kbz(s.css.gzipBytes)} gzipped**`],
   ['Behaviour JS',
-   `**${s.js.modules}** modules · **${kb(s.js.gzipBytes)} gzipped** · ${kb(s.js.rawBytes)} raw, ${s.js.commentPct}% of it comment · ${kb(s.js.codeBytes)} of code`],
+   `**${s.js.modules}** modules · **${kbz(s.js.gzipBytes)} gzipped** · ${kb(s.js.rawBytes)} raw, ${s.js.commentPct}% of it comment · ${kb(s.js.codeBytes)} of code`],
 ];
 
 const table = ['| | |', '|---|---|', ...rows.map(([k, v]) => `| ${k} | ${v} |`)].join('\n');
@@ -69,8 +72,10 @@ const note = [
   '`tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the',
   'committed copy is stale — the same contract `css/`, `kitchen-sink.html` and',
   '`portal.html` are already under. Do not edit the table by hand; the next build',
-  'overwrites it. The gzipped figures are read at level 9 and are sensitive to the',
-  "zlib the running Node bundles, which is why CI pins one. The tripwires those",
+  'overwrites it. The gzipped figures are whole KB on purpose: they are read at',
+  'level 9 and the last hundred bytes still depend on the zlib the running Node',
+  'bundles, so an exact figure makes the build fail on whichever machine did not',
+  'generate it. The tripwires those',
   'sizes run against — 85 KB for `css/`, 60 KB for `js/` — are decisions rather',
   'than measurements and live with their reasoning in `tools/build.mjs`.',
 ].join('\n');
