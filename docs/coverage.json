@@ -33,6 +33,10 @@
       "hit": 10,
       "own": 17
     },
+    "combo-button": {
+      "hit": 6,
+      "own": 10
+    },
     "overflow-menu": {
       "hit": 12,
       "own": 20

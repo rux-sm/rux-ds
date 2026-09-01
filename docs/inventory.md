@@ -223,7 +223,7 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `contained-list` | **CUT** | 86 | 232 | 0 | overlaps list and data-table |
 | `dialog` | **CUT** | 76 | 185 | 0 | overlaps modal; both are the same shape |
 | `pagination-nav` | **CUT** | 74 | 188 | 0 | a second pagination form; one is enough |
-| `combo-button` | **CUT** | 74 | 201 | 0 | button + menu composition |
+| `combo-button` | **KEEP** | 74 | 201 | 0 | **ADMITTED 2026-08-31.** A primary action and a menu trigger in one container. **Measured +0.12 KB gzipped, the cheapest admission this document records** — the menu, the button and the popover chrome it composes are all already compiled, so the partial adds only the container, the seam and the trigger. **No module written**: the menu is PORTALED in Carbon's capture, so trigger and surface are too far apart for the markup to relate them, which is exactly the `data-rux-open` case, and `js/menu.js` already claims any such trigger. Two lines went into `menu.js` so the container gets `--open` and the chevron rotates, the same shape as the `overflow-menu--open` it already sets. **Two attested classes are NOT written**, both §4.1.12: `btn--lg` has no rule at all — Carbon's button sizes stop at `--md` and large comes from `layout--size-lg` — and `combo-button__bottom` appears nowhere in the SCSS. `sink/combo-button.html` at 60%; the four unexercised classes are `__top`, `__top-start`, `__top-end` and the sm/md container sizes' open state |
 | `menu-button` | **CUT** | 73 | 195 | 0 | button + menu composition |
 | `copy-button` | **CUT** | 72 | 177 | 1 | only exists to serve code-snippet |
 | `chat-button` | **CUT** | 70 | 174 | 0 | AI affordance |

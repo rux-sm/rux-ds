@@ -49,6 +49,19 @@
   const ITEMS = '[role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"]';
   const live = new Map();   // surface -> { registration, trigger, kind }
 
+  // A COMBO BUTTON'S CONTAINER CARRIES THE OPEN STATE, not the trigger and not
+  // the menu. Carbon's capture shows `combo-button__container--open` appearing
+  // beside the trigger's `aria-expanded=true`, and the only rule it carries
+  // rotates the trigger's chevron 180 degrees. Without it the menu opens and
+  // the chevron keeps pointing down.
+  //
+  // This is the same shape the `overflow` kind below already uses, which puts
+  // `overflow-menu--open` on ITS trigger; the combo button's state simply lives
+  // one element further out. It is a no-op for every other menu trigger,
+  // because closest() finds nothing.
+  const COMBO_OPEN = 'rux--combo-button__container--open';
+  const comboContainer = trigger => trigger?.closest('.rux--combo-button__container');
+
   // The two shapes, described rather than branched on at every call site.
   const KINDS = {
     menu: {
@@ -56,10 +69,12 @@
       show: (surface, trigger) => {
         surface.classList.add('rux--menu--open', 'rux--menu--shown');
         trigger?.setAttribute('aria-expanded', 'true');
+        comboContainer(trigger)?.classList.add(COMBO_OPEN);
       },
       hide: (surface, trigger) => {
         surface.classList.remove('rux--menu--open', 'rux--menu--shown');
         trigger?.setAttribute('aria-expanded', 'false');
+        comboContainer(trigger)?.classList.remove(COMBO_OPEN);
       },
     },
     overflow: {

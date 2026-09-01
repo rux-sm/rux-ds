@@ -158,6 +158,10 @@ const KNOWN = {
     + 'The POSITIONING wrapper, modal-close-button, is present — dropping that one was '
     + 'the defect this gate was written for.'],
   'overflow-menu:overflow-menu': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
+  'combo-button:combo-button__trigger': [TOOLTIP_CHROME,
+    'the icon-tooltip the sink declines throughout. The trigger is the component; the '
+    + 'hover hint is the story. sink/tooltip.html records the standing call.'],
+  'combo-button:btn--icon-only': [TOOLTIP_CHROME, 'the icon-tooltip the sink declines throughout'],
   'pagination:pagination__button': [TOOLTIP_CHROME,
     'the icon-tooltip the sink declines throughout. `pagination__control-buttons`, the '
     + 'STYLED wrapper the same note used to omit, is present as of 2026-08-28.'],

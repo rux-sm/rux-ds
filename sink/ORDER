@@ -5,6 +5,7 @@
 # orders what is built, it does not select it, and build-sink appends anything
 # it finds in sink/ precisely so a fragment cannot go missing unnoticed.
 buttons
+combo-button
 links
 tags
 text-input
