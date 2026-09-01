@@ -441,8 +441,14 @@ last push, and `npm run verify` runs sixteen of the twenty-one gates — `npm ru
 reports the other five and which pages each has been run against.
 `docs/gate-coverage.json` carries each reading with the commit it was taken at.
 
-**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, swept 2026-08-31 after twelve
-admissions, five new sink sections and three modules touched.
+**38 browser cells — 38 CURRENT, 0 stale, 0 never run**, re-swept 2026-09-01 after the
+fluid and date-picker specimens landed. Every template reproduced its previous reading
+exactly, at a DIFFERENT width than it was recorded at, which is the first evidence those
+readings are not viewport-sensitive. The sink is the only page whose numbers moved, and
+both moves are decomposed in `docs/gate-coverage.json`: two spacing divergences are the
+MACHINE rather than the markup — the byte-identical pre-change file reads 346 · 311 · 35
+here against the 345 · 312 · 33 recorded elsewhere, so this gate's fractional-margin
+classes do not carry between machines — and the rest is the new markup.
 
 **The sweep earned its keep, which is the argument for keeping the ledger at all.** It
 found a real defect and two real accessibility gaps that nothing else had.
@@ -467,9 +473,11 @@ its ring on the WRAPPER and Carbon sets `outline: none` on the field itself, so
 the wrapper goes from `outline: none` to `rgb(15,98,254) solid 2px`. Same family as
 `progress-step-button`, and left reported for the same reason.
 
-**`check-a11y` reads 9 findings and 6 notes on the sink** — 8 progress-step-button, 1
+**`check-a11y` reads 11 findings and 6 notes on the sink** — 8 progress-step-button, 3
 fluid list box — **4 on `wizard-page.html`**, the only template carrying a progress
-indicator, and **0 on the other ten pages**.
+indicator, and **0 on the other ten pages**. The fluid figure went 1 to 3 on 2026-09-01
+because two fluid dropdown state specimens landed; the same false positive at more sites,
+not a new one.
 
 **`npm run gates` prints this and does not fail the build**, by design — a gate red on
 every commit is one nobody keeps.
@@ -744,17 +752,17 @@ diagnostic on 2026-08-27, after all fifty findings of its first full run were
 adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
 its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
 kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**9 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
+**11 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
 **0 findings, 0 notes** on the other ten pages. The wizard's four are the same
-adjudicated `progress-step-button` false positive as eight of the sink's nine — it is the
-only template carrying a progress indicator. The sink's ninth is the fluid list box,
-adjudicated separately and for a different reason. The sink's notes are CSS specimens
+adjudicated `progress-step-button` false positive as eight of the sink's eleven — it is
+the only template carrying a progress indicator. The sink's other three are the fluid
+list box, adjudicated separately and for a different reason. The sink's notes are CSS specimens
 with no trigger, which are not meant to be operable — four menu densities, the overflow menu's options and the
 list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
 unrelated change found it had been 6 for some time; a count in prose drifts unless
 something re-reads it.
 
-**Twelve of the thirteen are `progress-step-button`, one cause, and it is a false
+**Twelve of the fifteen are `progress-step-button`, one cause, and it is a false
 positive** — adjudicated 2026-08-29 when it was a single finding; admitting
 `progress-indicator` as a compiled component multiplied the sites, not the causes, and
 `wizard-page.html` then multiplied them again by being the one template that carries the
