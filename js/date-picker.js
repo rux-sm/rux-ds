@@ -203,7 +203,9 @@
       }
     }
 
-    function show(which) {
+    // `adopting` is true only for a calendar the MARKUP declared open, which
+    // this module renders at load. See the register() call for why it matters.
+    function show(which, adopting) {
       active = which || 0;
       if (open) { render(); return; }
       open = true;
@@ -218,7 +220,22 @@
         element: container,
         anchor: icons[active] || inputs[active],
         close: hide,
-        dismissOn: { outside: true, escape: true }
+        dismissOn: { outside: true, escape: true },
+        // `dismissOthers: false` WHEN ADOPTING, AND ITS ABSENCE COST EXACTLY
+        // WHAT js/list-box.js SAYS IT COSTS. register() calls dismissAbove() by
+        // default, so a calendar the markup declares open tore down every
+        // surface already adopted at load: check-runtime-classes reported
+        // `dropdown--open`, `list-box__menu-item--highlighted` and
+        // `side-nav--expanded` STRIPPED, with their classes still in the file
+        // and check-coverage still counting them. That is the 2026-08-28 defect
+        // list-box.js documents, reintroduced by a module written after it.
+        //
+        // The kernel's own reasoning is the test: a surface that was DECLARED
+        // open did not open because anyone chose it, so it belongs on the stack
+        // -- Escape and an outside press must still reach it -- but it must not
+        // dismiss what is already there. A calendar the USER opens is a choice,
+        // and keeps the default.
+        dismissOthers: !adopting
       }).release;
       calendar.focus();
     }
@@ -312,7 +329,7 @@
     // Adopt that state rather than fighting it — the rule tile.js follows.
     // A page may ship it open on purpose; otherwise render once so the grid is
     // built, then take it out of the document.
-    if (calendar.classList.contains(OPEN)) { open = false; show(0); }
+    if (calendar.classList.contains(OPEN)) { open = false; show(0, true); }
     else { render(); container.hidden = true; detach(); }
   }
 

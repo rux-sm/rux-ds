@@ -114,6 +114,42 @@
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
+  /* ── fluid focus ───────────────────────────────────────────────────────── */
+  //
+  // A FLUID CONTROL DRAWS ITS FOCUS RING FROM A CLASS, NOT FROM `:focus`, and
+  // nothing was applying it. Found by check-a11y on 2026-08-31, which reported
+  // three `select-input`s in the fluid section as "no visible focus change" --
+  // and it was right, which is worth saying because the same rule's other
+  // findings on this page are an adjudicated false positive.
+  //
+  // Carbon's rules are `.rux--select--fluid .rux--select--fluid--focus
+  // .rux--select-input__wrapper` and its siblings: the ring is on a WRAPPER and
+  // is gated on a class React adds on focus. With no module doing that, a fluid
+  // select, number or dropdown took focus and painted nothing.
+  //
+  // THREE CLASSES, THREE DIFFERENT HOSTS, read off the selectors rather than
+  // guessed: the select's goes on the inner `.rux--select`, the number's on the
+  // `--fluid` root itself, and the list box's on its own wrapper.
+  const FLUID_FOCUS = [
+    ['.rux--select--fluid', '.rux--select', 'rux--select--fluid--focus'],
+    ['.rux--number-input--fluid', null, 'rux--number-input--fluid--focus'],
+    ['.rux--list-box__wrapper--fluid', null, 'rux--list-box__wrapper--fluid--focus'],
+  ];
+
+  function fluidFocus(target, on) {
+    for (const [rootSel, hostSel, cls] of FLUID_FOCUS) {
+      const root = target.closest?.(rootSel);
+      if (!root) continue;
+      const host = hostSel ? root.querySelector(hostSel) : root;
+      host?.classList.toggle(cls, on);
+    }
+  }
+
+  // focusin/focusout, not focus/blur: those do not bubble, and the control that
+  // takes focus is nested several levels inside the element the class goes on.
+  document.addEventListener('focusin', e => fluidFocus(e.target, true));
+  document.addEventListener('focusout', e => fluidFocus(e.target, false));
+
   /* ── search clear ──────────────────────────────────────────────────────── */
   const syncSearch = search => {
     const input = search.querySelector('.rux--search-input');

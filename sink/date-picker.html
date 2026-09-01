@@ -36,7 +36,7 @@
     the running page, where a day reads `cds--date-picker__day prevMonthDay`.
     A gate cannot check them; this note is the record.
 
-    THE CALENDARS HERE SHIP CLOSED. js/date-picker.js fills `__days` on load
+    THE SINGLE PICKER'S CALENDAR SHIPS OPEN; THE RANGE ONE SHIPS CLOSED. js/date-picker.js fills `__days` on load
     and opens on the `__icon` button — so the day cells below are generated,
     not written. That is deliberate: 42 hand-written buttons would be a copy
     of state the module derives, and the copy goes stale the moment the month
@@ -81,8 +81,17 @@
           </span>
         </div>
       </div>
-      <div class="rux--date-picker__calendar-container" hidden>
-        <div class="rux--date-picker__calendar" role="grid" aria-label="Calendar" tabindex="0">
+      <!-- THIS ONE SHIPS OPEN, and the reason is a gate rather than a
+           preference. The module DETACHES a closed calendar from the DOM,
+           which is what React does -- and check-runtime-classes then reported
+           EIGHT classes STRIPPED at load, because check-coverage counts
+           `__calendar`, `__month`, `__weekday` and the rest from the file
+           while nobody can see them. That is the exact direction that gate
+           exists to catch, and it caught this. One open specimen makes the
+           eight real; the range picker below still ships closed, so both
+           states are demoed. -->
+      <div class="rux--date-picker__calendar-container">
+        <div class="rux--date-picker__calendar open" role="grid" aria-label="Calendar" tabindex="0">
           <div class="rux--date-picker__month">
             <button class="rux--date-picker__month-nav" type="button" aria-label="Previous month">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
