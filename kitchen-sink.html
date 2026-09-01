@@ -1534,7 +1534,19 @@
          idiom instead of an inline style, per composing-pages §3.5. -->
     <div class="ks-grid">
       <div class="rux--tile rux--tile--expandable rux--tile--expandable--interactive">
-        <div>
+        <!-- THE OUTER STACK SPACES THE TWO FOLD HALVES, which Carbon also
+             leaves at zero: measured on the running story with the tile
+             EXPANDED, the gap between `__above-the-fold` and
+             `__below-the-fold` is 0px, and both compute padding 0 and margin
+             0. Carbon's story fills the fold with `<div style="height: 200px;
+             width: 200px">`, so once again the demo supplies what the
+             component does not.
+
+             The chevron is `position: absolute` and therefore out of flow, so
+             a grid on this wrapper spaces only the two tile-content blocks and
+             does not move it -- verified, its right and bottom edges are
+             unchanged with the stack on and off. -->
+        <div class="rux--stack-vertical rux--stack-scale-5">
           <div class="rux--tile-content">
             <div class="rux--stack-vertical rux--stack-scale-5">
               <h3>Scale the deployment</h3>
