@@ -89,11 +89,46 @@ because it has 124 KB of its own rules. The small end is the honest end: `badge-
 **There is no KB target.** Size is measured on every build and reported. It gates
 nothing. What gates the component set is the admission rule.
 
-**Admission.** A component enters `src/app.scss` only if both hold, and both are
-recorded in `docs/inventory.md`:
+**Admission.** A component enters `src/app.scss` when EITHER ground holds, and the
+`docs/inventory.md` row records which one, the measured cost, and the answer to 2:
 
-1. A named page shape in `templates/` requires it.
-2. Nothing already in the set serves that shape.
+1. A named page shape in `templates/` requires it, **or**
+2. The maintainer asks for it.
+
+And in both cases the row must answer: **does anything already in the set serve this
+shape?** That is a question to answer in the open, not a veto.
+
+> **AMENDED 2026-08-31, and the amendment is an admission that the rule had stopped
+> describing the project.** It read "only if BOTH hold", with (1) as a hard gate. On
+> 2026-08-31 sixteen components were admitted and **exactly one cited it** —
+> `date-picker`, via `templates/schedule-page.html`. `card`'s row had to say "ADMITTED
+> AGAINST RULE 1 RATHER THAN UNDER IT". The other fourteen went in because they were
+> asked for, or came with the fluid family. **A rule overridden fourteen times in a day
+> is not gating anything; it is making honest admissions read like violations.**
+>
+> **Why it stopped fitting is a change of job, not a loss of nerve.** Rule 1 was written
+> in Phase 3, when the work was MINIMISING a keep-set and `templates/` was the only
+> demand signal there was. §4.6 is now met, ten templates exist, and the job has changed
+> from "prove a small set can build pages" to "be a library Claude Code picks components
+> from". Rule 1 describes the old job.
+>
+> **What is kept is what the rule actually bought**, and all three survived the change:
+> a cost measured per component and written down; a stated reason; and a re-read of the
+> evidence behind any existing disposition. Those found real things on 2026-08-31 —
+> `card`'s "Carbon has no Card" and `user-avatar`'s "the shell already answers this" were
+> both false by the time they were re-read, and neither would have been caught by a rule
+> that only asked whether a template needed the component.
+>
+> **Rule 2 becomes a question rather than a veto for the same reason.** `user-avatar` is
+> the case: "the shell already answers this" was a rule-2 pass, and it was wrong — it
+> described the header's avatar ICON, not a component with initials, four sizes and
+> twelve colour orders. A veto invites a one-line dismissal; a question invites the
+> comparison that shows the dismissal is wrong.
+>
+> **What this does NOT relax.** Cost is still measured before admission, never after.
+> Every row still carries a disposition. `check-inventory` still fails on a component
+> with no row, and `check-coverage` still refuses a component that renders nowhere —
+> which is the check that now does the work rule 1 was doing badly.
 
 **Tripwire.** If the built stylesheet exceeds **85 KB gzipped**, something has gone
 wrong structurally — a component family re-enabled, an opt-in layer switched on.
