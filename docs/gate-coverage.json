@@ -5,187 +5,202 @@
   "check-a11y": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "d3663f7",
-      "result": "8 findings · 6 notes · focusRingChecked true — reproduces the recorded baseline exactly. The two new sections added no finding and no note: toggletip is operable, so it is not a specimen"
+      "commit": "b9e139c",
+      "result": "8 findings · 6 notes · focusRingChecked true — reproduces the recorded baseline exactly. All 8 are the adjudicated progress-step-button false positive, one rule: \"no visible focus change\"."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "241feaa",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "241feaa",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "241feaa",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "58be97a",
-      "result": "0 findings · 0 notes · focusRingChecked true — unchanged"
+      "commit": "b9e139c",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "3448844",
-      "result": "0 findings · 0 notes · focusRingChecked true — unchanged, and it was 0 while the heading defect was live, which is the point"
+      "commit": "b9e139c",
+      "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "241feaa",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "241feaa",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "b1953be",
-      "result": "4 findings · 0 notes · focusRingChecked true — all 4 are the one adjudicated progress-step-button false positive, one per step; same rule and same cause as the sink’s 8"
+      "commit": "b9e139c",
+      "result": "4 findings · 0 notes · focusRingChecked true — all 4 the same adjudicated progress-step-button false positive; it is the only template carrying the component."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "3448844",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "58be97a",
+      "commit": "b9e139c",
       "result": "0 findings · 0 notes · focusRingChecked true"
+    },
+    "templates/schedule-page.html": {
+      "date": "2026-08-31",
+      "commit": "b9e139c",
+      "result": "0 findings · 0 notes · focusRingChecked true — first run, on the new template."
     }
   },
   "check-runtime-classes": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "526 · 529 · 0 stripped · 3 added — the three documented classes. Unchanged: the legend fix touched templates only."
+      "commit": "PENDING",
+      "result": "526 · 529 · 0 stripped · 3 added — the three documented classes."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "65 · 65 · 0 stripped · 0 added — read AFTER the ledger settled, see the fixed-point note in _triage. 77 tag--green, 0 tag--magenta."
+      "commit": "PENDING",
+      "result": "65 · 65 · 0 stripped · 0 added — read LAST, after every other cell was written and the portal rebuilt: 89 tag--green, 0 tag--magenta. See the fixed-point note in _triage."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "40 · 40 · 0 stripped · 0 added — unchanged; this template has no fieldset."
+      "commit": "PENDING",
+      "result": "40 · 40 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "102 · 103 · 0 stripped · 1 added (table-sort--active) — unchanged."
+      "commit": "PENDING",
+      "result": "102 · 103 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "84 · 84 · 0 stripped · 0 added — was 83 · 83; +1 is the legend type class."
+      "commit": "PENDING",
+      "result": "84 · 84 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "106 · 106 · 0 stripped · 0 added — unchanged."
+      "commit": "PENDING",
+      "result": "106 · 106 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "59 · 59 · 0 stripped · 0 added — unchanged."
+      "commit": "PENDING",
+      "result": "59 · 59 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "51 · 51 · 0 stripped · 0 added — unchanged."
+      "commit": "PENDING",
+      "result": "51 · 51 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "94 · 94 · 0 stripped · 0 added — was 93 · 93; +1 is the legend type class."
+      "commit": "PENDING",
+      "result": "94 · 94 · 0 stripped · 0 added — reproduced exactly."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "75 · 76 · 0 stripped · 1 added (table-sort--active) — unchanged."
+      "commit": "PENDING",
+      "result": "75 · 76 · 0 stripped · 1 added (table-sort--active) — reproduced exactly."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "73 · 73 · 0 stripped · 0 added — was 72 · 72; +1 is rux--type-heading-compact-01 on the three legends."
+      "commit": "PENDING",
+      "result": "73 · 73 · 0 stripped · 0 added — reproduced exactly."
+    },
+    "templates/schedule-page.html": {
+      "date": "2026-08-31",
+      "commit": "b9e139c",
+      "result": "86 · 86 · 0 stripped · 0 added — first run."
     }
   },
   "check-spacing": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "312 · 287 · 25 diverge, 0 defects — at 1280x900, was 298 · 274 · 24. The ONE new divergence is card’s icon-only action button, display ours flex / Carbon inline-flex, which joins the inline-flex family already adjudicated in _triage. +14 checked and +13 matched are sink/card.html."
+      "commit": "PENDING",
+      "result": "312 · 287 · 25 diverge, 0 defects — at 1440x900."
     },
     "portal.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
+      "commit": "PENDING",
       "result": "25 · 23 · 2 diverge — at 1440x900, unchanged."
     },
     "templates/app-shell.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "21 · 20 · 1 diverge — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "21 · 20 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/table-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "61 · 58 · 3 diverge — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "61 · 58 · 3 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/form-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "54 · 52 · 2 diverge — at 1440x900, unchanged by the legend type class."
+      "commit": "PENDING",
+      "result": "54 · 52 · 2 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/detail-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "61 · 59 · 2 diverge — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "61 · 59 · 2 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/empty-state.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "31 · 30 · 1 diverge — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "31 · 30 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/error-state.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "28 · 27 · 1 diverge — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "28 · 27 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/wizard-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "55 · 47 · 8 diverge, 0 defects — at 1440x900, unchanged by the legend type class."
+      "commit": "PENDING",
+      "result": "55 · 47 · 8 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/dashboard-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "33 · 29 · 4 diverge, 0 defects — at 1440x900, unchanged."
+      "commit": "PENDING",
+      "result": "33 · 29 · 4 diverge — at 1440x900, reproduced exactly after the schedule page landed."
     },
     "templates/settings-page.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "44 · 43 · 1 diverge, 0 defects — at 1440x900, UNCHANGED by the legend type class. That was the point of re-reading it: the class changes font-size and weight and moves no box this gate measures."
+      "commit": "PENDING",
+      "result": "44 · 43 · 1 diverge — at 1440x900, reproduced exactly after the schedule page landed."
+    },
+    "templates/schedule-page.html": {
+      "date": "2026-08-31",
+      "commit": "b9e139c",
+      "result": "50 · 48 · 2 diverge, 0 defects — at 1440x900. BOTH are byte-identical to form-page.html’s: the 288px self-indent every template carries, and the checkbox-wrapper marginBlockEnd 3px against Carbon’s 6px. No new divergence."
     }
   },
   "check-rendered": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "38 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled — reproduced after the legend change."
+      "commit": "PENDING",
+      "result": "38 sections · 0 empty svgs · 0 collapsed · 0 escaped · 0 ua-styled."
     }
   },
   "_portal": "portal.html RENDERS THIS FILE, so recording a reading against it changes the page the reading was taken from. Readings are taken on the build immediately before the entry is written; chasing the fixed point would not terminate, and what differs between the two builds is table text, altering no rule the three gates apply. KNOWN GAP: portal.html is a pageTarget of those gates but is NOT in their `inputs`, so editing it does not age its own cells. That is deliberate and it is a compromise. `inputs` is per GATE, not per cell -- kitchen-sink.html already ages the templates' cells -- so adding a page regenerated on every verify would mark every browser cell stale on every build, including cells it has nothing to do with. The narrower fix is per-cell inputs, which is a redesign of the registry and a separate decision.",
   "check-behaviour": {
     "kitchen-sink.html": {
       "date": "2026-08-31",
-      "commit": "8e9f68b",
-      "result": "37 / 37 passed · 0 failed, over 12 modules — reproduced after the legend change."
+      "commit": "PENDING",
+      "result": "37 / 37 passed · 0 failed, over 12 modules."
     }
   },
   "_visual": "LOOKED AT, 2026-08-29 at 0d10eaa, viewport 1671x1048 in a widened pane -- the first time this sweep opened the pages rather than only measuring them. All 34 sink sections and all six templates, both the rendered page and, where a specimen is stateful, its states driven by hand. IT FOUND ONE DEFECT, AND NO GATE COULD HAVE. The table sort arrow was built from i-arrow--down, but Carbon’s glyph is ArrowUp and --descending rotates it 180deg, so both states pointed the wrong way. Nothing reads which symbol a <use> targets. CLEARED ON INSPECTION, each checked rather than assumed: the menu--with-icons specimen is visibility:hidden at rest because it is the TRIGGERED menu and opens correctly on click, not a repeat of the four hidden specimens this project shipped; the dropdown column that appeared to draw its list over its own trigger is the labelled list-box--up variant; the batch bar moves aria-hidden and tabindex together across select and deselect; every other hidden element resolved to a closed modal, a collapsed accordion, a hover tooltip, an empty search’s close button, or an unselected tile’s checkmark. G100 PASS, same day, same viewport, theme asserted from the resolved token (--rux-field-hover #333333, body rgb(22,22,22)). All 34 sink sections and all six templates again. ZERO DEFECTS. The inversions that carry real risk were each looked at rather than assumed: the inline high-contrast notifications go white-on-dark while the low-contrast ones stay dark with a coloured rule, which is the correct swap; the High contrast tag becomes a white pill with dark text; the modal overlay is rgba(0,0,0,0.6) over a rgb(38,38,38) surface with focus on the close button and the X still pinned top-right; the sort arrow still reads up for ascending. ONE OBSERVATION THAT IS NOT A DEFECT AND SHOULD NOT BE FIXED. Theming a template’s CONTENT to g100 makes the side nav merge into the page: nav, header and body all resolve to rgb(22,22,22) and nothing draws a divider. That is Carbon’s own definition -- @carbon/styles gives .side-nav background-color: $background and no border -- and it is not the state the templates ship, which is a g100 shell over white content, where the boundary is plain. Recorded so the next reader does not \"fix\" a faithful compile.",
