@@ -570,20 +570,32 @@ row, a fragment with provenance, a `sink/ORDER` line, a ratchet and a re-run, no
 uncommented `@use`. Two things not to misread later: class coverage drops as a PERCENTAGE
 the moment a component compiles, and `big-number`, `icon-indicator` and `shape-indicator`
 cannot have a fragment until their markup is captured. Roadmap §2.1. Their rows are in
-[`docs/inventory.md`](docs/inventory.md), and `sink/deferred/` holds 29 fragments still
+[`docs/inventory.md`](docs/inventory.md), and `sink/deferred/` holds 23 fragments still
 carrying the provenance the Phase 1 sweep gave them; the rest were cut before one was
 ever written. Restoring one is three lines: uncomment its `@use` in `src/app.scss`, move
 the fragment back, add it to `sink/ORDER`.
 
-**Move it, do not copy it — and SIX stubs in `sink/deferred/` are copies right now.**
-`card`, `combo-button`, `copy-button`, `date-picker`, `fluid` and `stack` are compiled,
-each has a shipped fragment, and each still has its deferred stub sitting there: 80 lines
-shadowing `card`'s 240, 29 shadowing `stack`'s 153. That is the defect `2930323` already
-paid for once — `sink/deferred/progress-indicator.html` sat for two days after the
-component was admitted, a 51-line stub shadowing the 140-line fragment that ships — now
-standing six times over. **No gate reads `sink/deferred/`**, so nothing here can tell a
-live deferral from a leftover, and the sixteen admissions of 2026-08-31 left six.
-Listed 2026-09-01 by diffing the directory against `sink/`.
+**Move it, do not copy it — CLOSED 2026-09-01, and now GATED.** The sixteen
+admissions of 2026-08-31 copied instead of moving, leaving `card`, `combo-button`,
+`copy-button`, `date-picker`, `fluid` and `stack` with a live fragment in `sink/` and a
+dead stub in `sink/deferred/`. That is the defect `2930323` already paid for once —
+`sink/deferred/progress-indicator.html` sat for two days after the component was
+admitted, a 51-line stub shadowing the 140-line fragment that ships — standing six
+times over. Cleared at `1f3da4d`: four deleted because everything they demo is demoed
+already, and `date-picker` and `fluid` REBUILT rather than moved, because the stubs were
+pre-admission markup. The captures paid for themselves on the way: the `date-picker`
+stub had INVENTED `date-picker-container--invalid` and `--short`, which none of the 669
+stories render, and both were dropped. Coverage ratcheted 619 to 638 of 937.
+
+**`check-inventory` reads the directory now** — `4727b08`, a rule on an existing gate
+rather than a twenty-second one. **It keys on FILENAME COLLISION and not on
+disposition**, deliberately: `fluid` and `stack` are fragment names rather than Carbon
+component names, so resolving through the inventory would have missed the two hardest to
+reason about. Two files with one name is the defect, whatever either is called. Driven
+red 2026-09-01 by copying `sink/card.html` back into `sink/deferred/` — one fault,
+exit 1, and the message names both paths. Every per-file gate stays blind there by
+construction, because `tools/lib/sources.mjs` excludes `sink/deferred/` so that a
+finding names a file you can edit.
 
 **The other eight arrived with Carbon 1.114 and were decided 2026-08-31** — `big-number`
 DEFER, the other seven CUT — under "The eight that arrived with Carbon 1.114" in
