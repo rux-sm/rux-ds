@@ -11,8 +11,9 @@ is the current state; `docs/roadmap.md` is the decision log; counts live in
 Carbon's markup allows and compiled under the `rux` prefix; Carbon stays a dev
 dependency as the upgrade path (roadmap §1, revised 2026-09-01). Nothing ERP,
 nothing from a client, nothing from `rux-ln-atlas` in any directory, tracked or
-not — a template is authored against invented content. Its consumers pin a commit SHA
-(`docs/roadmap.md` §8.2); a removed class is announced in `CHANGES.md`.
+not — a template is authored against invented content. Its consumers pin a tag
+(`docs/roadmap.md` §8.2) and start from `tools/new-project.sh`; a removed
+class is announced in `CHANGES.md`.
 
 ## The one rule
 

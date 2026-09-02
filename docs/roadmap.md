@@ -2636,6 +2636,19 @@ already uses — copy `css/`, `js/`, `assets/`, write a `PIN` — generalized in
 documented step for any new project, plus the template to copy. Exit: a new
 project reaches a styled, behaving first page in under ten minutes, from a tag.
 
+**Done 2026-09-02.** `tools/new-project.sh <dir> [template] [page]` is the
+step, `docs/starting-a-project.md` the page, `v0.1.0` the tag (§8.2). The
+script generalizes `sync-ds.sh` with two differences worth naming: it copies
+FROM this checkout rather than into a sibling, and it knows Phase 10's three
+kinds of file — `vendor/` overwritten every run, the theme and overrides files
+and the page written only when absent, so a re-run moves the pin around the
+project's own work. The page is the template with its five relative paths
+rewritten by `sed`; nothing else in a template is relative, checked by grep.
+Measured: the script in under a second, a rendered first page in under a
+minute, the runtime class check on it reading nothing stripped. NOT done: the
+portal's `sync-ds.sh` still exists in its own repository and is not replaced by
+this; the recipe for a project that is a GitHub Pages site is that script.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
@@ -2810,6 +2823,11 @@ uses no longer resolves.
 tag per release is nearly free and gives nothing to check against; a `version` field plus
 a "classes removed in" record is what would let a generated page detect its own
 staleness, and is real work.
+
+**TAGGED 2026-09-02: `v0.1.0`**, cut with Phase 11 rather than with §4.9's first
+batch as the line below promised; the four batches shipped untagged and this
+corrects it. Scheme, rux's to change: `v0.MINOR.PATCH`, minor when `CHANGES.md`
+gains a line (a class left), patch otherwise, `v1.0.0` when rux says so.
 
 **DECIDED 2026-09-01: tag milestones now.** The trigger below was a freeze, and §1
 no longer has one — the set grows toward completeness and Carbon upgrades keep
