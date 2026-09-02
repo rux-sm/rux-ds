@@ -562,7 +562,7 @@ every commit is one nobody keeps.
 | Markup provenance | **72 `rendered-dom` · 6 `source` · 0 `inferred`** across 78 files |
 | Icons | 59 symbols in a 16.1 KB sprite — 51 referenced, 8 nothing points at |
 | Size | 1023.9 KB raw · 920.9 KB min · **91 KB gzipped** |
-| Behaviour JS | **14** modules · **45 KB gzipped** · 154.6 KB raw, 61% of it comment · 61.0 KB of code |
+| Behaviour JS | **14** modules · **46 KB gzipped** · 158.2 KB raw, 60% of it comment · 62.8 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from
 `tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the

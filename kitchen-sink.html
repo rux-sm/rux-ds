@@ -5612,6 +5612,18 @@
       <div class="rux--header__global">
         <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
         <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
+      </div>
+      <!-- THE SWITCHER PANEL: a sibling of __global, collapsed until the grid button
+           opens it (js/ui-shell.js). Every app in an ecosystem lists the same apps
+           here; a divider is an <hr> in an li of its own. -->
+      <div class="rux--header-panel" style="position:absolute;block-size:calc(22rem - 3rem)">
+        <ul class="rux--switcher" aria-label="Applications">
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="./" aria-current="page">Rux DS</a></li>
+          <li><hr class="rux--switcher__item--divider"></li>
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="./">Deployments</a></li>
+          <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="./">Billing</a></li>
+        </ul>
       </div>
       <!-- The scrim is position:fixed in Carbon, which is right in production and
            wrong in a 22rem sandbox: it escaped this container's overflow:hidden and

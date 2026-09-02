@@ -278,6 +278,41 @@
       `--expanded=${has(nav, EXP)}, glyph=${glyph()}`);
   })();
 
+  // ── ui-shell: the switcher panel, which DOES dismiss on an outside press ─
+  // Confirmed on components-ui-shell-header--header-w-actions-and-switcher
+  // 2026-09-02: a press expands the panel 0 to 256px and marks the action
+  // active, the links' tabindex goes -1 to 0, a second press closes it, an
+  // outside press closes it, Escape closes it, focus stays where it was.
+  (() => {
+    const trigger = q('#ui-shell .rux--header__action[aria-expanded]:not(.rux--header__menu-toggle)');
+    const panel = trigger?.closest('.rux--header')?.querySelector('.rux--header-panel');
+    if (!trigger || !panel) return record('ui-shell', 'switcher', false, 'no switcher here');
+    const EXP = 'rux--header-panel--expanded';
+    const link = panel.querySelector('a');
+    if (has(panel, EXP)) click(trigger);
+
+    click(trigger);
+    record('ui-shell', 'the switcher opens its panel and marks the action active',
+      has(panel, EXP) && has(trigger, 'rux--header__action--active')
+      && trigger.getAttribute('aria-expanded') === 'true' && link?.tabIndex === 0,
+      `--expanded=${has(panel, EXP)}, active=${has(trigger, 'rux--header__action--active')}, tabindex=${link?.tabIndex}`);
+
+    document.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    record('ui-shell', 'an outside press closes the panel, unlike the nav',
+      !has(panel, EXP) && link?.tabIndex === -1,
+      `--expanded=${has(panel, EXP)}, tabindex=${link?.tabIndex}`);
+
+    click(trigger);
+    key(document, 'Escape');
+    record('ui-shell', 'and so does Escape',
+      !has(panel, EXP) && trigger.getAttribute('aria-expanded') === 'false',
+      `--expanded=${has(panel, EXP)}`);
+
+    click(trigger); click(trigger);
+    record('ui-shell', 'and a second press',
+      !has(panel, EXP), `--expanded=${has(panel, EXP)} after two presses`);
+  })();
+
   // ── tile: the collapsed cap is an inline value, and it round-trips ────────
   // Confirmed on components-tile--expandable 2026-08-29: Carbon's collapsed
   // tile carries style="max-height: 232px", expanding CLEARS it and adds

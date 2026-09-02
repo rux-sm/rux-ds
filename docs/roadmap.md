@@ -2649,6 +2649,44 @@ minute, the runtime class check on it reading nothing stripped. NOT done: the
 portal's `sync-ds.sh` still exists in its own repository and is not replaced by
 this; the recipe for a project that is a GitHub Pages site is that script.
 
+### 4.12 Phase 12 — The project creator and the Rux Portal
+
+**Added 2026-09-02**, from a conversation the same day. Three creators, cheapest
+first, and one home for every project built on rux-ds.
+
+1. **The script asks.** `tools/new-project.sh` run bare asks six questions —
+   folder, shape, theme, name, title, file — offering only what a text
+   substitution on a template can honestly change. **Done 2026-09-02**
+   (`db54691`); `docs/choices.md` is the catalogue of every choice with the
+   layer that offers it.
+2. **The skill composes.** `rux-ds-page` grows a multiple-choice flow: which
+   shell parts, regular or fluid fields, which buttons, which of the 68
+   fragments in the body; then it copies the page into this root and runs
+   `npm run verify`, so an invented class fails before anyone sees it. Open.
+3. **The configurator shows.** A page in the portal with the same choices, a
+   live preview and the HTML to take away. Open; after the portal.
+
+**The Rux Portal** is a repository named `rux-sm.github.io`, publishing at the
+root of the account, so every project site already sits under it by path.
+Each module is its own repository and folder, started by the script, pinned
+to a tag, with its own gates and publish. Nothing is shared by path: the
+design system by pin, and the list of apps by URL, one `switcher.json` at the
+root that every module's shell fetches to fill Carbon's switcher panel. The
+header and the switcher are therefore identical on every site by
+construction; the side nav and the page are each app's own. No frames: a
+module built on rux-ds renders its own shell, and wrapping it would show two.
+Modules for now: the portal itself, which is the landing page and the demo,
+and Notes. Older projects stay out until rebuilt on rux-ds; a scheduler joins
+when it exists.
+
+**First step, done 2026-09-02: the switcher exists.** The shell had the panel's
+CSS and a static open specimen, and no behaviour and no place in a template.
+`js/ui-shell.js` now opens and closes it as Carbon's story does — verified
+live, see its label — and every template carries the button and a collapsed
+panel with invented entries. Two decisions still rux's: the hub's name, since
+`portal.html` here is the gate dashboard; and where the module manifest
+contract is written down.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early

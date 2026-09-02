@@ -61,6 +61,21 @@
 
    NOT VERIFIED: the submenu chevron rotation, which is CSS off aria-expanded and was not
    driven; and the header nav's own menus.
+
+   THE HEADER PANEL (the app switcher) · verified-live 2026-09-02 on
+   https://react.carbondesignsystem.com/iframe.html?id=components-ui-shell-header--header-w-actions-and-switcher
+   reading classes, attributes and the panel's measured width at each step.
+
+   CONFIRMED: a press on the switcher action puts `header-panel--expanded` on the panel
+   (0 to 256px), `header__action--active` on the button and aria-expanded=true; the
+   links inside go from tabindex -1 to 0, so a collapsed panel is invisible to Tab.
+   A second press closes it. An OUTSIDE press closes it, and so does Escape on the
+   document — the opposite of the side nav on both counts, which is why the panel
+   takes the kernel's defaults and the nav declines them. Focus does NOT move into
+   the panel on open: document.activeElement stayed on the body.
+
+   NOT REIMPLEMENTED: Carbon's HeaderPanel `onHeaderPanelFocus`, which the story does
+   not exercise; nothing here manages focus beyond the tabindex swap.
    ========================================================================== */
 (() => {
   'use strict';
@@ -176,6 +191,44 @@
       { bubbles: true }));
   }
 
+  /* THE HEADER PANEL. Claimed by its trigger: a header action that carries
+     aria-expanded and is not the hamburger. The panel is the header's
+     `.rux--header-panel`, a sibling of `__global` in every capture; an action
+     may name its own with aria-controls when a header carries two.
+
+     Carbon's story closes it on an outside press and on Escape, so it takes the
+     kernel's defaults. A panel SHIPPED `--expanded` (the sink's specimen) is
+     left as it is and never registered: nothing chose to open it, and closing
+     a static specimen on the first press anywhere would make the sink's own
+     readings depend on where the pointer went. Its button still closes it. */
+  const EXPANDED_PANEL = 'rux--header-panel--expanded';
+  const panels = new Map();   // panel -> registration
+  const panelFor = trigger => {
+    const id = trigger.getAttribute('aria-controls');
+    const own = id && document.getElementById(id);
+    return own ?? trigger.closest('.rux--header')?.querySelector('.rux--header-panel') ?? null;
+  };
+  function setPanel(panel, open, trigger) {
+    panel.classList.toggle(EXPANDED_PANEL, open);
+    trigger.classList.toggle('rux--header__action--active', open);
+    trigger.setAttribute('aria-expanded', String(open));
+    // Carbon's own tabindex swap: a collapsed panel's links are not in the tab order.
+    for (const a of panel.querySelectorAll('a, button')) a.tabIndex = open ? 0 : -1;
+    const reg = panels.get(panel);
+    if (open && !reg) {
+      panels.set(panel, overlay.register({
+        element: panel,
+        anchor: trigger,
+        close: () => setPanel(panel, false, trigger),
+      }));
+    } else if (!open && reg) {
+      reg.release();
+      panels.delete(panel);
+    }
+    panel.dispatchEvent(new CustomEvent(open ? 'rux:header-panel-opened' : 'rux:header-panel-closed',
+      { bubbles: true }));
+  }
+
   function setSubmenu(button, open) {
     const item = button.closest('.rux--side-nav__item');
     const menu = item?.querySelector(':scope > .rux--side-nav__menu');
@@ -195,6 +248,16 @@
       if (nav) {
         event.preventDefault();
         setNav(nav, !nav.classList.contains(EXPANDED), burger);
+      }
+      return;
+    }
+
+    const action = event.target.closest('.rux--header__action[aria-expanded]:not(.rux--header__menu-toggle)');
+    if (action) {
+      const panel = panelFor(action);
+      if (panel) {
+        event.preventDefault();
+        setPanel(panel, !panel.classList.contains(EXPANDED_PANEL), action);
       }
       return;
     }
@@ -223,10 +286,16 @@
   }
   for (const button of document.querySelectorAll('.rux--side-nav__submenu'))
     setSubmenu(button, button.getAttribute('aria-expanded') === 'true');
+  // A collapsed panel's links leave the tab order on load, as Carbon renders them.
+  for (const panel of document.querySelectorAll('.rux--header-panel'))
+    if (!panel.classList.contains(EXPANDED_PANEL))
+      for (const a of panel.querySelectorAll('a, button')) a.tabIndex = -1;
 
   window.Rux.uiShell = {
     openNav: (nav, trigger) => setNav(nav, true, trigger),
     closeNav: nav => setNav(nav, false, live.get(nav)?.trigger),
     toggleSubmenu: button => setSubmenu(button, button.getAttribute('aria-expanded') !== 'true'),
+    openPanel: trigger => { const p = panelFor(trigger); if (p) setPanel(p, true, trigger); },
+    closePanel: trigger => { const p = panelFor(trigger); if (p) setPanel(p, false, trigger); },
   };
 })();
