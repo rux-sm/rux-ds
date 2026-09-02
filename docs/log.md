@@ -12,6 +12,23 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**ANSWERED 2026-09-02 — the hub is named Rux Apps.** It was one of two decisions
+left open when the hub was committed. `portal.html` here is the gate dashboard, so
+"Rux Portal" named two different things across two repositories. The entries are
+"apps" throughout, the word `switcher.json` already used for its array and the
+switcher panel for its label; the hub's own entry is "Home". Rejected: "Rux Home",
+"Rux Suite", "Rux Index", "Rux Atrium", and a bare "Rux" with no second word.
+Applied in `rux-sm.github.io` at `a9995bb`, `tools/check.mjs` passing — classes
+resolve, apps 2, pin v0.1.1 — and the switcher panel opened in a browser showing
+Home and Notes from `switcher.json`.
+
+**AND THE REPOSITORY NAME IS NOT THE HUB'S NAME.** `rux-sm/rux-apps` was created
+on 2026-09-02 and is wrong: only `<account>.github.io` serves at the account root,
+and every module's shell fetches `/switcher.json` and links `/switcher.js` by
+absolute path. Under `/rux-apps/` both 404 and `switcher.js` catches, so each page
+keeps the entries it shipped and the shared list is gone with nothing failing.
+Nothing was pushed to it.
+
 **WHERE THIS STOPPED, 2026-09-02, and the next steps in order.** Phases 9, 10 and
 11 are done; the plan being executed is roadmap §4.12 (three creators and the Rux
 Portal). Landed: the script questionnaire, `docs/choices.md`, the switcher panel in

@@ -65,15 +65,24 @@ Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
 **Where this stopped, 2026-09-02.** Phases 9, 10 and 11 are done. The plan being
-executed is roadmap §4.12: three creators and the Rux Portal. Landed: the script
-questionnaire, `docs/choices.md`, the switcher panel in every template with its
-behaviour (`v0.1.1`), and the portal itself, committed in
-`~/Developer/rux-sm.github.io` on the machine that built it and NOT yet pushed —
-the GitHub repository `rux-sm/rux-sm.github.io` must be created by hand first.
+executed is roadmap §4.12: three creators and the hub, now named **Rux Apps**.
+Landed: the script questionnaire, `docs/choices.md`, the switcher panel in every
+template with its behaviour (`v0.1.1`), and the hub itself, committed in
+`~/Developer/rux-sm.github.io` on the machine that built it and NOT yet pushed.
+
+**The hub's repository must be named `rux-sm.github.io`, not after the hub.**
+Only `<account>.github.io` publishes at the account root, and the root is the
+whole arrangement: every module's shell fetches `/switcher.json` and links
+`/switcher.js` by absolute path, and `tools/check.mjs` there requires each
+`path` to be `/` or `/name/`. A project repository serves at
+`https://rux-sm.github.io/<repo>/` instead, where those two fetches 404 —
+silently, because `switcher.js` catches and falls back to the entries the page
+shipped. `rux-sm/rux-apps` was created on 2026-09-02 and is the wrong name for
+this reason; rename it rather than pushing to it.
 
 **Next, in order:**
 
-1. Push the portal, enable Pages from its workflow, open https://rux-sm.github.io/.
+1. Push the hub, enable Pages from its workflow, open https://rux-sm.github.io/.
 2. Notes re-vendors rux-ds — its pin is from 2026-09-01, before the switcher —
    then gets the switcher button and panel and becomes module two in fact.
 3. Creator 2, the `rux-ds-page` skill's multiple-choice flow, offering only what
@@ -84,7 +93,6 @@ the GitHub repository `rux-sm/rux-sm.github.io` must be created by hand first.
 
 | What | Where |
 |---|---|
-| The hub's name — `portal.html` here is the gate dashboard | roadmap §4.12 |
 | Where the switcher manifest contract is written down — the shape of `switcher.json` and what a shell fetches. `js/ui-shell.js` only opens and closes the panel today; every template carries invented entries | roadmap §4.12 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 | Whether Notes' `sync-ds.sh` is retired for `tools/new-project.sh`, which already moves a pin around a project's own files and records the tag | roadmap §4.11 |

@@ -2666,8 +2666,14 @@ first, and one home for every project built on rux-ds.
 3. **The configurator shows.** A page in the portal with the same choices, a
    live preview and the HTML to take away. Open; after the portal.
 
-**The Rux Portal** is a repository named `rux-sm.github.io`, publishing at the
-root of the account, so every project site already sits under it by path.
+**Rux Apps** is a repository named `rux-sm.github.io`, publishing at the
+root of the account, so every project site already sits under it by path. The
+repository name is not the hub's name and cannot be: only `<account>.github.io`
+serves at the root, and the root is what makes the absolute `/switcher.json`
+and `/switcher.js` in every module's shell resolve. Named after the hub it
+would serve at `/rux-apps/`, both fetches would 404, and `switcher.js` would
+fall back silently to the entries each page shipped — the shared list gone with
+nothing failing. Answered 2026-09-02, with the name (§4.12 second decision).
 Each module is its own repository and folder, started by the script, pinned
 to a tag, with its own gates and publish. Nothing is shared by path: the
 design system by pin, and the list of apps by URL, one `switcher.json` at the
@@ -2683,12 +2689,21 @@ when it exists.
 CSS and a static open specimen, and no behaviour and no place in a template.
 `js/ui-shell.js` now opens and closes it as Carbon's story does — verified
 live, see its label — and every template carries the button and a collapsed
-panel with invented entries. Two decisions still rux's: the hub's name, since
-`portal.html` here is the gate dashboard; and where the module manifest
-contract is written down.
+panel with invented entries.
 
-**Stopped 2026-09-02 with the portal committed locally and unpushed**, waiting
-on the repository being created by hand. Next in order: push and enable Pages;
+**The hub's name is Rux Apps, answered by rux 2026-09-02.** `portal.html` here
+is the gate dashboard, so "Rux Portal" named two different things across two
+repositories. The entries are "apps" throughout, the word `switcher.json`
+already used for its array and the switcher panel for its label; the hub's own
+entry is "Home", since an entry called "Apps" inside the Apps switcher reads as
+a category rather than a destination. "Module" stays the architectural term for
+a repository-and-folder unit. Rejected: "Rux Home", "Rux Suite", "Rux Index",
+"Rux Atrium", and dropping the second word for a bare "Rux".
+
+One decision still rux's: where the module manifest contract is written down.
+
+**Stopped 2026-09-02 with the hub committed locally and unpushed**, waiting
+on the repository being created by hand under the right name. Next in order: push and enable Pages;
 the switcher on Notes; creator 2 (the skill); creator 3 (the configurator).
 README "Picking this up" carries the same list and is the one to update.
 
