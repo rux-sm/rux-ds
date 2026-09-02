@@ -209,15 +209,15 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
 <!-- ============ PAGE 2: SETUP ============ -->
 
 <section class="page-2">
-  <p class="eyebrow">Once per Mac · about fifteen minutes</p>
+  <p class="eyebrow">Once per Mac · under ten minutes</p>
   <h2>Setting up a machine</h2>
   <p class="lede">Do every step on both Macs so they are identical. Every step ends in something you can see.</p>
 
-  <p><strong>Before you start:</strong> git, Node 20 or newer, Python 3.9 or newer, and a GitHub sign-in that can see the private atlas repo. Nothing else. Check with <code>git --version</code>, <code>node --version</code>, <code>python3 --version</code>.</p>
+  <p><strong>Before you start:</strong> git, Node 22.13 or newer (rux-ds declares it and CI holds it), Python 3.9 or newer, and a way for git to reach the private atlas repo. A GitHub password does not work for that: create a personal access token with <code>repo</code> scope at github.com/settings/tokens and paste it as the password when the atlas clone prompts; Apple git keeps it in the keychain after that. Check with <code>git --version</code>, <code>node --version</code>, <code>python3 --version</code>.</p>
 
   <ol class="steps">
     <li><div>
-      <p>Clone all three into <code>~/Developer</code>, under the names the documents use.</p>
+      <p>Clone all three into <code>~/Developer</code>, under exactly these names, side by side. The layout is load-bearing: notes' checks look for <code>../rux-ds</code> and <code>../rux-ln-atlas</code> and refuse or report a gap without them.</p>
 <pre><code>mkdir -p ~/Developer &amp;&amp; cd ~/Developer
 git clone https://github.com/rux-sm/rux-ds.git
 git clone https://github.com/rux-sm/rux-ln-atlas.git
@@ -234,7 +234,7 @@ git -C ~/Developer/rux-ln-atlas config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-notes config core.hooksPath tools/githooks</code></pre>
     </div></li>
     <li><div>
-      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> from atlas, and <code>6 gates passed</code> from notes.</p>
+      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> with <code>0 warning(s)</code> from atlas, and <code>6 gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning is a content defect rather than a setup fault, and notes says <code>MEASURED is stale</code> whenever rux-ds has moved. Commit nothing during setup.</p>
 <pre><code>cd ~/Developer/rux-ds       &amp;&amp; npm install &amp;&amp; npm run verify; echo "exit $?"
 cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/build.py &amp;&amp; python3 tools/check.py
 cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs</code></pre>
@@ -261,11 +261,11 @@ code ~/Developer/rux.code-workspace</code></pre>
       <p class="why">The file is not in any repo, so it is created by hand on each Mac. Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all three, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
     </div></li>
     <li><div>
-      <p>Prove the hooks are armed. Try a commit with a forbidden trailer and watch it refuse; then discard it.</p>
-<pre><code>cd ~/Developer/rux-ds &amp;&amp; git commit --allow-empty -m "test: Probe
+      <p>Prove the hooks are armed, in all three. A commit with a forbidden trailer must be refused. A refusal leaves nothing behind. If one is accepted, that hook is not armed: run <code>git reset --hard HEAD~1</code> there and redo step 3.</p>
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r commit --allow-empty -m "test: Probe
 
-Co-Authored-By: nobody"
-# expect:  commit-msg: Co-Authored-By trailer — commits are authored by rux alone</code></pre>
+Co-Authored-By: nobody"; done
+# expect, three times:  commit-msg: Co-Authored-By trailer — commits are authored by rux alone</code></pre>
     </div></li>
   </ol>
 </section>
