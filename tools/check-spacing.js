@@ -379,7 +379,22 @@ const INVALID_ITEM = "`.file__selected-file .file-filename-container-wrap-invali
 const CONDENSED_LIST = 'the --condensed structured list: `.structured-list--condensed .structured-list-td, '
   + '.structured-list-th { padding: .5rem }`, and the harvest sampled no condensed list '
   + '(sink/structured-list.html)';
+// BATCH 5 OF §4.9, 2026-09-01.
+const SANDBOX = 'the dialog is `inset: 0; margin: auto`, so its margins are whatever centres it in '
+  + 'its containing block; the sink mounts it in a 22rem sandbox and the story mounts it in '
+  + 'the viewport (sink/dialog.html)';
+const STORY_GAP = "the chat-button story spaces its siblings with a margin the component does not own; "
+  + 'the sink lays its row out with a gap (sink/chat-button.html)';
 const KNOWN = {
+  'rux--dialog|marginBlockStart': SANDBOX,
+  'rux--dialog|marginBlockEnd': SANDBOX,
+  'rux--dialog|marginInlineStart': SANDBOX,
+  'rux--dialog|marginInlineEnd': SANDBOX,
+  'rux--btn.rux--btn--ghost.rux--btn--sm.rux--layout--size-sm.rux--btn--icon-only|display': BLOCKIFIED,
+  'rux--btn.rux--btn--ghost.rux--btn--icon-only|display': BLOCKIFIED,
+  'rux--chat-btn.rux--btn.rux--btn--sm.rux--layout--size-sm.rux--btn--primary|display': BLOCKIFIED,
+  'rux--chat-btn.rux--btn.rux--btn--sm.rux--layout--size-sm.rux--btn--primary|marginInlineEnd': STORY_GAP,
+
   'rux--structured-list-th|paddingBlockStart': CONDENSED_LIST,
   'rux--structured-list-td|paddingBlockStart': CONDENSED_LIST,
   'rux--structured-list-td|paddingBlockEnd': CONDENSED_LIST,
