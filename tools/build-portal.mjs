@@ -114,8 +114,17 @@ const covPct = Math.round((covHit / covOwn) * 100);
 // the same tree — a status page contradicting the tool it reports on. A reading
 // whose inputs have moved since is not coverage; `js/` changing invalidates
 // every browser cell, which is how 22 of them went stale in one commit.
+// DIRTY IS RENDERED AS STALE, AND THE REASON IS THAT THIS FILE IS COMMITTED.
+// A cell is DIRTY when an input has uncommitted changes -- true of the working
+// tree at build time, never true of the commit the page is committed in. On
+// 2026-09-01 (32818b0) the page was built on a dirty tree, committed with 38
+// "dirty" tags, and CI rebuilt it on a clean checkout as 38 "stale": a 76-line
+// diff and a red run for a page that described a moment rather than a commit.
+// `npm run gates` still says dirty; the committed page says what the commit
+// can say.
 const matrix = cellStates().map(r => {
   const rec = ledger[r.id]?.[r.page];
+  if (r.state === 'DIRTY') r = { ...r, state: 'STALE', why: r.why.replace(/^uncommitted: /, '') + ' changed since' };
   return { gate: r.id, page: r.page, state: r.state, why: r.why,
            current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
