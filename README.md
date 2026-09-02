@@ -183,7 +183,7 @@ part worth remembering: **the exit code cannot see this**, and this README's own
 to trust it over grepping output does not help here.
 
 There is a second cost. All five browser gates declare `css/rux.css` and `js` as inputs,
-so a spurious rebuild marks all 35 browser cells DIRTY. That prints and does not fail
+so a spurious rebuild marks every browser cell DIRTY. That prints and does not fail
 the build, but it destroys a `26 current · 0 stale` state that takes a browser and a
 person to re-earn. `npm install --ignore-scripts` then `npm run verify` restores `css/` byte-identically
 and the cells with it.

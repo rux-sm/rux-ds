@@ -12,6 +12,36 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DRAFTED 2026-09-02 — terminate the portal browser-ledger fixed point (§4.8).**
+The cycle is observed, not hypothetical: `2529e48` recorded readings taken at
+`a3f25e1` and regenerated `portal.html` from all 38 changed matrix rows, so the three
+portal cells were stale in the commit that recorded them. Seven legitimate portal
+changes followed and now appear as the immediate cause.
+
+The proposed Tier 2 diff leaves `staleness.mjs` alone and keeps `portal.html` as the
+input that ages its own cells. The generator derives those cells from `cells()`, omits
+their changing state, date and result, and renders one invariant row directing the
+reader to `npm run gates`. It reports the displayed subset and the CLI-only count
+separately, so it does not present the displayed subset as the whole registry. A full sweep remains two
+passes: commit the non-portal readings, sweep the resulting clean portal, then record
+the portal alone. On that second pass `npm run verify` must leave the portal
+byte-identical or the record is refused.
+
+**What this gives up:** the portal no longer shows the exact state of its own three
+cells. The CLI and ledger still do. What it does not give up is page staleness: any
+real portal change, including another rendered ledger row changing, still ages those
+three cells. No digest baseline or future commit is invented. This draft is not
+approved by its own passing checks.
+
+The fixed-point experiment changed only the portal reading for
+`check-runtime-classes`, rebuilt, and left `portal.html` byte-identical at
+`07109675380952f49a9f14e25e92e75ab00d2680b849e2de8e31b364a52ed2d4`.
+Changing one displayed non-portal reading changed the hash to
+`81e0f6f571e73ed675961fb74a2de2e4d9bb42c786262524d2157c21a5344e9c` and left
+exactly the three portal cells stale. Both temporary ledger edits were restored and
+the original hash returned. `npm run verify` then exited 0 and `check-classes` found
+no uncompiled class; that is diagnostic evidence, not approval of this Tier 2 diff.
+
 **IMPLEMENTED 2026-09-02 — the per-gate dependency model, and finding 14 with
 it.** Each browser gate now declares what it actually reads, and an optional
 `pageInputs` map carries a dependency that belongs to one page.

@@ -2269,10 +2269,33 @@ including four menu specimens that were `visibility: hidden`. Automating the bro
 gates risks retiring the habit that catches those.
 
 **What is conceded:** the staleness bookkeeping is a real cost and this decision does not
-address it. 35 cells go stale on any `css/rux.css` or `js/` edit, by design. Narrowing
+address it. Many cells go stale on a `css/rux.css` edit and every cell goes stale on a
+`js/` edit, by design. Narrowing
 that rule so a cell ages only when inputs that could affect ITS reading moved is
 available and unbuilt — it was the runner-up option and remains open work, filed here
 rather than as a separate question.
+
+**DECIDED 2026-09-02 — the portal does not render the state of its own browser
+cells.** `portal.html` is generated from the browser matrix and is also an input to
+the three cells swept on that page. The cycle already happened: `2529e48` recorded
+the sweep taken at `a3f25e1`, regenerated all 38 matrix rows, and changed
+`portal.html`, so its three portal readings were stale in the commit that recorded
+them. Seven later commits changed the portal legitimately and masked that first cause.
+
+The page stays an input. Removing it from `staleness.mjs` would reopen the exact
+under-ageing `d63771c` fixed. `tools/build-portal.mjs` instead derives the portal-cell
+set from `cells()` and omits those cells' state, date and result from its output. It
+renders one invariant explanation and directs the complete answer to `npm run gates`.
+The totals say how many cells are shown and how many are CLI-only; they never present
+the subset as the whole registry.
+
+**The cost is an extra pass, stated rather than hidden.** A full sweep records and
+commits the non-portal cells first, then sweeps the portal at that clean commit and
+records its cells in a second commit. On that second pass the ledger must be the only
+dirty file and `npm run verify` must leave `portal.html` byte-identical. If it rewrites
+the page, the invariant failed and the result is not recorded. The portal gives up the
+exact status of its own three cells; the CLI and ledger remain authoritative. No digest
+baseline is introduced and `staleness.mjs` is unchanged.
 
 **AN UNREGISTERED CHECK EXISTS** (`docs/audits.md` finding 10). `tools/build-portal.mjs`
 asserts that every `#i-name` it emits resolves to a `<symbol>` in the committed sprite,

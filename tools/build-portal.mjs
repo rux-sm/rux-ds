@@ -44,7 +44,7 @@
 //
 import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-import { GATES, browserGates } from './lib/gates.mjs';
+import { GATES, browserGates, cells } from './lib/gates.mjs';
 import { markupFiles } from './lib/sources.mjs';
 import { cellStates } from './lib/staleness.mjs';
 import { compiled } from './lib/ownership.mjs';
@@ -133,12 +133,35 @@ const matrix = cellStates().map(r => {
   return { gate: r.id, page: r.page, state: r.state, why: r.why,
            current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
-const currentCells = matrix.filter(c => c.current).length;
+
+// THIS PAGE CANNOT RENDER THE STATE OF ITS OWN BROWSER CELLS. portal.html is
+// generated from this matrix and is itself an input to each cell swept on it.
+// Commit 2529e48 recorded the a3f25e1 sweep, rebuilt all 38 rows, and thereby
+// changed portal.html after the three portal readings it recorded: they were
+// stale in the commit that introduced them. Repeating the sweep and record
+// would repeat the change forever.
+//
+// The page remains an input in staleness.mjs. That is what makes a real portal
+// change age its three readings, and removing it would reopen the under-ageing
+// d63771c fixed. Instead, the self-cell set is derived from the registry and
+// its state, date and result are omitted from this output. The invariant row
+// below tells the reader where the complete answer lives. Changing
+// any other rendered row still changes portal.html and ages the three cells,
+// so a full sweep terminates in two passes: record the other pages, commit,
+// then sweep and record the final portal.
+const PORTAL_PAGE = 'portal.html';
+const portalCellKeys = new Set(cells()
+  .filter(({ page }) => page === PORTAL_PAGE)
+  .map(({ gate, page }) => `${gate}\0${page}`));
+const isPortalCell = cell => portalCellKeys.has(`${cell.gate}\0${cell.page}`);
+const shownMatrix = matrix.filter(cell => !isPortalCell(cell));
+const portalCellCount = portalCellKeys.size;
+const currentCells = shownMatrix.filter(c => c.current).length;
 // "Stale" here is everything that is neither current nor never run, which is
 // the set `npm run gates` tells you to re-sweep. NO COMMIT and UNKNOWN COMMIT
 // used to fall into no bucket at all and vanished from the tile.
-const staleCells = matrix.filter(c => !c.current && c.state !== 'NEVER RUN').length;
-const neverRun = matrix.filter(c => c.state === 'NEVER RUN').length;
+const staleCells = shownMatrix.filter(c => !c.current && c.state !== 'NEVER RUN').length;
+const neverRun = shownMatrix.filter(c => c.state === 'NEVER RUN').length;
 
 // ── icons, asserted ─────────────────────────────────────────────────────────
 const sprite = read('assets/icons.svg').trim();
@@ -209,7 +232,7 @@ const gateRows = GATES.map(g =>
 const STATE_TAG = { 'ok': ['current', 'green'], 'STALE': ['stale', 'red'],
   'DIRTY': ['dirty', 'magenta'], 'NEVER RUN': ['never run', 'red'],
   'NO COMMIT': ['no commit', 'warm-gray'], 'UNKNOWN COMMIT': ['unknown commit', 'warm-gray'] };
-const matrixRows = matrix.map(c => {
+const matrixRows = shownMatrix.map(c => {
   const [label, colour] = STATE_TAG[c.state] ?? [c.state, 'cool-gray'];
   return `                <tr>
                   <td>${esc(c.gate)}</td>
@@ -218,7 +241,9 @@ const matrixRows = matrix.map(c => {
                   <td>${esc(c.date ?? '—')}</td>
                   <td>${esc(c.why || c.result || 'no result recorded')}</td>
                 </tr>`;
-}).join('\n');
+}).concat(`                <tr>
+                  <td colspan="5">${portalCellCount} ${portalCellCount === 1 ? 'cell' : 'cells'} for <code>${PORTAL_PAGE}</code> ${portalCellCount === 1 ? 'is' : 'are'} reported by <code>npm run gates</code> only. Rendering ${portalCellCount === 1 ? 'its' : 'their'} state here would change the page ${portalCellCount === 1 ? 'it measures' : 'they measure'}.</td>
+                </tr>`).join('\n');
 
 const templateCards = templates.map(t =>
 `          <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
@@ -338,7 +363,7 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
 ${tile('Components compiled', `${COMPILED.size} / ${allComponents.length}`, `${allComponents.length - COMPILED.size} cut or deferred`)}
 ${tile('Class coverage', `${covPct}%`, `${covHit} of ${covOwn} classes exercised`)}
 ${tile('Stylesheet', kbz(gzipSize), `${kb(cssSize)} raw · ${kb(minSize)} minified`)}
-${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCells} not current · ${neverRun} never run`)}
+${tile('Browser gates current', `${currentCells} of ${shownMatrix.length} shown`, `${portalCellCount} portal ${portalCellCount === 1 ? 'cell' : 'cells'} reported by npm run gates only`)}
           </div>
         </div>
 
@@ -409,7 +434,7 @@ ${gateRows}
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. ${currentCells} of ${matrix.length} cells are current; ${staleCells} not current, ${neverRun} never run. Same rule as <code>npm run gates</code>, from <code>tools/lib/staleness.mjs</code>.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, ${currentCells} of ${shownMatrix.length} are current; ${staleCells} not current, ${neverRun} never run. <code>npm run gates</code> reports all ${matrix.length}, including ${portalCellCount} for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -462,4 +487,4 @@ ${matrixRows}
 `;
 
 writeFileSync('portal.html', page);
-console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${currentCells}/${matrix.length} browser cells current, ${staleCells} not current, ${neverRun} never run`);
+console.log(`  portal.html — ${COMPILED.size}/${allComponents.length} components · ${GATES.length} gates · ${currentCells} of ${shownMatrix.length} shown browser cells current, ${staleCells} not current, ${neverRun} never run · ${portalCellCount} portal cells in npm run gates only`);
