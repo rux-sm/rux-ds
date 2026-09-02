@@ -78,7 +78,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">43 sections</div>
+  <div class="ks-count">50 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#combo-button">Combo button</a>
@@ -123,6 +123,13 @@
     <a href="#pagination">Pagination</a>
     <a href="#user-avatar">User avatar</a>
     <a href="#ui-shell">UI shell</a>
+    <a href="#combo-box">Combo box</a>
+    <a href="#multiselect">Multiselect</a>
+    <a href="#file-uploader">File uploader</a>
+    <a href="#slider">Slider</a>
+    <a href="#treeview">Tree view</a>
+    <a href="#progress-bar">Progress bar</a>
+    <a href="#aspect-ratio">Aspect ratio</a>
   </div>
 </nav>
 
@@ -5554,6 +5561,614 @@
         </ul>
       </div>
     </header>
+  </div>
+</section>
+
+<section class="ks-sec" id="combo-box">
+  <h2>Combo box</h2><p>filterable input over a list box</p>
+  <!-- PROVENANCE: rendered-dom · components-combobox--default and its state
+       recipes (open, readonly) in docs/carbon-react-states.json, harvested
+       2026-08-27 -->
+  <!--
+    Rebuilt 2026-08-27 against the rendered React DOM, superseding the shadow-DOM
+    extraction (roadmap §4.1.11). What the rendered DOM corrected:
+      - the root is `combo-box list-box` ONLY — no `--dropdown`, no size and no
+        layout class; the shadow DOM's `--dropdown` pairing was the web
+        component's, not React's
+      - label and control sit inside div.list-box__wrapper
+      - the menu icon is a BUTTON carrying aria-expanded, not a div
+      - the menu is a UL of LI options
+  -->
+  <div class="ks-grid">
+    <div class="rux--list-box__wrapper">
+      <label class="rux--label" for="cbx-1">Filter and choose</label>
+      <div class="rux--combo-box rux--list-box">
+        <div class="rux--list-box__field">
+          <input id="cbx-1" class="rux--text-input rux--text-input--empty" type="text" role="combobox"
+                 aria-expanded="false" aria-autocomplete="list" placeholder="Type to filter…">
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </button>
+        </div>
+        <ul class="rux--list-box__menu" role="listbox" hidden>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Apple</div>
+          </li>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Apricot</div>
+          </li>
+          <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+            <div class="rux--list-box__menu-item__option">Blackberry</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="rux--list-box__wrapper">
+      <label class="rux--label" for="cbx-2">Readonly</label>
+      <div class="rux--combo-box rux--combo-box--readonly rux--list-box">
+        <div class="rux--list-box__field">
+          <input id="cbx-2" class="rux--text-input" type="text" role="combobox" value="Locked" readonly>
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu" disabled>
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="multiselect">
+  <h2>Multiselect</h2><p>selection tag · open with checkboxes · filterable</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com components-multiselect--default, 2026-08-26
+       · filterable variant still undiffed (roadmap §4.1.11) -->
+  <!--
+    ADMITTED 2026-09-01. `multi-select__wrapper` is rendered by every capture and
+    has no rule in @carbon/styles — the §4.1.12 precedent — so it is not written
+    and the wrapper carries `list-box__wrapper` alone; check-classes rejected it
+    on the first run. The filterable variant is still undiffed.
+
+    STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
+    components-multiselect--default, class tree read out of the live page rather
+    than inferred. Six things were wrong before, and none of them was catchable by
+    any gate:
+
+      1. No `__field--wrapper`. Carbon puts one inside the root; it holds the tag
+         AND the field, as siblings.
+      2. The count is a TAG, not `__selection--multi`:
+         `.rux--tag.rux--tag--filter.rux--tag--high-contrast` > `__label` +
+         `__close-icon[role=button]`. Both are styled in our CSS, which is why
+         picking by eye was not possible — `.rux--multi-select .rux--tag`
+         (:15588) is the tell.
+      3. The field is a <button role="combobox">, not a div. `.rux--list-box__field`
+         (:9168) is a button reset — appearance:none, border:0 — which only makes
+         sense on a button.
+      4. The menu is a <ul> of <li>, not divs. (The `cds-dropdown` shadow DOM says
+         DIV; React says UL. §4.1.11 — React is authoritative for light DOM.)
+      5. Menu checkboxes nest TWICE: a bare `__checkbox-wrapper` around a
+         `form-item checkbox-wrapper`. My earlier note claiming form-item was
+         wrong here was itself wrong — Carbon uses both, nested.
+      6. `checkbox-label-text` is a <div>, and a `checkbox__validation-msg`
+         follows the label.
+
+    SIZE. React emits `cds--list-box--md` + `cds--layout--size-md`. We keep only
+    the second: @carbon/styles defines NO rule for `--list-box--md`, so using it
+    would fail check-classes for a class that does nothing. `--layout--size-md` is
+    what actually drives the height, via `--rux-layout-size-height` (:8976). This
+    also retires `--dropdown--lg`, which Carbon never emits here at all.
+  -->
+  <div class="ks-grid">
+    <div>
+      <!--
+        --multi-select--readonly is written compound with the base and the list
+        box: `.rux--multi-select.rux--multi-select--readonly.rux--list-box`, so
+        all three belong to one element.
+      -->
+      <div class="rux--list-box__wrapper">
+        <label class="rux--label" id="ms-4-label">Read-only</label>
+        <div class="rux--multi-select rux--multi-select--readonly rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">2</span>
+            </div>
+            <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="ms-4-label" aria-expanded="false" aria-readonly="true">
+              <span class="rux--list-box__label">Set by policy</span>
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="rux--list-box__wrapper">
+        <label class="rux--label" id="ms-1-label">Choose several
+          <span class="rux--visually-hidden">Clear all selected items, 2 selected</span>
+        </label>
+        <div class="rux--multi-select rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">2</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <button type="button" class="rux--list-box__field" role="combobox" aria-labelledby="ms-1-label" aria-expanded="false" aria-haspopup="listbox" aria-controls="ms-1-menu">
+              <span class="rux--list-box__label">Choose several</span>
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </button>
+          </div>
+          <ul id="ms-1-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-a" title="Option A">
+                      <div class="rux--checkbox-label-text">Option A</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-b" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-1-b" title="Option B">
+                      <div class="rux--checkbox-label-text">Option B</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-1-c" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-1-c" title="Option C">
+                      <div class="rux--checkbox-label-text">Option C</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="rux--form__helper-text">Optional helper text</div>
+      </div>
+    </div>
+
+    <div>
+      <!--
+        FILTERABLE — the wrapper, tag and menu shape follow the verified default
+        above; the field's INPUT form is inferred, because the dump was of
+        components-multiselect--default. FilterableMultiSelect is a separate story
+        and has not been read yet. `--combo-box` is required alongside
+        `--filterable`: the input's border reset is
+        `.rux--multi-select--filterable.rux--combo-box .rux--text-input` (:15646).
+      -->
+      <div class="rux--list-box__wrapper">
+        <label class="rux--label" for="ms-2">Filterable</label>
+        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field--wrapper">
+            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
+              <span class="rux--tag__label">1</span>
+              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+              </div>
+            </div>
+            <div class="rux--list-box__field">
+              <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-controls="ms-2-menu" placeholder="Filter…">
+              <div class="rux--list-box__menu-icon">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+              </div>
+            </div>
+          </div>
+          <ul id="ms-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
+            <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-a" class="rux--checkbox" type="checkbox" tabindex="-1" checked>
+                    <label class="rux--checkbox-label" for="ms-2-a" title="Blueberry">
+                      <div class="rux--checkbox-label-text">Blueberry</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="rux--list-box__menu-item" role="option" aria-selected="false">
+              <div class="rux--list-box__menu-item__option">
+                <div class="rux--checkbox-wrapper">
+                  <div class="rux--form-item rux--checkbox-wrapper">
+                    <input id="ms-2-b" class="rux--checkbox" type="checkbox" tabindex="-1">
+                    <label class="rux--checkbox-label" for="ms-2-b" title="Blackcurrant">
+                      <div class="rux--checkbox-label-text">Blackcurrant</div>
+                    </label>
+                    <div class="rux--checkbox__validation-msg"></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="file-uploader">
+  <h2>File uploader</h2><p>drop zone · browse · uploaded items</p>
+  <!-- PROVENANCE: rendered-dom · components-fileuploader--default,
+       --drop-container, --file-uploader-item with its invalid, complete and sm
+       recipes, and --drag-and-drop-upload-container-example-application.
+       Corrected 2026-08-27:
+       the drop zone is a BUTTON carrying both __drop-container and
+       file-browse-btn, with a visually-hidden label and a file-input input as
+       siblings; file-close is a button and file-complete an svg.
+       · re-diffed 2026-08-28 against --default, --drop-container and
+       --drag-and-drop-upload-container-example-application -->
+  <!--
+    ADMITTED 2026-09-01, and rebuilt against the item captures on the way. The
+    stub wrote a bare `p.file-filename` and put the state container straight
+    inside the selected-file span; Carbon renders the filename as a tooltip
+    trigger — `file-filename-container-wrap` (or `-invalid`) around the popover
+    chrome around `button.file-filename-button > p.file-filename-button` — and
+    wraps the state container in a div that carries `file-container-item` — a
+    class every capture renders and no rule in @carbon/styles styles, so on the
+    §4.1.12 precedent the div is kept and the class is not written. The invalid item also
+    carries a `form-requirement[role=alert]` after it. `diff-fragment` still
+    reports the selected files inside `file-container--drop` where the item
+    STORY mounts them at the root; that is the story's layout, and React puts
+    them in the container at runtime. `file--label--disabled`,
+    `file-browse-btn--disabled`, `file--invalid` and `file__selected-file--disabled`
+    have rules in @carbon/styles and no story renders them.
+  -->
+  <!--
+    THE FILE LIST IS A SIBLING OF THE DROP ZONE, not a child of it. Carbon puts
+    both inside a `form-item`: label, description, `div.file` holding the drop
+    button and its hidden input, then `file-container file-container--drop`
+    beside it. This fragment nested the container inside .rux--file, where the
+    drop variant's own rule cannot reach it.
+  -->
+  <div style="max-width:32rem">
+    <div class="rux--form-item">
+      <p class="rux--file--label">Upload files</p>
+      <p class="rux--label-description">Max 500 KB each</p>
+      <div class="rux--file">
+        <button type="button" class="rux--file__drop-container rux--file-browse-btn">Drag and drop files here or click to upload</button>
+        <label class="rux--visually-hidden" for="fu-1">Upload files</label>
+        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" multiple>
+      </div>
+      <div class="rux--file-container rux--file-container--drop">
+        <span class="rux--file__selected-file rux--file__selected-file--md">
+          <div class="rux--file-filename-container-wrap">
+            <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--tooltip rux--file-filename-tooltip">
+              <div class="rux--tooltip-trigger__wrapper">
+                <button type="button" class="rux--file-filename-button" aria-labelledby="fu-item-1-tip"><p class="rux--file-filename-button">report-q3.pdf</p></button>
+              </div>
+              <span class="rux--popover" role="tooltip" id="fu-item-1-tip" aria-hidden="true"><span class="rux--popover-content rux--tooltip-content">report-q3.pdf</span><span class="rux--popover-caret"></span></span>
+            </span>
+          </div>
+          <div>
+            <span class="rux--file__state-container"><svg class="rux--file-complete" role="img" aria-label="Upload complete" tabindex="-1" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><title>Upload complete</title><use href="#i-checkmark--filled"/></svg></span>
+          </div>
+        </span>
+        <span class="rux--file__selected-file rux--file__selected-file--md rux--file__selected-file--invalid">
+          <div class="rux--file-filename-container-wrap-invalid">
+            <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--tooltip rux--file-filename-tooltip">
+              <div class="rux--tooltip-trigger__wrapper">
+                <button type="button" class="rux--file-filename-button" aria-labelledby="fu-item-2-tip"><p class="rux--file-filename-button">too-large.zip</p></button>
+              </div>
+              <span class="rux--popover" role="tooltip" id="fu-item-2-tip" aria-hidden="true"><span class="rux--popover-content rux--tooltip-content">too-large.zip</span><span class="rux--popover-caret"></span></span>
+            </span>
+          </div>
+          <div>
+            <span class="rux--file__state-container"><svg class="rux--file-invalid" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg><button type="button" class="rux--file-close" aria-label="Delete file - too-large.zip" aria-describedby="fu-item-2-error"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button></span>
+          </div>
+          <div class="rux--form-requirement" role="alert">
+            <div class="rux--form-requirement__title">File exceeds 500 KB</div>
+            <p class="rux--form-requirement__supplement">Compress it or upload a smaller export.</p>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="rux--form-item" style="margin-block-start:2rem">
+      <p class="rux--file--label rux--file--label--disabled">Upload files (disabled)</p>
+      <div class="rux--file rux--file--invalid">
+        <button type="button" class="rux--file__drop-container rux--file-browse-btn rux--file-browse-btn--disabled" disabled>Uploads are turned off for this workspace</button>
+        <label class="rux--visually-hidden" for="fu-2">Upload files (disabled)</label>
+        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" multiple disabled>
+      </div>
+      <div class="rux--file-container rux--file-container--drop">
+        <span class="rux--file__selected-file rux--file__selected-file--sm rux--file__selected-file--disabled">
+          <div class="rux--file-filename-container-wrap">
+            <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--tooltip rux--file-filename-tooltip">
+              <div class="rux--tooltip-trigger__wrapper">
+                <button type="button" class="rux--file-filename-button" aria-labelledby="fu-item-3-tip"><p class="rux--file-filename-button">archive-2019.tar</p></button>
+              </div>
+              <span class="rux--popover" role="tooltip" id="fu-item-3-tip" aria-hidden="true"><span class="rux--popover-content rux--tooltip-content">archive-2019.tar</span><span class="rux--popover-caret"></span></span>
+            </span>
+          </div>
+          <div>
+            <span class="rux--file__state-container"><button type="button" class="rux--file-close" aria-label="Delete file - archive-2019.tar"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button></span>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="slider">
+  <h2>Slider</h2><p>single handle · two handles · disabled</p>
+  <!-- PROVENANCE: rendered-dom · components-slider--default with its
+       disabled, readonly, invalid and warn recipes, plus --two-handle-slider,
+       2026-08-28 -->
+  <!--
+    ADMITTED 2026-09-01. The `slider__input` is `type="hidden"`, as Carbon renders
+    it: `.rux--slider__input { display: none }` and no capture lists it, because
+    the extractor records no hidden input. The thumb is `div[role=slider]` and
+    Carbon drives it from React — drag, arrows, Home/End — which no module here
+    reimplements yet, so this fragment is a static specimen until one does. `role="slider"`,
+    tabindex and the aria-value* attributes sit on `slider__thumb` itself and
+    each example is wrapped in `form-item`, both as every capture has them.
+
+    The value field is not a bare input in the slider container: Carbon wraps it
+    in `text-input-wrapper slider-text-input-wrapper`, which is the element its
+    two rules position beside the track. `slider-text-input--upper` and
+    `--lower` name the two fields of a two-handle slider and have no rule in
+    @carbon/styles, so they are not copied (§4.1.12).
+
+    The validation ICON goes in that wrapper too, beside the input — not inside
+    `__validation-msg`, which holds only the text. This fragment had it in the
+    message, where the rule that positions it against the field cannot work.
+  -->
+  <div style="max-width:28rem;display:grid;gap:2rem">
+    <div class="rux--form-item">
+      <label class="rux--label" for="sl-1">Volume</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.6)"></div>
+          <div class="rux--slider__thumb-wrapper" style="inset-inline-start:60%;inset-block-start:50%">
+            <div class="rux--slider__thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <input id="sl-1" class="rux--slider__input" type="hidden" min="0" max="100" value="60">
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+    <div class="rux--form-item">
+      <label class="rux--label" for="sl-2">Range</label>
+      <div class="rux--slider-container rux--slider-container--two-handles">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.4)"></div>
+          <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--lower" style="inset-inline-start:25%;inset-block-start:50%">
+            <div class="rux--slider__thumb rux--slider__thumb--lower" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
+          </div>
+          <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--upper" style="inset-inline-start:65%;inset-block-start:50%">
+            <div class="rux--slider__thumb rux--slider__thumb--upper" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
+          </div>
+          <input id="sl-2" class="rux--slider__input" type="hidden" min="0" max="100" value="65">
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+    <div class="rux--form-item">
+      <label class="rux--label" for="sl-4">Read-only</label>
+      <div class="rux--slider-container rux--slider-container--readonly">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider rux--slider--readonly">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.3)"></div>
+          <div class="rux--slider__thumb-wrapper" style="inset-inline-start:30%;inset-block-start:50%">
+            <div class="rux--slider__thumb" role="slider" aria-valuemin="0" aria-valuemax="100" aria-readonly="true"></div>
+          </div>
+          <input id="sl-4" class="rux--slider__input" type="hidden" min="0" max="100" value="30" readonly>
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label" for="sl-5">With validation</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.9)"></div>
+          <div class="rux--slider__thumb-wrapper" style="inset-inline-start:90%;inset-block-start:50%">
+            <div class="rux--slider__thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <input id="sl-5" class="rux--slider__input" type="hidden" min="0" max="100" value="90">
+        </div>
+        <div class="rux--text-input-wrapper rux--slider-text-input-wrapper">
+          <input class="rux--text-input rux--slider-text-input rux--slider-text-input--warn" type="number" value="90" aria-label="Value">
+          <svg class="rux--slider__invalid-icon rux--slider__invalid-icon--warning" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>
+        </div>
+      </div>
+      <div class="rux--slider__validation-msg rux--slider__validation-msg--invalid rux--form-requirement">
+        Above the recommended range
+      </div>
+    </div>
+
+    <div class="rux--form-item">
+      <label class="rux--label rux--label--disabled" for="sl-3">Disabled</label>
+      <div class="rux--slider-container">
+        <span class="rux--slider__range-label">0</span>
+        <div class="rux--slider rux--slider--disabled">
+          <div class="rux--slider__track"></div>
+          <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.3)"></div>
+          <div class="rux--slider__thumb-wrapper" style="inset-inline-start:30%;inset-block-start:50%"><div class="rux--slider__thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100"></div></div>
+          <input id="sl-3" class="rux--slider__input" type="hidden" min="0" max="100" value="30" disabled>
+        </div>
+        <span class="rux--slider__range-label">100</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="treeview">
+  <h2>Tree view</h2><p>nested nodes · selected · disabled — click to select, click the caret to collapse</p>
+  <!-- PROVENANCE: rendered-dom · components-treeview--default, --with-icons,
+       --with-links and --with-complex-nesting, plus the xs recipe, 2026-08-28 -->
+  <!--
+    Corrected 2026-08-28: __icon and __label__text both belong inside
+    `__label__details`, not loose in __label, and a node carrying an icon takes
+    `--with-icon`.
+
+    Re-diffed on admission, 2026-09-01: every `__label__text` now sits inside
+    `__label__details` — four leaves still had it loose — and the `--active` and
+    `--disabled` states are shown on TOP-LEVEL nodes, because every sampled story
+    marks state there and `diff-fragment` had no parent for a state one level
+    down. The nested child keeps `--selected` alone, which the captures do show
+    inside `__children`. The parent node carries `tree-parent-node`, which every capture puts on
+    an expandable `li` and which positions the toggle icon. Not reimplemented:
+    keyboard navigation; a click selects
+    and the caret collapses, nothing more.
+  -->
+  <ul class="rux--tree" role="tree">
+    <li class="rux--tree-node rux--tree-node--with-icon rux--tree-parent-node" role="treeitem" aria-expanded="true" tabindex="0">
+      <div class="rux--tree-node__label">
+        <span class="rux--tree-parent-node__toggle"><svg class="rux--tree-parent-node__toggle-icon rux--tree-parent-node__toggle-icon--expanded" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></span>
+        <span class="rux--tree-node__label__details">
+          <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg>
+          <span class="rux--tree-node__label__text">Parent folder</span>
+        </span>
+      </div>
+      <ul class="rux--tree-node__children" role="group">
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Selected child</span></span></div>
+        </li>
+        <!--
+          This leaf carries an icon so `.rux--tree-leaf-node.rux--tree-node--with-icon`
+          (:25252, padding-inline-start: 2rem) is exercised. The parent already
+          showed --with-icon; nothing showed it on a LEAF, where Carbon indents
+          differently because there is no caret taking up the first slot.
+          check-compound flagged the pair as never sharing an element, and
+          demoing the combination is the right answer to that rather than
+          excepting it.
+        -->
+        <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--with-icon" role="treeitem" tabindex="-1">
+          <div class="rux--tree-node__label">
+            <span class="rux--tree-node__label__details">
+              <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg>
+              <span class="rux--tree-node__label__text">Second child</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
+      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Disabled node</span></span></div>
+    </li>
+  </ul>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">--tree--xs · the compact density</div>
+  <ul class="rux--tree rux--tree--xs" role="tree">
+    <li class="rux--tree-node rux--tree-leaf-node" role="treeitem" tabindex="0">
+      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact node</span></span></div>
+    </li>
+    <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
+      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact, selected</span></span></div>
+    </li>
+  </ul>
+</section>
+
+<section class="ks-sec" id="progress-bar">
+  <h2>Progress bar</h2><p>determinate · indeterminate · finished · error</p>
+  <!-- PROVENANCE: rendered-dom · components-progressbar--default with its
+       finished, error and small recipes, plus --determinate and
+       --indeterminate, 2026-08-28 -->
+  <!--
+    The finished and error bars each render `__status-icon` inside __label,
+    after the label text — the tick and the error mark that say which state the
+    bar is in without relying on the bar colour alone. Three rules hang off it
+    and this fragment drew neither icon.
+
+    __helper-text also holds a visually-hidden live region, which is what
+    announces progress to a screen reader.
+
+    `progress-bar--default` is emitted by the reference and dropped here: it is
+    the unclassed default size and @carbon/styles has no rule for it (§4.1.12).
+  -->
+  <div style="max-width:28rem;display:grid;gap:1.5rem">
+    <div class="rux--progress-bar rux--progress-bar--big">
+      <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Uploading</span></div>
+      <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar" style="transform:scaleX(0.42)"></div></div>
+      <div class="rux--progress-bar__helper-text">42%<div class="rux--visually-hidden">Uploading, 42 percent complete</div></div>
+    </div>
+    <div class="rux--progress-bar rux--progress-bar--small rux--progress-bar--indeterminate">
+      <div class="rux--progress-bar__label"><span class="rux--progress-bar__label-text">Working</span></div>
+      <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
+    </div>
+    <div class="rux--progress-bar rux--progress-bar--finished">
+      <div class="rux--progress-bar__label">
+        <span class="rux--progress-bar__label-text">Complete</span>
+        <svg class="rux--progress-bar__status-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+      </div>
+      <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
+      <div class="rux--progress-bar__helper-text">Done</div>
+    </div>
+    <div class="rux--progress-bar rux--progress-bar--error">
+      <div class="rux--progress-bar__label">
+        <span class="rux--progress-bar__label-text">Failed</span>
+        <svg class="rux--progress-bar__status-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+      </div>
+      <div class="rux--progress-bar__track"><div class="rux--progress-bar__bar"></div></div>
+      <div class="rux--progress-bar__helper-text">Upload failed</div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="aspect-ratio">
+  <h2>Aspect ratio</h2><p>16x9 · 4x3 · 1x1 · 2x1 · 9x16</p>
+  <!-- PROVENANCE: rendered-dom · components-aspectratio--default with its
+       2x1, 4x3 and 9x16 recipes, 2026-08-28 · diffed clean -->
+  <!--
+    The reference wraps its ratios in `css-grid` / `css-grid-column` with
+    responsive span classes. That is the STORY's layout, not the component:
+    AspectRatio is the ratio box itself, and the sink lays its examples out with
+    its own ks-grid. Recorded so the omission is a decision, not an oversight.
+  -->
+  <!--
+    The ratio comes from ::before { padding-block-start: <pct> } — the box takes its
+    HEIGHT from its own width. Two things break it:
+      1. a parent that stretches children (grid/flex default) overrides the height,
+         so align-items:start is required;
+      2. any padding or in-flow content ADDS to that height, so the label is
+         absolutely positioned rather than flowed.
+  -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.5rem;align-items:start">
+    <div class="rux--aspect-ratio rux--aspect-ratio--16x9" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">16 × 9</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--4x3" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">4 × 3</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--1x1" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">1 × 1</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--2x1" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">2 × 1</span>
+    </div>
+    <div class="rux--aspect-ratio rux--aspect-ratio--9x16" style="background:var(--rux-layer-01)">
+      <span style="position:absolute;inset:0;display:grid;place-items:center">9 × 16</span>
+    </div>
   </div>
 </section>
 </main>

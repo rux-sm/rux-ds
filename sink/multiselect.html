@@ -3,6 +3,11 @@
   <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com components-multiselect--default, 2026-08-26
        · filterable variant still undiffed (roadmap §4.1.11) -->
   <!--
+    ADMITTED 2026-09-01. `multi-select__wrapper` is rendered by every capture and
+    has no rule in @carbon/styles — the §4.1.12 precedent — so it is not written
+    and the wrapper carries `list-box__wrapper` alone; check-classes rejected it
+    on the first run. The filterable variant is still undiffed.
+
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
     components-multiselect--default, class tree read out of the live page rather
     than inferred. Six things were wrong before, and none of them was catchable by
@@ -39,7 +44,7 @@
         box: `.rux--multi-select.rux--multi-select--readonly.rux--list-box`, so
         all three belong to one element.
       -->
-      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+      <div class="rux--list-box__wrapper">
         <label class="rux--label" id="ms-4-label">Read-only</label>
         <div class="rux--multi-select rux--multi-select--readonly rux--list-box rux--layout--size-md">
           <div class="rux--list-box__field--wrapper">
@@ -58,7 +63,7 @@
     </div>
 
     <div>
-      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+      <div class="rux--list-box__wrapper">
         <label class="rux--label" id="ms-1-label">Choose several
           <span class="rux--visually-hidden">Clear all selected items, 2 selected</span>
         </label>
@@ -132,7 +137,7 @@
         `--filterable`: the input's border reset is
         `.rux--multi-select--filterable.rux--combo-box .rux--text-input` (:15646).
       -->
-      <div class="rux--multi-select__wrapper rux--list-box__wrapper">
+      <div class="rux--list-box__wrapper">
         <label class="rux--label" for="ms-2">Filterable</label>
         <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
           <div class="rux--list-box__field--wrapper">

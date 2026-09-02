@@ -46,7 +46,7 @@
 @use "@carbon/styles/scss/components/accordion";
 // @use "@carbon/styles/scss/components/action-set";
 // @use "@carbon/styles/scss/components/ai-label";
-// @use "@carbon/styles/scss/components/aspect-ratio";
+@use "@carbon/styles/scss/components/aspect-ratio";
 @use "@carbon/styles/scss/components/badge-indicator";
 // @use "@carbon/styles/scss/components/big-number";
 @use "@carbon/styles/scss/components/breadcrumb";
@@ -56,7 +56,7 @@
 @use "@carbon/styles/scss/components/checkbox";
 // @use "@carbon/styles/scss/components/coachmark";
 // @use "@carbon/styles/scss/components/code-snippet";
-// @use "@carbon/styles/scss/components/combo-box";
+@use "@carbon/styles/scss/components/combo-box";
 @use "@carbon/styles/scss/components/combo-button";
 // @use "@carbon/styles/scss/components/contained-list";
 // @use "@carbon/styles/scss/components/content-switcher";
@@ -82,7 +82,7 @@
 // @use "@carbon/styles/scss/components/dialog";
 @use "@carbon/styles/scss/components/dropdown";
 // @use "@carbon/styles/scss/components/EditInPlace";
-// @use "@carbon/styles/scss/components/file-uploader";
+@use "@carbon/styles/scss/components/file-uploader";
 // @use "@carbon/styles/scss/components/fluid-combo-box";
 @use "@carbon/styles/scss/components/fluid-date-picker";
 @use "@carbon/styles/scss/components/fluid-dropdown";
@@ -106,7 +106,7 @@
 @use "@carbon/styles/scss/components/menu";
 // @use "@carbon/styles/scss/components/menu-button";
 @use "@carbon/styles/scss/components/modal";
-// @use "@carbon/styles/scss/components/multiselect";
+@use "@carbon/styles/scss/components/multiselect";
 @use "@carbon/styles/scss/components/notification";
 @use "@carbon/styles/scss/components/number-input";
 // @use "@carbon/styles/scss/components/OptionsTile";
@@ -115,7 +115,7 @@
 @use "@carbon/styles/scss/components/pagination";
 // @use "@carbon/styles/scss/components/pagination-nav";
 @use "@carbon/styles/scss/components/popover";
-// @use "@carbon/styles/scss/components/progress-bar";
+@use "@carbon/styles/scss/components/progress-bar";
 // ADMITTED 2026-08-29 under §2.1, reversing its own DEFER. inventory.md deferred
 // it as "multi-step wizard; NO TARGET SHAPE HAS ONE -- measured +1.1 KB
 // gzipped", and §4.6's seventh exit attempt built exactly that shape. The
@@ -144,7 +144,7 @@
 // @use "@carbon/styles/scss/components/shape-indicator";
 // @use "@carbon/styles/scss/components/side-panel";
 @use "@carbon/styles/scss/components/skeleton-styles";
-// @use "@carbon/styles/scss/components/slider";
+@use "@carbon/styles/scss/components/slider";
 // @use "@carbon/styles/scss/components/slug";
 @use "@carbon/styles/scss/components/stack";
 // @use "@carbon/styles/scss/components/structured-list";
@@ -157,7 +157,7 @@
 @use "@carbon/styles/scss/components/toggle";
 @use "@carbon/styles/scss/components/toggletip";
 @use "@carbon/styles/scss/components/tooltip";
-// @use "@carbon/styles/scss/components/treeview";
+@use "@carbon/styles/scss/components/treeview";
 // @use "@carbon/styles/scss/components/truncated-text";
 @use "@carbon/styles/scss/components/ui-shell";
 @use "@carbon/styles/scss/components/user-avatar";

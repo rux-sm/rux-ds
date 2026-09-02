@@ -17,6 +17,14 @@
       "hit": 16,
       "own": 33
     },
+    "combo-box": {
+      "hit": 2,
+      "own": 4
+    },
+    "multiselect": {
+      "hit": 4,
+      "own": 8
+    },
     "data-table": {
       "hit": 41,
       "own": 80
@@ -25,9 +33,9 @@
       "hit": 11,
       "own": 19
     },
-    "text-input": {
-      "hit": 16,
-      "own": 27
+    "aspect-ratio": {
+      "hit": 6,
+      "own": 10
     },
     "combo-button": {
       "hit": 6,
@@ -65,21 +73,21 @@
       "hit": 5,
       "own": 8
     },
+    "text-input": {
+      "hit": 17,
+      "own": 27
+    },
     "tile": {
       "hit": 17,
       "own": 26
     },
+    "list-box": {
+      "hit": 23,
+      "own": 35
+    },
     "accordion": {
       "hit": 10,
       "own": 15
-    },
-    "form": {
-      "hit": 4,
-      "own": 6
-    },
-    "list-box": {
-      "hit": 22,
-      "own": 33
     },
     "select": {
       "hit": 16,
@@ -89,13 +97,13 @@
       "hit": 17,
       "own": 25
     },
+    "list": {
+      "hit": 28,
+      "own": 41
+    },
     "modal": {
       "hit": 17,
       "own": 25
-    },
-    "list": {
-      "hit": 27,
-      "own": 39
     },
     "user-avatar": {
       "hit": 17,
@@ -108,6 +116,10 @@
     "card": {
       "hit": 25,
       "own": 34
+    },
+    "form": {
+      "hit": 6,
+      "own": 8
     },
     "link": {
       "hit": 6,
@@ -125,6 +137,10 @@
       "hit": 18,
       "own": 22
     },
+    "file-uploader": {
+      "hit": 23,
+      "own": 28
+    },
     "ui-shell": {
       "hit": 46,
       "own": 56
@@ -140,6 +156,18 @@
     "toggletip": {
       "hit": 5,
       "own": 6
+    },
+    "progress-bar": {
+      "hit": 12,
+      "own": 14
+    },
+    "slider": {
+      "hit": 24,
+      "own": 28
+    },
+    "treeview": {
+      "hit": 17,
+      "own": 19
     },
     "menu": {
       "hit": 19,

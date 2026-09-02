@@ -110,6 +110,34 @@ const CARD_GRID_REASON = 'the story layout, not the component. All 17 card stori
   + 'class; nothing in css/rux.css scopes one to it. Same shape as links:link--disabled.';
 
 const KNOWN = {
+  // BATCH 1 OF §4.9, 2026-09-01 — the seven admissions below share two reasons
+  // that this list already records elsewhere: a story's own grid is not the
+  // component, and a class every capture renders but no rule styles is not
+  // written (§4.1.12).
+  'aspect-ratio:aspect-ratio': [['css-grid', 'css-grid-column'],
+    "the story's layout: every aspect-ratio story mounts its boxes in a css-grid "
+    + 'column to show several at once. The ratio box is the component; the fragment '
+    + 'lays its examples out with the sink grid. Recorded in the fragment.'],
+  'aspect-ratio:aspect-ratio--16x9': [['css-grid', 'sm:col-span-4', 'md:col-span-4', 'lg:col-span-4', 'css-grid-column', 'card'],
+    'the same story layout, intersected with the five card stories that put a 16x9 '
+    + 'image box inside a card column. Nothing in the CSS scopes the ratio to a card.'],
+  'file-uploader:file__state-container': [['file-container-item'],
+    'attested in every item capture and styled by no rule in @carbon/styles, so on '
+    + 'the §4.1.12 precedent the wrapper div is present and the class is not written. '
+    + 'check-classes rejected it on the first run.'],
+  'file-uploader:file-close': [['file-container-item'],
+    'the same unstyled wrapper as file__state-container above.'],
+  'multiselect:multi-select': [['multi-select__wrapper'],
+    'rendered by all 46 captures and styled by no rule in @carbon/styles — the '
+    + '§4.1.12 call sink/dropdown.html already records for dropdown__wrapper. The '
+    + 'styled wrapper, list-box__wrapper, is present.'],
+  'multiselect:list-box__field--wrapper': [['multi-select__wrapper'],
+    'the same unstyled wrapper as multi-select above.'],
+  'multiselect:multi-select--selected': [['multi-select__wrapper'],
+    'the same unstyled wrapper as multi-select above.'],
+  'multiselect:multi-select--filterable': [['multi-select__wrapper', 'multi-select--filterable__wrapper'],
+    'both wrappers are attested and unstyled; the filterable variant is still '
+    + 'undiffed beyond this, as the fragment records.'],
   'card:btn--icon-only': [TOOLTIP_CHROME,
     'the icon-tooltip the sink declines throughout. The reference wraps each '
     + '`card__action` button in one; the fragment demos the component rather than the '

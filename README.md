@@ -549,15 +549,15 @@ every commit is one nobody keeps.
 <!-- STATS:BEGIN -->
 | | |
 |---|---|
-| Components | **50 / 83 compiled** in 53 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
+| Components | **57 / 83 compiled** in 60 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
-| Tokens · classes | **607** `--rux-*` defined, 9 more read through a fallback · **1,400** `.rux--*` |
-| Kitchen sink | **43** sections · **670** classes with `templates/` and `js/` |
-| Class coverage | **638 / 937 (68%)** — ratcheted in `docs/coverage.json` |
+| Tokens · classes | **608** `--rux-*` defined, 8 more read through a fallback · **1,502** `.rux--*` |
+| Kitchen sink | **50** sections · **763** classes with `templates/` and `js/` |
+| Class coverage | **731 / 1,054 (69%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **47 `rendered-dom` · 6 `source` · 0 `inferred`** across 53 files |
+| Markup provenance | **54 `rendered-dom` · 6 `source` · 0 `inferred`** across 60 files |
 | Icons | 59 symbols in a 16.1 KB sprite — 36 referenced, 23 nothing points at |
-| Size | 772.9 KB raw · 694.6 KB min · **70 KB gzipped** |
+| Size | 819.8 KB raw · 735.9 KB min · **75 KB gzipped** |
 | Behaviour JS | **14** modules · **44 KB gzipped** · 149.6 KB raw, 61% of it comment · 58.8 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from

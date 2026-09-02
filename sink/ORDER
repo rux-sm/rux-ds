@@ -47,3 +47,10 @@ progress-indicator
 pagination
 user-avatar
 ui-shell
+combo-box
+multiselect
+file-uploader
+slider
+treeview
+progress-bar
+aspect-ratio
