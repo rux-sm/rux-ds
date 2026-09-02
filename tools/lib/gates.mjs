@@ -87,27 +87,26 @@ export function pageTargets() {
 // keep `inputs`, unchanged: they read their whole target set on every run and
 // have no cells.
 // WHAT EVERY SWEPT PAGE ACTUALLY LOADS, which is not the same as what the build
-// produces. Each of the twelve pages links assets/fonts/plex.css, and a font
-// changes metrics: it moves spacing readings, focus-ring geometry and the size
-// half of a contrast reading. It was missing from this list until 2026-09-02.
+// produces. All twelve link css/rux.css, css/rux-theme.css, css/rux-overrides.css
+// and assets/fonts/plex.css -- the last two only since finding 13 fixed
+// portal.html, which linked neither -- and every one of them loads js/.
 //
-// css/rux-theme.css AND css/rux-overrides.css ARE NOT HERE, AND NOT BECAUSE OF
-// THE PAGES ANY MORE. All twelve link them as of 2026-09-02, finding 13 having
-// fixed portal.html, which linked neither. They are absent now because THIS
-// LIST IS SHARED BY GATES THAT DO NOT READ THE SAME THING. A stylesheet moves
-// what is rendered -- spacing, focus-ring geometry, the size half of a contrast
-// reading -- but check-runtime-classes reads the DOM's CLASS SETS, and no
-// change to a stylesheet puts a class on an element. Declaring them here would
-// age twelve readings that cannot move, which is finding 11's first half
-// arriving by a new route. They go in per-gate lists, and that refinement is
-// what finding 11 closes on.
-//
-// sink/harness.css is loaded by kitchen-sink.html ALONE, so it is not shared
-// and this list cannot express it. `sharedInputs` plus the cell's page has no
-// room for a per-page extra, and the sink's four readings do not age against
-// the stylesheet that positions their specimens. Pre-existing: no browser gate
-// ever named it. Audit finding 14.
-const RENDERED_INPUTS = ['css/rux.css', 'js', 'assets/fonts/plex.css'];
+// A FONT AND A STYLESHEET ARE NOT DECORATION TO THESE GATES. Plex changes
+// metrics, so it moves spacing readings, focus-ring geometry and the size half
+// of a contrast reading. The theme and override layers move what is rendered.
+// None of them was declared before 2026-09-02.
+const RENDERED_INPUTS = [
+  'css/rux.css', 'css/rux-theme.css', 'css/rux-overrides.css',
+  'assets/fonts/plex.css', 'js',
+];
+
+// FINDING 14. sink/harness.css positions the kitchen sink's specimens and is
+// loaded by that page alone, so it is not shared by a gate's cells and is not
+// the page either. Declared per page, for the four gates whose reading it can
+// move: what is rendered, spacing, behaviour and accessibility. NOT
+// check-runtime-classes -- that compares the live DOM's class sets against the
+// static markup, and no stylesheet puts a class on an element.
+const SINK_HARNESS = { 'kitchen-sink.html': ['sink/harness.css'] };
 
 export const GATES = [
   {
@@ -170,7 +169,7 @@ export const GATES = [
     kind: 'node',
     inVerify: true,
     catches: 'a `var(--rux-*)` that resolves to nothing',
-    blindTo: 'a token whose *value* moved — check-token-values covers it as of 2026-09-02',
+    blindTo: 'a token whose *value* moved. check-token-values covers the values DECLARED in css/rux.css and only those: not a value that moves through the cascade, not one declared in css/rux-theme.css or css/rux-overrides.css, and not what a browser finally computes',
     reads: 'assembled',
     fileTargets: ['css/rux.css', 'sink/harness.css', 'css/rux-theme.css', 'css/rux-overrides.css', 'kitchen-sink.html', 'portal.html', 'templates'],
     pageTargets: [],
@@ -497,6 +496,7 @@ export const GATES = [
     canRun: { sink: true, templates: false },
     cannotRunReason: 'its unit is the .ks-sec section; a template has none, and a fallback would report a pass it did not earn',
     sharedInputs: [...RENDERED_INPUTS],
+    pageInputs: SINK_HARNESS,
     redRun: 'flatten a section: #tags [class*="rux--"] { height:1px; min-height:0; padding:0 }',
     // Both bite an operator. The theme reset is not a restore: it writes
     // 'white' whatever the page was on before.
@@ -518,7 +518,11 @@ export const GATES = [
     fileTargets: [],
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
-    sharedInputs: [...RENDERED_INPUTS],
+    // NOT THE STYLESHEETS. This gate compares the live DOM's class sets
+    // against the static markup, and the difference is made by MODULES
+    // running -- no stylesheet puts a class on an element. Declaring CSS
+    // here would age twelve readings that cannot move.
+    sharedInputs: ['js'],
     redRun: 'remove a class from the live DOM by hand; it reports that class stripped',
     // Condition 5 of the sink-check skill, and it conflicts with condition 1:
     // the click check-a11y needs for document.hasFocus() is the kind of press
@@ -538,6 +542,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: ['docs/carbon-react-spacing.json', ...RENDERED_INPUTS],
+    pageInputs: SINK_HARNESS,
     redRun: 'change a padding on any compiled class and re-run',
     sideEffects: null,
     // READ THE noReference LIST. Pagination's real defect sat in that bucket
@@ -562,7 +567,11 @@ export const GATES = [
     pageTargets: ['kitchen-sink.html'],
     canRun: { sink: true, templates: false },
     cannotRunReason: 'it drives every module, and no template carries the components to drive — five modules bind to nothing there at all',
+    // CSS REACHES THIS ONE. It measures element rectangles and menu
+    // height, so a stylesheet can change its result -- it is not a
+    // pure-JavaScript reading.
     sharedInputs: [...RENDERED_INPUTS],
+    pageInputs: SINK_HARNESS,
     redRun: 'revert the offset write in js/menu.js and the tabindex pairing in js/data-table.js — expect 3 failures naming an 8px overlap and tabindex [0,0,0] on a hidden bar',
     // Every case restores what it touched, so it is safe to run twice and safe
     // beside the other browser gates. It still runs AFTER check-runtime-classes,
@@ -582,6 +591,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: [...RENDERED_INPUTS],
+    pageInputs: SINK_HARNESS,
     redRun: '.rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important } — expect 12 findings',
     sideEffects: 'moves focus and restores it; injects and removes a transition:none style',
     baseline: 'kitchen-sink 0 findings · 6 notes · focusRingChecked true',

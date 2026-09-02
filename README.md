@@ -248,7 +248,7 @@ None is sufficient alone — roadmap §4.1.2 has the bug that proved it — and 
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
 | `build-portal.mjs` icon assertion | a `#i-name` emitted into `portal.html` that the sprite has no `<symbol>` for — it caught `#i-katex` on its first run | every page it does not generate; its unit is `portal.html` alone |
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
-| `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved — `check-token-values` covers it |
+| `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved — `check-token-values` covers the values **declared in `css/rux.css`** and only those |
 | `check-token-values.mjs` | a `--rux-*` value that moved, was added or was dropped under a stable name, keyed by the context declaring it | a value that changes only through the CASCADE — it reads what `css/rux.css` declares, not what a browser computes |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |

@@ -122,15 +122,27 @@ export function cellStates() {
       continue;
     }
 
-    // WHAT CAN INVALIDATE THIS READING: the page it was taken on, plus what
-    // every cell of the gate shares. The registry declares only the shared
-    // half -- see the note above RENDERED_INPUTS in gates.mjs, which is where
-    // audit finding 11 is recorded -- and the page is added here, once, rather
-    // than restated in 38 registry rows where it would drift.
+    // WHAT CAN INVALIDATE THIS READING, in three parts. What every cell of the
+    // gate shares; what THIS PAGE alone brings, if anything; and the page. The
+    // registry declares the first two -- see the note above RENDERED_INPUTS in
+    // gates.mjs, where audit findings 11 and 14 are recorded -- and the page is
+    // added here, once, rather than restated in 38 registry rows where it would
+    // drift.
+    //
+    // pageInputs IS FINDING 14. sink/harness.css is loaded by kitchen-sink.html
+    // and by nothing else, so it is neither shared by the gate's cells nor the
+    // page itself, and a model with only those two had no way to say it: the
+    // sink's readings did not age against the stylesheet positioning their
+    // specimens, and no browser gate had ever named it. An optional per-page
+    // list says it exactly, without pretending harness.css reaches a template.
     //
     // The same set for committed movement and for dirty files: a modified page
     // cannot honestly keep a current reading either.
-    const inputs = [...gate.sharedInputs, page];
+    const inputs = [
+      ...gate.sharedInputs,
+      ...(gate.pageInputs?.[page] ?? []),
+      page,
+    ];
     const moved = inputs.filter(i => movedSince(recorded.commit, i));
     const modified = inputs.filter(isDirty);
 

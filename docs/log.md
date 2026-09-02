@@ -12,6 +12,38 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**IMPLEMENTED 2026-09-02 — the per-gate dependency model, and finding 14 with
+it.** Each browser gate now declares what it actually reads, and an optional
+`pageInputs` map carries a dependency that belongs to one page.
+`check-runtime-classes` takes `js/` and its own page and NO stylesheet: it
+compares the live DOM's class sets against the static markup, the difference is
+made by modules running, and nothing in a stylesheet puts a class on an element.
+The other four take all three shipped CSS layers, Plex and `js/`, because they
+measure what is rendered — `check-behaviour` included, since it reads element
+rectangles and menu height and CSS can move both. `sink/harness.css` is declared
+for those four against `kitchen-sink.html` alone, which closes finding 14: it
+positions the sink's specimens, is loaded by no other page, and had never been
+named by any browser gate.
+
+**Measured one file at a time, from a clean clone.** A change to `css/rux.css`,
+`css/rux-theme.css`, `css/rux-overrides.css` or Plex ages 27 cells and none of
+`check-runtime-classes`'; a change to `js/` ages all 38; `sink/harness.css` ages
+4, every one of them `kitchen-sink.html` and no template; the Carbon spacing
+capture ages `check-spacing` alone. Before this, the first four aged everything
+or nothing and the harness aged nothing at all.
+
+**A THIRD PARSER FAULT IN THE TOKEN SNAPSHOT, found in review.** Whitespace was
+collapsed across the whole value, so `"a  b"` was recorded as `"a b"` — a value
+the stylesheet does not declare, and a real change from one to the other would
+have compared equal. The gate whose entire job is noticing a moved value was
+blind to that one. Collapsing now stops at a quote and resumes after it, escapes
+included; outside quotes it still happens, which is what makes a reformatted
+build produce no diff. The committed baseline was unaffected: 0 moved.
+
+`check-tokens`'s `blindTo` is narrowed to match what is actually covered —
+values DECLARED in `css/rux.css` and only those, not the cascade, not
+`css/rux-theme.css` or `css/rux-overrides.css`, not what a browser computes.
+
 **DONE 2026-09-02 — Phase 8's token snapshot, the declaration half (§4.8).**
 `check-token-values` is the only gate here that is not name-based. It records
 every `--rux-*` value `css/rux.css` declares — 2,756 declarations across 231

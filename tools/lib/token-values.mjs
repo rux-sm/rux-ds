@@ -52,13 +52,37 @@ function declarations(css, file) {
   const stack = [];
   let buf = '', i = 0, quote = null, paren = 0;
 
+  // COLLAPSE RUNS OF WHITESPACE, BUT NEVER INSIDE A QUOTED STRING. A bare
+  // .replace(/\s+/g, ' ') over the whole value rewrote `"a  b"` to `"a b"`, so
+  // the snapshot recorded a string the stylesheet does not declare and a real
+  // change from `"a  b"` to `"a b"` would have compared equal -- a gate whose
+  // whole job is noticing a moved value, blind to that one. Found by fixture in
+  // review, 2026-09-02. Outside quotes the collapsing is wanted: it is what
+  // makes a reformatted build produce no diff.
+  const normalise = value => {
+    let out = '', quote = null, prevSpace = false;
+    for (let k = 0; k < value.length; k++) {
+      const c = value[k];
+      if (quote) {
+        out += c;
+        if (c === '\\') { out += value[++k] ?? ''; continue; }
+        if (c === quote) quote = null;
+        continue;
+      }
+      if (c === '"' || c === "'") { quote = c; out += c; prevSpace = false; continue; }
+      if (/\s/.test(c)) { if (!prevSpace) out += ' '; prevSpace = true; continue; }
+      out += c; prevSpace = false;
+    }
+    return out.trim();
+  };
+
   const flushDecl = text => {
     const t = text.trim();
     if (!t.startsWith('--rux-')) return;
     const colon = t.indexOf(':');
     if (colon === -1) return;
     const name = t.slice(0, colon).trim();
-    const value = t.slice(colon + 1).trim().replace(/\s+/g, ' ');
+    const value = normalise(t.slice(colon + 1).trim());
     if (!/^--rux-[A-Za-z0-9_-]+$/.test(name)) return;
     found.push({ context: stack.join(' › '), name, value });
   };
