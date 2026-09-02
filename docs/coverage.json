@@ -9,6 +9,10 @@
       "hit": 9,
       "own": 23
     },
+    "multiselect": {
+      "hit": 4,
+      "own": 10
+    },
     "tooltip": {
       "hit": 5,
       "own": 12
@@ -20,10 +24,6 @@
     "combo-box": {
       "hit": 2,
       "own": 4
-    },
-    "multiselect": {
-      "hit": 4,
-      "own": 8
     },
     "data-table": {
       "hit": 41,
@@ -162,7 +162,7 @@
       "own": 14
     },
     "slider": {
-      "hit": 24,
+      "hit": 25,
       "own": 28
     },
     "treeview": {
@@ -177,6 +177,10 @@
       "hit": 2,
       "own": 2
     },
+    "fluid-combo-box": {
+      "hit": 1,
+      "own": 1
+    },
     "fluid-date-picker": {
       "hit": 1,
       "own": 1
@@ -186,6 +190,10 @@
       "own": 1
     },
     "fluid-list-box": {
+      "hit": 1,
+      "own": 1
+    },
+    "fluid-multiselect": {
       "hit": 1,
       "own": 1
     },

@@ -127,6 +127,15 @@ const KNOWN = {
     + 'check-classes rejected it on the first run.'],
   'file-uploader:file-close': [['file-container-item'],
     'the same unstyled wrapper as file__state-container above.'],
+  // BATCH 2 OF §4.9, 2026-09-01: the fluid multiselect in sink/fluid.html,
+  // declined for the reason its base records three entries below.
+  'fluid:multi-select': [['multi-select__wrapper'],
+    'the unstyled attested wrapper, as for multiselect below; list-box__wrapper--fluid '
+    + 'is the styled one and is present.'],
+  'fluid:list-box__field--wrapper': [['multi-select__wrapper'],
+    'the same unstyled wrapper.'],
+  'fluid:multi-select--filterable': [['multi-select__wrapper', 'multi-select--filterable__wrapper'],
+    'both wrappers attested and unstyled, as sink/multiselect.html records.'],
   'multiselect:multi-select': [['multi-select__wrapper'],
     'rendered by all 46 captures and styled by no rule in @carbon/styles — the '
     + '§4.1.12 call sink/dropdown.html already records for dropdown__wrapper. The '

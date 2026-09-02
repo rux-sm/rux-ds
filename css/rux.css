@@ -13663,301 +13663,6 @@ button.rux--dropdown-text:focus {
   }
 }
 
-.rux--date-picker--fluid {
-  display: inline-flex;
-  background: var(--rux-field);
-}
-
-.rux--date-picker--fluid .rux--date-picker {
-  position: relative;
-  block-size: 100%;
-  inline-size: 100%;
-  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
-}
-
-.rux--date-picker--fluid .rux--label {
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  block-size: 1rem;
-  inline-size: calc(100% - 2rem);
-  inset-block-start: 0.8125rem;
-  inset-inline-start: 1rem;
-}
-
-.rux--date-picker--fluid .rux--label::-webkit-scrollbar,
-.rux--date-picker--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
-  display: none;
-}
-
-.rux--date-picker--fluid .rux--label:not(:has(.rux--toggletip-label)),
-.rux--date-picker--fluid .rux--label .rux--toggletip-label {
-  -ms-overflow-style: none;
-  overflow-x: scroll;
-  scrollbar-width: none;
-  white-space: nowrap;
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper > span {
-  inline-size: 100%;
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper .rux--date-picker__input {
-  padding: 2rem 1rem 0.8125rem;
-  background: transparent;
-  border-block-end: none;
-  min-block-size: 4rem;
-  min-inline-size: 9rem;
-}
-
-.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__icon {
-  display: none;
-}
-
-.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__input:not(.rux--date-picker__input--invalid):not(.rux--date-picker__input--warn),
-.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn {
-  border-block-end: 1px solid var(--rux-border-strong);
-}
-
-.rux--date-picker--fluid .rux--date-picker__icon {
-  inset-block-start: 2.6875rem;
-}
-
-.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input {
-  inline-size: 100%;
-}
-
-.rux--date-picker--fluid .rux--date-picker--single {
-  border-block-end: none;
-}
-
-.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input:not(.rux--date-picker__input--invalid),
-.rux--date-picker--single .rux--date-picker--fluid--warn {
-  border-block-end: 1px solid var(--rux-border-strong);
-}
-
-.rux--date-picker--fluid:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range .rux--date-picker-container:not(.rux--date-picker--fluid--invalid) {
-  border-block-end: 1px solid var(--rux-border-strong);
-}
-
-.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker__input,
-.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker-container {
-  inline-size: 100%;
-  min-block-size: 3.9375rem;
-  min-inline-size: 9rem;
-}
-
-.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:first-child {
-  margin-inline-end: 0;
-}
-
-.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
-  border-inline-start: 1px solid var(--rux-border-strong);
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
-.rux--date-picker-container.rux--date-picker--fluid--invalid {
-  outline: 2px solid var(--rux-support-error, #da1e28);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--date-picker--fluid.rux--date-picker--fluid--invalid,
-  .rux--date-picker-container.rux--date-picker--fluid--invalid {
-    outline-style: dotted;
-  }
-}
-
-.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid {
-  outline: none;
-}
-
-.rux--date-picker--fluid .rux--date-picker-container:last-child.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid,
-.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid + .rux--date-picker-container .rux--date-picker__input {
-  border-inline-start: none;
-}
-
-.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--form-requirement,
-.rux--date-picker-container.rux--date-picker--fluid--warn .rux--form-requirement {
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
-  margin: 0;
-}
-
-.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
-.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker--fluid--warn .rux--date-picker__input,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range .rux--date-picker-container {
-  border-block-end: 1px solid transparent;
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
-.rux--date-picker--fluid .rux--date-picker--fluid--warn + .rux--date-picker-container:last-child .rux--date-picker__input,
-.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child .rux--date-picker__input {
-  border-inline-start: 1px solid transparent;
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:first-child::after,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:first-child::after,
-.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:first-child::after,
-.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
-  position: absolute;
-  display: block;
-  background: var(--rux-border-strong);
-  block-size: calc(100% - 1rem);
-  content: "";
-  inline-size: 1px;
-  inset-block-start: 0.5rem;
-  inset-inline-end: 0;
-}
-
-.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
-  inset-inline-start: 0;
-}
-
-.rux--date-picker--fluid .rux--date-picker__divider {
-  border-style: solid;
-  border-color: var(--rux-border-subtle);
-  margin: 0 1rem;
-  border-block-end: none;
-  inline-size: calc(100% - 2rem);
-}
-
-.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
-.rux--date-picker-container.rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
-  inset-block-start: 5rem;
-}
-
-.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
-.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
-  display: block;
-}
-
-.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
-    outline-style: dotted;
-  }
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range ~ .rux--form-requirement {
-  display: block;
-  overflow: visible;
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
-  margin-block-start: 0;
-  max-block-size: 100%;
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement {
-  color: var(--rux-text-error, #da1e28);
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn {
-  position: relative;
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range + .rux--date-picker__icon,
-.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range + .rux--date-picker__icon {
-  inset-block-start: 5rem;
-}
-
-.rux--date-picker--fluid__skeleton {
-  background: var(--rux-skeleton-background, #e8e8e8);
-  block-size: 4rem;
-  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
-}
-
-.rux--date-picker--fluid__skeleton--container {
-  position: relative;
-  block-size: 100%;
-  inline-size: 100%;
-}
-
-.rux--date-picker--fluid__skeleton .rux--skeleton {
-  position: absolute;
-  block-size: 0.5rem;
-  inline-size: 25%;
-  inset-block-start: 1rem;
-  inset-inline-start: 1rem;
-}
-
-.rux--date-picker--fluid__skeleton .rux--label {
-  margin-block-end: 0.25rem;
-}
-
-.rux--date-picker--fluid__skeleton .rux--text-input {
-  position: absolute;
-  padding: 0;
-  block-size: 0.5rem;
-  inline-size: 50%;
-  inset-block-start: 2.25rem;
-  inset-inline-start: 1rem;
-}
-
-.rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
-  inset-block: auto 0.5rem;
-}
-
-.rux--date-picker--fluid__skeleton--range {
-  display: flex;
-  flex-direction: row;
-}
-
-.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container {
-  display: flex;
-  flex-direction: column;
-  inline-size: 50%;
-}
-
-.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container:first-of-type {
-  border-inline-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
-}
-
-.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
-  inset-block-end: 0.5rem;
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker > .rux--date-picker-container,
-.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker .rux--date-picker__input {
-  border-block-end-color: var(--rux-border-subtle);
-}
-
-.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
-  border-inline-start-color: var(--rux-border-subtle);
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker-input-inner-wrapper--decorator > *,
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--ai-label,
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--slug {
-  inset-block-start: 2.6875rem;
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--slug):not(:has(~ .rux--slug--revert)) {
-  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
-  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--ai-label):not(:has(.rux--ai-label--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid),
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--slug):not(:has(.rux--slug--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid) {
-  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
-}
-
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
-.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
-.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
-.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
-.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
-.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--slug .rux--date-picker__input {
-  padding-inline-end: 4rem;
-}
-
 .rux--list-box__wrapper--fluid.rux--list-box__wrapper {
   position: relative;
   background: var(--rux-field);
@@ -14310,6 +14015,532 @@ button.rux--dropdown-text:focus {
 .rux--list-box__wrapper--fluid.rux--list-box__wrapper--slug .rux--list-box--invalid[data-invalid] .rux--slug::before,
 .rux--list-box__wrapper--slug .rux--list-box--warning .rux--slug::before {
   display: none;
+}
+
+.rux--list-box__wrapper--fluid .rux--combo-box .rux--list-box__field {
+  overflow: visible;
+  padding: 0;
+}
+
+.rux--list-box__wrapper--fluid .rux--combo-box .rux--text-input {
+  overflow: hidden;
+  padding-block: 2.0625rem 0.8125rem;
+  padding-inline: 1rem 4rem;
+  text-overflow: ellipsis;
+  transition: none;
+  white-space: nowrap;
+}
+
+.rux--list-box__wrapper--fluid .rux--combo-box .rux--list-box__selection {
+  inset-block: auto 0.625rem;
+  transform: none;
+}
+
+.rux--list-box__wrapper--fluid .rux--combo-box .rux--list-box__menu-icon {
+  inset-block-end: 0.875rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--list-box[data-invalid] .rux--list-box__field .rux--text-input + .rux--list-box__invalid-icon,
+.rux--list-box__wrapper--fluid .rux--list-box--warning .rux--list-box__field .rux--text-input + .rux--list-box__invalid-icon {
+  inset-inline-end: 1rem;
+}
+
+.rux--list-box__wrapper--fluid :not(.rux--list-box--up) .rux--combo-box .rux--list-box__menu {
+  inset-block-start: calc(100% + 0.0625rem);
+}
+
+.rux--date-picker--fluid {
+  display: inline-flex;
+  background: var(--rux-field);
+}
+
+.rux--date-picker--fluid .rux--date-picker {
+  position: relative;
+  block-size: 100%;
+  inline-size: 100%;
+  transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9), outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--date-picker--fluid .rux--label {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  block-size: 1rem;
+  inline-size: calc(100% - 2rem);
+  inset-block-start: 0.8125rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid .rux--label::-webkit-scrollbar,
+.rux--date-picker--fluid .rux--label .rux--toggletip-label::-webkit-scrollbar {
+  display: none;
+}
+
+.rux--date-picker--fluid .rux--label:not(:has(.rux--toggletip-label)),
+.rux--date-picker--fluid .rux--label .rux--toggletip-label {
+  -ms-overflow-style: none;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper > span {
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper .rux--date-picker__input {
+  padding: 2rem 1rem 0.8125rem;
+  background: transparent;
+  border-block-end: none;
+  min-block-size: 4rem;
+  min-inline-size: 9rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__icon {
+  display: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker__input:not(.rux--date-picker__input--invalid):not(.rux--date-picker__input--warn),
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid .rux--date-picker__icon {
+  inset-block-start: 2.6875rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input {
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single {
+  border-block-end: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker__input:not(.rux--date-picker__input--invalid),
+.rux--date-picker--single .rux--date-picker--fluid--warn {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range .rux--date-picker-container:not(.rux--date-picker--fluid--invalid) {
+  border-block-end: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker-container {
+  inline-size: 100%;
+  min-block-size: 3.9375rem;
+  min-inline-size: 9rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:first-child {
+  margin-inline-end: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start: 1px solid var(--rux-border-strong);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+.rux--date-picker-container.rux--date-picker--fluid--invalid {
+  outline: 2px solid var(--rux-support-error, #da1e28);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+  .rux--date-picker-container.rux--date-picker--fluid--invalid {
+    outline-style: dotted;
+  }
+}
+
+.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid {
+  outline: none;
+}
+
+.rux--date-picker--fluid .rux--date-picker-container:last-child.rux--date-picker--fluid--invalid .rux--date-picker__input--invalid,
+.rux--date-picker--fluid .rux--date-picker-container.rux--date-picker--fluid--invalid + .rux--date-picker-container .rux--date-picker__input {
+  border-inline-start: none;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--form-requirement,
+.rux--date-picker-container.rux--date-picker--fluid--warn .rux--form-requirement {
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin: 0;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker,
+.rux--date-picker--fluid .rux--date-picker--single .rux--date-picker--fluid--warn .rux--date-picker__input,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range .rux--date-picker-container {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--fluid--warn + .rux--date-picker-container:last-child .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start: 1px solid transparent;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range > .rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range > .rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:first-child::after,
+.rux--date-picker--fluid .rux--date-picker--range .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
+  position: absolute;
+  display: block;
+  background: var(--rux-border-strong);
+  block-size: calc(100% - 1rem);
+  content: "";
+  inline-size: 1px;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker--fluid--warn.rux--date-picker-container:last-child::after {
+  inset-inline-start: 0;
+}
+
+.rux--date-picker--fluid .rux--date-picker__divider {
+  border-style: solid;
+  border-color: var(--rux-border-subtle);
+  margin: 0 1rem;
+  border-block-end: none;
+  inline-size: calc(100% - 2rem);
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
+.rux--date-picker-container.rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
+  inset-block-start: 5rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--invalid .rux--date-picker__icon--invalid,
+.rux--date-picker--fluid .rux--date-picker--simple .rux--date-picker--fluid--warn .rux--date-picker__icon--warn {
+  display: block;
+}
+
+.rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--date-picker-container.rux--date-picker--fluid--invalid .rux--date-picker__input:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range ~ .rux--form-requirement {
+  display: block;
+  overflow: visible;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  margin-block-start: 0;
+  max-block-size: 100%;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range ~ .rux--form-requirement {
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn {
+  position: relative;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--invalid .rux--date-picker--range + .rux--date-picker__icon,
+.rux--date-picker--fluid.rux--date-picker--fluid--warn .rux--date-picker--range + .rux--date-picker__icon {
+  inset-block-start: 5rem;
+}
+
+.rux--date-picker--fluid__skeleton {
+  background: var(--rux-skeleton-background, #e8e8e8);
+  block-size: 4rem;
+  border-block-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--date-picker--fluid__skeleton--container {
+  position: relative;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.rux--date-picker--fluid__skeleton .rux--skeleton {
+  position: absolute;
+  block-size: 0.5rem;
+  inline-size: 25%;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid__skeleton .rux--label {
+  margin-block-end: 0.25rem;
+}
+
+.rux--date-picker--fluid__skeleton .rux--text-input {
+  position: absolute;
+  padding: 0;
+  block-size: 0.5rem;
+  inline-size: 50%;
+  inset-block-start: 2.25rem;
+  inset-inline-start: 1rem;
+}
+
+.rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
+  inset-block: auto 0.5rem;
+}
+
+.rux--date-picker--fluid__skeleton--range {
+  display: flex;
+  flex-direction: row;
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container {
+  display: flex;
+  flex-direction: column;
+  inline-size: 50%;
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container:first-of-type {
+  border-inline-end: 1px solid var(--rux-skeleton-element, #c6c6c6);
+}
+
+.rux--date-picker--fluid__skeleton--range .rux--date-picker--fluid__skeleton--container .rux--date-picker__icon {
+  inset-block-end: 0.5rem;
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker > .rux--date-picker-container,
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker .rux--date-picker__input {
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--date-picker--fluid.rux--date-picker--fluid--readonly:not(.rux--date-picker--fluid--invalid):not(.rux--date-picker--fluid--warn) .rux--date-picker--range > .rux--date-picker-container:last-child .rux--date-picker__input {
+  border-inline-start-color: var(--rux-border-subtle);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker-input-inner-wrapper--decorator > *,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--ai-label,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--slug {
+  inset-block-start: 2.6875rem;
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--ai-label):not(:has(~ .rux--ai-label--revert)),
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input:has(~ .rux--slug):not(:has(~ .rux--slug--revert)) {
+  background-image: linear-gradient(0deg, var(--rux-ai-aura-start-sm, rgba(69, 137, 255, 0.16)) 0%, 15%, var(--rux-ai-aura-end, rgba(255, 255, 255, 0)) 50%, transparent 100%);
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--ai-label):not(:has(.rux--ai-label--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid),
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug:has(.rux--slug):not(:has(.rux--slug--revert)) .rux--date-picker__input:not(.rux--date-picker__input--invalid) {
+  border-block-end-color: var(--rux-ai-border-strong, #4589ff);
+}
+
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--decorator .rux--date-picker__input,
+.rux--date-picker--fluid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
+.rux--date-picker--fluid--invalid .rux--date-picker-input__wrapper--slug .rux--date-picker__input,
+.rux--date-picker--fluid--warn .rux--date-picker-input__wrapper--slug .rux--date-picker__input {
+  padding-inline-end: 4rem;
+}
+
+.rux--multi-select {
+  box-sizing: border-box;
+}
+
+.rux--multi-select .rux--list-box__field--wrapper {
+  display: inline-flex;
+  align-items: center;
+  block-size: calc(100% + 1px);
+  inline-size: 100%;
+}
+
+.rux--multi-select .rux--list-box__field {
+  block-size: 100%;
+}
+
+.rux--multi-select .rux--list-box__field:focus {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+
+.rux--multi-select--filterable .rux--list-box__field {
+  padding: 0;
+}
+
+.rux--multi-select .rux--tag {
+  margin: 0 0.5rem 0 1rem;
+  min-inline-size: auto;
+}
+
+.rux--multi-select .rux--list-box__menu {
+  min-inline-size: auto;
+}
+
+.rux--multi-select.rux--multi-select--selectall .rux--list-box__menu-item:first-child .rux--list-box__menu-item__option {
+  padding: calc((var(--rux-layout-size-height-local) - 1lh) / 2 - 1px) 1rem;
+  margin: 0;
+  border-block-end: 1px solid var(--rux-border-subtle-01, #c6c6c6);
+}
+
+.rux--multi-select.rux--multi-select--selectall .rux--list-box__menu-item:nth-child(2) .rux--list-box__menu-item__option {
+  border-block-start: none;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label {
+  display: inline-block;
+  overflow: hidden;
+  inline-size: 100%;
+  padding-inline-start: 1.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label::before {
+  margin-block: 0;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox:indeterminate + .rux--checkbox-label::after {
+  inset-block-start: 0.5625rem;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label::after {
+  inset-block-start: 0.3125rem;
+}
+
+.rux--multi-select .rux--list-box__menu-item__option > .rux--form-item {
+  flex-direction: row;
+  margin: 0;
+}
+
+.rux--multi-select .rux--list-box__menu-item .rux--checkbox:checked ~ .rux--checkbox-label-text {
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--multi-select--filterable {
+  transition: outline-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--multi-select--filterable.rux--combo-box .rux--text-input {
+  border: 0.125rem solid transparent;
+  background-clip: padding-box;
+  outline: none;
+}
+
+.rux--multi-select--filterable--input-focused,
+.rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=false]),
+.rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=true]) {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--multi-select--filterable--input-focused,
+  .rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=false]),
+  .rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=true]) {
+    outline-style: dotted;
+  }
+}
+
+.rux--multi-select.rux--list-box--expanded .rux--list-box__field--wrapper:has(button[aria-activedescendant]:not([aria-activedescendant=""])),
+.rux--multi-select--filterable.rux--list-box--expanded:has(input[aria-activedescendant]:not([aria-activedescendant=""])) {
+  outline-offset: -0.0625rem;
+  outline-width: 0.0625rem;
+}
+
+.rux--multi-select--filterable.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted::before,
+.rux--multi-select.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted::before {
+  position: absolute;
+  border: 2px solid var(--rux-focus, #0f62fe);
+  block-size: 100%;
+  border-block-start: 1px solid var(--rux-focus, #0f62fe);
+  content: "";
+  inline-size: 100%;
+}
+
+.rux--multi-select--filterable.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted,
+.rux--multi-select.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+
+.rux--multi-select--filterable.rux--multi-select--selected .rux--text-input,
+.rux--multi-select.rux--multi-select--selected .rux--list-box__field {
+  padding-inline-start: 0;
+}
+
+.rux--multi-select--filterable.rux--list-box--disabled:hover:not(.rux--multi-select--filterable) .rux--text-input {
+  background-color: var(--rux-field);
+}
+
+.rux--multi-select--filterable .rux--list-box__selection--multi {
+  margin: 0 0 0 1rem;
+}
+
+.rux--multi-select--filterable.rux--multi-select--inline,
+.rux--multi-select--filterable.rux--multi-select--inline .rux--text-input {
+  background-color: transparent;
+  border-block-end: 0;
+}
+
+.rux--multi-select:not(.rux--list-box--expanded) .rux--list-box__menu {
+  visibility: hidden;
+}
+
+.rux--multi-select.rux--multi-select--readonly,
+.rux--multi-select.rux--multi-select--readonly:hover {
+  background-color: transparent;
+  border-block-end-color: var(--rux-border-subtle);
+}
+
+.rux--multi-select.rux--multi-select--readonly .rux--list-box__menu-icon svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--multi-select.rux--multi-select--readonly .rux--tag--filter,
+.rux--multi-select.rux--multi-select--readonly .rux--tag__close-icon:hover {
+  background-color: transparent;
+  color: var(--rux-text-primary, #161616);
+  cursor: default;
+}
+
+.rux--multi-select.rux--multi-select--readonly .rux--tag--filter {
+  box-shadow: 0 0 0 1px var(--rux-border-subtle);
+}
+
+.rux--multi-select.rux--multi-select--readonly .rux--tag--filter svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--multi-select.rux--multi-select--readonly .rux--list-box__field,
+.rux--multi-select.rux--multi-select--readonly .rux--list-box__menu-icon {
+  cursor: default;
+}
+
+.rux--multi-select__wrapper.rux--list-box__wrapper--fluid--focus:not(.rux--multi-select--filterable__wrapper) .rux--list-box__field--wrapper--input-focused {
+  outline: none;
+}
+
+.rux--list-box__wrapper--fluid .rux--tag.rux--tag--filter {
+  margin-block-start: 1.25rem;
+}
+
+.rux--list-box__wrapper--fluid .rux--multi-select--filterable .rux--list-box__field .rux--text-input {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--list-box__wrapper--fluid .rux--multi-select--filterable.rux--combo-box .rux--list-box__field {
+  align-items: baseline;
+}
+
+.rux--list-box__wrapper--fluid.rux--multi-select--filterable__wrapper:not(.rux--list-box--up) .rux--list-box__menu {
+  inset-block-start: calc(100% + 0.0625rem);
 }
 
 .rux--number__controls:hover .rux--number__control-btn::after {
@@ -17312,185 +17543,6 @@ optgroup.rux--select-optgroup:disabled,
     color: Highlight;
     outline: 1px solid Highlight;
   }
-}
-
-.rux--multi-select {
-  box-sizing: border-box;
-}
-
-.rux--multi-select .rux--list-box__field--wrapper {
-  display: inline-flex;
-  align-items: center;
-  block-size: calc(100% + 1px);
-  inline-size: 100%;
-}
-
-.rux--multi-select .rux--list-box__field {
-  block-size: 100%;
-}
-
-.rux--multi-select .rux--list-box__field:focus {
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-}
-
-.rux--multi-select--filterable .rux--list-box__field {
-  padding: 0;
-}
-
-.rux--multi-select .rux--tag {
-  margin: 0 0.5rem 0 1rem;
-  min-inline-size: auto;
-}
-
-.rux--multi-select .rux--list-box__menu {
-  min-inline-size: auto;
-}
-
-.rux--multi-select.rux--multi-select--selectall .rux--list-box__menu-item:first-child .rux--list-box__menu-item__option {
-  padding: calc((var(--rux-layout-size-height-local) - 1lh) / 2 - 1px) 1rem;
-  margin: 0;
-  border-block-end: 1px solid var(--rux-border-subtle-01, #c6c6c6);
-}
-
-.rux--multi-select.rux--multi-select--selectall .rux--list-box__menu-item:nth-child(2) .rux--list-box__menu-item__option {
-  border-block-start: none;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-wrapper {
-  display: flex;
-  align-items: center;
-  block-size: 100%;
-  inline-size: 100%;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label {
-  display: inline-block;
-  overflow: hidden;
-  inline-size: 100%;
-  padding-inline-start: 1.75rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label::before {
-  margin-block: 0;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox:indeterminate + .rux--checkbox-label::after {
-  inset-block-start: 0.5625rem;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option .rux--checkbox-label::after {
-  inset-block-start: 0.3125rem;
-}
-
-.rux--multi-select .rux--list-box__menu-item__option > .rux--form-item {
-  flex-direction: row;
-  margin: 0;
-}
-
-.rux--multi-select .rux--list-box__menu-item .rux--checkbox:checked ~ .rux--checkbox-label-text {
-  color: var(--rux-text-primary, #161616);
-}
-
-.rux--multi-select--filterable {
-  transition: outline-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
-}
-
-.rux--multi-select--filterable.rux--combo-box .rux--text-input {
-  border: 0.125rem solid transparent;
-  background-clip: padding-box;
-  outline: none;
-}
-
-.rux--multi-select--filterable--input-focused,
-.rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=false]),
-.rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=true]) {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--multi-select--filterable--input-focused,
-  .rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=false]),
-  .rux--multi-select .rux--list-box__field--wrapper--input-focused:has(button[aria-expanded=true]) {
-    outline-style: dotted;
-  }
-}
-
-.rux--multi-select.rux--list-box--expanded .rux--list-box__field--wrapper:has(button[aria-activedescendant]:not([aria-activedescendant=""])),
-.rux--multi-select--filterable.rux--list-box--expanded:has(input[aria-activedescendant]:not([aria-activedescendant=""])) {
-  outline-offset: -0.0625rem;
-  outline-width: 0.0625rem;
-}
-
-.rux--multi-select--filterable.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted::before,
-.rux--multi-select.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted::before {
-  position: absolute;
-  border: 2px solid var(--rux-focus, #0f62fe);
-  block-size: 100%;
-  border-block-start: 1px solid var(--rux-focus, #0f62fe);
-  content: "";
-  inline-size: 100%;
-}
-
-.rux--multi-select--filterable.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted,
-.rux--multi-select.rux--multi-select--selected .rux--list-box__menu-item:first-child.rux--list-box__menu-item--highlighted {
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-}
-
-.rux--multi-select--filterable.rux--multi-select--selected .rux--text-input,
-.rux--multi-select.rux--multi-select--selected .rux--list-box__field {
-  padding-inline-start: 0;
-}
-
-.rux--multi-select--filterable.rux--list-box--disabled:hover:not(.rux--multi-select--filterable) .rux--text-input {
-  background-color: var(--rux-field);
-}
-
-.rux--multi-select--filterable .rux--list-box__selection--multi {
-  margin: 0 0 0 1rem;
-}
-
-.rux--multi-select--filterable.rux--multi-select--inline,
-.rux--multi-select--filterable.rux--multi-select--inline .rux--text-input {
-  background-color: transparent;
-  border-block-end: 0;
-}
-
-.rux--multi-select:not(.rux--list-box--expanded) .rux--list-box__menu {
-  visibility: hidden;
-}
-
-.rux--multi-select.rux--multi-select--readonly,
-.rux--multi-select.rux--multi-select--readonly:hover {
-  background-color: transparent;
-  border-block-end-color: var(--rux-border-subtle);
-}
-
-.rux--multi-select.rux--multi-select--readonly .rux--list-box__menu-icon svg {
-  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--multi-select.rux--multi-select--readonly .rux--tag--filter,
-.rux--multi-select.rux--multi-select--readonly .rux--tag__close-icon:hover {
-  background-color: transparent;
-  color: var(--rux-text-primary, #161616);
-  cursor: default;
-}
-
-.rux--multi-select.rux--multi-select--readonly .rux--tag--filter {
-  box-shadow: 0 0 0 1px var(--rux-border-subtle);
-}
-
-.rux--multi-select.rux--multi-select--readonly .rux--tag--filter svg {
-  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
-}
-
-.rux--multi-select.rux--multi-select--readonly .rux--list-box__field,
-.rux--multi-select.rux--multi-select--readonly .rux--list-box__menu-icon {
-  cursor: default;
 }
 
 .rux--inline-notification html {
