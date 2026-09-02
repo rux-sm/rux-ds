@@ -1,6 +1,6 @@
 ---
 name: sink-check
-description: Run the kitchen sink's browser-only gates (check-a11y.js, check-rendered.js) and any focus or contrast measurement against the running page. Use when asked to run the browser checks, verify the sink in a browser, measure focus rings or contrast, or look at the sink after a change. Encodes seven conditions that each silently produce a wrong answer if skipped.
+description: Run rux-ds browser-only gates against the kitchen sink, portal, and templates, including check-a11y.js, check-rendered.js, check-runtime-classes.js, check-spacing.js, and check-behaviour.js. Use when asked to run browser checks, sweep pages after a batch, verify the sink or templates in a browser, measure focus rings or contrast, or update gate-coverage readings. Encodes seven conditions and the repeatable per-page loop that prevent confident wrong answers.
 ---
 
 # Running the browser-only gates
@@ -125,6 +125,44 @@ Then call `b.click()` and watch the surface open. On 2026-08-30 that pair was th
 whole difference between a harness limit and a bug — and it was checked against the
 source too: `js/overlay.js:224` preventDefaults on Escape alone, and nothing in `js/`
 touches Enter or Space. This is why `check-behaviour` drives clicks rather than keys.
+
+## Sweep every page after a batch
+
+Let `npm run gates` name the required cells. Sweep the assembled sink, `portal.html`,
+and every template it lists; do not maintain a second target list here.
+
+For `portal.html` and each template, use this loop in order:
+
+1. Navigate to the page afresh. Run `check-runtime-classes` before focusing, clicking,
+   hovering, or changing state.
+2. Give the document focus with Tab, blur the focused control, suppress transitions and
+   animations, set the white theme, and read back `document.hasFocus()`, a resolved
+   theme token, the viewport width, and IBM Plex availability. Stop if any condition is
+   not the one being recorded.
+3. Park the pointer off content and look at the rendered page. A missing or failed
+   screenshot is not a visual pass; retry the page.
+4. Run `check-a11y` and require `focusRingChecked: true`, then run `check-spacing`.
+   Record the actual findings, notes, known set, and unknown set rather than only a
+   count.
+
+Use the same order on `kitchen-sink.html`, then also run `check-rendered` and
+`check-behaviour`. The sink is their unit; templates are not. Keep the calendar present
+through the a11y reading and compare every new finding or spacing unknown with the
+adjudicated evidence before changing code.
+
+### Use two tabs, not one long serial pass
+
+After proving the loop on the sink, portal, and first template, open one second tab and
+sweep the remaining templates two at a time. Keep one page per tab and pass explicit tab
+ids to every action. Parallelise across tabs only: within each tab,
+`check-runtime-classes` must still run before the focus/setup/check sequence above.
+Reload a tab before retrying a page whose screenshot or setup failed; do not reuse its
+perturbed DOM.
+
+Do not write `docs/gate-coverage.json` piecemeal. First finish every page and reconcile
+the results. Then record every cell at the code or fix commit actually measured,
+preserve the prior reading beneath it, run `npm run verify`, and require `npm run gates`
+to report every cell current before committing the ledger.
 
 ## Measuring rings yourself
 

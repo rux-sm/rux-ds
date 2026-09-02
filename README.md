@@ -11,8 +11,8 @@ stated twice drifts — which is exactly what happened to the Status block below
 2026-08-28.
 
 `CLAUDE.md` is the routing file an agent loads automatically; it points at the rules
-below rather than repeating them. **The guide to BUILDING a page is Phase 6 and has
-started** — `templates/app-shell.html` is the frame, with `table-page.html`,
+below rather than repeating them. **Phase 6's guide to BUILDING a page is complete** —
+`templates/app-shell.html` is the frame, with `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
 `wizard-page.html`, `dashboard-page.html`, `settings-page.html` and `schedule-page.html`
 built on it. The kitchen sink remains the worked
@@ -144,8 +144,12 @@ markup for the eight new components, which is what let `docs/inventory.md` decid
 on evidence; it did not buy a second class. One class, and the end of the last `unknown`
 in the reference set.
 
-**DO THIS FIRST — Phase 6, templates.** Roadmap §4.6 calls it the actual goal;
-everything before it is preparation. **All ten exist** — `app-shell.html`, `table-page.html`,
+**DO THIS FIRST — roadmap §4.9, completeness.** Its table is the work list and owns
+the progress of each admission batch. `portal.html` is the generated view of the
+current component set, and `npm run gates` reports the current browser sweep; do not
+copy either figure into prose here.
+
+**Phase 6, templates, is complete.** All ten exist — `app-shell.html`, `table-page.html`,
 `form-page.html`, `detail-page.html`, `empty-state.html`, `error-state.html`,
 `wizard-page.html`, `dashboard-page.html`, `settings-page.html` and
 `schedule-page.html`.
@@ -576,24 +580,10 @@ Before the strip: **83 components** — Carbon 1.114 added eight to the 75 this 
 first stripped, and `docs/inventory.md` has since decided all 83 — 4 themes, 939 KB min,
 **94.0 KB gzipped**.
 
-**33 components are not compiled, and all 33 are decided** — 11 DEFER and 22 CUT, which
-is what `check-inventory` prints.
-
-**The 11 DEFER are admitted as capacity allows, decided 2026-09-01** — components and
-icons should be available as OPTIONS even when nothing uses them yet, which is where
-§2.1's amended job leads. **The capacity was measured before deciding:** all eleven cost
-**+7.0 KB gzipped between them** and land at **77.4 KB, still 7.6 KB under the 85 KB
-tripwire**. Compiling all 83 reads **93.2 KB and trips it**, so the set that was asked for
-fits and the whole catalogue does not — and the 22 that do not fit are the ones already
-judged unwanted. **A few at a time, not one sweep**, because admitting a component is a
-row, a fragment with provenance, a `sink/ORDER` line, a ratchet and a re-run, not an
-uncommented `@use`. Two things not to misread later: class coverage drops as a PERCENTAGE
-the moment a component compiles, and `big-number`, `icon-indicator` and `shape-indicator`
-cannot have a fragment until their markup is captured. Roadmap §2.1. Their rows are in
-[`docs/inventory.md`](docs/inventory.md), and `sink/deferred/` holds 23 fragments still
-carrying the provenance the Phase 1 sweep gave them; the rest were cut before one was
-ever written. Restoring one is three lines: uncomment its `@use` in `src/app.scss`, move
-the fragment back, add it to `sink/ORDER`.
+The current component count and disposition summary are generated in `portal.html`.
+Roadmap §4.9 owns the admission batches and their state; `docs/inventory.md` owns each
+component's decision; `npm run gates` and `docs/gate-coverage.json` own the sweep state.
+They are intentionally not repeated here.
 
 **Move it, do not copy it — CLOSED 2026-09-01, and now GATED.** The sixteen
 admissions of 2026-08-31 copied instead of moving, leaving `card`, `combo-button`,
