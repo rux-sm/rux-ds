@@ -2793,8 +2793,8 @@ unchanged.
 Raised by the 2026-08-29 audit (`docs/audits.md`, findings 1 and 6). They are recorded
 together because they are one domain: what it means to hand this to someone else.
 
-**§8.1 is decided and done as of 2026-08-29. §8.2 is still open**, and until it is
-answered a consumer pins to a commit SHA or to nothing.
+**§8.1 is decided and done as of 2026-08-29. §8.2 was decided 2026-09-01 and
+tagged 2026-09-02**; a consumer pins a tag.
 
 ### 8.1 Licence — DECIDED 2026-08-29, Apache-2.0
 

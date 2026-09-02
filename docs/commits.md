@@ -66,9 +66,10 @@ Refs docs/roadmap.md 4.3
 
 ## Identity
 
-Always `rux <rux.dev@pm.me>`, lowercase. Resolved automatically under `~/Developer/`
-by a conditional include in `~/.gitconfig` pointing at `~/.config/git/identity-rux`,
-so it cannot leak into repositories elsewhere.
+Always `rux <rux.dev@pm.me>`, lowercase. Set once per machine with
+`git config --global`, as `docs/operating-card.html` says; every hook in the
+family refuses any other name or address. A conditional include was described
+here until 2026-09-02 and existed on no machine.
 
 **No AI authorship credit.** No `Co-Authored-By:`, no "Generated with" line, no
 assistant named anywhere in the message. rux-ui accumulated 257 such trailers before

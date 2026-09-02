@@ -184,7 +184,7 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
   <ol class="steps">
     <li><div><p>Commit in every repo you touched. The hook checks the message: <code>type(scope): Subject</code>, subject ≤ 50 characters, body wrapped at 72, no AI trailer of any kind.</p></div></li>
     <li><div><p>Push every repo you touched, then confirm each one reads level with origin.</p>
-<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r status -sb | head -1; done
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r fetch -q; git -C ~/Developer/$r status -sb | head -1; done
 ## main...origin/main      ← every line must look like this</code></pre></div></li>
     <li><div><p><strong>Close the lid only after the push.</strong> Nothing stays local on either Mac. Ever.</p></div></li>
   </ol>
@@ -194,9 +194,10 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
   <h3>Never</h3>
   <ul>
     <li>Hand-edit <code>vendor/</code> or <code>data/guides/</code> in notes. The next sync erases the edit; the fix belongs upstream.</li>
-    <li>Edit a generated file in rux-ds: <code>css/</code>, <code>kitchen-sink.html</code>, <code>portal.html</code>, the README stats table.</li>
+    <li>Edit a generated file in rux-ds: <code>css/rux.css</code>, <code>css/rux.min.css</code>, <code>kitchen-sink.html</code>, <code>portal.html</code>, the README stats table.</li>
     <li>Work around a "dirty tree" or "wrong identity" refusal. It is holding a rule for you.</li>
     <li>Run two agent sessions in the same repo. Different repos at once are fine.</li>
+    <li>Send anything from notes or atlas into rux-ds except an ask with invented content that <code>check-publishable</code> clears. Never a real page.</li>
   </ul>
 </section>
 
@@ -234,7 +235,7 @@ git -C ~/Developer/rux-ln-atlas config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-notes config core.hooksPath tools/githooks</code></pre>
     </div></li>
     <li><div>
-      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> with <code>0 warning(s)</code> from atlas, and <code>6 gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning is a content defect rather than a setup fault, and notes says <code>MEASURED is stale</code> whenever rux-ds has moved. Commit nothing during setup.</p>
+      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> with <code>0 warning(s)</code> from atlas, and <code>gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning is a content defect rather than a setup fault, and notes says <code>MEASURED is stale</code> whenever rux-ds has moved. Commit nothing during setup.</p>
 <pre><code>cd ~/Developer/rux-ds       &amp;&amp; npm install &amp;&amp; npm run verify; echo "exit $?"
 cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/build.py &amp;&amp; python3 tools/check.py
 cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs</code></pre>
@@ -279,7 +280,7 @@ Co-Authored-By: nobody"; done
     <tbody>
       <tr>
         <td>rux-ds<br><span class="tag">public</span></td>
-        <td>The design system. Carbon compiled under the <code>rux</code> prefix, templates, behaviour modules, 21 gates.</td>
+        <td>The design system. Carbon compiled under the <code>rux</code> prefix, templates, behaviour modules, and the gates <code>npm run gates</code> lists.</td>
         <td>Carbon, by npm</td>
         <td><code>npm run verify</code></td>
         <td>CI re-runs the gates. Consumers pin a tag.</td>
@@ -303,7 +304,7 @@ Co-Authored-By: nobody"; done
   </div>
   <hr class="rule">
   <p class="why"><strong>Atlas never touches rux-ds.</strong> The only line is atlas → notes ← rux-ds. rux-ui is frozen and outside the family.<br>
-  <strong>The portal</strong> (<code>rux-sm.github.io</code>) is committed on the other Mac and unpushed. Create the GitHub repo by hand, push from that Mac, enable Pages. Then clone it on this one.</p>
+  <strong>The portal</strong> (<code>rux-sm.github.io</code>) is the fourth repo once it is pushed; rux-ds README "Picking this up" carries its state. It joins the workspace and this card when it exists on both Macs.</p>
 </section>
 
 </div>
