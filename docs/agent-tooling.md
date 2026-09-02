@@ -87,6 +87,58 @@ failure.
 **What it is.** Not a check. A *delivery mechanism* that makes a check
 unskippable at a moment when skipping is tempting.
 
+**This repo has one: `.githooks/commit-msg`, armed per clone with
+`git config core.hooksPath .githooks`.** This section said the opposite until
+2026-09-01 — that no hook existed and `CLAUDE.md`'s claim was a corrupted
+variable — and by then the hook had existed for days. The paragraph describing
+the corruption was itself the stale line, which is the failure mode this
+document warns about, arriving from inside it. `adoption-audit.md` finding 5
+recorded the contradiction; nobody corrected the sentence.
+
+**When to add one.** When a defect could recur silently, and the question that
+would have caught it can be answered mechanically from files in the repo. Both
+halves matter. A defect that announces itself does not need a gate; a question
+that needs a human eye cannot have one.
+
+**When NOT to add one.**
+
+- **If it needs a growing allow-list, it is not ready.** A rule you can only
+  express as "everything except these 40 cases" is measuring the 40 cases. Under
+  an agent this is worse than useless: adding an entry is the cheapest route to
+  green, and the agent will take it and report success.
+- **If the check would be half a check.** `check-ancestry` is the standing
+  example — a local version would need DOM captures this repo deliberately does
+  not vendor, and a half-version reads as coverage nobody has.
+
+**The rule that matters most here.** *A gate must declare its own blind spots.*
+Every tool in `tools/` names, in its own header, what it cannot see. This is
+unusual — ESLint does not do it — and it is the single highest-value adaptation
+for agent work, because "check passed" reads as "thing is correct" to a model
+unless the check says otherwise. `blindTo` and `blindSpots` in the registry are
+copied from those headers, and where a tool states nothing the value is `null`
+rather than a guess.
+
+**The second rule.** *A gate never run against a target is indistinguishable
+from a gate that passed.* This cost nine instances of one bug: `check-a11y`
+already carried the rule, and had never been pointed at `templates/`. Hence
+`npm run gates` and its coverage matrix, which is itself a gate in `verify`.
+
+**Where they live here.** `tools/check-*.mjs` (Node, read files, run in
+`verify`) and `tools/check-*.js` (browser, run against a served page). 21 total;
+16 in `verify`, 5 needing a browser. Check `verify`'s **exit code** — a pipe
+returns the last command's status and has already reported a pass over a
+failure.
+
+---
+
+## 2. Hooks
+
+**Also called:** pre-commit hook, git hook. Elsewhere: `husky`, `pre-commit`,
+`lefthook`.
+
+**What it is.** Not a check. A *delivery mechanism* that makes a check
+unskippable at a moment when skipping is tempting.
+
 **This repo has none, and its own `CLAUDE.md` says otherwise.** That file
 describes `docs/commits.md` as "enforced by a hook". There is no such hook: not
 in `.git/hooks`, not in `.claude/settings.json`, not in
@@ -106,11 +158,11 @@ budget of patience. One hook that always matters beats five that mostly do not.
 **Rule of thumb.** Under ~200ms and a false-positive rate near zero, or do not
 ship it.
 
-**The one worth having here** is the commit-message check `CLAUDE.md` already
-believes exists: subject <=50 chars, body wrapped at 72 BYTES, no AI attribution.
-A bad commit message is unrecoverable without a rewrite of history, which is the
-exact profile that earns a hook. Until it is written, delete the claim or build
-the thing — a guard that exists only in prose is worse than an acknowledged gap.
+**The one worth having here is the one that exists**: subject ≤50 chars,
+body wrapped at 72, no AI attribution, identity checked. A bad commit message
+is unrecoverable without a rewrite of history, which is the exact profile that
+earns a hook, and it runs in well under 200ms. The same script is copied into
+`rux-ln-atlas` and `rux-ln-notes`, so the family has one commit rule.
 
 ---
 

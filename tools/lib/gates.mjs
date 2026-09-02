@@ -21,9 +21,11 @@
 // below says why patching it would be worse than leaving it.
 //
 // GATE IS NOT THE SAME WORD AS TOOL, and four documents disagreed because of
-// it. There are 13 `check-*` FILES and 14 GATES: `build.mjs` carries the
-// namespace check, which has a row in README's table and no file of its own.
-// Ten run in `npm run verify`; four need a browser.
+// it: `build.mjs` and `build-portal.mjs` each carry a gate with a row in
+// README's table and no check-* file of its own. THIS HEADER STATES NO
+// COUNTS. It read 14 gates, 10 in verify, 4 in a browser against a registry
+// below of 21, 16 and 5 — docs/agent-tooling.md cites that very drift as its
+// opening example. `npm run gates` prints the numbers from the registry.
 //
 // TWO KINDS OF FIGURE, and only one of them may ever be auto-verified.
 // Counts derivable from the repo — gate membership, KNOWN entries, the coverage
