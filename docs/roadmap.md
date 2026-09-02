@@ -2190,7 +2190,7 @@ Carry forward what rux-ui learned by being bitten:
 | Gate | Catches |
 |---|---|
 | Class resolution | a class used in a template with no CSS behind it |
-| Token value snapshot | a value moving under a stable name |
+| Token value snapshot | a value moving under a stable name — **declaration half landed 2026-09-02**, computed half open |
 | Namespace check | `cds` leakage, invented `rux-*` names, interpolated class names |
 
 The token snapshot is the one that matters most and the one most likely to be skipped:
@@ -2202,6 +2202,36 @@ every other gate is name-based, so a changed *value* passes all of them silently
 > it does not depend on the component set being frozen, so nothing forces it to wait for
 > Phase 4. Moving it ahead of Phase 7 is cheap and would stop the docs describing
 > unpinned numbers. Not decided.
+
+**ANSWERED 2026-09-02, and the answer is narrower than the question.** What
+landed is a DECLARATION snapshot, not the "dump of computed values" the note
+above promises, and the two are not the same gate. `check-token-values` reads
+what `css/rux.css` declares -- 2,756 declarations across 231 contexts, keyed by
+the context that declares them, since `--rux-grid-columns` is legitimately 4, 8
+and 16 under three breakpoints. It runs in `npm run verify`, needs no browser,
+and names the exact declaration behind every value.
+
+**What it therefore does not pin.** 211 of those values contain `var(...)` and
+40 contain `calc()`, `min()`, `max()` or `clamp()`. A `var()` chain is covered
+transitively -- the referenced token has its own declaration in the same file,
+so a move there is caught -- but a function resolving against context is not,
+and neither is a value that changes only through the CASCADE, one theme leaking
+into another, or an override winning where it should not. None of that is
+visible to a parser, and the gate's `blindTo` says so.
+
+**The computed snapshot stays open.** It is a real and different gate, it needs
+a browser, and it would join the owed sweeps rather than `npm run verify`. The
+declaration half was taken first because it is cheap, runs everywhere, and
+closes the case §4.8 actually names -- a value moving under a stable name, which
+every other gate here is blind to by construction. Proven 2026-09-02: with
+`--rux-layer-01` edited from `#f4f4f4` to `#ededed`, `check-tokens`,
+`check-classes`, `check-co-classes` and `check-compound` all exit 0 and this
+exits 1.
+
+**The sequencing question above is moot rather than answered.** It waited on
+Phase 7 documenting the values it would pin, and Phase 7 was re-scoped on
+2026-09-01 to a component index that documents no values at all. The condition
+cannot be met; it stopped existing.
 
 #### Two gate-shaped findings from the 2026-08-29 audit
 

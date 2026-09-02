@@ -797,7 +797,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>21 gates. 16 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>22 gates. 17 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -843,7 +843,14 @@
                   <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
                   <td>a `var(--rux-*)` that resolves to nothing</td>
-                  <td>a token whose *value* moved (roadmap §4.8)</td>
+                  <td>a token whose *value* moved — check-token-values covers it as of 2026-09-02</td>
+                </tr>
+                <tr>
+                  <td>check-token-values</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a --rux-* value that moved, was added or was dropped, under a stable name</td>
+                  <td>a value that changes only through the CASCADE — this reads what css/rux.css declares, not what a browser computes. Also anything in css/rux-theme.css: that file is the project's own and is meant to move</td>
                 </tr>
                 <tr>
                   <td>check-icons</td>

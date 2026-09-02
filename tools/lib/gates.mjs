@@ -170,7 +170,7 @@ export const GATES = [
     kind: 'node',
     inVerify: true,
     catches: 'a `var(--rux-*)` that resolves to nothing',
-    blindTo: 'a token whose *value* moved (roadmap §4.8)',
+    blindTo: 'a token whose *value* moved — check-token-values covers it as of 2026-09-02',
     reads: 'assembled',
     fileTargets: ['css/rux.css', 'sink/harness.css', 'css/rux-theme.css', 'css/rux-overrides.css', 'kitchen-sink.html', 'portal.html', 'templates'],
     pageTargets: [],
@@ -182,6 +182,36 @@ export const GATES = [
     redRun: 'name a token that does not exist anywhere in sink/harness.css',
     sideEffects: null,
     baseline: 'unresolved 0 · 4 known-unset, each with a reason',
+  },
+  {
+    // THE ONLY GATE HERE THAT IS NOT NAME-BASED. Every other one asks whether a
+    // name resolves; this asks whether a VALUE is the value it was. A Carbon
+    // bump that moves --rux-layer-01 from one grey to another changes no class,
+    // no token name and no markup, so it passes every other gate in silence.
+    // Proven 2026-09-02: with that one value edited, check-tokens,
+    // check-classes, check-co-classes and check-compound all exit 0 and this
+    // exits 1. §4.8 names it the gate that matters most and the one most likely
+    // to be skipped.
+    //
+    // ITS BASELINE IS REGENERABLE, WHICH IS ITS WEAKNESS, and the honest way to
+    // state it: the gate is as strong as the discipline of reading the diff
+    // before running tokens:snapshot. docs/coverage.json makes the same bargain
+    // and can at least ratchet; a token value has no better direction to move
+    // in, so this one cannot.
+    id: 'check-token-values',
+    tool: 'tools/check-token-values.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a --rux-* value that moved, was added or was dropped, under a stable name',
+    blindTo: 'a value that changes only through the CASCADE — this reads what css/rux.css declares, not what a browser computes. Also anything in css/rux-theme.css: that file is the project\'s own and is meant to move',
+    reads: 'assembled',
+    fileTargets: ['css/rux.css'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['css/rux.css', 'docs/token-values.json'],
+    redRun: 'change one --rux-* value in css/rux.css — the gate names the context, the token, and both values',
+    sideEffects: null,
+    baseline: '2756 declarations · 231 contexts · 0 moved · 0 added · 0 removed',
   },
   {
     id: 'check-icons',
@@ -597,6 +627,16 @@ export const CONTROL_FILES = [
   'tools/check-tags.mjs', 'tools/check-tokens.mjs',
   'tools/build.mjs', 'tools/build-portal.mjs',
 
+  // PHASE 8'S TOKEN SNAPSHOT, ALL FOUR PIECES. The gate is obvious; the other
+  // three are here because each one decides what passes. build-token-values
+  // writes the baseline, so it defines what "unchanged" means; lib/token-values
+  // is the parser BOTH of them read, so a change there moves the baseline and
+  // the comparison together and neither would notice; and the baseline itself
+  // is an expected result in exactly the sense docs/coverage.json is. Listing
+  // the checker alone would have left three ways to weaken it silently.
+  'tools/check-token-values.mjs', 'tools/build-token-values.mjs',
+  'tools/lib/token-values.mjs',
+
   // The registry and the libraries every gate reads through.
   'tools/lib/gates.mjs', 'tools/lib/ownership.mjs', 'tools/lib/sources.mjs',
   'tools/lib/staleness.mjs', 'tools/check-controls.mjs',
@@ -611,6 +651,7 @@ export const CONTROL_FILES = [
   // against, and check-coverage's baseline is the one that had to be taught to
   // refuse a downgrade.
   'docs/coverage.json', 'docs/inventory.json', 'docs/gate-coverage.json',
+  'docs/token-values.json',
 
   // THE CAPTURES ARE EXPECTED RESULTS TOO, and the sentence above always
   // covered them -- they were simply not listed. Seven gates decide pass or

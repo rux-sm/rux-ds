@@ -12,6 +12,42 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-02 — Phase 8's token snapshot, the declaration half (§4.8).**
+`check-token-values` is the only gate here that is not name-based. It records
+every `--rux-*` value `css/rux.css` declares — 2,756 declarations across 231
+contexts — keyed by the context, because `--rux-grid-columns` is legitimately
+4, 8 and 16 under three breakpoints and keying by name alone would collapse
+them. **Proven on the day**: with `--rux-layer-01` edited from `#f4f4f4` to
+`#ededed`, `check-tokens`, `check-classes`, `check-co-classes` and
+`check-compound` all exit 0 and this exits 1. That is §4.8's claim made
+concrete — a Carbon bump changes no name, so every other gate passes in silence.
+
+**THREE FAULTS CAME OUT OF REVIEW, AND THE PARSER'S WAS THE ONE THAT MATTERED.**
+A repeat was reported only when the value DIFFERED, and the snapshot held one
+value per context and name — so a declaration ADDED as a duplicate of an
+existing one left the file byte-identical and the gate that claims to catch
+added declarations would have passed it. Every value is now kept, a repeat as an
+array, and the injected case is caught. The same pass found an unquoted data URL
+truncated to `url(data:image/svg+xml` because a `;` inside `url()` was read as a
+terminator; parenthesis depth is tracked now. And the diff was capped at 40
+lines while the failure message asked the reader to confirm every line: a list
+that looks complete and is not, so the cap is gone.
+
+**A REPEAT IS RECORDED, NOT FAILED, and the reason is the one rule.** Failing on
+one was the review's instruction. `css/rux.css` declares 15 tokens twice, all in
+`:root` with identical values, because Carbon emits two separate `:root` blocks
+— line 1914 for the contextual layer tokens, line 31372 for the white theme.
+Removing one means editing a Carbon file, which never happens here, so that gate
+could never pass and would be switched off instead.
+
+**IT IS THE DECLARATION HALF ONLY.** §4.8 promised a dump of *computed* values;
+211 of these carry `var(...)` and 40 carry `calc()`, `min()`, `max()` or
+`clamp()`. A `var()` chain is caught transitively, a context-resolving function
+is not, and neither is anything that moves only through the cascade. The
+computed snapshot stays open in §4.8 rather than being quietly retired. All four
+artifacts are in `CONTROL_FILES`: the baseline is an expected result, the
+builder defines what "unchanged" means, and the parser is read by both.
+
 **SUPERSEDED THE SAME DAY. Finding 11 is NOT closed** — the first version of
 this entry said it was, which was the drafting run marking its own homework. The
 entry below split one `inputs` list by asking whether an entry contained a page

@@ -106,7 +106,6 @@ things that are not choices, and gating the result through this root.
 | Where the switcher manifest contract is written down — the shape of `switcher.json` and what a shell fetches. `js/ui-shell.js` only opens and closes the panel today; every template carries invented entries | roadmap §4.12 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 | Whether Notes' `sync-ds.sh` is retired for `tools/new-project.sh`, which already moves a pin around a project's own files and records the tag | roadmap §4.11 |
-| The token snapshot runs after Phase 7 documents the values it would pin | roadmap §4.8 |
 
 **Two human tasks remain, both with an assistive technology running.**
 `docs/screen-reader-pass.md` is the procedure and lists what is already done:
@@ -249,7 +248,8 @@ None is sufficient alone — roadmap §4.1.2 has the bug that proved it — and 
 | `build.mjs` namespace check | `cds` leakage into output | anything visual |
 | `build-portal.mjs` icon assertion | a `#i-name` emitted into `portal.html` that the sprite has no `<symbol>` for — it caught `#i-katex` on its first run | every page it does not generate; its unit is `portal.html` alone |
 | `check-classes.mjs` | a class used in HTML **or `js/`** with no CSS behind it · a class whose component was stripped | a class that resolves but renders wrong |
-| `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved (roadmap §4.8) |
+| `check-tokens.mjs` | a `var(--rux-*)` that resolves to nothing | a token whose *value* moved — `check-token-values` covers it |
+| `check-token-values.mjs` | a `--rux-*` value that moved, was added or was dropped under a stable name, keyed by the context declaring it | a value that changes only through the CASCADE — it reads what `css/rux.css` declares, not what a browser computes |
 | `check-icons.mjs` | a `<use>` pointing at a symbol the sprite does not carry · a fragment referencing the sprite externally or a template referencing it bare · a sprite out of step with `icons.mjs` | whether the symbol DRAWS what its name says — that is `check-glyphs` |
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
 | `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 11 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
