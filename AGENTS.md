@@ -17,8 +17,24 @@ not — a template is authored against invented content. Its consumers pin a com
 ## The one rule
 
 **No Carbon file is ever edited.** Customization is `$prefix`, Carbon's config
-flags, and which components and themes `src/app.scss` compiles. One documented
-exception, `--cds-grid-*`, is renamed by the build. Roadmap §1.1.
+flags, which components and themes `src/app.scss` compiles, and two files
+that sit above the build and are linked after `css/rux.css` by every page:
+`css/rux-theme.css` for token values, `css/rux-overrides.css` for component
+rules. One documented exception, `--cds-grid-*`, is renamed by the build.
+Roadmap §1.1 and §4.10.
+
+## Where a change goes
+
+| The change is | It goes in | Never |
+|---|---|---|
+| A colour, or any value a token names | `css/rux-theme.css`, inside a `[data-theme]` block | `:root`, `css/rux.css` |
+| How a component looks beyond its tokens | `css/rux-overrides.css`, at Carbon's own specificity | `!important`; a class Carbon does not compile |
+| Which components and themes exist, or the prefix | `src/app.scss` | `node_modules/@carbon` |
+| Markup | `sink/*.html` and `templates/`, diffed against the captures | a class invented to hang a rule on |
+| Behaviour | `js/`, within the rule below | |
+
+`check-tokens` fails on a token the theme file introduces; `check-classes` fails
+on a class either file selects that `rux.css` does not compile.
 
 ## What must not be invented
 

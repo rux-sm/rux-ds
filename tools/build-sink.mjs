@@ -39,6 +39,8 @@ const page = `<!doctype html>
 <title>rux-ds — kitchen sink</title>
 <link rel="stylesheet" href="assets/fonts/plex.css">
 <link rel="stylesheet" href="css/rux.css">
+<link rel="stylesheet" href="css/rux-theme.css">
+<link rel="stylesheet" href="css/rux-overrides.css">
 <link rel="stylesheet" href="sink/harness.css">
 </head>
 <body>
@@ -56,7 +58,10 @@ ${nav}
 <main class="ks-main">
   <div class="ks-themes">
     <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="white">white</button>
+    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g10">g10</button>
+    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g90">g90</button>
     <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g100">g100</button>
+    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="rux">rux</button>
   </div>
 
 ${sections.join('\n\n')}

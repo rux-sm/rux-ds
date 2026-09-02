@@ -183,22 +183,24 @@
 // from the manifest, which is exactly the §1.1 customisation surface.
 @include type.type-classes;
 
-// Themes — all four in the baseline; Phase 3 cuts to two.
-// Phase 3 pass 3, 2026-08-28 — four themes to two.
+// Themes — all four, plus one of rux's ABOVE them. Phase 10, 2026-09-02.
 //
-// NOT A SIZE DECISION, and Phase 2 is why. A theme is the same ~600 token names
-// with different values, so it compresses almost entirely against the first
-// one: the foundation measures 51 KB minified with one theme and 71 KB with
-// two, and 7 KB GZIPPED EITHER WAY. Across the whole keep-set, dropping two
-// themes saves 44 KB minified and 2 KB gzipped. §4.3 lists this pass beside the
-// component cut as though they were comparable; docs/inventory.md records the
-// measurement that says they are not.
+// Phase 3 cut this to white and g100 on 2026-08-28, and the comment that stood
+// here said why: not size — a theme is the same ~600 token names with other
+// values, and the pair dropped was ~2 KB gzipped — but scope, because every
+// theme kept is one more combination every visual check has to cover. §1's
+// revision of 2026-09-01 reversed it: the goal is a complete Carbon foundation,
+// and a consumer picks a theme by setting `data-theme`, never by rebuilding.
+// The cost accepted is the one the old comment named: check-rendered now
+// sweeps five themes, not two.
 //
-// The real reason is scope: two themes is what an application needs, and every
-// theme kept is another combination every visual check has to cover.
-//
-// white and g100 are the pair — the existing :root default, and the furthest
-// point from it, so light and dark are unambiguous. g90 over g100 is a design
-// preference and a one-line change; both are dark, g90 softer.
+// Order is Carbon's, light to dark. `:root` is white so a page with no
+// attribute renders; the other three answer `data-theme`. The custom theme is
+// NOT here. It is a plain CSS override block in css/rux-theme.css on top of
+// white, because that is the mechanism a consumer with no Sass can copy, and
+// keeping it out of the build is what keeps `git diff css/rux.css` empty when
+// it changes.
 :root                  { @include theme.theme(themes.$white); }
+[data-theme="g10"]     { @include theme.theme(themes.$g10);   }
+[data-theme="g90"]     { @include theme.theme(themes.$g90);   }
 [data-theme="g100"]    { @include theme.theme(themes.$g100);  }

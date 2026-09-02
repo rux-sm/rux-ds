@@ -21,7 +21,11 @@ import { pageFiles } from './lib/sources.mjs';
 
 // Declarations live in the built CSS; references may appear anywhere that ships.
 const DEFINES = ['css/rux.css', 'sink/harness.css'];
-const ROOTS = pageFiles(['css/rux.css', 'sink/harness.css']);
+// Phase 10's customization files REFERENCE tokens like a page and are gated
+// like one, but they do not DEFINE any: a name css/rux-theme.css introduces is
+// a token no component reads, and the loop below fails on it. 2026-09-02.
+const CUSTOM_CSS = ['css/rux-theme.css', 'css/rux-overrides.css'];
+const ROOTS = pageFiles(['css/rux.css', 'sink/harness.css', ...CUSTOM_CSS]);
 
 // Carbon custom properties its React/Lit layer sets at runtime and its light-DOM CSS
 // never declares. Each is unreachable from the markup we ship, and declaring a value
@@ -47,6 +51,14 @@ for (const f of DEFINES.flatMap(r => walk(r)))
   for (const m of readFileSync(f, 'utf8').matchAll(/(--rux-[a-zA-Z0-9_-]+)\s*:/g)) defined.add(m[1]);
 
 let bad = 0, hedged = 0, refs = new Set();
+for (const f of CUSTOM_CSS) {
+  const src = readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const m of src.matchAll(/(--rux-[a-zA-Z0-9_-]+)\s*:/g)) {
+    if (defined.has(m[1])) continue;
+    console.log(`  INVENTED    ${m[1].padEnd(46)} ${f}`);
+    bad++;
+  }
+}
 for (const f of ROOTS.flatMap(r => walk(r))) {
   const seen = new Set();
   // capture the token, and whether a comma — i.e. a fallback — follows it

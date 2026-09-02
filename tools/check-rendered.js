@@ -73,8 +73,13 @@
     sections: document.querySelectorAll(SEC).length,
     emptySvgs: [...document.querySelectorAll(`${MAIN} svg`)].filter(s => !s.children.length).length,
     uaStyled,
+    // Five since Phase 10 (2026-09-02): the four Carbon themes plus the custom
+    // one in css/rux-theme.css, which only the sink and the templates link.
     white: sweep('white'),
+    g10: sweep('g10'),
+    g90: sweep('g90'),
     g100: sweep('g100'),
+    rux: sweep('rux'),
   };
   document.documentElement.dataset.theme = 'white';
   console.log(out);

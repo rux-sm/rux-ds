@@ -41,6 +41,21 @@ const files = ROOTS.flatMap(r => walk(r));
 const COMPILED = compiled();
 
 let bad = 0, stripped = 0, used = new Set();
+
+// Phase 10's two customization files sit above the build and are the one place
+// a selector is hand-written. A class there that rux.css does not compile is an
+// invented class WITH a stylesheet behind it — the exact thing this gate exists
+// to refuse — so each is read with its comments stripped and every `.rux--*`
+// it selects must resolve. Added 2026-09-02; it makes nothing weaker.
+const CUSTOM_CSS = ['css/rux-theme.css', 'css/rux-overrides.css'];
+for (const f of CUSTOM_CSS) {
+  const src = readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const m of src.matchAll(/\.(rux--[a-zA-Z0-9_-]+)/g)) {
+    if (defined.has(m[1])) continue;
+    console.log(`  UNDEFINED  ${m[1].padEnd(42)} ${f}`);
+    bad++;
+  }
+}
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
   // The pattern itself is in tools/lib/ownership.mjs, so this gate and the

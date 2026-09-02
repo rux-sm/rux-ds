@@ -63,8 +63,7 @@ const BANNER = `/*!
  * Licensed under the Apache License, Version 2.0. See LICENSE.
  *
  * Contains rules compiled from @carbon/styles, with the class and custom-property
- * prefix changed at build time, the component set reduced, and two of four themes
- * kept:
+ * prefix changed at build time and the component set reduced:
  *   Carbon Design System, Copyright IBM Corp. 2015, 2026
  *   Licensed under the Apache License, Version 2.0
  *

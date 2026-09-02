@@ -389,7 +389,11 @@ Stated so the gaps are visible rather than assumed filled:
   against `docs/inventory.md` yet.
 - **No content or writing guidance.** `carbon-website/src/pages/guidelines/content`
   exists and has not been mined.
-- **Nothing on theming a consumer page** beyond `data-theme` existing.
+- **Theming is one attribute.** `data-theme` on `<html>` is `white`, `g10`,
+  `g90`, `g100` or `rux`, and the shell zone keeps its own — the head comment in
+  `templates/app-shell.html` says why it is g100. Every template
+  links `css/rux-theme.css` and `css/rux-overrides.css` after `rux.css`, in
+  that order; which change goes in which is `AGENTS.md`, "Where a change goes".
 - **Nothing on responsive behaviour** except 3.2's breakpoint and 3.12's gap.
 - **This document is unenforced.** No gate reads it, and it can go stale exactly
   the way the counts in README did before `check-gates` existed. Treat a claim

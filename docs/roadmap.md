@@ -2604,6 +2604,31 @@ changes such as button shapes, with a rule in `AGENTS.md` saying which kind of
 change goes where. Exit: a page renders in IBM's four themes and in one of rux's,
 and `git diff` of any Carbon-derived file is empty.
 
+**Done 2026-09-02.** `src/app.scss` compiles white, g10, g90 and g100: 91.7 KB
+gzipped against the 96 KB tripwire, under the 92.4 KB projected when the
+tripwire was raised. `css/rux-theme.css` is the custom theme, twenty
+interactive-family tokens over white under `data-theme="rux"`, with IBM's
+purple grades standing in until rux chooses an accent (the mark is Carbon
+blue, so white needed nothing). `css/rux-overrides.css` ships empty with its
+rule in the header. The sink and every template link both after `rux.css`;
+the sink's switcher has five buttons. `AGENTS.md` "Where a change goes" is the
+rule. `check-classes` and `check-tokens` read both files, each seen red on an
+invented class and an invented token before being trusted green;
+`check-rendered` sweeps five themes.
+
+Measured on the sink at 1280×900: each theme resolves its own tokens
+(background `#ffffff` · `#f4f4f4` · `#262626` · `#161616`, and `#ffffff` with
+interactive `#8a3ffc` under rux); the shell's g100 zone stays g100 on a rux
+page; `check-a11y` under rux reads the same 29 findings as white with no
+contrast rule firing, so the grade-for-grade choice held; rendered is clean in
+all five. `git diff css/rux.css` is empty when the theme file changes by
+construction, since the file is not compiled.
+
+NOT done, and said so: no rule is live in the overrides file, so that path is
+wired and gated but has not yet moved a pixel; the custom hue is a placeholder,
+not a decision; g10 and g90 have their tokens and their render sweep but no
+page has been LOOKED at in either beyond the sink's button section.
+
 ### 4.11 Phase 11 — Starting a project
 
 **Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`
