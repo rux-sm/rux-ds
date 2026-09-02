@@ -2424,6 +2424,169 @@ li.rux--accordion__item--disabled:last-of-type {
   margin-inline-end: 0.25rem;
 }
 
+.rux--big-number {
+  margin: 0;
+}
+
+.rux--big-number__label {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  display: block;
+  margin: 0;
+  color: var(--rux-text-secondary, #525252);
+}
+
+.rux--big-number__value {
+  font-size: var(--rux-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-heading-04-font-weight, 400);
+  line-height: var(--rux-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-04-letter-spacing, 0);
+  margin-block-end: 0;
+}
+
+.rux--big-number__total {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--big-number__total,
+.rux--big-number__percentage-mark {
+  margin-block: auto 0.25rem;
+}
+
+.rux--big-number__info {
+  padding-inline-start: 0.5rem;
+  vertical-align: top;
+}
+
+.rux--big-number__trend {
+  margin-block-start: 0.5rem;
+  vertical-align: top;
+}
+
+.rux--big-number__row {
+  display: flex;
+}
+
+.rux--big-number__percentage {
+  font-size: var(--rux-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-heading-04-font-weight, 400);
+  line-height: var(--rux-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-04-letter-spacing, 0);
+}
+
+.rux--big-number__percentage-mark {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--big-number__icon-button {
+  margin-inline-start: 0.25rem;
+}
+
+.rux--big-number--lg .rux--big-number__value,
+.rux--big-number--lg .rux--big-number__percentage {
+  font-size: var(--rux-heading-06-font-size, 2.625rem);
+  font-weight: var(--rux-heading-06-font-weight, 300);
+  line-height: var(--rux-heading-06-line-height, 1.199);
+  letter-spacing: var(--rux-heading-06-letter-spacing, 0);
+}
+
+.rux--big-number--lg .rux--big-number__total,
+.rux--big-number--lg .rux--big-number__percentage-mark {
+  font-size: var(--rux-heading-03-font-size, 1.25rem);
+  font-weight: var(--rux-heading-03-font-weight, 400);
+  line-height: var(--rux-heading-03-line-height, 1.4);
+  letter-spacing: var(--rux-heading-03-letter-spacing, 0);
+}
+
+.rux--big-number--xl .rux--big-number__label {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+
+.rux--big-number--xl .rux--big-number__value,
+.rux--big-number--xl .rux--big-number__percentage {
+  font-size: var(--rux-heading-07-font-size, 3.375rem);
+  font-weight: var(--rux-heading-07-font-weight, 300);
+  line-height: var(--rux-heading-07-line-height, 1.19);
+  letter-spacing: var(--rux-heading-07-letter-spacing, 0);
+}
+
+.rux--big-number--xl .rux--big-number__total,
+.rux--big-number--xl .rux--big-number__percentage-mark {
+  font-size: var(--rux-heading-04-font-size, 1.75rem);
+  font-weight: var(--rux-heading-04-font-weight, 400);
+  line-height: var(--rux-heading-04-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-04-letter-spacing, 0);
+}
+
+.rux--big-number--xl .rux--big-number__trend {
+  margin-block-start: 0.75rem;
+}
+
+.rux--big-number .rux--big-number__tooltip-trigger {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  vertical-align: top;
+}
+.rux--big-number .rux--big-number__tooltip-trigger:focus {
+  outline: 1px solid var(--rux-focus, #0f62fe);
+}
+
+.rux--big-number-skeleton {
+  inline-size: 4rem;
+}
+
+.rux--big-number-skeleton__label {
+  block-size: 0.75rem;
+  margin-block: 0 0.5rem;
+}
+
+.rux--big-number-skeleton__value {
+  margin: 0;
+  /* stylelint-disable-next-line declaration-no-important */
+  block-size: 2.5rem !important;
+}
+
+.rux--big-number-skeleton--lg {
+  inline-size: 5rem;
+}
+
+.rux--big-number-skeleton--xl {
+  inline-size: 6rem;
+}
+
+.rux--big-number-skeleton.rux--big-number-skeleton--lg .rux--big-number-skeleton__label {
+  block-size: 0.75rem;
+}
+
+.rux--big-number-skeleton.rux--big-number-skeleton--lg .rux--big-number-skeleton__value {
+  /* stylelint-disable-next-line declaration-no-important */
+  block-size: 3rem !important;
+}
+
+.rux--big-number-skeleton.rux--big-number-skeleton--xl .rux--big-number-skeleton__label {
+  block-size: 0.75rem;
+}
+
+.rux--big-number-skeleton.rux--big-number-skeleton--xl .rux--big-number-skeleton__value {
+  /* stylelint-disable-next-line declaration-no-important */
+  block-size: 4rem !important;
+}
+
 @keyframes rux--hide-feedback {
   0% {
     opacity: 1;
@@ -14474,6 +14637,156 @@ button.rux--dropdown-text:focus {
   fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
 }
 
+.rux--edit-in-place {
+  --rux--edit-in-place--size: 2rem;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rux--edit-in-place--sm {
+  --rux--edit-in-place--size: 2.5rem;
+}
+
+.rux--edit-in-place--md {
+  --rux--edit-in-place--size: 3rem;
+}
+
+.rux--edit-in-place--lg {
+  --rux--edit-in-place--size: 4rem;
+}
+
+.rux--edit-in-place__toggletip-wrapper {
+  display: block;
+  inline-size: 100%;
+}
+
+.rux--edit-in-place__toggletip-wrapper .rux--toggletip-button {
+  display: block;
+  inline-size: 100%;
+}
+
+.rux--edit-in-place:hover {
+  background: var(--rux-field-01, #f4f4f4);
+}
+
+.rux--edit-in-place:hover .rux--edit-in-place__btn-edit,
+.rux--edit-in-place__btn-edit.rux--edit-in-place__btn-edit--always-visible {
+  visibility: visible;
+}
+
+.rux--edit-in-place__btn-edit {
+  visibility: hidden;
+}
+
+.rux--edit-in-place--invalid {
+  border: 2px solid var(--rux-support-error, #da1e28);
+}
+
+.rux--edit-in-place--focused {
+  background: var(--rux-field-01, #f4f4f4);
+}
+
+.rux--edit-in-place--focused:has(.rux--edit-in-place__text-input:focus) {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+}
+
+.rux--edit-in-place--invalid.rux--edit-in-place--focused {
+  border: none;
+}
+
+.rux--edit-in-place__text-input {
+  flex: 1;
+}
+
+.rux--edit-in-place--inherit-type .rux--edit-in-place__text-input {
+  /* match font of container */
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+.rux--edit-in-place__text-input-label {
+  display: none;
+}
+
+.rux--edit-in-place__warning-icon {
+  margin: auto 0.5rem;
+  color: var(--rux-support-error, #da1e28);
+  inline-size: 1rem;
+}
+
+.rux--edit-in-place__warning-text {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  color: var(--rux-support-error, #da1e28);
+  margin-block-start: 0.5rem;
+}
+
+.rux--edit-in-place__text-input.rux--text-input {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.rux--edit-in-place:not(.rux--edit-in-place--focused) .rux--edit-in-place__text-input.rux--text-input:focus,
+.rux--edit-in-place:not(.rux--edit-in-place--focused) .rux--edit-in-place__text-input.rux--text-input:active {
+  outline: none;
+}
+
+.rux--edit-in-place__toolbar {
+  --toolbar-width: var(--rux--edit-in-place--size);
+  --toolbar-width-focussed: calc(2 * var(--rux--edit-in-place--size));
+  display: inline-flex;
+  align-self: stretch;
+  inline-size: var(--toolbar-width);
+}
+.rux--edit-in-place__toolbar .rux--btn.rux--btn--icon-only:not(rux-icon-button) {
+  padding: 0;
+  min-block-size: unset;
+}
+
+.rux--edit-in-place__toolbar .rux--btn.rux--btn--icon-only:not(rux-icon-button) {
+  block-size: var(--rux--edit-in-place--size);
+  inline-size: var(--rux--edit-in-place--size);
+}
+
+.rux--edit-in-place__toolbar rux-icon-button::part(button) {
+  padding: 0.25rem;
+}
+
+.rux--edit-in-place--invalid .rux--edit-in-place__toolbar {
+  --toolbar-width: calc(var(--rux--edit-in-place--size) + 2rem);
+  --toolbar-width-focussed: calc(
+    2 * var(--rux--edit-in-place--size) + 2rem
+  );
+}
+
+@keyframes edit-in-place-slide-in {
+  0% {
+    overflow: hidden;
+    inline-size: var(--toolbar-width);
+  }
+  99% {
+    overflow: hidden;
+    inline-size: var(--toolbar-width-focussed);
+  }
+  100% {
+    overflow: visible;
+    inline-size: var(--toolbar-width-focussed);
+  }
+}
+.rux--edit-in-place--focused:not(.rux--edit-in-place--readonly) .rux--edit-in-place__toolbar {
+  overflow: initial;
+  animation: edit-in-place-slide-in 150ms cubic-bezier(0, 0, 0.38, 0.9);
+  inline-size: var(--toolbar-width-focussed);
+}
+
 .rux--loading {
   box-sizing: border-box;
   padding: 0;
@@ -18311,6 +18624,237 @@ optgroup.rux--select-optgroup:disabled,
   inline-size: 50%;
 }
 
+.rux--full-page-error {
+  block-size: inherit;
+}
+
+.rux--full-page-error__container {
+  margin: 0 1.5rem;
+  block-size: 100%;
+}
+@media (max-width: 41.98rem) {
+  .rux--full-page-error__container {
+    margin: 0 0.5rem;
+  }
+}
+
+.rux--full-page-error__grid {
+  block-size: 100%;
+  padding-block: 2rem;
+}
+
+.rux--full-page-error__column {
+  padding: 0;
+}
+@media (min-width: 66rem) {
+  .rux--full-page-error__column {
+    padding: 0 2rem 0 0;
+  }
+}
+
+.rux--full-page-error__svg-container {
+  display: flex;
+  padding: 0.5rem 0.5rem 5rem 0.5rem;
+  block-size: 100%;
+}
+@media (min-width: 42rem) {
+  .rux--full-page-error__svg-container {
+    padding: auto 0.5rem 5rem;
+  }
+}
+
+.rux--full-page-error__label,
+.rux--full-page-error__title {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-size: calc(2rem + 0.25 * (100vw - 20rem) / 22);
+}
+@media (min-width: 42rem) {
+  .rux--full-page-error__label,
+  .rux--full-page-error__title {
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.22;
+    font-size: calc(2.25rem + 0.375 * (100vw - 42rem) / 24);
+  }
+}
+@media (min-width: 66rem) {
+  .rux--full-page-error__label,
+  .rux--full-page-error__title {
+    font-size: 2.625rem;
+    line-height: 1.19;
+    font-size: calc(2.625rem + 0.375 * (100vw - 66rem) / 16);
+  }
+}
+@media (min-width: 82rem) {
+  .rux--full-page-error__label,
+  .rux--full-page-error__title {
+    font-size: 3rem;
+    line-height: 1.17;
+    font-size: calc(3rem + 0.75 * (100vw - 82rem) / 17);
+  }
+}
+@media (min-width: 99rem) {
+  .rux--full-page-error__label,
+  .rux--full-page-error__title {
+    font-size: 3.75rem;
+    font-size: 3.75rem;
+  }
+}
+
+.rux--full-page-error__label {
+  display: block;
+  color: var(--rux-text-error, #da1e28);
+}
+
+.rux--full-page-error__title {
+  margin-block-end: 3rem;
+}
+
+.rux--full-page-error__description {
+  font-size: var(--rux-body-02-font-size, 1rem);
+  font-weight: var(--rux-body-02-font-weight, 400);
+  line-height: var(--rux-body-02-line-height, 1.5);
+  letter-spacing: var(--rux-body-02-letter-spacing, 0);
+  margin-block-end: 2rem;
+}
+
+.rux--full-page-error__body {
+  font-size: var(--rux-body-02-font-size, 1rem);
+  font-weight: var(--rux-body-02-font-weight, 400);
+  line-height: var(--rux-body-02-line-height, 1.5);
+  letter-spacing: var(--rux-body-02-letter-spacing, 0);
+}
+
+.rux--full-page-error__svg-container svg.rux--full-page-error__svg {
+  inline-size: 100%;
+}
+
+.rux--full-page-error__svg-container svg.rux--full-page-error__svg path {
+  fill: var(--rux-background, #ffffff);
+  stroke: var(--rux-border-inverse, #161616);
+}
+
+.rux--icon-indicator {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  display: flex;
+  align-items: center;
+  color: var(--rux-text-secondary, #525252);
+  gap: 0.5rem;
+  line-height: unset;
+}
+
+.rux--icon-indicator svg {
+  align-self: center;
+}
+
+.rux--icon-indicator--20 {
+  font-size: var(--rux-body-compact-02-font-size, 1rem);
+  font-weight: var(--rux-body-compact-02-font-weight, 400);
+  line-height: var(--rux-body-compact-02-line-height, 1.375);
+  letter-spacing: var(--rux-body-compact-02-letter-spacing, 0);
+  line-height: unset;
+}
+
+.rux--icon-indicator--failed {
+  fill: var(--rux-status-red, #da1e28);
+}
+
+.rux--icon-indicator--caution-major {
+  fill: var(--rux-status-orange, #ff832b);
+}
+.rux--icon-indicator--caution-major path:first-of-type {
+  fill: #000000;
+}
+
+.rux--icon-indicator--caution-minor {
+  fill: var(--rux-status-yellow, #f1c21b);
+}
+.rux--icon-indicator--caution-minor path:first-of-type {
+  fill: #000000;
+}
+
+.rux--icon-indicator--undefined {
+  fill: var(--rux-status-purple, #8a3ffc);
+}
+
+.rux--icon-indicator--succeeded {
+  fill: var(--rux-status-green, #24a148);
+}
+
+.rux--icon-indicator--normal {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--icon-indicator--in-progress {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--icon-indicator--incomplete {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--icon-indicator--not-started {
+  fill: var(--rux-status-gray, #6f6f6f);
+}
+
+.rux--icon-indicator--pending {
+  fill: var(--rux-status-gray, #6f6f6f);
+}
+
+.rux--icon-indicator--unknown {
+  fill: var(--rux-status-gray, #6f6f6f);
+}
+
+.rux--icon-indicator--informative {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--icon-indicator__button {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--icon-indicator__button *,
+.rux--icon-indicator__button *::before,
+.rux--icon-indicator__button *::after {
+  box-sizing: inherit;
+}
+.rux--icon-indicator__button::-moz-focus-inner {
+  border: 0;
+}
+.rux--icon-indicator__button {
+  display: flex;
+}
+.rux--icon-indicator__button:focus {
+  outline: 1px solid var(--rux-focus, #0f62fe);
+}
+@media screen and (prefers-contrast) {
+  .rux--icon-indicator__button:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--icon-indicator .rux--definition-tooltip {
+  padding-block: 0.125rem;
+}
+
 @keyframes prefix--stroke {
   100% {
     stroke-dashoffset: 0;
@@ -20101,6 +20645,228 @@ optgroup.rux--select-optgroup:disabled,
   }
 }
 
+.rux--options-tile {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--rux-layer);
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--options-tile__toggle-container {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: calc(1rem + 2rem + 1rem);
+  inset-block: 0;
+  inset-inline-end: 0;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+}
+
+.rux--options-tile__toggle {
+  position: absolute;
+}
+
+.rux--options-tile__toggle .rux--toggle-input__label .rux--toggle__switch {
+  margin: 0;
+}
+
+.rux--options-tile__toggle .rux--toggle__label-text {
+  position: absolute;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+  visibility: inherit;
+  white-space: nowrap;
+}
+
+.rux--options-tile__details {
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.rux--options-tile__header,
+.rux--options-tile__static-content {
+  display: grid;
+  box-sizing: border-box;
+  align-items: center;
+  grid-template-columns: 3rem 1fr 0;
+  padding-inline-end: 1rem;
+}
+
+.rux--options-tile__header {
+  flex-grow: 1;
+  background-color: transparent;
+  cursor: pointer;
+  inline-size: 100%;
+  transition: background-color 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+.rux--options-tile__header--has-toggle {
+  inline-size: calc(100% - (1rem + 2rem + 1rem));
+}
+
+.rux--options-tile__header::-webkit-details-marker {
+  display: none;
+}
+
+.rux--options-tile__header:hover {
+  background-color: var(--rux-background-hover, rgba(141, 141, 141, 0.12));
+}
+
+.rux--options-tile__header:has(.rux--options-tile__toggle-container:hover) {
+  background-color: transparent;
+}
+
+.rux--options-tile__header:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--options-tile__header:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--options-tile__heading {
+  grid-column: 2;
+}
+
+.rux--options-tile__title {
+  font-size: var(--rux-productive-heading-01-font-size, 0.875rem);
+  font-weight: var(--rux-productive-heading-01-font-weight, 600);
+  line-height: var(--rux-productive-heading-01-line-height, 1.28572);
+  letter-spacing: var(--rux-productive-heading-01-letter-spacing, 0.16px);
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--options-tile__summary {
+  font-size: var(--rux-helper-text-01-font-size, 0.75rem);
+  line-height: var(--rux-helper-text-01-line-height, 1.33333);
+  letter-spacing: var(--rux-helper-text-01-letter-spacing, 0.32px);
+  display: grid;
+  block-size: 1rem;
+  color: var(--rux-text-secondary, #525252);
+  margin-block-start: 0.25rem;
+  opacity: 1;
+  transition-duration: 150ms;
+  transition-property: height, opacity, margin-top;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--options-tile__summary--invalid,
+.rux--options-tile__summary--warn,
+.rux--options-tile__summary--locked {
+  column-gap: 0.25rem;
+  grid-template-columns: 1rem 1fr;
+}
+
+.rux--options-tile__summary--invalid {
+  color: var(--rux-support-error, #da1e28);
+}
+
+.rux--options-tile__summary--warn {
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--options-tile__summary--warn svg {
+  color: var(--rux-support-warning, #f1c21b);
+}
+
+.rux--options-tile__summary--warn svg path[fill=none] {
+  fill: #000000;
+}
+
+.rux--options-tile__summary-text {
+  overflow: hidden;
+  block-size: max-content;
+  padding-inline-end: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--options-tile__chevron {
+  display: block;
+  justify-self: center;
+  transition: transform 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--options-tile__content {
+  padding-inline: 3rem 1rem;
+}
+
+.rux--options-tile__content > .rux--fieldset > .rux--label:empty {
+  display: none;
+}
+
+.rux--options-tile--closing .rux--options-tile__content {
+  overflow: hidden;
+}
+
+.rux--options-tile__summary.rux--options-tile__summary--open:not(.rux--options-tile__summary--closing),
+.rux--options-tile__summary--hidden {
+  block-size: 0;
+  margin-block-start: 0;
+  opacity: 0;
+}
+
+.rux--options-tile__chevron.rux--options-tile__chevron--open:not(.rux--options-tile__chevron--closing) {
+  transform: rotate(180deg);
+}
+
+.rux--options-tile > details[open] .rux--options-tile__content {
+  padding-block: 0.5rem 1.5rem;
+}
+
+.rux--options-tile__locked-text {
+  font-size: var(--rux-body-long-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-long-01-font-weight, 400);
+  line-height: var(--rux-body-long-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-long-01-letter-spacing, 0.16px);
+  display: inline-flex;
+  align-items: center;
+  color: var(--rux-text-secondary, #525252);
+  margin-block-end: 1.5rem;
+}
+
+.rux--options-tile__locked-text > svg {
+  margin-inline-end: 0.25rem;
+}
+
+.rux--options-tile--lg .rux--options-tile__header,
+.rux--options-tile--lg .rux--options-tile__static-content {
+  block-size: 3rem;
+}
+
+.rux--options-tile--xl .rux--options-tile__header,
+.rux--options-tile--xl .rux--options-tile__static-content {
+  block-size: 4rem;
+}
+
+.rux--options-tile--lg .rux--options-tile__toggle {
+  inset-block-start: 1rem;
+}
+
+.rux--options-tile--xl .rux--options-tile__toggle {
+  inset-block-start: 1.5rem;
+}
+
+.rux--options-tile--lg .rux--options-tile__summary {
+  margin-block-start: 0.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rux--options-tile__summary,
+  .rux--options-tile__chevron {
+    transition: none;
+  }
+}
 .rux--data-table-container + .rux--pagination {
   border-block-start: 0;
 }
@@ -21339,6 +22105,205 @@ span.rux--pagination__text.rux--pagination__items-count {
   inline-size: 1px;
   inset-block-start: 0;
   inset-inline-start: 0;
+}
+
+.rux--scroll-gradient {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  block-size: inherit;
+  inline-size: inherit;
+}
+
+.rux--scroll-gradient__content {
+  display: grid;
+  overflow: auto;
+  block-size: inherit;
+  grid-template-columns: 1fr;
+  inline-size: 100%;
+}
+
+.rux--scroll-gradient__content-children {
+  block-size: 100%;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  inline-size: 100%;
+}
+
+.rux--scroll-gradient__content-children > * {
+  grid-area: 1/1;
+}
+
+.rux--scroll-gradient__start-vertical,
+.rux--scroll-gradient__start-horizontal,
+.rux--scroll-gradient__end-vertical,
+.rux--scroll-gradient__end-horizontal {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  pointer-events: none;
+}
+
+.rux--scroll-gradient--y-scrollable .rux--scroll-gradient__start-vertical {
+  block-size: 3rem;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
+.rux--scroll-gradient--y-scrollable .rux--scroll-gradient__end-vertical {
+  block-size: 3rem;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+}
+
+.rux--scroll-gradient--x-scrollable .rux--scroll-gradient__start-horizontal {
+  inline-size: 3rem;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
+.rux--scroll-gradient--x-scrollable .rux--scroll-gradient__end-horizontal {
+  inline-size: 3rem;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.rux--scroll-gradient [data-start-vertical],
+.rux--scroll-gradient [data-end-vertical] {
+  block-size: 3rem;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  inline-size: 100%;
+}
+
+.rux--scroll-gradient [data-end-vertical],
+.rux--scroll-gradient [data-end-horizontal] {
+  place-self: flex-end;
+}
+
+.rux--scroll-gradient [data-start-horizontal],
+.rux--scroll-gradient [data-end-horizontal] {
+  block-size: 100%;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  inline-size: 3rem;
+}
+
+.rux--shape-indicator {
+  font-size: var(--rux-helper-text-01-font-size, 0.75rem);
+  line-height: var(--rux-helper-text-01-line-height, 1.33333);
+  letter-spacing: var(--rux-helper-text-01-letter-spacing, 0.32px);
+  display: flex;
+  align-items: center;
+  color: var(--rux-text-secondary, #525252);
+  gap: 0.5rem;
+  line-height: unset;
+}
+
+.rux--shape-indicator svg {
+  align-self: center;
+}
+
+.rux--shape-indicator--14 {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  line-height: unset;
+}
+
+.rux--shape-indicator--failed {
+  fill: var(--rux-status-red, #da1e28);
+}
+
+.rux--shape-indicator--critical {
+  fill: var(--rux-status-red, #da1e28);
+}
+
+.rux--shape-indicator--high {
+  fill: var(--rux-status-red, #da1e28);
+}
+
+.rux--shape-indicator--medium {
+  fill: var(--rux-status-orange, #ff832b);
+}
+.rux--shape-indicator--medium path:first-of-type {
+  fill: var(--rux-status-orange-outline, #ba4e00);
+}
+
+.rux--shape-indicator--low {
+  fill: var(--rux-status-yellow, #f1c21b);
+}
+.rux--shape-indicator--low path:nth-of-type(2) {
+  fill: var(--rux-status-yellow-outline, #8e6a00);
+}
+
+.rux--shape-indicator--cautious {
+  fill: var(--rux-status-yellow, #f1c21b);
+}
+.rux--shape-indicator--cautious path:first-of-type {
+  fill: var(--rux-status-yellow-outline, #8e6a00);
+}
+
+.rux--shape-indicator--undefined {
+  fill: var(--rux-status-purple, #8a3ffc);
+}
+
+.rux--shape-indicator--stable {
+  fill: var(--rux-status-green, #24a148);
+}
+
+.rux--shape-indicator--informative {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--shape-indicator--incomplete path:nth-of-type(2) {
+  fill: var(--rux-status-blue, #0043ce);
+}
+
+.rux--shape-indicator--draft {
+  fill: var(--rux-status-gray, #6f6f6f);
+}
+
+.rux--shape-indicator__button {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--shape-indicator__button *,
+.rux--shape-indicator__button *::before,
+.rux--shape-indicator__button *::after {
+  box-sizing: inherit;
+}
+.rux--shape-indicator__button::-moz-focus-inner {
+  border: 0;
+}
+.rux--shape-indicator__button {
+  display: flex;
+}
+.rux--shape-indicator__button:focus {
+  outline: 1px solid var(--rux-focus, #0f62fe);
+}
+@media screen and (prefers-contrast) {
+  .rux--shape-indicator__button:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--shape-indicator .rux--definition-tooltip {
+  padding-block: 0.125rem;
 }
 
 @keyframes ai-skeleton-animation {
@@ -28572,6 +29537,15 @@ em {
   --rux-content-switcher-background: #e0e0e0;
   --rux-content-switcher-background-hover: #d1d1d1;
   --rux-content-switcher-selected: #ffffff;
+  --rux-status-red: #da1e28;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ba4e00;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #8e6a00;
+  --rux-status-green: #24a148;
+  --rux-status-blue: #0043ce;
+  --rux-status-purple: #8a3ffc;
+  --rux-status-gray: #6f6f6f;
   --rux-notification-background-error: #fff1f1;
   --rux-notification-background-success: #defbe6;
   --rux-notification-background-info: #edf5ff;
@@ -29174,6 +30148,15 @@ em {
   --rux-content-switcher-background: rgba(0, 0, 0, 0);
   --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
   --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
+  --rux-status-red: #fa4d56;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ff832b;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #f1c21b;
+  --rux-status-green: #42be65;
+  --rux-status-blue: #4589ff;
+  --rux-status-purple: #a56eff;
+  --rux-status-gray: #8d8d8d;
   --rux-notification-background-error: #262626;
   --rux-notification-background-success: #262626;
   --rux-notification-background-info: #262626;

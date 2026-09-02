@@ -1,6 +1,10 @@
 {
   "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here. `--update` REFUSES to lower any entry, so this file only ever moves up; the refusal is in tools/check-coverage.mjs and is not advice. Regenerate with `npm run coverage:update` after adding sink markup. A real loss — a component stripped, or a class gone upstream — needs `--update --force`, which prints what it lowered.",
   "components": {
+    "big-number": {
+      "hit": 5,
+      "own": 18
+    },
     "dropdown": {
       "hit": 9,
       "own": 23
@@ -29,9 +33,17 @@
       "hit": 3,
       "own": 6
     },
+    "EditInPlace": {
+      "hit": 8,
+      "own": 16
+    },
     "data-table": {
       "hit": 41,
       "own": 80
+    },
+    "OptionsTile": {
+      "hit": 14,
+      "own": 25
     },
     "text-area": {
       "hit": 11,
@@ -181,6 +193,10 @@
       "hit": 12,
       "own": 14
     },
+    "scroll-gradient": {
+      "hit": 8,
+      "own": 9
+    },
     "slider": {
       "hit": 25,
       "own": 28
@@ -192,6 +208,18 @@
     "menu": {
       "hit": 22,
       "own": 24
+    },
+    "icon-indicator": {
+      "hit": 14,
+      "own": 15
+    },
+    "shape-indicator": {
+      "hit": 13,
+      "own": 14
+    },
+    "toggle": {
+      "hit": 16,
+      "own": 17
     },
     "badge-indicator": {
       "hit": 2,
@@ -241,6 +269,10 @@
       "hit": 1,
       "own": 1
     },
+    "FullPageError": {
+      "hit": 10,
+      "own": 10
+    },
     "menu-button": {
       "hit": 3,
       "own": 3
@@ -256,10 +288,6 @@
     "stack": {
       "hit": 15,
       "own": 15
-    },
-    "toggle": {
-      "hit": 16,
-      "own": 16
     }
   }
 }

@@ -207,9 +207,9 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `date-picker` | **KEEP** | 43 | 120 | 1 | **ADMITTED 2026-08-31, under rule 1** — `templates/schedule-page.html` is the named page shape, and it shipped with a plain text input standing in for this. **Measured +3.4 KB gzipped and 41 classes.** **THE ADMISSION TURNED ON WHICH OF CARBON'S TWO DATE PICKERS THIS IS.** The CLASSIC one (`components-datepicker--*`) renders its calendar through FLATPICKR: measured 2026-08-31, the open calendar matches 4 rules via `flatpickr-*` selectors and ZERO via `cds--`, so `cds--date-picker__calendar` is a marker that styles nothing and rebuilding it would mean shipping flatpickr, which §1 declines. The **`--next`** variant (`preview-preview-datepicker--*`) renders ZERO flatpickr elements, days as real `<button type=button>`, calendar as `role=grid`, and all 64 calendar rules key on Carbon's own classes. That is what ships. **The committed capture could not have told you this** — `react-dom.js` filters classes to the `cds--` prefix, so the classic capture records clean Carbon markup with its dependency invisible. Two recipes were added and the `--next` stories captured with the calendar OPEN (`preview-preview-datepicker--*-with-calendar@open`), which also fixed two real `check-tags` faults waiting to happen: `__day` was attested only on `span` and `__weekday` only on `span`, where `--next` renders `button` and `div`. `js/date-picker.js` is the 13th module; `sink/date-picker.html` demos simple, single and range at 47%. **The day STATE classes are unprefixed** — `selected`, `today`, `inRange`, `prevMonthDay`, `nextMonthDay`, `disabled`, `focused` — so no capture records them and no gate can check them; they were read off `css/rux.css` and confirmed live |
 | `treeview` | **KEEP** | 20 | 86 | 0 | **ADMITTED 2026-09-01, §4.9 batch 1.** The deferral read "no target shape needs it yet — measured +0.7 KB gzipped"; §2.1 now asks only whether a capture exists, and it does |
 | `progress-bar` | **KEEP** | 8 | 21 | 0 | **ADMITTED 2026-09-01, §4.9 batch 1.** The deferral read "8 KB; cheap to add back when something reports progress — measured +0.6 KB gzipped"; §2.1 now asks only whether a capture exists, and it does |
-| `icon-indicator` | **DEFER** | 3 | 18 | 1 | status vocabulary; tag covers most of it — **measured +0.4 KB gzipped** |
+| `icon-indicator` | **KEEP** | 3 | 18 | 1 | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "status vocabulary; tag covers most of it — measured +0.4 KB gzipped"; §4.9 now asks whether a capture exists, and two do |
 | `action-set` | **DEFER** | 2 | 19 | 0 | 2 KB; modal footers may want it in Phase 6 — **measured +0.3 KB gzipped** |
-| `shape-indicator` | **DEFER** | 2 | 17 | 0 | status vocabulary; tag covers most of it — **measured +0.3 KB gzipped** |
+| `shape-indicator` | **KEEP** | 2 | 17 | 0 | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "status vocabulary; tag covers most of it — measured +0.3 KB gzipped"; §4.9 now asks whether a capture exists, and two do |
 | `aspect-ratio` | **KEEP** | 1 | 12 | 0 | **ADMITTED 2026-09-01, §4.9 batch 1.** The deferral read "1 KB layout primitive; Phase 6 may want it — measured +0.1 KB gzipped"; §2.1 now asks only whether a capture exists, and it does |
 | `stack` | **KEEP** | 1 | 15 | 1 | restored 2026-08-28 — two templates had no vertical rhythm without it. Item 4 |
 | `badge-indicator` | **KEEP** | 1 | 2 | 0 | restored 2026-08-29 — the shell ships a Notifications button and the system could not express an unread count at all. **Measured +0.1 KB gzipped / 2 classes**, both exercised. Carbon renders it only as the last child of an icon-only button, which supplies its containing block |
@@ -255,63 +255,49 @@ component with no row, and on a row that carries no disposition.
 
 ## The eight that arrived with Carbon 1.114
 
-Rows exist now; **seven of the eight are still yours to decide.** Sized 2026-08-31 from a
-regenerated `docs/inventory.json`; the marginal column is each one compiled ON TOP of the
-shipped set, which is the only figure that answers "what does adding this cost."
+The marginal column was sized 2026-08-31 from a regenerated `docs/inventory.json`, each
+component compiled on top of the then-shipped set. The dispositions are current; the
+paragraphs below keep the first decision and the evidence that later superseded it.
 
-**One fact applies to all eight and is not a judgement call.** `docs/carbon-react-dom.json`
-was captured 2026-08-31 against `@carbon/react` 1.115.0 / `@carbon/styles` 1.114.0 — the
-version this repo compiles — with **no filter and 505 stories**. None of the eight appears
-in it as a story, a class, a co-class, a spacing signature or a slot, and none appears in
-the ibm-products captures either. Carbon ships their CSS and renders none of them. **Any
-fragment built for one of these would be invented markup**, which §1.1 and `CLAUDE.md`
-forbid, unless a targeted ibm-products capture is taken first. That is the same evidence
-ground `card`, `page-header` and `side-panel` were cut on.
+`docs/carbon-react-dom.json` was captured against `@carbon/react` 1.115.0 /
+`@carbon/styles` 1.114.0 with no filter and 505 stories, and renders none of the eight.
+That originally made every possible fragment invented. A targeted ibm-products capture
+then supplied `big-number`, `EditInPlace`, `FullPageError`, `InterstitialScreen` and
+`OptionsTile`; a utility capture supplied `scroll-gradient`; the React preview already
+supplied both status indicators. Phase 9 admits every one with a usable capture. The
+capture requirement did not weaken — the evidence set grew.
 
 `EditInPlace`, `FullPageError`, `InterstitialScreen` and `OptionsTile` are also the **only
 PascalCase directories among all 83** — ibm-products' own naming convention, surviving
 the move into `@carbon/styles`.
 
-**Decided 2026-08-31: seven CUT, `big-number` DEFER.** The admission rule settles all
+**First decision, 2026-08-31: seven CUT, `big-number` DEFER.** The admission rule settled all
 seven without needing a byte of the size column — five fail rule 1 (no named page shape
 in `templates/` requires them) and two fail rule 2 (`error-state.html` and `tile`
 already serve the shape). Cost decided nothing here, which is the pattern §2.1 recorded
 when it removed the KB target: not one of the CUT rows in this document was decided on
-bytes, and the whole of this table is under 1 KB gzipped a component.
-
-**CUT rather than DEFER, and for these eight the two are operationally identical.** DEFER
-normally means a fragment parked in `sink/deferred/` that three lines restore. None of
-these can have a fragment — nothing renders them, so there is nothing to diff against and
-anything written would be invented markup. Neither disposition compiles anything, neither
-creates a file, and the choice is therefore bookkeeping rather than a purchase. CUT is the
-word this document already uses for that state: it is the ground `page-header` and
-`side-panel` were cut on. **The sentence here named `card` as a third example until
-2026-08-31 and no longer can** — card has 17 stories to diff against, was admitted that
-day, and was never in the state this paragraph describes. `page-header` and `side-panel`
-are unaffected: both really are `c4p--` and neither is rendered by `@carbon/react`. **Re-opening one costs a sentence**, and the two worth
-watching are named below.
-
-**Two are likelier than the rest to come back.** `user-avatar` is the one a real
-application asks for soonest, and it fails rule 1 only because no template has an account
-or profile shape yet — write one and the row is live again. `EditInPlace` is held by a
-dependency rather than by its own merits: cutting it also declines `toggletip`, which is
-an open DEFER under "What needs your call", so a decision to take `toggletip` should
-re-read this row rather than assume it settled.
+bytes, and the whole table was under 1 KB gzipped a component. **Phase 9 superseded the
+admission test, not that measurement.** `user-avatar` had already been admitted;
+`big-number`, `EditInPlace`, `FullPageError`, `OptionsTile` and `scroll-gradient` are
+batch 4. `coachmark` is batch 5. `InterstitialScreen` remains the one separate decision
+because its captured carousel styling is absent from @carbon/styles 1.114.
 
 | Component | Disposition | KB | Classes | Marginal | Reason / evidence |
 |---|---|---|---|---|---|
-| `big-number` | **DEFER** | 4 | 19 | +0.3 KB | **The only one with a real page shape.** `templates/detail-page.html`'s metric row (`241feaa`) is exactly what it styles — `__label` label-01 secondary, `__value` heading-04, `__total` body-compact-01 — against the row's hand-composed `<p>`/`<h3>`/`<p>`. Deferred, not admitted, on two counts: rule 2 currently holds (tile + type build that row, verified against a running Carbon page 2026-08-31 with measurements recorded), and there is no capture to build a fragment from. **THE CAPTURE WAS TAKEN 2026-08-31 and the deferral survives it, on better grounds than before.** Carbon's markup is `figure.c4p--big-number` > `span.__row` > `figcaption.__label`, then `span.__row[role=math]` > `span.__value` — no heading anywhere. Diffing the hand-composed row against it found a real defect: the value was an `<h3>`, so the page's heading outline carried bare numbers with the label left behind, and skipped a level. Fixed 2026-08-31 to `<p class="rux--type-heading-04">`, which emits the identical declarations Carbon gives the h3 element — measured, no visual change. **Rule 2 now holds honestly**: it was true visually and false semantically before, and is true both ways now. `figure`/`figcaption` were NOT copied — they appear once in all 667 stories, inside this component, so composing them without its classes is unattested and `rux--tile` on a `<figure>` is a check-tags fault. `role=math` was not copied either; its effect on a real screen reader is unheard, and this project has been bitten twice reasoning about ARIA from markup. **TWO CONDITIONS REOPEN THIS, and they are the whole of what admitting it would buy:** IBM promoting it out of `preview-candidate` (it is the least stable tier in ibm-products' own taxonomy, so its markup may move), or an AT pass showing that three unpaired paragraphs — label, value, note, with no programmatic pairing — actually confuses a listener. `figcaption` naming its `figure` is the pairing we decline |
+| `big-number` | **KEEP** | 4 | 19 | +0.3 KB | **ADMITTED 2026-09-01, §4.9 batch 4.** Was DEFER because tile plus type already served the visual shape and the only capture is an ibm-products `preview-candidate`. §4.9 supersedes that admission test. Its captured `figure`/`figcaption`, second row at `role=math`, and value span now ship as a fragment; uncaptured size, percentage, trend, tooltip and skeleton variants remain unwritten rather than inferred |
 | `coachmark` | **CUT** | 6 | 31 | +0.9 KB | No template shape needs an onboarding beacon. Would need a behaviour module this project has not written; pulls `button`. Dearest of the eight, and the only one over +0.5 KB. **Rule 1 fails** |
-| `EditInPlace` | **CUT** | 3 | 27 | +0.5 KB | No template shape. Depends on `toggletip-button`, and `toggletip` is itself an undecided DEFER — admitting this decides that one by implication. **Rule 1 fails** |
-| `FullPageError` | **CUT** | 2 | 10 | +0.2 KB | **`templates/error-state.html` already builds this shape** from `inline-notification--error` + `css-grid` + buttons. Rule 2 as written fails |
+| `EditInPlace` | **KEEP** | 3 | 27 | +0.5 KB | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "No template shape. Depends on `toggletip-button`"; the targeted ibm-products capture now supplies four stories, and §4.9 supersedes the old admission test |
+| `FullPageError` | **KEEP** | 2 | 10 | +0.2 KB | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "`templates/error-state.html` already builds this shape"; three ibm-products captures now supply its markup, and §4.9 supersedes the old admission test |
 | `InterstitialScreen` | **CUT** | 4 | 21 | +0.4 KB | No template shape. **Incomplete on arrival**: it styles `cds--carousel`, and `@carbon/styles` 1.114.0 has no `carousel` component directory at all, so part of it can never resolve. **Rule 1 fails** |
-| `OptionsTile` | **CUT** | 5 | 37 | +0.6 KB | `tile` is compiled and serves the shape. Rule 2 as written fails |
-| `scroll-gradient` | **CUT** | 2 | 9 | +0.2 KB | No template shape. A scroll affordance, not a component a page is composed from; cheapest of the eight, which decides nothing. **Rule 1 fails** |
+| `OptionsTile` | **KEEP** | 5 | 37 | +0.6 KB | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "`tile` is compiled and serves the shape"; two ibm-products captures now supply the expandable and static markup, and §4.9 supersedes the old admission test |
+| `scroll-gradient` | **KEEP** | 2 | 9 | +0.2 KB | **ADMITTED 2026-09-01, §4.9 batch 4.** Was: "A scroll affordance, not a component a page is composed from"; two ibm-products captures now supply the structure, and §4.9 supersedes the old admission test |
 | `user-avatar` | **KEEP** | 5 | 28 | +0.5 KB | **ADMITTED 2026-08-31, and its CUT reason did not survive contact with the component.** That reason was rule 2 — "the shell already answers this", because `app-shell.html` puts the `user--avatar` ICON in a `header__action`. An icon is not this: this is initials or a photo, four sizes, and twelve `--order-N-*` colours meant to be hashed from a name so a person keeps the same colour everywhere. The shell's icon answers "where do I click for my account"; it does not answer "who is this". **Measured +0.68 KB gzipped, 24 classes.** **No module** — an avatar displays and has no state. **THE ONLY FRAGMENT WHOSE REFERENCE IS `c4p--`**: the component was absorbed out of ibm-products into `@carbon/styles` at 1.114, so it compiles under `rux--` here while the only captured stories still render `c4p--`. Checked rather than assumed — 5 of the 6 captured classes resolve after a prefix swap; the sixth, `user-avatar__tooltip`, is ibm-products' own hover chrome and is declined. `sink/user-avatar.html` at 71%: the five unexercised classes are the `__photo` family, which needs an `<img>` this sink has never carried — the same constraint `card` records |
 
-**None of these has a fragment or a `sink/deferred/` entry, and none can until its markup
-is captured.** Deciding one KEEP means capturing it first — there is nothing to diff a
-fragment against.
+**At the time of the decision above, none had a fragment and none could until its markup
+was captured.** The targeted ibm-products capture later supplied five of them; §4.9
+batch 4 admits those five alongside the already-captured status indicators. Only
+`InterstitialScreen` remains a separate decision because its captured carousel styling
+does not exist in @carbon/styles 1.114.
 
 **All eight now carry a commented `@use` line in `src/app.scss`**, added 2026-08-31.
 They had none, which meant the build manifest did not list them at all: a component absent

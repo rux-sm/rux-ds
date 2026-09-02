@@ -78,7 +78,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">56 sections</div>
+  <div class="ks-count">63 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#combo-button">Combo button</a>
@@ -136,6 +136,13 @@
     <a href="#code-snippet">Code snippet</a>
     <a href="#pagination-nav">Pagination nav</a>
     <a href="#menu-button">Menu button</a>
+    <a href="#icon-indicator">Icon indicator</a>
+    <a href="#shape-indicator">Shape indicator</a>
+    <a href="#big-number">Big number</a>
+    <a href="#edit-in-place">Edit in place</a>
+    <a href="#full-page-error">Full-page error</a>
+    <a href="#options-tile">Options tile</a>
+    <a href="#scroll-gradient">Scroll gradient</a>
   </div>
 </nav>
 
@@ -6732,6 +6739,275 @@
     <div class="rux--menu-button__container">
       <button type="button" class="rux--btn rux--btn--tertiary rux--menu-button__trigger rux--menu-button__trigger--open" aria-haspopup="true" aria-expanded="true">Open</button>
     </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="icon-indicator">
+  <h2>Icon indicator</h2><p>status set · 16 and 20px</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com
+     preview-statusindicators-preview-iconindicator--default and --default-with-size-20, 2026-08-27
+     · status modifier sits on the SVG, base and --20 on the wrapper div, per the reference.
+     · icons go through the sprite rather than inline paths, so Carbon's
+       `--caution-major path:first-of-type { fill: #000 }` cannot reach them. -->
+  <!--
+    THE SPRITE MAKES CARBON'S PER-PATH RULES INERT. Carbon colours multi-path
+    status icons with descendant rules — `--caution-major path:first-of-type
+    { fill: #000 }` is the black glyph inside the orange triangle. Our icons are
+    <use href="#symbol">, and outer-document CSS does not cross into a <use>
+    shadow tree, so those rules match nothing. Measured in the sink: of 35 such
+    rules across the system, 2 match any element. Every one-path status renders
+    correctly; the multi-path ones lose their inner colour. Not specific to this
+    fragment, and not fixable inside it.
+  -->
+  <!-- Icon per status from web-components/icon-indicator.js:50-97. -->
+  <div class="ks-row">
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--failed" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--caution-major" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--caution-minor" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--undefined" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--succeeded" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>Succeeded</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--normal" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-checkmark--outline"/></svg>Normal</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--in-progress" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-in-progress"/></svg>In progress</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--incomplete" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--not-started" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-dash"/></svg>Not started</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--pending" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-pending--filled"/></svg>Pending</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--unknown" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-unknown--filled"/></svg>Unknown</div>
+    <div class="rux--icon-indicator"><svg class="rux--icon-indicator--informative" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning-square--filled"/></svg>Informative</div>
+  </div>
+  <div class="ks-label">20px</div>
+  <div class="ks-row">
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--failed" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-error--filled"/></svg>Failed</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--caution-major" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt-inverted--filled"/></svg>Caution major</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--caution-minor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--alt--filled"/></svg>Caution minor</div>
+    <div class="rux--icon-indicator rux--icon-indicator--20"><svg class="rux--icon-indicator--undefined" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-undefined--filled"/></svg>Undefined</div>
+  </div>
+</section>
+
+<section class="ks-sec" id="shape-indicator">
+  <h2>Shape indicator</h2><p>status by shape, so colour is never the only signal</p>
+  <!-- PROVENANCE: rendered-dom · react.carbondesignsystem.com
+     preview-statusindicators-preview-shapeindicator--default, 2026-08-27
+     · status modifier sits on the SVG, base on the wrapper div, per the reference.
+     · --incomplete renders black here: its only rule is
+       `path:nth-of-type(2) { fill: status-blue }`, which the sprite blocks. -->
+  <!--
+    --incomplete HAS NO DIRECT FILL. Its only rule is
+    `.rux--shape-indicator--incomplete path:nth-of-type(2) { fill: status-blue }`,
+    so the shape is meant to be an outline with one blue path inside. Through the
+    sprite that selector reaches nothing and the icon renders in the inherited
+    colour. Same root cause as the note in icon-indicator.html.
+  -->
+  <!-- Icon per status from web-components/shape-indicator.js:55-65. The --kind
+       class supplies `fill` only; the shape itself must be the right SVG. -->
+  <div class="ks-row">
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--failed" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical"/></svg>Failed</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--critical" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-critical-severity"/></svg>Critical</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--high" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>High</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--medium" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Medium</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--low" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Low</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--cautious" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-caution"/></svg>Cautious</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--stable" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-fill"/></svg>Stable</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--informative" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Informative</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--incomplete" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-incomplete"/></svg>Incomplete</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--draft" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-stroke"/></svg>Draft</div>
+    <div class="rux--shape-indicator"><svg class="rux--shape-indicator--undefined" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-diamond-fill"/></svg>Undefined</div>
+  </div>
+  <div class="ks-label">14px text</div>
+  <div class="ks-row">
+    <div class="rux--shape-indicator rux--shape-indicator--14"><svg class="rux--shape-indicator--stable" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-circle-fill"/></svg>Stable</div>
+    <div class="rux--shape-indicator rux--shape-indicator--14"><svg class="rux--shape-indicator--informative" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-low-severity"/></svg>Informative</div>
+  </div>
+</section>
+
+<section class="ks-sec" id="big-number">
+  <h2>Big number</h2><p>programmatically paired label and value</p>
+  <!-- PROVENANCE: rendered-dom · preview-candidate-bignumber--big-number on
+       the ibm-products origin, 2026-08-31 -->
+  <!--
+    THIS CAPTURE RENDERS c4p-- WHILE @carbon/styles 1.114 compiles the absorbed
+    component under rux--. The prefix swap is the user-avatar precedent; every
+    class used below resolves after it. Only the one captured preview-candidate
+    shape is written, so the initial ratchet is deliberately the thinnest in
+    the file: 5 of 18 owned classes. Size, percentage, trend, tooltip and
+    skeleton classes have rules but no captured markup and are not inferred.
+
+    The figure/figcaption and role=math are the semantic value this component
+    adds over the old tile-plus-type substitute. The capture's icon-button slot
+    is empty in the only story, so it remains empty here rather than inventing
+    a control.
+  -->
+  <figure class="rux--big-number">
+    <span class="rux--big-number__row">
+      <figcaption class="rux--big-number__label">Completed requests</figcaption>
+    </span>
+    <span class="rux--big-number__row" role="math">
+      <span class="rux--big-number__value">1,284</span>
+      <span class="rux--big-number__icon-button"></span>
+    </span>
+  </figure>
+</section>
+
+<section class="ks-sec" id="edit-in-place">
+  <h2>Edit in place</h2><p>default · invalid</p>
+  <!-- PROVENANCE: rendered-dom · components-editinplace--default and
+       --invalid on the ibm-products origin, 2026-08-31 -->
+  <!--
+    The captures render c4p--edit-in-place beside cds-- primitives; the
+    absorbed @carbon/styles component compiles both families under rux-- here.
+    __btn and text-input--sm appear in every capture and have no compiled rule;
+    §4.1.12 therefore leaves them unwritten. The icon-tooltip wrapper is kept:
+    check-ancestry proves every captured edit button sits inside it, so dropping
+    it would make this component an exception to the captured structure. The
+    read-only story is omitted: it
+    is a toggletip composition rather than another edit state, while the two
+    structures below exercise every class needed for the captured editable
+    and invalid forms.
+  -->
+  <div class="ks-stack" style="max-inline-size:32rem">
+    <div class="rux--edit-in-place rux--edit-in-place--sm">
+      <input class="rux--edit-in-place__text-input rux--text-input" aria-invalid="false" aria-label="Project name" value="Atlas migration">
+      <div class="rux--edit-in-place__toolbar">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--top rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button class="rux--edit-in-place__btn-edit rux--btn rux--btn--sm rux--layout--size-sm rux--btn--ghost rux--btn--icon-only" type="button" aria-labelledby="eip-tip-default"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-edit"/></svg></button>
+          </div>
+          <span class="rux--popover" role="tooltip" aria-hidden="true"><span class="rux--popover-content rux--tooltip-content" id="eip-tip-default">Edit project name</span><span class="rux--popover-caret"></span></span>
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <div class="rux--edit-in-place rux--edit-in-place--sm rux--edit-in-place--invalid">
+        <input class="rux--edit-in-place__text-input rux--text-input" aria-invalid="true" aria-describedby="eip-warning" aria-label="Project code" value="">
+        <div class="rux--edit-in-place__toolbar">
+          <svg class="rux--edit-in-place__warning-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-warning--filled"/></svg>
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--top rux--tooltip rux--icon-tooltip">
+            <div class="rux--tooltip-trigger__wrapper">
+              <button class="rux--edit-in-place__btn-edit rux--btn rux--btn--sm rux--layout--size-sm rux--btn--ghost rux--btn--icon-only" type="button" aria-labelledby="eip-tip-invalid"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-edit"/></svg></button>
+            </div>
+            <span class="rux--popover" role="tooltip" aria-hidden="true"><span class="rux--popover-content rux--tooltip-content" id="eip-tip-invalid">Edit project code</span><span class="rux--popover-caret"></span></span>
+          </span>
+        </div>
+      </div>
+      <p class="rux--edit-in-place__warning-text" id="eip-warning">Enter a project code</p>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="full-page-error">
+  <h2>Full-page error</h2><p>page-level error composition</p>
+  <!-- PROVENANCE: rendered-dom · components-fullpageerror--full-page-error on
+       the ibm-products origin, 2026-08-31 -->
+  <!--
+    The captured c4p-- component is absorbed and compiles as rux--. Its root is
+    role=main and its title is h1 on the real page. A page using this component
+    alone keeps Carbon's h1. Only this sink specimen omits the duplicate
+    landmark and lowers the title to h2 because it is embedded inside the
+    kitchen sink's existing main and heading outline; copying it as a page must
+    restore both captured semantics. check-tags records that one deliberate
+    h1-to-h2 divergence rather than teaching the component a second contract.
+
+    The DOM capture records the story's custom illustration paths but not their
+    geometry. The __svg slot is therefore deliberately empty: stretching a
+    generic 32px glyph into this full-width illustration slot is visibly wrong,
+    and reconstructing the missing paths would be invention. The captured
+    __custom/403/404 modifiers have no compiled rules and are not written under
+    §4.1.12.
+  -->
+  <div class="rux--full-page-error">
+    <div class="rux--full-page-error__container">
+      <div class="rux--full-page-error__grid rux--css-grid">
+        <div class="rux--full-page-error__column rux--sm:col-span-4 rux--md:col-span-3 rux--lg:col-span-6 rux--css-grid-column">
+          <h2 class="rux--full-page-error__title"><span class="rux--full-page-error__label">404</span>Page not found</h2>
+          <p class="rux--full-page-error__description">The address may have changed or the page may no longer exist.</p>
+          <div class="rux--full-page-error__body"><a class="rux--link rux--link--lg" href="#full-page-error">Return to the component index</a></div>
+        </div>
+        <div class="rux--sm:col-span-4 rux--md:col-span-5 rux--lg:col-span-10 rux--css-grid-column">
+          <div class="rux--full-page-error__svg-container">
+            <svg class="rux--full-page-error__svg" aria-hidden="true"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="options-tile">
+  <h2>Options tile</h2><p>expandable with toggle · static</p>
+  <!-- PROVENANCE: rendered-dom · components-optionstile--options-tile and
+       --static-options-tile on the ibm-products origin, 2026-08-31 -->
+  <!--
+    The captured c4p-- component is absorbed and compiles as rux--. Native
+    details/summary supplies disclosure; js/form-controls.js already owns the
+    nested Carbon toggle. React-only transition classes and uncaptured lg/xl
+    variants are not inferred.
+  -->
+  <div class="ks-stack">
+    <section class="rux--options-tile rux--options-tile--lg">
+      <details class="rux--options-tile__details" open>
+        <summary class="rux--options-tile__header rux--options-tile__header--has-toggle">
+          <div class="rux--options-tile__toggle-container">
+            <div class="rux--toggle rux--options-tile__toggle">
+              <button class="rux--toggle__button" type="button" role="switch" aria-checked="true" aria-labelledby="ot-title"></button>
+              <div class="rux--toggle__label">
+                <div class="rux--toggle__appearance rux--toggle__appearance--sm">
+                  <div class="rux--toggle__switch rux--toggle__switch--checked"><svg class="rux--toggle__check" width="6" height="5" viewBox="0 0 6 5" aria-hidden="true"><path d="M2.2 2.7L5 0 6 1 2.2 5 0 2.7 1 1.5z"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <svg class="rux--options-tile__chevron" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+          <div class="rux--options-tile__heading">
+            <h2 class="rux--options-tile__title" id="ot-title">Automatic updates</h2>
+            <span class="rux--options-tile__summary" aria-hidden="false"><span class="rux--options-tile__summary-text">Updates install outside working hours</span></span>
+          </div>
+        </summary>
+        <div class="rux--options-tile__content"><p>Choose the maintenance window in the deployment settings.</p></div>
+      </details>
+    </section>
+
+    <section class="rux--options-tile rux--options-tile--lg">
+      <div class="rux--options-tile__static-content">
+        <div class="rux--options-tile__heading">
+          <h2 class="rux--options-tile__title">Audit logging</h2>
+          <span class="rux--options-tile__summary" aria-hidden="false"><span class="rux--options-tile__summary-text">Required for this workspace</span></span>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section class="ks-sec" id="scroll-gradient">
+  <h2>Scroll gradient</h2><p>vertical overflow structure</p>
+  <!-- PROVENANCE: rendered-dom · utilities-scrollgradient--scroll-gradient-vertical
+       on the ibm-products origin, 2026-08-31 -->
+  <!--
+    The captured c4p-- utility is absorbed and compiles as rux--. The capture
+    records the four presentation overlays and the scrollable class but not the
+    data attributes or inline paint React uses to observe the scroll edges.
+    This fragment therefore demonstrates the captured structure and overflow;
+    it does not claim React's unrecorded intersection treatment.
+
+    --x-none and --y-none appear in the capture and have no compiled rule, so
+    §4.1.12 leaves them unwritten.
+  -->
+  <div class="rux--scroll-gradient rux--scroll-gradient--y-scrollable" role="presentation" style="block-size:12rem;max-inline-size:32rem">
+    <div class="rux--scroll-gradient__content">
+      <span></span><span></span>
+      <div class="rux--scroll-gradient__content-children">
+        <div class="ks-stack">
+          <p>Deployment created</p><p>Validation started</p><p>Assets compiled</p>
+          <p>Checks completed</p><p>Review requested</p><p>Deployment approved</p>
+          <p>Release published</p><p>Monitoring active</p><p>Health checked</p>
+          <p>Traffic shifted</p><p>Metrics stable</p><p>Runbook updated</p>
+        </div>
+      </div>
+      <span></span><span></span>
+    </div>
+    <div class="rux--scroll-gradient__start-vertical" role="presentation" aria-hidden="true"></div>
+    <div class="rux--scroll-gradient__start-horizontal" role="presentation" aria-hidden="true"></div>
+    <div class="rux--scroll-gradient__end-vertical" role="presentation" aria-hidden="true"></div>
+    <div class="rux--scroll-gradient__end-horizontal" role="presentation" aria-hidden="true"></div>
   </div>
 </section>
 </main>
