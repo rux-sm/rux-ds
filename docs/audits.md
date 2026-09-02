@@ -143,7 +143,7 @@ means "absent from a targeted grep", not "absent from the roadmap".
 | 8 | `dashboard.html` untracked — §4.6 exit evidence outside version control | **CLOSED 2026-08-29** | **RESOLVED by deciding, not by fixing** — archived to `~/Developer/_archive/` and deleted. §4.6's entry is now the record and stands alone |
 | 9 | `check-provenance` baseline in `gates.mjs` reads `38 files · 5 source`; a clean-tree run at `f726cf1` returns **39 · 6** | **CLOSED 2026-08-29** | **FIXED at source** — `gates.mjs` now reads 39 · 6, plus the module line |
 | 10 | `tools/build-portal.mjs` asserts every `#i-name` it emits resolves in the sprite. It is a real check and is NOT in the gate registry | **filed §4.8** | `docs/roadmap.md` §4.8 · README decision table |
-| 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | **filed** | `docs/gate-coverage.json` `_portal` |
+| 11 | `gates.mjs` `inputs` is per GATE, not per cell, so `kitchen-sink.html` ages every template's cells and `portal.html` cannot age its own | **FIX DRAFTED 2026-09-02** | `cellStates()` adds a page only when no gate input already covers it, for both committed and dirty changes; close after independent review |
 | 12 | `check-icons` baseline in `gates.mjs` reads `58 symbols, 32 CUT or DEFERRED`; the committed sprite has held **59 · 29 unreferenced** for some time | **CLOSED 2026-08-29** | **FIXED at source** — found while adding the licence attribution, same class as finding 9 |
 
 Finding 9 was produced by running `npm run verify` at the end of this sweep —

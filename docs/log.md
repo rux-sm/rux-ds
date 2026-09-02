@@ -12,7 +12,19 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
-**DONE 2026-09-02 — Phase 7's component index (§4.7).** `portal.html` gained a
+**FIX DRAFTED 2026-09-02 — browser-cell staleness now includes the page.** The
+three `portal.html` readings remained current after four commits changed their
+page because the registry's shared gate inputs named the sink and templates but
+not the portal. Adding the portal to those shared inputs would also age ten
+unrelated template readings. `cellStates()` instead adds a cell's page only when
+no existing file or directory input covers it, and uses that same effective set
+for committed movement and dirty files. The dry run reads 35 current and three
+stale, exactly the portal cells. This is a Tier 2 control change: its result does
+not approve the Phase 7 work it exposed, and the portal sweep remains owed for
+an independent run.
+
+**IMPLEMENTED 2026-09-02; BROWSER SWEEP OWED — Phase 7's component index
+(§4.7).** `portal.html` gained a
 Reference column from `docs/component-docs.json`: 37 components with a page of
 their own in IBM's nav, 23 documented on another component's page, 15 with no
 page and a captured specimen instead, 2 with neither. 77 accounted for; **all

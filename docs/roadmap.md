@@ -2137,7 +2137,8 @@ reads `rux` here, which variants are captured and shipped, and which fragment in
 `sink/` is the markup to copy. `portal.html` already carries the rows; the links
 are what is missing. Exit: every compiled component has a row with a live link.
 
-**THE LINKS LANDED 2026-09-02, and the exit is met with two named exceptions.**
+**THE LINKS LANDED 2026-09-02; the content exit is met with two named
+exceptions, and the page's browser sweep is still owed.**
 `docs/component-docs.json` carries one reference per compiled component and
 `portal.html` renders it as a fourth column. 37 components have a page of their
 own in IBM's nav, 23 are documented on another component's page, 15 have no page

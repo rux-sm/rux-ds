@@ -104,8 +104,17 @@ export function cellStates() {
       continue;
     }
 
-    const moved = gate.inputs.filter(i => movedSince(recorded.commit, i));
-    const modified = gate.inputs.filter(isDirty);
+    // `inputs` names what can invalidate every cell owned by the gate. The page
+    // itself is also an input to its own cell, but adding every page to the
+    // registry would make one portal edit age all ten template readings. Add it
+    // here only when an existing file or directory input does not already cover
+    // it. Use the same set for committed and uncommitted changes: a dirty page
+    // cannot honestly retain a current reading either.
+    const inputs = gate.inputs.some(i => page === i || page.startsWith(`${i}/`))
+      ? gate.inputs
+      : [...gate.inputs, page];
+    const moved = inputs.filter(i => movedSince(recorded.commit, i));
+    const modified = inputs.filter(isDirty);
 
     if (moved.length) rows.push({ id, page, state: 'STALE', why: `${moved.join(', ')} changed since` });
     else if (modified.length) rows.push({ id, page, state: 'DIRTY', why: `uncommitted: ${modified.join(', ')}` });
