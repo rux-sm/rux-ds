@@ -2580,8 +2580,8 @@ anything, and one ledger commit at the end.
 | 2 | fluid-combo-box, fluid-multiselect (held by batch 1's bases) | **Done** `b748d93` · `7acd902` · `0935058` |
 | 3 | contained-list, structured-list, content-switcher, code-snippet, pagination-nav, menu-button | **Done** `3d4b9a8` · `2583f4a` · `6979683` |
 | 4 | icon-indicator, shape-indicator, big-number, OptionsTile, scroll-gradient, FullPageError, EditInPlace | **Done** `d143416` · `2ed4334` · `8d67a1f` · `02cd862` |
-| 5 | dialog, side-panel, coachmark, ai-label, chat-button — captures exist, each needs a behaviour module or an explicit yes on the AI affordances | Open |
-| stays DEFER | action-set, resizer, truncated-text, slug — no story renders them; `truncated-text` appears only inside page-header captures | Rows to reword |
+| 5 | dialog, side-panel, ai-label, chat-button, and action-set (captured inside every side-panel story after all) | **Done** `b17f27c` · `4cad285` · ledger follows. coachmark moved to DEFER: its captures render the `__next` generation of classes that `@carbon/styles` 1.114 does not style |
+| stays DEFER | resizer, truncated-text, slug — no story renders them; `truncated-text` appears only inside page-header captures — and coachmark, on the class mismatch above | Rows reworded 2026-09-01 |
 | decision | `page-header`: ten captures, all under `deprecated-` in ibm-products, so completeness of CURRENT Carbon argues for staying CUT as "deprecated upstream". `InterstitialScreen`: six captures but incomplete on arrival, styling a carousel `@carbon/styles` 1.114 does not ship; stay CUT until an upgrade brings it, or admit knowing part cannot render | rux's call |
 
 What the first three batches taught, so the next two do not relearn it: a class
