@@ -67,7 +67,47 @@ export function pageTargets() {
 // becomes. A change to either invalidates a reading taken before it — which is
 // the case that motivated the staleness rule, since editing js/menu.js on
 // 2026-08-29 silently invalidated every template's a11y result.
-const RENDERED_INPUTS = ['css/rux.css', 'js'];
+// SHARED INPUTS ARE DECLARED, NOT INFERRED. A browser gate's cells each sweep
+// one page, so what can invalidate a reading is that page plus whatever every
+// cell of the gate shares. Only the shared half is listed here: `sharedInputs`
+// is exactly that, and tools/lib/staleness.mjs adds the cell's own page.
+//
+// AUDIT FINDING 11, both directions, is what this replaces. The list used to be
+// `inputs` and mixed the two: it named kitchen-sink.html and templates/, which
+// between them ARE eleven of check-a11y's twelve cells. Read as one list a page
+// input ages cells it cannot reach -- one line in the kitchen sink aged all 38
+// cells, ten template sweeps owed for a change no template can see -- while
+// portal.html, named by no gate, could not age its own readings at all.
+//
+// Splitting them by asking whether an entry happens to contain a swept page was
+// drafted and rejected: it infers the semantics from directory containment, so
+// a future gate whose shared directory input happened to hold a swept page
+// would lose that input for every other cell, silently, which is the same
+// under-ageing again. Declaring the shared half is the whole fix. Node gates
+// keep `inputs`, unchanged: they read their whole target set on every run and
+// have no cells.
+// WHAT EVERY SWEPT PAGE ACTUALLY LOADS, which is not the same as what the build
+// produces. Each of the twelve pages links assets/fonts/plex.css, and a font
+// changes metrics: it moves spacing readings, focus-ring geometry and the size
+// half of a contrast reading. It was missing from this list until 2026-09-02.
+//
+// css/rux-theme.css AND css/rux-overrides.css ARE NOT HERE, AND NOT BECAUSE OF
+// THE PAGES ANY MORE. All twelve link them as of 2026-09-02, finding 13 having
+// fixed portal.html, which linked neither. They are absent now because THIS
+// LIST IS SHARED BY GATES THAT DO NOT READ THE SAME THING. A stylesheet moves
+// what is rendered -- spacing, focus-ring geometry, the size half of a contrast
+// reading -- but check-runtime-classes reads the DOM's CLASS SETS, and no
+// change to a stylesheet puts a class on an element. Declaring them here would
+// age twelve readings that cannot move, which is finding 11's first half
+// arriving by a new route. They go in per-gate lists, and that refinement is
+// what finding 11 closes on.
+//
+// sink/harness.css is loaded by kitchen-sink.html ALONE, so it is not shared
+// and this list cannot express it. `sharedInputs` plus the cell's page has no
+// room for a per-page extra, and the sink's four readings do not age against
+// the stylesheet that positions their specimens. Pre-existing: no browser gate
+// ever named it. Audit finding 14.
+const RENDERED_INPUTS = ['css/rux.css', 'js', 'assets/fonts/plex.css'];
 
 export const GATES = [
   {
@@ -426,7 +466,7 @@ export const GATES = [
     // a redesign and a separate decision.
     canRun: { sink: true, templates: false },
     cannotRunReason: 'its unit is the .ks-sec section; a template has none, and a fallback would report a pass it did not earn',
-    inputs: ['kitchen-sink.html', ...RENDERED_INPUTS],
+    sharedInputs: [...RENDERED_INPUTS],
     redRun: 'flatten a section: #tags [class*="rux--"] { height:1px; min-height:0; padding:0 }',
     // Both bite an operator. The theme reset is not a restore: it writes
     // 'white' whatever the page was on before.
@@ -448,7 +488,7 @@ export const GATES = [
     fileTargets: [],
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
-    inputs: ['kitchen-sink.html', 'templates', ...RENDERED_INPUTS],
+    sharedInputs: [...RENDERED_INPUTS],
     redRun: 'remove a class from the live DOM by hand; it reports that class stripped',
     // Condition 5 of the sink-check skill, and it conflicts with condition 1:
     // the click check-a11y needs for document.hasFocus() is the kind of press
@@ -467,7 +507,7 @@ export const GATES = [
     fileTargets: [],
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
-    inputs: ['kitchen-sink.html', 'templates', 'docs/carbon-react-spacing.json', ...RENDERED_INPUTS],
+    sharedInputs: ['docs/carbon-react-spacing.json', ...RENDERED_INPUTS],
     redRun: 'change a padding on any compiled class and re-run',
     sideEffects: null,
     // READ THE noReference LIST. Pagination's real defect sat in that bucket
@@ -492,7 +532,7 @@ export const GATES = [
     pageTargets: ['kitchen-sink.html'],
     canRun: { sink: true, templates: false },
     cannotRunReason: 'it drives every module, and no template carries the components to drive — five modules bind to nothing there at all',
-    inputs: ['kitchen-sink.html', ...RENDERED_INPUTS],
+    sharedInputs: [...RENDERED_INPUTS],
     redRun: 'revert the offset write in js/menu.js and the tabindex pairing in js/data-table.js — expect 3 failures naming an 8px overlap and tabindex [0,0,0] on a hidden bar',
     // Every case restores what it touched, so it is safe to run twice and safe
     // beside the other browser gates. It still runs AFTER check-runtime-classes,
@@ -511,7 +551,7 @@ export const GATES = [
     fileTargets: [],
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
-    inputs: ['kitchen-sink.html', 'templates', ...RENDERED_INPUTS],
+    sharedInputs: [...RENDERED_INPUTS],
     redRun: '.rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important } — expect 12 findings',
     sideEffects: 'moves focus and restores it; injects and removes a transition:none style',
     baseline: 'kitchen-sink 0 findings · 6 notes · focusRingChecked true',

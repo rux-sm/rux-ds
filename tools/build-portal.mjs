@@ -253,6 +253,22 @@ const page = `<!doctype html>
 <title>rux-ds — portal</title>
 <link rel="stylesheet" href="assets/fonts/plex.css">
 <link rel="stylesheet" href="css/rux.css">
+<!-- THE CUSTOMIZATION LAYER, after css/rux.css and in this order, because
+     AGENTS.md requires every page to link both and this page linked neither
+     until 2026-09-02 (audit finding 13). It rendered without the layer the
+     other eleven swept pages have, and while that was true neither file could
+     honestly be called an input shared by all browser cells, which is what
+     finding 11 is still open on.
+
+     ADDING THEM CHANGES NOTHING ON THIS PAGE TODAY, and that is measured, not
+     assumed: css/rux-overrides.css carries no live rule at all, and
+     css/rux-theme.css carries exactly one block, [data-theme="rux"], which
+     this page does not match -- it is data-theme="white" above. The point is
+     that the portal stops being the exception. The moment a rule lands in
+     overrides, or this page's theme changes, it moves with every other page
+     instead of silently diverging. -->
+<link rel="stylesheet" href="css/rux-theme.css">
+<link rel="stylesheet" href="css/rux-overrides.css">
 <style>
 /* Copied from templates/app-shell.html, which records why this is a fixed
    padding and not a grid offset: .rux--content is only ever indented by a

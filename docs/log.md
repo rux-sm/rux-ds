@@ -12,6 +12,53 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**SUPERSEDED THE SAME DAY. Finding 11 is NOT closed** — the first version of
+this entry said it was, which was the drafting run marking its own homework. The
+entry below split one `inputs` list by asking whether an entry contained a page
+the gate sweeps. It measured well — one line in the kitchen sink aged all 38
+cells before, 8 after — but it inferred the semantics from directory
+containment, so a future gate whose shared directory input happened to hold a
+swept page would have lost that input for every other cell, silently: the same
+under-ageing finding 11 is about, moved somewhere new. A check for it was
+proposed and does not work, because it cannot see a misclassification while any
+other shared input survives and would reject a legitimately page-only gate.
+
+**What replaced it is declared, not inferred.** A browser gate carries
+`sharedInputs`, the shared half only, and `cellStates()` adds the cell's own
+page: `[...gate.sharedInputs, page]`. Node gates keep `inputs` unchanged, which
+cost nothing — `staleness.mjs` is the only reader of that field in the
+repository. A browser gate with no `sharedInputs` throws rather than defaulting
+to `[]`, because an empty list is a real answer meaning nothing is shared, and
+substituting it would age a cell by its page alone and never by `css/rux.css`.
+
+Measured from a clean clone, one change at a time: `portal.html` ages 3 cells;
+`kitchen-sink.html` ages its own 5 and no template; one template ages only its
+own 3; `css/rux.css` and `js/` each age all 38; the spacing capture ages
+`check-spacing` alone. `npm run verify` exits 0 and today's reading is
+unchanged at 35 current, 3 stale.
+
+**What review is still for.** `sharedInputs` is a claim a person makes and no
+check tests. Drop the spacing capture from `check-spacing` and twelve readings
+quietly stop ageing against the file they compare with; the throw catches a
+missing list, not an incomplete one.
+
+**AND REVIEW IMMEDIATELY FOUND TWO, which is the argument for the rule.** The
+guard against a missing `sharedInputs` was placed after the `NEVER RUN` return.
+A newly registered gate has no ledger entry, so it is NEVER RUN, so the one case
+the guard exists for would have returned before reaching it — a check that could
+only fire where it was not needed. It is now validated before the ledger is read.
+And the declared list was incomplete: every swept page links
+`assets/fonts/plex.css`, a font moves spacing, focus-ring geometry and the size
+half of a contrast reading, and it was in no browser gate's inputs. Added.
+
+**Two more stylesheets belong in that list and could not be added.**
+`css/rux-theme.css` and `css/rux-overrides.css` are linked by eleven of the
+twelve swept pages; `portal.html` links neither, against AGENTS.md's rule that
+every page links both after `css/rux.css`. Declaring them shared would claim of
+all cells what is false of one, so finding 11 stays open on finding 13. Finding
+14 records a third: `sink/harness.css` is the sink's alone, no browser gate has
+ever named it, and `sharedInputs` plus a page has no room to express it.
+
 **FIX DRAFTED 2026-09-02 — browser-cell staleness now includes the page.** The
 three `portal.html` readings remained current after four commits changed their
 page because the registry's shared gate inputs named the sink and templates but

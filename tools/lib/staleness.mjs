@@ -88,6 +88,24 @@ export function cellStates() {
   const rows = [];
   for (const { gate: id, page } of cells()) {
     const gate = GATES.find(g => g.id === id);
+
+    // A BROWSER GATE WITHOUT sharedInputs IS A REGISTRY FAULT, not a gate with
+    // nothing shared: `[]` says that, and says it deliberately. Substituting an
+    // empty list for a missing one would age such a cell by its page alone and
+    // never by css/rux.css, which is this module's own failure mode. There is
+    // no honest value to guess, so it throws.
+    //
+    // VALIDATED BEFORE THE LEDGER IS CONSULTED, and the order is the whole
+    // point. A newly registered gate has no ledger entry, so it is NEVER RUN --
+    // and the first draft put this check after that early return, along with
+    // NO COMMIT and UNKNOWN COMMIT. A new gate with no sharedInputs, which is
+    // exactly what the check is for, would have returned before reaching it.
+    // Found in review, not by running it: every gate in the registry declares
+    // the field today, so nothing failed.
+    if (!Array.isArray(gate.sharedInputs)) {
+      throw new Error(`${id} is swept as a browser gate but declares no sharedInputs`);
+    }
+
     const recorded = ledger[id]?.[page] ?? null;
 
     if (!recorded) { rows.push({ id, page, state: 'NEVER RUN', why: '' }); continue; }
@@ -104,15 +122,15 @@ export function cellStates() {
       continue;
     }
 
-    // `inputs` names what can invalidate every cell owned by the gate. The page
-    // itself is also an input to its own cell, but adding every page to the
-    // registry would make one portal edit age all ten template readings. Add it
-    // here only when an existing file or directory input does not already cover
-    // it. Use the same set for committed and uncommitted changes: a dirty page
-    // cannot honestly retain a current reading either.
-    const inputs = gate.inputs.some(i => page === i || page.startsWith(`${i}/`))
-      ? gate.inputs
-      : [...gate.inputs, page];
+    // WHAT CAN INVALIDATE THIS READING: the page it was taken on, plus what
+    // every cell of the gate shares. The registry declares only the shared
+    // half -- see the note above RENDERED_INPUTS in gates.mjs, which is where
+    // audit finding 11 is recorded -- and the page is added here, once, rather
+    // than restated in 38 registry rows where it would drift.
+    //
+    // The same set for committed movement and for dirty files: a modified page
+    // cannot honestly keep a current reading either.
+    const inputs = [...gate.sharedInputs, page];
     const moved = inputs.filter(i => movedSince(recorded.commit, i));
     const modified = inputs.filter(isDirty);
 
