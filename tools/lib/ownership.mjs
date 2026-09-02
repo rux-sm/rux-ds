@@ -36,6 +36,11 @@ export const ALIAS = {
   'file-uploader': ['file'], 'code-snippet': ['snippet'],
   'truncated-text': ['truncated'], 'chat-button': ['chat-btn'],
   'copy-button': ['copy-btn', 'copy'], 'multiselect': ['multi-select'],
+  // These partial directories use ibm-products' PascalCase names while their
+  // absorbed Carbon classes use kebab-case stems.
+  'EditInPlace': ['edit-in-place'],
+  'FullPageError': ['full-page-error'],
+  'OptionsTile': ['options-tile'],
 };
 
 export function stems(name) { return ALIAS[name] ?? [name]; }
