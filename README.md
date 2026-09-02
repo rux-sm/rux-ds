@@ -1,7 +1,8 @@
 # rux-ds
 
-A framework-free CSS/HTML/JS design system, derived from Carbon v11 by subtraction.
-Its primary consumer is Claude Code generating consistent pages.
+A framework-free UI kit built from Carbon v11, kept as complete as Carbon's markup
+allows, that any of rux's projects vendors as static CSS, HTML and JS. Goal revised
+2026-09-01; `docs/roadmap.md` §1 has the decision and the phases it re-scoped.
 
 **Start with [`docs/roadmap.md`](docs/roadmap.md)** — the end goal, the decisions on
 record, and the phase this project is in. This README is the index: current state, what

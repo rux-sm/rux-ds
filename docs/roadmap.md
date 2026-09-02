@@ -11,6 +11,38 @@ This is a decision document. It moves no code. Execution runs against §4.
 
 ## 1. End goal
 
+**REVISED 2026-09-01, after a review of what the project is for.** The paragraphs
+below this block are the goal as first written and stand as the record; this block
+is the goal now. The change in one line: **completeness over subtraction, and Carbon
+kept as the upgrade path rather than removed.**
+
+> A framework-free UI kit built from Carbon v11, kept as complete as Carbon's own
+> markup allows, that any of rux's projects vendors as static CSS, HTML and JS with
+> no build step. Page templates are the starting points; a customization layer on
+> top carries themes and overrides and never touches Carbon. Carbon stays a
+> build-time dependency so a new Carbon version is a bump, a re-capture and a diff.
+>
+> **Done means:** every Carbon component with a capture is compiled and verified;
+> ten or more templates; a documented way to start a project from it; a
+> customization layer with all four Carbon themes and at least one that is not
+> IBM's; and a Carbon upgrade performed once end to end.
+
+**What it is for**, stated so the phases can be judged against it: a personal tool,
+shared with friends when it is ready, so that every web app rux builds shares one
+style and one set of behaviours. Many consumers, all of them vendoring a pinned
+copy. Its documentation is IBM's own; this repository documents only what IBM
+cannot know — the prefix, what is compiled, what is captured.
+
+**What this changed, section by section:** §1.1 gains six decisions dated
+2026-09-01; §2.1's admission rule now asks "is it captured", not "does a page
+shape need it"; §4.4 Devendor is cancelled and replaced by an upgrade path; §4.7
+shrinks from a documentation rewrite to an index; §4.9–§4.11 are new; §7 loses two
+lines; §8.2 tags now rather than at a freeze that no longer exists.
+
+---
+
+*The goal as first written, 2026-08-26:*
+
 A framework-free CSS/HTML/JS design system, derived from Carbon v11 **by subtraction**,
 whose primary consumer is Claude Code generating consistent pages.
 
@@ -51,6 +83,12 @@ Three properties define done:
 | 2026-08-26 | **Carbon's core and BEM kept intact** | Rewriting conventions or gutting internals |
 | 2026-08-28 | Size reported, not budgeted (§2.1) | A third revision of the KB target |
 | 2026-08-28 | **Devendor last, after templates** | Devendoring before behaviours and templates |
+| 2026-09-01 | **Completeness: every captured component is admitted** (§4.9) | A keep-set gated by page shapes |
+| 2026-09-01 | **Carbon stays a dev dependency; the SCSS build is the upgrade path** (§4.4) | Devendoring and freezing the set |
+| 2026-09-01 | **IBM's documentation is the documentation** (§4.7) | Rewriting ~72 usage/style/accessibility pages |
+| 2026-09-01 | **All four Carbon themes compiled, plus a custom one** (§4.10) | Two themes |
+| 2026-09-01 | **Customization in a layer on top, never in Carbon** (§4.10) | Editing component files to restyle them |
+| 2026-09-01 | **Tag milestones now** (§8.2) | Waiting for a freeze that no longer exists |
 
 **The keep-core rule.** Customization is limited to what Carbon exposes as configuration
 — `$prefix` and its sibling flags — plus choosing which components and themes to compile.
@@ -104,6 +142,14 @@ because it has 124 KB of its own rules. The small end is the honest end: `badge-
 
 **There is no KB target.** Size is measured on every build and reported. It gates
 nothing. What gates the component set is the admission rule.
+
+> **The admission rule was rewritten on 2026-09-01.** It asked whether a page shape
+> needed the component; §1 now asks for completeness, so it asks one thing: **is
+> there a capture to verify it against?** A component `@carbon/react` or
+> `ibm-products` renders in a story is admitted; one nothing renders stays DEFER
+> until a capture exists, because a fragment with nothing to diff against is a
+> guess. Every CUT row in `docs/inventory.md` that fails only the old test becomes
+> a §4.9 work item. The KB tripwire stands as the only size instrument.
 
 **Admission.** A component enters `src/app.scss` when EITHER ground holds, and the
 `docs/inventory.md` row records which one, the measured cost, and the answer to 2:
@@ -1266,6 +1312,23 @@ version bump is a version bump rather than a re-merge.
 
 ### 4.4 Phase 4 — Devendor
 
+**CANCELLED 2026-09-01, and replaced.** §1 now wants a Carbon version to be a bump
+rather than a re-merge, and deleting the SCSS is the one thing that would make that
+impossible. The runtime property the phase existed for is already met: consumers
+take `css/rux.css`, `js/` and the sprite and install nothing. What stays is the
+record below of why it was planned and why it was deferred.
+
+**Phase 4 is now the upgrade path.** Bump `@carbon/styles` in `package.json`,
+`npm install`, re-run `tools/extract/` against the matching Storybook so the
+captures move with the version, `npm run verify`, sweep the five browser gates,
+and read what `check-tags`, `check-ancestry`, `check-slots` and `check-spacing`
+report as moved. Exit: one upgrade performed end to end and written up, including
+the components the new version added or removed, so the second is a procedure
+rather than an expedition. `README.md`'s warning about a stale `node_modules`
+rewriting the stylesheet is the first trap on that path.
+
+*As first planned:*
+
 **The one-way door. RUNS LAST, after Phase 6** — see the amendment below.
 
 Scripted, executed once, in a single commit.
@@ -2046,6 +2109,16 @@ the page you would use to find it.
 
 ### 4.7 Phase 7 — Documentation
 
+**RE-SCOPED 2026-09-01.** IBM's documentation is the documentation; rux builds
+pages from it and customizes slowly. This phase is now **a component index**: one
+page, one row per compiled component, linking to Carbon's usage, style and
+accessibility pages, and carrying the three things IBM cannot know — that `cds`
+reads `rux` here, which variants are captured and shipped, and which fragment in
+`sink/` is the markup to copy. `portal.html` already carries the rows; the links
+are what is missing. Exit: every compiled component has a row with a live link.
+
+*As first planned:*
+
 Only now, and only for what survived.
 
 Carbon's 43 component pages each carry `usage.mdx`, `style.mdx`, `accessibility.mdx`,
@@ -2465,6 +2538,35 @@ order, which is not a repeatable instrument.
 
 ---
 
+### 4.9 Phase 9 — Completeness
+
+**Added 2026-09-01. Runs before customization, decided the same day.** Admit every
+component `docs/inventory.md` marks CUT or DEFER that has a capture, in batches,
+through the same door every admission has used: uncomment the `@use`, a fragment
+with provenance, a `sink/ORDER` line, the coverage ratchet, the Node gates, the
+browser sweep, one commit per batch. The sixteen admissions of 2026-08-31 are the
+shape and the pace. A component with no capture stays DEFER with the reason
+"no story renders it", and the row says so. Exit: no CUT row whose only reason
+was the old admission test; every DEFER row names the missing capture.
+
+### 4.10 Phase 10 — Customization layer
+
+**Added 2026-09-01.** Everything rux changes lives above Carbon, never inside it.
+Three things, in order: **all four Carbon themes** compiled and switchable by
+`data-theme` (the two-theme decision of 2026-08-28 is reversed; its size argument
+was ~2 KB gzipped); **one custom theme** as a token override block, proving the
+mechanism; **one overrides file** that loads after `rux.css` for component-level
+changes such as button shapes, with a rule in `AGENTS.md` saying which kind of
+change goes where. Exit: a page renders in IBM's four themes and in one of rux's,
+and `git diff` of any Carbon-derived file is empty.
+
+### 4.11 Phase 11 — Starting a project
+
+**Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`
+already uses — copy `css/`, `js/`, `assets/`, write a `PIN` — generalized into one
+documented step for any new project, plus the template to copy. Exit: a new
+project reaches a styled, behaving first page in under ten minutes, from a tag.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
@@ -2550,11 +2652,14 @@ unchanged.
 
 - Not modifying rux-ui. It is frozen and stays working.
 - Not porting `@carbon/react`, and not shipping `@carbon/icons`.
-- Not keeping SCSS past Phase 4 — a build step is a dependency.
+- ~~Not keeping SCSS past Phase 4 — a build step is a dependency.~~ Reversed
+  2026-09-01: the SCSS build is the upgrade path (§4.4). The consumer still has
+  no build step; the dependency is this repository's alone.
 - Not running IBM Telemetry. `@carbon/web-components`, `@carbon/utilities` and
   `@carbon/icon-helpers` carry `postinstall` telemetry hooks; npm 11 blocks them by
   default and they stay blocked.
-- Not supporting 4 themes. Two.
+- ~~Not supporting 4 themes. Two.~~ Reversed 2026-09-01: all four, plus a custom
+  one (§4.10).
 
 ---
 
@@ -2636,6 +2741,11 @@ uses no longer resolves.
 tag per release is nearly free and gives nothing to check against; a `version` field plus
 a "classes removed in" record is what would let a generated page detect its own
 staleness, and is real work.
+
+**DECIDED 2026-09-01: tag milestones now.** The trigger below was a freeze, and §1
+no longer has one — the set grows toward completeness and Carbon upgrades keep
+coming. A friend or a project pins a tag; `CHANGES.md` records a removal; the
+first tag lands with §4.9's first batch. *The deferral as written:*
 
 **DEFERRED 2026-08-31, WITH A TRIGGER — decided when the component set freezes.**
 *Trigger corrected later the same day: it read "when Phase 4 freezes the component

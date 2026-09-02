@@ -7,10 +7,11 @@ is the current state; `docs/roadmap.md` is the decision log; counts live in
 
 ## What this repository is
 
-**Public.** A framework-free design system derived from Carbon v11 by
-subtraction, compiled under the `rux` prefix. Nothing ERP, nothing from a
-client, nothing from `rux-ln-atlas` in any directory, tracked or not — a
-template is authored against invented content. Its consumers pin a commit SHA
+**Public.** A framework-free UI kit built from Carbon v11, kept as complete as
+Carbon's markup allows and compiled under the `rux` prefix; Carbon stays a dev
+dependency as the upgrade path (roadmap §1, revised 2026-09-01). Nothing ERP,
+nothing from a client, nothing from `rux-ln-atlas` in any directory, tracked or
+not — a template is authored against invented content. Its consumers pin a commit SHA
 (`docs/roadmap.md` §8.2); a removed class is announced in `CHANGES.md`.
 
 ## The one rule
