@@ -4,8 +4,8 @@ A framework-free UI kit built from Carbon v11, kept as complete as Carbon's mark
 allows, that any of rux's projects vendors as static CSS, HTML and JS. Goal revised
 2026-09-01; `docs/roadmap.md` §1 has the decision and the phases it re-scoped.
 
-**Start with [`docs/roadmap.md`](docs/roadmap.md)** — the end goal, the decisions on
-record, and the phase this project is in. This README is the index: current state, what
+**An agent starts at `AGENTS.md`, then “Picking this up” below.** [`docs/roadmap.md`](docs/roadmap.md)
+is the end goal and the decision log, read when a decision is being reopened. This README is the index: current state, what
 is open, and where each rule lives. It does not repeat the roadmap, because a rule
 stated twice drifts — which is exactly what happened to the Status block below before
 2026-08-28.
@@ -34,10 +34,11 @@ modal and menu); a popover, tooltip or overflow menu needs none. Focus trapping,
 outside press and the stack deciding which surface a press belongs to all come from the
 kernel.
 
-What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`
-reports twelve findings and six notes on the sink and four on
-`templates/wizard-page.html` — three adjudicated false positives across sixteen sites —
-and nothing on the other ten pages. It read nine here until 2026-09-01: the sweep took
+What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`'s
+current reading on every page is in `docs/gate-coverage.json`, each finding adjudicated
+there with its evidence, and `npm run gates` says whether that reading is still current;
+a count copied here read nine, then twelve, then twenty-nine within two days. One reading
+was wrong by method rather than markup: the sweep took
 focus with a CLICK, which is an outside press, and the kernel removed the calendar the
 tool then could not find. The cause is the method, not the markup. But it reads
 attributes rather than running an AT. Its focus-ring check does now run in an
@@ -151,7 +152,7 @@ npm run ancestry         # wrappers Carbon never omits, with the recorded declin
 npm run tags             # class-on-the-wrong-element check, with its KNOWN list
 ```
 
-**`npm install` BEFORE `npm run verify`, after any pull that touches `package.json`.**
+**`npm install --ignore-scripts` BEFORE `npm run verify`, after any pull that touches `package.json`** — `npm ci --ignore-scripts` on a fresh clone. The flag skips the `ibmtelemetry` postinstall every `@carbon/*` package carries, as CI does.
 `verify` BUILDS `css/rux.css` and `.min.css` from the `@carbon/styles` that is in
 `node_modules`, and never compares that against what `package.json` pins. So a stale
 install does not fail — it rewrites the committed stylesheet from the OLD Carbon and
@@ -167,7 +168,7 @@ to trust it over grepping output does not help here.
 There is a second cost. All five browser gates declare `css/rux.css` and `js` as inputs,
 so a spurious rebuild marks all 35 browser cells DIRTY. That prints and does not fail
 the build, but it destroys a `26 current · 0 stale` state that takes a browser and a
-person to re-earn. `npm install` then `npm run verify` restores `css/` byte-identically
+person to re-earn. `npm install --ignore-scripts` then `npm run verify` restores `css/` byte-identically
 and the cells with it.
 
 | | |
@@ -189,7 +190,7 @@ and the cells with it.
 |---|---|
 | `src/app.scss` | **The build manifest — this file is the strip.** Roadmap §4.3 |
 | `css/` | Build output, generated-and-committed. It was to BECOME the source at Phase 4; that devendor is declined while admissions are open — roadmap §4.4 |
-| `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the other eleven delegate to it. Roadmap §4.5 |
+| `js/` | **The behaviour layer.** `overlay.js` is the kernel and loads first; the others delegate to it. Roadmap §4.5 |
 | `templates/` | **Runnable page skeletons — Phase 6's deliverable.** Ten of them. Each is a COMPLETE page carrying the shell, not a fragment. Roadmap §4.6 |
 | `sink/` | One fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` | Generated — do not edit; edit `sink/` and run `npm run sink` |
@@ -223,7 +224,7 @@ One documented exception, enforced on every build: `tools/build.mjs` renames
 
 ## Gates
 
-Twenty-one, because none is sufficient alone — see roadmap §4.1.2 for the bug that proved it.
+None is sufficient alone — roadmap §4.1.2 has the bug that proved it — and `npm run gates` prints how many there are and which page each has been run against.
 
 | Gate | Catches | Blind to |
 |---|---|---|
@@ -249,192 +250,10 @@ Twenty-one, because none is sufficient alone — see roadmap §4.1.2 for the bug
 | `check-behaviour.js` | a behaviour module that stops doing what its own header claims — the state a click produces | anything landing in a microtask: focus destination, focus restoration, the order two surfaces close in |
 | `check-a11y.js` | dangling idrefs · composites with many tab stops · unnamed controls · roles missing required state | what a screen reader announces · focus-ring contrast · whether the tab order makes sense · **an ARIA role Carbon never renders** · **a page carrying no heading at all** |
 
-**`check-ancestry` was written after a defect three gates could not see.** The modal's
-close button rendered in the flow under the heading, left-aligned, because the fragment
-had no `modal-close-button` — the element carrying the `position: absolute` that pins it
-to the corner. `check-tags` asks which *element type* a class sits on; `check-compound`
-asks which classes share *one element*; `diff-fragment` says in its own header that it
-reports nesting that **disagrees**, not nesting that is **absent**. A wrapper simply not
-there was invisible to all three. The new gate intersects the classed ancestors of every
-occurrence of a class across all 667 captures and requires what survives — what Carbon
-puts above it *without exception*. Its first full run found a second instance of the same
-defect, `pagination__control-buttons`, hiding behind a note that named the optional
-wrapper and never mentioned the styled one. **50 declines are recorded with reasons; 0
-findings remain.**
-
-**Two blind spots were found on 2026-08-30, by a tab-order sweep rather than by a gate.
-Both shipped a page that passed all seventeen. BOTH ARE NOW GATED, 2026-08-31.**
-
-**An ARIA role Carbon never renders — now `check-aria-roles.mjs`, the twenty-first.**
-`sink/ui-shell.html` carried `role="menu"` on the side nav's `ul`; the capture it cites
-renders that element bare. `role="menu"` requires `menuitem` children and these are
-`li > a`, so an AT was told it had entered a menu and then found nothing in it. Every
-class gate was blind by construction — a bare attribute is not a class — and `check-a11y`
-was blind by its own rule, which counts `[role^="menuitem"]` descendants and skips a
-composite with none, so zero items yielded neither a finding nor a note.
-
-**It is the first thing here that reads the captures' ATTRIBUTE data**, which has been
-recorded as `[role=x]{aria-y=z}` beside every element since the first harvest and which
-nothing had ever looked at. It reads **332 corroborated role sites, 0 uncovered, 0
-invented**, and its red run reproduces the original defect exactly: put `role="menu"`
-back on `side-nav__items` and it reports one invented role against 12 captures that
-render the class bare.
-
-**Its first run found four divergences, and three were real.** `inline-notification` and
-`toast-notification` carried `role="alert"` where Carbon renders `role="status"` — six
-sites in the sink and, more to the point, one in `templates/error-state.html`, a shipped
-template. `alert` is assertive and `status` is polite, so the markup was interrupting a
-listener where Carbon chose not to; both now match Carbon, and an author who wants the
-assertive form can still say so. A disabled ghost link carried `role="button"` on an `<a>`
-with no `href`, which Carbon never does; removed.
-
-**The fourth is DECLINED, and the reason bounds the whole gate.** `loading` carries
-`role="status"` where Carbon renders no role — but `role="status"` is an implicit LIVE
-REGION, and `aria-live` is **not** among the thirteen attributes the extractor records.
-The capture cannot tell "Carbon announces nothing here" from "Carbon announces it by a
-means we never recorded", so removing the role on this evidence would be deciding the
-question the wrong way round. Widening the extractor would settle it. That is one KNOWN
-entry with a stated limit, not an allow-list.
-
-**A page carrying no heading at all — NOW GATED, 2026-08-31.**
-`templates/table-page.html` rendered its only title as `div.data-table-header__title` and
-had no `h1`–`h6` anywhere. Heading navigation is a primary way an AT user moves through a
-page, and a template IS a page, so the page offered none. Not a provenance fault — Carbon
-renders that class as both `h2` and `div`, so neither was invented — which is exactly why
-no markup gate could have caught it: it is a composition question, and the gates check
-parts.
-
-`check-headings.mjs` is the twentieth gate and closes this one. Every page carries exactly
-one `h1` and skips no level; `sink/*.html` is excluded by design, because a fragment is a
-specimen and fifty `h1`s in the assembled sink is the opposite of the point.
-
-**ITS FIRST RUN FOUND THE SAME DEFECT TWO MORE TIMES.** The label/value shape fixed on
-`detail-page.html` and `dashboard-page.html` at `241feaa` — a bare value promoted into
-the outline with its label left behind in the `<p>` above — was still live in
-`templates/wizard-page.html` ("Bilbao → Toulouse" as an `h3` under `h1`) and in
-`tools/build-portal.mjs`, whose stat tile emitted `<h3>37 / 83</h3>` on every build. A
-fourth occurrence was `portal.html`'s template cards at `h4` under `<h2>Templates</h2>`, a
-real level skip. **A fix applied to the two files where a defect was noticed is not a
-fixed defect**, and nothing here could tell the difference until something read the
-outline.
-
-All three are fixed the way `241feaa` fixed the first two, and the swap is invisible by
-construction rather than by measurement: `h3` and `.rux--type-heading-04` emit the same
-four declarations from the same tokens, and `h3` and `p` share one reset rule, so margins
-match too. The portal's template card keeps `h4`'s appearance with
-`h3.rux--type-heading-03`.
-
-**Coverage is a ratchet, not a threshold.** `check-coverage` used to report a component
-COVERED on a single class hit — `ui-shell` owns 55 classes and one `rux--header` passed
-it — so the gate read 31/31 green while 45% of the shipped CSS had never been rendered.
-It now measures per-component class coverage against `docs/coverage.json`, which records
-what the sink and templates actually achieve (**551/803, 69%**) and fails only when a
-component exercises fewer classes than before. A threshold high enough to mean something
-would be red today with no action available; a ratchet can only be moved up, and moving
-it is deliberate.
-
-**That sentence was prose until 2026-08-31, and prose is not a ratchet.** `--update`
-wrote the current measurement unconditionally, so lowering the baseline — the cheapest
-possible route from a red gate to a green one — took one command and left a diff nothing
-flagged. `tools/check-coverage.mjs` now REFUSES to record a lower number and names the
-components; a real loss, a component stripped or a class gone upstream, needs
-`node tools/check-coverage.mjs --update --force`, which has no npm script in front of it
-and prints what it lowered. Found by the adoption audit and confirmed by probing a copy
-of the tree; `adoption-audit.md` carries the transcript.
-
-**It counts the FILE, and the file is not what the reader sees.** `check-coverage` is a
-Node tool, so it parses `kitchen-sink.html`; modules then run. `check-runtime-classes.js`
-compares the two and the directions are not symmetric. A class STRIPPED at load is
-counted while nobody can see it — a green number over a state that does not render, and
-it found dropdown.html's two expanded specimens rendering closed for as long as the sink
-had shipped an open side nav (§4.5, fixed 2026-08-28). A class ADDED at load is the
-harmless direction: the ratchet understates. Three today —
-`data-table--selected`, `table-sort--active` and `side-nav__overlay-active` — so on the
-sink the real figure is 504, not the 501 the file carries. They are NOT worth hardcoding
-into the markup to collect: that duplicates state a module derives from the checkbox, the
-sort button and the nav, and the copy goes stale the moment the real state moves.
-**0 stripped on all eleven pages, 3 added on the sink and 1 each on `table-page.html`
-and `dashboard-page.html` — `table-sort--active` both times, the same module marking the
-same thing. Swept 2026-08-31; `docs/gate-coverage.json` carries every cell.**
-
-Sixteen run in `npm run verify`; the other five need a browser. `check-tags` was promoted from a
-diagnostic on 2026-08-27, after all fifty findings of its first full run were
-adjudicated; its `KNOWN` list carries the seven recorded divergences, each with
-its reason, following `check-tokens`' precedent. **`check-a11y.js`, `check-rendered.js`, `check-runtime-classes.js`, `check-spacing.js` and `check-behaviour.js` need a browser** — paste any into the
-kitchen sink's devtools console. `check-a11y` is Phase 5's keyboard pass and reports
-**12 findings, 6 notes** on the sink, **4 findings** on `templates/wizard-page.html` and
-**0 findings, 0 notes** on the other ten pages. The wizard's four are the same
-adjudicated `progress-step-button` false positive as eight of the sink's twelve — it is
-the only template carrying a progress indicator. Three more are the fluid list box, and
-the twelfth is the date-picker calendar; all three causes are adjudicated, each against
-different evidence and each left reported rather than suppressed. The sink's notes are CSS specimens
-with no trigger, which are not meant to be operable — four menu densities, the overflow menu's options and the
-list box's. The figure read 5 here until 2026-08-28, when a measurement taken before an
-unrelated change found it had been 6 for some time; a count in prose drifts unless
-something re-reads it.
-
-**Twelve of the sixteen are `progress-step-button`, one cause, and it is a false
-positive** — adjudicated 2026-08-29 when it was a single finding; admitting
-`progress-indicator` as a compiled component multiplied the sites, not the causes, and
-`wizard-page.html` then multiplied them again by being the one template that carries the
-component. All twelve report the same rule, "no visible focus change". Re-swept 2026-08-31. Carbon draws that ring on
-`:focus-visible` on the LABEL and sets `outline: none` on plain `:focus`, which the tool
-documents as out of its reach; a real Tab press shows the ring. It is left reported
-rather than suppressed, because an exception list is not a passing check.
-
-**The sink is the wrong page to run this gate on alone.** Its bar ships ACTIVE, so the
-one state that carries the defect — a closed batch bar whose buttons are still tab stops
-— cannot occur there, and the sink read 0 findings for as long as the defect existed.
-It surfaced in `templates/table-page.html`, which ships the bar closed, and only because
-a page built from that template was checked. **Run it on the templates too, not only on
-the sink.** It refuses to run its focus-ring check when `document.hasFocus()`
-is false, because `:focus` cannot match in an unfocused document and the check would
-otherwise report every control on the page. When it does run it suppresses transitions
-first: Carbon fades `outline` over 70ms, an automated pane's animation clock never
-advances, and reading mid-fade called 49 rings missing that a key press shows are
-there. It reads the ring where Carbon DRAWS it — the label beside a hidden input,
-not the 1x1 input focus lands on — and discards outlines that paint nothing, so no
-control can pass on the browser's own ring. Until 2026-08-28 it passed 24 checkboxes,
-radios and tiles on Chromium's `outline: auto`, and called those same 24 ringless
-whenever `:focus-visible` stopped matching. Swept afterwards, all 164 focusable
-controls change something that actually paints: 161 move an outline or a shadow, and
-three — `skip-to-content`, `header__name` and the menu trigger — carry Carbon's
-header treatment instead, a border resting at `transparent` and coloured on focus.
-That is the inverse of the tile's transparent OUTLINE and must not be suppressed with
-it: the border has width and style, so colouring it paints. No control passes on a
-border whose style is `none` or whose width is 0, so that rule is not written — an
-unexercised rule measures nothing. **It is not a screen-reader pass** — that needs a human with an AT, and §4.5
-stays open until one is done.
-
-
-**Focus-ring CONTRAST was swept by hand on 2026-08-28, and no gate does it.** All 164
-focusable controls in both themes: 126 outline rings, 35 box-shadow rings, 3 that colour
-a border. Nothing is below 3:1 on both of its edges. One number is worth knowing — the
-data-table toolbar's overflow button reads **2.76:1 on the ring's INNER edge**, where
-Carbon's `background-active` sits under an inset ring, and 4.55:1 on the outer edge that
-meets the toolbar. Not ours to fix and not a defect: `--rux-focus` compiles to `#0f62fe`
-and `#ffffff`, byte-identical to Carbon's generated `$focus`, and the rules are Carbon's
-own. The captures in `docs/` cannot check this — they carry markup, no colour.
-
-Two things the sweep does NOT cover. **Forced colors**, where `--rux-focus` becomes the
-system `Highlight` keyword and every number above stops applying. And legibility: this is
-arithmetic over computed colours, not a judgement that a ring reads at a glance. Carbon's
-button ring is two-tone — blue outer, white inner — so scoring one layer against the
-surface beneath it says nothing; a first pass did exactly that and called 27 controls
-1:1 before the edges were measured separately.
-
-**All three of `check-rendered`'s rules were driven RED and restored on 2026-09-01**, so
-its zero is demonstrated rather than assumed: an inset border takes `uaStyled` 0 to 1,
-`display: none` on every classed element of a section takes `collapsed` to that section
-in BOTH themes, and `position: absolute; left: -600px` takes `escaped` to it. Worth
-knowing for the next attempt: **shrinking elements does not work** — `height` and
-`min-height` at `!important` still measured 29.97px on a `rux--btn`, because Carbon's own
-layout holds the box. `display: none` is the shape that fires it.
-
-**`check-rendered.js` needs a browser** — paste
-it into the kitchen sink's devtools console. It is deliberately not a Node tool, because
-automating it means adding a headless-browser dependency and this project has none.
-
+`npm run gates` prints how many gates run in `npm run verify` and how many need a
+browser, and which page each browser gate has been run against; the `sink-check`
+skill runs the browser ones. Every gate's history — what it was written after, what
+its first run found, what was adjudicated and why — is in `docs/log.md`, "Gates".
 **None of them catches a component that compiles, resolves, and still renders wrong.**
 Only looking does. That is why the kitchen sink exists, and why every phase ends by
 looking at it — twice now it has been the only thing that found the bug (roadmap §4.1.2,
@@ -451,11 +270,3 @@ ARIA; the blocks driving CUT or DEFERRED components — copy button, content swi
 tree view, slider, toggletip, combo box, multiselect — were deleted rather than moved,
 because driving markup that is not on the page is code nobody can test and nobody will
 delete. **390 lines have become 67.** The phase is done when the file is empty. Roadmap §4.1.8.
-
-### Known gap — closed by the strip
-
-`.rux--truncated-text__expand-toggle` had no button reset in Carbon's light-DOM CSS and
-rendered with browser default chrome; it was shown unfixed and labelled, because fixing
-it meant editing a Carbon file (roadmap §4.1.5). `truncated-text` is CUT in Phase 3, so
-`check-rendered` now reports no default chrome anywhere. The gap returns with the
-component if it is ever restored, and its fragment still says so.
