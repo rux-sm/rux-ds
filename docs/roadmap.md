@@ -2137,6 +2137,25 @@ reads `rux` here, which variants are captured and shipped, and which fragment in
 `sink/` is the markup to copy. `portal.html` already carries the rows; the links
 are what is missing. Exit: every compiled component has a row with a live link.
 
+**THE LINKS LANDED 2026-09-02, and the exit is met with two named exceptions.**
+`docs/component-docs.json` carries one reference per compiled component and
+`portal.html` renders it as a fourth column. 37 components have a page of their
+own in IBM's nav, 23 are documented on another component's page, 15 have no page
+and carry a captured specimen instead, and 2 — `action-set` and
+`skeleton-styles` — have neither and say so. All 135 distinct URLs returned 200
+on the day. **The column distinguishes the four kinds and must go on doing so**:
+guidance for this component, guidance for the page it is documented on, a
+specimen that is not guidance at all, and nothing. Collapsing them into one
+"docs" link would assert what none of the last three say.
+
+**What is still missing is a gate.** Nothing fails when a newly admitted
+component has no entry — the column simply shows an em dash — and nothing
+re-checks the URLs, so a page IBM retires becomes a confidently wrong reference
+with every check green. That is the failure class §4.9 keeps finding by looking.
+Proposed and not built, because a control must not be authored in the run it
+would judge: `check-component-docs`, and the two new files added to
+`CONTROL_FILES` once they feed `portal.html`.
+
 *As first planned:*
 
 Only now, and only for what survived.

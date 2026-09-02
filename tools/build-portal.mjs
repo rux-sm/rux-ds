@@ -60,6 +60,7 @@ const kbz = n => `${Math.floor(n / 1024)} KB`;
 
 // ── the facts, all read ─────────────────────────────────────────────────────
 const inventory = json('docs/inventory.json');
+const componentDocs = json('docs/component-docs.json').components;
 const coverage = json('docs/coverage.json');
 const ledger = json('docs/gate-coverage.json');
 const css = read('css/rux.css');
@@ -168,6 +169,23 @@ const tile = (label, value, note) =>
 
 const tag = (text, colour) => `<span class="rux--tag rux--tag--${colour} rux--tag--sm"><span class="rux--tag__label">${esc(text)}</span></span>`;
 
+// THE REFERENCE CELL SAYS WHAT KIND OF LINK IT IS, and the four kinds are not
+// interchangeable. `page` is IBM's own usage guidance for this component;
+// `alias` is guidance for the page it is documented ON, which is a different
+// claim and is labelled with that page's name; `story` is a captured SPECIMEN
+// and not guidance at all; `none` is the honest answer for the two components
+// that have neither. Collapsing these into one "docs" link would be the same
+// mistake docs/component-docs.json exists to avoid.
+const reference = name => {
+  const d = componentDocs[name];
+  if (!d) return '—';
+  if (d.kind === 'none') return `${tag('no reference', 'warm-gray')}`;
+  if (d.kind === 'story') return `<a class="rux--link" href="${esc(d.specimen)}">specimen</a> ${tag(d.site, 'purple')}`;
+  const links = ['usage', 'style', 'accessibility']
+    .map(k => `<a class="rux--link" href="${esc(d[k])}">${k}</a>`).join(' · ');
+  return d.kind === 'alias' ? `${links} ${tag(`on ${d.page}`, 'blue')}` : links;
+};
+
 const componentRows = allComponents.map(name => {
   const on = COMPILED.has(name);
   const cov = coverage.components[name];
@@ -175,6 +193,7 @@ const componentRows = allComponents.map(name => {
                   <td>${esc(name)}</td>
                   <td>${on ? tag('compiled', 'green') : tag('not compiled', 'cool-gray')}</td>
                   <td>${cov ? `${cov.hit} / ${cov.own}` : '—'}</td>
+                  <td>${on ? reference(name) : '—'}</td>
                 </tr>`;
 }).join('\n');
 
@@ -324,6 +343,7 @@ ${tile('Browser gates current', `${currentCells} / ${matrix.length}`, `${staleCe
                     <th scope="col"><div class="rux--table-header-label">Component</div></th>
                     <th scope="col"><div class="rux--table-header-label">State</div></th>
                     <th scope="col"><div class="rux--table-header-label">Classes exercised</div></th>
+                    <th scope="col"><div class="rux--table-header-label">Reference</div></th>
                   </tr>
                 </thead>
                 <tbody>

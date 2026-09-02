@@ -12,6 +12,33 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-02 — Phase 7's component index (§4.7).** `portal.html` gained a
+Reference column from `docs/component-docs.json`: 37 components with a page of
+their own in IBM's nav, 23 documented on another component's page, 15 with no
+page and a captured specimen instead, 2 with neither. 77 accounted for; **all
+135 distinct URLs returned 200** that day. The slugs come from
+`carbon-website/src/data/nav-items.yaml` and the output is committed, because
+the quarry is gitignored and no gate reads it — a generator that needed it would
+fail on most clones, which is why `docs/carbon-*.json` are committed too.
+
+**The nav is the authority, not the directory listing.** `overflow-menu` still
+has a page directory IBM stopped linking, so a link there goes into whatever
+redirect replaced it; it gets a specimen and the entry records why. Two faults
+were caught by reading the first output rather than trusting it: a state
+capture's key is `<story>@<state>`, this repository's own recipe suffix and not
+a Storybook id, so the first overflow-menu link would have 404ed; and the
+nav-dropped case was indistinguishable from a component with no page at all.
+
+**Aliases are authored, not inferred.** Each carries how often the humanised
+name occurs in each page's own mdx, which is evidence and not proof: "card"
+occurs 34 times on the menu-buttons page and means the noun.
+
+`tools/build-portal.mjs` is a control file, so the rendering half was drafted as
+a diff and proposed before it was applied, with what it weakens stated: the
+generator gains an input nothing validates, and the links are attested once and
+then rot silently. **The gate that would close both is proposed and not built** —
+a control must not be authored in the run it would judge.
+
 **DONE 2026-09-02 — creator 2, the skill's composition flow (§4.12 item 2).**
 `rux-ds-page` §2 is a decision table of eight rows — shape, theme, header nav,
 global actions and switcher, field style, button kinds, button size, body

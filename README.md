@@ -64,7 +64,12 @@ machine-local note. This section is the current state and the next steps only.
 Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
-**Where this stopped, 2026-09-02.** Phases 9, 10 and 11 are done. The plan being
+**Where this stopped, 2026-09-02.** Phases 7, 9, 10 and 11 are done — Phase 7's
+component index landed the same day: `portal.html` carries a Reference column
+from `docs/component-docs.json`, every compiled component accounted for and all
+135 URLs live, with `action-set` and `skeleton-styles` honestly marked as having
+nothing to link. **It has no gate**, which roadmap §4.7 states and proposes.
+The plan being
 executed is roadmap §4.12: three creators and the hub, now named **Rux Apps**.
 Landed: the script questionnaire, `docs/choices.md`, the switcher panel in every
 template with its behaviour (`v0.1.1`), and the hub itself, committed in
