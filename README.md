@@ -552,13 +552,13 @@ every commit is one nobody keeps.
 | Components | **65 / 83 compiled** in 68 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 2 — white, g100 |
 | Tokens · classes | **611** `--rux-*` defined, 8 more read through a fallback · **1,581** `.rux--*` |
-| Kitchen sink | **56** sections · **825** classes with `templates/` and `js/` |
+| Kitchen sink | **56** sections · **826** classes with `templates/` and `js/` |
 | Class coverage | **803 / 1,150 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **60 `rendered-dom` · 6 `source` · 0 `inferred`** across 66 files |
 | Icons | 59 symbols in a 16.1 KB sprite — 38 referenced, 21 nothing points at |
 | Size | 887.9 KB raw · 797.7 KB min · **81 KB gzipped** |
-| Behaviour JS | **14** modules · **44 KB gzipped** · 151.4 KB raw, 61% of it comment · 59.5 KB of code |
+| Behaviour JS | **14** modules · **45 KB gzipped** · 153.0 KB raw, 61% of it comment · 60.4 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from
 `tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the

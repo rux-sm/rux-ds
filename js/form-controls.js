@@ -49,6 +49,9 @@
    position worked. Both classes are now in the markup and the module reads them, keeping
    position as a fallback.
 
+   ADDED 2026-09-01, not driven live: the selectable structured list's two row classes,
+   `--focused-within` on focus and `--selected` on change (see the handler below).
+
    THE TOGGLE IS CONFIRMED WHOLE: a <button role="switch"> with aria-checked, beside a
    `toggle__switch` that takes `toggle__switch--checked`, and a `toggle__text` carrying the
    words On and Off. That is the structure this module writes.
@@ -149,6 +152,30 @@
   // takes focus is nested several levels inside the element the class goes on.
   document.addEventListener('focusin', e => fluidFocus(e.target, true));
   document.addEventListener('focusout', e => fluidFocus(e.target, false));
+
+  /* ── structured list, selectable ──────────────────────────────────────── */
+  // Added 2026-09-01 with structured-list's admission. Carbon draws the focus
+  // ring on the ROW through `structured-list-row--focused-within`, a class
+  // React toggles when the visually-hidden radio inside it has focus, and
+  // marks the chosen row `--selected` the same way. Measured on the sink
+  // before this: focusing the radio changed nothing on the row, the cell or
+  // the check mark. Reimplemented on the AGENTS.md rule for behaviour Carbon
+  // keeps in its React layer.
+  const listRow = input => input.closest?.('.rux--structured-list-row');
+  const listFocus = (target, on) => {
+    if (!target.matches?.('.rux--structured-list-input')) return;
+    listRow(target)?.classList.toggle('rux--structured-list-row--focused-within', on);
+  };
+  document.addEventListener('focusin', e => listFocus(e.target, true));
+  document.addEventListener('focusout', e => listFocus(e.target, false));
+  document.addEventListener('change', e => {
+    const input = e.target;
+    if (!input.matches?.('.rux--structured-list-input') || !input.checked) return;
+    const list = input.closest('.rux--structured-list');
+    list?.querySelectorAll('.rux--structured-list-row--selected')
+      .forEach(row => row.classList.remove('rux--structured-list-row--selected'));
+    listRow(input)?.classList.add('rux--structured-list-row--selected');
+  });
 
   /* ── search clear ──────────────────────────────────────────────────────── */
   const syncSearch = search => {

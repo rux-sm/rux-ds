@@ -3,6 +3,12 @@
   <!-- PROVENANCE: rendered-dom · components-structuredlist--default,
        --selection, --initial-selection and its condensed recipe, 2026-08-28 -->
   <!--
+    ADMITTED 2026-09-01. Its radio ids were `sl-1`/`sl-2`, which the slider
+    fragment also uses; renamed `stl-*` so the sink has one element per id. That collision had also
+    been NAMING these radios — the slider's `<label for="sl-1">` reached them —
+    so each now carries the aria-label every capture gives its input, and the
+    check mark is `role="img"` with a label rather than hidden, as captured.
+
     Two corrections from the reference. The list carries ARIA table roles —
     role=table on the root, rowgroup on thead and tbody, row on each row,
     columnheader on the th and cell on the td — which this fragment had none of,
@@ -49,17 +55,17 @@
       <div class="rux--structured-list-row rux--structured-list-row--selected" role="row">
         <div class="rux--structured-list-td" role="cell">Standard</div>
         <div class="rux--structured-list-td" role="cell">Everything in the base tier</div>
-        <input id="sl-1" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl" checked>
+        <input id="stl-1" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl" aria-label="Select Standard" checked>
         <div class="rux--structured-list-td" role="cell">
-          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+          <svg class="rux--structured-list-svg" role="img" aria-label="Selected" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><use href="#i-checkmark--filled"/></svg>
         </div>
       </div>
       <div class="rux--structured-list-row" role="row">
         <div class="rux--structured-list-td" role="cell">Extended</div>
         <div class="rux--structured-list-td" role="cell">Adds retention and audit</div>
-        <input id="sl-2" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl">
+        <input id="stl-2" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl" aria-label="Select Extended">
         <div class="rux--structured-list-td" role="cell">
-          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+          <svg class="rux--structured-list-svg" role="img" aria-label="Selected" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><use href="#i-checkmark--filled"/></svg>
         </div>
       </div>
     </div>

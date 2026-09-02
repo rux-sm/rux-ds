@@ -268,6 +268,8 @@
       why: 'the filterable form rings the ROOT: js/list-box.js adds `multi-select--filterable--input-focused` on focus, as React does. Measured 2026-09-01: root outline none -> rgb(15,98,254) solid 2px.' },
     { rule: 'no visible focus change', what: 'rux--text-input rux--text-input--empty', where: 'fluid',
       why: 'the fluid filterable multiselect rings its ROOT and its WRAPPER through the class js/list-box.js adds, as React does. Measured 2026-09-01: root and wrapper outline none -> rgb(15,98,254) solid 2px on focus; the input itself none. The fluid combo box beside it rings its own input and is not matched here.' },
+    { rule: 'no visible focus change', what: 'rux--structured-list-input', where: 'structured-list',
+      why: 'Carbon rings the ROW: js/form-controls.js adds `structured-list-row--focused-within` while the visually-hidden radio has focus, as React does. Measured 2026-09-01: row outline none -> rgb(15,98,254) solid 2px, back on blur; the radio itself is visually hidden.' },
     { rule: 'no visible focus change', what: 'rux--slider__thumb--', where: 'slider',
       why: 'the two-handle thumbs show focus by SWAPPING AN ICON: `--lower:focus` hides `thumb-icon` and shows `thumb-icon--focus`, with box-shadow and transform set to none. A child display change is outside what this tool reads. Both icons are in the fragment as captured.' },
   ];

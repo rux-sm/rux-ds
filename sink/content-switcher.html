@@ -11,6 +11,10 @@
       (§4.1.12); the three `layout-constraint--size__*` classes every capture
       puts on the root ARE styled (24 rules) and are written on each root.
 
+      Tab stops follow the captures: the selected tab is tabindex=0 and every
+      other tab -1, a roving tabindex check-a11y read as "3 of 3 tab stops"
+      before it was written.
+
       EVERY nesting finding here is one decision, reported once per class. The
       reference wraps this component's trigger in an icon-tooltip, so its buttons
       sit inside `tooltip-trigger__wrapper`; the sink declines that chrome on the
@@ -20,13 +24,13 @@
   -->
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--sm rux--layout--size-sm rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
-      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">
+      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true" tabindex="0">
         <span class="rux--content-switcher__label">First</span>
       </button>
-      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" tabindex="-1">
         <span class="rux--content-switcher__label">Second</span>
       </button>
-      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" tabindex="-1">
         <span class="rux--content-switcher__label">Third</span>
       </button>
     </div>
@@ -57,17 +61,17 @@
   <div class="ks-row">
     <div class="rux--content-switcher rux--layout--size-md rux--content-switcher--icon-only rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--selected">
-        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="true" aria-label="List view">
+        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="true" aria-label="List view" tabindex="0">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper">
-        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Grid view">
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Grid view" tabindex="-1">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg>
         </button>
       </span>
       <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--disabled">
-        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Map view" disabled>
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Map view" disabled tabindex="-1">
           <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-location"/></svg>
         </button>
       </span>
@@ -76,10 +80,10 @@
 
   <div class="ks-row">
     <div class="rux--content-switcher rux--content-switcher--lg rux--layout--size-lg rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
-      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">
+      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true" tabindex="0">
         <span class="rux--content-switcher__label">Large</span>
       </button>
-      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false" tabindex="-1">
         <span class="rux--content-switcher__label">Switcher</span>
       </button>
     </div>

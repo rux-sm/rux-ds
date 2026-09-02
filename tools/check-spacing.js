@@ -375,7 +375,19 @@ const NOT_LAST_ITEM = '`.file__selected-file { margin-block-end: .5rem }` with `
 const INVALID_ITEM = "`.file__selected-file .file-filename-container-wrap-invalid .file-filename-tooltip "
   + "{ padding-inline-start: 1rem }` -- the INVALID item's rule; only the plain item was "
   + 'harvested for spacing';
+// BATCH 3 OF §4.9, 2026-09-01.
+const CONDENSED_LIST = 'the --condensed structured list: `.structured-list--condensed .structured-list-td, '
+  + '.structured-list-th { padding: .5rem }`, and the harvest sampled no condensed list '
+  + '(sink/structured-list.html)';
 const KNOWN = {
+  'rux--structured-list-th|paddingBlockStart': CONDENSED_LIST,
+  'rux--structured-list-td|paddingBlockStart': CONDENSED_LIST,
+  'rux--structured-list-td|paddingBlockEnd': CONDENSED_LIST,
+  'rux--structured-list-td|paddingInlineStart': CONDENSED_LIST,
+  'rux--structured-list-td|paddingInlineEnd': CONDENSED_LIST,
+  'rux--structured-list-td.rux--structured-list-content--nowrap|paddingBlockStart': CONDENSED_LIST,
+  'rux--structured-list-td.rux--structured-list-content--nowrap|paddingBlockEnd': CONDENSED_LIST,
+
   'rux--tree-node__label|minBlockSize': XS_TREE,
   'rux--tree-node__label|paddingBlockStart': XS_TREE,
   'rux--tree-node__label|paddingBlockEnd': XS_TREE,
