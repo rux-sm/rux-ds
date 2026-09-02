@@ -12,8 +12,8 @@ Three layers offer them, cheapest first:
 | Layer | Offers | Status |
 |---|---|---|
 | **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, name, title, file | Done |
-| **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Planned, roadmap §4.12 |
-| **Configurator** page in the Rux Portal | the same choices with a live preview and the HTML to take away | Planned, after the portal |
+| **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Done 2026-09-02, its §2 |
+| **Configurator** page in Rux Apps | the same choices with a live preview and the HTML to take away | Planned, after the hub |
 
 ## Page shape — ten, pick one
 

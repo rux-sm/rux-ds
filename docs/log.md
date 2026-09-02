@@ -12,6 +12,26 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-02 — creator 2, the skill's composition flow (§4.12 item 2).**
+`rux-ds-page` §2 is a decision table of eight rows — shape, theme, header nav,
+global actions and switcher, field style, button kinds, button size, body
+blocks — each answer drawn from `docs/choices.md` and nowhere else, on the rule
+that an option it does not list is a request to that file before it is a harder
+version of the job. Five things are named as NOT choices, because offering them
+is the error: the side nav variant, the header's `g100`, the mark, button states,
+and fluid for the controls that have no fluid form. The boundary with
+`tools/new-project.sh` is now written on both sides — the script had always said
+composition was the skill's, and the skill had never said what composition was.
+
+**Writing it found two stale claims in the skill itself**, both of the kind a
+reader would have believed. §1 said ten templates and listed nine, omitting
+`schedule-page`. §2 said "**34 of 75**" and named `date-picker`, `combo-box` and
+`toggletip` as deferred — all three admitted on 2026-08-31 and 2026-09-01, so the
+skill was steering work away from components that had been compiled for days. The
+count is deleted rather than corrected: the rulebook puts counts in `npm run
+gates` and `portal.html`, and this is what a count in prose does. `npm run verify`
+exits 0; 38 sweep cells current.
+
 **ANSWERED 2026-09-02 — the hub is named Rux Apps.** It was one of two decisions
 left open when the hub was committed. `portal.html` here is the gate dashboard, so
 "Rux Portal" named two different things across two repositories. The entries are

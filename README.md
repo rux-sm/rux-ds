@@ -83,11 +83,16 @@ this reason; rename it rather than pushing to it.
 **Next, in order:**
 
 1. Push the hub, enable Pages from its workflow, open https://rux-sm.github.io/.
-2. Notes re-vendors rux-ds — its pin is from 2026-09-01, before the switcher —
-   then gets the switcher button and panel and becomes module two in fact.
-3. Creator 2, the `rux-ds-page` skill's multiple-choice flow, offering only what
-   `docs/choices.md` lists and gating the result through this root.
-4. Creator 3, the configurator page, as a portal page. Last.
+2. Notes gets the switcher button and panel and becomes module two in fact.
+   **Its pin is current** — moved to `6a64dbd` on 2026-09-02, `e883eef` there,
+   seven gates passing. The panel itself waits on item 1: `js/ui-shell.js` only
+   opens and closes it, the entries in every template are invented, and the
+   shared list is `/switcher.json` at a root that does not exist yet.
+3. Creator 3, the configurator page, as a page in the hub. Last.
+
+**Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
+table of eight rows offering only what `docs/choices.md` lists, naming five
+things that are not choices, and gating the result through this root.
 
 **Open decisions, rux's:**
 

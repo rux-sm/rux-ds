@@ -25,26 +25,100 @@ Ten exist, each a **complete page**, shell included.
 | one step of a multi-step flow | `templates/wizard-page.html` |
 | an overview of many things | `templates/dashboard-page.html` |
 | grouped preferences | `templates/settings-page.html` |
+| dates and times | `templates/schedule-page.html` |
 | something went wrong | `templates/error-state.html` |
 
 **Not `sink/ui-shell.html`** — same shell in a 22rem sandbox, positioned for a
 specimen.
 
-**Read the source comments in what you copied.** ~2,650 lines across the six,
-most of it recording an approach that was tried and failed. The comment above
-the thing you are about to change is usually the answer to your question.
+**Read the source comments in what you copied.** Thousands of lines across the
+ten, most of it recording an approach that was tried and failed. The comment
+above the thing you are about to change is usually the answer to your question.
 
-## 2. Confirm the component is compiled
+## 2. Compose it — the decision table
 
-**34 of 75.** `docs/inventory.md` has the list and the reason for each cut.
-`date-picker`, `combo-box`, `toggletip` are deferred; `page-header` is cut. A
-class for an uncompiled component resolves to nothing and **fails silently** —
+**`docs/choices.md` is the catalogue and the only source of options.** Every
+entry there is attested: a template or a sink fragment renders it, diffed
+against a Carbon capture. So an answer that is not in the table below is not a
+harder version of this job — it is a request to `docs/choices.md` first, and
+then to whichever layer owns it.
+
+Ask only what is still undecided. A brief that already names the shape and the
+theme has answered rows 1 and 2; do not re-ask them. When the answer is "your
+call", take the default and say which one you took.
+
+| # | Question | The only answers | What it changes | Default |
+| :-- | :--- | :--- | :--- | :--- |
+| 1 | Page shape | the ten in §1 | which template you copy | the nearest row in §1 |
+| 2 | Theme | `white` `g10` `g90` `g100` `rux` | `data-theme` on `<html>` | `white`; `g10` when cards should stand off the page; `g90`/`g100` for a dark tool |
+| 3 | Header nav links | present, absent | the `<nav class="rux--header__nav">` block | present |
+| 4 | Global actions and the switcher panel | present, absent | `rux--header__global` and its sibling panel | present |
+| 5 | Field style | regular, fluid | the six controls that have both: text input, text area, select, number input, search, date picker | regular |
+| 6 | Button kinds | primary, secondary, tertiary, ghost, danger, danger tertiary, danger ghost | the modifier on each `rux--btn` | one primary per view, secondary beside it, ghost for the quiet action |
+| 7 | Button size | `xs` `sm` `md` `lg` `xl` | the size class | `lg`, which is the default and carries no class; `sm` inside tables and toolbars |
+| 8 | Body blocks | any name in `sink/ORDER` | what goes inside `.rux--content` | the template's own |
+
+**Five things are not choices**, and offering them is itself the error:
+
+- **The side nav.** Only the expanded, fixed variant is captured. No rail, no
+  collapsed-by-default — ask before offering one.
+- **The header's theme.** `g100` by Carbon's own guidance, whatever the page is.
+- **The mark.** It is the brand.
+- **Button states** — disabled, loading, selected. The page sets them; they are
+  not decided at creation.
+- **Fluid for checkbox, radio, toggle and the list-box family.** No fluid form
+  exists for them, so row 5 cannot reach them.
+
+**Row 5 is one decision for the whole form, not one per field.** Carbon does not
+mix regular and fluid in a group, so mixing them is a composition the captures
+do not attest.
+
+Everything the table offers is already compiled — that is what "attested" buys.
+§3 is for anything you reach for beyond it.
+
+### Where the script stops and you start
+
+`tools/new-project.sh` answers rows 1 and 2, plus name, title and file: what a
+text substitution on a template can honestly change. It writes the page with its
+five paths pointed at `vendor/`. Its own header hands the rest over — rows 3 to 8
+are composition, and composition is this skill. Run it first for a new project,
+then compose into what it wrote.
+
+```
+sh tools/new-project.sh <dir> --template table-page --theme g10 \
+                        --name "Orders" --title "Orders" --page orders
+```
+
+Re-run bare on a project that already has a `PIN` and it moves the pin, asks
+nothing and writes no page.
+
+### Gate the result through this root
+
+**The gates live here and nowhere else** — a consumer vendors `css/`, `assets/`
+and `js/`, not them. So whatever the page is ultimately for, compose it inside
+this checkout and run `npm run verify` before it leaves. That is what catches
+the invented class and the uncompiled component while it is still cheap.
+
+**Check its exit code; do not grep its output.** Then §7 — open the page,
+because verify passing is not the page being right.
+
+## 3. Confirm the component is compiled
+
+`docs/inventory.md` decides every component and gives the reason for each cut.
+**The figure belongs in `portal.html` and `npm run verify`, never in this file**:
+this section read "34 of 75" until 2026-09-02, by which time it was wrong in both
+numbers and named `date-picker`, `combo-box` and `toggletip` as deferred when all
+three had been admitted. `page-header` is cut, and `src/app.scss` carries it
+commented out.
+
+A class for an uncompiled component resolves to nothing and **fails silently** —
 correct-looking markup, no styling.
 
 `npm run verify` catches it, so the loop is short. Knowing first saves designing
-around something absent.
+around something absent — or, as that stale paragraph did, around something that
+has been there for days.
 
-## 3. Four failures that produce a finished-looking wrong page
+## 4. Four failures that produce a finished-looking wrong page
 
 These are the ones to check *while writing*, because none of them looks broken.
 
@@ -79,7 +153,7 @@ the missing responsive metric-row idiom, and **the type utility classes** —
 the field label beside it. Keep the `<legend>`; an `<h2>` loses the fieldset's
 accessible grouping.
 
-## 4. What must not be invented
+## 5. What must not be invented
 
 - **Classes.** Every `rux--*` comes from Carbon. `npm run verify` fails on one
   that does not resolve or whose component is not compiled.
@@ -91,7 +165,7 @@ accessible grouping.
 - **Decisions.** Roadmap §1.1, §2.1, §4.4, §4.6 record choices *with their
   rejected alternatives*. Ask before reopening one.
 
-## 5. IBM's own pattern guidance
+## 6. IBM's own pattern guidance
 
 `carbon-website/` is on disk, gitignored — *read from, never shipped*.
 Seventeen pattern pages under `src/pages/patterns/`: empty states, forms,
@@ -107,7 +181,7 @@ Apache-2.0 *code*, not website guidance content.
 For markup the captures remain authoritative. The website says what a pattern
 should do; `docs/carbon-*.json` says what the markup is.
 
-## 6. Open the page
+## 7. Open the page
 
 **The gates cannot see everything and looking is not optional.** Five shipped
 defects passed every gate: two chevrons rotated from the wrong base glyph, a
@@ -128,7 +202,7 @@ every component present.
 because getting one wrong produced a confident wrong number. `npm run gates`
 says which gate has been run against which page.
 
-## 7. If the page is a template
+## 8. If the page is a template
 
 `docs/verifying-templates.md` is the procedure, and it has one hard rule: a
 template's behaviour is **verified against a running Carbon page**, never
@@ -140,7 +214,7 @@ a URL, the date, and what was NOT covered.
 ## Using this outside rux-ds
 
 A consumer vendors `css/`, `assets/` and `js/` — **not this skill, not
-`sink/`, not the captures, and not the gates**. Everything in §4 is unenforced
+`sink/`, not the captures, and not the gates**. Everything in §5 is unenforced
 there unless the consumer adopts it deliberately. `rux-ln-notes` is the first
 such project; its `vendor/rux-ds/PIN` records which commit its copy came from,
 and a reference read at a different commit than the vendored CSS is the drift

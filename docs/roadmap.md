@@ -2660,9 +2660,16 @@ first, and one home for every project built on rux-ds.
    (`db54691`); `docs/choices.md` is the catalogue of every choice with the
    layer that offers it.
 2. **The skill composes.** `rux-ds-page` grows a multiple-choice flow: which
-   shell parts, regular or fluid fields, which buttons, which of the 68
-   fragments in the body; then it copies the page into this root and runs
-   `npm run verify`, so an invented class fails before anyone sees it. Open.
+   shell parts, regular or fluid fields, which buttons, which of the fragments
+   in `sink/ORDER` in the body; then it copies the page into this root and runs
+   `npm run verify`, so an invented class fails before anyone sees it.
+   **Done 2026-09-02**, the skill's §2: eight rows, each answer drawn from
+   `docs/choices.md` and nowhere else, five things named as NOT choices, and
+   the boundary with the script written down on both sides. Writing it found
+   the skill's own §1 listing nine of the ten templates and its §2 claiming
+   "34 of 75" with `date-picker`, `combo-box` and `toggletip` deferred — all
+   three admitted days earlier. Both fixed; the count is gone rather than
+   corrected, which is what the rulebook asks for.
 3. **The configurator shows.** A page in the portal with the same choices, a
    live preview and the HTML to take away. Open; after the portal.
 
@@ -2704,7 +2711,7 @@ One decision still rux's: where the module manifest contract is written down.
 
 **Stopped 2026-09-02 with the hub committed locally and unpushed**, waiting
 on the repository being created by hand under the right name. Next in order: push and enable Pages;
-the switcher on Notes; creator 2 (the skill); creator 3 (the configurator).
+the switcher on Notes; creator 3 (the configurator). Creator 2 is done.
 README "Picking this up" carries the same list and is the one to update.
 
 ## 5. Risks and one-way doors
