@@ -2,7 +2,8 @@
 
 This is the one instruction file. `CLAUDE.md` imports it, Codex reads it
 directly, and nothing here is repeated elsewhere. `README.md` "Picking this up"
-is the current state; `docs/roadmap.md` is the decision log; counts live in
+is the current state; `docs/roadmap.md` is the decision log; `docs/log.md` is
+the record of every dated pass and answered decision; counts live in
 `npm run gates` and `portal.html`, never in prose.
 
 ## What this repository is

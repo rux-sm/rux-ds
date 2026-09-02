@@ -8,7 +8,7 @@ not look at**.
 ## What this file is not
 
 **Findings do not live here.** A finding is filed where its decision lives: a
-roadmap section, README's "Decisions waiting on you" table, `docs/inventory.md`.
+roadmap section, `docs/log.md`'s "Decisions waiting on you" table, `docs/inventory.md`.
 The ledger below carries a one-line pointer to that place and nothing more.
 
 The rule is not tidiness. README already records that a rule stated twice
@@ -176,7 +176,7 @@ defect this file exists for.
 **Filing completed 2026-08-29.** Every row now points somewhere a decision can be
 made, which is what this ledger asked for and did not have when it was written. What
 changed is only WHERE the findings live — none of them was decided by being filed, and
-six of them are now rows in README's "Decisions waiting on you" table precisely because
+six of them are now rows in `docs/log.md`'s "Decisions waiting on you" table precisely because
 they are still open.
 
 Two closed rather than filed. Finding 3 was closed by re-sweeping all 25 cells in both

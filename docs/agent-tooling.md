@@ -289,7 +289,7 @@ attempt learned and leave the rule unenforced.
 
 **A decision with no recorded rejected alternative looks OPEN.** An agent will
 reopen it, in good faith, every session, for free. Roadmap §1.1, §2.1, §4.4 and
-§4.6 record choices *with what was rejected and why*, and README's "Undecided"
+§4.6 record choices *with what was rejected and why*, and README's "Open decisions"
 section is the inverse — an explicit list of what must not be settled quietly.
 Those two sections do more to keep an agent on course than any gate here.
 
