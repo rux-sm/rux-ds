@@ -2549,6 +2549,30 @@ shape and the pace. A component with no capture stays DEFER with the reason
 "no story renders it", and the row says so. Exit: no CUT row whose only reason
 was the old admission test; every DEFER row names the missing capture.
 
+**The work list, sorted 2026-09-01 by capture and dependency.** Thirty-three rows
+read CUT or DEFER that day; 27 have a capture and 6 do not or need a decision.
+Each batch is one admission commit, one fix commit if the browser sweep finds
+anything, and one ledger commit at the end.
+
+| Batch | Components | State |
+|---|---|---|
+| 1 | combo-box, multiselect, file-uploader, slider, treeview, progress-bar, aspect-ratio | **Done** `32818b0` · `64feb26` · `e0fe651` |
+| 2 | fluid-combo-box, fluid-multiselect (held by batch 1's bases) | **Done** `b748d93` · `7acd902` · `0935058` |
+| 3 | contained-list, structured-list, content-switcher, code-snippet, pagination-nav, menu-button | **Done** `3d4b9a8` · `2583f4a` · `6979683` |
+| 4 | icon-indicator, shape-indicator, big-number, OptionsTile, scroll-gradient, FullPageError, EditInPlace | Open |
+| 5 | dialog, side-panel, coachmark, ai-label, chat-button — captures exist, each needs a behaviour module or an explicit yes on the AI affordances | Open |
+| stays DEFER | action-set, resizer, truncated-text, slug — no story renders them; `truncated-text` appears only inside page-header captures | Rows to reword |
+| decision | `page-header`: ten captures, all under `deprecated-` in ibm-products, so completeness of CURRENT Carbon argues for staying CUT as "deprecated upstream". `InterstitialScreen`: six captures but incomplete on arrival, styling a carousel `@carbon/styles` 1.114 does not ship; stay CUT until an upgrade brings it, or admit knowing part cannot render | rux's call |
+
+What the first three batches taught, so the next two do not relearn it: a class
+every capture renders and no rule styles is not written (§4.1.12), and the
+declines say so; a state React produces by toggling a class — a focus ring on a
+wrapper, a selected row — is reimplemented in the owning module and adjudicated
+in `check-a11y` with a measurement; a story's grid or its single sampled variant
+is a `check-spacing` KNOWN entry named against the Carbon rule, never a bare
+count; and the committed `portal.html` must not depend on the working tree
+(`3ec9c87`, `a22f318`).
+
 ### 4.10 Phase 10 — Customization layer
 
 **Added 2026-09-01.** Everything rux changes lives above Carbon, never inside it.
