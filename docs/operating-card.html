@@ -252,12 +252,13 @@ cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs</code></pre>
     "git.autofetch": true,
     "git.pullTags": true,
     "git.rebaseWhenSync": true,
+    "git.repositoryScanMaxDepth": 0,
     "files.exclude": { "**/node_modules": true, "**/.venv": true }
   }
 }
 EOF
 code ~/Developer/rux.code-workspace</code></pre>
-      <p class="why">The file is not in any repo, so it is created by hand on each Mac. Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all three, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
+      <p class="why">The file is not in any repo, so it is created by hand on each Mac. Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all three, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
     </div></li>
     <li><div>
       <p>Prove the hooks are armed. Try a commit with a forbidden trailer and watch it refuse; then discard it.</p>
