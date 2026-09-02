@@ -124,7 +124,11 @@ const covPct = Math.round((covHit / covOwn) * 100);
 // can say.
 const matrix = cellStates().map(r => {
   const rec = ledger[r.id]?.[r.page];
-  if (r.state === 'DIRTY') r = { ...r, state: 'STALE', why: r.why.replace(/^uncommitted: /, '') + ' changed since' };
+  // AND THE REASON IS A CONSTANT, for the same reason. 2583f4a mapped the state
+  // but carried the dirty reason's wording ("css/rux.css, js changed since")
+  // where a clean checkout computes "css/rux.css changed since": another
+  // 76-line diff and another red run. What moved is `npm run gates`' to say.
+  if (r.state === 'DIRTY' || r.state === 'STALE') r = { ...r, state: 'STALE', why: 'an input changed since' };
   return { gate: r.id, page: r.page, state: r.state, why: r.why,
            current: r.state === 'ok', date: rec?.date ?? null, result: rec?.result ?? null };
 });
