@@ -6,7 +6,14 @@
     ADMITTED 2026-09-01. `multi-select__wrapper` is rendered by every capture and
     has no rule in @carbon/styles — the §4.1.12 precedent — so it is not written
     and the wrapper carries `list-box__wrapper` alone; check-classes rejected it
-    on the first run. The filterable variant is still undiffed.
+    on the first run. The filterable example now matches the one capture that
+    exists for it, `components-multiselect--filterable`: unselected, no tag, the
+    input and a `button.list-box__menu-icon` straight inside `list-box__field`.
+    Its selected state has no capture and is not shown. check-spacing reports
+    `checkbox-label` in the open menu as UNKNOWN: ours is Carbon's own
+    `.multi-select .list-box__menu-item__option .checkbox-label` (inline-block,
+    1.75rem), and the reference has only standalone checkbox stories to compare
+    against, because no open multiselect was harvested for spacing.
 
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
     components-multiselect--default, class tree read out of the live page rather
@@ -139,20 +146,12 @@
       -->
       <div class="rux--list-box__wrapper">
         <label class="rux--label" for="ms-2">Filterable</label>
-        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
-          <div class="rux--list-box__field--wrapper">
-            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
-              <span class="rux--tag__label">1</span>
-              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
-                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
-              </div>
-            </div>
-            <div class="rux--list-box__field">
-              <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-controls="ms-2-menu" placeholder="Filter…">
-              <div class="rux--list-box__menu-icon">
-                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-              </div>
-            </div>
+        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field">
+            <input id="ms-2" class="rux--text-input rux--text-input--empty" type="text" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls="ms-2-menu" placeholder="Filter…">
+            <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </button>
           </div>
           <ul id="ms-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
             <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">

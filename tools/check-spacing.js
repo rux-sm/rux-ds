@@ -363,7 +363,27 @@ const LAST_OF_TYPE = 'the page measured its :last-of-type wrapper against a reco
   + 'non-last one; 0.1875rem vs 0.375rem are both Carbon own, and the key cannot '
   + 'express position (check-spacing header, 2026-08-28)';
 
+// BATCH 1 OF §4.9, 2026-09-01. Four sampling shapes, each named against the
+// Carbon rule that produces our value.
+const XS_TREE = 'the --xs tree: `.tree--xs .tree-node__label` sets min-block-size 1.5rem and '
+  + 'padding 0 on a leaf, and the spacing harvest sampled no xs tree (sink/treeview.html)';
+const ICON_PARENT = "Carbon's own `.tree-node--with-icon .tree-node { margin-inline-start: .5rem }`; "
+  + 'the one sampled nested selected node sits under a parent with no icon';
+const NOT_LAST_ITEM = '`.file__selected-file { margin-block-end: .5rem }` with `:last-child { 0 }`; the '
+  + 'item story mounts one item, so its only sample is a last child, and the key cannot '
+  + 'express position';
+const INVALID_ITEM = "`.file__selected-file .file-filename-container-wrap-invalid .file-filename-tooltip "
+  + "{ padding-inline-start: 1rem }` -- the INVALID item's rule; only the plain item was "
+  + 'harvested for spacing';
 const KNOWN = {
+  'rux--tree-node__label|minBlockSize': XS_TREE,
+  'rux--tree-node__label|paddingBlockStart': XS_TREE,
+  'rux--tree-node__label|paddingBlockEnd': XS_TREE,
+  'rux--tree-node__label|paddingInlineEnd': XS_TREE,
+  'rux--tree-node.rux--tree-leaf-node.rux--tree-node--selected|marginInlineStart': ICON_PARENT,
+  'rux--file__selected-file.rux--file__selected-file--md|marginBlockEnd': NOT_LAST_ITEM,
+  'rux--popover-container.rux--popover--caret.rux--popover--high-contrast.rux--popover--bottom.rux--tooltip.rux--file-filename-tooltip|paddingInlineStart': INVALID_ITEM,
+
   'rux--btn.rux--btn--danger--tertiary|display': BLOCKIFIED,
   'rux--btn.rux--btn--danger--ghost|display': BLOCKIFIED,
   'rux--btn.rux--btn--md.rux--layout--size-md.rux--btn--primary|display': BLOCKIFIED,

@@ -258,6 +258,16 @@
       why: 'Carbon draws the ring on :focus-visible on the LABEL and sets outline:none on plain :focus; a real Tab press shows it. README, gates section.' },
     { rule: 'no visible focus change', what: 'rux--list-box__field', where: 'fluid',
       why: 'the fluid list box rings its WRAPPER and Carbon sets outline:none on the field. Measured: wrapper outline none -> rgb(15,98,254) solid 2px on focus.' },
+    { rule: 'no visible focus change', what: 'rux--tree-node', where: 'treeview',
+      why: 'Carbon rings the CHILD div, `.tree-node:focus > .tree-node__label`, and sets outline:none on the li. Measured 2026-09-01: label outline none -> rgb(15,98,254) solid 2px; the li unchanged.' },
+    { rule: 'no visible focus change', what: 'rux--file-filename-button', where: 'file-uploader',
+      why: 'Carbon writes `outline: revert` on this button, the one place the stylesheet hands focus back to the UA ring. Measured 2026-09-01: outline none 1.5px -> auto 1px, which this tool discounts by rule.' },
+    { rule: 'no visible focus change', what: 'rux--list-box__field', where: 'multiselect',
+      why: 'as the fluid list box: Carbon sets `.multi-select .list-box__field:focus { outline: 2px solid transparent }` and js/list-box.js rings the WRAPPER by class, as React does. Measured 2026-09-01: wrapper outline none -> rgb(15,98,254) solid 2px on focus, back on blur.' },
+    { rule: 'no visible focus change', what: 'rux--text-input', where: 'multiselect',
+      why: 'the filterable form rings the ROOT: js/list-box.js adds `multi-select--filterable--input-focused` on focus, as React does. Measured 2026-09-01: root outline none -> rgb(15,98,254) solid 2px.' },
+    { rule: 'no visible focus change', what: 'rux--slider__thumb--', where: 'slider',
+      why: 'the two-handle thumbs show focus by SWAPPING AN ICON: `--lower:focus` hides `thumb-icon` and shows `thumb-icon--focus`, with box-shadow and transform set to none. A child display change is outside what this tool reads. Both icons are in the fragment as captured.' },
   ];
   const isAdjudicated = f => ADJUDICATED.some(a =>
     a.rule === f.rule

@@ -19,8 +19,8 @@
       <div class="rux--combo-box rux--list-box">
         <div class="rux--list-box__field">
           <input id="cbx-1" class="rux--text-input rux--text-input--empty" type="text" role="combobox"
-                 aria-expanded="false" aria-autocomplete="list" placeholder="Type to filter…">
-          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu">
+                 aria-expanded="false" aria-haspopup="listbox" aria-autocomplete="list" placeholder="Type to filter…">
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1">
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </button>
         </div>
@@ -41,8 +41,8 @@
       <label class="rux--label" for="cbx-2">Readonly</label>
       <div class="rux--combo-box rux--combo-box--readonly rux--list-box">
         <div class="rux--list-box__field">
-          <input id="cbx-2" class="rux--text-input" type="text" role="combobox" value="Locked" readonly>
-          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu" disabled>
+          <input id="cbx-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-haspopup="listbox" value="Locked" readonly>
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1" disabled>
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </button>
         </div>

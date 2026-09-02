@@ -23,7 +23,11 @@
     STORY mounts them at the root; that is the story's layout, and React puts
     them in the container at runtime. `file--label--disabled`,
     `file-browse-btn--disabled`, `file--invalid` and `file__selected-file--disabled`
-    have rules in @carbon/styles and no story renders them.
+    have rules in @carbon/styles and no story renders them. check-spacing reports
+    `form-requirement` here as UNKNOWN: the only harvested variant is a
+    dropdown's, and the invalid file item's requirement was never harvested for
+    spacing. Left unknown rather than keyed KNOWN, because that key would also
+    cover the checkbox and fluid rows that are unknown for their own reasons.
   -->
   <!--
     THE FILE LIST IS A SIBLING OF THE DROP ZONE, not a child of it. Carbon puts
@@ -39,7 +43,7 @@
       <div class="rux--file">
         <button type="button" class="rux--file__drop-container rux--file-browse-btn">Drag and drop files here or click to upload</button>
         <label class="rux--visually-hidden" for="fu-1">Upload files</label>
-        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" multiple>
+        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" tabindex="-1" multiple>
       </div>
       <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--md">
@@ -67,7 +71,7 @@
           <div>
             <span class="rux--file__state-container"><svg class="rux--file-invalid" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg><button type="button" class="rux--file-close" aria-label="Delete file - too-large.zip" aria-describedby="fu-item-2-error"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button></span>
           </div>
-          <div class="rux--form-requirement" role="alert">
+          <div class="rux--form-requirement" role="alert" id="fu-item-2-error">
             <div class="rux--form-requirement__title">File exceeds 500 KB</div>
             <p class="rux--form-requirement__supplement">Compress it or upload a smaller export.</p>
           </div>
@@ -75,12 +79,13 @@
       </div>
     </div>
 
-    <div class="rux--form-item" style="margin-block-start:2rem">
+    <div style="margin-block-start:2rem">
+    <div class="rux--form-item">
       <p class="rux--file--label rux--file--label--disabled">Upload files (disabled)</p>
       <div class="rux--file rux--file--invalid">
         <button type="button" class="rux--file__drop-container rux--file-browse-btn rux--file-browse-btn--disabled" disabled>Uploads are turned off for this workspace</button>
         <label class="rux--visually-hidden" for="fu-2">Upload files (disabled)</label>
-        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" multiple disabled>
+        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" tabindex="-1" multiple disabled>
       </div>
       <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--sm rux--file__selected-file--disabled">
@@ -97,6 +102,7 @@
           </div>
         </span>
       </div>
+    </div>
     </div>
   </div>
 </section>

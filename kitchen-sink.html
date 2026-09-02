@@ -5585,8 +5585,8 @@
       <div class="rux--combo-box rux--list-box">
         <div class="rux--list-box__field">
           <input id="cbx-1" class="rux--text-input rux--text-input--empty" type="text" role="combobox"
-                 aria-expanded="false" aria-autocomplete="list" placeholder="Type to filter…">
-          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu">
+                 aria-expanded="false" aria-haspopup="listbox" aria-autocomplete="list" placeholder="Type to filter…">
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1">
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </button>
         </div>
@@ -5607,8 +5607,8 @@
       <label class="rux--label" for="cbx-2">Readonly</label>
       <div class="rux--combo-box rux--combo-box--readonly rux--list-box">
         <div class="rux--list-box__field">
-          <input id="cbx-2" class="rux--text-input" type="text" role="combobox" value="Locked" readonly>
-          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open menu" disabled>
+          <input id="cbx-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-haspopup="listbox" value="Locked" readonly>
+          <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1" disabled>
             <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
           </button>
         </div>
@@ -5625,7 +5625,14 @@
     ADMITTED 2026-09-01. `multi-select__wrapper` is rendered by every capture and
     has no rule in @carbon/styles — the §4.1.12 precedent — so it is not written
     and the wrapper carries `list-box__wrapper` alone; check-classes rejected it
-    on the first run. The filterable variant is still undiffed.
+    on the first run. The filterable example now matches the one capture that
+    exists for it, `components-multiselect--filterable`: unselected, no tag, the
+    input and a `button.list-box__menu-icon` straight inside `list-box__field`.
+    Its selected state has no capture and is not shown. check-spacing reports
+    `checkbox-label` in the open menu as UNKNOWN: ours is Carbon's own
+    `.multi-select .list-box__menu-item__option .checkbox-label` (inline-block,
+    1.75rem), and the reference has only standalone checkbox stories to compare
+    against, because no open multiselect was harvested for spacing.
 
     STRUCTURE FROM THE RENDERED REACT DOM, 2026-08-26 — react.carbondesignsystem.com
     components-multiselect--default, class tree read out of the live page rather
@@ -5758,20 +5765,12 @@
       -->
       <div class="rux--list-box__wrapper">
         <label class="rux--label" for="ms-2">Filterable</label>
-        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--multi-select--selected rux--list-box rux--layout--size-md">
-          <div class="rux--list-box__field--wrapper">
-            <div class="rux--tag rux--tag--filter rux--tag--high-contrast">
-              <span class="rux--tag__label">1</span>
-              <div class="rux--tag__close-icon" role="button" tabindex="0" title="Clear all">
-                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
-              </div>
-            </div>
-            <div class="rux--list-box__field">
-              <input id="ms-2" class="rux--text-input" type="text" role="combobox" aria-expanded="false" aria-controls="ms-2-menu" placeholder="Filter…">
-              <div class="rux--list-box__menu-icon">
-                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-              </div>
-            </div>
+        <div class="rux--multi-select rux--multi-select--filterable rux--combo-box rux--list-box rux--layout--size-md">
+          <div class="rux--list-box__field">
+            <input id="ms-2" class="rux--text-input rux--text-input--empty" type="text" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls="ms-2-menu" placeholder="Filter…">
+            <button type="button" class="rux--list-box__menu-icon" aria-expanded="false" aria-label="Open" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+            </button>
           </div>
           <ul id="ms-2-menu" class="rux--list-box__menu" role="listbox" tabindex="-1" hidden>
             <li class="rux--list-box__menu-item rux--list-box__menu-item--active" role="option" aria-selected="true">
@@ -5832,7 +5831,11 @@
     STORY mounts them at the root; that is the story's layout, and React puts
     them in the container at runtime. `file--label--disabled`,
     `file-browse-btn--disabled`, `file--invalid` and `file__selected-file--disabled`
-    have rules in @carbon/styles and no story renders them.
+    have rules in @carbon/styles and no story renders them. check-spacing reports
+    `form-requirement` here as UNKNOWN: the only harvested variant is a
+    dropdown's, and the invalid file item's requirement was never harvested for
+    spacing. Left unknown rather than keyed KNOWN, because that key would also
+    cover the checkbox and fluid rows that are unknown for their own reasons.
   -->
   <!--
     THE FILE LIST IS A SIBLING OF THE DROP ZONE, not a child of it. Carbon puts
@@ -5848,7 +5851,7 @@
       <div class="rux--file">
         <button type="button" class="rux--file__drop-container rux--file-browse-btn">Drag and drop files here or click to upload</button>
         <label class="rux--visually-hidden" for="fu-1">Upload files</label>
-        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" multiple>
+        <input id="fu-1" type="file" class="rux--file-input rux--visually-hidden" tabindex="-1" multiple>
       </div>
       <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--md">
@@ -5876,7 +5879,7 @@
           <div>
             <span class="rux--file__state-container"><svg class="rux--file-invalid" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-warning--filled"/></svg><button type="button" class="rux--file-close" aria-label="Delete file - too-large.zip" aria-describedby="fu-item-2-error"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg></button></span>
           </div>
-          <div class="rux--form-requirement" role="alert">
+          <div class="rux--form-requirement" role="alert" id="fu-item-2-error">
             <div class="rux--form-requirement__title">File exceeds 500 KB</div>
             <p class="rux--form-requirement__supplement">Compress it or upload a smaller export.</p>
           </div>
@@ -5884,12 +5887,13 @@
       </div>
     </div>
 
-    <div class="rux--form-item" style="margin-block-start:2rem">
+    <div style="margin-block-start:2rem">
+    <div class="rux--form-item">
       <p class="rux--file--label rux--file--label--disabled">Upload files (disabled)</p>
       <div class="rux--file rux--file--invalid">
         <button type="button" class="rux--file__drop-container rux--file-browse-btn rux--file-browse-btn--disabled" disabled>Uploads are turned off for this workspace</button>
         <label class="rux--visually-hidden" for="fu-2">Upload files (disabled)</label>
-        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" multiple disabled>
+        <input id="fu-2" type="file" class="rux--file-input rux--visually-hidden" tabindex="-1" multiple disabled>
       </div>
       <div class="rux--file-container rux--file-container--drop">
         <span class="rux--file__selected-file rux--file__selected-file--sm rux--file__selected-file--disabled">
@@ -5907,6 +5911,7 @@
         </span>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -5922,7 +5927,11 @@
     Carbon drives it from React — drag, arrows, Home/End — which no module here
     reimplements yet, so this fragment is a static specimen until one does. `role="slider"`,
     tabindex and the aria-value* attributes sit on `slider__thumb` itself and
-    each example is wrapped in `form-item`, both as every capture has them.
+    each example is wrapped in `form-item`, both as every capture has them. Each
+    two-handle thumb carries TWO icons, the plain one and the same with `--focus`
+    (`thumb-icon--lower`/`--upper` are attested and unstyled, so not written, on
+    the §4.1.12 precedent): Carbon shows focus on those thumbs by swapping the icon, not by a
+    ring, which is why check-a11y cannot see it and why the entry is adjudicated.
 
     The value field is not a bare input in the slider container: Carbon wraps it
     in `text-input-wrapper slider-text-input-wrapper`, which is the element its
@@ -5958,10 +5967,10 @@
           <div class="rux--slider__track"></div>
           <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.4)"></div>
           <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--lower" style="inset-inline-start:25%;inset-block-start:50%">
-            <div class="rux--slider__thumb rux--slider__thumb--lower" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
+            <div class="rux--slider__thumb rux--slider__thumb--lower" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg><svg class="rux--slider__thumb-icon rux--slider__thumb-icon--focus" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
           </div>
           <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--upper" style="inset-inline-start:65%;inset-block-start:50%">
-            <div class="rux--slider__thumb rux--slider__thumb--upper" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
+            <div class="rux--slider__thumb rux--slider__thumb--upper" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg><svg class="rux--slider__thumb-icon rux--slider__thumb-icon--focus" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
           </div>
           <input id="sl-2" class="rux--slider__input" type="hidden" min="0" max="100" value="65">
         </div>
@@ -6037,13 +6046,17 @@
     marks state there and `diff-fragment` had no parent for a state one level
     down. The nested child keeps `--selected` alone, which the captures do show
     inside `__children`. The parent node carries `tree-parent-node`, which every capture puts on
-    an expandable `li` and which positions the toggle icon. Not reimplemented:
+    an expandable `li` and which positions the toggle icon. Each label carries the inline offset React computes per depth —
+    padding-inline-start and a matching negative margin, `depth + 1` rem for a
+    parent, `+ 2` with an icon, `+ 2.5` for a leaf — because no rule in
+    @carbon/styles indents a node; the values are read off the spacing capture
+    (16, 40, 56, 64, 72, 88px). Not reimplemented:
     keyboard navigation; a click selects
     and the caret collapses, nothing more.
   -->
   <ul class="rux--tree" role="tree">
     <li class="rux--tree-node rux--tree-node--with-icon rux--tree-parent-node" role="treeitem" aria-expanded="true" tabindex="0">
-      <div class="rux--tree-node__label">
+      <div class="rux--tree-node__label" style="padding-inline-start:1rem;margin-inline-start:-1rem">
         <span class="rux--tree-parent-node__toggle"><svg class="rux--tree-parent-node__toggle-icon rux--tree-parent-node__toggle-icon--expanded" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg></span>
         <span class="rux--tree-node__label__details">
           <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg>
@@ -6052,7 +6065,7 @@
       </div>
       <ul class="rux--tree-node__children" role="group">
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected" role="treeitem" tabindex="-1">
-          <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Selected child</span></span></div>
+          <div class="rux--tree-node__label" style="padding-inline-start:3.5rem;margin-inline-start:-3.5rem"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Selected child</span></span></div>
         </li>
         <!--
           This leaf carries an icon so `.rux--tree-leaf-node.rux--tree-node--with-icon`
@@ -6064,7 +6077,7 @@
           excepting it.
         -->
         <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--with-icon" role="treeitem" tabindex="-1">
-          <div class="rux--tree-node__label">
+          <div class="rux--tree-node__label" style="padding-inline-start:3.5rem;margin-inline-start:-3.5rem">
             <span class="rux--tree-node__label__details">
               <svg class="rux--tree-node__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg>
               <span class="rux--tree-node__label__text">Second child</span>
@@ -6074,17 +6087,17 @@
       </ul>
     </li>
     <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--disabled" role="treeitem" aria-disabled="true" tabindex="-1">
-      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Disabled node</span></span></div>
+      <div class="rux--tree-node__label" style="padding-inline-start:2.5rem;margin-inline-start:-2.5rem"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Disabled node</span></span></div>
     </li>
   </ul>
 
   <div class="ks-label" style="margin-block-start:1.5rem">--tree--xs · the compact density</div>
   <ul class="rux--tree rux--tree--xs" role="tree">
     <li class="rux--tree-node rux--tree-leaf-node" role="treeitem" tabindex="0">
-      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact node</span></span></div>
+      <div class="rux--tree-node__label" style="padding-inline-start:2.5rem;margin-inline-start:-2.5rem"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact node</span></span></div>
     </li>
     <li class="rux--tree-node rux--tree-leaf-node rux--tree-node--selected rux--tree-node--active" role="treeitem" tabindex="-1">
-      <div class="rux--tree-node__label"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact, selected</span></span></div>
+      <div class="rux--tree-node__label" style="padding-inline-start:2.5rem;margin-inline-start:-2.5rem"><span class="rux--tree-node__label__details"><span class="rux--tree-node__label__text">Compact, selected</span></span></div>
     </li>
   </ul>
 </section>

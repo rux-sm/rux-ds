@@ -49,6 +49,11 @@
    leaves focus on the field. Typeahead exists and accumulates -- `o` then `p` holds the
    same option rather than jumping.
 
+   ADDED 2026-09-01, not driven live: the two focus classes React toggles on a
+   multiselect (see the handler below). NOT reimplemented: multiselect selection
+   itself, the selection-count tag, and filtering -- the field opens and the
+   cursor moves as for a dropdown, and nothing here reads the checkboxes.
+
    TWO THINGS THIS FILE HAD WRONG, both now fixed and both invisible to every gate:
    the arrows WRAPPED where Carbon clamps at each end, and Space was grouped with Enter
    -- opening a closed field, choosing in an open one -- where Carbon ignores it in both
@@ -177,6 +182,28 @@
     if (at === -1) return list[by > 0 ? 0 : list.length - 1];
     return list[Math.min(list.length - 1, Math.max(0, at + by))];
   };
+
+  /* ── the focus ring React adds by class ─────────────────────────────── */
+  // Added 2026-09-01 with multiselect's admission. Carbon sets
+  // `.rux--multi-select .rux--list-box__field:focus { outline: 2px solid
+  // transparent }` and draws the visible ring on the WRAPPER, through a class
+  // React toggles on focus: `list-box__field--wrapper--input-focused` on the
+  // field wrapper, and for the filterable form
+  // `multi-select--filterable--input-focused` on the root. Without this the
+  // multiselect field has no visible focus at all -- measured on the sink:
+  // outline none -> rgba(0,0,0,0) solid 2px, wrapper unchanged. Reimplemented
+  // here on the AGENTS.md rule for behaviour Carbon keeps in its React layer.
+  const focusClass = (target, on) => {
+    const ms = target.closest('.rux--multi-select');
+    if (!ms) return;
+    if (target.matches('.rux--list-box__field')) {
+      target.closest('.rux--list-box__field--wrapper')?.classList.toggle('rux--list-box__field--wrapper--input-focused', on);
+    } else if (target.matches('.rux--text-input') && ms.classList.contains('rux--multi-select--filterable')) {
+      ms.classList.toggle('rux--multi-select--filterable--input-focused', on);
+    }
+  };
+  document.addEventListener('focusin',  e => e.target instanceof Element && focusClass(e.target, true));
+  document.addEventListener('focusout', e => e.target instanceof Element && focusClass(e.target, false));
 
   /* ── pointer ──────────────────────────────────────────────────────────── */
   document.addEventListener('click', event => {

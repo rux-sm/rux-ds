@@ -10,7 +10,11 @@
     Carbon drives it from React — drag, arrows, Home/End — which no module here
     reimplements yet, so this fragment is a static specimen until one does. `role="slider"`,
     tabindex and the aria-value* attributes sit on `slider__thumb` itself and
-    each example is wrapped in `form-item`, both as every capture has them.
+    each example is wrapped in `form-item`, both as every capture has them. Each
+    two-handle thumb carries TWO icons, the plain one and the same with `--focus`
+    (`thumb-icon--lower`/`--upper` are attested and unstyled, so not written, on
+    the §4.1.12 precedent): Carbon shows focus on those thumbs by swapping the icon, not by a
+    ring, which is why check-a11y cannot see it and why the entry is adjudicated.
 
     The value field is not a bare input in the slider container: Carbon wraps it
     in `text-input-wrapper slider-text-input-wrapper`, which is the element its
@@ -46,10 +50,10 @@
           <div class="rux--slider__track"></div>
           <div class="rux--slider__filled-track" style="transform:translate(0,-50%) scaleX(0.4)"></div>
           <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--lower" style="inset-inline-start:25%;inset-block-start:50%">
-            <div class="rux--slider__thumb rux--slider__thumb--lower" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
+            <div class="rux--slider__thumb rux--slider__thumb--lower" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg><svg class="rux--slider__thumb-icon rux--slider__thumb-icon--focus" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg></div>
           </div>
           <div class="rux--slider__thumb-wrapper rux--slider__thumb-wrapper--upper" style="inset-inline-start:65%;inset-block-start:50%">
-            <div class="rux--slider__thumb rux--slider__thumb--upper" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
+            <div class="rux--slider__thumb rux--slider__thumb--upper" tabindex="0" role="slider"><svg class="rux--slider__thumb-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg><svg class="rux--slider__thumb-icon rux--slider__thumb-icon--focus" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg></div>
           </div>
           <input id="sl-2" class="rux--slider__input" type="hidden" min="0" max="100" value="65">
         </div>
