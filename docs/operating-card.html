@@ -235,7 +235,7 @@ git -C ~/Developer/rux-ln-atlas config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-notes config core.hooksPath tools/githooks</code></pre>
     </div></li>
     <li><div>
-      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> with <code>0 warning(s)</code> from atlas, and <code>gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning is a content defect rather than a setup fault, and notes says <code>MEASURED is stale</code> whenever rux-ds has moved. Commit nothing during setup.</p>
+      <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> from atlas, and <code>gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning names a content defect or a text cache that is missing or stale (neither blocks), and notes says <code>MEASURED is stale</code> whenever rux-ds has moved. Commit nothing during setup.</p>
 <pre><code>cd ~/Developer/rux-ds       &amp;&amp; npm install &amp;&amp; npm run verify; echo "exit $?"
 cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/build.py &amp;&amp; python3 tools/check.py
 cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs</code></pre>
