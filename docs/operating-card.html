@@ -213,29 +213,42 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
 <!-- ============ PAGE 2: SETUP ============ -->
 
 <section class="page-2">
-  <p class="eyebrow">Once per Mac · under ten minutes</p>
-  <h2>Setting up a machine</h2>
-  <p class="lede">Do every step on both Macs so they are identical. Every step ends in something you can see.</p>
+  <p class="eyebrow">Once per Mac</p>
+  <h2>Set up — or check — the other Mac</h2>
+  <p class="lede">Use this page before continuing work on another machine. If the three repositories are already there, do not clone them again: start at step 2 and continue through step 6. A clone contains the files, but not the machine-local hook setting, dependencies, Python environment or VS Code workspace.</p>
 
-  <p><strong>Before you start:</strong> git, Node 22.13 or newer (rux-ds declares it and CI holds it), Python 3.9 or newer, the <code>code</code> shell command (VS Code: Command Palette → “Shell Command: Install 'code' command in PATH”; the app install does not add it), and a way for git to reach the private atlas repo. A GitHub password does not work for that: create a personal access token with <code>repo</code> scope at github.com/settings/tokens and paste it as the password when the atlas clone prompts; Apple git keeps it in the keychain after that. Check with <code>git --version</code>, <code>node --version</code>, <code>python3 --version</code>.</p>
+  <p><strong>You need:</strong> git; Node 22.13 or newer; Python 3.9 or newer; VS Code; and access to the private <code>rux-ln-atlas</code> repository. In VS Code, open the Command Palette and run “Shell Command: Install 'code' command in PATH”. For the private clone, use a GitHub personal access token with repository access when git asks for a password; macOS then stores it in the keychain.</p>
+<pre><code>git --version
+node --version          # 22.13 or newer
+python3 --version       # 3.9 or newer
+code --version</code></pre>
 
   <ol class="steps">
     <li><div>
-      <p>Clone all three into <code>~/Developer</code>, under exactly these names, side by side. The layout is load-bearing: notes' checks look for <code>../rux-ds</code> and <code>../rux-ln-atlas</code> and refuse or report a gap without them.</p>
+      <p><strong>Only if they are missing:</strong> clone all three into <code>~/Developer</code>, under exactly these names and beside one another. That layout matters because notes reads its two sibling repositories. If a directory already exists, stop instead of cloning over it; use the pull commands in step 2.</p>
 <pre><code>mkdir -p ~/Developer &amp;&amp; cd ~/Developer
 git clone https://github.com/rux-sm/rux-ds.git
 git clone https://github.com/rux-sm/rux-ln-atlas.git
 git clone https://github.com/rux-sm/rux-ln-notes.git</code></pre>
     </div></li>
     <li><div>
-      <p>Set the identity once, globally. Every commit hook in the family refuses any other name or address.</p>
-<pre><code>git config --global user.name "rux" &amp;&amp; git config --global user.email "rux.dev@pm.me"</code></pre>
+      <p>Pull all three before doing any work. <code>--ff-only</code> refuses to hide a commit that exists only on this Mac. If it refuses, use “When a pull refuses” on page 1.</p>
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do
+  git -C ~/Developer/$r pull --ff-only
+done</code></pre>
     </div></li>
     <li><div>
-      <p>Arm the commit hooks. This is per clone and git cannot carry it, so a fresh clone commits with no checks and nothing tells you. Note the different path in notes.</p>
-<pre><code>git -C ~/Developer/rux-ds       config core.hooksPath .githooks
+      <p>Set the commit identity, then arm the hooks. The identity is a machine setting. The hook path is a clone setting, so pulling files from GitHub does not install it. Notes deliberately uses a different path.</p>
+<pre><code>git config --global user.name "rux"
+git config --global user.email "rux.dev@pm.me"
+
+git -C ~/Developer/rux-ds       config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-atlas config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-notes config core.hooksPath tools/githooks</code></pre>
+      <p class="why">Confirm the values instead of assuming they were saved:</p>
+<pre><code>git -C ~/Developer/rux-ds       config --get core.hooksPath
+git -C ~/Developer/rux-ln-atlas config --get core.hooksPath
+git -C ~/Developer/rux-ln-notes config --get core.hooksPath</code></pre>
     </div></li>
     <li><div>
       <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> from atlas, and <code>gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning names a content defect (the text-cache warning clears once the venv line has run; the venv is per machine and gitignored), and notes prints where the sibling checkouts stand under “siblings (live)”, which is information and never a failure. Commit nothing during setup.</p>
@@ -251,11 +264,15 @@ code ~/Developer/rux.code-workspace</code></pre>
       <p class="why">The file lives in rux-ds under <code>docs/</code> and is copied up because VS Code wants it beside the three folders; edit the copy in rux-ds, never the one in <code>~/Developer</code>. Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing, and no Mac needs it: nothing in <code>npm run verify</code> reads it, and a Mac that wants it clones <code>github.com/carbon-design-system/carbon-website</code> into <code>rux-ds/</code>, where <code>.gitignore</code> already hides it. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all three, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
     </div></li>
     <li><div>
-      <p>Prove the hooks are armed, in all three. A commit with a forbidden trailer must be refused. A refusal leaves nothing behind. If one is accepted, that hook is not armed: run <code>git reset --hard HEAD~1</code> there and redo step 3.</p>
+      <p>Prove the hooks work in all three repositories. This tries to make an empty commit with a forbidden trailer; each hook must refuse it. A refusal changes nothing. If one is accepted, do not push it: run the safe undo command below in that repository, then repeat step 3 for it.</p>
 <pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r commit --allow-empty -m "test: Probe
 
 Co-Authored-By: nobody"; done
-# expect, three times:  commit-msg: Co-Authored-By trailer — commits are authored by rux alone</code></pre>
+# expect three refusals: commit-msg: Co-Authored-By trailer …
+
+# ONLY if a probe was accepted, run this inside that repository:
+git reset --soft HEAD~1</code></pre>
+      <p class="why"><code>--soft</code> removes only the unpushed probe commit and leaves files alone. Do not use <code>reset --hard</code>; it can erase real work.</p>
     </div></li>
   </ol>
 </section>
