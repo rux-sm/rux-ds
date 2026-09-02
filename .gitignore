@@ -20,3 +20,7 @@ m/
 # Agent worktrees. Transient, and each carries its own .git -- committing one
 # embeds a repository nobody can clone.
 .claude/worktrees/
+
+# Claude Code's per-machine permission allowlist. A global ignore file kept it
+# out on one Mac and nothing did on the other.
+.claude/settings.local.json
