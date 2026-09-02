@@ -2788,7 +2788,7 @@ unchanged.
 
 ---
 
-## 8. Distribution — licence decided, versioning open
+## 8. Distribution — licence and versioning decided
 
 Raised by the 2026-08-29 audit (`docs/audits.md`, findings 1 and 6). They are recorded
 together because they are one domain: what it means to hand this to someone else.
@@ -2849,9 +2849,11 @@ already built and CI-enforced.
 with the delivery mechanism deliberately engineered, and no licence file either way. That
 state lasted from Phase 1 until 2026-08-29 and is now closed.
 
-### 8.2 Versioning — consumers pin to a SHA or to nothing
+### 8.2 Versioning — consumers pin a tag
 
-No `version` field, no git tags (`git tag` returns empty), no changelog.
+**Decided.** Tags from 2026-09-02 — `v0.1.0`, `v0.1.1` — and `CHANGES.md` as the
+changelog, removals only; still no `version` field. What follows is the history of
+the decision, most recent entry first after this paragraph.
 
 This matters more here than in a normal library, because §1 names the primary consumer as
 **Claude Code generating pages**. A generated page is a snapshot of the class vocabulary
