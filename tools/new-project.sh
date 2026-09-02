@@ -6,6 +6,9 @@
 #   sh tools/new-project.sh <dir> [template] [page]
 #   sh tools/new-project.sh <dir> --template table-page --theme g10 \
 #                           --name "Orders" --title "Orders" --page orders
+#   sh tools/new-project.sh <dir>             on a project that has a PIN:
+#                                             moves the pin, asks nothing,
+#                                             writes no page
 #
 # Every question offers only what the templates and sink attest; the list of
 # what a project can choose, and which layer offers it, is docs/choices.md.
@@ -53,6 +56,19 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# ---- a project that already has a PIN: move the pin and nothing else ------
+# Measured 2026-09-02: re-running with only the folder, as "Moving the pin"
+# in docs/starting-a-project.md shows, re-asked the five questions and wrote
+# an index.html from app-shell into a project whose page was orders.html.
+# A PIN is the proof a project exists. With one present and no template,
+# theme, name, title or page named, the run is a pin move; name any of
+# those and it is a second page, asked for as before.
+MOVE_ONLY=""
+if [ -n "$DIR" ] && [ -e "$DIR/vendor/rux-ds/PIN" ] && [ -z "$TPL$THEME$NAME$TITLE$PAGE" ]; then
+  MOVE_ONLY=1
+  OLD_PIN="$(sed -n 's/^commit  *//p' "$DIR/vendor/rux-ds/PIN" | cut -c1-7)"
+fi
+
 # ---- the questions, asked only for what was not given ---------------------
 # A numbered list, a default in brackets, Enter takes the default.
 ask() { # ask VAR "question" "default" "options or empty"
@@ -72,6 +88,7 @@ if [ -z "$DIR" ]; then
   echo "rux-ds: a new project. Enter takes the default."
   ask DIR "Folder for the project" "$HOME/Developer/my-app" ""
 fi
+if [ -z "$MOVE_ONLY" ]; then
 if [ -z "$TPL" ]; then
   echo "The page shape — each is a complete page, shell included (docs/choices.md):"
   ask TPL "Template" "app-shell" "$TEMPLATES"
@@ -91,6 +108,7 @@ if [ -z "$TITLE" ]; then
 fi
 if [ -z "$PAGE" ]; then
   ask PAGE "File name, without .html" "index" ""
+fi
 fi
 
 # ---- the pin --------------------------------------------------------------
@@ -129,7 +147,9 @@ for f in rux-theme.css rux-overrides.css; do
 done
 
 # ---- the page: five paths, then the five substitutions --------------------
-if [ -e "$DIR/$PAGE.html" ]; then
+if [ -n "$MOVE_ONLY" ]; then
+  PAGE_NOTE=""
+elif [ -e "$DIR/$PAGE.html" ]; then
   PAGE_NOTE="kept, already there"
 else
   N="$(esc "$NAME")"; P="$(esc "$PREFIX")"; T="$(esc "$TITLE")"
@@ -149,4 +169,8 @@ fi
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR"
 echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · PIN"
 echo "  rux-theme.css, rux-overrides.css   yours; left alone if present"
-echo "  $PAGE.html   $PAGE_NOTE"
+if [ -n "$MOVE_ONLY" ]; then
+  echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
+else
+  echo "  $PAGE.html   $PAGE_NOTE"
+fi
