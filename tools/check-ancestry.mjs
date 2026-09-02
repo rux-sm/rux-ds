@@ -459,7 +459,7 @@ const showAll = process.argv.includes('--all');
 // WHY THAT MATTERS AND WHY IT IS NOT A CONVENIENCE. A wrapper that is simply
 // absent is the defect class nothing else catches -- see the header -- and it
 // is the one a consumer is most likely to introduce, because a consumer
-// vendors css/, assets/ and js/ and inherits none of the enforcement. rux-ln-guides
+// vendors css/, assets/ and js/ and inherits none of the enforcement. rux-ln-notes
 // has hit it: a missing `__icon` class that flexbox squashed from 20px to 5px,
 // which its own two gates could not see and a person found by looking.
 //
@@ -471,7 +471,7 @@ const showAll = process.argv.includes('--all');
 // never committed, quoted or copied here.
 //
 //   node tools/check-ancestry.mjs                          # sink + templates
-//   node tools/check-ancestry.mjs ../rux-ln-guides/guides  # a consumer's pages
+//   node tools/check-ancestry.mjs ../rux-ln-notes/guides  # a consumer's pages
 //
 // This is the same fix `pageTargets()` took for the browser gates, and that
 // four node gates took at 9186429: a hardcoded page list is a gate that cannot

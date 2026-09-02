@@ -141,7 +141,7 @@ a URL, the date, and what was NOT covered.
 
 A consumer vendors `css/`, `assets/` and `js/` — **not this skill, not
 `sink/`, not the captures, and not the gates**. Everything in §4 is unenforced
-there unless the consumer adopts it deliberately. `rux-ln-guides` is the first
+there unless the consumer adopts it deliberately. `rux-ln-notes` is the first
 such project; its `vendor/rux-ds/PIN` records which commit its copy came from,
 and a reference read at a different commit than the vendored CSS is the drift
 that pin exists to prevent.
