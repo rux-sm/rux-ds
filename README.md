@@ -205,6 +205,7 @@ and the cells with it.
 | `docs/roadmap.md` | Canonical plan and decision log |
 | `docs/log.md` | **The record** — every dated pass, measurement and answered decision, moved out of "Picking this up" so README could stay current |
 | `docs/choices.md` | **What a project can choose** — shapes, shell parts, themes, field style, buttons — each attested, and which layer offers it |
+| `docs/operating-card.html` | **The printable two-page card for rux** — the per-session loop across rux-ds, atlas and notes, and the once-per-Mac setup. Not a rux-ds page; no gate reads it |
 | `docs/starting-a-project.md` | **How a project starts on a tag** — one command, three kinds of file, how the pin moves |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
 | `docs/audits.md` | **Which whole-project sweeps have been run, and what each did NOT look at** — the ledger only; every finding is filed where its decision lives |
