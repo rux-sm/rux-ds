@@ -127,6 +127,30 @@ const KNOWN = {
     + 'check-classes rejected it on the first run.'],
   'file-uploader:file-close': [['file-container-item'],
     'the same unstyled wrapper as file__state-container above.'],
+  // BATCH 5 OF §4.9, 2026-09-01.
+  //
+  // action-set is captured ONLY inside an open side panel, mounted in the
+  // story's `.content` shell; the standalone fragment demos the component
+  // alone and sink/side-panel.html shows it in place. Same shape as the
+  // aspect-ratio declines: the story's mount is not the component.
+  'action-set:action-set': [['content', 'side-panel', 'side-panel--open'],
+    'every capture mounts the set in an open side panel inside the story shell; the '
+    + 'fragment demos the set alone, and side-panel.html carries it in place.'],
+  'action-set:action-set--row-single': [['content', 'side-panel', 'side-panel--open'], 'as action-set above.'],
+  'action-set:action-set--md': [['content', 'side-panel', 'side-panel--md', 'side-panel--open'], 'as action-set above.'],
+  'action-set:action-set__action-button': [['content', 'side-panel', 'side-panel--open', 'side-panel__actions-container'], 'as action-set above.'],
+  'action-set:action-set__action-button--expressive': [['content', 'side-panel', 'side-panel--open', 'side-panel__actions-container'], 'as action-set above.'],
+  // The AI label's popover is `auto-align` in every capture: floating-ui
+  // placement this system has no JS for. The fragment fixes `--bottom` instead,
+  // the call sink/ai-label.html and the side-panel decorator already record.
+  'ai-label:ai-label__button--xs': [['popover--auto-align', 'autoalign'],
+    'floating-ui auto-alignment the fragment replaces with a fixed --bottom; recorded in the fragment.'],
+  'ai-label:ai-label__button--sm': [['popover--auto-align', 'autoalign'], 'as ai-label__button--xs above.'],
+  'ai-label:ai-label__button--md': [['popover--auto-align', 'autoalign'], 'as ai-label__button--xs above.'],
+  'ai-label:ai-label__button--inline': [['popover--auto-align', 'autoalign'], 'as ai-label__button--xs above.'],
+  'side-panel:ai-label__button--xs': [['popover--auto-align', 'autoalign'], 'as ai-label__button--xs above.'],
+  'dialog:dialog__close': [TOOLTIP_CHROME,
+    'the icon-tooltip the sink declines throughout; the POSITIONING wrapper, dialog__header-controls, is present.'],
   // BATCH 3 OF §4.9, 2026-09-01. The code snippet's copy button and the
   // pagination nav's arrows are icon-tooltips in every capture; the sink
   // declines that chrome throughout and names each site.
@@ -159,10 +183,12 @@ const KNOWN = {
     'the icon-tooltip the sink declines throughout. The reference wraps each '
     + '`card__action` button in one; the fragment demos the component rather than the '
     + "story's hover hint, on the combo-button precedent."],
-  'buttons:btn--expressive': [['content', 'btn-set'],
+  'buttons:btn--expressive': [['content', 'btn-set', 'side-panel', 'side-panel--open', 'action-set', 'side-panel__actions-container'],
     'the sink demos a standalone expressive button. `btn-set` contributes only '
     + '`max-inline-size: 20rem` to buttons inside a group, and `content` is the shell '
-    + 'page region every capture is mounted in.'],
+    + 'page region every capture is mounted in. Since batch 5 admitted side-panel, the '
+    + 'only stories rendering btn--expressive are its action sets, so the panel classes '
+    + 'joined the intersection; nothing in the CSS scopes the size to a panel.'],
   'buttons:inline-loading__animation': [['inline-loading'],
     'already recorded in the fragment: NO story renders `btn--loading` at all, so '
     + 'there is no sampled composition to match. The pairing follows the CSS, which '

@@ -78,24 +78,23 @@
      __header--has-navigation-back nor __navigation-back-button appears anywhere
      in the harvest. --resizable needs the resizer component, which has no
      reference in any Storybook. -->
-  <div class="ks-row">
-    <button type="button" class="rux--btn rux--btn--primary" data-ks-open="sp-right">Open right panel</button>
-    <button type="button" class="rux--btn rux--btn--secondary" data-ks-open="sp-left">Open left panel</button>
-    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-slide">Open slide-in panel</button>
-    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-toolbar">Open panel with toolbar</button>
-    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-notitle">Open panel with no title</button>
-    <button type="button" class="rux--btn rux--btn--tertiary" data-ks-open="sp-decorator">Open panel with decorator</button>
-  </div>
-  <div class="ks-label" style="margin-block-start:1rem">the other five widths</div>
-  <div class="ks-row">
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-xs">xs</button>
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-sm">sm</button>
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-lg">lg</button>
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-xl">xl</button>
-    <button type="button" class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-ks-open="sp-2xl">2xl</button>
-  </div>
-
-  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay" id="sp-right" hidden>
+  <!--
+    ADMITTED 2026-09-01, §4.9 batch 5. The stub carried two rows of
+    `data-ks-open` buttons that no script here reads — a harness that was
+    never written — and every panel `hidden`. The first panel is now OPEN in a
+    22rem sandbox, `--open` and an inline `position:absolute` on the panel and
+    its overlay standing in for Carbon's fixed positioning, as the ui-shell
+    fragment does. The other panels stay hidden: they are class specimens for
+    the widths and the toolbar, decorator and no-title headers, deliberately
+    not operable. No module drives a side panel yet.
+  -->
+  <!-- Every capture mounts the panel in the shell's `content` region, and
+       check-ancestry requires it above every panel class; the specimens sit
+       in one, as a page would put them. Carbon renders that region as <main>;
+       the sink already has its one, so this is a div, recorded in check-tags. -->
+  <div class="rux--content">
+  <div style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden">
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay rux--side-panel--open" id="sp-right" style="position:absolute" aria-label="Right panel">
     <div class="rux--side-panel__header rux--side-panel__header--has-title">
       <p class="rux--side-panel__label-text">Context</p>
       <div class="rux--side-panel__title">
@@ -105,7 +104,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -121,7 +120,8 @@
       <p>Panel body content scrolls independently of the page behind it.</p>
     </div>
   </aside>
-  <div class="rux--side-panel__overlay" id="sp-right-overlay" hidden></div>
+  <div class="rux--side-panel__overlay" id="sp-right-overlay" style="position:absolute"></div>
+  </div>
 
   <aside class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" hidden>
     <div class="rux--side-panel__header rux--side-panel__header--has-title">
@@ -132,7 +132,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -158,7 +158,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -183,7 +183,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -208,7 +208,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -233,7 +233,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -258,7 +258,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -283,7 +283,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -309,7 +309,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -369,7 +369,7 @@
       <div class="rux--side-panel__decorator-and-close">
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -426,7 +426,7 @@
         </div>
         <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
           <div class="rux--tooltip-trigger__wrapper">
-            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close" data-ks-close>
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
               <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
             </button>
           </div>
@@ -443,4 +443,5 @@
     </div>
   </aside>
   <div class="rux--side-panel__overlay" id="sp-decorator-overlay" hidden></div>
+  </div>
 </section>

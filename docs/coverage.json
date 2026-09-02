@@ -73,6 +73,10 @@
       "hit": 8,
       "own": 13
     },
+    "side-panel": {
+      "hit": 31,
+      "own": 50
+    },
     "time-picker": {
       "hit": 13,
       "own": 21
@@ -173,6 +177,10 @@
       "hit": 22,
       "own": 27
     },
+    "ai-label": {
+      "hit": 14,
+      "own": 17
+    },
     "file-uploader": {
       "hit": 23,
       "own": 28
@@ -189,6 +197,10 @@
       "hit": 5,
       "own": 6
     },
+    "action-set": {
+      "hit": 12,
+      "own": 14
+    },
     "progress-bar": {
       "hit": 12,
       "own": 14
@@ -204,6 +216,10 @@
     "treeview": {
       "hit": 17,
       "own": 19
+    },
+    "dialog": {
+      "hit": 12,
+      "own": 13
     },
     "menu": {
       "hit": 22,
@@ -224,6 +240,10 @@
     "badge-indicator": {
       "hit": 2,
       "own": 2
+    },
+    "chat-button": {
+      "hit": 4,
+      "own": 4
     },
     "fluid-combo-box": {
       "hit": 1,

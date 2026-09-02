@@ -69,6 +69,7 @@ const KNOWN = {
   'full-page-error__title': { tag: 'h2', reason: 'standalone h1 lowered only inside the assembled sink outline (full-page-error.html)' },
   'tile--disabled':         { tag: 'div', reason: 'classic selectable tile is div[role=checkbox]; only the feature-flag story disables, as a label (tile.html)' },
   'tree-node--active':      { tag: 'li', reason: 'active sampled only in the link tree, on <a>; non-link nodes are LIs (treeview.html)' },
+  'content':                { tag: 'div', reason: 'the kitchen sink already has its one <main>; the side-panel specimens sit in a content region written as a div (side-panel.html)' },
   'pagination-nav__page--active': { tag: 'div', reason: 'the icon wrapper when the current page sits in the overflow select -- Carbon writes `.select-icon-wrapper.page--active` and check-compound asks for it; the one story samples the active BUTTON only (pagination-nav.html)' },
 };
 

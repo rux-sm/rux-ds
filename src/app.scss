@@ -44,15 +44,15 @@
 // on a component with no line here, and on a line whose state disagrees with
 // its row. Roadmap §4.2.
 @use "@carbon/styles/scss/components/accordion";
-// @use "@carbon/styles/scss/components/action-set";
-// @use "@carbon/styles/scss/components/ai-label";
+@use "@carbon/styles/scss/components/action-set";
+@use "@carbon/styles/scss/components/ai-label";
 @use "@carbon/styles/scss/components/aspect-ratio";
 @use "@carbon/styles/scss/components/badge-indicator";
 @use "@carbon/styles/scss/components/big-number";
 @use "@carbon/styles/scss/components/breadcrumb";
 @use "@carbon/styles/scss/components/button";
 @use "@carbon/styles/scss/components/card";
-// @use "@carbon/styles/scss/components/chat-button";
+@use "@carbon/styles/scss/components/chat-button";
 @use "@carbon/styles/scss/components/checkbox";
 // @use "@carbon/styles/scss/components/coachmark";
 @use "@carbon/styles/scss/components/code-snippet";
@@ -79,7 +79,7 @@
 @use "@carbon/styles/scss/components/data-table/expandable";
 @use "@carbon/styles/scss/components/data-table/action";
 @use "@carbon/styles/scss/components/date-picker";
-// @use "@carbon/styles/scss/components/dialog";
+@use "@carbon/styles/scss/components/dialog";
 @use "@carbon/styles/scss/components/dropdown";
 @use "@carbon/styles/scss/components/EditInPlace";
 @use "@carbon/styles/scss/components/file-uploader";
@@ -142,7 +142,7 @@
 @use "@carbon/styles/scss/components/search";
 @use "@carbon/styles/scss/components/select";
 @use "@carbon/styles/scss/components/shape-indicator";
-// @use "@carbon/styles/scss/components/side-panel";
+@use "@carbon/styles/scss/components/side-panel";
 @use "@carbon/styles/scss/components/skeleton-styles";
 @use "@carbon/styles/scss/components/slider";
 // @use "@carbon/styles/scss/components/slug";

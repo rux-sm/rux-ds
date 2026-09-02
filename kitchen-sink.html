@@ -78,7 +78,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">63 sections</div>
+  <div class="ks-count">68 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#combo-button">Combo button</a>
@@ -143,6 +143,11 @@
     <a href="#full-page-error">Full-page error</a>
     <a href="#options-tile">Options tile</a>
     <a href="#scroll-gradient">Scroll gradient</a>
+    <a href="#dialog">Dialog</a>
+    <a href="#side-panel">Side panel</a>
+    <a href="#ai-label">AI label</a>
+    <a href="#chat-button">Chat button</a>
+    <a href="#action-set">Action set</a>
   </div>
 </nav>
 
@@ -7013,6 +7018,719 @@
     <div class="rux--scroll-gradient__start-horizontal" role="presentation" aria-hidden="true"></div>
     <div class="rux--scroll-gradient__end-vertical" role="presentation" aria-hidden="true"></div>
     <div class="rux--scroll-gradient__end-horizontal" role="presentation" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section class="ks-sec" id="dialog">
+  <h2>Dialog</h2><p>the newer primitive under modal · two-button and three-button footers</p>
+  <!-- PROVENANCE: rendered-dom · preview-dialog--modal, --non-modal,
+       --danger-dialog, --passive-dialog and --with-scrolling-content,
+       2026-08-28 · supersedes f9f5414, which claimed a React DOM diff the
+       fragment could not name -->
+  <!--
+    The close control is not a loose absolutely-positioned button, which is what
+    this fragment had — inline styles and all. Carbon wraps it in
+    `dialog__header-controls`, and the button is a real Button
+    (`dialog__close btn btn--ghost btn--icon-only`) whose glyph carries
+    `icon__close` — dropped here for having no rule in @carbon/styles
+    (§4.1.12). The inline positioning went with the wrapper that makes it
+    unnecessary.
+
+    Every remaining nesting finding is the icon-tooltip popover the reference
+    wraps the close button in, which the sink declines on the combo-button
+    precedent, plus the footer buttons: no story puts a ghost button in a
+    dialog footer, though that is what the three-button footer is for.
+  -->
+  <!--
+    ADMITTED 2026-09-01, §4.9 batch 5, and the ROOT was the correction: every
+    capture renders a native `<dialog class="dialog">`, `--modal` on the modal
+    forms — attested and unstyled, so not written (§4.1.12) — with
+    `dialog-container` INSIDE it. The stub had the container as a
+    static div. Carbon positions the dialog `fixed; inset: 0; margin: auto`, so
+    each specimen sits `open` in a relative sandbox with an inline
+    `position:absolute`, the ui-shell fragment's technique. The content carries
+    `layer-two` and the footer `btn-set`, both as captured. No module drives
+    `showModal()` yet; these are open, non-modal specimens.
+  -->
+  <div class="ks-grid">
+    <div style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden">
+    <dialog class="rux--dialog" open style="position:absolute" aria-labelledby="dlg-1-heading">
+    <div class="rux--dialog-container">
+      <div class="rux--dialog__header">
+        <h2 class="rux--dialog-header__label">Section</h2>
+        <h2 class="rux--dialog-header__heading" id="dlg-1-heading">Dialog heading</h2>
+        <div class="rux--dialog__header-controls">
+          <button type="button" class="rux--dialog__close rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+      <!--
+        Both classes on ONE element, corrected 2026-08-26. Carbon defines
+        `.rux--dialog-content.rux--dialog-scroll-content` and NO descendant
+        form, so nesting them split the pair: `-content` owns overflow-y:auto
+        and the grid area while `-scroll-content` owns the fade mask.
+      -->
+      <div class="rux--layer-two rux--dialog-content rux--dialog-scroll-content rux--dialog-scroll-content--no-fade">
+        <p>Body content for the dialog.</p>
+      </div>
+      <div class="rux--dialog-footer rux--btn-set">
+        <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
+        <button type="button" class="rux--btn rux--btn--primary">Confirm</button>
+      </div>
+    </div>
+    </dialog>
+    </div>
+    <div style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden">
+    <dialog class="rux--dialog" open style="position:absolute" aria-labelledby="dlg-2-heading">
+    <div class="rux--dialog-container">
+      <div class="rux--dialog__header">
+        <h2 class="rux--dialog-header__heading" id="dlg-2-heading">Destructive action</h2>
+        <div class="rux--dialog__header-controls">
+          <button type="button" class="rux--dialog__close rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Paired here too, and without --no-fade, so the danger-specific mask
+           rule is actually exercised by something. -->
+      <div class="rux--layer-two rux--dialog-content rux--dialog-scroll-content"><p>Danger variant.</p></div>
+      <div class="rux--dialog-footer rux--dialog-footer--three-button rux--btn-set">
+        <button type="button" class="rux--btn rux--btn--ghost">Discard</button>
+        <button type="button" class="rux--btn rux--btn--secondary">Cancel</button>
+        <button type="button" class="rux--btn rux--btn--danger">Delete</button>
+      </div>
+    </div>
+    </dialog>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="side-panel">
+  <h2>Side panel</h2><p>left and right placement — `--open` is Carbon's show hook</p>
+  <!-- PROVENANCE: rendered-dom · ibm-products.carbondesignsystem.com, 2026-08-27
+     components-sidepanel--slide-in (labelled), --slide-over (unlabelled) and
+     --with-static-title. Harvest: docs/carbon-ibm-products-dom.json.
+
+     @carbon/react has no side-panel. @carbon/styles ships the ibm-products one
+     under the cds prefix, and all 19 classes those stories emit are defined in
+     our CSS, so it is a real reference despite the c4p-- prefix on the origin.
+
+     THE HEADER IS THE REFERENCE'S, not an inference from selectors:
+
+       __header--has-title       present whenever there is a title at all
+       __label-text              a <p> BEFORE __title. Only slide-in renders one.
+       __title                   wraps both headings; takes --no-label when there
+                                 is no __label-text above it, which is what the
+                                 modifier means. Its only rules are compound —
+                                 `.side-panel .__title--no-label .__title-text`
+                                 and the same for __collapsed-title-text.
+       __collapsed-title-text    a SECOND h2 holding the same text, shown while
+                                 the header is collapsed.
+       __decorator-and-close     wraps the close control, position:absolute.
+       __close-button            icon-only PRIMARY button inside an icon-tooltip,
+                                 not the ghost text button this fragment had.
+       __subtitle-text           a <p> AFTER the close block, containing <strong>.
+       --scrolls                 pairs with __inner-content.
+
+     TWO CLASSES THE REFERENCE EMITS ARE NOT COPIED, both §4.1.12 cases —
+     @carbon/styles defines no rule for either, so check-classes would reject
+     them: __action-toolbar-button and
+     __subtitle-text-no-animation-no-action-toolbar.
+
+     --has-overlay and --slide-in are demoed as of 2026-08-27. The overlay is a
+     SIBLING of the panel, not a child: the stylesheet says so with
+     `.--side-panel--has-ai-label + .--side-panel__overlay`, and the rendered DOM
+     confirms it — button, aside, then div.__overlay. It is position:fixed at
+     z-index 6000, so harness.js hides it with its panel; left up it swallows
+     every click on the page. --has-overlay itself carries no paint: its only job
+     is suppressing the panel's box-shadow, via
+     `.--side-panel:not(.--side-panel--has-overlay)`. --slide-in drops the shadow
+     the same way and takes no overlay, which is how the reference renders it.
+
+     The action toolbar and the no-title header are demoed as of 2026-08-27.
+     __action-toolbar sits INSIDE __header, after __subtitle-text, not beside
+     it — with-action-toolbar renders it there. __actions-container is a
+     different thing at panel level, a sibling of __inner-content, and it is an
+     action-set: `action-set __actions-container action-set--md btn-set` with
+     role=presentation. without-title is exactly __header with no --has-title
+     modifier and nothing in it but the close control.
+
+     --has-action-toolbar AND __header--has-action-toolbar ARE NOT USED, and
+     that is deliberate. Both are defined in @carbon/styles, but the reference
+     emits neither — zero occurrences across all ten stories, including the two
+     that actually render a toolbar. Defined-but-unemitted is the mirror of
+     §4.1.12, and the same answer applies: follow what Carbon renders, not what
+     its stylesheet leaves lying about. Demoing them would be invention.
+
+     --has-decorator is demoed as of 2026-08-27, and it proves the overlay is
+     placed right. Carbon tints the overlay for a decorated panel through an
+     ADJACENT SIBLING selector, `.--side-panel--has-decorator +
+     .--side-panel__overlay`. Measured: the decorated panel's overlay is
+     rgba(0,17,65,0.5) while the two plain ones are rgba(0,0,0,0.6). That
+     selector cannot match a child or a distant sibling, so the tint firing is
+     independent confirmation of the placement. --has-decorator also swaps the
+     panel's shadow for the AI glow, inset 0 -80px 70px -65px.
+
+     FOUR CLASSES ARE DEFINED BUT NEVER EMITTED, and are not used here:
+     __ai-label-and-close, __slug-and-close, --has-ai-label and --has-slug, all
+     zero occurrences across the ten stories. The generic --has-decorator /
+     __decorator-and-close pair superseded them; @carbon/styles still carries
+     both spellings, and its own AI rules still list all three. Same trap as
+     --has-action-toolbar: check-classes would accept any of them, because they
+     have rules. Only the reference says they are dead.
+
+     Not yet demoed: --resizable, --condensed-actions, --closing, and the
+     second-step navigation. The second step needs a click to reach, so
+     panel-with-second-step captures only step one and neither
+     __header--has-navigation-back nor __navigation-back-button appears anywhere
+     in the harvest. --resizable needs the resizer component, which has no
+     reference in any Storybook. -->
+  <!--
+    ADMITTED 2026-09-01, §4.9 batch 5. The stub carried two rows of
+    `data-ks-open` buttons that no script here reads — a harness that was
+    never written — and every panel `hidden`. The first panel is now OPEN in a
+    22rem sandbox, `--open` and an inline `position:absolute` on the panel and
+    its overlay standing in for Carbon's fixed positioning, as the ui-shell
+    fragment does. The other panels stay hidden: they are class specimens for
+    the widths and the toolbar, decorator and no-title headers, deliberately
+    not operable. No module drives a side panel yet.
+  -->
+  <!-- Every capture mounts the panel in the shell's `content` region, and
+       check-ancestry requires it above every panel class; the specimens sit
+       in one, as a page would put them. Carbon renders that region as <main>;
+       the sink already has its one, so this is a div, recorded in check-tags. -->
+  <div class="rux--content">
+  <div style="position:relative;height:22rem;border:1px solid var(--rux-border-subtle);overflow:hidden">
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay rux--side-panel--open" id="sp-right" style="position:absolute" aria-label="Right panel">
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <p class="rux--side-panel__label-text">Context</p>
+      <div class="rux--side-panel__title">
+        <h2 class="rux--side-panel__title-text">Right panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Right panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>With a label and a subtitle, as slide-in renders it.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Panel body content scrolls independently of the page behind it.</p>
+    </div>
+  </aside>
+  <div class="rux--side-panel__overlay" id="sp-right-overlay" style="position:absolute"></div>
+  </div>
+
+  <aside class="rux--side-panel rux--side-panel--left-placement rux--side-panel--md" id="sp-left" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">Left panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Left panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>No label, so the title block carries --no-label.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Left-placed panel. Same header shape, mirrored placement.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xs" id="sp-xs" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">xs panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">xs panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --xs.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--sm" id="sp-sm" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">sm panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">sm panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --sm.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--lg" id="sp-lg" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">lg panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">lg panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --lg.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--xl" id="sp-xl" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">xl panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">xl panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --xl.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--2xl" id="sp-2xl" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">2xl panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">2xl panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Width variant --2xl.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--slide-in" id="sp-slide" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">Slide-in panel</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">Slide-in panel</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>No overlay, and the stylesheet drops the shadow too.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Slide-in sits beside the page rather than over it, so the content behind stays reachable.</p>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md" id="sp-toolbar" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">With an action toolbar</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">With an action toolbar</h2>
+      </div>
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>The toolbar sits inside the header, after the subtitle.</strong></p>
+      <!--
+        Carbon puts __action-toolbar-button on all three of these and
+        __action-toolbar-leading-button on the first as well. @carbon/styles has
+        no rule for __action-toolbar-button, so check-classes would reject it and
+        it is left off — roadmap §4.1.12. The leading class is kept; it has one.
+      -->
+      <div class="rux--side-panel__action-toolbar">
+        <button type="button" class="rux--side-panel__action-toolbar-leading-button rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm">Primary action</button>
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm rux--btn--icon-only" aria-label="Edit">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-edit"/></svg>
+        </button>
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm rux--btn--icon-only" aria-label="Delete">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-trash-can"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>Body content. The action toolbar above scrolls away with the header; the action set below is pinned.</p>
+    </div>
+    <div class="rux--action-set rux--side-panel__actions-container rux--action-set--md rux--btn-set" role="presentation">
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--secondary rux--btn--expressive">Cancel</button>
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--primary rux--btn--expressive">Save</button>
+    </div>
+  </aside>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-overlay rux--side-panel--condensed-actions" id="sp-notitle" hidden>
+    <!-- No title, so __header carries NO --has-title and holds only the close
+         control. This is components-sidepanel--without-title exactly.
+
+         --condensed-actions is NOT from the reference. No story emits it,
+         across all eighteen that render a side panel. It is kept because it is
+         live rather than superseded: .--side-panel sets
+         --rux--side-panel--actions-height to 4rem and --condensed-actions sets
+         it to 3rem. Nothing else in the stylesheet does that job, so unlike
+         --has-ai-label this is undemoed rather than dead.
+
+         The variable is read by
+         `.--side-panel .__actions-container .--action-set__action-button`, so
+         it sizes the BUTTONS, not the container. That distinction was found by
+         being wrong about it: the first version of this demo set the modifier,
+         measured the container, saw 49px either way, and looked like a dead
+         class. The buttons here were missing --action-set__action-button
+         entirely, so the rule had nothing to match. With it, and with the
+         --expressive pairing the reference uses, the buttons measure 50px here
+         against 64px in every other panel. -->
+    <div class="rux--side-panel__header">
+      <div class="rux--side-panel__decorator-and-close">
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>A panel with no title at all. The header collapses to just the close button.</p>
+    </div>
+    <div class="rux--action-set rux--side-panel__actions-container rux--action-set--row-single rux--action-set--md rux--btn-set" role="presentation">
+      <button type="button" class="rux--action-set__action-button rux--action-set__action-button--expressive rux--btn rux--btn--primary rux--btn--expressive">Done</button>
+    </div>
+  </aside>
+  <div class="rux--side-panel__overlay" id="sp-notitle-overlay" hidden></div>
+
+  <aside class="rux--side-panel rux--side-panel--right-placement rux--side-panel--md rux--side-panel--has-decorator rux--side-panel--has-overlay" id="sp-decorator" hidden>
+    <div class="rux--side-panel__header rux--side-panel__header--has-title">
+      <div class="rux--side-panel__title rux--side-panel__title--no-label">
+        <h2 class="rux--side-panel__title-text">With a decorator</h2>
+        <h2 class="rux--side-panel__collapsed-title-text">With a decorator</h2>
+      </div>
+      <!--
+        The decorator goes INSIDE __decorator-and-close, BEFORE the close
+        control, and the root takes --has-decorator. Two departures from the
+        reference, both deliberate:
+
+        · The reference's toggletip is --auto-align, which exists so floating-ui
+          can place it; the rule
+          `.--popover-container:not(.--popover--auto-align)` means the container
+          drops position:relative when it is set. With no auto-align JS here the
+          popover would be placed from the wrong box, so --left is used instead.
+        · ai-label__button--default is dropped. @carbon/styles defines no rule
+          for it — §4.1.12.
+      -->
+      <div class="rux--side-panel__decorator-and-close">
+        <div class="rux--ai-label">
+          <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--toggletip">
+            <button type="button" class="rux--toggletip-button rux--ai-label__button rux--ai-label__button--xs" aria-expanded="false" aria-label="AI information">
+              <span class="rux--ai-label__text">AI</span>
+            </button>
+            <span class="rux--popover">
+              <span class="rux--popover-content rux--ai-label-content">
+                <div class="rux--toggletip-content">
+                  <p>Summarised by a model from the records in this panel.</p>
+                </div>
+              </span>
+              <span class="rux--popover-caret"></span>
+            </span>
+          </span>
+        </div>
+        <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--left rux--tooltip rux--icon-tooltip">
+          <div class="rux--tooltip-trigger__wrapper">
+            <button type="button" class="rux--side-panel__close-button rux--btn rux--btn--primary rux--btn--icon-only" aria-label="Close">
+              <svg class="rux--side-panel--btn__icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <span class="rux--popover" role="tooltip">
+            <span class="rux--popover-content rux--tooltip-content">Close</span>
+            <span class="rux--popover-caret"></span>
+          </span>
+        </span>
+      </div>
+      <p class="rux--side-panel__subtitle-text"><strong>--has-decorator on the root, the decorator itself beside the close button.</strong></p>
+    </div>
+    <div class="rux--side-panel__inner-content rux--side-panel--scrolls">
+      <p>The decorator sits in the header, not the body.</p>
+    </div>
+  </aside>
+  <div class="rux--side-panel__overlay" id="sp-decorator-overlay" hidden></div>
+  </div>
+</section>
+
+<section class="ks-sec" id="ai-label">
+  <h2>AI label</h2><p>the AI affordance · sizes and inline form</p>
+  <!-- PROVENANCE: rendered-dom · components-ailabel--default and --inline,
+       2026-08-28 -->
+  <!--
+    The AI button is not a direct child of `.rux--ai-label`. Carbon puts a
+    toggletip popover container between them — `popover-container
+    popover--caret popover--high-contrast popover--bottom toggletip` — and the
+    button is that toggletip's trigger, which is why it also carries
+    `toggletip-button`. Without the container the trigger has no popover to
+    open and the caret rules have no element.
+
+    The reference also emits `popover--auto-align` and `autoalign`; both are
+    the floating-ui placement this system has no JS for yet, so a fixed
+    `--bottom` is used instead — the same call the side-panel decorator made.
+  -->
+  <!--
+    ADMITTED 2026-09-01, §4.9 batch 5. The md label now carries the popover the
+    capture renders — `popover > popover-content.ai-label-content >
+    toggletip-content` with a body and an `ai-label-actions` row — so the
+    toggletip has a surface to open; the button is `toggletip-button` first and
+    wraps its text in `ai-label__text`, as captured; `ai-label__button--default`
+    is attested and unstyled and is not written (§4.1.12). The three action buttons
+    are written without their icon-tooltip chrome, on the sink's standing
+    decline. `--revert` and the 2xs, lg and xl button sizes have rules in
+    @carbon/styles and no story renders them; kept as the file-uploader states
+    are, and named here so the next diff does not rediscover them.
+  -->
+  <div class="ks-row" style="padding-block:1rem">
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--xs rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
+    </div>
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--2xs" aria-label="AI information">AI</button>
+      </span>
+    </div>
+    <div class="rux--ai-label rux--ai-label--revert">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--toggletip-button rux--ai-label__button--inline" aria-label="AI information">
+        AI<span class="rux--ai-label__additional-text">&nbsp;generated</span>
+      </button>
+      </span>
+    </div>
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--sm rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
+    </div>
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--toggletip-button rux--ai-label__button rux--ai-label__button--md" aria-expanded="false" aria-label="AI Show information"><span class="rux--ai-label__text">AI</span></button>
+        <span class="rux--popover">
+          <span class="rux--popover-content rux--ai-label-content">
+            <div class="rux--toggletip-content">
+              <div>
+                <p>AI explained</p>
+                <h2>84%</h2>
+                <p>Confidence score</p>
+                <p>This is not a real model. The label and its confidence are specimen copy.</p>
+                <hr>
+                <p>Model type</p>
+                <p>Foundation model</p>
+                <a class="rux--link" href="#">View details</a>
+              </div>
+              <div class="rux--toggletip-actions rux--ai-label-actions">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="View"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-view"/></svg></button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Open folder"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-folder"/></svg></button>
+                <button type="button" class="rux--btn rux--btn--primary">View literature</button>
+              </div>
+            </div>
+          </span>
+          <span class="rux--popover-caret"></span>
+        </span>
+      </span>
+    </div>
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--lg rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
+    </div>
+    <div class="rux--ai-label">
+      <span class="rux--popover-container rux--popover--caret rux--popover--high-contrast rux--popover--bottom rux--toggletip">
+        <button type="button" class="rux--ai-label__button rux--ai-label__button--xl rux--toggletip-button" aria-label="AI information">AI</button>
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="chat-button">
+  <h2>Chat button</h2><p>quick actions · with icon</p>
+  <!-- PROVENANCE: rendered-dom · preview-chatbutton--default, 2026-08-28 -->
+  <!--
+    A chat button is a Button with `chat-btn` over it, and the reference always
+    gives it a SIZE PAIR — `btn--<size>` + `layout--size-<size>` — which this
+    fragment omitted, leaving every one at the unclassed default. The reference
+    also emits `chat-btn--sm` / `--md`; both are dropped for having no rule in
+    @carbon/styles (§4.1.12).
+  -->
+  <div class="ks-row">
+    <button type="button" class="rux--chat-btn rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary">Send</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--with-icon rux--btn rux--btn--md rux--layout--size-md rux--btn--tertiary">With icon</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--quick-action rux--btn rux--btn--md rux--layout--size-md rux--btn--ghost">Quick action</button>
+    <button type="button" class="rux--chat-btn rux--chat-btn--quick-action rux--chat-btn--quick-action--selected rux--btn rux--btn--md rux--layout--size-md rux--btn--ghost">Selected</button>
+  </div>
+</section>
+
+<section class="ks-sec" id="action-set">
+  <h2>Action set</h2><p>single · double · triple rows</p>
+  <!-- PROVENANCE: rendered-dom · the side-panel action sets in
+       components-sidepanel--slide-over and its size recipes, and
+       patterns-create-flows-createsidepanel--create-side-panel@open,
+       2026-08-28 · @carbon/react has no ActionSet; it is an ibm-products
+       component that @carbon/styles compiles -->
+  <!--
+    Two classes have no reference and are kept deliberately.
+    `action-set--row-triple` and `__action-button--ghost` are unreachable in
+    the harvest: the side-panel stories map their action count through a
+    numeric control that a URL arg never applies, so only the single and double
+    rows can be captured (recorded in tools/extract/react-dom.js). Both are
+    real CSS with rules behind them.
+
+    The ghost button in the action set is the same gap seen from the other
+    side: no sampled action set contains one.
+  -->
+  <!--
+    .rux--action-set sets align-items and justify-content but NOT display — it is
+    also a .rux--btn-set, which is what supplies display:flex (css/rux.css:2353).
+    Without it the buttons are block-level and overlap.
+
+    `--stacking` is deliberately not shown: @carbon/styles contains no rule that
+    implements it, only a `:not(.rux--action-set--stacking)` negation. Carbon's React
+    ActionSet computes the stacked layout in JS, so the class is inert in light DOM.
+  -->
+  <div style="display:grid;gap:1rem">
+    <div class="rux--action-set rux--btn-set rux--action-set--row-single rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-triple rux--action-set--lg">
+      <button type="button" class="rux--btn rux--btn--ghost rux--action-set__action-button rux--action-set__action-button--ghost">Discard</button>
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
+    </div>
+
+    <!--
+      --sm is paired with row-single deliberately. Carbon gives a width to
+      row-single+md, row-double+md|lg, row-triple+lg, xl and 2xl — and to nothing
+      at --sm (_action-set.scss:55-108). Two buttons at sm therefore keep the
+      btn-set default of full width each and run off the left of the page, which
+      is what check-rendered reported as an escape.
+    -->
+    <div class="rux--action-set rux--btn-set rux--action-set--row-single rux--action-set--sm">
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">sm · single</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--md">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">md</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--xl">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">xl</button>
+    </div>
+
+    <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--2xl">
+      <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
+      <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button rux--action-set__action-button--expressive">2xl · expressive</button>
+    </div>
   </div>
 </section>
 </main>
