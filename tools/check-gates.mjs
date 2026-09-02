@@ -131,4 +131,14 @@ if (never.length) console.log(`  ${never.length} cell${never.length === 1 ? '' :
   + `never run. Sweep the page and record it in docs/gate-coverage.json`);
 console.log();
 
+// THE HOOKS ARE PER CLONE, and until 2026-09-02 nothing in verify said so: a
+// fresh clone commits with no checks and every gate still passes. Reported,
+// not enforced -- CI has no hooks and no need of them.
+if (!process.env.CI) {
+  const { spawnSync } = await import('node:child_process');
+  const hp = (spawnSync('git', ['config', 'core.hooksPath'], { encoding: 'utf8' }).stdout ?? '').trim();
+  if (hp !== '.githooks')
+    console.log('  WARNING: commit hooks are not armed in this clone — git config core.hooksPath .githooks\n');
+}
+
 process.exit(never.length ? 1 : 0);

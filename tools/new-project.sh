@@ -118,6 +118,18 @@ if [ -n "$(git -C "$HERE" status --porcelain -uno)" ]; then
   git -C "$HERE" status --short -uno
   exit 1
 fi
+# PUSHED, NOT ONLY CLEAN. A pin names a commit; if the other machine never
+# receives it, the pin names nothing there. Measured 2026-09-02: the portal
+# sat committed and unpushed on one Mac while the README on the other pointed
+# at it. Compared against the last fetch, which is the best a local check has.
+UP="$(git -C "$HERE" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
+if [ -z "$UP" ]; then
+  echo "note: rux-ds has no upstream branch; pushed-ness not checked"
+elif [ "$(git -C "$HERE" rev-list --count "$UP..HEAD")" != "0" ]; then
+  echo "rux-ds has commits not on $UP. Push them first -- a pin that names an"
+  echo "unpushed commit names nothing on the other machine."
+  exit 1
+fi
 SHA="$(git -C "$HERE" rev-parse HEAD)"
 TAG="$(git -C "$HERE" describe --tags --exact-match 2>/dev/null || true)"
 OUT="$DIR/vendor/rux-ds"
