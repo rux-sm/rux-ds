@@ -283,7 +283,7 @@ ${navItem('gates', 'Gates', 'checkmark--outline', false)}
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h1 id="status">rux-ds</h1>
-          <p>A framework-free CSS/HTML/JS design system, derived from Carbon v11 by subtraction. Every figure below is read from this repository at build time.</p>
+          <p>A framework-free CSS/HTML/JS design system, built from Carbon v11, kept as complete as its markup allows. Every figure below is read from this repository at build time.</p>
           <!-- with-row-gap: the tiles wrap at md and below, and without it the
                rows butt together into one unbroken slab of layer colour. -->
           <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
