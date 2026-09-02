@@ -62,6 +62,23 @@ the phase numbers are names, not positions. Roadmap §4.4.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**WHERE THIS STOPPED, 2026-09-02, and the next steps in order.** Phases 9, 10 and
+11 are done; the plan being executed is roadmap §4.12 (three creators and the Rux
+Portal). Landed: the script questionnaire, `docs/choices.md`, the switcher panel in
+every template with its behaviour (`v0.1.1`), and the portal itself, committed in
+`~/Developer/rux-sm.github.io` and NOT yet pushed — the GitHub repository
+`rux-sm/rux-sm.github.io` must be created by hand first. Then, in order:
+
+1. Push the portal, enable Pages from its workflow, open https://rux-sm.github.io/.
+2. Notes gets the switcher button, panel and `/switcher.js` (in `rux-ln-notes`,
+   its own task) and becomes module two in fact.
+3. Creator 2, the `rux-ds-page` skill's multiple-choice flow, offering only what
+   `docs/choices.md` lists and gating the result through this root.
+4. Creator 3, the configurator page, as a portal page. Last.
+
+Open decisions, rux's: the hub's name (`portal.html` here is the gate dashboard), and
+the custom theme's accent (`css/rux-theme.css` carries a purple placeholder).
+
 **DONE 2026-08-31 — the two `ibm-products` captures carry provenance.** They were the
 last unattributed input to a gate; nothing in `docs/carbon-*.json` says `unknown` any
 more. Re-captured against `https://ibm-products.carbondesignsystem.com`, 21 stories and

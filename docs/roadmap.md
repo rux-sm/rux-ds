@@ -2687,6 +2687,11 @@ panel with invented entries. Two decisions still rux's: the hub's name, since
 `portal.html` here is the gate dashboard; and where the module manifest
 contract is written down.
 
+**Stopped 2026-09-02 with the portal committed locally and unpushed**, waiting
+on the repository being created by hand. Next in order: push and enable Pages;
+the switcher on Notes; creator 2 (the skill); creator 3 (the configurator).
+README "Picking this up" carries the same list and is the one to update.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
