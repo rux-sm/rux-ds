@@ -74,8 +74,14 @@ copy afterwards.
 ```sh
 git -C rux-ds fetch --tags && git -C rux-ds checkout v0.2.0
 sh rux-ds/tools/new-project.sh ~/Developer/my-app
+git -C rux-ds checkout main
 git -C ~/Developer/my-app diff --stat vendor/
 ```
+
+With a `PIN` already under `vendor/rux-ds/` and nothing else named, the script
+asks nothing and writes no page — it moves the pin and stops. Name a template
+or a page to add one. The third line puts your rux-ds clone back on `main`;
+without it the clone sits on a detached tag until you notice.
 
 Additions are safe. A class that LEFT is the one hazard, and `CHANGES.md` in
 rux-ds is the list, newest first, with the commit; read it between the two
