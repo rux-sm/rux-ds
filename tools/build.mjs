@@ -128,30 +128,21 @@ const JS_TRIPWIRE_KB = 60;
 // covered. Admitting the fluid family took the stylesheet from 66.4 to 70.5 KB
 // and NOTHING would have stopped it at 75.
 //
-// RAISED TO 85 KB. The ceiling is full Carbon at 94.0 KB gzipped with four
-// themes (README's before-the-strip row), so 85 sits 14.5 KB above today and
-// 9 KB below everything.
+// RAISED FROM 85 TO 96 KB on 2026-09-01 for the completeness decision. Measured
+// in memory against the CURRENT @carbon/styles: all 83 components and all four
+// themes are 93.955 KB gzipped; batch 5 and four themes are 92.423 KB. 96 is one
+// clear integer step above the full-Carbon ceiling without the unsupported room
+// 100 would add. Roadmap 2.1 carries the measurement and decision.
 //
-// A THEME ACCIDENT DOES NOT REACH IT, AND NEVER REACHED 75 EITHER. 2.1 names
-// two accidents this tripwire is for -- "a theme added by accident, a
-// component family re-enabled" -- and the first one was checked rather than
-// assumed: adding BOTH remaining themes, g10 and g90, moves the stylesheet
-// from 70.5 to 73.4 KB. +2.9 KB for two whole themes, because a theme is ~600
-// custom-property VALUES and gzip dedupes them against the two already there.
-// The old 75 would not have caught it either; the rationale was never
-// measured. Roadmap 2.1 carries the correction.
+// THIS CHANGES WHAT THE ALARM MEANS. It no longer notices the full component set
+// being re-enabled; completeness makes that a legitimate state. It notices this
+// build OUTGROWING full Carbon, which means duplication or an opt-in layer rather
+// than admission. That is weaker than 85 and is stated rather than hidden.
 //
-// SO WHAT THIS ACTUALLY CATCHES IS THE COMPONENT SET, which is the term that
-// dominates: 23.5 KB separates today's keep-set from all of Carbon. 85 trips
-// on roughly two thirds of the remaining components coming back at once, and
-// leaves room for the deliberate admissions 75 no longer had room for -- the
-// fluid family alone was +5.04 KB.
-//
-// IF THIS TRIPS, DO NOT RAISE IT AGAIN WITHOUT READING 2.1. The honest response
-// to a tripwire is to re-open the set, and a number amended each time it is
-// tested was never a constraint -- which is the argument 2.1 used to delete the
-// KB target and 4.5 used to delete the JS budget.
-const CSS_TRIPWIRE_KB = 85;
+// IF THIS TRIPS, re-measure full Carbon on the pinned dependency before touching
+// the number. A Carbon bump may move the ceiling; a build above that ceiling is
+// still a fault.
+const CSS_TRIPWIRE_KB = 96;
 const jsFiles = readdirSync('js').filter(f => f.endsWith('.js')).sort();
 const jsRaw = jsFiles.map(f => readFileSync(join('js', f)));
 const jsGzip = gzipSync(Buffer.concat(jsRaw), { level: 9 }).length / 1024;

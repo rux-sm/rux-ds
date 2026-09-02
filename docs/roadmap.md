@@ -192,10 +192,30 @@ shape?** That is a question to answer in the open, not a veto.
 > with no row, and `check-coverage` still refuses a component that renders nowhere —
 > which is the check that now does the work rule 1 was doing badly.
 
-**Tripwire.** If the built stylesheet exceeds **85 KB gzipped**, something has gone
-wrong structurally — a component family re-enabled, an opt-in layer switched on.
-Re-open the set. This is a smoke alarm, not a thermostat: it sits where no legitimate
-sequence of admissions reaches it.
+**Tripwire.** If the built stylesheet exceeds **96 KB gzipped**, it has outgrown the
+current full-Carbon ceiling. That means duplication or an opt-in layer, not admission.
+Re-measure full Carbon on the pinned dependency before changing the number.
+
+> **RAISED FROM 85 TO 96 ON 2026-09-01 FOR THE COMPLETENESS DECISION.** The old
+> invariant was that no legitimate admission reached 85. Batch 5 does: measured in
+> memory from the same manifest and Sass compiler the build uses, without changing the
+> tree:
+>
+>     72 components, 2 themes, current       84.681 KB gzipped
+>     77 components, 2 themes, batch 5       91.719 KB gzipped
+>     77 components, 4 themes, phase 10      92.423 KB gzipped
+>     83 components, 2 themes, full set      93.231 KB gzipped
+>     83 components, 4 themes, full Carbon   93.955 KB gzipped
+>
+> 96 is one clear integer step above the measured ceiling. 94 would sit only
+> 0.045 KB above it and flap on the next dependency movement; 100 would add 4 KB
+> of room with no measurement supporting it.
+>
+> **WHAT THIS MAKES WEAKER.** The tripwire no longer notices the full set being
+> re-enabled. It notices the build outgrowing Carbon. Completeness makes all captured
+> components legitimate options, so the old component-set alarm and the current goal
+> cannot both survive. The 75-to-85 account below is retained as history; its claim
+> that the full component set must trip is superseded by this decision.
 
 > **RAISED FROM 75 TO 85 ON 2026-08-31, AND ENFORCED FOR THE FIRST TIME.** Both halves
 > matter. The number read 75 and lived in PROSE ONLY — nothing computed it — so

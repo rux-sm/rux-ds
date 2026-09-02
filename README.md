@@ -572,7 +572,7 @@ overwrites it. The gzipped figures are whole KB on purpose: they are read at
 level 9 and the last hundred bytes still depend on the zlib the running Node
 bundles, so an exact figure makes the build fail on whichever machine did not
 generate it. The tripwires those
-sizes run against — 85 KB for `css/`, 60 KB for `js/` — are decisions rather
+sizes run against — 96 KB for `css/`, 60 KB for `js/` — are decisions rather
 than measurements and live with their reasoning in `tools/build.mjs`.
 <!-- STATS:END -->
 
