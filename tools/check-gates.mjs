@@ -112,7 +112,7 @@ if (blocked.length && !gapsOnly) {
 }
 
 console.log();
-// This tool is NOT one of the 14. It checks the coverage of those gates, not
+// This tool is NOT one of the gates it counts. It checks the coverage of those gates, not
 // the design system, so it reads the registry rather than appearing in it.
 console.log(`  ${GATES.length} gates — ${inVerify().length} in npm run verify, `
   + `${browserGates().length} need a browser; this coverage check runs there too`);

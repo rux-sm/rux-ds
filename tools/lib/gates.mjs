@@ -262,7 +262,7 @@ export const GATES = [
     kind: 'node',
     inVerify: true,
     catches: 'a class on a different element type than Carbon renders it on',
-    blindTo: 'classes no story emits (16 today)',
+    blindTo: 'classes no story emits (81 today)',
     reads: 'per-file',
     fileTargets: ROOTS,
     pageTargets: [],
@@ -271,7 +271,7 @@ export const GATES = [
       'docs/carbon-react-states.json', 'docs/carbon-ibm-products-states.json'],
     redRun: 'move a class onto an element type no story renders it on',
     sideEffects: null,
-    baseline: '5 known divergences · 34 classes with no reference · 0 on a different element',
+    baseline: '10 known divergences · 81 classes with no reference · 0 on a different element',
   },
   {
     id: 'check-ancestry',
@@ -291,7 +291,7 @@ export const GATES = [
     // KNOWN is keyed `fragment:class`, so a template entry is separate from the
     // sink's. That is why byte-identical markup copied into a new file can fail:
     // the adjudication does not travel with it.
-    baseline: '26 declines, each with a reason · 0 missing · 492 classes corroborated',
+    baseline: '84 declines, each with a reason · 0 missing · 550 classes corroborated',
   },
   {
     id: 'check-coverage',
@@ -328,7 +328,7 @@ export const GATES = [
     inputs: ['src/app.scss', 'docs/inventory.md', 'docs/inventory.json', 'node_modules/@carbon/styles'],
     redRun: 'change any row\'s disposition to UNDECIDED, or comment out a KEEP component\'s @use, or set the `carbon` field in docs/inventory.json to another version — the stale fault, verified 2026-09-02 on the unstamped file',
     sideEffects: null,
-    baseline: '83 carbon · 83 rows · 34 KEEP · 14 DEFER · 35 CUT · 83 listed · 34 compiling',
+    baseline: '83 carbon · 83 rows · 77 KEEP · 2 DEFER · 4 CUT · 83 listed · 77 compiling',
     // A RENAME arrives as one phantom and one unrowed with nothing tying them
     // together. Both are findings, so nothing is missed; the gate just cannot
     // say they are the same component under a new name.
@@ -394,7 +394,7 @@ export const GATES = [
     inputs: ROOTS,
     redRun: 'strip a PROVENANCE comment from any fragment',
     sideEffects: null,
-    baseline: '39 files labelled · 33 rendered-dom · 6 source · 0 inferred · 6 templates verified-live · 12 modules, 10 derived · 2 verified-live',
+    baseline: '39 files labelled · 33 rendered-dom · 6 source · 0 inferred · 10 templates verified-live · 14 modules · 14 verified-live',
   },
 
   // ── browser-only ────────────────────────────────────────────────────────
@@ -487,7 +487,7 @@ export const GATES = [
     // The sink only. It drives real components, so it needs one of everything —
     // a selectable table, an overflow menu, tabs, an accordion, a modal, a
     // dismissible notification, a toggle and a dropdown. No template carries
-    // that set, and five of the twelve modules bind to nothing in any template.
+    // that set, and five of the modules bind to nothing in any template.
     fileTargets: [],
     pageTargets: ['kitchen-sink.html'],
     canRun: { sink: true, templates: false },
