@@ -1,5 +1,6 @@
 {
- "generated": "2026-08-31",
+ "generated": "2026-09-02",
+ "carbon": "1.114.0",
  "baselineClasses": [
   "rux--layout--density-condensed",
   "rux--layout--density-normal",
@@ -68,7 +69,7 @@
    ],
    "classCount": 27,
    "minBytes": 3257,
-   "gzipBytes": 727,
+   "gzipBytes": 726,
    "deps": [],
    "depsAll": [],
    "tokenCount": 521,
@@ -91,7 +92,7 @@
    ],
    "classCount": 10,
    "minBytes": 2192,
-   "gzipBytes": 455,
+   "gzipBytes": 457,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -125,7 +126,7 @@
    ],
    "classCount": 21,
    "minBytes": 3833,
-   "gzipBytes": 691,
+   "gzipBytes": 690,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -175,7 +176,7 @@
    ],
    "classCount": 37,
    "minBytes": 5035,
-   "gzipBytes": 1227,
+   "gzipBytes": 1226,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -227,7 +228,7 @@
    ],
    "classCount": 39,
    "minBytes": 12710,
-   "gzipBytes": 1716,
+   "gzipBytes": 1714,
    "deps": [],
    "depsAll": [],
    "tokenCount": 522,
@@ -259,7 +260,7 @@
    ],
    "classCount": 19,
    "minBytes": 2504,
-   "gzipBytes": 402,
+   "gzipBytes": 403,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -514,7 +515,7 @@
    ],
    "classCount": 242,
    "minBytes": 101071,
-   "gzipBytes": 8668,
+   "gzipBytes": 8650,
    "deps": [
     "slug"
    ],
@@ -549,7 +550,7 @@
    ],
    "classCount": 12,
    "minBytes": 749,
-   "gzipBytes": 190,
+   "gzipBytes": 191,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -564,7 +565,7 @@
    ],
    "classCount": 2,
    "minBytes": 592,
-   "gzipBytes": 193,
+   "gzipBytes": 195,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -596,7 +597,7 @@
    ],
    "classCount": 19,
    "minBytes": 4227,
-   "gzipBytes": 595,
+   "gzipBytes": 601,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -847,7 +848,7 @@
    ],
    "classCount": 238,
    "minBytes": 89390,
-   "gzipBytes": 8201,
+   "gzipBytes": 8182,
    "deps": [
     "link",
     "overflow-menu"
@@ -1035,7 +1036,7 @@
    ],
    "classCount": 164,
    "minBytes": 70216,
-   "gzipBytes": 6269,
+   "gzipBytes": 6252,
    "deps": [
     "tooltip"
    ],
@@ -1110,7 +1111,7 @@
    ],
    "classCount": 57,
    "minBytes": 9494,
-   "gzipBytes": 1767,
+   "gzipBytes": 1766,
    "deps": [],
    "depsAll": [],
    "tokenCount": 525,
@@ -1297,7 +1298,7 @@
    ],
    "classCount": 174,
    "minBytes": 72009,
-   "gzipBytes": 6483,
+   "gzipBytes": 6460,
    "deps": [
     "button"
    ],
@@ -1413,7 +1414,7 @@
    ],
    "classCount": 97,
    "minBytes": 25237,
-   "gzipBytes": 3369,
+   "gzipBytes": 3371,
    "deps": [
     "form"
    ],
@@ -1461,7 +1462,7 @@
    ],
    "classCount": 31,
    "minBytes": 5794,
-   "gzipBytes": 1298,
+   "gzipBytes": 1301,
    "deps": [
     "button"
    ],
@@ -1691,7 +1692,7 @@
    ],
    "classCount": 211,
    "minBytes": 88252,
-   "gzipBytes": 8112,
+   "gzipBytes": 8097,
    "deps": [
     "copy-button"
    ],
@@ -1962,7 +1963,7 @@
    ],
    "classCount": 249,
    "minBytes": 85686,
-   "gzipBytes": 9781,
+   "gzipBytes": 9791,
    "deps": [
     "list-box"
    ],
@@ -2186,7 +2187,7 @@
    ],
    "classCount": 201,
    "minBytes": 75692,
-   "gzipBytes": 7045,
+   "gzipBytes": 7028,
    "deps": [
     "button",
     "menu"
@@ -2439,7 +2440,7 @@
    ],
    "classCount": 232,
    "minBytes": 88126,
-   "gzipBytes": 8063,
+   "gzipBytes": 8050,
    "deps": [
     "button",
     "overflow-menu"
@@ -2680,7 +2681,7 @@
    ],
    "classCount": 220,
    "minBytes": 95275,
-   "gzipBytes": 8153,
+   "gzipBytes": 8135,
    "deps": [
     "button"
    ],
@@ -2876,7 +2877,7 @@
    ],
    "classCount": 177,
    "minBytes": 73245,
-   "gzipBytes": 6753,
+   "gzipBytes": 6737,
    "deps": [
     "button"
    ],
@@ -3105,7 +3106,7 @@
    ],
    "classCount": 210,
    "minBytes": 61256,
-   "gzipBytes": 7261,
+   "gzipBytes": 7264,
    "deps": [
     "checkbox",
     "radio-button"
@@ -3250,7 +3251,7 @@
    ],
    "classCount": 120,
    "minBytes": 44024,
-   "gzipBytes": 5524,
+   "gzipBytes": 5515,
    "deps": [
     "button",
     "form"
@@ -3456,7 +3457,7 @@
    ],
    "classCount": 185,
    "minBytes": 77762,
-   "gzipBytes": 7398,
+   "gzipBytes": 7378,
    "deps": [
     "button"
    ],
@@ -3756,7 +3757,7 @@
    ],
    "classCount": 281,
    "minBytes": 96171,
-   "gzipBytes": 10754,
+   "gzipBytes": 10762,
    "deps": [
     "list-box"
    ],
@@ -4037,7 +4038,7 @@
    ],
    "classCount": 258,
    "minBytes": 93516,
-   "gzipBytes": 9083,
+   "gzipBytes": 9062,
    "deps": [
     "button",
     "form",
@@ -4367,7 +4368,7 @@
    ],
    "classCount": 307,
    "minBytes": 111150,
-   "gzipBytes": 11899,
+   "gzipBytes": 11901,
    "deps": [
     "dropdown",
     "fluid-list-box"
@@ -4532,7 +4533,7 @@
    ],
    "classCount": 139,
    "minBytes": 55082,
-   "gzipBytes": 6558,
+   "gzipBytes": 6552,
    "deps": [
     "date-picker"
    ],
@@ -4862,7 +4863,7 @@
    ],
    "classCount": 307,
    "minBytes": 110242,
-   "gzipBytes": 11732,
+   "gzipBytes": 11733,
    "deps": [
     "dropdown",
     "fluid-list-box"
@@ -4950,7 +4951,7 @@
    ],
    "classCount": 62,
    "minBytes": 14739,
-   "gzipBytes": 1726,
+   "gzipBytes": 1735,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -5325,7 +5326,7 @@
    ],
    "classCount": 362,
    "minBytes": 128274,
-   "gzipBytes": 14101,
+   "gzipBytes": 14100,
    "deps": [
     "fluid-combo-box",
     "fluid-list-box",
@@ -5471,7 +5472,7 @@
    ],
    "classCount": 113,
    "minBytes": 43779,
-   "gzipBytes": 4750,
+   "gzipBytes": 4749,
    "deps": [
     "number-input"
    ],
@@ -5654,7 +5655,7 @@
    ],
    "classCount": 163,
    "minBytes": 46408,
-   "gzipBytes": 5479,
+   "gzipBytes": 5477,
    "deps": [
     "search"
    ],
@@ -6034,7 +6035,7 @@
    ],
    "classCount": 126,
    "minBytes": 40664,
-   "gzipBytes": 4784,
+   "gzipBytes": 4783,
    "deps": [
     "text-input"
    ],
@@ -6234,7 +6235,7 @@
    ],
    "classCount": 182,
    "minBytes": 61579,
-   "gzipBytes": 6664,
+   "gzipBytes": 6660,
    "deps": [
     "fluid-select",
     "fluid-text-input"
@@ -6311,7 +6312,7 @@
    ],
    "classCount": 52,
    "minBytes": 13918,
-   "gzipBytes": 1913,
+   "gzipBytes": 1911,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -6342,7 +6343,7 @@
    ],
    "classCount": 18,
    "minBytes": 2619,
-   "gzipBytes": 653,
+   "gzipBytes": 656,
    "deps": [],
    "depsAll": [],
    "tokenCount": 529,
@@ -6376,7 +6377,7 @@
    ],
    "classCount": 21,
    "minBytes": 8293,
-   "gzipBytes": 1299,
+   "gzipBytes": 1300,
    "deps": [
     "loading"
    ],
@@ -6410,7 +6411,7 @@
    ],
    "classCount": 17,
    "minBytes": 3792,
-   "gzipBytes": 657,
+   "gzipBytes": 659,
    "deps": [],
    "depsAll": [],
    "tokenCount": 524,
@@ -6432,7 +6433,7 @@
    ],
    "classCount": 9,
    "minBytes": 2118,
-   "gzipBytes": 496,
+   "gzipBytes": 498,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -6686,7 +6687,7 @@
    ],
    "classCount": 241,
    "minBytes": 83744,
-   "gzipBytes": 9569,
+   "gzipBytes": 9572,
    "deps": [
     "button",
     "tag",
@@ -6722,7 +6723,7 @@
    ],
    "classCount": 12,
    "minBytes": 6386,
-   "gzipBytes": 930,
+   "gzipBytes": 932,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -6766,7 +6767,7 @@
    ],
    "classCount": 31,
    "minBytes": 8217,
-   "gzipBytes": 1110,
+   "gzipBytes": 1112,
    "deps": [
     "button"
    ],
@@ -6980,7 +6981,7 @@
    ],
    "classCount": 195,
    "minBytes": 74904,
-   "gzipBytes": 6952,
+   "gzipBytes": 6932,
    "deps": [
     "button",
     "menu"
@@ -7237,7 +7238,7 @@
    ],
    "classCount": 236,
    "minBytes": 84278,
-   "gzipBytes": 8220,
+   "gzipBytes": 8212,
    "deps": [
     "button"
    ],
@@ -7547,7 +7548,7 @@
    ],
    "classCount": 291,
    "minBytes": 100197,
-   "gzipBytes": 11346,
+   "gzipBytes": 11353,
    "deps": [
     "checkbox",
     "list-box"
@@ -7812,7 +7813,7 @@
    ],
    "classCount": 240,
    "minBytes": 110811,
-   "gzipBytes": 9045,
+   "gzipBytes": 9026,
    "deps": [
     "button"
    ],
@@ -7928,7 +7929,7 @@
    ],
    "classCount": 97,
    "minBytes": 31999,
-   "gzipBytes": 3831,
+   "gzipBytes": 3832,
    "deps": [
     "form"
    ],
@@ -8148,7 +8149,7 @@
    ],
    "classCount": 203,
    "minBytes": 80143,
-   "gzipBytes": 7241,
+   "gzipBytes": 7223,
    "deps": [
     "button",
     "tooltip"
@@ -8200,7 +8201,7 @@
    ],
    "classCount": 32,
    "minBytes": 3584,
-   "gzipBytes": 820,
+   "gzipBytes": 826,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -8490,7 +8491,7 @@
    ],
    "classCount": 277,
    "minBytes": 101884,
-   "gzipBytes": 9700,
+   "gzipBytes": 9681,
    "deps": [
     "button",
     "select"
@@ -8700,7 +8701,7 @@
    ],
    "classCount": 188,
    "minBytes": 76029,
-   "gzipBytes": 6993,
+   "gzipBytes": 6972,
    "deps": [
     "button"
    ],
@@ -8800,7 +8801,7 @@
    ],
    "classCount": 81,
    "minBytes": 49275,
-   "gzipBytes": 3670,
+   "gzipBytes": 3666,
    "deps": [],
    "depsAll": [],
    "tokenCount": 528,
@@ -8834,7 +8835,7 @@
    ],
    "classCount": 21,
    "minBytes": 8437,
-   "gzipBytes": 1191,
+   "gzipBytes": 1187,
    "deps": [],
    "depsAll": [],
    "tokenCount": 521,
@@ -9043,7 +9044,7 @@
    ],
    "classCount": 196,
    "minBytes": 78152,
-   "gzipBytes": 7288,
+   "gzipBytes": 7273,
    "deps": [
     "button",
     "tooltip"
@@ -9151,7 +9152,7 @@
    ],
    "classCount": 88,
    "minBytes": 22299,
-   "gzipBytes": 2981,
+   "gzipBytes": 2985,
    "deps": [
     "button",
     "form"
@@ -9183,7 +9184,7 @@
    ],
    "classCount": 11,
    "minBytes": 1033,
-   "gzipBytes": 368,
+   "gzipBytes": 369,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -9205,7 +9206,7 @@
    ],
    "classCount": 9,
    "minBytes": 1579,
-   "gzipBytes": 345,
+   "gzipBytes": 350,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -9373,7 +9374,7 @@
    ],
    "classCount": 155,
    "minBytes": 44449,
-   "gzipBytes": 5188,
+   "gzipBytes": 5185,
    "deps": [
     "text-input"
    ],
@@ -9483,7 +9484,7 @@
    ],
    "classCount": 92,
    "minBytes": 24593,
-   "gzipBytes": 3337,
+   "gzipBytes": 3336,
    "deps": [
     "form"
    ],
@@ -9517,7 +9518,7 @@
    ],
    "classCount": 17,
    "minBytes": 2405,
-   "gzipBytes": 606,
+   "gzipBytes": 607,
    "deps": [
     "icon-indicator"
    ],
@@ -9622,7 +9623,7 @@
    ],
    "classCount": 86,
    "minBytes": 19309,
-   "gzipBytes": 2916,
+   "gzipBytes": 2919,
    "deps": [
     "button"
    ],
@@ -9663,7 +9664,7 @@
    ],
    "classCount": 22,
    "minBytes": 4449,
-   "gzipBytes": 729,
+   "gzipBytes": 724,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -9852,7 +9853,7 @@
    ],
    "classCount": 176,
    "minBytes": 46785,
-   "gzipBytes": 5619,
+   "gzipBytes": 5614,
    "deps": [
     "form",
     "text-input"
@@ -10113,7 +10114,7 @@
    ],
    "classCount": 242,
    "minBytes": 101071,
-   "gzipBytes": 8668,
+   "gzipBytes": 8650,
    "deps": [
     "popover",
     "toggletip"
@@ -10149,7 +10150,7 @@
    ],
    "classCount": 15,
    "minBytes": 739,
-   "gzipBytes": 150,
+   "gzipBytes": 148,
    "deps": [],
    "depsAll": [],
    "tokenCount": 521,
@@ -10193,7 +10194,7 @@
    ],
    "classCount": 31,
    "minBytes": 11851,
-   "gzipBytes": 1558,
+   "gzipBytes": 1564,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -10392,7 +10393,7 @@
    ],
    "classCount": 186,
    "minBytes": 77699,
-   "gzipBytes": 7044,
+   "gzipBytes": 7030,
    "deps": [
     "button",
     "tooltip"
@@ -10473,7 +10474,7 @@
    ],
    "classCount": 61,
    "minBytes": 20196,
-   "gzipBytes": 2969,
+   "gzipBytes": 2978,
    "deps": [],
    "depsAll": [],
    "tokenCount": 561,
@@ -10567,7 +10568,7 @@
    ],
    "classCount": 81,
    "minBytes": 20530,
-   "gzipBytes": 2946,
+   "gzipBytes": 2948,
    "deps": [
     "form"
    ],
@@ -10704,7 +10705,7 @@
    ],
    "classCount": 120,
    "minBytes": 34726,
-   "gzipBytes": 4254,
+   "gzipBytes": 4256,
    "deps": [
     "form"
    ],
@@ -10785,7 +10786,7 @@
    ],
    "classCount": 64,
    "minBytes": 21240,
-   "gzipBytes": 2645,
+   "gzipBytes": 2641,
    "deps": [
     "button"
    ],
@@ -10971,7 +10972,7 @@
    ],
    "classCount": 167,
    "minBytes": 47872,
-   "gzipBytes": 5539,
+   "gzipBytes": 5538,
    "deps": [
     "select",
     "text-input"
@@ -11018,7 +11019,7 @@
    ],
    "classCount": 27,
    "minBytes": 7325,
-   "gzipBytes": 1354,
+   "gzipBytes": 1348,
    "deps": [
     "button"
    ],
@@ -11210,7 +11211,7 @@
    ],
    "classCount": 173,
    "minBytes": 72737,
-   "gzipBytes": 6522,
+   "gzipBytes": 6503,
    "deps": [
     "button"
    ],
@@ -11318,7 +11319,7 @@
    ],
    "classCount": 89,
    "minBytes": 51293,
-   "gzipBytes": 3990,
+   "gzipBytes": 3980,
    "deps": [
     "popover"
    ],
@@ -11421,7 +11422,7 @@
    ],
    "classCount": 86,
    "minBytes": 20419,
-   "gzipBytes": 2895,
+   "gzipBytes": 2896,
    "deps": [
     "form"
    ],
@@ -11443,7 +11444,7 @@
    ],
    "classCount": 5,
    "minBytes": 605,
-   "gzipBytes": 219,
+   "gzipBytes": 218,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
@@ -11709,7 +11710,7 @@
    ],
    "classCount": 253,
    "minBytes": 116316,
-   "gzipBytes": 9406,
+   "gzipBytes": 9394,
    "deps": [],
    "depsAll": [],
    "tokenCount": 548,
@@ -11750,7 +11751,7 @@
    ],
    "classCount": 28,
    "minBytes": 5478,
-   "gzipBytes": 907,
+   "gzipBytes": 913,
    "deps": [],
    "depsAll": [],
    "tokenCount": 520,
