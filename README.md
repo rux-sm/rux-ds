@@ -102,11 +102,11 @@ on both gates after it, so widening produced no new fault.
 
 **That number has moved again, and so has everything the gates count.** `date-picker`'s
 admission added two state recipes, so the reference is 669; the sixteen admissions of
-2026-08-31 roughly doubled what there is to check. **Re-measured 2026-09-01, this is what
-the gates print today:**
+2026-08-31 roughly doubled what there is to check. **Re-measured 2026-09-02, after
+admission batches 1 to 5, this is what the gates print today:**
 
-    check-tags      669 stories · 1648 classes · 67 with no reference · 5 known · 0 on a different element
-    check-ancestry  669 stories · 550 corroborated ancestries · 53 declined · 0 missing
+    check-tags      669 stories · 2208 classes · 81 with no reference · 10 known · 0 on a different element
+    check-ancestry  669 stories · 550 corroborated ancestries · 84 declined · 0 missing
 
 Still 0 findings on both. Every figure quoted above this line is the record of a pass and
 not the current state — which is the whole reason this README re-measures rather than
@@ -726,7 +726,7 @@ Twenty-one, because none is sufficient alone — see roadmap §4.1.2 for the bug
 | `check-glyphs.mjs` | a sprite symbol whose geometry is not the glyph its name claims, compared against `@carbon/icons` via the `docs/carbon-glyphs.json` snapshot · a symbol name Carbon has no file for | **which slot** a glyph belongs in — that is `check-slots` |
 | `check-slots.mjs` | the WRONG GLYPH in a slot, against `docs/carbon-slots.json` — 33 slots, each backed by 3+ stories or 3+ sibling slots agreeing | 11 slots have no Carbon capture that can answer (reported UNCOVERED, never passed) · 25 more are captured but under the corroboration bar |
 | `check-compound.mjs` | two classes Carbon compounds, split across elements | wrong nesting order · missing wrapper |
-| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (44 today) |
+| `check-tags.mjs` | a class on a different element type than Carbon renders it on | classes no story emits (81 today) |
 | `check-ancestry.mjs` | a wrapper Carbon renders in **every** capture, absent here | a wrapper Carbon only sometimes renders |
 | `check-coverage.mjs` | a component exercising fewer classes than `docs/coverage.json` records | standing still — it ratchets, it does not set a floor |
 | `check-co-classes.mjs` | a modifier used without the base class that styles it | a base class Carbon never pairs |
