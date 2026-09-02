@@ -54,3 +54,9 @@ slider
 treeview
 progress-bar
 aspect-ratio
+contained-list
+structured-list
+content-switcher
+code-snippet
+pagination-nav
+menu-button

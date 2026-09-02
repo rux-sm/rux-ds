@@ -68,6 +68,7 @@ const KNOWN = {
   'contained-list__label':  { tag: 'h3', reason: 'a heading where Carbon uses a div + ARIA (contained-list.html)' },
   'tile--disabled':         { tag: 'div', reason: 'classic selectable tile is div[role=checkbox]; only the feature-flag story disables, as a label (tile.html)' },
   'tree-node--active':      { tag: 'li', reason: 'active sampled only in the link tree, on <a>; non-link nodes are LIs (treeview.html)' },
+  'pagination-nav__page--active': { tag: 'div', reason: 'the icon wrapper when the current page sits in the overflow select -- Carbon writes `.select-icon-wrapper.page--active` and check-compound asks for it; the one story samples the active BUTTON only (pagination-nav.html)' },
 };
 
 // Four references, because two packages ship the components this system

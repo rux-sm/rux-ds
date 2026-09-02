@@ -5919,6 +5919,727 @@ fieldset[disabled] .rux--form__helper-text {
   margin-block-start: 0;
 }
 
+.rux--copy-btn html {
+  font-size: 100%;
+}
+.rux--copy-btn body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--copy-btn code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--copy-btn strong {
+  font-weight: 600;
+}
+.rux--copy-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background-color: var(--rux-layer);
+  cursor: pointer;
+}
+@media (any-hover: hover) {
+  .rux--copy-btn:hover {
+    background-color: var(--rux-layer-hover);
+  }
+}
+.rux--copy-btn:active {
+  background-color: var(--rux-layer-active);
+}
+.rux--copy-btn::before {
+  position: absolute;
+  z-index: 6000;
+  border-style: solid;
+  block-size: 0;
+  content: "";
+  inline-size: 0;
+  display: none;
+}
+.rux--copy-btn .rux--copy-btn__feedback {
+  box-shadow: 0 2px 6px var(--rux-shadow, rgba(0, 0, 0, 0.3));
+  z-index: 6000;
+  padding: 0.1875rem 1rem;
+  border-radius: 0.125rem;
+  background-color: var(--rux-background-inverse, #393939);
+  block-size: auto;
+  color: var(--rux-text-inverse, #ffffff);
+  font-weight: 400;
+  inline-size: max-content;
+  max-inline-size: 13rem;
+  min-inline-size: 1.5rem;
+  text-align: start;
+  transform: translateX(-50%);
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-accelerator: true) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-ime-align: auto) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
+  .rux--copy-btn .rux--copy-btn__feedback {
+    border: 1px solid transparent;
+  }
+}
+.rux--copy-btn .rux--copy-btn__feedback {
+  display: none;
+  overflow: visible;
+  box-sizing: content-box;
+  margin: auto;
+  clip: auto;
+}
+.rux--copy-btn:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--copy-btn:focus {
+    outline-style: dotted;
+  }
+}
+.rux--copy-btn:focus {
+  outline-color: var(--rux-focus, #0f62fe);
+}
+.rux--copy-btn.rux--copy-btn--animating::before, .rux--copy-btn.rux--copy-btn--animating .rux--copy-btn__feedback {
+  display: block;
+}
+.rux--copy-btn.rux--copy-btn--animating::before {
+  border: none;
+}
+.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--hide-feedback;
+}
+.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--show-feedback;
+}
+
+.rux--copy-btn svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--copy {
+  font-size: 0;
+}
+
+.rux--snippet html {
+  font-size: 100%;
+}
+.rux--snippet body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--snippet code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--snippet strong {
+  font-weight: 600;
+}
+
+.rux--snippet--disabled,
+.rux--snippet--disabled .rux--btn.rux--snippet-btn--expand {
+  background-color: var(--rux-layer);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--snippet--disabled .rux--copy-btn {
+  background-color: var(--rux-layer);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+@media (any-hover: hover) {
+  .rux--snippet--disabled .rux--snippet-btn--expand:hover,
+  .rux--snippet--disabled .rux--copy-btn:hover {
+    background-color: var(--rux-layer);
+    color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+    cursor: not-allowed;
+  }
+}
+.rux--snippet--disabled .rux--snippet__icon,
+.rux--snippet--disabled .rux--snippet-btn--expand .rux--icon-chevron--down {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--snippet code {
+  font-family: var(--rux-code-01-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-01-font-size, 0.75rem);
+  font-weight: var(--rux-code-01-font-weight, 400);
+  line-height: var(--rux-code-01-line-height, 1.33333);
+  letter-spacing: var(--rux-code-01-letter-spacing, 0.32px);
+}
+
+.rux--snippet--inline html {
+  font-size: 100%;
+}
+.rux--snippet--inline body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--snippet--inline code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--snippet--inline strong {
+  font-weight: 600;
+}
+.rux--snippet--inline {
+  position: relative;
+  display: inline;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--rux-layer);
+  color: var(--rux-text-primary, #161616);
+  cursor: pointer;
+}
+@media (any-hover: hover) {
+  .rux--snippet--inline:hover {
+    background-color: var(--rux-layer-hover);
+  }
+}
+.rux--snippet--inline:active {
+  background-color: var(--rux-layer-active);
+}
+.rux--snippet--inline:focus {
+  border: 1px solid var(--rux-focus, #0f62fe);
+  outline: none;
+}
+.rux--snippet--inline::before {
+  position: absolute;
+  z-index: 6000;
+  border-style: solid;
+  block-size: 0;
+  content: "";
+  inline-size: 0;
+  display: none;
+  border: none;
+}
+.rux--snippet--inline .rux--copy-btn__feedback {
+  box-shadow: 0 2px 6px var(--rux-shadow, rgba(0, 0, 0, 0.3));
+  z-index: 6000;
+  padding: 0.1875rem 1rem;
+  border-radius: 0.125rem;
+  background-color: var(--rux-background-inverse, #393939);
+  block-size: auto;
+  color: var(--rux-text-inverse, #ffffff);
+  font-weight: 400;
+  inline-size: max-content;
+  max-inline-size: 13rem;
+  min-inline-size: 1.5rem;
+  text-align: start;
+  transform: translateX(-50%);
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .rux--snippet--inline .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-accelerator: true) {
+  .rux--snippet--inline .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@supports (-ms-ime-align: auto) {
+  .rux--snippet--inline .rux--copy-btn__feedback {
+    inline-size: auto;
+  }
+}
+@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
+  .rux--snippet--inline .rux--copy-btn__feedback {
+    border: 1px solid transparent;
+  }
+}
+.rux--snippet--inline .rux--copy-btn__feedback {
+  display: none;
+  overflow: visible;
+  box-sizing: content-box;
+  margin: auto;
+  clip: auto;
+}
+
+.rux--snippet--inline.rux--copy-btn--animating::before,
+.rux--snippet--inline.rux--copy-btn--animating .rux--copy-btn__feedback {
+  display: block;
+}
+
+.rux--snippet--inline.rux--copy-btn--animating.rux--copy-btn--fade-out::before,
+.rux--snippet--inline.rux--copy-btn--animating.rux--copy-btn--fade-out .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--hide-feedback;
+}
+
+.rux--snippet--inline.rux--copy-btn--animating.rux--copy-btn--fade-in::before,
+.rux--snippet--inline.rux--copy-btn--animating.rux--copy-btn--fade-in .rux--copy-btn__feedback {
+  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--show-feedback;
+}
+
+.rux--snippet--inline code {
+  padding: 0 0.5rem;
+}
+
+.rux--snippet--inline.rux--snippet--no-copy {
+  display: inline-block;
+}
+@media (any-hover: hover) {
+  .rux--snippet--inline.rux--snippet--no-copy:hover {
+    background-color: var(--rux-layer);
+    cursor: auto;
+  }
+}
+
+@media (any-hover: hover) {
+  .rux--snippet--light.rux--snippet--inline.rux--snippet--no-copy:hover {
+    background-color: var(--rux-layer-hover);
+    cursor: auto;
+  }
+}
+.rux--snippet--single {
+  font-family: var(--rux-code-01-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-01-font-size, 0.75rem);
+  font-weight: var(--rux-code-01-font-weight, 400);
+  line-height: var(--rux-code-01-line-height, 1.33333);
+  letter-spacing: var(--rux-code-01-letter-spacing, 0.32px);
+  position: relative;
+  background-color: var(--rux-layer);
+  inline-size: 100%;
+  max-inline-size: 48rem;
+  min-inline-size: 0;
+  display: flex;
+  align-items: center;
+  block-size: 2.5rem;
+  padding-inline-end: 2.5rem;
+}
+
+.rux--snippet--single.rux--snippet--no-copy {
+  padding: 0;
+}
+.rux--snippet--single.rux--snippet--no-copy::after {
+  inset-inline-end: 1rem;
+}
+
+.rux--snippet--single .rux--snippet-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  block-size: 100%;
+  min-inline-size: 0;
+  overflow-x: auto;
+  padding-inline-start: 1rem;
+}
+.rux--snippet--single .rux--snippet-container:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--snippet--single .rux--snippet-container:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--snippet--single pre {
+  font-family: var(--rux-code-01-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-01-font-size, 0.75rem);
+  font-weight: var(--rux-code-01-font-weight, 400);
+  line-height: var(--rux-code-01-line-height, 1.33333);
+  letter-spacing: var(--rux-code-01-letter-spacing, 0.32px);
+  padding-inline-end: 2rem;
+}
+
+.rux--snippet--single pre,
+.rux--snippet--inline code {
+  white-space: pre;
+}
+
+.rux--snippet--multi {
+  font-family: var(--rux-code-01-font-family, 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace);
+  font-size: var(--rux-code-01-font-size, 0.75rem);
+  font-weight: var(--rux-code-01-font-weight, 400);
+  line-height: var(--rux-code-01-line-height, 1.33333);
+  letter-spacing: var(--rux-code-01-letter-spacing, 0.32px);
+  position: relative;
+  background-color: var(--rux-layer);
+  inline-size: 100%;
+  max-inline-size: 48rem;
+  min-inline-size: 0;
+  display: flex;
+  padding: 1rem;
+}
+
+.rux--snippet--multi .rux--snippet-container {
+  position: relative;
+  order: 1;
+  max-block-size: 100%;
+  min-block-size: 100%;
+  overflow-y: auto;
+  transition: max-height 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.rux--snippet--multi .rux--snippet-container:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--snippet--multi .rux--snippet-container:focus {
+    outline-style: dotted;
+  }
+}
+.rux--snippet--multi .rux--snippet-container:focus {
+  outline-offset: 0;
+}
+
+.rux--snippet--multi.rux--snippet--expand .rux--snippet-container {
+  padding-block-end: 1rem;
+  transition: max-height 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--snippet--multi.rux--snippet--wraptext pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.rux--snippet--multi .rux--snippet-container pre {
+  overflow: auto;
+  padding-block-end: 1.5rem;
+  padding-inline-end: 1.5rem;
+}
+
+.rux--snippet--multi.rux--snippet--no-copy .rux--snippet-container pre {
+  padding-inline-end: 0;
+}
+
+[dir=rtl] .rux--snippet--multi.rux--snippet--has-right-overflow::after {
+  background-image: linear-gradient(to left, transparent, var(--rux-layer));
+}
+
+.rux--snippet--multi .rux--snippet-container pre code {
+  overflow: hidden;
+}
+
+.rux--snippet__icon {
+  block-size: 1rem;
+  fill: var(--rux-icon-primary, #161616);
+  inline-size: 1rem;
+  transition: all 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--btn > .rux--snippet__icon {
+  margin-block-start: 0;
+}
+
+.rux--copy-btn html {
+  font-size: 100%;
+}
+.rux--copy-btn body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--copy-btn code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--copy-btn strong {
+  font-weight: 600;
+}
+.rux--copy-btn {
+  display: flex;
+  overflow: visible;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background-color: var(--rux-layer);
+  cursor: pointer;
+  outline: none;
+}
+.rux--copy-btn:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--copy-btn:focus {
+    outline-style: dotted;
+  }
+}
+.rux--copy-btn:focus {
+  outline-color: var(--rux-focus, #0f62fe);
+}
+
+.rux--snippet .rux--popover-container {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.rux--snippet--inline.rux--btn {
+  block-size: 1.25rem;
+  inline-size: initial;
+  max-inline-size: unset;
+  min-block-size: 1.25rem;
+  padding-inline: 0;
+}
+
+@media (any-hover: hover) {
+  .rux--snippet--inline.rux--btn.rux--btn--primary:hover {
+    color: var(--rux-text-primary, #161616);
+  }
+}
+.rux--snippet.rux--snippet--multi .rux--popover-container {
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+}
+
+.rux--snippet--multi .rux--copy-btn {
+  z-index: 10;
+}
+
+.rux--snippet-btn--expand {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  position: absolute;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 0;
+  background-color: var(--rux-layer);
+  block-size: 2rem;
+  color: var(--rux-text-primary, #161616);
+  inset-block-end: 0;
+  inset-inline-end: 0;
+}
+
+.rux--snippet-btn--expand .rux--snippet-btn--text {
+  position: relative;
+  inset-block-start: -0.0625rem;
+}
+
+.rux--snippet-btn--expand--hide.rux--snippet-btn--expand {
+  display: none;
+}
+
+.rux--snippet-btn--expand .rux--icon-chevron--down {
+  fill: var(--rux-icon-primary, #161616);
+  margin-inline-start: 0.5rem;
+  transform: rotate(0deg);
+  transition: 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+@media (any-hover: hover) {
+  .rux--snippet-btn--expand:hover {
+    background: var(--rux-layer-hover);
+    color: var(--rux-text-primary, #161616);
+  }
+}
+.rux--snippet-btn--expand:active {
+  background-color: var(--rux-layer-active);
+}
+
+.rux--snippet-btn--expand:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--snippet-btn--expand:focus {
+    outline-style: dotted;
+  }
+}
+.rux--snippet-btn--expand:focus {
+  border-color: transparent;
+}
+
+.rux--snippet--expand .rux--snippet-btn--expand .rux--icon-chevron--down {
+  transform: rotate(180deg);
+  transition: transform 300ms;
+}
+
+.rux--snippet--light,
+.rux--snippet--light .rux--snippet-button,
+.rux--snippet--light .rux--btn.rux--snippet-btn--expand,
+.rux--snippet--light .rux--copy-btn {
+  background-color: var(--rux-layer);
+}
+
+@media (any-hover: hover) {
+  .rux--snippet--light.rux--snippet--inline:hover,
+  .rux--snippet--light .rux--snippet-button:hover,
+  .rux--snippet--light .rux--btn.rux--snippet-btn--expand:hover,
+  .rux--snippet--light .rux--copy-btn:hover {
+    background-color: var(--rux-layer-hover);
+  }
+}
+.rux--snippet--light.rux--snippet--inline:active,
+.rux--snippet--light .rux--snippet-button:active,
+.rux--snippet--light .rux--btn.rux--snippet-btn--expand:active,
+.rux--snippet--light .rux--copy-btn:active {
+  background-color: var(--rux-layer-active);
+}
+
+.rux--snippet.rux--skeleton .rux--snippet-container {
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.rux--snippet-button .rux--btn--copy__feedback {
+  inset-block-start: 3.175rem;
+  inset-inline: 50% auto;
+}
+.rux--snippet-button .rux--btn--copy__feedback::before {
+  inset-block-start: 0;
+}
+.rux--snippet-button .rux--btn--copy__feedback::after {
+  inset-block-start: -0.25rem;
+}
+
+.rux--snippet--multi .rux--snippet-button .rux--btn--copy__feedback {
+  inset-block-start: 2.675rem;
+}
+
+.rux--snippet--inline .rux--btn--copy__feedback {
+  inset-block-start: calc(100% - 0.25rem);
+  inset-inline: 50% auto;
+}
+
+.rux--snippet--single .rux--snippet-container {
+  mask-image: linear-gradient(to right, #000000 calc(100% - 2rem), transparent 100%);
+  pointer-events: auto;
+}
+
+.rux--snippet--multi {
+  position: relative;
+}
+
+.rux--snippet--multi .rux--snippet-container {
+  inline-size: 100%;
+  mask-composite: intersect;
+  mask-image: linear-gradient(to right, #000000 calc(100% - 2rem), transparent 100%), linear-gradient(to bottom, #000000 calc(100% - 1rem), transparent 100%);
+  pointer-events: auto;
+}
+
+[dir=rtl] .rux--snippet--single .rux--snippet-container {
+  mask-image: linear-gradient(to left, #000000 calc(100% - 2rem), transparent 100%);
+}
+
+[dir=rtl] .rux--snippet--multi .rux--snippet-container {
+  mask-image: linear-gradient(to left, #000000 calc(100% - 2rem), transparent 100%), linear-gradient(to bottom, #000000 calc(100% - 1rem), transparent 100%);
+}
+
+.rux--snippet--single:focus-within .rux--snippet-container,
+.rux--snippet--multi:focus-within .rux--snippet-container {
+  mask-image: none;
+}
+
+.rux--snippet--multi.rux--skeleton {
+  block-size: 6.125rem;
+}
+
+.rux--snippet--single.rux--skeleton {
+  block-size: 3.5rem;
+}
+
+.rux--snippet.rux--skeleton span {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--snippet.rux--skeleton span:hover, .rux--snippet.rux--skeleton span:focus, .rux--snippet.rux--skeleton span:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--snippet.rux--skeleton span::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--snippet.rux--skeleton span::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--snippet.rux--skeleton span {
+    background: CanvasText;
+  }
+  .rux--snippet.rux--skeleton span::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--snippet.rux--skeleton span {
+  display: block;
+  block-size: 1rem;
+  inline-size: 100%;
+  margin-block-start: 0.5rem;
+}
+.rux--snippet.rux--skeleton span:first-child {
+  margin: 0;
+}
+.rux--snippet.rux--skeleton span:nth-child(2) {
+  inline-size: 85%;
+}
+.rux--snippet.rux--skeleton span:nth-child(3) {
+  inline-size: 95%;
+}
+
+.rux--snippet--single.rux--skeleton .rux--snippet-container {
+  padding-block-end: 0;
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--snippet--inline:focus {
+    color: Highlight;
+    outline: 1px solid Highlight;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--snippet--single,
+  .rux--snippet--multi {
+    outline: 1px solid transparent;
+  }
+}
+
 .rux--text-input {
   --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-xs)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
   --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
@@ -8559,126 +9280,847 @@ fieldset[disabled] .rux--form__helper-text {
   transform: translate(0, calc(-100% - var(--rux-popover-offset, 3rem)));
 }
 
-.rux--copy-btn html {
+.rux--contained-list {
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-sm)), var(--rux-layout-size-height, var(--rux-layout-size-height-lg)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-xl)));
+  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
+}
+
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-xs: 1.125rem;
+}
+.rux--contained-list .rux--tag.rux--layout--size-xs, .rux--layout--size-xs :where(.rux--contained-list .rux--tag) {
+  --rux-layout-size-height: var(--rux-layout-size-height-xs);
+}
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-sm: 1.125rem;
+}
+.rux--contained-list .rux--tag.rux--layout--size-sm, .rux--layout--size-sm :where(.rux--contained-list .rux--tag) {
+  --rux-layout-size-height: var(--rux-layout-size-height-sm);
+}
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-md: 1.5rem;
+}
+.rux--contained-list .rux--tag.rux--layout--size-md, .rux--layout--size-md :where(.rux--contained-list .rux--tag) {
+  --rux-layout-size-height: var(--rux-layout-size-height-md);
+}
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-lg: 1.5rem;
+}
+.rux--contained-list .rux--tag.rux--layout--size-lg, .rux--layout--size-lg :where(.rux--contained-list .rux--tag) {
+  --rux-layout-size-height: var(--rux-layout-size-height-lg);
+}
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-xl: 1.5rem;
+}
+.rux--contained-list .rux--tag.rux--layout--size-xl, .rux--layout--size-xl :where(.rux--contained-list .rux--tag) {
+  --rux-layout-size-height: var(--rux-layout-size-height-xl);
+}
+.rux--contained-list .rux--tag {
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-sm)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-xl)));
+}
+
+.rux--contained-list > ul {
+  padding: 0;
+  margin: 0;
+}
+
+.rux--contained-list__header {
+  position: sticky;
+  z-index: 1;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  inset-block-start: 0;
+  padding-inline: var(--rux-layout-density-padding-inline-local);
+}
+
+.rux--contained-list__label {
+  inline-size: 100%;
+}
+
+.rux--contained-list .rux--search {
+  position: sticky;
+  z-index: 1;
+  inset-block-start: var(--rux-layout-size-height-local);
+}
+.rux--contained-list .rux--search.rux--search--expandable .rux--search-input {
+  background-color: var(--rux-field);
+}
+
+.rux--contained-list .rux--search .rux--search-input {
+  background-color: var(--rux-background, #ffffff);
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--contained-list .rux--search .rux--search-close::before {
+  display: none;
+}
+
+.rux--contained-list .rux--search .rux--search-close {
+  border-inline-end: 2px solid transparent;
+  outline: none;
+}
+.rux--contained-list .rux--search .rux--search-close:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--contained-list .rux--search .rux--search-close:focus {
+    outline-style: dotted;
+  }
+}
+
+.rux--contained-list .rux--search .rux--search-input ~ .rux--search-close:hover {
+  border-block-end: 1px solid transparent;
+}
+
+.rux--contained-list .rux--search .rux--search-input:focus ~ .rux--search-close:hover {
+  border: 2px solid var(--rux-focus, #0f62fe);
+  border-inline-start: 0;
+  outline: none;
+}
+
+.rux--contained-list--on-page + .rux--contained-list--on-page {
+  margin-block-start: 1rem;
+}
+
+.rux--contained-list--on-page .rux--contained-list__header {
+  font-size: var(--rux-heading-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-heading-compact-01-font-weight, 600);
+  line-height: var(--rux-heading-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-compact-01-letter-spacing, 0.16px);
+  background-color: var(--rux-layer-background);
+  block-size: var(--rux-layout-size-height-local);
+  border-block-end: 1px solid var(--rux-border-subtle);
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--layer-two .rux--contained-list--on-page .rux--contained-list__header {
+  background-color: var(--rux-layer-01, #f4f4f4);
+}
+
+.rux--layer-three .rux--contained-list--on-page .rux--contained-list__header {
+  background-color: var(--rux-layer-02, #ffffff);
+}
+
+.rux--contained-list--disclosed .rux--contained-list__header {
+  font-size: var(--rux-label-01-font-size, 0.75rem);
+  font-weight: var(--rux-label-01-font-weight, 400);
+  line-height: var(--rux-label-01-line-height, 1.33333);
+  letter-spacing: var(--rux-label-01-letter-spacing, 0.32px);
+  background-color: var(--rux-layer);
+  block-size: 2rem;
+  color: var(--rux-text-secondary, #525252);
+}
+
+.rux--contained-list-item {
+  position: relative;
+  display: list-item;
+  list-style: none;
+}
+
+.rux--contained-list-item:not(:first-of-type) {
+  margin-block-start: -1px;
+}
+
+.rux--contained-list-item__content {
+  box-sizing: border-box;
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--contained-list-item--clickable .rux--contained-list-item__content *,
+.rux--contained-list-item--clickable .rux--contained-list-item__content *::before,
+.rux--contained-list-item--clickable .rux--contained-list-item__content *::after {
+  box-sizing: inherit;
+}
+.rux--contained-list-item--clickable .rux--contained-list-item__content::-moz-focus-inner {
+  border: 0;
+}
+.rux--contained-list-item--clickable .rux--contained-list-item__content {
+  text-align: start;
+  transition: background-color 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--contained-list-item__content,
+.rux--contained-list-item--clickable .rux--contained-list-item__content {
+  --temp-1lh: (
+    var(--rux-body-01-line-height, 1.42857) * 1em
+  );
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  padding: calc((var(--rux-layout-size-height-local) - var(--temp-1lh)) / 2) var(--rux-layout-density-padding-inline-local);
+  color: var(--rux-text-primary, #161616);
+  min-block-size: var(--rux-layout-size-height-local);
+}
+
+.rux--contained-list-item:not(:last-of-type)::before {
+  position: absolute;
+  background-color: var(--rux-border-subtle);
+  block-size: 1px;
+  content: "";
+  inset-block-end: 0;
+  inset-inline: 0;
+}
+
+.rux--contained-list--inset-rulers .rux--contained-list-item:not(:last-of-type)::before {
+  inset-inline: var(--rux-layout-density-padding-inline-local) var(--rux-layout-density-padding-inline-local);
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content:not(:disabled):hover {
+  background-color: var(--rux-layer-hover);
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content:not(:disabled):active {
+  background-color: var(--rux-layer-active);
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content:disabled {
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+  cursor: not-allowed;
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content:focus {
+  outline: none;
+}
+
+.rux--contained-list-item--clickable .rux--contained-list-item__content:focus::after {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--contained-list-item--clickable .rux--contained-list-item__content:focus::after {
+    outline-style: dotted;
+  }
+}
+.rux--contained-list-item--clickable .rux--contained-list-item__content:focus::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+}
+
+.rux--contained-list-item--with-action .rux--contained-list-item__content {
+  padding-inline-end: 4rem;
+}
+
+.rux--contained-list__action,
+.rux--contained-list-item__action {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  inset-block-start: 0;
+  inset-inline: 0;
+  pointer-events: none;
+}
+
+.rux--contained-list__action > *,
+.rux--contained-list-item__action > * {
+  pointer-events: all;
+}
+
+.rux--contained-list-item--with-icon .rux--contained-list-item__content {
+  display: grid;
+  column-gap: 0.75rem;
+  grid-template-columns: 1rem 1fr;
+}
+
+.rux--contained-list-item__icon {
+  display: inline-flex;
+  padding-block-start: 0.125rem;
+}
+
+.rux--content-switcher {
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-sm)), var(--rux-layout-size-height, var(--rux-layout-size-height-md)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
+  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
+  display: flex;
+  justify-content: space-evenly;
+  border-radius: 0.25rem;
+  block-size: var(--rux-layout-size-height-local);
+  inline-size: 100%;
+  outline: 0.0625rem solid var(--rux-border-inverse, #161616);
+  outline-offset: -0.0625rem;
+}
+
+.rux--content-switcher:has(.rux--content-switcher-btn:disabled) {
+  outline-color: var(--rux-border-disabled, #c6c6c6);
+}
+
+.rux--content-switcher-btn html {
   font-size: 100%;
 }
-.rux--copy-btn body {
+.rux--content-switcher-btn body {
   font-weight: 400;
   font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-.rux--copy-btn code {
+.rux--content-switcher-btn code {
   font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
 }
-.rux--copy-btn strong {
+.rux--content-switcher-btn strong {
   font-weight: 600;
 }
-.rux--copy-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background-color: var(--rux-layer);
-  cursor: pointer;
-}
-@media (any-hover: hover) {
-  .rux--copy-btn:hover {
-    background-color: var(--rux-layer-hover);
-  }
-}
-.rux--copy-btn:active {
-  background-color: var(--rux-layer-active);
-}
-.rux--copy-btn::before {
-  position: absolute;
-  z-index: 6000;
-  border-style: solid;
-  block-size: 0;
-  content: "";
-  inline-size: 0;
-  display: none;
-}
-.rux--copy-btn .rux--copy-btn__feedback {
-  box-shadow: 0 2px 6px var(--rux-shadow, rgba(0, 0, 0, 0.3));
-  z-index: 6000;
-  padding: 0.1875rem 1rem;
-  border-radius: 0.125rem;
-  background-color: var(--rux-background-inverse, #393939);
-  block-size: auto;
-  color: var(--rux-text-inverse, #ffffff);
-  font-weight: 400;
-  inline-size: max-content;
-  max-inline-size: 13rem;
-  min-inline-size: 1.5rem;
-  text-align: start;
-  transform: translateX(-50%);
+.rux--content-switcher-btn {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   font-size: var(--rux-body-compact-01-font-size, 0.875rem);
   font-weight: var(--rux-body-compact-01-font-weight, 400);
   line-height: var(--rux-body-compact-01-line-height, 1.28572);
   letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
-}
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  .rux--copy-btn .rux--copy-btn__feedback {
-    inline-size: auto;
-  }
-}
-@supports (-ms-accelerator: true) {
-  .rux--copy-btn .rux--copy-btn__feedback {
-    inline-size: auto;
-  }
-}
-@supports (-ms-ime-align: auto) {
-  .rux--copy-btn .rux--copy-btn__feedback {
-    inline-size: auto;
-  }
-}
-@media screen and (-ms-high-contrast: active), screen and (prefers-contrast) {
-  .rux--copy-btn .rux--copy-btn__feedback {
-    border: 1px solid transparent;
-  }
-}
-.rux--copy-btn .rux--copy-btn__feedback {
-  display: none;
-  overflow: visible;
-  box-sizing: content-box;
-  margin: auto;
-  clip: auto;
-}
-.rux--copy-btn:focus {
-  outline: 2px solid var(--rux-focus, #0f62fe);
-  outline-offset: -2px;
-}
-@media screen and (prefers-contrast) {
-  .rux--copy-btn:focus {
-    outline-style: dotted;
-  }
-}
-.rux--copy-btn:focus {
-  outline-color: var(--rux-focus, #0f62fe);
-}
-.rux--copy-btn.rux--copy-btn--animating::before, .rux--copy-btn.rux--copy-btn--animating .rux--copy-btn__feedback {
-  display: block;
-}
-.rux--copy-btn.rux--copy-btn--animating::before {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
   border: none;
+  margin: 0;
+  background-color: transparent;
+  border-block-end: 0.0625rem solid var(--rux-border-inverse, #161616);
+  border-block-start: 0.0625rem solid var(--rux-border-inverse, #161616);
+  color: var(--rux-text-secondary, #525252);
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
 }
-.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-out .rux--copy-btn__feedback {
-  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--hide-feedback;
+.rux--content-switcher-btn::after {
+  position: absolute;
+  display: block;
+  border-radius: 0.25rem;
+  background-color: var(--rux-layer-selected-inverse, #161616);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
 }
-.rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in::before, .rux--copy-btn.rux--copy-btn--animating.rux--copy-btn--fade-in .rux--copy-btn__feedback {
-  animation: 110ms cubic-bezier(0.2, 0, 0.38, 0.9) rux--show-feedback;
+.rux--content-switcher-btn:disabled::after {
+  display: none;
+}
+.rux--content-switcher-btn:focus {
+  border: 0;
+}
+.rux--content-switcher-btn:focus::after {
+  border-radius: 0.25rem;
+  box-shadow: inset 0 0 0 2px var(--rux-focus, #0f62fe), inset 0 0 0 3px var(--rux-focus-inset, #ffffff);
+}
+.rux--content-switcher-btn:active {
+  z-index: 3;
+  background-color: var(--rux-layer-hover);
+  color: var(--rux-text-primary, #161616);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:hover {
+    z-index: 3;
+    background-color: var(--rux-layer-hover);
+    color: var(--rux-text-primary, #161616);
+    cursor: pointer;
+  }
+}
+.rux--content-switcher-btn:disabled {
+  border-color: var(--rux-border-disabled, #c6c6c6);
+  background-color: transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:disabled:hover {
+    cursor: not-allowed;
+  }
 }
 
-.rux--copy-btn svg {
+.rux--content-switcher-btn:not(.rux--content-switcher--selected):focus::before {
+  display: block;
+  border-radius: 0.25rem;
+  block-size: 100%;
+  box-shadow: inset 0 0 0 0.125rem var(--rux-focus, #0f62fe);
+  content: "";
+  inline-size: 100%;
+}
+.rux--content-switcher-btn:not(.rux--content-switcher--selected):focus::after {
+  background-color: var(--rux-focus-inset, #ffffff);
+  transform: scaleY(1);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:not(.rux--content-switcher--selected):focus:hover::after {
+    border-radius: 0;
+    background-color: var(--rux-layer-hover);
+    border-block-end: 0.0625rem solid var(--rux-border-inverse, #161616);
+    border-block-start: 0.0625rem solid var(--rux-border-inverse, #161616);
+    box-shadow: none;
+  }
+}
+
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn {
+  align-items: center;
+  padding: 0.5rem var(--rux-layout-density-padding-inline-local);
+  inline-size: 100%;
+}
+
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:first-child {
+  border-end-start-radius: 0.25rem;
+  border-start-start-radius: 0.25rem;
+  box-shadow: inset 0.0625rem 0 0 0 var(--rux-border-inverse, #161616);
+}
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:first-child:disabled {
+  box-shadow: none;
+}
+
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:last-child {
+  border-end-end-radius: 0.25rem;
+  border-start-end-radius: 0.25rem;
+  box-shadow: inset -0.0625rem 0 0 0 var(--rux-border-inverse, #161616);
+}
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:last-child:disabled {
+  box-shadow: none;
+}
+
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected,
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected:first-child,
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected:last-child {
+  border: 0;
+}
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected:disabled::before,
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected:first-child:disabled::before,
+.rux--content-switcher .rux--content-switcher-btn.rux--content-switcher--selected:last-child:disabled::before {
+  display: none;
+}
+
+.rux--content-switcher-btn::before {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  background-color: var(--rux-border-subtle);
+  block-size: 1rem;
+  content: "";
+  inline-size: 0.0625rem;
+  inset-inline-start: 0;
+}
+
+.rux--content-switcher:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:first-of-type::before {
+  background-color: transparent;
+}
+
+.rux--content-switcher-btn:focus::before,
+.rux--content-switcher-btn:focus + .rux--content-switcher-btn::before,
+.rux--content-switcher--selected::before,
+.rux--content-switcher--selected + .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:hover::before,
+  .rux--content-switcher-btn:hover + .rux--content-switcher-btn::before {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher-btn:disabled::before {
+  background-color: var(--rux-border-disabled, #c6c6c6);
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:disabled:hover + .rux--content-switcher-btn:disabled::before {
+    background-color: var(--rux-border-disabled, #c6c6c6);
+  }
+}
+.rux--content-switcher-btn.rux--content-switcher--selected:disabled + .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher-btn.rux--content-switcher--selected:disabled:hover + .rux--content-switcher-btn::before {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher__icon {
+  fill: var(--rux-icon-secondary, #525252);
+}
+
+.rux--content-switcher__icon + span {
+  margin-inline-start: 0.5rem;
+}
+
+.rux--content-switcher__label {
+  z-index: 1;
+  overflow: hidden;
+  max-inline-size: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rux--content-switcher-btn:focus .rux--content-switcher__icon {
   fill: var(--rux-icon-primary, #161616);
 }
 
-.rux--copy {
-  font-size: 0;
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:hover .rux--content-switcher__icon {
+    fill: var(--rux-icon-primary, #161616);
+  }
+}
+@media (any-hover: hover) {
+  .rux--content-switcher-btn:focus:has(+ .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover)::before,
+  .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover + .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher-btn:hover + .rux--content-switcher-btn.rux--content-switcher--selected::before,
+  .rux--content-switcher-btn.rux--content-switcher--selected:has(+ .rux--content-switcher-btn:hover)::before {
+    z-index: 0;
+    border-radius: 0;
+    block-size: 100%;
+    border-block-end: 0.0625rem solid var(--rux-border-inverse, #161616);
+    border-block-start: 0.0625rem solid var(--rux-border-inverse, #161616);
+    box-shadow: inset 0 0 0 0.0625rem var(--rux-layer-hover);
+    content: "";
+    inline-size: 100%;
+  }
+  .rux--content-switcher-btn:focus:has(+ .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover):not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover + .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-btn:hover + .rux--content-switcher-btn.rux--content-switcher--selected:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-btn.rux--content-switcher--selected:has(+ .rux--content-switcher-btn:hover):not(.rux--content-switcher--selected)::after {
+    background-color: var(--rux-focus-inset, #ffffff);
+    transform: scaleY(1);
+  }
+}
+.rux--content-switcher-btn.rux--content-switcher--selected {
+  z-index: 3;
+  color: var(--rux-text-inverse, #ffffff);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher-btn.rux--content-switcher--selected:hover {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher-btn.rux--content-switcher--selected:disabled {
+  border-radius: 0.25rem;
+  background-color: var(--rux-button-disabled, #c6c6c6);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+.rux--content-switcher-btn.rux--content-switcher--selected::after {
+  transform: scaleY(1);
+}
+
+.rux--content-switcher-btn.rux--content-switcher--selected .rux--content-switcher__icon {
+  fill: var(--rux-icon-inverse, #ffffff);
+}
+
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--content-switcher-btn:focus {
+    color: Highlight;
+    outline: 1px solid Highlight;
+  }
+}
+
+.rux--content-switcher--icon-only {
+  justify-content: flex-start;
+  inline-size: fit-content;
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-btn {
+  align-items: center;
+  padding: 0;
+  transition: none;
+}
+.rux--content-switcher--icon-only .rux--content-switcher-btn:focus {
+  box-shadow: none;
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:first-child .rux--content-switcher-btn:first-of-type::before {
+  background-color: transparent;
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:first-child .rux--content-switcher-btn {
+  border-end-start-radius: 0.25rem;
+  border-start-start-radius: 0.25rem;
+  box-shadow: inset 0.0625rem 0 0 0 var(--rux-border-inverse, #161616);
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:last-child .rux--content-switcher-btn {
+  border-end-end-radius: 0.25rem;
+  border-start-end-radius: 0.25rem;
+  box-shadow: inset -0.0625rem 0 0 0 var(--rux-border-inverse, #161616);
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:first-child .rux--content-switcher-btn[disabled],
+.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:last-child .rux--content-switcher-btn[disabled] {
+  box-shadow: none;
+}
+
+.rux--content-switcher--lg .rux--content-switcher-btn {
+  padding-inline: 0.875rem 0.875rem;
+}
+
+.rux--content-switcher--lg .rux--content-switcher-btn svg {
+  block-size: 20px;
+  inline-size: 20px;
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-btn svg {
+  z-index: 1;
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--content-switcher--icon-only .rux--content-switcher-btn.rux--content-switcher--selected svg {
+  z-index: 1;
+  fill: var(--rux-icon-inverse, #ffffff);
+}
+
+.rux--content-switcher--icon-only.rux--content-switcher--sm .rux--btn--sm {
+  block-size: 2rem;
+}
+
+.rux--content-switcher-btn:focus::before,
+.rux--content-switcher-popover__wrapper:focus-within + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn::before,
+.rux--content-switcher--selected::before,
+.rux--content-switcher-popover--selected + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--disabled):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher--selected):not(:focus)::before {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher--icon-only .rux--content-switcher-btn[disabled] svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--icon-only .rux--content-switcher-btn[disabled]:not(.rux--content-switcher--selected):hover,
+  .rux--content-switcher--icon-only .rux--content-switcher-popover--selected + .rux--content-switcher-popover--disabled .rux--content-switcher-btn[disabled]:hover::before {
+    background-color: transparent;
+  }
+  .rux--content-switcher--icon-only .rux--content-switcher-btn[disabled]:hover::before {
+    background-color: var(--rux-border-subtle);
+  }
+  .rux--content-switcher-popover__wrapper:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover) .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--selected):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher-popover__wrapper:hover + .rux--content-switcher-popover__wrapper .rux--content-switcher--selected::before,
+  .rux--content-switcher-popover--selected:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:hover) .rux--content-switcher-btn::before {
+    z-index: 0;
+    border-radius: 0;
+    block-size: 100%;
+    border-block-end: 0.0625rem solid var(--rux-border-inverse, #161616);
+    border-block-start: 0.0625rem solid var(--rux-border-inverse, #161616);
+    box-shadow: inset 0 0 0 0.0625rem var(--rux-layer-hover);
+    content: "";
+    inline-size: 100%;
+  }
+  .rux--content-switcher-popover__wrapper:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover) .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--selected):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-popover__wrapper:hover + .rux--content-switcher-popover__wrapper .rux--content-switcher--selected:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher-popover--selected:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:hover) .rux--content-switcher-btn:not(.rux--content-switcher--selected)::after {
+    background-color: var(--rux-focus-inset, #ffffff);
+    transform: scaleY(1);
+  }
+}
+.rux--content-switcher--low-contrast {
+  background-color: var(--rux-content-switcher-background, #e0e0e0);
+  outline-color: var(--rux-border-strong);
+}
+
+.rux--content-switcher--low-contrast .rux--content-switcher-btn {
+  border-color: var(--rux-border-strong);
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:active {
+  background-color: var(--rux-content-switcher-background-hover, #d1d1d1);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:hover {
+    background-color: var(--rux-content-switcher-background-hover, #d1d1d1);
+  }
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn::before {
+  background-color: var(--rux-border-strong);
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn::after {
+  background-color: var(--rux-content-switcher-selected, #ffffff);
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:disabled {
+  border-color: var(--rux-border-disabled, #c6c6c6);
+  background-color: transparent;
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:disabled:hover {
+    cursor: not-allowed;
+  }
+}
+
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher--selected):focus::before {
+  background: transparent;
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher--selected):focus::after {
+  background-color: var(--rux-content-switcher-background, #e0e0e0);
+  box-shadow: inset 0 0 0 0.125rem var(--rux-focus, #0f62fe);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher--selected):focus:hover::after {
+    border-color: var(--rux-border-strong);
+    background-color: var(--rux-content-switcher-background-hover, #d1d1d1);
+    box-shadow: none;
+  }
+}
+
+.rux--content-switcher--low-contrast:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:first-child {
+  box-shadow: inset 0.0625rem 0 0 0 var(--rux-border-strong);
+}
+
+.rux--content-switcher--low-contrast:not(.rux--content-switcher--icon-only) .rux--content-switcher-btn:last-child {
+  box-shadow: inset -0.0625rem 0 0 0 var(--rux-border-strong);
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:focus:has(+ .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover)::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover + .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:hover + .rux--content-switcher-btn.rux--content-switcher--selected::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:has(+ .rux--content-switcher-btn:hover)::before {
+    border-color: var(--rux-border-strong);
+    box-shadow: inset 0 0 0 0.0625rem var(--rux-content-switcher-background-hover, #d1d1d1);
+  }
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:focus:has(+ .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover):not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover + .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:hover + .rux--content-switcher-btn.rux--content-switcher--selected:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:has(+ .rux--content-switcher-btn:hover):not(.rux--content-switcher--selected)::after {
+    background-color: var(--rux-content-switcher-background, #e0e0e0);
+  }
+}
+
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected {
+  font-size: var(--rux-heading-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-heading-compact-01-font-weight, 600);
+  line-height: var(--rux-heading-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-compact-01-letter-spacing, 0.16px);
+  color: var(--rux-text-primary, #161616);
+}
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:hover {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected::after {
+  border-radius: 0.25rem;
+  background-color: var(--rux-content-switcher-selected, #ffffff);
+  box-shadow: inset 0 0 0 0.0625rem var(--rux-border-inverse, #161616);
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:focus::after {
+  box-shadow: inset 0 0 0 0.125rem var(--rux-focus, #0f62fe);
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:disabled {
+  border: 0.0625rem solid var(--rux-border-disabled, #c6c6c6);
+  border-radius: 0.25rem;
+  background-color: var(--rux-content-switcher-selected, #ffffff);
+  color: var(--rux-text-disabled, rgba(22, 22, 22, 0.25));
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:disabled::before {
+  background-color: transparent;
+}
+
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:focus::before,
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:focus + .rux--content-switcher-btn::before,
+.rux--content-switcher--low-contrast .rux--content-switcher--selected::before,
+.rux--content-switcher--low-contrast .rux--content-switcher--selected + .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:hover::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:hover + .rux--content-switcher-btn::before {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:disabled::before {
+  background-color: var(--rux-border-disabled, #c6c6c6);
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:disabled:hover + .rux--content-switcher-btn:disabled::before {
+    background-color: var(--rux-border-disabled, #c6c6c6);
+  }
+}
+.rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:disabled + .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn.rux--content-switcher--selected:disabled:hover + .rux--content-switcher-btn::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-btn:disabled:hover + .rux--content-switcher-btn.rux--content-switcher--selected::before {
+    background-color: transparent;
+  }
+}
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:first-child .rux--content-switcher-btn:not([disabled]) {
+  box-shadow: inset 0.0625rem 0 0 0 var(--rux-border-strong);
+}
+
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-popover__wrapper:last-child .rux--content-switcher-btn:not([disabled]) {
+  box-shadow: inset -0.0625rem 0 0 0 var(--rux-border-strong);
+}
+
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn svg {
+  fill: var(--rux-icon-secondary, #525252);
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn:hover svg {
+    fill: var(--rux-icon-primary, #161616);
+  }
+}
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn[disabled] svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn.rux--content-switcher--selected svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn.rux--content-switcher--selected[disabled] svg {
+  fill: var(--rux-icon-disabled, rgba(22, 22, 22, 0.25));
+}
+
+.rux--content-switcher--low-contrast.rux--content-switcher--icon-only .rux--content-switcher-btn.rux--content-switcher--selected:disabled {
+  border-color: var(--rux-border-disabled, #c6c6c6);
+}
+
+.rux--content-switcher--low-contrast .rux--content-switcher-btn:not(.rux--content-switcher__selected-hovered):focus::before,
+.rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:focus-within + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn::before,
+.rux--content-switcher--low-contrast .rux--content-switcher--selected:not(.rux--content-switcher__selected-hovered)::before,
+.rux--content-switcher--low-contrast .rux--content-switcher-popover--selected + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn::before {
+  background-color: transparent;
+}
+
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--disabled):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher__selected-hovered)::before {
+    background-color: transparent;
+  }
+}
+@media (any-hover: hover) {
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover) .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--selected):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:focus::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:hover + .rux--content-switcher-popover__wrapper .rux--content-switcher--selected::before,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover--selected:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:hover) .rux--content-switcher-btn::before {
+    border-color: var(--rux-border-strong);
+    box-shadow: inset 0 0 0 0.0625rem var(--rux-content-switcher-background-hover, #d1d1d1);
+  }
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:not(.rux--content-switcher--selected):hover) .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:not(.rux--content-switcher-popover--selected):hover + .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:focus:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover__wrapper:hover + .rux--content-switcher-popover__wrapper .rux--content-switcher--selected:not(.rux--content-switcher--selected)::after,
+  .rux--content-switcher--low-contrast .rux--content-switcher-popover--selected:has(+ .rux--content-switcher-popover__wrapper .rux--content-switcher-btn:hover) .rux--content-switcher-btn:not(.rux--content-switcher--selected)::after {
+    background-color: var(--rux-content-switcher-background, #e0e0e0);
+  }
 }
 
 .rux--radio-button-group {
@@ -17055,6 +18497,22 @@ optgroup.rux--select-optgroup:disabled,
   inset-inline-start: calc(-1 * 0.75rem);
 }
 
+.rux--menu-button__container {
+  display: inline-flex;
+}
+
+.rux--menu-button__trigger:not(.rux--btn--ghost) {
+  min-inline-size: 12rem;
+}
+
+.rux--menu-button__trigger svg {
+  transition: transform 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--menu-button__trigger--open svg {
+  transform: rotate(180deg);
+}
+
 .rux--modal {
   position: fixed;
   z-index: 9000;
@@ -19118,6 +20576,228 @@ span.rux--pagination__text.rux--pagination__items-count {
   border-inline-end: 1px solid var(--rux-border-subtle);
 }
 
+.rux--pagination-nav html {
+  font-size: 100%;
+}
+.rux--pagination-nav body {
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rux--pagination-nav code {
+  font-family: 'IBM Plex Mono', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', monospace;
+}
+.rux--pagination-nav strong {
+  font-weight: 600;
+}
+.rux--pagination-nav {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  --rux-layout-size-height-local: clamp(max(var(--rux-layout-size-height-min), var(--rux-layout-size-height-sm)), var(--rux-layout-size-height, var(--rux-layout-size-height-lg)), min(var(--rux-layout-size-height-max), var(--rux-layout-size-height-lg)));
+  --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
+  line-height: 0;
+}
+
+.rux--pagination-nav__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.rux--pagination-nav__list-item {
+  padding: 0;
+}
+.rux--pagination-nav__list-item:first-child {
+  padding-inline-start: 0;
+}
+.rux--pagination-nav__list-item:last-child {
+  padding-inline-end: 0;
+}
+
+.rux--pagination-nav__page {
+  font-size: var(--rux-body-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-compact-01-font-weight, 400);
+  line-height: var(--rux-body-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-body-compact-01-letter-spacing, 0.16px);
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--pagination-nav__page *,
+.rux--pagination-nav__page *::before,
+.rux--pagination-nav__page *::after {
+  box-sizing: inherit;
+}
+.rux--pagination-nav__page::-moz-focus-inner {
+  border: 0;
+}
+.rux--pagination-nav__page {
+  position: relative;
+  display: block;
+  padding: calc((var(--rux-layout-size-height-local) - 0.875rem) / 2) 0.25rem;
+  border-radius: 0;
+  color: var(--rux-text-primary, #161616);
+  font-weight: 400;
+  line-height: 1;
+  min-inline-size: var(--rux-layout-size-height-local);
+  outline: 0;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 110ms cubic-bezier(0.2, 0, 0.38, 0.9), color 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  user-select: none;
+}
+@media (any-hover: hover) {
+  .rux--pagination-nav__page:hover {
+    background-color: var(--rux-background-hover, rgba(141, 141, 141, 0.12));
+    color: var(--rux-text-primary, #161616);
+  }
+}
+.rux--pagination-nav__page:focus {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--pagination-nav__page:focus {
+    outline-style: dotted;
+  }
+}
+.rux--pagination-nav__page:disabled, .rux--pagination-nav__page.rux--pagination-nav__page--disabled {
+  background: none;
+  color: rgba(var(--rux-text-secondary, #525252), 0.5);
+  outline: none;
+  pointer-events: none;
+}
+.rux--pagination-nav__page:not(.rux--pagination-nav__page--direction)::after {
+  position: absolute;
+  display: block;
+  background-color: var(--rux-border-interactive, #0f62fe);
+  block-size: 0.25rem;
+  content: "";
+  inline-size: 0;
+  inset-block-end: 0;
+  inset-inline-start: 50%;
+  opacity: 0;
+  transition: width 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .rux--pagination-nav__page:not(.rux--pagination-nav__page--direction)::after {
+    transition: none;
+  }
+}
+.rux--pagination-nav__page--active + .rux--pagination-nav__page::after, .rux--pagination-nav__page.rux--pagination-nav__page--active::after {
+  inline-size: 1rem;
+  inset-inline-start: calc(50% - 0.5rem);
+  opacity: 1;
+}
+.rux--pagination-nav__page.rux--pagination-nav__page--active {
+  background-color: initial;
+  color: var(--rux-text-primary, #161616);
+  font-weight: 600;
+}
+.rux--pagination-nav__page .rux--pagination-nav__icon {
+  fill: currentColor;
+  pointer-events: none;
+}
+
+.rux--pagination-nav__page--direction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 3rem;
+  inline-size: 3rem;
+  line-height: 0;
+}
+
+.rux--pagination-nav__select {
+  position: relative;
+}
+
+.rux--pagination-nav__page--select {
+  appearance: none;
+  max-block-size: var(--rux-layout-size-height-local);
+  text-indent: calc(50% - 4.5px);
+  /* This is for targeting styles specific to firefox */
+  /* https://sass-lang.com/documentation/breaking-changes/moz-document/ */
+  /* stylelint-disable-next-line at-rule-no-vendor-prefix */
+}
+@-moz-document url-prefix() {
+  .rux--pagination-nav__page--select {
+    text-indent: 0;
+  }
+}
+
+.rux--pagination-nav__select-icon-wrapper {
+  position: absolute;
+  block-size: 100%;
+  inline-size: 100%;
+  inset-block-start: 0;
+  pointer-events: none;
+}
+.rux--pagination-nav__select-icon-wrapper:not(.rux--pagination-nav__page--direction)::after {
+  position: absolute;
+  display: block;
+  background-color: var(--rux-border-interactive, #0f62fe);
+  block-size: 0.25rem;
+  content: "";
+  inline-size: 0;
+  inset-block-end: 0;
+  inset-inline-start: 50%;
+  opacity: 0;
+  transition: width 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .rux--pagination-nav__select-icon-wrapper:not(.rux--pagination-nav__page--direction)::after {
+    transition: none;
+  }
+}
+.rux--pagination-nav__page--active + .rux--pagination-nav__select-icon-wrapper::after, .rux--pagination-nav__select-icon-wrapper.rux--pagination-nav__page--active::after {
+  inline-size: 1rem;
+  inset-inline-start: calc(50% - 0.5rem);
+  opacity: 1;
+}
+.rux--pagination-nav__page--active + .rux--pagination-nav__select-icon-wrapper .rux--pagination-nav__select-icon {
+  display: none;
+}
+
+.rux--pagination-nav__select-icon {
+  position: absolute;
+  inset-block-start: calc(50% - 0.25rem);
+  inset-inline-start: calc(50% - 0.5rem);
+  pointer-events: none;
+}
+
+.rux--pagination-nav__accessibility-label {
+  position: absolute;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+  visibility: inherit;
+  white-space: nowrap;
+}
+
+[dir=rtl] .rux--pagination-nav__list-item svg {
+  transform: rotate(0.5turn);
+}
+
 .rux--progress-bar {
   --rux-layout-density-padding-inline-local: clamp(var(--rux-layout-density-padding-inline-min), var(--rux-layout-density-padding-inline, var(--rux-layout-density-padding-inline-normal)), var(--rux-layout-density-padding-inline-max));
 }
@@ -20380,6 +22060,272 @@ span.rux--pagination__text.rux--pagination__items-count {
 
 .rux--stack-scale-13 {
   --rux-stack-gap: 10rem;
+}
+
+.rux--structured-list--selection .rux--structured-list-td,
+.rux--structured-list--selection .rux--structured-list-th {
+  padding-inline: 1rem 1rem;
+}
+.rux--structured-list--selection .rux--structured-list-td:first-child,
+.rux--structured-list--selection .rux--structured-list-th:first-child {
+  padding-inline: 1rem 1rem;
+}
+
+.rux--structured-list-row--focused-within {
+  outline: 2px solid var(--rux-focus, #0f62fe);
+  outline-offset: -2px;
+}
+@media screen and (prefers-contrast) {
+  .rux--structured-list-row--focused-within {
+    outline-style: dotted;
+  }
+}
+
+.rux--structured-list {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--structured-list *,
+.rux--structured-list *::before,
+.rux--structured-list *::after {
+  box-sizing: inherit;
+}
+.rux--structured-list {
+  display: table;
+  background-color: var(--rux-layer) transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+  inline-size: 100%;
+  overflow-x: auto;
+}
+.rux--structured-list.rux--structured-list--condensed .rux--structured-list-td, .rux--structured-list.rux--structured-list--condensed .rux--structured-list-th {
+  padding: 0.5rem;
+}
+.rux--structured-list .rux--structured-list-row .rux--structured-list-td:first-of-type,
+.rux--structured-list .rux--structured-list-row .rux--structured-list-th:first-of-type {
+  padding-inline-start: 1rem;
+}
+.rux--structured-list.rux--structured-list--flush .rux--structured-list-row .rux--structured-list-td, .rux--structured-list.rux--structured-list--flush .rux--structured-list-row .rux--structured-list-th, .rux--structured-list.rux--structured-list--flush .rux--structured-list-row .rux--structured-list-td:first-of-type, .rux--structured-list.rux--structured-list--flush .rux--structured-list-row .rux--structured-list-th:first-of-type {
+  padding-inline: 0 1rem;
+}
+
+.rux--structured-list-row {
+  display: table-row;
+  border-block-start: 1px solid var(--rux-border-subtle);
+  transition: background-color 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--structured-list-tbody .rux--structured-list-row:last-child {
+  border-block-end: 1px solid var(--rux-border-subtle);
+}
+
+.rux--structured-list-row--header-row {
+  border: none;
+}
+
+@media (any-hover: hover) {
+  .rux--structured-list--selection .rux--structured-list-row:hover:not(.rux--structured-list-row--header-row):not(.rux--structured-list-row--selected) {
+    border-color: var(--rux-layer-hover);
+    background-color: var(--rux-layer-hover);
+    cursor: pointer;
+  }
+  .rux--structured-list--selection .rux--structured-list-row:hover:not(.rux--structured-list-row--header-row):not(.rux--structured-list-row--selected) + .rux--structured-list-row {
+    border-color: var(--rux-layer-hover);
+  }
+}
+.rux--structured-list--selection .rux--structured-list-row.rux--structured-list-row--selected {
+  border-color: var(--rux-layer-selected);
+  background-color: var(--rux-layer-selected);
+}
+
+.rux--structured-list--selection .rux--structured-list-row--selected + .rux--structured-list-row {
+  border-color: var(--rux-layer-selected);
+}
+
+.rux--structured-list--selection .rux--structured-list-row.rux--structured-list-row--selected .rux--structured-list-td {
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--structured-list-row.rux--structured-list-row--header-row {
+  cursor: inherit;
+}
+
+@media (any-hover: hover) {
+  .rux--structured-list--selection .rux--structured-list-row:hover:not(.rux--structured-list-row--header-row) > .rux--structured-list-td {
+    color: var(--rux-text-primary, #161616);
+  }
+}
+.rux--structured-list--selection .rux--structured-list-row.rux--structured-list-row--selected > .rux--structured-list-td {
+  color: var(--rux-text-primary, #161616);
+}
+
+.rux--structured-list-thead {
+  display: table-header-group;
+  vertical-align: middle;
+}
+
+.rux--structured-list-th {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--structured-list-th *,
+.rux--structured-list-th *::before,
+.rux--structured-list-th *::after {
+  box-sizing: inherit;
+}
+.rux--structured-list-th {
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  font-size: var(--rux-heading-compact-01-font-size, 0.875rem);
+  font-weight: var(--rux-heading-compact-01-font-weight, 600);
+  line-height: var(--rux-heading-compact-01-line-height, 1.28572);
+  letter-spacing: var(--rux-heading-compact-01-letter-spacing, 0.16px);
+  display: table-cell;
+  block-size: 2.5rem;
+  color: var(--rux-text-primary, #161616);
+  font-weight: 600;
+  text-align: start;
+  text-transform: none;
+  vertical-align: top;
+}
+
+.rux--structured-list-tbody {
+  display: table-row-group;
+  vertical-align: middle;
+}
+
+.rux--structured-list-td {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+.rux--structured-list-td *,
+.rux--structured-list-td *::before,
+.rux--structured-list-td *::after {
+  box-sizing: inherit;
+}
+.rux--structured-list-td {
+  font-size: var(--rux-body-01-font-size, 0.875rem);
+  font-weight: var(--rux-body-01-font-weight, 400);
+  line-height: var(--rux-body-01-line-height, 1.42857);
+  letter-spacing: var(--rux-body-01-letter-spacing, 0.16px);
+  padding: 1rem 0.5rem 1.5rem 0.5rem;
+  position: relative;
+  display: table-cell;
+  color: var(--rux-text-secondary, #525252);
+  max-inline-size: 36rem;
+  transition: color 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.rux--structured-list-content--nowrap {
+  white-space: nowrap;
+}
+
+.rux--structured-list-input + .rux--structured-list-td {
+  text-align: end;
+}
+
+.rux--structured-list-svg {
+  display: inline-block;
+  margin-block-start: 0.125rem;
+  transition: all 110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  vertical-align: top;
+}
+
+.rux--structured-list-input:checked + .rux--structured-list-row .rux--structured-list-svg,
+.rux--structured-list-input:checked + .rux--structured-list-td .rux--structured-list-svg {
+  fill: var(--rux-icon-primary, #161616);
+}
+
+.rux--structured-list-svg {
+  fill: transparent;
+}
+
+.rux--structured-list--selection .rux--structured-list-td:last-child {
+  inline-size: 2rem;
+  padding-inline-start: 0;
+}
+
+.rux--structured-list.rux--skeleton .rux--structured-list-th:first-child {
+  inline-size: 8%;
+}
+.rux--structured-list.rux--skeleton .rux--structured-list-th:nth-child(3n+2) {
+  inline-size: 30%;
+}
+.rux--structured-list.rux--skeleton .rux--structured-list-th:nth-child(3n+3) {
+  inline-size: 15%;
+}
+.rux--structured-list.rux--skeleton span {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--rux-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+}
+.rux--structured-list.rux--skeleton span:hover, .rux--structured-list.rux--skeleton span:focus, .rux--structured-list.rux--skeleton span:active {
+  border: none;
+  cursor: default;
+  outline: none;
+}
+.rux--structured-list.rux--skeleton span::before {
+  position: absolute;
+  animation: 3000ms ease-in-out rux--skeleton infinite;
+  background: var(--rux-skeleton-element, #c6c6c6);
+  block-size: 100%;
+  content: "";
+  inline-size: 100%;
+  inset-inline-start: 0;
+  will-change: transform-origin, transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rux--structured-list.rux--skeleton span::before {
+    animation: none;
+  }
+}
+@media screen and (-ms-high-contrast: active), (forced-colors: active) {
+  .rux--structured-list.rux--skeleton span {
+    background: CanvasText;
+  }
+  .rux--structured-list.rux--skeleton span::before {
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+}
+.rux--structured-list.rux--skeleton span {
+  display: block;
+  block-size: 1rem;
+  inline-size: 75%;
+}
+
+.rux--structured-list.rux--structured-list--selection.rux--skeleton .rux--structured-list-th:first-child {
+  inline-size: 5%;
+}
+.rux--structured-list.rux--structured-list--selection.rux--skeleton .rux--structured-list-th:first-child span {
+  display: none;
+}
+
+.rux--structured-list__icon {
+  margin-block-start: 0.125rem;
+  vertical-align: top;
+}
+
+.rux--structured-list--selection .rux--structured-list-td:first-child:has(.rux--structured-list__icon) {
+  inline-size: 2rem;
+  padding-inline-end: 0;
 }
 
 .rux--tabs.rux--tabs--contained.rux--tabs--full-width .rux--tab--list {
@@ -26623,6 +28569,9 @@ em {
   --rux-tag-background-warm-gray: #e5e0df;
   --rux-tag-color-warm-gray: #171414;
   --rux-tag-hover-warm-gray: #d8d0cf;
+  --rux-content-switcher-background: #e0e0e0;
+  --rux-content-switcher-background-hover: #d1d1d1;
+  --rux-content-switcher-selected: #ffffff;
   --rux-notification-background-error: #fff1f1;
   --rux-notification-background-success: #defbe6;
   --rux-notification-background-info: #edf5ff;
@@ -27222,6 +29171,9 @@ em {
   --rux-tag-background-warm-gray: #565151;
   --rux-tag-color-warm-gray: #f7f3f2;
   --rux-tag-hover-warm-gray: #696363;
+  --rux-content-switcher-background: rgba(0, 0, 0, 0);
+  --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
+  --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
   --rux-notification-background-error: #262626;
   --rux-notification-background-success: #262626;
   --rux-notification-background-info: #262626;

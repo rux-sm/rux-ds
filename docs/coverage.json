@@ -1,10 +1,6 @@
 {
   "note": "Per-component class coverage of the kitchen sink, as achieved. check-coverage fails when a component exercises fewer classes than recorded here. `--update` REFUSES to lower any entry, so this file only ever moves up; the refusal is in tools/check-coverage.mjs and is not advice. Regenerate with `npm run coverage:update` after adding sink markup. A real loss — a component stripped, or a class gone upstream — needs `--update --force`, which prints what it lowered.",
   "components": {
-    "copy-button": {
-      "hit": 2,
-      "own": 6
-    },
     "dropdown": {
       "hit": 9,
       "own": 23
@@ -21,9 +17,17 @@
       "hit": 16,
       "own": 33
     },
+    "code-snippet": {
+      "hit": 8,
+      "own": 16
+    },
     "combo-box": {
       "hit": 2,
       "own": 4
+    },
+    "copy-button": {
+      "hit": 3,
+      "own": 6
     },
     "data-table": {
       "hit": 41,
@@ -129,13 +133,33 @@
       "hit": 28,
       "own": 37
     },
-    "tag": {
-      "hit": 22,
-      "own": 27
+    "content-switcher": {
+      "hit": 10,
+      "own": 13
+    },
+    "pagination-nav": {
+      "hit": 10,
+      "own": 13
     },
     "button": {
       "hit": 18,
-      "own": 22
+      "own": 23
+    },
+    "contained-list": {
+      "hit": 11,
+      "own": 14
+    },
+    "pagination": {
+      "hit": 20,
+      "own": 25
+    },
+    "structured-list": {
+      "hit": 13,
+      "own": 16
+    },
+    "tag": {
+      "hit": 22,
+      "own": 27
     },
     "file-uploader": {
       "hit": 23,
@@ -148,10 +172,6 @@
     "breadcrumb": {
       "hit": 5,
       "own": 6
-    },
-    "pagination": {
-      "hit": 10,
-      "own": 12
     },
     "toggletip": {
       "hit": 5,
@@ -170,8 +190,8 @@
       "own": 19
     },
     "menu": {
-      "hit": 19,
-      "own": 21
+      "hit": 22,
+      "own": 24
     },
     "badge-indicator": {
       "hit": 2,
@@ -220,6 +240,10 @@
     "fluid-time-picker": {
       "hit": 1,
       "own": 1
+    },
+    "menu-button": {
+      "hit": 3,
+      "own": 3
     },
     "progress-indicator": {
       "hit": 7,

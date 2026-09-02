@@ -55,11 +55,11 @@
 // @use "@carbon/styles/scss/components/chat-button";
 @use "@carbon/styles/scss/components/checkbox";
 // @use "@carbon/styles/scss/components/coachmark";
-// @use "@carbon/styles/scss/components/code-snippet";
+@use "@carbon/styles/scss/components/code-snippet";
 @use "@carbon/styles/scss/components/combo-box";
 @use "@carbon/styles/scss/components/combo-button";
-// @use "@carbon/styles/scss/components/contained-list";
-// @use "@carbon/styles/scss/components/content-switcher";
+@use "@carbon/styles/scss/components/contained-list";
+@use "@carbon/styles/scss/components/content-switcher";
 @use "@carbon/styles/scss/components/copy-button";
 @use "@carbon/styles/scss/components/data-table";
 // DATA-TABLE IS FOUR MODULES, NOT ONE. Carbon's own components/_index.scss @uses
@@ -104,7 +104,7 @@
 @use "@carbon/styles/scss/components/list-box";
 @use "@carbon/styles/scss/components/loading";
 @use "@carbon/styles/scss/components/menu";
-// @use "@carbon/styles/scss/components/menu-button";
+@use "@carbon/styles/scss/components/menu-button";
 @use "@carbon/styles/scss/components/modal";
 @use "@carbon/styles/scss/components/multiselect";
 @use "@carbon/styles/scss/components/notification";
@@ -113,7 +113,7 @@
 @use "@carbon/styles/scss/components/overflow-menu";
 // @use "@carbon/styles/scss/components/page-header";
 @use "@carbon/styles/scss/components/pagination";
-// @use "@carbon/styles/scss/components/pagination-nav";
+@use "@carbon/styles/scss/components/pagination-nav";
 @use "@carbon/styles/scss/components/popover";
 @use "@carbon/styles/scss/components/progress-bar";
 // ADMITTED 2026-08-29 under §2.1, reversing its own DEFER. inventory.md deferred
@@ -147,7 +147,7 @@
 @use "@carbon/styles/scss/components/slider";
 // @use "@carbon/styles/scss/components/slug";
 @use "@carbon/styles/scss/components/stack";
-// @use "@carbon/styles/scss/components/structured-list";
+@use "@carbon/styles/scss/components/structured-list";
 @use "@carbon/styles/scss/components/tabs";
 @use "@carbon/styles/scss/components/tag";
 @use "@carbon/styles/scss/components/text-area";

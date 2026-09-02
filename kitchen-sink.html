@@ -78,7 +78,7 @@
 
 <nav class="ks-nav">
   <h1>rux-ds</h1>
-  <div class="ks-count">50 sections</div>
+  <div class="ks-count">56 sections</div>
   <div class="ks-navlinks">
     <a href="#buttons">Buttons</a>
     <a href="#combo-button">Combo button</a>
@@ -130,6 +130,12 @@
     <a href="#treeview">Tree view</a>
     <a href="#progress-bar">Progress bar</a>
     <a href="#aspect-ratio">Aspect ratio</a>
+    <a href="#contained-list">Contained list</a>
+    <a href="#structured-list">Structured list</a>
+    <a href="#content-switcher">Content switcher</a>
+    <a href="#code-snippet">Code snippet</a>
+    <a href="#pagination-nav">Pagination nav</a>
+    <a href="#menu-button">Menu button</a>
   </div>
 </nav>
 
@@ -6315,6 +6321,406 @@
     </div>
     <div class="rux--aspect-ratio rux--aspect-ratio--9x16" style="background:var(--rux-layer-01)">
       <span style="position:absolute;inset:0;display:grid;place-items:center">9 × 16</span>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="contained-list">
+  <h2>Contained list</h2><p>on-page · disclosed · item variants</p>
+  <!-- PROVENANCE: rendered-dom · components-containedlist--default,
+       --disclosed, --with-actions, --with-interactive-items and
+       --with-list-title-decorators, 2026-08-28 -->
+  <!--
+    DELIBERATE divergence, kept against the reference: Carbon renders
+    __label on a <div>; this system uses <h3> — a contained list's label
+    is a heading, and the heading level gives screen-reader users the
+    outline Carbon reconstructs with ARIA instead. Applies to both lists
+    below. check-tags reports it by design.
+
+    The nesting report flags the buttons inside `contained-list-item__action`.
+    That class is real — two rules in @carbon/styles — but every story that
+    demos an action puts it in the HEADER's `contained-list__action` instead,
+    so no sample pairs a button with the item-level one. Kept: the item action
+    is what those two rules exist for. 2026-08-28.
+
+    Both lists take `layout--size-lg`, and the ul takes role=list, from the
+    reference. `contained-list--lg` is emitted there too and dropped for having
+    no rule in @carbon/styles (§4.1.12).
+  -->
+  <div class="ks-grid">
+    <div class="rux--contained-list rux--layout--size-lg rux--contained-list--on-page">
+      <div class="rux--contained-list__header"><h3 class="rux--contained-list__label">On page</h3></div>
+      <ul role="list">
+        <li class="rux--contained-list-item">
+          <div class="rux--contained-list-item__content">First item</div>
+        </li>
+        <li class="rux--contained-list-item rux--contained-list-item--with-action">
+          <div class="rux--contained-list-item__content">With action</div>
+          <div class="rux--contained-list-item__action">
+            <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm">Edit</button>
+          </div>
+        </li>
+        <li class="rux--contained-list-item rux--contained-list-item--clickable">
+          <button type="button" class="rux--contained-list-item__content">Clickable item</button>
+        </li>
+      </ul>
+    </div>
+    <div class="rux--contained-list rux--layout--size-lg rux--contained-list--disclosed rux--contained-list--inset-rulers">
+      <div class="rux--contained-list__header"><h3 class="rux--contained-list__label">Disclosed</h3></div>
+      <ul role="list">
+        <li class="rux--contained-list-item"><div class="rux--contained-list-item__content">Alpha</div></li>
+        <li class="rux--contained-list-item"><div class="rux--contained-list-item__content">Bravo</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="structured-list">
+  <h2>Structured list</h2><p>header row · selection · condensed</p>
+  <!-- PROVENANCE: rendered-dom · components-structuredlist--default,
+       --selection, --initial-selection and its condensed recipe, 2026-08-28 -->
+  <!--
+    Two corrections from the reference. The list carries ARIA table roles —
+    role=table on the root, rowgroup on thead and tbody, row on each row,
+    columnheader on the th and cell on the td — which this fragment had none of,
+    so it read to a screen reader as a stack of unrelated divs.
+
+    And the SELECTION variant is a real component state this fragment named in
+    its own subtitle but never demoed: `--selection` on the root, then each row
+    holds a visually-hidden radio `structured-list-input` and a final cell whose
+    `structured-list-svg` tick marks the chosen row. Fifteen rules hang off
+    --selection alone. The row-level `--selected` class the fragment already had
+    is what paints it; the input is what makes it selectable.
+
+    `th` is a span in the reference and `td` a div; both are kept as rendered.
+  -->
+  <div class="rux--structured-list rux--structured-list--condensed" role="table">
+    <div class="rux--structured-list-thead" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--header-row" role="row">
+        <span class="rux--structured-list-th" role="columnheader">Name</span>
+        <span class="rux--structured-list-th" role="columnheader">Description</span>
+      </div>
+    </div>
+    <div class="rux--structured-list-tbody" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--selected" role="row">
+        <div class="rux--structured-list-td rux--structured-list-content--nowrap" role="cell">Alpha</div>
+        <div class="rux--structured-list-td" role="cell">Selected row</div>
+      </div>
+      <div class="rux--structured-list-row" role="row">
+        <div class="rux--structured-list-td rux--structured-list-content--nowrap" role="cell">Bravo</div>
+        <div class="rux--structured-list-td" role="cell">Ordinary row</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">selection</div>
+  <div class="rux--structured-list rux--structured-list--selection" role="table">
+    <div class="rux--structured-list-thead" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--header-row" role="row">
+        <span class="rux--structured-list-th" role="columnheader">Plan</span>
+        <span class="rux--structured-list-th" role="columnheader">Included</span>
+        <span class="rux--structured-list-th" role="columnheader"></span>
+      </div>
+    </div>
+    <div class="rux--structured-list-tbody" role="rowgroup">
+      <div class="rux--structured-list-row rux--structured-list-row--selected" role="row">
+        <div class="rux--structured-list-td" role="cell">Standard</div>
+        <div class="rux--structured-list-td" role="cell">Everything in the base tier</div>
+        <input id="sl-1" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl" checked>
+        <div class="rux--structured-list-td" role="cell">
+          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        </div>
+      </div>
+      <div class="rux--structured-list-row" role="row">
+        <div class="rux--structured-list-td" role="cell">Extended</div>
+        <div class="rux--structured-list-td" role="cell">Adds retention and audit</div>
+        <input id="sl-2" class="rux--structured-list-input rux--visually-hidden" type="radio" name="sl">
+        <div class="rux--structured-list-td" role="cell">
+          <svg class="rux--structured-list-svg" role="img" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--filled"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="content-switcher">
+  <h2>Content switcher</h2><p>sizes · selected state</p>
+  <!-- PROVENANCE: rendered-dom · components-contentswitcher--default,
+       --icon-only, --low-contrast and the sm/lg recipes, 2026-08-28 -->
+  <!--
+      ADMITTED 2026-09-01. Every root now carries `layout--size-*` beside its
+      size class, as every capture does, and the icon-only demo is md rather
+      than sm because the three icon-only captures are all md — check-ancestry
+      required `layout--size-md` above the popover wrapper. `content-switcher--md`
+      is attested and unstyled, so the md root carries `layout--size-md` alone
+      (§4.1.12); the three `layout-constraint--size__*` classes every capture
+      puts on the root ARE styled (24 rules) and are written on each root.
+
+      EVERY nesting finding here is one decision, reported once per class. The
+      reference wraps this component's trigger in an icon-tooltip, so its buttons
+      sit inside `tooltip-trigger__wrapper`; the sink declines that chrome on the
+      combo-button precedent — it demos the component, not the story's hover
+      hint — which leaves our buttons as direct children of the component's own
+      wrapper. Nothing else differs.
+  -->
+  <div class="ks-row">
+    <div class="rux--content-switcher rux--content-switcher--sm rux--layout--size-sm rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
+      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">
+        <span class="rux--content-switcher__label">First</span>
+      </button>
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+        <span class="rux--content-switcher__label">Second</span>
+      </button>
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+        <span class="rux--content-switcher__label">Third</span>
+      </button>
+    </div>
+  </div>
+  <!--
+    --content-switcher-popover--disabled sits on the __wrapper, never on the
+    button: every rule reads it as `.__wrapper:not(.popover--disabled)` or as the
+    sibling of a selected wrapper.
+
+    ICON-ONLY BUTTONS ARE FULL BUTTONS. Found 2026-08-27 by looking at the
+    rendered page: these three collapsed to 16x16 icons in a 48px-wide
+    switcher. Every sizing rule for __content-switcher-btn is scoped
+    `.rux--content-switcher:not(.rux--content-switcher--icon-only)`
+    (css/rux.css:10614), so in the icon-only variant the box comes from the
+    Button classes instead — and Carbon's own stylesheet says so outright:
+    `.--content-switcher--icon-only.--content-switcher--sm .rux--btn--sm
+    { block-size: 2rem }` (:10825) is dead markup without them. The rendered
+    reference agrees, emitting btn + size pair + primary + icon-only on each
+    (components-contentswitcher--icon-only). With them the buttons measure
+    32x32 and the switcher 96x40; btn--primary paints nothing, because the
+    switcher rules and the selected ::before win.
+
+    Not copied from that reference: its icon-tooltip popover chrome and
+    __tooltip-trigger__wrapper, on the same ground as combo-button — the sink
+    demos the component, not the story's hover hint. The selected fill is a
+    ::before, which is why the button's own background computes transparent.
+  -->
+  <div class="ks-row">
+    <div class="rux--content-switcher rux--layout--size-md rux--content-switcher--icon-only rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
+      <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--selected">
+        <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="true" aria-label="List view">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg>
+        </button>
+      </span>
+      <span class="rux--content-switcher-popover__wrapper">
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Grid view">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg>
+        </button>
+      </span>
+      <span class="rux--content-switcher-popover__wrapper rux--content-switcher-popover--disabled">
+        <button type="button" class="rux--content-switcher-btn rux--btn rux--btn--md rux--layout--size-md rux--btn--primary rux--btn--icon-only" role="tab" aria-selected="false" aria-label="Map view" disabled>
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-location"/></svg>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <div class="ks-row">
+    <div class="rux--content-switcher rux--content-switcher--lg rux--layout--size-lg rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
+      <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true">
+        <span class="rux--content-switcher__label">Large</span>
+      </button>
+      <button type="button" class="rux--content-switcher-btn" role="tab" aria-selected="false">
+        <span class="rux--content-switcher__label">Switcher</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="code-snippet">
+  <h2>Code snippet</h2><p>inline · single line · multi line</p>
+  <!-- PROVENANCE: rendered-dom · components-codesnippet--inline, --singleline
+       and --multiline with their disabled recipes, 2026-08-28 -->
+  <!--
+    THE SNIPPET BUTTONS ARE BUTTONS, the third component in this sweep to be
+    missing that (copy-button and the icon-only content switcher were the
+    others). The copy control is `copy-btn copy btn btn--sm layout--size-sm
+    btn--primary btn--icon-only` and the expand control adds `btn--ghost`;
+    this fragment carried only the snippet-specific classes, so neither had a
+    box or a kind. `snippet-button` went with them — the reference never emits
+    it and @carbon/styles has no rule for it.
+
+    Not copied: the icon-tooltip popover wrapping the copy button in the
+    reference, on the combo-button precedent. That is what the nesting report
+    means when it says Carbon puts copy-btn inside `tooltip-trigger__wrapper`.
+  -->
+  <div style="display:grid;gap:1.5rem;max-width:36rem">
+    <div>
+      <!--
+        REVERSED 2026-08-28. The 2026-08-27 adjudication recorded this as a
+        deliberate divergence and rendered it on a <code>, reasoning that inert
+        code is semantically a code element. check-compound then failed the
+        moment the other snippet buttons got their Button classes: Carbon
+        writes `.snippet--inline.btn` as a COMPOUND, so within this system the
+        inline snippet is one element that is both. The earlier call was mine
+        and it was wrong — an inline CodeSnippet in Carbon is a copy button,
+        and a <code> cannot carry the classes that make it one. Both KNOWN
+        entries in check-tags go with it.
+
+        The child is a <code>, as the reference renders it, and that matters:
+        `.rux--copy` sets `font-size: 0` to swallow stray text, and the code
+        element is what re-establishes a readable size. With a <span> there the
+        snippet measured 4px wide.
+      -->
+      <button type="button" class="rux--snippet rux--snippet--inline rux--copy rux--btn rux--btn--primary rux--btn--icon-only">
+        <code>npm run build</code>
+      </button>
+    </div>
+    <div class="rux--snippet rux--snippet--single">
+      <div class="rux--snippet-container"><pre><code>node tools/build.mjs</code></pre></div>
+      <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy">
+        <span class="rux--copy-btn__feedback">Copied</span>
+      </button>
+    </div>
+    <div class="rux--snippet rux--snippet--single rux--snippet--disabled">
+      <div class="rux--snippet-container"><pre><code>npm run verify   # disabled</code></pre></div>
+      <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy" disabled>
+        <span class="rux--copy-btn__feedback">Copied</span>
+      </button>
+    </div>
+    <div class="rux--snippet rux--snippet--multi">
+      <div class="rux--snippet-container"><pre><code>@use "@carbon/styles/scss/config" with ($prefix: "rux");
+@use "@carbon/styles/scss/theme";
+@use "@carbon/styles/scss/components/button";</code></pre></div>
+      <button type="button" class="rux--snippet-btn--expand rux--btn rux--btn--sm rux--layout--size-sm rux--btn--ghost">
+        <span class="rux--snippet-btn--text">Show more</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="ks-sec" id="pagination-nav">
+  <h2>Pagination nav</h2><p>numbered pages · an overflow select · previous and next</p>
+  <!-- PROVENANCE: rendered-dom · components-paginationnav--default, 2026-09-01 -->
+  <!--
+    ADMITTED 2026-09-01, §4.9 batch 3, written from the one capture Carbon has.
+    A `nav.pagination-nav` at `layout--size-lg` holds a list: a previous
+    arrow, numbered page BUTTONS each with a visually-hidden accessibility
+    label, an overflow SELECT wrapped in `pagination-nav__select` with its own
+    icon wrapper, and a next arrow. The active page carries `--active` and
+    `aria-current="page"`.
+
+    THE TWO ARROWS ARE ICON-TOOLTIPS IN THE CAPTURE, and the sink declines that
+    chrome throughout: each is written as the ghost icon-only button with an
+    aria-label, and the decline is recorded in check-ancestry. The previous
+    arrow is disabled on page 1, as the story renders it.
+
+    `pagination-nav__page--direction` and `--disabled` have rules in
+    @carbon/styles and no story renders them; the arrows are plain buttons in
+    every capture. Not written. No module drives this yet; the page buttons
+    are static.
+  -->
+  <nav class="rux--pagination-nav rux--layout--size-lg" aria-label="Pagination">
+    <ul class="rux--pagination-nav__list">
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--disabled rux--btn--icon-only" aria-label="Previous page" disabled>
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg>
+        </button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page rux--pagination-nav__page--active" aria-current="page"><span class="rux--pagination-nav__accessibility-label">page</span>1</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>2</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>3</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>4</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <div class="rux--pagination-nav__select">
+          <select class="rux--pagination-nav__page rux--pagination-nav__page--select" aria-label="Select page number">
+            <option value="" hidden></option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <div class="rux--pagination-nav__select-icon-wrapper">
+            <svg class="rux--pagination-nav__select-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--horizontal"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>10</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Next page">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg>
+        </button>
+      </li>
+    </ul>
+    <div class="rux--pagination-nav__accessibility-label" aria-live="polite">Page 1 of 10</div>
+  </nav>
+
+  <div class="ks-label" style="margin-block-start:1.5rem">current page inside the overflow — `--active` on the select AND its icon wrapper</div>
+  <!-- check-compound asked for this one: Carbon writes
+       `.pagination-nav__select-icon-wrapper.pagination-nav__page--active`, the
+       state React produces when the current page is one the select holds.
+       The first nav shows the active BUTTON; this one shows the other half.
+       check-tags records `page--active` on this <div> as a KNOWN divergence:
+       the one capture has it on a button only, because no story puts the
+       current page inside the overflow; the CSS rule is the evidence. The
+       select itself stays as captured, without the modifier. -->
+  <nav class="rux--pagination-nav rux--layout--size-lg" aria-label="Pagination, page 7">
+    <ul class="rux--pagination-nav__list">
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Previous page">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--left"/></svg>
+        </button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>1</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <div class="rux--pagination-nav__select">
+          <select class="rux--pagination-nav__page rux--pagination-nav__page--select" aria-label="Select page number" aria-current="page">
+            <option value="2">2</option>
+            <option value="7" selected>7</option>
+            <option value="9">9</option>
+          </select>
+          <div class="rux--pagination-nav__select-icon-wrapper rux--pagination-nav__page--active">
+            <svg class="rux--pagination-nav__select-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-overflow-menu--horizontal"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--pagination-nav__page"><span class="rux--pagination-nav__accessibility-label">page</span>10</button>
+      </li>
+      <li class="rux--pagination-nav__list-item">
+        <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only" aria-label="Next page">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-caret--right"/></svg>
+        </button>
+      </li>
+    </ul>
+    <div class="rux--pagination-nav__accessibility-label" aria-live="polite">Page 7 of 10</div>
+  </nav>
+</section>
+
+<section class="ks-sec" id="menu-button">
+  <h2>Menu button</h2><p>single trigger opening a menu</p>
+  <!-- PROVENANCE: rendered-dom · components-menubutton--default with its open
+       and open-lg recipes, plus --with-icons and --with-dividers, 2026-08-28 -->
+  <!--
+    One finding recorded: this demo triggers from a TERTIARY button where every
+    sampled menu button is primary. Both are Button kinds and the trigger class
+    is the same; the reference simply has no tertiary sample. The open menu
+    itself — `menu menu--open menu--shown` — is demoed in the menu fragment,
+    which owns those classes.
+  -->
+  <div class="ks-row">
+    <div class="rux--menu-button__container">
+      <button type="button" class="rux--btn rux--btn--primary rux--menu-button__trigger" aria-haspopup="true" aria-expanded="false">Actions</button>
+    </div>
+    <div class="rux--menu-button__container">
+      <button type="button" class="rux--btn rux--btn--tertiary rux--menu-button__trigger rux--menu-button__trigger--open" aria-haspopup="true" aria-expanded="true">Open</button>
     </div>
   </div>
 </section>

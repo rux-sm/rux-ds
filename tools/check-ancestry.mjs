@@ -127,6 +127,14 @@ const KNOWN = {
     + 'check-classes rejected it on the first run.'],
   'file-uploader:file-close': [['file-container-item'],
     'the same unstyled wrapper as file__state-container above.'],
+  // BATCH 3 OF §4.9, 2026-09-01. The code snippet's copy button and the
+  // pagination nav's arrows are icon-tooltips in every capture; the sink
+  // declines that chrome throughout and names each site.
+  'code-snippet:snippet--inline': [TOOLTIP_CHROME,
+    'the inline snippet IS a copy button wrapped in an icon-tooltip; the tooltip is '
+    + 'the story\'s hover hint and the sink declines it throughout.'],
+  'code-snippet:copy': [TOOLTIP_CHROME, 'the same icon-tooltip around the copy button.'],
+  'code-snippet:copy-btn': [TOOLTIP_CHROME, 'the same icon-tooltip around the copy button.'],
   // BATCH 2 OF §4.9, 2026-09-01: the fluid multiselect in sink/fluid.html,
   // declined for the reason its base records three entries below.
   'fluid:multi-select': [['multi-select__wrapper'],
