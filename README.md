@@ -679,6 +679,7 @@ and the cells with it.
 | `AGENTS.md` | **The policy, and it binds every agent.** It classifies every artifact into three tiers before you create or modify it, and lists what to stop on. `CLAUDE.md` routes; this decides. `tools/check-controls.mjs` reports which control files a diff touched, and is deliberately NOT a gate — it asserts nothing about the repository |
 | `LICENSE` · `NOTICE` | **Apache-2.0**, decided 2026-08-29. `LICENSE` is upstream's own copy of the text; `NOTICE` names each artefact carrying Carbon-derived material. The attribution in `css/` and `assets/` is written by the BUILD tools, so it survives a rebuild — roadmap §8.1 |
 | `docs/roadmap.md` | Canonical plan and decision log |
+| `docs/choices.md` | **What a project can choose** — shapes, shell parts, themes, field style, buttons — each attested, and which layer offers it |
 | `docs/starting-a-project.md` | **How a project starts on a tag** — one command, three kinds of file, how the pin moves |
 | `docs/verifying-templates.md` | **How a template's behaviour is checked against a running Carbon page** — and the four wrong answers that came from reading the stylesheet instead |
 | `docs/audits.md` | **Which whole-project sweeps have been run, and what each did NOT look at** — the ledger only; every finding is filed where its decision lives |

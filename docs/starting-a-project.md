@@ -12,7 +12,17 @@ template: header, side nav, a page of content, every module running, IBM Plex
 loading from the folder. No build, no install, no server needed — the page is
 plain HTML linking plain CSS and JS by relative path.
 
-A second argument picks another template, a third names the page:
+Run with no arguments it asks instead: folder, template, theme, product
+name, tab title, file name, each with a numbered list or a default that
+Enter accepts. Flags answer the same questions for a script:
+
+```sh
+sh rux-ds/tools/new-project.sh ~/Developer/my-app --template table-page \
+   --theme g10 --name Orders --title "Orders" --page orders
+```
+
+What can be chosen, and what each choice is for, is `docs/choices.md`. A
+second positional argument picks another template, a third names the page:
 
 ```sh
 sh rux-ds/tools/new-project.sh ~/Developer/my-app table-page orders

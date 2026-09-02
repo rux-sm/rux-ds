@@ -2,11 +2,17 @@
 #
 # Start a project on rux-ds, or move one to a newer pin. Phase 11, roadmap §4.11.
 #
+#   sh tools/new-project.sh                       asks, one question at a time
 #   sh tools/new-project.sh <dir> [template] [page]
+#   sh tools/new-project.sh <dir> --template table-page --theme g10 \
+#                           --name "Orders" --title "Orders" --page orders
 #
-#   <dir>       the project; created if absent
-#   [template]  a name from templates/, default app-shell
-#   [page]      the file written, default index (→ <dir>/index.html)
+# Every question offers only what the templates and sink attest; the list of
+# what a project can choose, and which layer offers it, is docs/choices.md.
+# What THIS script chooses is what a text substitution on a template can do:
+# the template, the theme on <html>, the product name in the header, the
+# page title and the file name. Which fields, which buttons, which shell
+# parts — that is composition, and the rux-ds-page skill does it.
 #
 # Run from THIS checkout, at a tag. It refuses a dirty tree for sync-ds.sh's
 # reason: a pin is a claim about the bytes copied, and a modified tracked
@@ -25,23 +31,75 @@
 set -e
 
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DIR="${1:?usage: sh tools/new-project.sh <dir> [template] [page]}"
-TPL="${2:-app-shell}"
-PAGE="${3:-index}"
+THEMES="white g10 g90 g100 rux"
+TEMPLATES="$(ls "$HERE/templates" | sed 's/\.html$//')"
 
-[ -f "$HERE/templates/$TPL.html" ] || {
-  echo "no templates/$TPL.html — the templates are:"
-  ls "$HERE/templates" | sed 's/\.html$//; s/^/  /'
-  exit 1
+has() { for x in $2; do [ "$x" = "$1" ] && return 0; done; return 1; }
+esc() { printf '%s' "$1" | sed 's/[&|\\]/\\&/g'; }
+
+# ---- arguments ------------------------------------------------------------
+DIR=""; TPL=""; THEME=""; NAME=""; PREFIX="Rux"; TITLE=""; PAGE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --template) TPL="$2"; shift 2 ;;
+    --theme)    THEME="$2"; shift 2 ;;
+    --name)     NAME="$2"; shift 2 ;;
+    --prefix)   PREFIX="$2"; shift 2 ;;
+    --title)    TITLE="$2"; shift 2 ;;
+    --page)     PAGE="$2"; shift 2 ;;
+    -h|--help)  sed -n '3,15p' "$0"; exit 0 ;;
+    --*)        echo "unknown flag $1"; exit 1 ;;
+    *) if [ -z "$DIR" ]; then DIR="$1"; elif [ -z "$TPL" ]; then TPL="$1"; elif [ -z "$PAGE" ]; then PAGE="$1"; fi; shift ;;
+  esac
+done
+
+# ---- the questions, asked only for what was not given ---------------------
+# A numbered list, a default in brackets, Enter takes the default.
+ask() { # ask VAR "question" "default" "options or empty"
+  _v="$1"; _q="$2"; _d="$3"; _o="$4"
+  if [ -n "$_o" ]; then
+    i=0; for x in $_o; do i=$((i+1)); printf '  %2d  %s\n' "$i" "$x"; done
+  fi
+  printf '%s [%s]: ' "$_q" "$_d"
+  read -r _a || _a=""
+  [ -z "$_a" ] && _a="$_d"
+  if [ -n "$_o" ] && [ "$_a" -eq "$_a" ] 2>/dev/null; then
+    _a="$(printf '%s\n' $_o | sed -n "${_a}p")"
+  fi
+  eval "$_v=\"\$_a\""
 }
+if [ -z "$DIR" ]; then
+  echo "rux-ds: a new project. Enter takes the default."
+  ask DIR "Folder for the project" "$HOME/Developer/my-app" ""
+fi
+if [ -z "$TPL" ]; then
+  echo "The page shape — each is a complete page, shell included (docs/choices.md):"
+  ask TPL "Template" "app-shell" "$TEMPLATES"
+fi
+has "$TPL" "$TEMPLATES" || { echo "no templates/$TPL.html; the templates are:"; printf '  %s\n' $TEMPLATES; exit 1; }
+if [ -z "$THEME" ]; then
+  echo "The theme on <html>; the shell header keeps its own dark one:"
+  ask THEME "Theme" "white" "$THEMES"
+fi
+has "$THEME" "$THEMES" || { echo "no theme $THEME; one of: $THEMES"; exit 1; }
+if [ -z "$NAME" ]; then
+  echo "The product name in the header, after the '$PREFIX' prefix:"
+  ask NAME "Name" "DS" ""
+fi
+if [ -z "$TITLE" ]; then
+  ask TITLE "Browser tab title" "$PREFIX $NAME" ""
+fi
+if [ -z "$PAGE" ]; then
+  ask PAGE "File name, without .html" "index" ""
+fi
 
+# ---- the pin --------------------------------------------------------------
 if [ -n "$(git -C "$HERE" status --porcelain -uno)" ]; then
   echo "rux-ds has uncommitted changes to tracked files; commit them first."
   echo "A pin taken from a dirty tree names the wrong bytes."
   git -C "$HERE" status --short -uno
   exit 1
 fi
-
 SHA="$(git -C "$HERE" rev-parse HEAD)"
 TAG="$(git -C "$HERE" describe --tags --exact-match 2>/dev/null || true)"
 OUT="$DIR/vendor/rux-ds"
@@ -70,16 +128,22 @@ for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cp "$HERE/css/$f" "$DIR/$f"
 done
 
+# ---- the page: five paths, then the five substitutions --------------------
 if [ -e "$DIR/$PAGE.html" ]; then
   PAGE_NOTE="kept, already there"
 else
+  N="$(esc "$NAME")"; P="$(esc "$PREFIX")"; T="$(esc "$TITLE")"
   sed -e 's|"\.\./css/rux\.css"|"vendor/rux-ds/css/rux.css"|' \
       -e 's|"\.\./css/rux-theme\.css"|"rux-theme.css"|' \
       -e 's|"\.\./css/rux-overrides\.css"|"rux-overrides.css"|' \
       -e 's|"\.\./assets/|"vendor/rux-ds/assets/|g' \
       -e 's|"\.\./js/|"vendor/rux-ds/js/|g' \
+      -e "s|^<html lang=\"en\" data-theme=\"white\">|<html lang=\"en\" data-theme=\"$THEME\">|" \
+      -e "s|<title>[^<]*</title>|<title>$T</title>|" \
+      -e "s|name--prefix\">Rux</span>&nbsp;DS|name--prefix\">$P</span>\&nbsp;$N|" \
+      -e "s|aria-label=\"Rux DS\"|aria-label=\"$P $N\"|g" \
       "$HERE/templates/$TPL.html" > "$DIR/$PAGE.html"
-  PAGE_NOTE="written from templates/$TPL.html"
+  PAGE_NOTE="written from templates/$TPL.html · theme $THEME · '$PREFIX $NAME'"
 fi
 
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR"

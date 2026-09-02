@@ -1,0 +1,84 @@
+# Choices a project makes
+
+The user-facing list of what can be picked when a page is started, where
+each option comes from, and which layer offers it. **Every option here is
+attested**: a template or a sink fragment renders it, diffed against a Carbon
+capture. Nothing is offered that the gates would refuse. Counts come from
+`templates/` and `sink/` on 2026-09-02; when they move, this page is wrong
+before the code is.
+
+Three layers offer them, cheapest first:
+
+| Layer | Offers | Status |
+|---|---|---|
+| **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, name, title, file | Done |
+| **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Planned, roadmap §4.12 |
+| **Configurator** page in the Rux Portal | the same choices with a live preview and the HTML to take away | Planned, after the portal |
+
+## Page shape — ten, pick one
+
+Each is a complete page with the shell. Start from the one nearest the job;
+the second column is the suggestion.
+
+| Template | Use it when |
+|---|---|
+| `app-shell` | nav and header, nothing else yet |
+| `dashboard-page` | a few numbers and a table, read more than edited |
+| `table-page` | a list of records: sort, select, page |
+| `form-page` | create or edit one record |
+| `detail-page` | read one record, with actions |
+| `settings-page` | grouped controls that save |
+| `wizard-page` | one step of a multi-step flow |
+| `schedule-page` | dates and times |
+| `empty-state` | nothing to show yet |
+| `error-state` | something failed |
+
+## UI shell — one, with parts
+
+Carbon ships one shell and rux-ds carries one attested build of it: a dark
+header with the product name, header nav links, global actions, a right-hand
+**header panel with the switcher**, and a left side nav, expanded, fixed. Two
+things are choices and three are not:
+
+- **Header nav links**: present or absent.
+- **Global actions and the switcher panel**: present or absent. The switcher
+  is where an ecosystem lists its apps.
+- Side nav: only the expanded, fixed variant is captured. No rail, no
+  collapsed-by-default; ask before offering one.
+- The shell's theme: the header is `g100` by Carbon's own guidance and stays
+  so whatever the page is.
+- The mark: it is the brand, not a choice.
+
+## Theme — five
+
+`white`, `g10`, `g90`, `g100` from Carbon, and `rux`, the block in the
+project's own `rux-theme.css`. Suggestion: `white` or `g10` for a page read
+at length, `g10` when cards should stand off the page, `g90` or `g100` for
+a dark tool.
+
+## Fields — regular or fluid
+
+Six controls exist in both styles: text input, text area, select, number
+input, search, date picker. Fluid packs the label inside the field's box so
+a dense form aligns; regular keeps the label above and is what every other
+control matches. Suggestion: regular unless the whole form is fluid, since
+Carbon does not mix them in one group. Checkbox, radio, toggle and the
+list-box family have no fluid form.
+
+## Buttons — kinds, sizes, states
+
+- **Kinds**, seven: primary, secondary, tertiary, ghost, danger, danger
+  tertiary, danger ghost. Suggestion: one primary per view, secondary beside
+  it, ghost for the quiet action, danger only for the destructive one.
+- **Sizes**, five: `xs` `sm` `md` `lg` `xl`, and `lg` is the default with no
+  size class. Suggestion: `lg` in forms and dialogs, `sm` inside tables and
+  toolbars, `xl` only for a hero action; `expressive` is a type-scale
+  variant, not a size.
+- **States**: disabled, loading, selected. They are states the page sets,
+  not choices made at creation.
+
+## Content blocks — 68 fragments
+
+Anything in `sink/` can be dropped into a page body; the kitchen sink is the
+catalogue and `sink/ORDER` the index. The skill offers them by name; the
+script does not.
