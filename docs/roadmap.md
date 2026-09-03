@@ -2995,9 +2995,23 @@ and the sign-in button drawn despite `hidden`, because Carbon's display rule
 beats the browser's on origin (`.rux--btn[hidden]` in the overrides file,
 `4a29024`). All 38 browser cells re-read and recorded at `8fc08a1`. The drift
 report's first real run, on the pin move, named exactly what each module
-lacked: `theme.js`, the ids, `aria-controls`, the panel. The hub has them and
-is verified live; Notes has them written and uncommitted, waiting behind
-another session's contract-3 work in the same file. NOT done, and said so: an
+lacked: `theme.js`, the ids, `aria-controls`, the panel. **Both have them as of
+2026-09-03 and the standard is proved across modules**: a theme and a name set
+on the hub are what Notes opens with, read live. Notes was blocked for a day by
+another session's unfinished contract-3 work in the same file; rux called it
+abandoned, and it was lifted out to the session scratchpad as two applicable
+patches with a note, because its producer half is committed in atlas and it is
+resumable rather than dead.
+
+**The notifications glyph left both modules, answered by rux 2026-09-03.**
+Carbon's captured header carries one; nothing in this ecosystem notifies, and
+an icon-only button with no handler is an affordance that lies — the rule
+`js/` and Notes' own shell already stated. Notes had omitted it from the
+start, so the two headers disagreed under a standard whose whole point is
+that they agree. `templates/` keeps it, which leaves an open question: the
+script hands every new project a bell to delete. Rejected: adding a
+decorative bell to Notes so the headers matched, which would have made both
+lie. NOT done, and said so: an
 avatar, since Carbon compiles no avatar component; a visual pass in g100 and
 `rux` beyond computed style, since the pane's screenshots returned stale
 frames after a theme switch; and the drift report compares head resources by

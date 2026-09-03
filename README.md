@@ -105,23 +105,25 @@ sites verified live: Plex loading from the preloads, the switcher filling from
 the root. The same-tag CI check for the hub is drafted as a diff and not
 applied; it is rux's to accept.
 
-**§4.13 step 3 landed 2026-09-02 as `v0.1.3`** (`fd2a6e1`, fixed at `4a29024`,
-swept at `8fc08a1`): the account panel in every template and the sink, every
-theme offered in it, `js/theme.js` and `js/profile.js`, the first live rule in
-`css/rux-overrides.css`, the theme and overrides vendored, `tools/drift.mjs`.
-The hub is on it and verified live (`bb699a5` there): the panel opens, a theme
-pick survives a reload. **Notes is not yet**: its pin moved and the panel is
-written into `tools/build.mjs`, uncommitted, beside another session's
-contract-3 work in the same file, which stops the build until the guides
-re-sync. The shell hunks are in that working tree; rebuild, check and commit
-them once the contract work lands.
+**§4.13 step 3 is DONE, 2026-09-02/03, tagged `v0.1.3`** (`fd2a6e1`, fixed at
+`4a29024`, swept at `8fc08a1`): the account panel in every template and the
+sink, every theme offered in it, `js/theme.js` and `js/profile.js`, the first
+live rule in `css/rux-overrides.css`, the theme and overrides vendored,
+`tools/drift.mjs`. **Both modules are on the tag and it is proved across
+them**: a theme and a display name chosen on the hub (`020363a` there) are
+what Notes (`44486b8` there) opens with, read live on 2026-09-03.
+
+**The notifications glyph is gone from both modules, answered by rux
+2026-09-03.** Nothing notifies, and an icon-only button with no handler is an
+affordance that lies — the rule Notes had applied from the start, which is why
+the two headers disagreed under a standard whose point is that they do not.
+`templates/` KEEPS it, as Carbon's captured set, so `tools/new-project.sh`
+still hands a new project one. Whether it should is below.
 
 **Next, in order:**
 
-1. Finish step 3's tail: Notes rebuilt on `v0.1.3` with the panel, verified
-   live, a theme chosen in one app read by the other.
-2. §4.13 step 4, `rux-backend` and the Supabase project.
-3. Creator 3, the configurator page, as a page in the hub. Last.
+1. §4.13 step 4, `rux-backend` and the Supabase project.
+2. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
@@ -131,6 +133,7 @@ things that are not choices, and gating the result through this root.
 
 | What | Where |
 |---|---|
+| Whether `templates/` keeps the notifications glyph. Both modules dropped it on 2026-09-03 as an affordance that lies; the templates keep Carbon's captured three actions, so every project the script starts is handed the same lying bell to delete | roadmap §4.13 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 
 **Two human tasks remain, both with an assistive technology running.**
