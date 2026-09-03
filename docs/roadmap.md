@@ -2965,8 +2965,13 @@ and is the list to update.
    after the model works.
 9. **Creator 3** (§4.12 item 3) stays last and is untouched by any of this.
 
-**Step 1 done 2026-09-02**, the same evening: hub pushed and live, Notes with
-the switcher. **Step 2 begun** with `v0.1.2`.
+**Steps 1 and 2 done 2026-09-02**, the same evening: hub pushed and live, Notes
+with the switcher; then `v0.1.2` cut, both modules moved to it with
+`tools/new-project.sh`, Notes' `sync-ds.sh` retired and its theme and overrides
+files linked, both sites verified live. The pin move itself changed no css or
+js byte — only Plex, now `font-display: optional` behind preloads, which both
+modules had to add by hand: the first drift the report of step 3 would have
+caught. The hub's same-tag CI check is a drafted diff, tier 2, not applied.
 
 **Outside Supabase, deliberately.** `switcher.json` stays static, so
 navigation works with the backend down. Notes' guide content stays static

@@ -98,13 +98,18 @@ verified live with Notes marked current. Its header reads "Rux Notes" since
 the same day, by the naming rule in §4.13. The manifest contract is written
 down in §4.12.
 
+**§4.13 step 2 is done, 2026-09-02.** `v0.1.2` is cut and both modules are on
+it by `tools/new-project.sh` — the hub at `54d3c4a` there, Notes at `27e69a9`
+with its `sync-ds.sh` retired and its theme and overrides files linked. Both
+sites verified live: Plex loading from the preloads, the switcher filling from
+the root. The same-tag CI check for the hub is drafted as a diff and not
+applied; it is rux's to accept.
+
 **Next, in order:**
 
-1. §4.13 step 2, pin discipline: `v0.1.2` is cut; both modules move to it with
-   `tools/new-project.sh` and Notes' `sync-ds.sh` retires.
-2. §4.13 step 3, the shell standard: every theme, the account panel, the local
+1. §4.13 step 3, the shell standard: every theme, the account panel, the local
    profile, one tag.
-3. Creator 3, the configurator page, as a page in the hub. Last.
+2. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
