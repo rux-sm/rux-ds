@@ -92,15 +92,19 @@ Actions. GitHub enabled Pages from the branch on the first push, so today both
 the branch build and `pages.yml` deploy, and the branch build ignores
 `tools/check.mjs`. The token here cannot change it (403 on the Pages API).
 
+**Notes is module two in fact, 2026-09-02** (`48786ce` there): the grid button,
+the collapsed panel, and `/switcher.js` filling it from the shared list,
+verified live with Notes marked current. Its header reads "Rux Notes" since
+the same day, by the naming rule in §4.13. The manifest contract is written
+down in §4.12.
+
 **Next, in order:**
 
-1. Notes gets the switcher button and panel and becomes module two in fact.
-   **Its pin is current** — moved to `6a64dbd` on 2026-09-02, `e883eef` there,
-   seven gates passing. `js/ui-shell.js` only opens and closes the panel, the
-   entries in every template are invented, and the shared list is
-   `/switcher.json`, live at the root since 2026-09-02. Its header reads
-   "Rux Notes" since the same day, by the naming rule in §4.13.
-2. Creator 3, the configurator page, as a page in the hub. Last.
+1. §4.13 step 2, pin discipline: `v0.1.2` is cut; both modules move to it with
+   `tools/new-project.sh` and Notes' `sync-ds.sh` retires.
+2. §4.13 step 3, the shell standard: every theme, the account panel, the local
+   profile, one tag.
+3. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
@@ -110,9 +114,7 @@ things that are not choices, and gating the result through this root.
 
 | What | Where |
 |---|---|
-| Where the switcher manifest contract is written down — the shape of `switcher.json` and what a shell fetches. `js/ui-shell.js` only opens and closes the panel today; every template carries invented entries | roadmap §4.12 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
-| Whether Notes' `sync-ds.sh` is retired for `tools/new-project.sh`, which already moves a pin around a project's own files and records the tag | roadmap §4.11 |
 
 **Two human tasks remain, both with an assistive technology running.**
 `docs/screen-reader-pass.md` is the procedure and lists what is already done:

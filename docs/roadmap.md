@@ -2745,6 +2745,12 @@ overwritten on every run, so the `rux` theme is the same theme in every app —
 and the project's own `rux-theme.css` stays, written only when absent, for its
 deltas. The overrides file and the page are unchanged.
 
+**`sync-ds.sh` retires with `v0.1.2`, 2026-09-02** (§4.13 step 2): Notes moves
+its pin with this script from then on, and the recipe for a GitHub Pages site
+is this script too. Lost with it, and said so: its report of a js module
+rux-ds added or removed, which a project's static script list needs a person
+to mirror. That belongs to the drift report of §4.13 step 3.
+
 ### 4.12 Phase 12 — The project creator and the Rux Portal
 
 **Added 2026-09-02**, from a conversation the same day. Three creators, cheapest
@@ -2803,7 +2809,25 @@ a category rather than a destination. "Module" stays the architectural term for
 a repository-and-folder unit. Rejected: "Rux Home", "Rux Suite", "Rux Index",
 "Rux Atrium", and dropping the second word for a bare "Rux".
 
-One decision still rux's: where the module manifest contract is written down.
+**The manifest contract, written down here 2026-09-02, answering the last
+decision.** `switcher.json` at the account root is
+`{ "apps": [ { "name", "path", "description" } ] }` in display order: `path` is
+`/` or `/name/` where `name` is the module's repository, exactly one entry is
+`/`, every field is a non-empty string, and the hub's `tools/check.mjs` refuses
+anything else. A shell ships Carbon's switcher panel with its own REAL entries
+— Home and itself, the app it is marked `aria-current="page"` — and links
+`/switcher.js` after `ui-shell.js`. That script fetches `/switcher.json`
+uncached, replaces the items of every `ul.rux--switcher` with the list, a
+divider after the first entry, marks as current the entry whose path prefixes
+`location.pathname`, leaves the links out of the tab order while the panel is
+collapsed, and fills `#apps-grid` where a page has one. If the fetch fails the
+shipped entries stay and nothing reports it, which is why they must be real.
+Adding a module is one entry in the file and nothing anywhere else.
+
+**Notes is module two in fact, 2026-09-02** (`48786ce` there): button, panel,
+`/switcher.js`, verified live against the root with Notes marked current. Its
+`check-links` learned that a root-absolute reference is the hub's to answer —
+a tier 2 change, proposed in its commit with what it weakens.
 
 **Stopped 2026-09-02 with the hub committed locally and unpushed**, waiting
 on the repository being created by hand under the right name. Next in order: push and enable Pages;
@@ -2940,6 +2964,9 @@ and is the list to update.
    timestamps and time zone, user-scoped CRUD, RLS and tests. Reminders only
    after the model works.
 9. **Creator 3** (§4.12 item 3) stays last and is untouched by any of this.
+
+**Step 1 done 2026-09-02**, the same evening: hub pushed and live, Notes with
+the switcher. **Step 2 begun** with `v0.1.2`.
 
 **Outside Supabase, deliberately.** `switcher.json` stays static, so
 navigation works with the backend down. Notes' guide content stays static
