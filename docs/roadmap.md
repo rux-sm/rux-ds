@@ -2795,6 +2795,14 @@ on the repository being created by hand under the right name. Next in order: pus
 the switcher on Notes; creator 3 (the configurator). Creator 2 is done.
 README "Picking this up" carries the same list and is the one to update.
 
+**Pushed and live 2026-09-02.** rux renamed the empty `rux-apps` to
+`rux-sm.github.io`; the push followed, `/`, `/switcher.json` and `/switcher.js`
+all answer 200, and `pages.yml`'s check and deploy jobs were green on the first
+run. GitHub enabled Pages from the branch on its own, so the branch build also
+deploys and ignores the check until rux sets the source to GitHub Actions.
+Item 1 of the list above is done; the naming rule of §4.13 gave Notes its
+"Rux Notes" header the same day.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

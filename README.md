@@ -74,8 +74,8 @@ executed is roadmap §4.12, three creators and the hub, now named **Rux Apps**,
 and after it §4.13: every theme in every app, a profile everywhere, one
 backend. Its first step is the next-steps list below.
 Landed: the script questionnaire, `docs/choices.md`, the switcher panel in every
-template with its behaviour (`v0.1.1`), and the hub itself, committed in
-`~/Developer/rux-sm.github.io` on the machine that built it and NOT yet pushed.
+template with its behaviour (`v0.1.1`), and the hub itself, pushed and live at
+https://rux-sm.github.io/ since 2026-09-02.
 
 **The hub's repository must be named `rux-sm.github.io`, not after the hub.**
 Only `<account>.github.io` publishes at the account root, and the root is the
@@ -84,18 +84,23 @@ whole arrangement: every module's shell fetches `/switcher.json` and links
 `path` to be `/` or `/name/`. A project repository serves at
 `https://rux-sm.github.io/<repo>/` instead, where those two fetches 404 —
 silently, because `switcher.js` catches and falls back to the entries the page
-shipped. `rux-sm/rux-apps` was created on 2026-09-02 and is the wrong name for
-this reason; rename it rather than pushing to it.
+shipped. `rux-sm/rux-apps` was created on 2026-09-02 under the wrong name and
+renamed to `rux-sm.github.io` the same day, before anything was pushed to it.
+
+**One click of rux's on GitHub remains:** Settings → Pages → Source → GitHub
+Actions. GitHub enabled Pages from the branch on the first push, so today both
+the branch build and `pages.yml` deploy, and the branch build ignores
+`tools/check.mjs`. The token here cannot change it (403 on the Pages API).
 
 **Next, in order:**
 
-1. Push the hub, enable Pages from its workflow, open https://rux-sm.github.io/.
-2. Notes gets the switcher button and panel and becomes module two in fact.
+1. Notes gets the switcher button and panel and becomes module two in fact.
    **Its pin is current** — moved to `6a64dbd` on 2026-09-02, `e883eef` there,
-   seven gates passing. The panel itself waits on item 1: `js/ui-shell.js` only
-   opens and closes it, the entries in every template are invented, and the
-   shared list is `/switcher.json` at a root that does not exist yet.
-3. Creator 3, the configurator page, as a page in the hub. Last.
+   seven gates passing. `js/ui-shell.js` only opens and closes the panel, the
+   entries in every template are invented, and the shared list is
+   `/switcher.json`, live at the root since 2026-09-02. Its header reads
+   "Rux Notes" since the same day, by the naming rule in §4.13.
+2. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
