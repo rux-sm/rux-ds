@@ -89,6 +89,9 @@ Three properties define done:
 | 2026-09-01 | **All four Carbon themes compiled, plus a custom one** (§4.10) | Two themes |
 | 2026-09-01 | **Customization in a layer on top, never in Carbon** (§4.10) | Editing component files to restyle them |
 | 2026-09-01 | **Tag milestones now** (§8.2) | Waiting for a freeze that no longer exists |
+| 2026-09-02 | **Every theme in every app; the custom theme vendored** (§4.13) | A theme chosen per project, its file project-owned |
+| 2026-09-02 | **A profile in every app, local first, cloud at the root** (§4.13) | Sign-in only where an app needs it |
+| 2026-09-02 | **One Supabase project for every app, on Free** (§4.13) | A project per app; Pro from day one |
 
 **The keep-core rule.** Customization is limited to what Carbon exposes as configuration
 — `$prefix` and its sibling flags — plus choosing which components and themes to compile.
@@ -2722,6 +2725,11 @@ minute, the runtime class check on it reading nothing stripped. NOT done: the
 portal's `sync-ds.sh` still exists in its own repository and is not replaced by
 this; the recipe for a project that is a GitHub Pages site is that script.
 
+**Amended 2026-09-02 (§4.13):** `rux-theme.css` joins `vendor/` — copied and
+overwritten on every run, so the `rux` theme is the same theme in every app —
+and the project's own `rux-theme.css` stays, written only when absent, for its
+deltas. The overrides file and the page are unchanged.
+
 ### 4.12 Phase 12 — The project creator and the Rux Portal
 
 **Added 2026-09-02**, from a conversation the same day. Three creators, cheapest
@@ -2786,6 +2794,152 @@ One decision still rux's: where the module manifest contract is written down.
 on the repository being created by hand under the right name. Next in order: push and enable Pages;
 the switcher on Notes; creator 3 (the configurator). Creator 2 is done.
 README "Picking this up" carries the same list and is the one to update.
+
+### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
+
+**Added 2026-09-02**, from a conversation the same day, and decided by rux the
+same evening. Three creators and a hub (§4.12) gave every app the same header
+and the same switcher. This phase gives every app the same themes, a profile,
+and one place to keep what a profile saves. Two of the three are rux-ds
+standards; the third is a repository of its own.
+
+**Two standards, new to rux-ds.**
+
+1. **Every app offers every theme.** The five themes — `white`, `g10`, `g90`,
+   `g100`, `rux` — are a feature of the shell, not a per-project choice; the
+   script's theme question becomes the *default* theme. The sink's five-button
+   switcher in `sink/harness.js` becomes `js/theme.js`: it sets `data-theme`
+   on `<html>` before first paint from the stored preference, and the control
+   lives in the shell's right panel beside the account. The header stays
+   `g100` by Carbon's rule whatever the page is. For `rux` to be the same
+   theme everywhere, `css/rux-theme.css` is vendored under
+   `vendor/rux-ds/css/` and overwritten on every pin move; the project's own
+   `rux-theme.css` stays, for its deltas, linked after it. That reverses
+   §4.11's "written only when absent" for one file, and §4.11 says so. The
+   accent stays rux's open decision; the mechanism does not wait for it.
+2. **Every app has a profile, always.** Two layers, and the first needs no
+   network. *Local*, in rux-ds: display name, avatar initial and theme in
+   `localStorage` under one key. Every module sits on the origin
+   `rux-sm.github.io`, so a name set in Notes is already read by the hub.
+   This is the layer that is not password-protected, the one the gates test
+   with no network, and the one that keeps an app usable with the backend
+   down. *Cloud*, at the root: Supabase anonymous sign-in on first visit
+   gives every visitor an `auth.uid()` with no password, so row-level
+   security applies from day one; GitHub sign-in links that identity and
+   makes the profile portable across devices. Cloud wins when a session
+   exists and rewrites local; local serves when it does not.
+
+Read on Supabase's documentation 2026-09-02: anonymous sign-ins must be
+enabled in the dashboard; policies tell them apart by the `is_anonymous` JWT
+claim; a default rate limit of 30 sign-ins an hour per IP applies; Turnstile
+or invisible CAPTCHA is recommended; converting to a permanent user is
+`auth.linkIdentity({ provider })`, and manual linking must also be enabled.
+The identity-linking page does not say in so many words that linking applies
+to anonymous users; the anonymous sign-ins page does, and step 5 relies on
+that page.
+
+**One backend.** One Supabase project for every app, on the Free tier, named
+`rux-platform` after the repository that holds its configuration, migrations,
+row-level-security policies and database tests, with no secrets in it. Auth,
+`public.profiles`, and later a schema per app that needs one. The publishable
+key is the only key a page ever sees. Blast radius is the price of one
+project: migrations only in `rux-platform`, per-app schemas, RLS tests
+mandatory; an app is split out only for unrelated data or independent
+operations. Free's cost is the pause after a week idle; Pro only when it
+bites. The pricing figures the first draft cited were not re-verified.
+
+**The architecture.**
+
+```
+rux-ds, one tag, vendored into every module, overwritten on pin move
+  css/rux.css · css/rux-theme.css · js/ (theme.js, profile.js, ui-shell.js)
+  assets/ · templates/ (for the drift report)
+
+rux-sm.github.io, the root
+  switcher.json   the static app list
+  switcher.js     fills the switcher panel
+  account.js      Supabase client, fills the account panel, syncs the profile
+  index.html      app grid, one Foundations link to rux-ds
+
+rux-platform, new repository
+  supabase/       config, migrations, RLS policies, tests; no secrets
+
+one Supabase project, Free tier
+  auth · public.profiles · later a scheduler schema
+```
+
+Ownership follows the switcher's split, which already exists. rux-ds owns the
+account panel's markup and open/close, the theme module and the local
+profile. The root owns `account.js`, the client and the auth configuration.
+Each app owns its nav and content, and no app CSS restyles the shell. rux-ds
+never gains a dependency — zero is a Phase 4 measurement (§4.4). `supabase-js`
+from a CDN is a runtime dependency of every app, and is named as one.
+
+**Steps, in order.** README "Picking this up" carries the first two already
+and is the list to update.
+
+1. **README items 1 and 2 first.** Push the hub, enable Pages, open the root.
+   Notes gets the switcher button and panel. The redirect URLs and
+   `/account.js` need the root to exist.
+2. **Pin discipline.** Answer the open decision: Notes' `sync-ds.sh` retires
+   for `new-project.sh`, which also gives Notes the theme and overrides files
+   it lacks. Notes moves to a tag; the hub's check already refuses a PIN
+   without one. A hub CI check that every module is on the same tag is tier
+   2: proposed as a diff, with what it makes weaker. Write the manifest
+   contract in §4.12: the shape of `switcher.json` and what a shell fetches.
+3. **The shell standard, one rux-ds tag.** Capture Carbon's
+   `header-w-actions-and-right-panel` story — already in the DOM and spacing
+   captures — and diff the account panel against it. Compose its contents
+   from compiled components: a radio group for theme, a text input for the
+   name, a sign-in button. Add `js/theme.js` and `js/profile.js` with
+   `BEHAVIOUR:` labels; `check-behaviour` covers both, with no network in any
+   gate. Vendor `css/rux-theme.css` and `templates/`; add a drift report that
+   compares a page's header region to the vendored template and blocks
+   nothing. Update `docs/choices.md`: the theme question is the default. Tag.
+4. **`rux-platform` and the project.** One repository: Supabase config,
+   migrations, policies, database tests, local development notes, no secrets.
+   One cloud project on Free. Auth: anonymous sign-ins on, GitHub as the one
+   provider, manual linking on, Turnstile on. `public.profiles` references
+   `auth.users`: display name, avatar, theme, updated-at. RLS owner only,
+   tested both ways — owner passes, a second user fails. One exact redirect
+   URL per app path.
+5. **`/account.js` at the root.** Loads the client, opens an anonymous
+   session on first visit, reads and writes the profile row, fills the panel
+   the shell already renders, offers GitHub sign-in and links the identity.
+   When the fetch fails it does nothing and the local profile stands — the
+   same contract as `switcher.js`.
+6. **The landing page.** Header-only shell, the app grid from
+   `switcher.json`, one quiet Foundations link to rux-ds. Not a dashboard
+   until cross-app data exists.
+7. **Roll out.** Both modules to the same tag. Verify shell, theme, switcher
+   and profile in each, in the browser, and record it in `docs/log.md`.
+8. **Scheduler**, when it starts: its own schema, events with owner,
+   timestamps and time zone, user-scoped CRUD, RLS and tests. Reminders only
+   after the model works.
+9. **Creator 3** (§4.12 item 3) stays last and is untouched by any of this.
+
+**Outside Supabase, deliberately.** `switcher.json` stays static, so
+navigation works with the backend down. Notes' guide content stays static
+and publishable-gated; per-user favourites keyed by guide id are fine, guide
+text is not. Every rux-ds gate runs on fixtures with no account and no
+network.
+
+**Rejected, from the first draft of the same day, recorded so it is not
+re-proposed.** *Theme consistency as drift between project-owned theme files*
+— Notes ships no theme file at all, and the shared look is compiled into the
+vendored stylesheet; the real change is the standard above. *Notes data in
+Supabase* — guide content is atlas's export tier, static and gate-held on
+every commit. *A shell-region rewriter that patches a page's markup on pin
+move* — the shell has changed once; a drift report that blocks nothing is
+enough until it changes a third time. *The sign-in entry point in the hub and
+the panel in rux-ds with no line between them* — the switcher's split is the
+line. *A Foundations link to Atlas* — it is private. *Pro from day one* — a
+decorative Account button does not need it. *Starting before the root
+exists* — nothing here resolves without it.
+
+**Record.** Notes' README says publishing "did not add a fourth project";
+this adds one, and the hub is a fifth. Amend that line there rather than
+leave it implicit.
 
 ## 5. Risks and one-way doors
 
