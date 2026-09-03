@@ -70,7 +70,9 @@ carries a Reference column from `docs/component-docs.json`, every compiled
 component accounted for and all 135 URLs live, with `action-set` and
 `skeleton-styles` honestly marked as having nothing to link. **Its content has
 no gate**, which roadmap §4.7 states and proposes. The plan being
-executed is roadmap §4.12: three creators and the hub, now named **Rux Apps**.
+executed is roadmap §4.12, three creators and the hub, now named **Rux Apps**,
+and after it §4.13: every theme in every app, a profile everywhere, one
+backend. Its first step is the next-steps list below.
 Landed: the script questionnaire, `docs/choices.md`, the switcher panel in every
 template with its behaviour (`v0.1.1`), and the hub itself, committed in
 `~/Developer/rux-sm.github.io` on the machine that built it and NOT yet pushed.
