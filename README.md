@@ -155,7 +155,6 @@ things that are not choices, and gating the result through this root.
 
 | What | Where |
 |---|---|
-| Whether a clickable tile should fill its grid cell in `css/rux-overrides.css` here, so every app gets it. The hub's own overrides file carries that rule since 2026-09-03: Carbon stretches the COLUMN and the tile keeps its content height, so a row of tiles with unequal text has a ragged bottom edge. `templates/dashboard-page.html` does not show it only because its four tiles happen to hold the same amount of text | roadmap §4.10 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 
 **Two human tasks remain, both with an assistive technology running.**
