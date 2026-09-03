@@ -36,18 +36,30 @@ listed by running the script with a name it does not have.
 ```
 my-app/
 ├── index.html            yours — the template, paths pointed at vendor/
-├── rux-theme.css         yours — token values, one [data-theme] block
-├── rux-overrides.css     yours — component rules, ships empty
+├── rux-theme.css         yours — token deltas only, ships empty
+├── rux-overrides.css     yours — component-rule deltas only, ships empty
 └── vendor/rux-ds/        rux-ds's — never edited, overwritten by every run
     ├── PIN                 which tag and commit this is
     ├── css/rux.css         the stylesheet; rux.min.css beside it
+    ├── css/rux-theme.css   the canonical theme, the same in every app
+    ├── css/rux-overrides.css  the canonical rules, the same in every app
     ├── js/                 the behaviour modules the page links
-    └── assets/             icons.svg and fonts/ with its licence
+    ├── assets/             icons.svg and fonts/ with its licence
+    └── templates/          what the drift report compares your shell to
 ```
 
 Three kinds of file. The script writes `vendor/` every time and the other
 three only when they are missing, so re-running it moves the pin without
-touching your work.
+touching your work. Your page links the vendored theme and overrides first
+and your own two after them, so rux-ds's decisions arrive with every pin
+move and yours stay on top. Since 2026-09-02 (roadmap §4.13); before that
+the two files were copies of rux-ds's and never moved again.
+
+**After every run the drift report prints**: what each page's `<head>`
+resources and header skeleton carry that the pinned template does not, and
+the reverse. It blocks nothing. A page is yours, and the report is what tells
+you a shell change upstream — a preload, a panel, a module — has not reached
+it; apply what you want by hand.
 
 ## Which file a change goes in
 
@@ -55,8 +67,8 @@ The same rule as inside rux-ds (`AGENTS.md`, "Where a change goes"):
 
 | The change is | It goes in |
 |---|---|
-| A colour, or any value a token names | `rux-theme.css`, inside a `[data-theme]` block |
-| How a component looks beyond its tokens | `rux-overrides.css`, at Carbon's own specificity, no `!important` |
+| A colour, or any value a token names | your `rux-theme.css`, inside a `[data-theme]` block, on top of the vendored one |
+| How a component looks beyond its tokens | your `rux-overrides.css`, at Carbon's own specificity, no `!important` |
 | A page | copy a template again; the script will not overwrite the one you have |
 | Anything under `vendor/` | rux-ds itself: a request with invented content, never a local edit |
 

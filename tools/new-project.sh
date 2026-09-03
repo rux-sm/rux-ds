@@ -25,10 +25,21 @@
 #   vendor/rux-ds/          rux-ds's. Overwritten on every run; never edit it,
 #                           the next run erases the edit and the fix belongs
 #                           upstream. PIN says which tag and commit it is.
-#   rux-theme.css           the project's, from the first run on. Written only
-#   rux-overrides.css       if absent; re-running moves the pin around them.
+#                           Since 2026-09-02 (roadmap §4.13) it also carries
+#                           css/rux-theme.css and css/rux-overrides.css — the
+#                           canonical theme and rules, the same in every app —
+#                           and templates/, for the drift report below.
+#   rux-theme.css           the project's OWN deltas, linked after the vendored
+#   rux-overrides.css       pair. Written only if absent, and written EMPTY but
+#                           for a header; re-running moves the pin around them.
 #   <page>.html             the project's. Written only if absent, from the
-#                           template with its five paths pointed at vendor/.
+#                           template with its five paths pointed at vendor/
+#                           and the two project links added after them.
+#
+# AFTER A PIN MOVE THE DRIFT REPORT RUNS: tools/drift.mjs compares each page's
+# shell to the vendored template and prints what differs. It blocks nothing;
+# a page is the project's, and the report is what says a shell change upstream
+# has not reached it.
 #
 # docs/starting-a-project.md is the long version.
 set -e
@@ -95,7 +106,8 @@ if [ -z "$TPL" ]; then
 fi
 has "$TPL" "$TEMPLATES" || { echo "no templates/$TPL.html; the templates are:"; printf '  %s\n' $TEMPLATES; exit 1; }
 if [ -z "$THEME" ]; then
-  echo "The theme on <html>; the shell header keeps its own dark one:"
+  echo "The DEFAULT theme on <html> -- every page offers all five in its account"
+  echo "panel, and a visitor's choice wins; the shell header keeps its own dark one:"
   ask THEME "Theme" "white" "$THEMES"
 fi
 has "$THEME" "$THEMES" || { echo "no theme $THEME; one of: $THEMES"; exit 1; }
@@ -135,7 +147,9 @@ TAG="$(git -C "$HERE" describe --tags --exact-match 2>/dev/null || true)"
 OUT="$DIR/vendor/rux-ds"
 
 mkdir -p "$OUT/css" "$OUT/js" "$OUT/assets/fonts"
-cp "$HERE/css/rux.css" "$HERE/css/rux.min.css" "$OUT/css/"
+cp "$HERE/css/rux.css" "$HERE/css/rux.min.css" "$HERE/css/rux-theme.css" "$HERE/css/rux-overrides.css" "$OUT/css/"
+mkdir -p "$OUT/templates"
+cp "$HERE/templates/"*.html "$OUT/templates/"
 cp "$HERE/js/"*.js "$OUT/js/"
 cp "$HERE/assets/icons.svg" "$OUT/assets/"
 # The typeface is part of the design system: rux.css names IBM Plex Sans and
@@ -155,7 +169,14 @@ CHANGES.md in rux-ds names any class that left between two tags.
 PIN
 
 for f in rux-theme.css rux-overrides.css; do
-  [ -e "$DIR/$f" ] || cp "$HERE/css/$f" "$DIR/$f"
+  [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
+/* $f -- this project's own, linked after vendor/rux-ds/css/$f, which is
+   rux-ds's and is overwritten on every pin move. Only what THIS project changes
+   goes here: token values inside a [data-theme] block (rux-theme.css), or
+   component rules at Carbon's own specificity with no !important
+   (rux-overrides.css). Empty is the normal state. rux-ds AGENTS.md, "Where a
+   change goes". */
+DELTA
 done
 
 # ---- the page: five paths, then the five substitutions --------------------
@@ -166,23 +187,29 @@ elif [ -e "$DIR/$PAGE.html" ]; then
 else
   N="$(esc "$NAME")"; P="$(esc "$PREFIX")"; T="$(esc "$TITLE")"
   sed -e 's|"\.\./css/rux\.css"|"vendor/rux-ds/css/rux.css"|' \
-      -e 's|"\.\./css/rux-theme\.css"|"rux-theme.css"|' \
-      -e 's|"\.\./css/rux-overrides\.css"|"rux-overrides.css"|' \
+      -e 's|"\.\./css/rux-theme\.css"|"vendor/rux-ds/css/rux-theme.css"|' \
+      -e 's|"\.\./css/rux-overrides\.css"|"vendor/rux-ds/css/rux-overrides.css"|' \
       -e 's|"\.\./assets/|"vendor/rux-ds/assets/|g' \
       -e 's|"\.\./js/|"vendor/rux-ds/js/|g' \
       -e "s|^<html lang=\"en\" data-theme=\"white\">|<html lang=\"en\" data-theme=\"$THEME\">|" \
       -e "s|<title>[^<]*</title>|<title>$T</title>|" \
       -e "s|name--prefix\">Rux</span>&nbsp;DS|name--prefix\">$P</span>\&nbsp;$N|" \
       -e "s|aria-label=\"Rux DS\"|aria-label=\"$P $N\"|g" \
-      "$HERE/templates/$TPL.html" > "$DIR/$PAGE.html"
+      "$HERE/templates/$TPL.html" \
+  | awk '{ print } /href="vendor\/rux-ds\/css\/rux-overrides\.css"/ { print "<link rel=\"stylesheet\" href=\"rux-theme.css\">"; print "<link rel=\"stylesheet\" href=\"rux-overrides.css\">" }' \
+  > "$DIR/$PAGE.html"
   PAGE_NOTE="written from templates/$TPL.html · theme $THEME · '$PREFIX $NAME'"
 fi
 
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR"
-echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · PIN"
-echo "  rux-theme.css, rux-overrides.css   yours; left alone if present"
+echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · templates $(ls "$OUT/templates" | wc -l | tr -d ' ') · PIN"
+echo "  rux-theme.css, rux-overrides.css   yours, deltas only; left alone if present"
 if [ -n "$MOVE_ONLY" ]; then
   echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
 else
   echo "  $PAGE.html   $PAGE_NOTE"
 fi
+
+# The drift report, on every run: what each page's shell carries that the
+# vendored template does not, and the reverse. It prints and blocks nothing.
+node "$HERE/tools/drift.mjs" "$DIR"

@@ -284,8 +284,11 @@
   // active, the links' tabindex goes -1 to 0, a second press closes it, an
   // outside press closes it, Escape closes it, focus stays where it was.
   (() => {
-    const trigger = q('#ui-shell .rux--header__action[aria-expanded]:not(.rux--header__menu-toggle)');
-    const panel = trigger?.closest('.rux--header')?.querySelector('.rux--header-panel');
+    // BY NAME SINCE 2026-09-02: the Account action carries aria-expanded too
+    // now, and comes first, so "the first expandable action" stopped being the
+    // switcher. Each action names its panel with aria-controls.
+    const trigger = q('#ui-shell .rux--header__action[aria-label="App switcher"]');
+    const panel = trigger && document.getElementById(trigger.getAttribute('aria-controls') || '');
     if (!trigger || !panel) return record('ui-shell', 'switcher', false, 'no switcher here');
     const EXP = 'rux--header-panel--expanded';
     const link = panel.querySelector('a');
@@ -311,6 +314,73 @@
     click(trigger); click(trigger);
     record('ui-shell', 'and a second press',
       !has(panel, EXP), `--expanded=${has(panel, EXP)} after two presses`);
+  })();
+
+  // ── ui-shell: two panels in one header, each action opens its own ────────
+  // Added 2026-09-02 with the account panel (roadmap §4.13). js/ui-shell.js
+  // resolves a panel through aria-controls when the action names one; the
+  // Account action must open #rux-account-panel and leave the switcher's
+  // closed, and opening the switcher must close it, because the kernel keeps
+  // one dismissible surface on the stack.
+  (() => {
+    const account = q('#ui-shell .rux--header__action[aria-controls="rux-account-panel"]');
+    const grid = q('#ui-shell .rux--header__action[aria-controls="rux-switcher-panel"]');
+    const ap = document.getElementById('rux-account-panel');
+    const sp = document.getElementById('rux-switcher-panel');
+    if (!account || !grid || !ap || !sp) return record('ui-shell', 'account panel', false, 'no account panel here');
+    const EXP = 'rux--header-panel--expanded';
+    if (has(ap, EXP)) click(account);
+    if (has(sp, EXP)) click(grid);
+
+    click(account);
+    record('ui-shell', 'the Account action opens its own panel and not the switcher',
+      has(ap, EXP) && !has(sp, EXP) && account.getAttribute('aria-expanded') === 'true',
+      `account=${has(ap, EXP)}, switcher=${has(sp, EXP)}, aria-expanded=${account.getAttribute('aria-expanded')}`);
+
+    click(grid);
+    record('ui-shell', 'opening the switcher closes the account panel',
+      has(sp, EXP) && !has(ap, EXP) && account.getAttribute('aria-expanded') === 'false',
+      `account=${has(ap, EXP)}, switcher=${has(sp, EXP)}`);
+    click(grid);
+  })();
+
+  // ── profile and theme: the local profile round trip ──────────────────────
+  // js/profile.js: a theme radio moves data-theme on <html> and stores it; a
+  // name stores as typed. js/theme.js: apply() puts a stored theme on <html>
+  // and refuses a value that does not look like a theme name. Everything
+  // touched — storage, the theme, the name — is restored.
+  (() => {
+    const P = window.Rux?.profile, T = window.Rux?.theme;
+    const radio = q('#rux-account-panel input[name="rux-theme"][value="g90"]');
+    const name = q('#rux-profile-name');
+    if (!P || !T || !radio || !name) return record('profile', 'local profile', false, 'no account panel or modules here');
+    const html = document.documentElement;
+    const before = { theme: html.dataset.theme, stored: localStorage.getItem(T.KEY), name: name.value };
+
+    radio.checked = true;
+    radio.dispatchEvent(new Event('change', { bubbles: true }));
+    record('profile', 'a theme radio moves data-theme on <html> and stores it',
+      html.dataset.theme === 'g90' && T.read()?.theme === 'g90',
+      `data-theme=${html.dataset.theme}, stored=${T.read()?.theme}`);
+
+    name.value = 'Check';
+    name.dispatchEvent(new Event('input', { bubbles: true }));
+    record('profile', 'a typed name is stored',
+      T.read()?.name === 'Check', `stored name=${T.read()?.name}`);
+
+    localStorage.setItem(T.KEY, JSON.stringify({ theme: 'g10' }));
+    record('theme', 'apply() puts the stored theme on <html>',
+      T.apply() === 'g10' && html.dataset.theme === 'g10', `data-theme=${html.dataset.theme}`);
+
+    localStorage.setItem(T.KEY, JSON.stringify({ theme: 'not a theme!' }));
+    html.dataset.theme = 'white';
+    record('theme', 'and refuses a value that is not a theme name',
+      T.apply() === null && html.dataset.theme === 'white', `data-theme=${html.dataset.theme}`);
+
+    if (before.stored === null) localStorage.removeItem(T.KEY); else localStorage.setItem(T.KEY, before.stored);
+    if (before.theme === undefined) delete html.dataset.theme; else html.dataset.theme = before.theme;
+    name.value = before.name;
+    window.dispatchEvent(new StorageEvent('storage', { key: T.KEY }));  // re-render the radios to the restored theme
   })();
 
   // ── tile: the collapsed cap is an inline value, and it round-trips ────────

@@ -36,25 +36,32 @@ the second column is the suggestion.
 ## UI shell — one, with parts
 
 Carbon ships one shell and rux-ds carries one attested build of it: a dark
-header with the product name, header nav links, global actions, a right-hand
-**header panel with the switcher**, and a left side nav, expanded, fixed. Two
-things are choices and three are not:
+header with the product name, header nav links, global actions, two
+right-hand header panels — **the switcher** and, since 2026-09-02, **the
+account panel** — and a left side nav, expanded, fixed. Two things are
+choices and four are not:
 
 - **Header nav links**: present or absent.
 - **Global actions and the switcher panel**: present or absent. The switcher
   is where an ecosystem lists its apps.
 - Side nav: only the expanded, fixed variant is captured. No rail, no
   collapsed-by-default; ask before offering one.
+- The account panel: every app has one (roadmap §4.13). It holds the profile
+  — a display name and the theme — saved in the browser under one key every
+  app on the origin shares, so a choice made in one app is the choice in all.
+  `js/theme.js` applies it before first paint, `js/profile.js` keeps it.
 - The shell's theme: the header is `g100` by Carbon's own guidance and stays
   so whatever the page is.
 - The mark: it is the brand, not a choice.
 
-## Theme — five
+## Theme — five, all offered, one the default
 
-`white`, `g10`, `g90`, `g100` from Carbon, and `rux`, the block in the
-project's own `rux-theme.css`. Suggestion: `white` or `g10` for a page read
-at length, `g10` when cards should stand off the page, `g90` or `g100` for
-a dark tool.
+`white`, `g10`, `g90`, `g100` from Carbon, and `rux`, the block in
+`css/rux-theme.css`, vendored so it is the same theme in every app. Every
+page offers all five in its account panel and a visitor's choice wins; what
+a project chooses is the DEFAULT, on `<html>`. Suggestion: `white` or `g10`
+for a page read at length, `g10` when cards should stand off the page, `g90`
+or `g100` for a dark tool.
 
 ## Fields — regular or fluid
 

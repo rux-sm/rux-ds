@@ -2740,10 +2740,15 @@ minute, the runtime class check on it reading nothing stripped. NOT done: the
 portal's `sync-ds.sh` still exists in its own repository and is not replaced by
 this; the recipe for a project that is a GitHub Pages site is that script.
 
-**Amended 2026-09-02 (§4.13):** `rux-theme.css` joins `vendor/` — copied and
-overwritten on every run, so the `rux` theme is the same theme in every app —
-and the project's own `rux-theme.css` stays, written only when absent, for its
-deltas. The overrides file and the page are unchanged.
+**Amended 2026-09-02 (§4.13):** `rux-theme.css` AND `rux-overrides.css` join
+`vendor/` — copied and overwritten on every run, so the `rux` theme and the one
+live rule are the same in every app — and the project's own pair stays, written
+only when absent and written empty, for its deltas, linked after the vendored
+pair. `templates/` is vendored too, for the drift report `tools/drift.mjs`
+prints after every run. The page is unchanged: still copied once, still the
+project's, which is exactly why the report exists. The first draft of this
+amendment said the overrides file was unchanged; step 3 put a rule in it the
+same day, and a rule that is canonical has to travel.
 
 **`sync-ds.sh` retires with `v0.1.2`, 2026-09-02** (§4.13 step 2): Notes moves
 its pin with this script from then on, and the recipe for a GitHub Pages site

@@ -44,6 +44,7 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
+<script src="js/theme.js"></script>
 <link rel="stylesheet" href="sink/harness.css">
 </head>
 <body>
@@ -88,6 +89,7 @@ ${sections.join('\n\n')}
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
+<script src="js/profile.js"></script>
 <script src="sink/harness.js"></script>
 </body>
 </html>
