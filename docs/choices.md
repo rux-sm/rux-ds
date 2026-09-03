@@ -42,8 +42,11 @@ account panel** — and a left side nav, expanded, fixed. Two things are
 choices and four are not:
 
 - **Header nav links**: present or absent.
-- **Global actions and the switcher panel**: present or absent. The switcher
-  is where an ecosystem lists its apps.
+- **Global actions and the switcher panel**: present or absent. Two actions
+  ship, in Carbon's prescribed order: the switcher, where an ecosystem lists
+  its apps, and the account. Notifications and help are NOT among them
+  (2026-09-03) — an icon-only button with no handler is an affordance that
+  lies. Add one in a product when it does something.
 - Side nav: only the expanded, fixed variant is captured. No rail, no
   collapsed-by-default; ask before offering one.
 - The account panel: every app has one (roadmap §4.13). It holds the profile
