@@ -3003,15 +3003,29 @@ abandoned, and it was lifted out to the session scratchpad as two applicable
 patches with a note, because its producer half is committed in atlas and it is
 resumable rather than dead.
 
-**The notifications glyph left both modules, answered by rux 2026-09-03.**
-Carbon's captured header carries one; nothing in this ecosystem notifies, and
-an icon-only button with no handler is an affordance that lies — the rule
-`js/` and Notes' own shell already stated. Notes had omitted it from the
-start, so the two headers disagreed under a standard whose whole point is
-that they agree. `templates/` keeps it, which leaves an open question: the
-script hands every new project a bell to delete. Rejected: adding a
-decorative bell to Notes so the headers matched, which would have made both
-lie. NOT done, and said so: an
+**The notifications glyph left the whole system, answered by rux 2026-09-03,
+and `v0.1.4` is one shell everywhere.** Carbon's captured header carries a
+bell; nothing in this ecosystem notifies, and an icon-only button with no
+handler is an affordance that lies — the rule `js/` and Notes' own shell
+already stated. Notes had omitted it from the start, so the two headers
+disagreed under a standard whose whole point is that they agree. It went from
+both modules first and then, the same day, from all ten templates, so the
+script no longer hands a new project a button to delete. Two global actions
+ship, in Carbon's prescribed right-to-left order: switcher, then account.
+`sink/ui-shell.html` KEEPS all three, and that is the line — the fragment is
+the capture, a template is what an app ships; `i-notification` stays
+referenced and the icon figures do not move. Notes also gained the mark, the
+one shell part it had never carried. Rejected: adding a decorative bell to
+Notes so the headers matched, which would have made both lie.
+
+**Removing it was invisible to every gate**, and that is worth keeping. A
+whole button left ten pages and no figure moved: its classes are the two
+remaining actions' classes, so `check-runtime-classes` counts the same
+distinct set; its spacing signature is theirs, so `check-spacing` compares
+the same rows; it had no focus defect, so `check-a11y` had nothing to say.
+All 33 affected cells were re-swept at `33077bb` to record exactly that. A
+gate that cannot see a button leave cannot see one arrive wrong — the third
+time in two days that only looking would have caught something. NOT done, and said so: an
 avatar, since Carbon compiles no avatar component; a visual pass in g100 and
 `rux` beyond computed style, since the pane's screenshots returned stale
 frames after a theme switch; and the drift report compares head resources by

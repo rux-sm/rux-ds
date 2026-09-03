@@ -113,12 +113,15 @@ live rule in `css/rux-overrides.css`, the theme and overrides vendored,
 them**: a theme and a display name chosen on the hub (`020363a` there) are
 what Notes (`44486b8` there) opens with, read live on 2026-09-03.
 
-**The notifications glyph is gone from both modules, answered by rux
-2026-09-03.** Nothing notifies, and an icon-only button with no handler is an
-affordance that lies — the rule Notes had applied from the start, which is why
-the two headers disagreed under a standard whose point is that they do not.
-`templates/` KEEPS it, as Carbon's captured set, so `tools/new-project.sh`
-still hands a new project one. Whether it should is below.
+**ONE SHELL, EVERYWHERE, as of `v0.1.4` 2026-09-03.** The notifications glyph
+left the templates as well as both modules: nothing notifies, and an icon-only
+button with no handler is an affordance that lies. Two global actions ship, in
+Carbon's prescribed order — the switcher and the account. `sink/ui-shell.html`
+keeps all three, because that fragment is the capture and a template is what an
+app ships. Notes gained the mark, which it alone had never carried. Read live
+on both sites: the same 33×30 mark, the same `Rux` prefix, the same two
+actions, the same account panel. The three shells now differ in their name and
+their nav and nothing else.
 
 **Next, in order:**
 
@@ -133,7 +136,6 @@ things that are not choices, and gating the result through this root.
 
 | What | Where |
 |---|---|
-| Whether `templates/` keeps the notifications glyph. Both modules dropped it on 2026-09-03 as an affordance that lies; the templates keep Carbon's captured three actions, so every project the script starts is handed the same lying bell to delete | roadmap §4.13 |
 | The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 
 **Two human tasks remain, both with an assistive technology running.**
