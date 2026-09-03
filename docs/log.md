@@ -33,7 +33,11 @@ preload at 7–14ms, before `plex.css` finished at 11–23ms; one fetch per file
 unused-preload warning; every template renders both Sans faces, and Mono is rendered by
 the sink, the portal and `templates/schedule-page.html` alone, so those three preload it.
 The `sink-check` loop now reloads when Plex is not serving, since under `optional` a
-cold-cache load never swaps. Ages all 38 browser cells.
+cold-cache load never swaps. Ages all 38 browser cells. **Re-swept the same day at
+`96b6c4a`, all twelve pages, and every reading is identical to its predecessor** — counts,
+the named unknown sets, the adjudicated findings and the eight stripped calendar classes on
+the schedule template all unchanged; pane hidden throughout, and the sink alone gave no
+readable screenshot, which its cells say. Recorded in two passes per the portal rule.
 
 **DRAFTED 2026-09-02 — terminate the portal browser-ledger fixed point (§4.8).**
 The cycle is observed, not hypothetical: `2529e48` recorded readings taken at
