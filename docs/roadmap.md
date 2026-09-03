@@ -616,6 +616,21 @@ not as drawn. If the type ever looks subtly loose, this is why, and the fix is t
 Plex properly: a self-hosted woff2 subset, `$font-path` pointed at it, and
 `$css--font-face: true`.
 
+**Revised 2026-09-01 and 2026-09-02 — Plex is served, self-hosted and opt-in.** The way
+out above landed at `81e6cb3` without the flag: `assets/fonts/plex.css` carries
+hand-written `@font-face` rules against the split Latin1 woff2 files copied from Carbon's
+own `@ibm/plex-*` dependencies, nothing in `css/rux.css` references it, and a page opts in
+by linking it. Two things were then found on a consumer page and fixed on 2026-09-02.
+**`font-display: swap` redrew every page**: first paint in `system-ui`, then a re-wrap when
+Plex arrived, because the file is only discovered after the stylesheet parses and the
+faces differ in width and line height (21px against 19px at 16px). Now `optional`, so a
+load shows one face and never swaps, and every page preloads the files it reaches so the
+fetch starts with the HTML. **Plex Mono was reached and not shipped**: the reset sets every
+`<code>` in it, and the sink and portal set one, so those rendered in the machine's
+monospace. Mono 400, Latin1, now sits beside Sans. Rejected: a metric-matched fallback
+face (`size-adjust`, `ascent-override`), because the ratio is string- and OS-dependent
+and the `local()` list it would name is not the face the stack actually falls to.
+
 #### 4.1.2 What Phase 1 discovered
 
 Two things the plan did not anticipate, both found by building rather than reading.

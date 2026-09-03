@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rux-ds — portal</title>
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/IBMPlexSans-Regular-Latin1.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/IBMPlexSans-SemiBold-Latin1.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/IBMPlexMono-Regular-Latin1.woff2">
 <link rel="stylesheet" href="assets/fonts/plex.css">
 <link rel="stylesheet" href="css/rux.css">
 <!-- THE CUSTOMIZATION LAYER, after css/rux.css and in this order, because
@@ -196,7 +199,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <p class="rux--type-heading-04">35 of 35 shown</p>
+              <p class="rux--type-heading-04">0 of 35 shown</p>
               <p>3 portal cells reported by npm run gates only</p>
             </div>
           </div>
@@ -979,7 +982,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 35 of 35 are current; 0 not current, 0 never run. <code>npm run gates</code> reports all 38, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 0 of 35 are current; 35 not current, 0 never run. <code>npm run gates</code> reports all 38, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -996,247 +999,247 @@
                 <tr>
                   <td>check-rendered</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/schedule-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/settings-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>templates/wizard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/schedule-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/settings-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>templates/wizard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-behaviour</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/app-shell.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/dashboard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/detail-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/empty-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/error-state.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/form-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/schedule-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/settings-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/table-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>templates/wizard-page.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-02</td>
-                  <td>2026-09-02</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td colspan="5">3 cells for <code>portal.html</code> are reported by <code>npm run gates</code> only. Rendering their state here would change the page they measure.</td>

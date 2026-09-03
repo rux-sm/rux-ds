@@ -12,6 +12,29 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-02 — Plex at `font-display: optional`, preloaded, and Plex Mono shipped
+(§4.1.1).** Found on a consumer page: every load painted in `system-ui` and then redrew in
+Plex, because the file was only discovered after `plex.css` had parsed — on this server the
+stylesheet finished at 19ms and both files were requested at 37ms — and the faces do not
+share metrics: measured here, Plex is 1.65% narrower than `system-ui` on one 80-character
+string and 0.8% on another, and its normal line box at 16px is 21px against 19px, so the
+swap re-wrapped lines and pushed paragraphs down. Fixed in `assets/fonts/plex.css`
+(`optional`: one face per load, never a mid-flight swap, cached for the next) and by a
+`<link rel="preload" as="font" crossorigin>` per face ahead of the stylesheets in the ten
+templates, `tools/build-sink.mjs` and `tools/build-portal.mjs`. Rejected a metric-matched
+fallback face: its `size-adjust` came from one string on one OS, and its `local()` list did
+not name the face the stack actually falls to on a Mac. Also found that Plex Mono was
+reached and not shipped — the reset sets `<code>` in it, the sink's code-snippet and
+copy-button and the portal set one, and Carbon's date and time inputs are `code-02` — so
+`IBMPlexMono-Regular-Latin1.woff2` is copied from `@ibm/plex-mono@2.5.0` with that
+package's own unicode-range, which is not the list `@ibm/plex@6.4.1` gives the Sans files.
+Measured after the change on all twelve pages in the pane: every woff2 requested by its
+preload at 7–14ms, before `plex.css` finished at 11–23ms; one fetch per file; no
+unused-preload warning; every template renders both Sans faces, and Mono is rendered by
+the sink, the portal and `templates/schedule-page.html` alone, so those three preload it.
+The `sink-check` loop now reloads when Plex is not serving, since under `optional` a
+cold-cache load never swaps. Ages all 38 browser cells.
+
 **DRAFTED 2026-09-02 — terminate the portal browser-ledger fixed point (§4.8).**
 The cycle is observed, not hypothetical: `2529e48` recorded readings taken at
 `a3f25e1` and regenerated `portal.html` from all 38 changed matrix rows, so the three

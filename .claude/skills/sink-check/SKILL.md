@@ -138,7 +138,10 @@ For `portal.html` and each template, use this loop in order:
 2. Give the document focus with Tab, blur the focused control, suppress transitions and
    animations, set the white theme, and read back `document.hasFocus()`, a resolved
    theme token, the viewport width, and IBM Plex availability. Stop if any condition is
-   not the one being recorded.
+   not the one being recorded. Plex is `font-display: optional` since 2026-09-02, so a
+   cold-cache load can stay in the fallback and never swap: if
+   `document.fonts.check('16px "IBM Plex Sans"')` reads false, reload and start the
+   loop again from step 1 rather than recording.
 3. Park the pointer off content and look at the rendered page. A missing or failed
    screenshot is not a visual pass; retry the page.
 4. Run `check-a11y` and require `focusRingChecked: true`, then run `check-spacing`.
