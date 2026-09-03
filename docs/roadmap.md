@@ -3055,6 +3055,43 @@ exists* — nothing here resolves without it.
 this adds one, and the hub is a fifth. Amend that line there rather than
 leave it implicit.
 
+**Step 4 started 2026-09-03, `rux-backend` private, not tagged.** The
+project this step names did not need provisioning: `rux-ui`
+(`udnmqhayzhrbltxzzhjw`), the bus/trip scheduler's own backend, already is
+"one Supabase project" in the sense §4.13 means, so it was adopted rather
+than a second one created. CLI migration history was bootstrapped against
+its live schema (`db pull` needs Docker; installed this pass) and the pull
+committed as a private snapshot — `rux-ui`'s own tables, `public.profiles`
+among them, an unauthenticated driver roster unrelated to this phase's
+profile and never touched. The cross-app profile lives in a new `platform`
+schema instead: `platform.profiles`, keyed to `auth.users`, owner-only RLS,
+4/4 pgTAP passing locally before anything reached the live project
+(`25b4bdf`, `677bcf3` there). Anonymous sign-in (user-enabled in the
+dashboard) and manual identity linking are live and confirmed there.
+
+**`supabase config push` replaces a whole config section rather than
+merging it, and that cost a live setting.** Two keys were wrong in the
+first pass — `enable_manual_linking` nested under `[auth.anonymous]`
+instead of top-level `[auth]`, and anonymous sign-in written as an invented
+`[auth.anonymous]` table instead of the real `enable_anonymous_sign_ins` —
+both silently defaulted to `false` and the push carried that default onto
+`rux-ui`, which also reverted MFA TOTP, email confirmation, email OTP
+settings and the API `extra_search_path` to CLI defaults as a side effect
+of the same whole-section replace. None of it was in the diff anyone had
+read closely enough to expect. Caught by asking rux to check the dashboard
+toggle directly rather than trusting the CLI's own diff output, corrected,
+and reverified across three pushes down to a clean single-field change
+(`7793b9b` there). The lesson: `config push` needs every field that
+differs from CLI defaults stated explicitly, or it will revert them —
+matching this project's own refrain that a tool's own report is not enough
+to trust without checking the thing itself.
+
+**Still open before step 4 is done:** a GitHub OAuth App and a Turnstile
+site, both external accounts only rux can create; their secrets set as
+Supabase project secrets; `platform` added to the live dashboard's exposed
+schemas (Settings → API), which `config.toml` cannot reach. Steps 5 and 6
+are not started.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
