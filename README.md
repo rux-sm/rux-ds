@@ -64,9 +64,9 @@ machine-local note. This section is the current state and the next steps only.
 Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
-**Where this stopped, 2026-09-02.** Phases 9, 10 and 11 are done. Phase 7's
-component index is implemented but awaits its browser sweep: `portal.html`
-carries a Reference column from `docs/component-docs.json`, every compiled
+**Where this stopped, 2026-09-03.** Phases 9, 10 and 11 are done. Phase 7's
+component index is implemented and swept — `npm run gates` holds the
+cells: `portal.html` carries a Reference column from `docs/component-docs.json`, every compiled
 component accounted for and all 135 URLs live, with `action-set` and
 `skeleton-styles` honestly marked as having nothing to link. **Its content has
 no gate**, which roadmap §4.7 states and proposes. The plan being
@@ -135,6 +135,16 @@ dashboard. Roadmap §4.13 has the full account, including a `config push`
 mistake mid-pass that briefly reverted MFA/email/search-path settings on
 the live project before being caught and corrected — read it before
 touching `rux-backend`'s `config.toml` again.
+
+**`v0.1.5`, 2026-09-03: the tile-fill rule reaches every app.** `fd437ae`
+promoted the hub's one-class fix into `css/rux-overrides.css`, and no tag
+carried it — so the hub kept a private copy of a rule meant to be shared,
+and Notes had none. Both modules are on the tag by `tools/new-project.sh`
+(hub `75a2cfd`, Notes `57ce558`), the hub's local copy is deleted, and both
+drift reports read as they did at `v0.1.4`. Read live the same day at
+1280×900: the hub's two cards 152 px each, one flush edge, the rule served
+from `vendor/` alone. Notes uses no clickable tile, so nothing rendered
+there moves. A patch, by §8.2: `CHANGES.md` gains no line.
 
 **Next, in order:**
 

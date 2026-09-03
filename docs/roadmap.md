@@ -3092,6 +3092,23 @@ Supabase project secrets; `platform` added to the live dashboard's exposed
 schemas (Settings → API), which `config.toml` cannot reach. Steps 5 and 6
 are not started.
 
+**`v0.1.5`, 2026-09-03 — the tile-fill rule in every app.** The hub found
+a ragged row of cards, fixed it with one compiled class in its own
+`rux-overrides.css`, and rux promoted the rule into rux-ds's file
+(`fd437ae`). That left it in no tag: both modules pinned `v0.1.4`, Notes
+had no rule, and the hub looked right only because of its private copy —
+the two-places state the pin exists to prevent, and invisible to every
+gate on either side, since the hub's check asks whether classes resolve
+and the drift report compares shells, not stylesheets. Tagged as a patch,
+both pins moved with `tools/new-project.sh`, the hub's copy deleted; each
+diff is `PIN` and the vendored overrides file, and each drift report
+reads as it did at `v0.1.4`. Read live on both sites: `PIN` at `v0.1.5`,
+the rule in `vendor/` and nowhere else, the hub's two cards 152 px flush
+at 1280×900. The rule this adds to the procedure: a promotion into
+`css/rux-overrides.css` is not finished until a tag carries it and every
+pin has moved, and the module that donated the rule deletes its own copy
+in the same commit as the move.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
