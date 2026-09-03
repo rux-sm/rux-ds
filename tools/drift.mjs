@@ -31,7 +31,9 @@
 //
 // WHAT IT CANNOT SEE. A template change outside <head> resources and the
 // header — the content inset <style>, the scrim, a footer — and any change
-// of VALUE in an attribute it drops. It says "differs", never "wrong": a
+// of VALUE in an attribute it drops. Head resources compare by FILE NAME, so
+// a page linking vendor/rux-ds/css/rux-theme.css and its own rux-theme.css
+// reads as one extra rux-theme.css, and their order is invisible. It says "differs", never "wrong": a
 // module that deliberately omits the notifications glyph shows as a missing
 // button every time, and that is the report being honest, not a failure.
 //

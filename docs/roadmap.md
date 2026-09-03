@@ -2978,6 +2978,32 @@ js byte — only Plex, now `font-display: optional` behind preloads, which both
 modules had to add by hand: the first drift the report of step 3 would have
 caught. The hub's same-tag CI check is a drafted diff, tier 2, not applied.
 
+**Step 3 done in rux-ds 2026-09-02, `v0.1.3`** — a patch by §8.2's scheme,
+since `CHANGES.md` gains no line, and not the `v0.2.0` the plan above named.
+What landed: the account panel in all ten templates and the sink, Carbon's
+captured right panel opened by the Account action through `aria-controls`,
+holding the sink's text input and a vertical radio group offering all five
+themes; `js/theme.js` in `<head>` applying the stored theme before first
+paint; `js/profile.js` keeping name and theme under one key every app on the
+origin shares; the first live rule in `css/rux-overrides.css`; the theme,
+overrides and templates vendored by `new-project.sh`, the project's pair
+written empty; `tools/drift.mjs` after every pin move. `check-behaviour`
+gains six cases, 47 of 47. Every gate green at `fd2a6e1` — and LOOKING found
+two things no gate can: a text input whose field-01 equalled the panel's
+layer-01 in g100 (Carbon's `layer-two` on the stack, measured #393939 after),
+and the sign-in button drawn despite `hidden`, because Carbon's display rule
+beats the browser's on origin (`.rux--btn[hidden]` in the overrides file,
+`4a29024`). All 38 browser cells re-read and recorded at `8fc08a1`. The drift
+report's first real run, on the pin move, named exactly what each module
+lacked: `theme.js`, the ids, `aria-controls`, the panel. The hub has them and
+is verified live; Notes has them written and uncommitted, waiting behind
+another session's contract-3 work in the same file. NOT done, and said so: an
+avatar, since Carbon compiles no avatar component; a visual pass in g100 and
+`rux` beyond computed style, since the pane's screenshots returned stale
+frames after a theme switch; and the drift report compares head resources by
+file name, so the vendored-then-own order of the two theme links is invisible
+to it.
+
 **Outside Supabase, deliberately.** `switcher.json` stays static, so
 navigation works with the backend down. Notes' guide content stays static
 and publishable-gated; per-user favourites keyed by guide id are fine, guide
