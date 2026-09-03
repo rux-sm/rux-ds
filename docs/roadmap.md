@@ -2839,11 +2839,11 @@ to anonymous users; the anonymous sign-ins page does, and step 5 relies on
 that page.
 
 **One backend.** One Supabase project for every app, on the Free tier, named
-`rux-platform` after the repository that holds its configuration, migrations,
+`rux-backend` after the repository that holds its configuration, migrations,
 row-level-security policies and database tests, with no secrets in it. Auth,
 `public.profiles`, and later a schema per app that needs one. The publishable
 key is the only key a page ever sees. Blast radius is the price of one
-project: migrations only in `rux-platform`, per-app schemas, RLS tests
+project: migrations only in `rux-backend`, per-app schemas, RLS tests
 mandatory; an app is split out only for unrelated data or independent
 operations. Free's cost is the pause after a week idle; Pro only when it
 bites. The pricing figures the first draft cited were not re-verified.
@@ -2861,7 +2861,7 @@ rux-sm.github.io, the root
   account.js      Supabase client, fills the account panel, syncs the profile
   index.html      app grid, one Foundations link to rux-ds
 
-rux-platform, new repository
+rux-backend, new repository
   supabase/       config, migrations, RLS policies, tests; no secrets
 
 one Supabase project, Free tier
@@ -2896,7 +2896,7 @@ and is the list to update.
    gate. Vendor `css/rux-theme.css` and `templates/`; add a drift report that
    compares a page's header region to the vendored template and blocks
    nothing. Update `docs/choices.md`: the theme question is the default. Tag.
-4. **`rux-platform` and the project.** One repository: Supabase config,
+4. **`rux-backend` and the project.** One repository: Supabase config,
    migrations, policies, database tests, local development notes, no secrets.
    One cloud project on Free. Auth: anonymous sign-ins on, GitHub as the one
    provider, manual linking on, Turnstile on. `public.profiles` references

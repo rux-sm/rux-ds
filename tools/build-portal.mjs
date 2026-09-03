@@ -313,7 +313,7 @@ ${sprite}
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
   <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false">${icon('menu', 20, 16)}</button>
-  <a class="rux--header__name" href="portal.html"><span class="rux--header__name--prefix">rux</span>&nbsp;ds</a>
+  <a class="rux--header__name" href="portal.html"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
   <nav class="rux--header__nav" aria-label="rux-ds">
     <ul class="rux--header__menu-bar">
       <li><a class="rux--header__menu-item rux--header__menu-item--current" href="portal.html" aria-current="page"><span class="rux--text-truncate-end">Portal</span></a></li>
