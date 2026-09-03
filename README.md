@@ -146,6 +146,17 @@ drift reports read as they did at `v0.1.4`. Read live the same day at
 from `vendor/` alone. Notes uses no clickable tile, so nothing rendered
 there moves. A patch, by §8.2: `CHANGES.md` gains no line.
 
+**§4.13 step 6 is DONE, 2026-09-03** (hub `68ce1fa`): the landing page is
+header-only. The side nav the app-shell template carries held Home and an
+anchor to a grid already on screen, so it left with the hamburger, the
+scrim and the content-indent `<style>` block; the grid from `switcher.json`
+and one Foundations link to the rux-ds repository remain, and Carbon's own
+`.rux--header ~ .rux--content` rule places the content. Gated on the served
+page with the three page-level browser gates loaded from disk on one origin
+— runtime-classes 47/47, a11y 0 findings with rings checked, spacing 27/29
+with both remainders older than the change and in the ledger — and read
+live the same day. Roadmap §4.13 has the readings and what is not done.
+
 **Next, in order:**
 
 1. Finish §4.13 step 4: a GitHub OAuth App and a Turnstile site (both
@@ -154,8 +165,7 @@ there moves. A patch, by §8.2: `CHANGES.md` gains no line.
    schemas, then `[auth.external.github]`/`[auth.captcha]` flipped on in
    `rux-backend`'s `config.toml` and pushed.
 2. §4.13 step 5, `/account.js` at the hub root.
-3. §4.13 step 6, the landing page.
-4. Creator 3, the configurator page, as a page in the hub. Last.
+3. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five

@@ -3109,6 +3109,37 @@ at 1280×900. The rule this adds to the procedure: a promotion into
 pin has moved, and the module that donated the rule deletes its own copy
 in the same commit as the move.
 
+**Step 6 done 2026-09-03, hub `68ce1fa`.** The landing page is header-only.
+The side nav that came with the app-shell template held Home and an anchor
+to a grid already on screen, so it navigated nowhere the page did not show;
+it left with the hamburger, the scrim and the `<style>` block that indented
+the content past a nav inside the header, and Carbon's own
+`.rux--header ~ .rux--content` rule places the content now. The shape is
+the captured `header-w-actions-and-right-panel` story — actions, panel,
+content, no menu trigger, no nav — which is why this is not the rail or
+collapsed nav `docs/choices.md` says to ask before offering; it is the
+absence of one. The Foundations link goes to the rux-ds repository, which
+has no site of its own, and is inline because it sits in a sentence.
+
+Gated as `rux-ds-page` §7 asks, with one mechanic worth keeping: neither
+server sends CORS, and `check-spacing` reads `/docs/carbon-react-spacing.json`
+from its own origin, so the tools ran from a scratch root of symlinks — the
+hub's files beside rux-ds's `docs/` and `tools/` — served as one origin,
+every file the one on disk. Read at 1280×900, white asserted, focus held
+and blurred, transitions off, pointer parked: `check-runtime-classes`
+47/47, nothing stripped or added; `check-a11y` 0 findings, 0 notes,
+`focusRingChecked: true`; `check-spacing` 27 of 29 matched, the two others
+the col-span-4 demo `min-block-size` this ledger adjudicates and the
+subgrid padding-block divergence recorded on every page carrying the grid,
+both older than the change. At 375px nothing overflows and the cards stack.
+Read live the same day.
+
+NOT done, and said so: `tools/drift.mjs` now names five shell parts missing
+on this page on every pin move, by design, and the report has no way to
+say so; and this is the first page in the ecosystem with no side nav while
+`docs/choices.md` lists the nav as not a choice — whether "header-only"
+becomes a row there, offered by the skill, is rux's to decide.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
