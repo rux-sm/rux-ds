@@ -220,6 +220,17 @@ where the real path is `/rux-ln-notes/`, harmless today since `account.js`
 always redirects to the bare origin but wrong to leave written down —
 corrected, pending `config push`.
 
+**`/account/` gated 2026-09-04**, served from a symlink scratch root
+beside `rux-ds`'s `tools/` and `docs/` the way step 6 did it —
+`check-runtime-classes` 0 stripped, 2 added (the JS-injected panel link);
+`check-a11y` 0 findings with `focusRingChecked: true`, confirmed real by
+stripping every ring first (13 findings) and restoring; `check-spacing`
+28 of 28 comparable classes matched across the signed-out and connected
+states, 0 diverges. Seven classes have no Carbon reference at all to
+compare against — this page's own compositions, the same ones its own
+header comment already names — so those read "nothing to compare," not
+"correct."
+
 **Next, in order:**
 
 1. Creator 3, the configurator page, as a page in the hub. Last.
