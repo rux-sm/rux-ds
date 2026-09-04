@@ -203,6 +203,23 @@ session at all (Turnstile blocked, as it does in an automated pane), the
 connected-accounts tag read identically to a genuine unlinked anonymous
 session, both "Not connected" — fixed with a distinct "Signed out" state.
 
+**A review pass the same day, 2026-09-04, closed the one real gap that
+review found and three smaller ones.** The real one: Notes
+(`rux-ln-notes` `437cfd2`) never loaded `account.js` at all — it had the
+local profile from the shell rollout but none of the cloud half, no
+sign-in, no "Account settings" link, because step 5 only ever named "the
+hub root". Fixed with three script tags pointing at the hub's one copy,
+no new file there. The three smaller ones, all in `rux-sm.github.io`
+`9c1c93f`: the connected-accounts tag now reads "Connected as
+`<github-username>`" (`identity_data.user_name`, falling back to email)
+rather than a bare "Connected"; signing out gets a helper-text note that
+it starts a new anonymous session, rather than doing that silently, with
+no native `confirm()` since this codebase uses one nowhere else; and
+`rux-backend`'s `config.toml` had `/notes/` in `additional_redirect_urls`
+where the real path is `/rux-ln-notes/`, harmless today since `account.js`
+always redirects to the bare origin but wrong to leave written down —
+corrected, pending `config push`.
+
 **Next, in order:**
 
 1. Creator 3, the configurator page, as a page in the hub. Last.
