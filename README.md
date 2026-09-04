@@ -180,6 +180,29 @@ worked; fixed by only revealing the Sign in button while the session is
 still anonymous, so its absence is now the signal. Console-verified after
 both fixes: `anonymous: false`, `providers: ['github']`.
 
+**The profile system gained its full page, 2026-09-04**
+(`rux-sm.github.io` `ff1ab64`; `rux-ds` `252c652`), beyond the nine steps
+§4.13 originally scoped: `/account/` at the hub root, built from
+`templates/settings-page.html`'s fieldset pattern rather than the raw
+template (the hub's own header-only shell is the correct base, not the
+side-nav one settings-page.html demos). Three groups — Profile (a
+`user-avatar`, initials and a colour hashed from the user id, beside the
+name field), Theme, Connected accounts (a status tag plus connect/sign-out,
+reusing `sink/table.html`'s tag markup) — real-time-save through
+`window.Rux.profile`, no separate Save/Discard, matching the panel's own
+already-verified contract instead of adding a second save model. The
+panel gained one link, "Account settings", added by `account.js` rather
+than rux-ds's markup — the switcher panel's own contents are JS-filled the
+same way, so a hub-specific route has no reason to grow every template.
+Found stale in the same pass: `js/profile.js`'s comment claiming Carbon
+compiles no avatar component — `user-avatar` was admitted 2026-08-31,
+before that comment was written; corrected in place. Verified live:
+avatar initials/colour and theme/name sync bidirectionally between panel
+and page; one real gap surfaced by testing rather than reasoning — with no
+session at all (Turnstile blocked, as it does in an automated pane), the
+connected-accounts tag read identically to a genuine unlinked anonymous
+session, both "Not connected" — fixed with a distinct "Signed out" state.
+
 **Next, in order:**
 
 1. Creator 3, the configurator page, as a page in the hub. Last.
