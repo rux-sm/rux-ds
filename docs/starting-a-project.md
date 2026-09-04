@@ -100,6 +100,15 @@ rux-ds is the list, newest first, with the commit; read it between the two
 tags before trusting the diff. Vendoring from a commit between tags works and
 the PIN says so.
 
+Inside rux-ds a tag reaches every module, the root first because it serves
+`/switcher.js`, and a rule promoted from a module's own delta file into
+`css/rux-overrides.css` or `css/rux-theme.css` is not finished until a tag
+carries it, every pin has moved, and the donating module deletes its own copy
+in the same commit as the move (roadmap §4.13, 2026-09-03). Tag first, record
+after; `git tag` and `git push` as two commands, since one command carrying
+both is refused here. This paragraph is the one recipe — the hub's and Notes'
+READMEs point at it rather than carry their own.
+
 ## Measured
 
 2026-09-02, from this checkout at `v0.1.0`: the script ran in well under a
