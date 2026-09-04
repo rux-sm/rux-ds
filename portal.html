@@ -108,7 +108,7 @@
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
   <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
-  <a class="rux--header__name" href="portal.html"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <a class="rux--header__name" href="portal.html"><span aria-hidden="true" style="width:1.5rem;height:1.5rem;margin-right:.5rem;flex:none;border:1px dashed currentColor;opacity:.6"></span><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
   <nav class="rux--header__nav" aria-label="rux-ds">
     <ul class="rux--header__menu-bar">
       <li><a class="rux--header__menu-item rux--header__menu-item--current" href="portal.html" aria-current="page"><span class="rux--text-truncate-end">Portal</span></a></li>
@@ -199,7 +199,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <p class="rux--type-heading-04">3 of 38 shown</p>
+              <p class="rux--type-heading-04">0 of 38 shown</p>
               <p>3 portal cells reported by npm run gates only</p>
             </div>
           </div>
@@ -996,7 +996,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 3 of 38 are current; 35 not current, 0 never run. <code>npm run gates</code> reports all 41, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 0 of 38 are current; 38 not current, 0 never run. <code>npm run gates</code> reports all 41, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -1020,9 +1020,9 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-04</td>
-                  <td>2026-09-04</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1104,9 +1104,9 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-04</td>
-                  <td>2026-09-04</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1195,9 +1195,9 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-04</td>
-                  <td>2026-09-04</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
