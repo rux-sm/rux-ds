@@ -163,7 +163,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 490,
+      "line": 430,
       "provenance": "PROVENANCE: rendered-dom · components-ui-shell-header--header-w-navigation-actions-and-side-nav, --header-w-side-nav and --side-nav-rail-w-header, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-6",
@@ -180,7 +180,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 446,
+      "line": 386,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; metric row from elements-grid--subgrid; table from components-datatable-sorting--default; list from components-list--unordered, 2026-08-31",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -197,7 +197,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 453,
+      "line": 393,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; metric row from elements-grid--subgrid; table from components-datatable-sorting--default; list from components-list--unordered, 2026-08-31",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -214,7 +214,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 526,
+      "line": 466,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; metric row from elements-grid--subgrid; table from components-datatable-sorting--default; list from components-list--unordered, 2026-08-31",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -231,7 +231,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 469,
+      "line": 409,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; breadcrumb from components-breadcrumb--default; tabs from components-tabs--default and --contained-with-icons; the rest from the sink fragments that carry their own rendered-dom labels — tag, tile, accordion, notification, list, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-6",
@@ -248,7 +248,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 523,
+      "line": 463,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; breadcrumb from components-breadcrumb--default; tabs from components-tabs--default and --contained-with-icons; the rest from the sink fragments that carry their own rendered-dom labels — tag, tile, accordion, notification, list, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-6",
@@ -265,7 +265,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 626,
+      "line": 566,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; breadcrumb from components-breadcrumb--default; tabs from components-tabs--default and --contained-with-icons; the rest from the sink fragments that carry their own rendered-dom labels — tag, tile, accordion, notification, list, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": "rux--stack-vertical rux--stack-scale-6",
@@ -282,7 +282,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 454,
+      "line": 394,
       "provenance": "PROVENANCE: source · carbon-website/src/pages/patterns/empty-states-pattern, read 2026-08-28. Carbon ships NO empty-state component — @carbon/styles has no such file and none of the 641 captures renders one — so this is a PATTERN composed from compiled components, and the pattern page is the reference. The shell is rendered-dom from components-ui-shell-header--header-w-navigation-actions-and-side-nav.",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -299,7 +299,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 499,
+      "line": 439,
       "provenance": "PROVENANCE: source · carbon-website/src/pages/patterns/empty-states-pattern, read 2026-08-28. Carbon ships NO empty-state component — @carbon/styles has no such file and none of the 641 captures renders one — so this is a PATTERN composed from compiled components, and the pattern page is the reference. The shell is rendered-dom from components-ui-shell-header--header-w-navigation-actions-and-side-nav.",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -316,7 +316,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 455,
+      "line": 395,
       "provenance": "PROVENANCE: source · carbon-website empty-states-pattern, \"Error management empty states\", and notification-pattern, read 2026-08-28. Carbon ships no error-state component and no error-state PATTERN either: it files a page-level error as a KIND OF EMPTY STATE, which is why this template is the empty state's twin rather than a new shape. The notification markup is rendered-dom, from the sink fragment it was diffed in. The shell is rendered-dom from components-ui-shell-header--header-w-navigation-actions-and-side-nav.",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -333,7 +333,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 502,
+      "line": 442,
       "provenance": "PROVENANCE: source · carbon-website empty-states-pattern, \"Error management empty states\", and notification-pattern, read 2026-08-28. Carbon ships no error-state component and no error-state PATTERN either: it files a page-level error as a KIND OF EMPTY STATE, which is why this template is the empty state's twin rather than a new shape. The notification markup is rendered-dom, from the sink fragment it was diffed in. The shell is rendered-dom from components-ui-shell-header--header-w-navigation-actions-and-side-nav.",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -350,7 +350,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 475,
+      "line": 415,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; form structure from components-form--default and components-formgroup--default; controls from the sink fragments they were diffed in, 2026-08-28",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -367,7 +367,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 479,
+      "line": 419,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; form structure from components-form--default and components-formgroup--default; controls from the sink fragments they were diffed in, 2026-08-28",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -384,7 +384,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 510,
+      "line": 450,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; form structure from components-form--default; controls from components-timepicker--default, components-dropdown--default, components-numberinput--default and components-inlineloading--default, via the sink fragments they were diffed in, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -401,7 +401,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 514,
+      "line": 454,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; form structure from components-form--default; controls from components-timepicker--default, components-dropdown--default, components-numberinput--default and components-inlineloading--default, via the sink fragments they were diffed in, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -418,7 +418,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 439,
+      "line": 379,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; group structure from components-formgroup--default; controls from the sink fragments they were diffed in, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -435,7 +435,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 443,
+      "line": 383,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; group structure from components-formgroup--default; controls from the sink fragments they were diffed in, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -452,7 +452,7 @@
       "slot": "body",
       "follows": null,
       "deps": [],
-      "line": 463,
+      "line": 403,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; table from components-datatable-batch-actions--batch-batch-actions, --with-sorting, --with-overflow-menu and components-pagination--default, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -469,7 +469,7 @@
       "slot": "body",
       "follows": "table",
       "deps": [],
-      "line": 659,
+      "line": 599,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; table from components-datatable-batch-actions--batch-batch-actions, --with-sorting, --with-overflow-menu and components-pagination--default, 2026-08-28",
       "column": "rux--css-grid-column rux--col-span-100",
       "stack": null,
@@ -486,7 +486,7 @@
       "slot": "title",
       "follows": null,
       "deps": [],
-      "line": 466,
+      "line": 406,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; vertical progress from components-progressindicator--default@vertical in the states file; invalid text input from components-textinput--default@invalid; modal from components-modal--default; button set from components-button-set-of-buttons--default, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-16",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -503,7 +503,7 @@
       "slot": "steps",
       "follows": null,
       "deps": [],
-      "line": 480,
+      "line": 420,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; vertical progress from components-progressindicator--default@vertical in the states file; invalid text input from components-textinput--default@invalid; modal from components-modal--default; button set from components-button-set-of-buttons--default, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-4",
       "stack": null,
@@ -520,7 +520,7 @@
       "slot": "panel",
       "follows": null,
       "deps": [],
-      "line": 528,
+      "line": 468,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; vertical progress from components-progressindicator--default@vertical in the states file; invalid text input from components-textinput--default@invalid; modal from components-modal--default; button set from components-button-set-of-buttons--default, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -537,7 +537,7 @@
       "slot": "panel",
       "follows": null,
       "deps": [],
-      "line": 568,
+      "line": 508,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; vertical progress from components-progressindicator--default@vertical in the states file; invalid text input from components-textinput--default@invalid; modal from components-modal--default; button set from components-button-set-of-buttons--default, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -554,7 +554,7 @@
       "slot": "panel",
       "follows": null,
       "deps": [],
-      "line": 649,
+      "line": 589,
       "provenance": "PROVENANCE: rendered-dom · shell from components-ui-shell-header--header-w-navigation-actions-and-side-nav; vertical progress from components-progressindicator--default@vertical in the states file; invalid text input from components-textinput--default@invalid; modal from components-modal--default; button set from components-button-set-of-buttons--default, 2026-08-31",
       "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
       "stack": "rux--stack-vertical rux--stack-scale-7",
@@ -570,9 +570,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 489,
-          "start": 42122,
-          "end": 42304,
+          "line": 429,
+          "start": 39011,
+          "end": 39193,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": "rux--stack-vertical rux--stack-scale-6"
@@ -592,9 +592,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 444,
-          "start": 39184,
-          "end": 50291,
+          "line": 384,
+          "start": 36073,
+          "end": 47180,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": "rux--stack-vertical rux--stack-scale-7"
@@ -619,9 +619,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 467,
-          "start": 40796,
-          "end": 61242,
+          "line": 407,
+          "start": 37685,
+          "end": 58131,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": "rux--stack-vertical rux--stack-scale-6"
@@ -646,9 +646,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 452,
-          "start": 39641,
-          "end": 45057,
+          "line": 392,
+          "start": 36530,
+          "end": 41946,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": null
@@ -671,9 +671,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 453,
-          "start": 39729,
-          "end": 44957,
+          "line": 393,
+          "start": 36618,
+          "end": 41846,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": null
@@ -696,9 +696,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 474,
-          "start": 41132,
-          "end": 48813,
+          "line": 414,
+          "start": 38021,
+          "end": 45702,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
             "stack": "rux--stack-vertical rux--stack-scale-7"
@@ -721,9 +721,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 509,
-          "start": 43195,
-          "end": 58841,
+          "line": 449,
+          "start": 40084,
+          "end": 55730,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
             "stack": "rux--stack-vertical rux--stack-scale-7"
@@ -746,9 +746,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 438,
-          "start": 38595,
-          "end": 48121,
+          "line": 378,
+          "start": 35484,
+          "end": 45010,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
             "stack": "rux--stack-vertical rux--stack-scale-7"
@@ -771,9 +771,9 @@
       "slots": [
         {
           "name": "body",
-          "line": 461,
-          "start": 40332,
-          "end": 57989,
+          "line": 401,
+          "start": 37221,
+          "end": 54878,
           "container": {
             "column": "rux--css-grid-column rux--col-span-100",
             "stack": null
@@ -796,9 +796,9 @@
       "slots": [
         {
           "name": "title",
-          "line": 465,
-          "start": 40873,
-          "end": 41005,
+          "line": 405,
+          "start": 37762,
+          "end": 37894,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-16",
             "stack": "rux--stack-vertical rux--stack-scale-7"
@@ -812,9 +812,9 @@
         },
         {
           "name": "steps",
-          "line": 479,
-          "start": 41488,
-          "end": 43929,
+          "line": 419,
+          "start": 38377,
+          "end": 40818,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-4",
             "stack": null
@@ -828,9 +828,9 @@
         },
         {
           "name": "panel",
-          "line": 526,
-          "start": 44296,
-          "end": 53644,
+          "line": 466,
+          "start": 41185,
+          "end": 50533,
           "container": {
             "column": "rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8",
             "stack": "rux--stack-vertical rux--stack-scale-7"
