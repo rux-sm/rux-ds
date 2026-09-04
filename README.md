@@ -238,8 +238,8 @@ header comment already names — so those read "nothing to compare," not
    preview); next are select-and-edit, add-and-move with instance identity,
    then `check-parity` and export. Roadmap §4.12 item 3 has the account. The
    tier-2 wiring (`check-blocks` and `npm run builder` in `verify`, the
-   registry, the CI staleness list) is drafted as a proven diff and is rux's
-   to accept.
+   registry, the CI staleness list) was proposed as a proven diff and landed
+   2026-09-04 on rux's acceptance.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template

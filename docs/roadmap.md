@@ -2929,11 +2929,17 @@ builder yet, and one of them is contradictory as written: removing "global
 actions" removes the Account action, while the same table says the account
 panel is not a choice. That goes to rux before it is built. The preview is
 outside every gate: the sweep above measures the builder's chrome, and the
-page says so. The tier-2 wiring — `check-blocks` and `npm run builder` in
-`verify`, the registry entries, `builder.html` and `builder/blocks.json` in
-CI's staleness diff, and the pre-existing registry drift where the Node
-gates' literal `fileTargets` still name `kitchen-sink.html` and `portal.html`
-by hand though the tools discover root pages — is a proven diff awaiting rux.
+page says so. The tier-2 wiring — `check-blocks` and `build-builder-icons` in the
+registry and `CONTROL_FILES`, `npm run blocks`, `npm run builder` and
+`check-blocks` in `verify`, `builder.html` and `builder/blocks.json` in CI's
+staleness diff — was drafted as a diff, proven by `verify` with it applied,
+proposed with what it weakens (a longer chain stops earlier, so a
+`check-blocks` failure hides what follows it), and **accepted by rux and
+landed 2026-09-04** in the commit that carries this sentence. Left open on
+purpose, for rux to decide rather than bury in that diff: the pre-existing
+registry drift where six Node gates' literal `fileTargets` still name
+`kitchen-sink.html` and `portal.html` by hand though the tools discover root
+pages since 2026-08-31.
 The three `builder.html` cells in `docs/gate-coverage.json` are stamped at
 `19b328e`, the HEAD they were read against with the page uncommitted, and
 are re-swept and restamped in the ledger commit that follows, as the

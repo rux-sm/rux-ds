@@ -465,6 +465,43 @@ export const GATES = [
     sideEffects: null,
     baseline: '39 files labelled · 33 rendered-dom · 6 source · 0 inferred · 10 templates verified-live · 14 modules · 14 verified-live',
   },
+  {
+    id: 'check-blocks',
+    tool: 'tools/check-blocks.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json that is not a byte-exact copy of what the markers enclose, or whose slot records do not rebuild the file',
+    blindTo: 'whether the marked region is the RIGHT part of the fragment — that is a reading',
+    reads: 'per-file',
+    fileTargets: ['sink', 'templates', 'builder/blocks.json'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['sink', 'templates', 'assets/icons.svg', 'builder/blocks.json'],
+    redRun: 'swap two BLOCK:END names in sink/structured-list.html, or change one byte inside a marked region without `npm run blocks`',
+    sideEffects: null,
+    baseline: '33 blocks in 18 files · 12 slots',
+  },
+
+  {
+    // The same shape as build-portal-icons: a gate carried by a build tool. The
+    // generator inlines assets/icons.svg and refuses to write a page that uses
+    // a glyph the sprite lacks, because a <use> at a missing symbol paints
+    // nothing, silently.
+    id: 'build-builder-icons',
+    tool: 'tools/build-builder.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a `#i-name` emitted into builder.html that the committed sprite has no `<symbol>` for',
+    blindTo: 'every page it does not generate - its unit is builder.html alone, and never the page inside its preview',
+    reads: 'the emitted builder markup against assets/icons.svg',
+    fileTargets: ['tools/build-builder.mjs'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['assets/icons.svg'],
+    redRun: 'reference #i-nothing from the generator and run npm run builder',
+    sideEffects: 'writes builder.html',
+    baseline: '0 unresolved sprite references',
+  },
 
   // ── browser-only ────────────────────────────────────────────────────────
   // None of these can be run by a Node runner. package.json has three
@@ -629,13 +666,13 @@ export const browserGates = () => GATES.filter(g => g.kind === 'browser');
 export const CONTROL_FILES = [
   // The gates themselves, and the two build tools that carry one.
   'tools/check-a11y.js', 'tools/check-ancestry.mjs', 'tools/check-aria-roles.mjs',
-  'tools/check-behaviour.js', 'tools/check-classes.mjs', 'tools/check-co-classes.mjs',
+  'tools/check-behaviour.js', 'tools/check-blocks.mjs', 'tools/check-classes.mjs', 'tools/check-co-classes.mjs',
   'tools/check-compound.mjs', 'tools/check-coverage.mjs', 'tools/check-gates.mjs',
   'tools/check-glyphs.mjs', 'tools/check-headings.mjs', 'tools/check-icons.mjs',
   'tools/check-inventory.mjs', 'tools/check-provenance.mjs', 'tools/check-rendered.js',
   'tools/check-runtime-classes.js', 'tools/check-slots.mjs', 'tools/check-spacing.js',
   'tools/check-tags.mjs', 'tools/check-tokens.mjs',
-  'tools/build.mjs', 'tools/build-portal.mjs',
+  'tools/build.mjs', 'tools/build-portal.mjs', 'tools/build-blocks.mjs', 'tools/build-builder.mjs',
 
   // PHASE 8'S TOKEN SNAPSHOT, ALL FOUR PIECES. The gate is obvious; the other
   // three are here because each one decides what passes. build-token-values
@@ -649,6 +686,12 @@ export const CONTROL_FILES = [
 
   // The registry and the libraries every gate reads through.
   'tools/lib/gates.mjs', 'tools/lib/ownership.mjs', 'tools/lib/sources.mjs',
+  // The block-marker parser, read by build-blocks (the writer) and check-blocks
+  // (the checker): change it and the manifest and its comparison move together.
+  'tools/lib/blocks.mjs',
+  // The one transformation a template undergoes to become a page, read by
+  // builder.html and, in the next stage, by check-parity against the script.
+  'builder/rewrites.mjs',
   'tools/lib/staleness.mjs', 'tools/check-controls.mjs',
 
   // The figure generators. tools/lib/stats.mjs answers for every number README

@@ -68,17 +68,20 @@ jobs:
           fi
 
       # The build writes tracked files. css/rux.css, css/rux.min.css,
-      # kitchen-sink.html and portal.html are committed so the system is
-      # consumable from a raw URL with no build step — which only holds while they match their
-      # sources. A clean tree after `verify` is the proof.
+      # kitchen-sink.html, portal.html, builder.html and builder/blocks.json are committed so
+      # the system is consumable from a raw URL with no build step — which only
+      # holds while they match their sources. A clean tree after `verify` is the
+      # proof. builder/blocks.json is the page builder's catalogue: a verbatim
+      # copy of every marked region in sink/ and templates/, so a stale copy
+      # would offer a block the sink no longer has.
       #
       # assets/icons.svg is deliberately excluded: `npm run icons` quarries
       # @carbon/icons, which is not a declared dependency, so CI cannot rebuild
       # the sprite to compare against.
       - name: Committed build output is up to date
         run: |
-          if ! git diff --quiet -- css kitchen-sink.html portal.html README.md; then
+          if ! git diff --quiet -- css kitchen-sink.html portal.html README.md builder/blocks.json builder.html; then
             echo "::error::Committed build output is stale — run 'npm run verify' and commit the result."
-            git diff --stat -- css kitchen-sink.html portal.html README.md
+            git diff --stat -- css kitchen-sink.html portal.html README.md builder/blocks.json builder.html
             exit 1
           fi

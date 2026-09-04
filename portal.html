@@ -800,7 +800,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>22 gates. 17 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>24 gates. 19 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -938,6 +938,20 @@
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
                   <td>a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date</td>
                   <td>whether either label is true</td>
+                </tr>
+                <tr>
+                  <td>check-blocks</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json that is not a byte-exact copy of what the markers enclose, or whose slot records do not rebuild the file</td>
+                  <td>whether the marked region is the RIGHT part of the fragment — that is a reading</td>
+                </tr>
+                <tr>
+                  <td>build-builder-icons</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>a `#i-name` emitted into builder.html that the committed sprite has no `&lt;symbol&gt;` for</td>
+                  <td>every page it does not generate - its unit is builder.html alone, and never the page inside its preview</td>
                 </tr>
                 <tr>
                   <td>check-rendered</td>
