@@ -233,7 +233,13 @@ header comment already names — so those read "nothing to compare," not
 
 **Next, in order:**
 
-1. Creator 3, the configurator page, as a page in the hub. Last.
+1. Creator 3, the page builder, `builder.html` here — stages 1 and 2 of its
+   plan landed 2026-09-04 (markers, the gate, the skeleton round trip, the
+   preview); next are select-and-edit, add-and-move with instance identity,
+   then `check-parity` and export. Roadmap §4.12 item 3 has the account. The
+   tier-2 wiring (`check-blocks` and `npm run builder` in `verify`, the
+   registry, the CI staleness list) is drafted as a proven diff and is rux's
+   to accept.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template
@@ -275,7 +281,7 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Components | **77 / 83 compiled** in 80 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 4 — white, g10, g90, g100 — plus `rux`, a token override block in `css/rux-theme.css`, not a compile |
 | Tokens · classes | **626** `--rux-*` defined, 10 more read through a fallback · **1,798** `.rux--*` |
-| Kitchen sink | **68** sections · **974** classes with `templates/` and `js/` |
+| Kitchen sink | **68** sections · **976** classes with `templates/` and `js/` |
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **72 `rendered-dom` · 6 `source` · 0 `inferred`** across 78 files |

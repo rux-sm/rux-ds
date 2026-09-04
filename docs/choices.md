@@ -13,7 +13,7 @@ Three layers offer them, cheapest first:
 |---|---|---|
 | **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, name, title, file | Done |
 | **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Done 2026-09-02, its §2 |
-| **Configurator** page in Rux Apps | the same choices with a live preview and the HTML to take away | Planned, after the hub |
+| **Builder** `builder.html`, here | a page builder: a template, its answers, marked blocks from `sink/` and `templates/`, a live preview, the HTML to take away | Partial 2026-09-04 — the template, the answers and the preview; blocks, editing and export follow (roadmap §4.12 item 3) |
 
 ## Page shape — ten, pick one
 
@@ -87,8 +87,13 @@ list-box family have no fluid form.
 - **States**: disabled, loading, selected. They are states the page sets,
   not choices made at creation.
 
-## Content blocks — 68 fragments
+## Content blocks — 68 fragments by name, 33 marked as blocks
 
 Anything in `sink/` can be dropped into a page body; the kitchen sink is the
-catalogue and `sink/ORDER` the index. The skill offers them by name; the
-script does not.
+catalogue and `sink/ORDER` the index. The skill offers all 68 by name; the
+script does not. The builder offers only what carries a `BLOCK:BEGIN` marker
+— one attested specimen per marked fragment, plus every REPLACE region of a
+template's `<main>` — because a fragment dropped in whole brings `ks-`
+wrappers that `css/rux.css` does not style and specimens a page does not
+want. `builder/blocks.json` is the list, and `tools/check-blocks.mjs` keeps it
+a verbatim copy of its sources.

@@ -2847,6 +2847,98 @@ deploys and ignores the check until rux sets the source to GitHub Actions.
 Item 1 of the list above is done; the naming rule of §4.13 gave Notes its
 "Rux Notes" header the same day.
 
+**Creator 3 is a page builder, decided 2026-09-04, and it lives here, not in
+the hub.** rux's brief: start from a template, add and remove blocks from the
+inventory like legos, see it live, take the HTML away; the whole catalogue in
+`docs/choices.md`, body blocks included. The first milestone is one journey —
+choose a template, personalise its content, add and move a block, undo a
+change, inspect narrow and wide, export — before the catalogue grows. The plan
+went through four revisions in the open; the findings that shaped it are
+recorded with the stages below rather than repeated.
+
+**Stage 1, `4bfc2a9` — blocks are marked regions, and the gate proves them.**
+A sink fragment is a demo catalogue: `ks-sec`, `ks-label`, `ks-row`, `ks-grid`
+exist only in `sink/harness.css` and appear zero times in `css/rux.css`, so a
+fragment dropped into a page carries wrappers that style nothing. So a block
+is `<!-- BLOCK:BEGIN name=basic label="Data table" -->` … `<!-- BLOCK:END
+basic -->` around one attested specimen, the END repeating the name because a
+fragment holds five to nine specimens and a lazy match would pair the wrong
+two. Nine blocks in eight fragments, by one rule — a region that can stand as
+a direct child of a page's stack — and `tools/build-blocks.mjs` copies them
+byte for byte into `builder/blocks.json`, which `tools/check-blocks.mjs`
+compares back: pairing, ordering below PROVENANCE (check-provenance faults
+BURIED on a comment above it), no `ks-` and no inline style inside a sink
+block, every glyph in the sprite, every `aria-*`/`for`/`data-rux-open`
+reference closed inside the block, the manifest exact. Three red runs before
+green. Two corrections to the approved plan while marking: none of the eight
+named blocks carries an id, so `accordion` cannot be the instance-identity
+test — `structured-list/selection` (ids, a radio `name`) is marked for it —
+and `href="#…"` is navigation, not a control relation, so it left the closure
+rule.
+
+**Stage 2, `19b328e` and this commit — slots, the round trip, the preview.**
+The template is the skeleton, verbatim; `<!-- SLOT:BEGIN name=body -->` marks
+the interior of a container it already has, holding blocks and blank lines and
+nothing else, so the frame plus the blocks IS the file — `check-blocks`
+reassembles every slot and faults REASSEMBLY otherwise. Every REPLACE region
+in a `<main>` is a block with its prose inside it. Three things the templates
+settled against the plan: a block cannot span a container's closing tag, so
+`table-page`'s table and pagination are two blocks with `follows=table`
+keeping them adjacent rather than one compound; `wizard-page`'s cancel dialog
+is opened from one column and lives after the grid, so it stays frame; and
+`detail-page`'s tabs are one block, panels included. 33 blocks in 18 files,
+12 slots. `builder/rewrites.mjs` reproduces `tools/new-project.sh:189-200`
+including the two project stylesheet links its awk step inserts — the omission
+rev 1 of the plan was returned for — and **all ten templates round-trip byte
+for byte against the script's real output**, run into a scratch directory,
+before any builder page existed. `tools/build-builder.mjs` then writes
+`builder.html`: the script's answers, a template picker, a Blob-URL preview
+at 375, 672, 1056, 1280, 1440 or fit. Read in the pane at 1280×720, white
+asserted: `check-runtime-classes` 0 stripped, 1 added (the `<option>`s the
+page creates); `check-a11y` 0 findings with rings checked, and 10 when every
+ring was stripped, on exactly this page's controls; `check-spacing` 29 of 30,
+the one divergence the subgrid padding-block every page here records.
+
+**Three claims stopped being probes.** A `srcdoc` preview's skip link
+navigated the frame to `builder.html#main-content` — the builder rendering
+inside its own preview — so the preview is a Blob URL, whose skip link stayed
+at `blob:…#main-content`. With `g90` stored in the reader's profile and `g10`
+chosen as the default, the frame showed `g10`, its body measured
+`rgb(244,244,244)`, and it saw no stored profile: the preview-only storage
+shim before `js/theme.js` does what it claims, and `js/profile.js` still runs
+(it returns early without `window.Rux.theme`, which is why dropping
+`theme.js` was rejected). And 375 renders at 375 inside the frame.
+
+**Rejected, recorded so it is not re-proposed:** the hub as the home (the
+gates live here); a page builder that assembles components freely
+(composing-pages §3.10 — an unattested composition inherits no spacing and
+no gate reads it; the unit is the whole attested specimen); rendering the
+preview in-page (two shells, the very thing §4.12's "no frames" forbids —
+the iframe honours it); `srcdoc` (measured above); baking the catalogue into
+`builder.html` (it works with `<` escaped, but buys a 500 KB page and a
+serialization contract for nothing a fetch does not give); `SPRITE:` markers
+on the generated page (`spritePages()` would hand the region to `npm run
+icons` as a second writer); a universal `<main>` wrapper (it cannot preserve
+`table-page`'s pagination outside the stack or `wizard-page`'s three
+columns); shipping id-suffixing before it is measured.
+
+**Not done, and said so.** Editing, the catalogue, add/move, undo, export and
+`check-parity` are the next stages. The two shell toggles the choices table
+offers — header nav and global actions present or absent — are not in the
+builder yet, and one of them is contradictory as written: removing "global
+actions" removes the Account action, while the same table says the account
+panel is not a choice. That goes to rux before it is built. The preview is
+outside every gate: the sweep above measures the builder's chrome, and the
+page says so. The tier-2 wiring — `check-blocks` and `npm run builder` in
+`verify`, the registry entries, `builder.html` and `builder/blocks.json` in
+CI's staleness diff, and the pre-existing registry drift where the Node
+gates' literal `fileTargets` still name `kitchen-sink.html` and `portal.html`
+by hand though the tools discover root pages — is a proven diff awaiting rux.
+The three `builder.html` cells in `docs/gate-coverage.json` are stamped at
+`19b328e`, the HEAD they were read against with the page uncommitted, and
+are re-swept and restamped in the ledger commit that follows, as the
+portal's cells were.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

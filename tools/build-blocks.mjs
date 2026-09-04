@@ -65,7 +65,9 @@ for (const f of markupFiles(['sink', 'templates'])) {
   }
   if (f.root === 'templates') {
     templates.push({ name: f.name.replace(/^templates\//, ''), path: f.path,
-      slots: r.slots.map(s => ({ name: s.name, line: s.line, container: s.container, blocks: s.blocks, pre: s.pre, gaps: s.gaps, post: s.post })) });
+      // start/end are byte offsets into the template file, for compose():
+      // the builder splices a rebuilt slot into the template text it fetched.
+      slots: r.slots.map(s => ({ name: s.name, line: s.line, start: s.start, end: s.end, container: s.container, blocks: s.blocks, pre: s.pre, gaps: s.gaps, post: s.post })) });
   }
 }
 
