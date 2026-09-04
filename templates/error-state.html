@@ -450,7 +450,9 @@
 <main id="main-content" class="rux--content">
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
+      <!-- SLOT:BEGIN name=body -->
 
+      <!-- BLOCK:BEGIN name=error-state label="Error state" -->
       <!-- AN ERROR STATE IS AN EMPTY STATE IN CARBON, and that is not a shortcut
            taken here. The empty-states pattern files "error management" as one of
            its three uses: "Empty states can also occur when there is data but it
@@ -495,7 +497,9 @@
         </div>
 
       </div>
+      <!-- BLOCK:END error-state -->
 
+      <!-- BLOCK:BEGIN name=inline-error label="Inline error" -->
       <!-- REPLACE OR DELETE: the IN-CONTEXT error, for when the page still has
            its content and one part of it failed. The notification pattern's
            placement rules are short and all three matter: put it near the item it
@@ -534,7 +538,9 @@
           </button>
         </div>
       </div>
+      <!-- BLOCK:END inline-error -->
 
+      <!-- SLOT:END body -->
     </div>
   </div>
 </main>

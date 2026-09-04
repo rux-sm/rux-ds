@@ -464,7 +464,9 @@
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
       <div class="rux--stack-vertical rux--stack-scale-6">
+        <!-- SLOT:BEGIN name=body -->
 
+        <!-- BLOCK:BEGIN name=page-header label="Page header" -->
         <!-- REPLACE: the page header. A detail page names ONE thing, so the
              breadcrumb carries the trail to it, the h1 names it, and the status
              sits beside the name rather than under it. -->
@@ -516,7 +518,9 @@
           <button type="button" class="rux--btn rux--btn--secondary">Roll back</button>
           <button type="button" class="rux--btn rux--btn--primary">Deploy</button>
         </div>
+        <!-- BLOCK:END page-header -->
 
+        <!-- BLOCK:BEGIN name=metric-row label="Metric row" -->
         <!-- REPLACE: the metric row. FOUR THINGS BESIDE EACH OTHER, which is the
              one page shape none of the six templates held until 2026-08-31 — and
              the gap that sent §4.6's third and fourth exit attempts out to
@@ -617,7 +621,9 @@
             </div>
           </div>
         </div>
+        <!-- BLOCK:END metric-row -->
 
+        <!-- BLOCK:BEGIN name=tabs label="Tabs" -->
         <!-- REPLACE: the tabs. A detail page is one subject seen several ways,
              which is what tabs are for. js/tabs.js owns the roving tabindex and
              the arrow keys; the panels are SIBLINGS of .rux--tabs, which is where
@@ -780,7 +786,9 @@
         </div>
 
       </div>
+        <!-- BLOCK:END tabs -->
 
+        <!-- SLOT:END body -->
       </div>
     </div>
   </div>

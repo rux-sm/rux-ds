@@ -506,8 +506,12 @@
            the first field than the fields are to each other and read as if it
            belonged to that field. Equal is the floor; tighter is wrong. -->
       <div class="rux--stack-vertical rux--stack-scale-7">
+      <!-- SLOT:BEGIN name=body -->
+      <!-- BLOCK:BEGIN name=page-title label="Page title" -->
       <h1>Schedule a booking</h1>
+      <!-- BLOCK:END page-title -->
 
+      <!-- BLOCK:BEGIN name=form label="Form" -->
       <!-- THE SCHEDULING FORM. Built 2026-08-31 to put four compiled
            components into a PAGE for the first time: time-picker, dropdown,
            number-input and inline-loading were all shipped and demoed only as
@@ -759,6 +763,8 @@
 
         </div>
       </form>
+      <!-- BLOCK:END form -->
+      <!-- SLOT:END body -->
       </div>
 
     </div>

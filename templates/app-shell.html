@@ -486,8 +486,12 @@
            should be separated inside it; do not delete the wrapper without
            knowing which of those cases you are in. -->
       <div class="rux--stack-vertical rux--stack-scale-6">
+        <!-- SLOT:BEGIN name=body -->
+        <!-- BLOCK:BEGIN name=page-title label="Page title" -->
         <h1>Dashboard</h1>
         <p>Replace this region with a page body.</p>
+        <!-- BLOCK:END page-title -->
+        <!-- SLOT:END body -->
       </div>
     </div>
   </div>

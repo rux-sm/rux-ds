@@ -435,8 +435,12 @@
            computes margin 0 in both block directions, measured on a running
            Carbon, so two of them in a row sit flush without this. -->
       <div class="rux--stack-vertical rux--stack-scale-7">
+        <!-- SLOT:BEGIN name=body -->
+        <!-- BLOCK:BEGIN name=page-title label="Page title" -->
         <h1>Settings</h1>
+        <!-- BLOCK:END page-title -->
 
+        <!-- BLOCK:BEGIN name=form label="Form" -->
         <form>
           <div class="rux--stack-vertical rux--stack-scale-7">
 
@@ -596,6 +600,8 @@
 
           </div>
         </form>
+        <!-- BLOCK:END form -->
+        <!-- SLOT:END body -->
       </div>
 
     </div>

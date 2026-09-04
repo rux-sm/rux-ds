@@ -462,7 +462,11 @@
          which is the fault app-shell.html and form-page.html both record. -->
     <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-16">
       <div class="rux--stack-vertical rux--stack-scale-7">
+        <!-- SLOT:BEGIN name=title -->
+        <!-- BLOCK:BEGIN name=flow-title label="Flow title" -->
         <h1>New shipment</h1>
+        <!-- BLOCK:END flow-title -->
+        <!-- SLOT:END title -->
       </div>
     </div>
 
@@ -472,6 +476,8 @@
          at all, so it does not collapse to horizontal when this column stacks
          below lg. Verified live 2026-08-31; see the BEHAVIOUR comment. -->
     <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-4">
+      <!-- SLOT:BEGIN name=steps -->
+      <!-- BLOCK:BEGIN name=step-list label="Step list" -->
       <ul class="rux--progress rux--progress--vertical">
         <li class="rux--progress-step rux--progress-step--complete">
           <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
@@ -509,13 +515,17 @@
           </button>
         </li>
       </ul>
+      <!-- BLOCK:END step-list -->
+      <!-- SLOT:END steps -->
     </div>
 
     <!-- REPLACE: the panel. EIGHT columns of sixteen; see the head comment on
          why the remaining four are left empty. -->
     <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-8">
       <div class="rux--stack-vertical rux--stack-scale-7">
+        <!-- SLOT:BEGIN name=panel -->
 
+        <!-- BLOCK:BEGIN name=summary label="Summary" -->
         <!-- REPLACE: the read-only summary of what the previous steps captured.
              A WIZARD NEEDS THIS AND A FORM DOES NOT: the answers being built on
              are off-screen, and a step that cannot show them makes the user go
@@ -553,7 +563,9 @@
             </div>
           </div>
         </div>
+        <!-- BLOCK:END summary -->
 
+        <!-- BLOCK:BEGIN name=fields label="Fields" -->
         <!-- REPLACE: this step's fields. Structure is components-form--default:
              a <form> holding `form-item`s, each control in its own item.
 
@@ -632,7 +644,9 @@
 
           </div>
         </form>
+        <!-- BLOCK:END fields -->
 
+        <!-- BLOCK:BEGIN name=actions label="Actions" -->
         <!-- REPLACE: the step actions.
 
              CANCEL IS OUTSIDE THE SET AND MUST STAY OUTSIDE. `btn-set` caps
@@ -671,7 +685,9 @@
         <div>
           <button type="button" class="rux--btn rux--btn--ghost" data-rux-open="wizard-cancel">Cancel</button>
         </div>
+        <!-- BLOCK:END actions -->
 
+        <!-- SLOT:END panel -->
       </div>
     </div>
 

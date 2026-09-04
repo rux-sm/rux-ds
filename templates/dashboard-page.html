@@ -441,12 +441,16 @@
          uses `subgrid`, and everything else just flows down the column. -->
     <div class="rux--css-grid-column rux--col-span-100">
       <div class="rux--stack-vertical rux--stack-scale-7">
+        <!-- SLOT:BEGIN name=body -->
 
+        <!-- BLOCK:BEGIN name=page-title label="Page title" -->
         <!-- REPLACE: the page title. It needs the stack as much as the rows do
              — an h1 carries margin 0 here, so without it the metric row starts
              on the title's exact bottom edge. -->
         <h1>Overview</h1>
+        <!-- BLOCK:END page-title -->
 
+        <!-- BLOCK:BEGIN name=metric-row label="Metric row" -->
         <!-- REPLACE: the metric row. FOUR ACROSS at lg, two at md, one at sm.
              THE SPANS ARE PER-BREAKPOINT AND ALL THREE ARE REQUIRED — a bare
              `col-span-4` plus an `lg:` override does nothing, because both are
@@ -517,7 +521,9 @@
             </div>
           </div>
         </div>
+        <!-- BLOCK:END metric-row -->
 
+        <!-- BLOCK:BEGIN name=table-and-activity label="Table and activity" -->
         <!-- REPLACE: the lower region. A wide table beside a narrow column.
              TEN AND SIX, not eight and eight: a table needs the room and a
              list does not, and 10 + 6 is the whole sixteen so nothing is left
@@ -633,7 +639,9 @@
           </div>
 
         </div>
+        <!-- BLOCK:END table-and-activity -->
 
+        <!-- SLOT:END body -->
       </div>
     </div>
   </div>

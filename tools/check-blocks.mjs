@@ -22,41 +22,53 @@
 //   resolved    every <use href="#i-…"> names a <symbol> in assets/icons.svg,
 //               because a <use> at a missing symbol paints nothing, silently.
 //   closed      every aria-controls, aria-labelledby, aria-describedby, for and
-//               data-rux-open inside a block points at an id inside the same
-//               block. A tabs block includes its panels; a modal block its
-//               trigger. href="#…" is NOT checked: a breadcrumb's links point
-//               out of the block by design. This is what makes "a block is a
-//               whole thing" checkable rather than asserted.
-//   current     builder/blocks.json exists, names exactly the blocks the
-//               markers enclose, and every `html` equals its source slice byte
-//               for byte. Edit a marked region without `npm run blocks` and
-//               this is the rule that fails.
+//               data-rux-open inside a SINK block points at an id inside the
+//               same block — a tabs block includes its panels. In a TEMPLATE
+//               the reference may resolve anywhere in the file, and one that
+//               lands in another block is recorded as a dependency the builder
+//               honours (wizard-page's Cancel opens a dialog that is frame).
+//               href="#…" is NOT checked: a breadcrumb's links point out of the
+//               block by design. This is what makes "a block is a whole thing"
+//               checkable rather than asserted.
 //   slotted     in templates/: every BLOCK inside a SLOT, every SLOT inside
-//               <main>. Enforced only on files that carry markers; "every
-//               template has a slot" arrives with the templates (stage 2).
+//               <main>, every template carries at least one SLOT, and a slot
+//               holds blocks and blank lines only — the FRAME IN SLOT fault —
+//               so the frame plus the blocks IS the file.
+//   follows     a block that `follows` another names the one immediately
+//               before it in the same slot.
+//   current     builder/blocks.json exists, names exactly the blocks the
+//               markers enclose, every `html` equals its source slice byte for
+//               byte, and every slot record REASSEMBLES to its file's slot
+//               interior byte for byte. Edit a marked region without `npm run
+//               blocks` and this is the rule that fails.
 //
 // WHAT IT CANNOT CHECK. Whether the marked region is the RIGHT part of the
-// fragment. That is a reading, and the catalogue is grown one reading at a
-// time for that reason.
+// fragment, or the right seam in a template. That is a reading, and the
+// catalogue is grown one reading at a time for that reason.
 //
 // RED RUN: swap two BLOCK:END names; move a marker above PROVENANCE; change one
-// byte inside a marked region without rebuilding. Each must fail.
+// byte inside a marked region without rebuilding; put a comment inside a slot
+// but outside any block. Each must fail.
 import { readFileSync, existsSync } from 'node:fs';
 import { markupFiles } from './lib/sources.mjs';
-import { scan, idOf, provenanceIndex, idsIn, refsIn, glyphsIn, markers } from './lib/blocks.mjs';
+import { scan, idOf, provenanceIndex, idsIn, refsIn, glyphsIn, markers, assemble } from './lib/blocks.mjs';
 
 const MANIFEST = 'builder/blocks.json';
 const faults = [];
 const symbols = new Set([...readFileSync('assets/icons.svg', 'utf8').matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
 
-const found = new Map();   // id → { block, path }
+const found = new Map();        // block id → { block, path }
+const scanned = new Map();      // path → { html, blocks, slots }
 let files = 0, slotCount = 0;
 
 for (const f of markupFiles(['sink', 'templates'])) {
   const html = readFileSync(f.path, 'utf8');
   const r = scan(html, f.path);
   faults.push(...r.faults);
-  if (!r.blocks.length && !r.slots.length && !markers(html).length) continue;
+  scanned.set(f.path, { html, ...r });
+  const marked = r.blocks.length || r.slots.length || markers(html).length;
+  if (f.root === 'templates' && !r.slots.length) faults.push(['NO SLOT', f.path, `a template with no SLOT — the builder can preview and export it but not edit it; mark the container its blocks live in`]);
+  if (!marked) continue;
   files++;
   slotCount += r.slots.length;
 
@@ -74,6 +86,7 @@ for (const f of markupFiles(['sink', 'templates'])) {
     else if (mainOpen === -1 || s.start < mainOpen || s.end > mainClose) faults.push(['MISPLACED', `${f.path}:${s.line}`, `SLOT ${s.name} is outside <main> — a slot is a container the page body already has`]);
   }
 
+  const fileIds = idsIn(html);
   for (const b of r.blocks) {
     const id = idOf(f.path, b.name);
     const where = `${f.path}:${b.line}`;
@@ -90,7 +103,9 @@ for (const f of markupFiles(['sink', 'templates'])) {
 
     const ids = idsIn(b.html);
     for (const ref of refsIn(b.html)) if (!ids.has(ref.id)) {
-      faults.push(['OPEN', `${f.path}:${b.line + ref.line - 1}`, `block ${b.name}: ${ref.attr}="${ref.id}" points outside the block — include the target or the block is not a whole thing`]);
+      const at = `${f.path}:${b.line + ref.line}`;
+      if (f.root === 'sink') faults.push(['OPEN', at, `block ${b.name}: ${ref.attr}="${ref.id}" points outside the block — include the target or the block is not a whole thing`]);
+      else if (!fileIds.has(ref.id)) faults.push(['OPEN', at, `block ${b.name}: ${ref.attr}="${ref.id}" resolves nowhere in ${f.path}`]);
     }
   }
 }
@@ -109,14 +124,29 @@ if (!existsSync(MANIFEST)) {
       else if (m.html !== block.html) faults.push(['STALE', MANIFEST, `${id} differs from its source region in ${path}:${block.line} — run \`npm run blocks\``]);
     }
     for (const id of listed.keys()) if (!found.has(id)) faults.push(['STALE', MANIFEST, `${id} is in the manifest but no longer marked — run \`npm run blocks\``]);
+
+    // Reassembly: the manifest's slot record plus its blocks must be the file.
+    for (const t of manifest.templates ?? []) {
+      const src = scanned.get(t.path);
+      if (!src) { faults.push(['STALE', MANIFEST, `${t.path} is in the manifest but was not scanned — run \`npm run blocks\``]); continue; }
+      const byName = Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
+      for (const s of t.slots) {
+        const live = src.slots.find(x => x.name === s.name);
+        if (!live) { faults.push(['STALE', MANIFEST, `${t.path}: SLOT ${s.name} is in the manifest but no longer marked — run \`npm run blocks\``]); continue; }
+        if (s.blocks.some(n => !(n in byName))) { faults.push(['STALE', MANIFEST, `${t.path}: SLOT ${s.name} names a block the manifest lacks — run \`npm run blocks\``]); continue; }
+        if (assemble(s, byName) !== src.html.slice(live.start, live.end)) {
+          faults.push(['REASSEMBLY', `${t.path}:${live.line}`, `SLOT ${s.name}: the manifest's blocks and gaps do not rebuild this slot byte for byte — run \`npm run blocks\``]);
+        }
+      }
+    }
   }
 }
 
 for (const [tag, where, why] of faults) {
-  console.log(`  ${tag.padEnd(13)}${where}`);
-  console.log(`  ${''.padEnd(13)}${why}`);
+  console.log(`  ${tag.padEnd(14)}${where}`);
+  console.log(`  ${''.padEnd(14)}${why}`);
 }
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 console.log(`  check-blocks: ${plural(found.size, 'block')} in ${plural(files, 'file')} · ${plural(slotCount, 'slot')} · ${plural(faults.length, 'fault')}`);
-console.log('  This says every marked region is well-formed, closed and copied exactly. It does not say it is the right region.');
+console.log('  This says every marked region is well-formed, closed and copied exactly, and every slot rebuilds its file. It does not say it is the right region.');
 process.exit(faults.length ? 1 : 0);

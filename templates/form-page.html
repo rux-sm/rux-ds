@@ -471,8 +471,12 @@
            the first field than the fields are to each other and read as if it
            belonged to that field. Equal is the floor; tighter is wrong. -->
       <div class="rux--stack-vertical rux--stack-scale-7">
+      <!-- SLOT:BEGIN name=body -->
+      <!-- BLOCK:BEGIN name=page-title label="Page title" -->
       <h1>New request</h1>
+      <!-- BLOCK:END page-title -->
 
+      <!-- BLOCK:BEGIN name=form label="Form" -->
       <!-- REPLACE: the form. Structure is components-form--default: a <form>
            holding fieldsets and `form-item`s, each control in its own item.
 
@@ -608,6 +612,8 @@
 
         </div>
       </form>
+      <!-- BLOCK:END form -->
+      <!-- SLOT:END body -->
       </div>
 
     </div>

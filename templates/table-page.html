@@ -458,7 +458,9 @@
 <main id="main-content" class="rux--content">
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
+      <!-- SLOT:BEGIN name=body -->
 
+      <!-- BLOCK:BEGIN name=table label="Data table with heading" -->
       <!-- REPLACE: the table. Everything below is one `data-table-container`
            holding a header, a toolbar and the table, with pagination after it.
 
@@ -652,7 +654,9 @@
         </div>
       </section>
       </div>
+      <!-- BLOCK:END table -->
 
+      <!-- BLOCK:BEGIN name=pagination label="Pagination" follows=table -->
       <!-- REPLACE: pagination. It sits OUTSIDE the container, never inside it.
            It used to be the container's DOM sibling and this comment said so;
            since 2026-08-30 the container is wrapped in the heading stack and
@@ -724,7 +728,9 @@
           </div>
         </div>
       </div>
+      <!-- BLOCK:END pagination -->
 
+      <!-- SLOT:END body -->
     </div>
   </div>
 </main>
