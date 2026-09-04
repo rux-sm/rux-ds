@@ -162,25 +162,27 @@ page with the three page-level browser gates loaded from disk on one origin
 with both remainders older than the change and in the ledger — and read
 live the same day. Roadmap §4.13 has the readings and what is not done.
 
-**§4.13 step 5 is BUILT, not yet verified live, 2026-09-03**
-(`rux-sm.github.io` `2b1153e`). `account.js` at the hub root: opens an
+**§4.13 step 5 is DONE, verified live, 2026-09-03**
+(`rux-sm.github.io` `bf26c6d`). `account.js` at the hub root: opens an
 anonymous Supabase session gated on Turnstile, syncs `platform.profiles`
 with the local profile field by field (cloud wins on load, local edits push
-up debounced), wires the sign-in button to GitHub `linkIdentity`. Scripts
-load with no console errors and the captcha gate was confirmed real
-(`signInAnonymously` fails without a token). **Not verified**: a token
-actually issuing, the profile row landing in `platform.profiles`, or the
-GitHub redirect completing — Cloudflare's own bot detection blocks the
-automated browser pane this was tested from (every challenge came back
-`failure_retry`), which is Turnstile working as intended against automated
-traffic, not a bug. Needs a human in a real browser next.
+up debounced), wires the sign-in button to GitHub `linkIdentity`. Read live
+by rux, in a real browser: the anonymous session, the Turnstile gate, and
+the profile sync (a name and a theme, both survived a reload) all worked.
+One real bug turned up in that same read — `linkIdentity` redirects to
+GitHub before Supabase knows whether the identity is free, so
+`identity_already_exists` (hit by testing across several anonymous
+sessions) only ever surfaces as error params on the return redirect, never
+through the promise — fixed by falling back to a direct GitHub sign-in on
+that specific error. A second gap the same read found: the panel has no
+avatar or name/email swap, so nothing showed whether linking had actually
+worked; fixed by only revealing the Sign in button while the session is
+still anonymous, so its absence is now the signal. Console-verified after
+both fixes: `anonymous: false`, `providers: ['github']`.
 
 **Next, in order:**
 
-1. Verify §4.13 step 5 live: open the deployed hub, click Sign in, confirm
-   a row appears in `platform.profiles` and the GitHub redirect returns
-   signed in.
-2. Creator 3, the configurator page, as a page in the hub. Last.
+1. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five

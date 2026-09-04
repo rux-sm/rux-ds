@@ -3159,6 +3159,58 @@ say so; and this is the first page in the ecosystem with no side nav while
 `docs/choices.md` lists the nav as not a choice — whether "header-only"
 becomes a row there, offered by the skill, is rux's to decide.
 
+**Step 5 done, verified live, 2026-09-03** (`rux-sm.github.io` `bf26c6d`).
+`account.js` at the hub root: `sb.auth.getSession()`, falling back to
+`signInAnonymously({ options: { captchaToken } })` with a token from a
+Turnstile widget rendered in `appearance: 'interaction-only'` mode; reads
+`platform.profiles` by the session's `id` and merges into the local
+profile field by field — a null column leaves the local value alone rather
+than blanking it — then upserts a fresh row when none exists; local edits
+push back up through `window.Rux.profile.onChange`, debounced 500ms;
+`window.Rux.profile.onSignIn` wires the panel's button to
+`sb.auth.linkIdentity({ provider: 'github' })`. supabase-js and Turnstile
+load from CDN, pinned to the major version per each vendor's own guidance;
+neither key embedded is a secret — the publishable key and the Turnstile
+site key are both meant to sit in client code the browser can read.
+
+Automated verification hit its ceiling here: Turnstile is bot detection,
+and the browser pane driving this session is exactly what it exists to
+catch. Every challenge came back `failure_retry` and no token issued —
+correct behaviour, confirmed separately by calling `signInAnonymously()`
+with no token and getting `captcha_failed` back, proving the gate was real
+and not merely assumed. What automation could not finish, rux did, in a
+real browser, the same day: the anonymous session opened, the Turnstile
+gate passed, a name and a theme both survived a reload. **Two real bugs
+turned up from that one read, neither reachable by reasoning about the
+code:**
+
+1. `linkIdentity` redirects to GitHub before Supabase knows whether the
+   identity is free, so a conflict — this GitHub identity already
+   belongs to a different, permanent account, from an earlier anonymous
+   session created during the same testing — surfaces only as
+   `error_code=identity_already_exists` in the URL on the return
+   redirect, never through the `linkIdentity()` promise, which had
+   already resolved and handed control to the browser navigation by the
+   time the conflict was known server-side. No try/catch around that
+   call could have caught it. Fixed by reading `location.hash` for the
+   error on load and falling back to `sb.auth.signInWithOAuth()`, which
+   authenticates the already-linked account instead.
+2. The account panel has no avatar and no name/email swap — nothing in
+   the markup shows a signed-in state — so after the redirect rux could
+   not tell whether linking had actually worked. Fixed the only way the
+   existing markup allows: `profile.onSignIn` is only registered while
+   the session is still anonymous, so a permanently-linked session never
+   reveals the Sign in button and its absence is the signal. Confirmed in
+   the console after both fixes: `anonymous: false`,
+   `providers: ['github']`.
+
+NOT done: an interrupted anonymous sign-in is not retried until the next
+page load; a real Turnstile interactive challenge (as opposed to the
+automated failure above) was never observed, so its placement inside the
+account panel is untested against one; and the panel still has no positive
+"signed in as X" indicator — only the negative signal of the button's
+absence, which answers "are you signed in" but not "as whom."
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
