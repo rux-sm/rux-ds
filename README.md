@@ -162,9 +162,24 @@ page with the three page-level browser gates loaded from disk on one origin
 with both remainders older than the change and in the ledger — and read
 live the same day. Roadmap §4.13 has the readings and what is not done.
 
+**§4.13 step 5 is BUILT, not yet verified live, 2026-09-03**
+(`rux-sm.github.io` `2b1153e`). `account.js` at the hub root: opens an
+anonymous Supabase session gated on Turnstile, syncs `platform.profiles`
+with the local profile field by field (cloud wins on load, local edits push
+up debounced), wires the sign-in button to GitHub `linkIdentity`. Scripts
+load with no console errors and the captcha gate was confirmed real
+(`signInAnonymously` fails without a token). **Not verified**: a token
+actually issuing, the profile row landing in `platform.profiles`, or the
+GitHub redirect completing — Cloudflare's own bot detection blocks the
+automated browser pane this was tested from (every challenge came back
+`failure_retry`), which is Turnstile working as intended against automated
+traffic, not a bug. Needs a human in a real browser next.
+
 **Next, in order:**
 
-1. §4.13 step 5, `/account.js` at the hub root.
+1. Verify §4.13 step 5 live: open the deployed hub, click Sign in, confirm
+   a row appears in `platform.profiles` and the GitHub redirect returns
+   signed in.
 2. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
