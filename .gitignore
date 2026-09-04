@@ -8,6 +8,9 @@ node_modules/
 *.css.map
 m/
 
+# Supabase CLI per-machine project linkage and update state.
+supabase/.temp/
+
 # Brand working directory -- a Linearity Curve template, a preview harness and
 # a drop folder for iPad exports. Working material, not a deliverable: the
 # finished marks belong in assets/brand/ once they are drawn. Ignored rather
