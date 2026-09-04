@@ -3,12 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The operating card for the three-repo family: the per-session loop and
-     the once-per-Mac setup. Printable, two pages. Not a rux-ds page and not
+<!-- The operating card for the five-repo family: the per-session loop and
+     the once-per-Mac setup. Printable, two sections. Not a rux-ds page and not
      on rux-ds: it links Google Fonts for IBM Plex and carries its own CSS,
      so no gate reads it (sources.mjs enumerates the root, sink/ and
      templates/ only). Written 2026-09-02, revised the same day after the
-     family audit. -->
+     family audit; revised 2026-09-04 for rux-sm.github.io and rux-backend,
+     which had been live for two days and one day without appearing here,
+     and for sync-ds.sh, retired 2026-09-02 and still documented twice.
+     That revision grew the content about 30%, so the masthead no longer
+     claims a page count — nobody has run a print preview since. -->
 <title>Rux Operating Card</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -124,9 +128,9 @@
 <header class="mast">
   <div>
     <h1>Rux Operating Card</h1>
-    <p class="sub">rux-ds · rux-ln-atlas · rux-ln-notes — one card for both Macs</p>
+    <p class="sub">rux-ds · rux-ln-atlas · rux-ln-notes · rux-sm.github.io · rux-backend — one card for both Macs</p>
   </div>
-  <div class="print">⌘P to print · two pages</div>
+  <div class="print">⌘P to print</div>
 </header>
 
 <!-- ============ PAGE 1: THE LOOP ============ -->
@@ -139,15 +143,19 @@
   <h3>Start</h3>
   <ol class="steps">
     <li><div>
-      <p>Open the workspace and pull all three. Fast-forward only. If a pull refuses, see the box below before doing anything else.</p>
+      <p>Open the workspace and pull all five. Fast-forward only. If a pull refuses, see the box below before doing anything else.</p>
 <pre><code>code ~/Developer/rux.code-workspace
-for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r pull --ff-only; done</code></pre>
+for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
+  git -C ~/Developer/$r pull --ff-only
+done</code></pre>
     </div></li>
     <li><div>
       <p>Health-check only the repo you are about to touch. Read the exit code, not the output.</p>
-<pre><code>cd ~/Developer/rux-ds       &amp;&amp; npm install --ignore-scripts &amp;&amp; npm run verify
-cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs
-cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
+<pre><code>cd ~/Developer/rux-ds          &amp;&amp; npm install --ignore-scripts &amp;&amp; npm run verify
+cd ~/Developer/rux-ln-notes    &amp;&amp; node tools/check.mjs
+cd ~/Developer/rux-ln-atlas    &amp;&amp; python3 tools/check.py
+cd ~/Developer/rux-sm.github.io &amp;&amp; node tools/check.mjs</code></pre>
+      <p class="why"><code>rux-backend</code> has no check of this kind: pgTAP, <code>supabase test db</code>, Docker, and only when a migration changes.</p>
     </div></li>
     <li><div>
       <p>Start agents on the tree you just pulled. One agent per repo at a time. Agents do not pull; you did.</p>
@@ -169,13 +177,24 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
       </ol>
     </div>
     <div class="flow">
-      <h3>Design system <span class="arrow">rux-ds → notes</span></h3>
+      <h3>Design system <span class="arrow">rux-ds → every module</span></h3>
       <ol>
         <li>rux-ds: edit · <code>npm run verify</code> · commit</li>
         <li>tag if a milestone or a class left (<code>CHANGES.md</code>) · push</li>
-        <li>notes: <code>sh tools/sync-ds.sh</code> · build · check</li>
-        <li>commit · push</li>
+        <li>from the rux-ds clone <strong>at that tag</strong>:<br><code>sh tools/new-project.sh ~/Developer/&lt;module&gt;</code></li>
+        <li>module: build if it has one · check · commit · push</li>
       </ol>
+      <p class="why">Every module moves in one pass — notes and the hub today. <code>sync-ds.sh</code> was retired 2026-09-02; <code>tools/drift.mjs</code> reports what a module still lacks after a pin move.</p>
+    </div>
+    <div class="flow">
+      <h3>A new app <span class="arrow">rux-ds → hub</span></h3>
+      <ol>
+        <li><code>sh tools/new-project.sh ~/Developer/&lt;repo&gt;</code></li>
+        <li>one entry in the hub's <code>switcher.json</code></li>
+        <li>hub: <code>node tools/check.mjs</code> · commit · push</li>
+        <li>add it to the workspace and this card</li>
+      </ol>
+      <p class="why">Its own repository and folder, serving at <code>rux-sm.github.io/&lt;repo&gt;/</code>. Apps are shared by URL, the design system by pin, nothing else.</p>
     </div>
   </div>
 </section>
@@ -185,7 +204,9 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
   <ol class="steps">
     <li><div><p>Commit in every repo you touched. The hook checks the message: <code>type(scope): Subject</code>, subject ≤ 50 characters, body wrapped at 72, no AI trailer of any kind.</p></div></li>
     <li><div><p>Push every repo you touched, then confirm each one reads level with origin <strong>and lists no file</strong>. The branch line alone cannot see an uncommitted or untracked file.</p>
-<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r fetch -q; git -C ~/Developer/$r status -sb; done
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
+  git -C ~/Developer/$r fetch -q; git -C ~/Developer/$r status -sb
+done
 ## main...origin/main      ← one such line per repo and NOTHING under it;
                           a file listed there is work only this Mac has</code></pre></div></li>
     <li><div><p><strong>Close the lid only after the push.</strong> Nothing stays local on either Mac. Ever.</p></div></li>
@@ -215,9 +236,9 @@ cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/check.py</code></pre>
 <section class="page-2">
   <p class="eyebrow">Once per Mac</p>
   <h2>Set up — or check — the other Mac</h2>
-  <p class="lede">Use this page before continuing work on another machine. If the three repositories are already there, do not clone them again: start at step 2 and continue through step 6. A clone contains the files, but not the machine-local hook setting, dependencies, Python environment or VS Code workspace.</p>
+  <p class="lede">Use this page before continuing work on another machine. If the five repositories are already there, do not clone them again: start at step 2 and continue through step 6. A clone contains the files, but not the machine-local hook setting, dependencies, Python environment or VS Code workspace.</p>
 
-  <p><strong>You need:</strong> git; Node 22.13 or newer; Python 3.9 or newer; VS Code; and access to the private <code>rux-ln-atlas</code> repository. In VS Code, open the Command Palette and run “Shell Command: Install 'code' command in PATH”. For the private clone, use a GitHub personal access token with repository access when git asks for a password; macOS then stores it in the keychain.</p>
+  <p><strong>You need:</strong> git; Node 22.13 or newer; Python 3.9 or newer; VS Code; and access to the two private repositories, <code>rux-ln-atlas</code> and <code>rux-backend</code>. In VS Code, open the Command Palette and run “Shell Command: Install 'code' command in PATH”. For a private clone, use a GitHub personal access token with repository access when git asks for a password; macOS then stores it in the keychain. Docker Desktop and the Supabase CLI are needed only to run <code>rux-backend</code>'s migrations or tests locally — not to work in any other repo.</p>
 <pre><code>git --version
 node --version          # 22.13 or newer
 python3 --version       # 3.9 or newer
@@ -225,15 +246,17 @@ code --version</code></pre>
 
   <ol class="steps">
     <li><div>
-      <p><strong>Only if they are missing:</strong> clone all three into <code>~/Developer</code>, under exactly these names and beside one another. That layout matters because notes reads its two sibling repositories. If a directory already exists, stop instead of cloning over it; use the pull commands in step 2.</p>
+      <p><strong>Only if they are missing:</strong> clone all five into <code>~/Developer</code>, under exactly these names and beside one another. That layout matters because notes reads its two sibling repositories, and because only <code>rux-sm.github.io</code> can carry that name — it is what publishes at the account root. If a directory already exists, stop instead of cloning over it; use the pull commands in step 2.</p>
 <pre><code>mkdir -p ~/Developer &amp;&amp; cd ~/Developer
 git clone https://github.com/rux-sm/rux-ds.git
 git clone https://github.com/rux-sm/rux-ln-atlas.git
-git clone https://github.com/rux-sm/rux-ln-notes.git</code></pre>
+git clone https://github.com/rux-sm/rux-ln-notes.git
+git clone https://github.com/rux-sm/rux-sm.github.io.git
+git clone https://github.com/rux-sm/rux-backend.git</code></pre>
     </div></li>
     <li><div>
-      <p>Pull all three before doing any work. <code>--ff-only</code> refuses to hide a commit that exists only on this Mac. If it refuses, use “When a pull refuses” on page 1.</p>
-<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do
+      <p>Pull all five before doing any work. <code>--ff-only</code> refuses to hide a commit that exists only on this Mac. If it refuses, use “When a pull refuses” on page 1.</p>
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
   git -C ~/Developer/$r pull --ff-only
 done</code></pre>
     </div></li>
@@ -242,33 +265,38 @@ done</code></pre>
 <pre><code>git config --global user.name "rux"
 git config --global user.email "rux.dev@pm.me"
 
-git -C ~/Developer/rux-ds       config core.hooksPath .githooks
-git -C ~/Developer/rux-ln-atlas config core.hooksPath .githooks
-git -C ~/Developer/rux-ln-notes config core.hooksPath tools/githooks</code></pre>
-      <p class="why">Confirm the values instead of assuming they were saved:</p>
-<pre><code>git -C ~/Developer/rux-ds       config --get core.hooksPath
-git -C ~/Developer/rux-ln-atlas config --get core.hooksPath
-git -C ~/Developer/rux-ln-notes config --get core.hooksPath</code></pre>
+git -C ~/Developer/rux-ds        config core.hooksPath .githooks
+git -C ~/Developer/rux-ln-atlas  config core.hooksPath .githooks
+git -C ~/Developer/rux-ln-notes  config core.hooksPath tools/githooks
+git -C ~/Developer/rux-sm.github.io config core.hooksPath .githooks
+git -C ~/Developer/rux-backend   config core.hooksPath .githooks</code></pre>
+      <p class="why">Confirm the values instead of assuming. <strong>A value here is not proof the hook runs</strong> — <code>rux-backend</code> carried this setting for a day pointing at a <code>.githooks/</code> that did not exist; nothing ran and nothing said so. Step 6 settles it.</p>
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
+  printf '%s: ' "$r"; git -C ~/Developer/$r config --get core.hooksPath
+done</code></pre>
     </div></li>
     <li><div>
       <p>Install and run the first check in each. You want exit 0 from verify, <code>check: clean</code> from atlas, and <code>gates passed</code> from notes with no <code>NAMES WERE NOT CHECKED</code> line above it. Three things look like failures and are not: npm warns that it skipped install scripts (expected; read the exit line), an atlas warning names a content defect (the text-cache warning clears once the venv line has run; the venv is per machine and gitignored), and notes prints where the sibling checkouts stand under “siblings (live)”, which is information and never a failure. Commit nothing during setup.</p>
-<pre><code>cd ~/Developer/rux-ds       &amp;&amp; npm ci --ignore-scripts &amp;&amp; npm run verify; echo "exit $?"
-cd ~/Developer/rux-ln-atlas &amp;&amp; python3 tools/build.py &amp;&amp; python3 tools/check.py
-cd ~/Developer/rux-ln-atlas &amp;&amp; python3 -m venv .venv &amp;&amp; .venv/bin/python -m pip install -q pypdf &amp;&amp; .venv/bin/python tools/text.py
-cd ~/Developer/rux-ln-notes &amp;&amp; node tools/check.mjs</code></pre>
+<pre><code>cd ~/Developer/rux-ds          &amp;&amp; npm ci --ignore-scripts &amp;&amp; npm run verify; echo "exit $?"
+cd ~/Developer/rux-ln-atlas    &amp;&amp; python3 tools/build.py &amp;&amp; python3 tools/check.py
+cd ~/Developer/rux-ln-atlas    &amp;&amp; python3 -m venv .venv &amp;&amp; .venv/bin/python -m pip install -q pypdf &amp;&amp; .venv/bin/python tools/text.py
+cd ~/Developer/rux-ln-notes    &amp;&amp; node tools/check.mjs
+cd ~/Developer/rux-sm.github.io &amp;&amp; node tools/check.mjs</code></pre>
+      <p class="why">The hub's check needs no install: it reads its own <code>vendor/</code>. <code>rux-backend</code> is not checked here — see page 1.</p>
     </div></li>
     <li><div>
-      <p>Create the VS Code workspace that holds all three, so one window pulls and shows everything.</p>
+      <p>Create the VS Code workspace that holds all five, so one window pulls and shows everything.</p>
 <pre><code>cp ~/Developer/rux-ds/docs/rux.code-workspace ~/Developer/
 code ~/Developer/rux.code-workspace</code></pre>
-      <p class="why">The file lives in rux-ds under <code>docs/</code> and is copied up because VS Code wants it beside the three folders; edit the copy in rux-ds, never the one in <code>~/Developer</code>. Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing, and no Mac needs it: nothing in <code>npm run verify</code> reads it, and a Mac that wants it clones <code>github.com/carbon-design-system/carbon-website</code> into <code>rux-ds/</code>, where <code>.gitignore</code> already hides it. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all three, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
+      <p class="why">The file lives in rux-ds under <code>docs/</code> and is copied up because VS Code wants it beside the five folders; edit the copy in rux-ds, never the one in <code>~/Developer</code> — that one is overwritten by the next run of this step, so a fix made there is lost on the other Mac. <strong>A new app joins here and in the pull loops above, in the same commit that adds it to the hub's <code>switcher.json</code>.</strong> Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing, and no Mac needs it: nothing in <code>npm run verify</code> reads it, and a Mac that wants it clones <code>github.com/carbon-design-system/carbon-website</code> into <code>rux-ds/</code>, where <code>.gitignore</code> already hides it. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all five, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
     </div></li>
     <li><div>
-      <p>Prove the hooks work in all three repositories. This tries to make an empty commit with a forbidden trailer; each hook must refuse it. A refusal changes nothing. If one is accepted, do not push it: run the safe undo command below in that repository, then repeat step 3 for it.</p>
-<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes; do git -C ~/Developer/$r commit --allow-empty -m "test: Probe
+      <p>Prove the hooks work in all five repositories. This tries to make an empty commit with a forbidden trailer; each hook must refuse it. A refusal changes nothing. If one is accepted, do not push it: run the safe undo command below in that repository, then repeat step 3 for it. <strong>This step is the one that catches an armed setting with no hook file behind it</strong> — the failure <code>rux-backend</code> actually had, for a day, silently.</p>
+<pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
+  git -C ~/Developer/$r commit --allow-empty -m "test: Probe
 
 Co-Authored-By: nobody"; done
-# expect three refusals: commit-msg: Co-Authored-By trailer …
+# expect five refusals: commit-msg: Co-Authored-By trailer …
 
 # ONLY if a probe was accepted, run this inside that repository:
 git reset --soft HEAD~1</code></pre>
@@ -279,7 +307,7 @@ git reset --soft HEAD~1</code></pre>
 
 <section>
   <p class="eyebrow">Reference</p>
-  <h2>The three repos</h2>
+  <h2>The five repos</h2>
   <div class="tablewrap">
   <table>
     <thead><tr><th>Repo</th><th>What it does</th><th>Pulls from</th><th>Check</th><th>Push means</th></tr></thead>
@@ -301,16 +329,31 @@ git reset --soft HEAD~1</code></pre>
       <tr>
         <td>rux-ln-notes<br><span class="tag">public</span></td>
         <td>Renders the guides on rux-ds and serves them at rux-sm.github.io/rux-ln-notes.</td>
-        <td>atlas via <code>sync-guides.sh</code><br>rux-ds via <code>sync-ds.sh</code></td>
+        <td>atlas via <code>sync-guides.sh</code><br>rux-ds via <code>new-project.sh</code></td>
         <td><code>node tools/check.mjs</code></td>
         <td><strong>Publication.</strong> Gates run in CI first; a failing push is never served.</td>
+      </tr>
+      <tr>
+        <td>rux-sm.github.io<br><span class="tag">public</span></td>
+        <td>Rux Apps — the account root. Owns <code>switcher.json</code>, the one list of apps, and <code>account.js</code>, the cloud half of the profile. Its own landing page and <code>/account/</code>.</td>
+        <td>rux-ds via <code>new-project.sh</code></td>
+        <td><code>node tools/check.mjs</code></td>
+        <td><strong>Publication</strong>, at the root. Every other site sits under it by path.</td>
+      </tr>
+      <tr>
+        <td>rux-backend<br><span class="tag private">private</span></td>
+        <td>Supabase config and migrations for <code>platform.profiles</code>, the cross-app profile. No secrets, no application code.</td>
+        <td>Nothing</td>
+        <td><code>supabase test db</code><br>(Docker; only on a migration)</td>
+        <td>Backup only. A schema reaches the live project through <code>supabase db push</code>, never a push here.</td>
       </tr>
     </tbody>
   </table>
   </div>
   <hr class="rule">
-  <p class="why"><strong>Atlas never touches rux-ds.</strong> The only line is atlas → notes ← rux-ds. rux-ui is frozen and outside the family.<br>
-  <strong>The portal</strong> (<code>rux-sm.github.io</code>) is the fourth repo once it is pushed; rux-ds README "Picking this up" carries its state. It joins the workspace and this card when it exists on both Macs.</p>
+  <p class="why"><strong>Atlas never touches rux-ds.</strong> The content line is atlas → notes ← rux-ds; rux-ds also feeds the hub, and the hub feeds every module its app list by URL.<br>
+  <strong>rux-ui is outside the family but no longer separate.</strong> <code>rux-backend</code> adopted its Supabase project rather than provision a second, so one database holds two unrelated systems: <code>public</code> is rux-ui's and is never edited here, <code>platform</code> is ours. Its <code>public.profiles</code> is a driver roster, unrelated to <code>platform.profiles</code>.<br>
+  <strong>Only <code>rux-sm.github.io</code> can carry that name.</strong> Rename it and <code>/switcher.json</code> and <code>/switcher.js</code> 404 on every module — silently, each page falling back to the entries it shipped.</p>
 </section>
 
 </div>
