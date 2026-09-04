@@ -12,7 +12,11 @@
      which had been live for two days and one day without appearing here,
      and for sync-ds.sh, retired 2026-09-02 and still documented twice.
      That revision grew the content about 30%, so the masthead no longer
-     claims a page count — nobody has run a print preview since. -->
+     claims a page count — nobody has run a print preview since.
+     Corrected the same day: an earlier draft of this file said
+     rux-backend had core.hooksPath set and only lacked the hook file.
+     It had neither. The claim came from misreading one line of output
+     as two, which is the same class of mistake step 6 exists to catch. -->
 <title>Rux Operating Card</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -270,7 +274,7 @@ git -C ~/Developer/rux-ln-atlas  config core.hooksPath .githooks
 git -C ~/Developer/rux-ln-notes  config core.hooksPath tools/githooks
 git -C ~/Developer/rux-sm.github.io config core.hooksPath .githooks
 git -C ~/Developer/rux-backend   config core.hooksPath .githooks</code></pre>
-      <p class="why">Confirm the values instead of assuming. <strong>A value here is not proof the hook runs</strong> — <code>rux-backend</code> carried this setting for a day pointing at a <code>.githooks/</code> that did not exist; nothing ran and nothing said so. Step 6 settles it.</p>
+      <p class="why">Confirm the values instead of assuming. <strong>A value here is still not proof the hook runs</strong> — the setting and the hook FILE are two halves and a clone carries neither. <code>rux-backend</code> had no hook at all until 2026-09-04 and every commit in it went unchecked. Step 6 is what settles it.</p>
 <pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
   printf '%s: ' "$r"; git -C ~/Developer/$r config --get core.hooksPath
 done</code></pre>
@@ -291,7 +295,7 @@ code ~/Developer/rux.code-workspace</code></pre>
       <p class="why">The file lives in rux-ds under <code>docs/</code> and is copied up because VS Code wants it beside the five folders; edit the copy in rux-ds, never the one in <code>~/Developer</code> — that one is overwritten by the next run of this step, so a fix made there is lost on the other Mac. <strong>A new app joins here and in the pull loops above, in the same commit that adds it to the hub's <code>switcher.json</code>.</strong> Auto-fetch keeps the ahead/behind arrows honest without pulling; pull-tags brings rux-ds's version tags down; rebase-when-sync puts your commits on top of the other Mac's instead of making merge commits. Scan depth 0 stops VS Code listing <code>carbon-website/</code>, IBM's docs clone that rux-ds keeps gitignored as a quarry; it is not yours and never needs syncing, and no Mac needs it: nothing in <code>npm run verify</code> reads it, and a Mac that wants it clones <code>github.com/carbon-design-system/carbon-website</code> into <code>rux-ds/</code>, where <code>.gitignore</code> already hides it. Always open VS Code from this file — the window title ends in “(Workspace)” — and in the Source Control view each repo gets its own row. Pull from there or with the loop on page 1; what matters is all five, before any agent starts. An up-arrow on a row at the end of a session is a commit only this Mac has.</p>
     </div></li>
     <li><div>
-      <p>Prove the hooks work in all five repositories. This tries to make an empty commit with a forbidden trailer; each hook must refuse it. A refusal changes nothing. If one is accepted, do not push it: run the safe undo command below in that repository, then repeat step 3 for it. <strong>This step is the one that catches an armed setting with no hook file behind it</strong> — the failure <code>rux-backend</code> actually had, for a day, silently.</p>
+      <p>Prove the hooks work in all five repositories. This tries to make an empty commit with a forbidden trailer; each hook must refuse it. A refusal changes nothing. If one is accepted, do not push it: run the safe undo command below in that repository, then repeat step 3 for it. <strong>This is the only step that proves git actually calls the hook</strong>, rather than that the script exists or the setting is spelled right — running the script by hand proves neither. <code>rux-backend</code> had no hook at all until 2026-09-04 and nothing said so.</p>
 <pre><code>for r in rux-ds rux-ln-atlas rux-ln-notes rux-sm.github.io rux-backend; do
   git -C ~/Developer/$r commit --allow-empty -m "test: Probe
 
