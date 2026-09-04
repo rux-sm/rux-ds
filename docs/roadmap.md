@@ -3086,11 +3086,30 @@ differs from CLI defaults stated explicitly, or it will revert them —
 matching this project's own refrain that a tool's own report is not enough
 to trust without checking the thing itself.
 
-**Still open before step 4 is done:** a GitHub OAuth App and a Turnstile
-site, both external accounts only rux can create; their secrets set as
-Supabase project secrets; `platform` added to the live dashboard's exposed
-schemas (Settings → API), which `config.toml` cannot reach. Steps 5 and 6
-are not started.
+**Step 4 done, 2026-09-03** (`rux-backend` `b95f839`). The GitHub OAuth App
+(homepage `https://rux-sm.github.io/`, callback
+`https://udnmqhayzhrbltxzzhjw.supabase.co/auth/v1/callback`) and the
+Cloudflare Turnstile site (domain `rux-sm.github.io`) both exist; `platform`
+is in the live dashboard's exposed schemas (Settings → Data API); and
+`[auth.external.github]` / `[auth.captcha]` are `enabled = true` in
+`config.toml`, pushed and confirmed live — the diff touched only those two
+sections, nothing MFA/email/search-path adjacent.
+
+**A second mechanism was tried and rejected before the real one worked:**
+`supabase secrets set` looked like where `SUPABASE_AUTH_GITHUB_CLIENT_ID` /
+`SUPABASE_AUTH_GITHUB_SECRET` / `SUPABASE_AUTH_CAPTCHA_SECRET` belonged —
+rux-backend's own README said so — but the CLI rejects any secret name
+starting with `SUPABASE_` outright, because `secrets set` manages Edge
+Function runtime secrets, a store `config push`'s `env(...)` never reads
+from. The right mechanism is a local (or CI) shell environment variable
+present when `config push` runs. rux-backend's README was wrong and is
+fixed in the same commit. **A second, separate mistake on the same pass:**
+the first `config push` attempt was confirmed with the literal placeholder
+text (`<github_client_id>`) still in the export command instead of the real
+value substituted in, which briefly pushed that placeholder as the live
+`client_id`; caught from the diff on the next push (real client id replacing
+the placeholder) before anything downstream used it, and corrected the same
+session. Steps 5 and 6 are not started.
 
 **`v0.1.5`, 2026-09-03 — the tile-fill rule in every app.** The hub found
 a ragged row of cards, fixed it with one compiled class in its own

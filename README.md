@@ -123,7 +123,7 @@ on both sites: the same 33×30 mark, the same `Rux` prefix, the same two
 actions, the same account panel. The three shells now differ in their name and
 their nav and nothing else.
 
-**§4.13 step 4 is IN PROGRESS, started 2026-09-03.** `rux-backend`
+**§4.13 step 4 is DONE, 2026-09-03** (`rux-backend` `b95f839`). `rux-backend`
 (private, `rux-sm/rux-backend`, not tagged) adopted `rux-ui`
 (`udnmqhayzhrbltxzzhjw`) as the one shared Supabase project rather than
 provisioning a second — it already backed the bus/trip scheduler.
@@ -131,10 +131,15 @@ provisioning a second — it already backed the bus/trip scheduler.
 `auth.users`) is live there, tested 4/4 locally first; `rux-ui`'s own
 `public.profiles`, an unrelated driver roster, is untouched. Anonymous
 sign-in and manual identity linking are live and confirmed in the
-dashboard. Roadmap §4.13 has the full account, including a `config push`
-mistake mid-pass that briefly reverted MFA/email/search-path settings on
-the live project before being caught and corrected — read it before
-touching `rux-backend`'s `config.toml` again.
+dashboard. The GitHub OAuth App and Cloudflare Turnstile site are created,
+`platform` is in the live dashboard's exposed schemas, and
+`[auth.external.github]` / `[auth.captcha]` are `enabled = true` in
+`config.toml`, pushed and confirmed. Roadmap §4.13 has the full account,
+including two `config push` mistakes along the way — one that briefly
+reverted MFA/email/search-path settings on the live project, one that
+briefly pushed placeholder text as the live `client_id` — both caught from
+the diff and corrected before anything downstream used them. Read it
+before touching `rux-backend`'s `config.toml` again.
 
 **`v0.1.5`, 2026-09-03: the tile-fill rule reaches every app.** `fd437ae`
 promoted the hub's one-class fix into `css/rux-overrides.css`, and no tag
@@ -159,13 +164,8 @@ live the same day. Roadmap §4.13 has the readings and what is not done.
 
 **Next, in order:**
 
-1. Finish §4.13 step 4: a GitHub OAuth App and a Turnstile site (both
-   external accounts, rux's to create), their secrets set as Supabase
-   project secrets, `platform` added to the live dashboard's exposed
-   schemas, then `[auth.external.github]`/`[auth.captcha]` flipped on in
-   `rux-backend`'s `config.toml` and pushed.
-2. §4.13 step 5, `/account.js` at the hub root.
-3. Creator 3, the configurator page, as a page in the hub. Last.
+1. §4.13 step 5, `/account.js` at the hub root.
+2. Creator 3, the configurator page, as a page in the hub. Last.
 
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
