@@ -235,6 +235,13 @@ header comment already names — so those read "nothing to compare," not
 
 1. Creator 3, the configurator page, as a page in the hub. Last.
 
+**Open, not next in order:** whether `templates/settings-page.html`'s
+`col-span-4/8/8` (not full-width) is deliberate or just what the template
+happened to ship with — `/account/` copied it verbatim rather than decide.
+Now that a live settings-shaped page exists on it, revisit the template
+with that as a second reference point, not only the original Carbon
+capture.
+
 **Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
 table of eight rows offering only what `docs/choices.md` lists, naming five
 things that are not choices, and gating the result through this root.
