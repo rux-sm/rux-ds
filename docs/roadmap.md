@@ -3151,8 +3151,19 @@ answer types and allowed themes were unchecked, and followers could reach
 across an unrelated block. These cases are now rejected, with followers
 restricted to their current contiguous run. Scratch checks: 25 failing cases
 before, all 42 cases passing after, including valid composition for all ten
-templates. Browser re-verification remains outstanding (server stopped and
-no preview-launch tool in the review session); no ledger cells were stamped.
+templates. Browser re-verification was outstanding when this was written --
+the server was stopped and the review session had no preview-launch tool --
+and **it is done as of 2026-09-05**: all six cells run against the served page
+and stamped, builder.html at `8d651f2` (`e482f6c`) and portal.html at
+`e482f6c` (`a68f059`), `npm run gates` 41 of 41 current. Every figure is
+unchanged from stage 5. The notice states were measured rather than left to
+the fresh page: 47/63 with the notice cloned, reproducing the figure recorded
+below exactly, and 47/64 with the alert as well, the one further class being
+`rux--actionable-notification--error`; 0 stripped in all three. The stage-5
+screenshot gap is closed too -- scrolling a hidden pane still captures blank,
+but a 1280x2300 emulated viewport renders the whole page in one shot, and the
+stage-6 chrome was read that way. `Cmd/Ctrl+Z` is still unproved by a real
+key, and still owes one human keypress.
 Saving is debounced 500ms and flushed on `pagehide`
 and `visibilitychange`, so an edit and an immediate reload survives;
 measured, not assumed. A save failure is shown in the notice region and not

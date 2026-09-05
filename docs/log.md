@@ -12,6 +12,44 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**SWEPT 2026-09-05 — the six stage-6 cells, and the record above corrected.**
+The entry below says "the six dirty browser readings remain unverified and
+unstamped"; that was true when it was written and is not true now. All six were
+run against the served page and recorded: builder.html at `8d651f2` (`e482f6c`),
+portal.html at `e482f6c` (`a68f059`), `npm run gates` 41 of 41 current.
+
+Every figure is unchanged from stage 5. builder.html: check-runtime-classes
+47/51 with 0 stripped and the same 4 added — the file count did NOT move,
+because Start over reuses the Remove button's danger-ghost class and Undo and
+Redo reuse the ghost-sm set, so stage 6 added no class to the authored page;
+check-a11y 0 findings and 0 notes with `focusRingChecked: true`, proved red at
+28 and restored to 0; check-spacing 33 checked, 32 matched, the same subgrid
+unknown. portal.html: 64/64, 0 findings, 25 checked and 23 matched.
+
+**THE NOTICE STATES WERE MEASURED, not left to the fresh page.** They are what
+stage 6 added and a fresh load never shows them: cloning the notice alone reads
+47/63 — reproducing the roadmap's recorded figure exactly — and cloning the
+alert as well reads 47/64, the one further class being
+`rux--actionable-notification--error`. 0 stripped in all three states, and the
+thirteen classes the pair brings are all ADDED, which is why they ship inside
+`<template>`.
+
+**A SCREENSHOT OF THE WHOLE PAGE, for the first time on these cells.** The
+stage-5 sweep recorded that a screenshot after scrolling came back blank twice
+because the pane is hidden, and verified that section structurally instead.
+Scrolling a hidden pane still returns a blank capture — reproduced here — but
+emulating a 1280x2300 viewport renders the entire page in one shot. Read that
+way: the Undo / Redo / Start over row with both history buttons disabled on a
+fresh page, Blocks with its move and remove controls, Edit content with Text 1
+of 2 and Text 2 of 2, and the preview status line. The gate readings were taken
+at 1280x900; the tall viewport was for the visual pass alone.
+
+The red-tag oscillation was measured in BOTH directions rather than inferred:
+the stale portal read 65/65 with 3 red tags and 131 green, the regenerated page
+64/64 with 0 red and 134 green, and `rux--tag--red--sm` leaves the unreferenced
+spacing list with them. Still not verified, and still the harness: `Cmd/Ctrl+Z`
+is not delivered to the page, so the shortcut still owes one human keypress.
+
 **FIXED IN REVIEW 2026-09-05 — three stage-6 recovery defects.**
 The validation claim in the proposal below was too broad: missing required slots,
 non-string answers, unknown themes and a follower separated from its leader all
@@ -25,6 +63,8 @@ functions in a mocked DOM/storage environment: 17 passed and 25 failed before,
 Browser verification was attempted but the server at port 8642 was stopped
 (connection refused), and this session has no preview-launch tool required by
 `sink-check`. The six dirty browser readings remain unverified and unstamped.
+**Superseded 2026-09-05 by the entry above: all six were run and recorded, and
+every figure is unchanged.**
 
 **PROPOSED 2026-09-05 — undo, redo and a draft that survives a reload (§4.12 stage 6).**
 `builder/session.mjs` new (pure, node-tested); `builder.js` on one session history;
