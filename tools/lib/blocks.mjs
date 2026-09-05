@@ -207,9 +207,14 @@ export const provenanceIndex = html => {
 
 // Ids and references inside one region. `href="#…"` is deliberately NOT a
 // reference here: a breadcrumb's or an error page's link points OUT of the
-// block by design, so it is navigation, not a control relation. It IS in the
-// rewrite list an inserted instance gets, so an in-block anchor follows its
-// target when ids are suffixed.
+// block by design, so it is navigation, not a control relation. Nor is this
+// the rewrite list an inserted instance gets — that is computed per block by
+// instanceOf in builder/rewrites.mjs, which rewrites a reference only when
+// its attribute can carry one AND the id it names is defined inside the same
+// block. So an href="#…" moves exactly when it points inward, and
+// data-rux-open="wizard-cancel" stays as it is although the attribute is
+// listed here: its dialog is frame, and suffixing by attribute name alone
+// would break the wizard's Cancel. Measured 2026-09-05, roadmap §4.12.
 export const REF_ATTRS = ['aria-controls', 'aria-labelledby', 'aria-describedby', 'for', 'data-rux-open'];
 
 export function idsIn(html) {

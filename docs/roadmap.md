@@ -2945,6 +2945,86 @@ The three `builder.html` cells in `docs/gate-coverage.json` are stamped at
 are re-swept and restamped in the ledger commit that follows, as the
 portal's cells were.
 
+**Stage 3, `0475e3f` — select a block and edit its text.** A block picker
+filled from the chosen template in slot order, every editable text in the
+selected block as its own field, and the edit written back into the composed
+page. `textFieldsOf` walks the block once with an open-element stack rather
+than matching `<tag>TEXT</tag>`: comments and script, style and svg bodies
+are opaque spans, because this repository's own comments carry literal tag
+examples and a flat match would have offered them as fields and shifted the
+real ones' offsets; the fourteen void elements are never pushed, since every
+one in this corpus is a bare tag and pushing it would wait for a close that
+never comes. A field is text between an element's own open and close tags
+with nothing else between, non-empty, and not owned by a behaviour module —
+judged against the whole ancestor stack, so data-table's bare span inside
+`batch-summary__para` is excluded by its ancestor rather than a lookback
+guess. `applyTextEdits` splices bytes at offsets read from the original
+html, never from an edited derivative, and escapes only `&`, `<` and `>`.
+Fields are textareas, because a text input strips the line breaks two
+blocks' `<p>` carry in source. Proved on all 33 blocks: zero edits gives the
+block back byte for byte, and one edit to `app-shell` changes one line of
+the export; the status line's round trip is measured on the UNEDITED
+composition, so an edit can never make it read identical for the wrong
+reason. Read in the pane at `ca911fb`: `check-runtime-classes` on
+`builder.html` moved from 46/47 with 1 added to 46/50 with 4 added — the
+text-area the picker clones — 0 stripped either way; `check-a11y` 0
+findings. The plan went through four revisions in the open (`b40e1a8`) and,
+folded here, its file is deleted. `e34b206` the same evening: `aed80a8` had
+swapped the logo in every template without regenerating
+`builder/blocks.json`, so every slot offset was 40 bytes high and 10 of 10
+templates failed to round-trip until the manifest was restamped — measured
+on the tree, not reasoned.
+
+**Stage 4, 2026-09-05, accepted by rux and landed in the commit that
+carries this sentence — instance identity, measured first.** Adding a block twice duplicates every id inside
+it, and a duplicate id does not error, it mis-binds: `<label for="stl-1">`
+resolves to the first `#stl-1` in the document, so the second copy's label
+drives the first copy's radio. Measured over all 33 blocks before anything
+was written: 51 ids in 9 blocks; all 49 `for`, `aria-controls` and
+`aria-labelledby` references name an id inside their own block; the one
+`data-rux-open` (`wizard-cancel`) and all 62 `href="#…"` — 52 sprite `<use>`,
+10 page anchors — point out of theirs; three blocks carry a radio `name`.
+Two findings. The comment on `REF_ATTRS` in `tools/lib/blocks.mjs` said
+`href` was in the rewrite list; suffixing it would have broken 52 icons and
+10 skip links and fixed nothing. And an attribute list alone cannot be right
+either: `data-rux-open` is in that list and its one use points at the
+wizard's frame dialog, which stage 2 kept frame on purpose. So
+`instanceOf(html, n)` in `builder/rewrites.mjs` rewrites a reference under
+two conditions, both required: the attribute can carry an id reference (the
+HTML and ARIA IDREF attributes, `href` only when it starts with `#`, and
+`data-rux-open`), and the id it names is defined inside the same block. The
+first keeps `value`, `class` and `name` untouched — spelling is not a
+reference — and the second keeps every outward reference untouched by
+resolution rather than by a list. One exception with its own reason: `name`
+on a radio is a document-scoped grouping key, so it is suffixed too, and no
+other `name` is. Instance 1 is the block byte for byte; the number is a
+positive integer the page model allocates per occurrence and keeps across a
+move, and anything else throws. Comments, script and style are opaque; svg
+is walked, because a `<title id>` and its `aria-labelledby` must move
+together. Proved by a scratch script, uncommitted, on all 33 blocks:
+instance 1 identical on every block; `structured-list/selection` at 2 gives
+`stl-1-2`, `stl-2-2`, `sl-2`, and the two instances concatenated have no
+duplicate id and two radio groups; nothing outward moved; all 49 inward
+references resolve; no attribute outside the carrying list coincides with an
+id in this corpus and no block defines both `A` and `A-<n>`, both asserted
+rather than assumed; text edits and instancing commute on every block with
+fields. Red before trusted: with the radio rule removed from a copy, 4 of
+the 24 assertions failed. Rejected, recorded so it is not re-proposed:
+suffixing by attribute name alone (breaks the wizard's Cancel); suffixing
+`href` unconditionally (breaks the sprite); an idempotence guard (a resolver
+cannot tell `stl-1-2` from an id always spelled that way — the contract is
+to derive from the manifest, as `applyTextEdits` already does). Tier 2, two
+control files: an additive export in `builder/rewrites.mjs` and a corrected
+comment in `tools/lib/blocks.mjs`, weakening nothing — no gate, fixture,
+baseline or `CONTROL_FILES` entry moves — and reaching no page: the add/move
+stage is what calls it. Not verified: its behaviour in a browser, which
+nothing exercises yet. Not done: the page model and instance allocation,
+the catalogue, insert/move/remove, undo, `check-parity`, export, and
+`check-rewrites.mjs` as a gate, which is its own proposal. Found on the way
+and left for rux, tier 2: `builder.html`'s three browser cells do not age on
+`builder/`, though `builder.js` runs in that page and `0475e3f` moved its
+runtime-classes reading; a `pageInputs` entry would say so.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

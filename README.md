@@ -289,11 +289,11 @@ tag would still pass.
 
 **Next, in order:**
 
-1. Creator 3, the page builder, `builder.html` here — stages 1, 2 and 3 of its
+1. Creator 3, the page builder, `builder.html` here — stages 1 to 4 of its
    plan have landed (markers, the gate, the skeleton round trip, the preview
-   2026-09-04; select-and-edit 2026-09-05). Next are add-and-move with instance
-   identity, then `check-parity` and export. Roadmap §4.12 item 3 has the
-   account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   2026-09-04; select-and-edit and instance identity 2026-09-05). Next is the
+   add-and-move page model on top of `instanceOf`, then `check-parity` and
+   export. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.
 2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both

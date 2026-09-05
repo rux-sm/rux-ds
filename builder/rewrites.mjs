@@ -228,3 +228,123 @@ export function applyTextEdits(html, edits) {
   });
   return out + html.slice(cursor);
 }
+
+// ──────────────────────────────────────────────────────────────────────────
+// INSTANCE IDENTITY — the same block twice on one page, each copy its own.
+//
+// A block's ids are written once, in its source. Inserted twice, every id is
+// duplicated, and a duplicate id does not error — it MIS-BINDS: `<label
+// for="stl-1">` resolves to the FIRST #stl-1 in the document, so the second
+// copy's label drives the first copy's radio. instanceOf(html, n) gives copy n
+// its own identity; it is the rewrite roadmap §4.12 declined to ship before it
+// was measured. Measured 2026-09-05 over all 33 blocks: 51 ids in 9 blocks;
+// every for, aria-controls and aria-labelledby (49) names an id inside its own
+// block; the one data-rux-open ("wizard-cancel") and every href="#…" (52
+// sprite <use>, 10 page anchors) point OUT of theirs.
+//
+// TWO CONDITIONS, both required, and neither alone is right:
+//   1. the attribute can carry an id reference — the HTML and ARIA IDREF
+//      attributes in REF_CARRYING, href and xlink:href only when the value
+//      starts with `#`, and this repository's data-rux-open. Spelling alone
+//      is not a reference: <input id="choice" value="choice"> must keep its
+//      submitted value, so value, class and name are never candidates.
+//   2. the id it names is DEFINED IN THIS BLOCK. That is what leaves
+//      data-rux-open="wizard-cancel" alone (its dialog is frame, not block —
+//      suffixing by attribute name alone would break the wizard's Cancel) and
+//      every <use href="#i-…"> alone (the sprite is the page's), and what
+//      makes an in-block anchor follow its target with no rule of its own.
+// The rewrite is therefore computed per block, never a fixed list of what to
+// suffix. The stated limitation: an attribute that gains reference semantics
+// later must be added to REF_CARRYING, or its references stay unrewritten.
+//
+// ONE EXCEPTION WITH ITS OWN REASON. `name` on <input type="radio"> is not an
+// idref but a document-scoped grouping key: two copies sharing name="sl" are
+// ONE radio group, and checking a plan in copy two unchecks it in copy one.
+// It is suffixed the same way. No other name= is touched — a text input's
+// name is a submission key, and renaming it has no measured reason.
+//
+// THE INSTANCE NUMBER is a positive integer, allocated uniquely per occurrence
+// of a source block on a page, kept when the instance moves, and not reused
+// while the page holds it. Allocation is the page model's, not this function's.
+// Instance 1 IS the block, byte for byte, so every page that uses a block
+// once is untouched and the round trip check-blocks asserts stays exact.
+// Anything that is not a positive integer throws: treating 0 or "2" as
+// instance 1 would hide a caller's bug behind a block that looks fine.
+//
+// ALWAYS DERIVED FROM THE MANIFEST'S html, never from an already-instanced
+// string: instanceOf(instanceOf(h, 2), 2) suffixes twice, by design, because
+// a resolver cannot tell stl-1-2 from an id that was always spelled that way.
+// The same contract applyTextEdits states, and the two commute — text edits
+// touch no attribute and this touches no text — so a field's index survives.
+//
+// Comments, <script> and <style> bodies are opaque, as for text fields; <svg>
+// is NOT, because <svg aria-labelledby="t"><title id="t"> is the accessible
+// svg idiom and both halves must move together. Attribute values are read in
+// the three forms attrOf accepts and, as above, assumed to carry no literal
+// `>`.
+
+const TAGS = /<!--[\s\S]*?-->|<script\b[\s\S]*?<\/script\s*>|<style\b[\s\S]*?<\/style\s*>|<\/?[a-zA-Z][^>]*>/g;
+const ATTR = /([^\s=\/"'>]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g;
+
+const REF_CARRYING = new Set(['for', 'form', 'list', 'headers', 'popovertarget',
+  'aria-activedescendant', 'aria-controls', 'aria-describedby', 'aria-details',
+  'aria-errormessage', 'aria-flowto', 'aria-labelledby', 'aria-owns',
+  'href', 'xlink:href', 'data-rux-open']);
+const FRAGMENT = new Set(['href', 'xlink:href']);
+
+// Every attribute of one open tag: name, value, and where the value sits in
+// the tag with its quotes excluded, so a rewrite splices the value and nothing
+// else.
+function attrsOf(tok) {
+  const out = [];
+  ATTR.lastIndex = 0;
+  for (let a; (a = ATTR.exec(tok));) {
+    const value = a[2] ?? a[3] ?? a[4];
+    const end = a.index + a[0].length - (a[4] === undefined ? 1 : 0);
+    out.push({ name: a[1].toLowerCase(), value, start: end - value.length, end });
+  }
+  return out;
+}
+
+// Instance `n` of a block: its own ids, every in-block reference following
+// them, and its radio groups its own. Instance 1 is the block itself.
+export function instanceOf(html, n) {
+  if (!Number.isInteger(n) || n < 1) throw new TypeError(`instanceOf: the instance must be a positive integer, got ${JSON.stringify(n)}`);
+  if (n === 1) return html;
+
+  const tags = [];
+  TAGS.lastIndex = 0;
+  for (let m; (m = TAGS.exec(html));) {
+    const tok = m[0];
+    if (tok.startsWith('<!--') || tok.startsWith('</') || /^<(script|style)\b/i.test(tok)) continue;
+    tags.push({ at: m.index, tok, attrs: attrsOf(tok) });
+  }
+  const ids = new Set();
+  for (const t of tags) for (const a of t.attrs) if (a.name === 'id') ids.add(a.value);
+
+  const suffixed = id => `${id}-${n}`;
+  let out = '', cursor = 0;
+  for (const t of tags) {
+    const radio = tagName(t.tok, 1) === 'input' && (t.attrs.find(a => a.name === 'type')?.value ?? '').toLowerCase() === 'radio';
+    for (const a of t.attrs) {
+      let next = null;
+      if (a.name === 'id') { if (ids.has(a.value)) next = suffixed(a.value); }
+      else if (a.name === 'name') { if (radio) next = suffixed(a.value); }
+      else if (REF_CARRYING.has(a.name)) {
+        // Token by token with the whitespace kept: aria-labelledby holds several.
+        const fragment = FRAGMENT.has(a.name);
+        next = a.value.split(/(\s+)/).map(tk => {
+          const hash = tk.startsWith('#');
+          if (hash !== fragment) return tk;
+          const id = hash ? tk.slice(1) : tk;
+          return ids.has(id) ? (hash ? '#' : '') + suffixed(id) : tk;
+        }).join('');
+        if (next === a.value) next = null;
+      }
+      if (next === null) continue;
+      out += html.slice(cursor, t.at + a.start) + next;
+      cursor = t.at + a.end;
+    }
+  }
+  return out + html.slice(cursor);
+}

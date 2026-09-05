@@ -12,6 +12,19 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — instance identity for the page builder, measured before written
+(§4.12 stage 4).** Over all 33 blocks in `builder/blocks.json`: 51 ids in 9
+blocks; 49 `for`/`aria-controls`/`aria-labelledby` references, every one inside its own
+block; 1 `data-rux-open`, 52 sprite `<use href="#i-…">` and 10 page anchors, every one
+outside; 3 radio `name`s; no id defined in two blocks, no block defining both `A` and
+`A-<n>`, no attribute outside the IDREF set coinciding with an id. `instanceOf(html, n)`
+added to `builder/rewrites.mjs`; the `REF_ATTRS` comment in `tools/lib/blocks.mjs`
+corrected — it said `href` was in the rewrite list, which would have broken 62
+references and fixed none. 24 scratch assertions, uncommitted: green on the first run,
+and 4 red when the radio-`name` rule was removed from a copy. `npm run verify` exit 0;
+`npm run gates` 41 of 41 current; `check-controls` names the two files. Accepted by rux
+and landed the same day; roadmap §4.12 stage 4 has the account.
+
 **DONE 2026-09-02 — Plex at `font-display: optional`, preloaded, and Plex Mono shipped
 (§4.1.1).** Found on a consumer page: every load painted in `system-ui` and then redrew in
 Plex, because the file was only discovered after `plex.css` had parsed — on this server the
