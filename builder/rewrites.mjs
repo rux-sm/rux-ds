@@ -97,3 +97,126 @@ export function compose(templateHtml, slots, byName) {
   }
   return html;
 }
+
+// ──────────────────────────────────────────────────────────────────────────
+// TEXT FIELDS — which text in a block a person may edit, and how an edit is
+// written back. Pure string logic with no DOM dependency, so the browser and
+// node run it identically, like everything else here.
+//
+// WHY A TOKENIZER AND NOT A REGEX. A flat `<tag>TEXT</tag>` match is lossless
+// on write but has no idea what a comment, a <script>/<style> body or SVG
+// descendant text is — and this repository's own comments routinely contain
+// literal tag examples. Those would be offered as editable fields, and worse,
+// would shift the recorded offsets of the real ones. So the string is walked
+// once with an explicit open-element stack, and the ancestor test below is a
+// real ancestor walk rather than a fixed-width lookback.
+//
+// LIMITATION, stated rather than guarded: an attribute value is assumed to
+// carry no literal `>`. tools/lib/blocks.mjs's own marker regex already makes
+// the same simplifying assumption about this corpus's attested markup.
+
+// Comments and the three opaque bodies are entered and skipped WHOLE: the
+// stack is never touched and nothing inside is ever visited. Anything else
+// that looks like a tag is a generic open, close or self-closing token.
+const TOKEN = /<!--[\s\S]*?-->|<script\b[\s\S]*?<\/script\s*>|<style\b[\s\S]*?<\/style\s*>|<svg\b[\s\S]*?<\/svg\s*>|<\/?[a-zA-Z][^>]*>/g;
+
+// Never pushed, whether or not written with a trailing slash. Every void
+// element in this corpus is a BARE tag — `<input id="f-n1" type="checkbox">`
+// (templates/form-page.html) is exactly as common as a self-closed `<use/>` —
+// and pushing one would wait forever for a close that never comes, corrupting
+// every ancestry and leaf test for the rest of the block.
+const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+  'link', 'meta', 'param', 'source', 'track', 'wbr']);
+
+// Text a behaviour module owns. Editing it here would either be overwritten at
+// runtime or would edit something no reader can see. Traced by grepping every
+// `.textContent =` assignment across js/.
+const HIDDEN = /rux--visually-hidden|rux--assistive-text/;   // any ancestor
+const OWNED_ANCESTOR = /rux--batch-summary__para/;           // js/data-table.js:148
+const OWNED_LEAF = /rux--toggle__text|rux--list-box__label|rux--tooltip-content/;
+
+const attrOf = (tag, name) => {
+  const m = tag.match(new RegExp(`\\b${name}\\s*=\\s*("[^"]*"|'[^']*'|[^\\s>]+)`, 'i'));
+  return m ? m[1].replace(/^["']|["']$/g, '') : '';
+};
+
+const tagName = (tok, from) => tok.slice(from).replace(/[\s/>][\s\S]*$/, '').toLowerCase();
+
+function excluded(ancestors, leaf) {
+  if (OWNED_LEAF.test(leaf.cls)) return true;
+  for (const el of [...ancestors, leaf]) {
+    if (el.ariaHidden || HIDDEN.test(el.cls) || OWNED_ANCESTOR.test(el.cls)) return true;
+  }
+  return false;
+}
+
+// Every editable text field in `html`, in document order, as [start, end)
+// offsets into that exact string, each carrying the lowercased tag name of the
+// element holding it so a caller can say WHERE the text sits without parsing
+// again. A field is text sitting immediately between
+// an element's own open tag and its own matching close tag with NOTHING else
+// in between — no nested tag, no comment, no opaque span — and non-empty once
+// trimmed. That is "leaf, text-only" derived structurally rather than guessed
+// at with a `[^<>]*` pattern, so mixed content (`<p>a <b>b</b> c</p>`) yields
+// only the inner `<b>`, which is the known limitation, not a bug.
+export function textFieldsOf(html) {
+  const fields = [], stack = [];
+  TOKEN.lastIndex = 0;
+  for (let m; (m = TOKEN.exec(html));) {
+    const tok = m[0], top = stack[stack.length - 1];
+
+    // A comment or an opaque body is content, not structure — but it does
+    // interrupt whatever holds it, so that element is no longer text-only.
+    if (tok.startsWith('<!--') || /^<(script|style|svg)\b/i.test(tok)) {
+      if (top) top.interrupted = true;
+      continue;
+    }
+
+    if (tok.startsWith('</')) {
+      const name = tagName(tok, 2);
+      let at = -1;
+      for (let i = stack.length - 1; i >= 0; i--) if (stack[i].name === name) { at = i; break; }
+      if (at < 0) { if (top) top.interrupted = true; continue; }   // stray close
+      const el = stack[at], wasTop = at === stack.length - 1;
+      stack.length = at;                                           // discard anything left open
+      if (wasTop && !el.interrupted) {
+        const raw = html.slice(el.contentStart, m.index);
+        if (raw.trim() !== '' && !excluded(stack, el)) fields.push({ start: el.contentStart, end: m.index, raw, name: el.name });
+      }
+      continue;
+    }
+
+    // An open tag. Whatever holds it now has a child, so it is not text-only.
+    if (top) top.interrupted = true;
+    const name = tagName(tok, 1);
+    if (VOID.has(name) || /\/\s*>$/.test(tok)) continue;
+    stack.push({
+      name,
+      cls: attrOf(tok, 'class'),
+      ariaHidden: attrOf(tok, 'aria-hidden') === 'true',
+      contentStart: m.index + tok.length,
+      interrupted: false,
+    });
+  }
+  return fields;
+}
+
+// Only `&`, `<` and `>`. Quotes are left alone: a field is text between tags,
+// never inside an attribute, so escaping them would show the entity itself.
+const escapeText = s => s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;');
+
+// `html` with the fields named in `edits` ({ index: text }) replaced, and every
+// other byte — self-closing syntax, bare boolean attributes, the indentation
+// inside an untouched multiline field — left exactly as it was. The field list
+// is always read from the ORIGINAL html, so blanking field 0 can never shift
+// field 1's index, and an untouched field is never spliced and so never
+// re-escaped.
+export function applyTextEdits(html, edits) {
+  let out = '', cursor = 0;
+  textFieldsOf(html).forEach((f, i) => {
+    if (!Object.hasOwn(edits, i)) return;
+    out += html.slice(cursor, f.start) + escapeText(String(edits[i]));
+    cursor = f.end;
+  });
+  return out + html.slice(cursor);
+}

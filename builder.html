@@ -102,7 +102,7 @@
 
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <a class="rux--header__name" href="builder.html"><span aria-hidden="true" style="width:1.5rem;height:1.5rem;margin-right:.5rem;flex:none;border:1px dashed currentColor;opacity:.6"></span><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <a class="rux--header__name" href="builder.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
   <nav class="rux--header__nav" aria-label="rux-ds">
     <ul class="rux--header__menu-bar">
       <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
@@ -220,6 +220,21 @@
             </div>
             <div class="rux--form__helper-text">Without .html — what the export downloads as.</div>
           </div>
+              <h2>Edit content</h2>
+              <div class="rux--form-item">
+                <div class="rux--select">
+                  <label class="rux--label" for="bld-block">Block</label>
+                  <div class="rux--select-input__wrapper">
+                    <select id="bld-block" class="rux--select-input"></select>
+                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                  </div>
+                  <div class="rux--form__helper-text">The marked regions of the chosen template, in the order they appear in it.</div>
+                </div>
+              </div>
+              <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
+              <div>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
+              </div>
             </div>
           </div>
 
@@ -248,6 +263,31 @@
     </div>
   </div>
 </main>
+
+<!-- CLONED, NEVER CONSTRUCTED. builder/builder.js says it invents no rux--
+     markup; a field row is real component markup, so it ships here where
+     check-classes reads it and is only cloned at runtime. The field row is
+     templates/form-page.html's own text-area composition minus maxlength,
+     placeholder and the counter-alert span — nothing here counts characters,
+     and an empty role="alert" region would ship for no reason. cols goes too,
+     and that one was measured rather than reasoned: cols is a flex item's
+     min-content floor, so the source's cols="50" rendered 403px wide inside
+     this 388px column and overflowed it. The wrapper is already inline-size
+     100%. id and for are set per clone. -->
+<template id="bld-field-template">
+  <div class="rux--form-item">
+    <div class="rux--text-area__label-wrapper">
+      <label class="rux--label"></label>
+    </div>
+    <div class="rux--text-area__wrapper">
+      <textarea class="rux--text-area" rows="2"></textarea>
+    </div>
+    <div class="rux--form__helper-text"></div>
+  </div>
+</template>
+<template id="bld-no-fields-template">
+  <p class="rux--form__helper-text">This block has no text to edit.</p>
+</template>
 
 <script src="js/overlay.js"></script>
 <script src="js/popover.js"></script>

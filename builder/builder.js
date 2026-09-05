@@ -11,7 +11,12 @@
    templates and the answers new-project.sh asks, composes the chosen
    template from its slot records — which, unedited, must give back the
    template byte for byte, and the status line says whether it did — and
-   previews the result in an iframe at a chosen width.
+   previews the result in an iframe at a chosen width. It also offers the
+   chosen template's blocks by label, lists the editable text in the selected
+   one, and writes an edit back through applyTextEdits, which splices bytes
+   and never reserializes a DOM. The round trip shown in the status line is
+   always measured on the UNEDITED composition, so an edit can never make it
+   read "identical" for the wrong reason.
 
    THE PREVIEW IS A BLOB URL, not srcdoc. A srcdoc document inherits the
    parent's base URL, so `href="#main-content"` — every template's skip link
@@ -22,18 +27,27 @@
 
    NOTHING HERE CONSTRUCTS rux-- MARKUP. The chrome is in the generated page,
    where check-classes reads it; this file only fills a <select>, toggles
-   aria-pressed, and writes an iframe's src and size.
+   aria-pressed, writes an iframe's src and size, and CLONES the two
+   <template>s builder.html ships — #bld-field-template for a text field and
+   #bld-no-fields-template for a block with none. A field row is real
+   component markup, so it is authored in the generator and cloned here, never
+   assembled out of class-name strings.
 
-   NOT YET: the catalogue, adding and moving blocks, editing content, undo,
-   export. Those are the next stages of the approved plan.
+   NOT YET: the catalogue, adding and moving blocks, general undo, export.
+   Those are the next stages of the approved plan.
    ========================================================================== */
-import { compose, previewPage, exportPage } from './rewrites.mjs';
+import { compose, previewPage, exportPage, textFieldsOf, applyTextEdits } from './rewrites.mjs';
 
 const ROOT = new URL('.', location.href).href;
 const $ = s => document.querySelector(s);
 const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-status');
 
-const state = { template: 'app-shell', theme: 'white', prefix: '', name: '', title: '', page: '', width: 'fit' };
+// `edits` is namespaced per template, then per block, then by FIELD INDEX
+// into that block's original html: { template: { block: { 0: 'text' } } }.
+// It is pruned as it goes — typing a value back to the original deletes the
+// index, and an empty block or template map is deleted outright — so the
+// count in the status line and Reset's disabled state cannot drift from it.
+const state = { template: 'app-shell', block: '', theme: 'white', prefix: '', name: '', title: '', page: '', width: 'fit', edits: {} };
 let manifest = null;
 const templates = new Map();   // name → source text
 
@@ -54,15 +68,132 @@ async function source(name) {
   return templates.get(name);
 }
 
-// The composed page: the template with each slot rebuilt from the manifest.
-// With no edits this is the template itself, and `roundTrip` records whether
-// the builder's own path reproduced it — the check the status line shows.
+// Every block the chosen template is built from, by name.
+const blocksOf = t => Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
+const templateOf = name => manifest.templates.find(x => x.name === name);
+// The saved edits for one block, or an empty map. Never creates the maps.
+const editsFor = (tpl, block) => (state.edits[tpl] ?? {})[block] ?? {};
+
+// The composed page: the template with each slot rebuilt from the manifest,
+// each edited block's html spliced first. `roundTrip` is deliberately measured
+// on the UNEDITED composition — that check asks whether the builder can
+// reproduce the template it was given, and an edit is not supposed to make it
+// fail, so letting an edit change the answer would destroy the only thing it
+// says. The per-entry spread never mutates the object the manifest holds.
 async function composed() {
   const src = await source(state.template);
-  const t = manifest.templates.find(x => x.name === state.template);
-  const byName = Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
-  const page = compose(src, t.slots, byName);
-  return { page, roundTrip: page === src };
+  const t = templateOf(state.template);
+  const byName = blocksOf(t);
+  const edited = {};
+  for (const [name, block] of Object.entries(byName)) {
+    const e = editsFor(state.template, name);
+    edited[name] = Object.keys(e).length ? { ...block, html: applyTextEdits(block.html, e) } : block;
+  }
+  return { page: compose(src, t.slots, edited), roundTrip: compose(src, t.slots, byName) === src };
+}
+
+// `field.raw` is a slice of the original HTML SOURCE, so real text carrying an
+// ampersand is stored as the literal bytes `&amp;`. Showing that verbatim in a
+// textarea would display the escape sequence itself, and submitting it back
+// unchanged would escape it a second time into `&amp;amp;`. One-way and for
+// display only: the write path only ever sees plain decoded text.
+function decodeText(raw) {
+  const probe = document.createElement('textarea');
+  probe.innerHTML = raw;
+  return probe.value;
+}
+
+// The field rows for one block. `html` MUST be the block's ORIGINAL html, not
+// an edited derivative: every recorded index, and the original each edit is
+// compared against to decide whether to prune it, is an offset into that exact
+// string. Saved edits are laid over it for display only.
+function renderFieldPanel(blockName, html) {
+  const box = $('#bld-fields');
+  box.textContent = '';
+  const fields = textFieldsOf(html);
+  if (!fields.length) {
+    box.append($('#bld-no-fields-template').content.cloneNode(true));
+    return;
+  }
+  const saved = editsFor(state.template, blockName);
+  fields.forEach((f, i) => {
+    const row = $('#bld-field-template').content.cloneNode(true);
+    const id = `bld-field-${i}`;
+    const label = row.querySelector('label'), area = row.querySelector('textarea');
+    label.setAttribute('for', id);
+    label.textContent = `Text ${i + 1} of ${fields.length}`;
+    row.querySelector('.rux--form__helper-text').textContent = `In <${f.name}>`;
+    area.id = id;
+    const original = decodeText(f.raw);
+    area.value = Object.hasOwn(saved, i) ? saved[i] : original;
+    area.addEventListener('input', () => { setEdit(blockName, i, area.value, original); later(); });
+    box.append(row);
+  });
+}
+
+// Record or prune one field's override, then keep Reset honest.
+function setEdit(blockName, i, value, original) {
+  const forTemplate = state.edits[state.template] ??= {};
+  const forBlock = forTemplate[blockName] ??= {};
+  if (value === original) delete forBlock[i]; else forBlock[i] = value;
+  if (!Object.keys(forBlock).length) delete forTemplate[blockName];
+  if (!Object.keys(forTemplate).length) delete state.edits[state.template];
+  syncReset();
+}
+
+const syncReset = () => { $('#bld-reset').disabled = !Object.keys(editsFor(state.template, state.block)).length; };
+const editCount = () => Object.values(state.edits[state.template] ?? {}).reduce((n, b) => n + Object.keys(b).length, 0);
+
+// Fill the block picker from the chosen template, in slot order, by label.
+function fillBlocks() {
+  const t = templateOf(state.template), byName = blocksOf(t);
+  const names = t.slots.flatMap(sl => sl.blocks);
+  const select = $('#bld-block');
+  select.textContent = '';
+  for (const n of names) {
+    const o = document.createElement('option');
+    o.className = 'rux--select-option';
+    o.value = n; o.textContent = byName[n].label;
+    select.append(o);
+  }
+  state.block = names[0] ?? '';
+  select.value = state.block;
+  showBlock();
+}
+
+// The panel and the preview highlight for whichever block is selected. Nothing
+// about the composed page changed by choosing one, so the frame is not reloaded.
+function showBlock() {
+  const t = templateOf(state.template);
+  const block = manifest.blocks.find(b => b.source === t.path && b.name === state.block);
+  renderFieldPanel(state.block, block ? block.html : '');
+  syncReset();
+  highlight();
+}
+
+// Best-effort, and only that: the preview is a document of its own and this
+// draws on it. The block's own BLOCK:BEGIN/END comments survive into it, so the
+// run of element siblings between them is the block — a run, not one element,
+// because a block can have several roots (app-shell's page-title is <h1>+<p>).
+// Each target's existing inline outline is saved and restored rather than
+// blanked, so the helper stays non-destructive even though nothing ships one.
+let highlighted = [];
+function highlight() {
+  for (const h of highlighted) { h.el.style.outline = h.outline; h.el.style.outlineOffset = h.offset; }
+  highlighted = [];
+  const doc = frame.contentDocument;
+  if (!doc || !doc.body || !state.block) return;
+  const walk = doc.createTreeWalker(doc.body, NodeFilter.SHOW_COMMENT);
+  let begin = null;
+  for (let n; (n = walk.nextNode());) if (n.nodeValue.includes(`BLOCK:BEGIN name=${state.block} `)) { begin = n; break; }
+  if (!begin) return;
+  for (let n = begin.nextSibling; n; n = n.nextSibling) {
+    if (n.nodeType === Node.COMMENT_NODE && n.nodeValue.includes(`BLOCK:END ${state.block}`)) break;
+    if (n.nodeType !== Node.ELEMENT_NODE) continue;
+    highlighted.push({ el: n, outline: n.style.outline, offset: n.style.outlineOffset });
+    n.style.outline = '2px dashed var(--rux-border-interactive)';
+    n.style.outlineOffset = '2px';
+  }
 }
 
 let pending = null;
@@ -73,10 +204,11 @@ async function render() {
     if (pending !== my) return;
     const doc = previewPage(page, answers(), ROOT);
     const url = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
-    frame.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
+    frame.addEventListener('load', () => { URL.revokeObjectURL(url); highlighted = []; highlight(); }, { once: true });
     frame.src = url;
     const t = manifest.templates.find(x => x.name === state.template);
-    status.textContent = `${state.template} · ${t.slots.length} slot${t.slots.length === 1 ? '' : 's'}, ${t.slots.reduce((n, s) => n + s.blocks.length, 0)} blocks · round trip ${roundTrip ? 'identical' : 'DIFFERS'} · ${state.width === 'fit' ? 'fit to pane' : `${state.width}px`}`;
+    const edits = editCount();
+    status.textContent = `${state.template} · ${t.slots.length} slot${t.slots.length === 1 ? '' : 's'}, ${t.slots.reduce((n, s) => n + s.blocks.length, 0)} blocks · round trip ${roundTrip ? 'identical' : 'DIFFERS'} · ${state.width === 'fit' ? 'fit to pane' : `${state.width}px`}${edits ? ` · ${edits} field${edits === 1 ? '' : 's'} edited` : ''}`;
   } catch (e) {
     status.textContent = `Could not build the preview: ${e.message}`;
   }
@@ -120,7 +252,18 @@ async function init() {
     select.append(o);
   }
   select.value = state.template;
-  select.addEventListener('change', () => { state.template = select.value; render(); });
+  select.addEventListener('change', () => { state.template = select.value; fillBlocks(); render(); });
+  const blocks = $('#bld-block');
+  blocks.addEventListener('change', () => { state.block = blocks.value; showBlock(); });
+  $('#bld-reset').addEventListener('click', () => {
+    const forTemplate = state.edits[state.template];
+    if (forTemplate) {
+      delete forTemplate[state.block];
+      if (!Object.keys(forTemplate).length) delete state.edits[state.template];
+    }
+    showBlock();
+    later();
+  });
   for (const r of document.querySelectorAll('input[name="bld-theme"]')) {
     r.addEventListener('change', () => { if (r.checked) { state.theme = r.value; render(); } });
   }
@@ -129,6 +272,7 @@ async function init() {
   }
   for (const b of document.querySelectorAll('[data-width]')) b.addEventListener('click', () => setWidth(b.dataset.width));
   window.addEventListener('resize', () => { if (state.width !== 'fit') setWidth(state.width); });
+  fillBlocks();
   render();
 }
 
@@ -137,6 +281,9 @@ window.RuxBuilder = {
   state,
   page: async () => exportPage((await composed()).page, answers()),
   roundTrip: async () => (await composed()).roundTrip,
+  // Exposed so the no-fields branch — which no shipped block triggers — can be
+  // driven through the real clone-into-DOM path rather than left untested.
+  renderFieldPanel,
 };
 
 init();

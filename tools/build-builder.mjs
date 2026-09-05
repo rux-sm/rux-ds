@@ -10,9 +10,11 @@
 // preview of the page those choices produce — in an iframe, because the
 // composed page has its own header and rendering it inline here would show
 // two shells, which is exactly what roadmap §4.12's "no frames" line forbids.
-// The catalogue of blocks, editing and export come in later stages; this page
-// is the skeleton round trip first, because a builder that cannot reproduce an
-// unedited template byte for byte has no business editing one.
+// A block picker and its text fields came next, because a builder that cannot
+// reproduce an unedited template byte for byte has no business editing one and
+// that round trip is proved first. The catalogue, adding and moving blocks and
+// export are still later stages. The icon assertion at the foot is unchanged:
+// this section adds no <use>.
 //
 // NO SPRITE MARKERS. tools/lib/sources.mjs spritePages() hands any root page
 // carrying SPRITE:BEGIN to `npm run icons` as a writer; this file is already
@@ -138,6 +140,21 @@ ${THEMES.map(([v, l]) => `                  <div class="rux--radio-button-wrappe
                 </fieldset>
                 <div class="rux--form__helper-text">The page's default. A visitor's own choice, saved in the account panel, wins on the real page; the preview shows the default.</div>
               </div>${textInput('bld-prefix', 'Product prefix', 'Rux', 'The lighter-weight half of the header name.')}${textInput('bld-name', 'Product name', 'DS', 'The header name and its aria-label.')}${textInput('bld-title', 'Browser tab title', 'Prefix and name', 'Defaults to the prefix and the name, as the script does.')}${textInput('bld-page', 'File name', 'index', 'Without .html — what the export downloads as.')}
+              <h2>Edit content</h2>
+              <div class="rux--form-item">
+                <div class="rux--select">
+                  <label class="rux--label" for="bld-block">Block</label>
+                  <div class="rux--select-input__wrapper">
+                    <select id="bld-block" class="rux--select-input"></select>
+                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                  </div>
+                  <div class="rux--form__helper-text">The marked regions of the chosen template, in the order they appear in it.</div>
+                </div>
+              </div>
+              <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
+              <div>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
+              </div>
             </div>
           </div>
 
@@ -161,6 +178,31 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
     </div>
   </div>
 </main>
+
+<!-- CLONED, NEVER CONSTRUCTED. builder/builder.js says it invents no rux--
+     markup; a field row is real component markup, so it ships here where
+     check-classes reads it and is only cloned at runtime. The field row is
+     templates/form-page.html's own text-area composition minus maxlength,
+     placeholder and the counter-alert span — nothing here counts characters,
+     and an empty role="alert" region would ship for no reason. cols goes too,
+     and that one was measured rather than reasoned: cols is a flex item's
+     min-content floor, so the source's cols="50" rendered 403px wide inside
+     this 388px column and overflowed it. The wrapper is already inline-size
+     100%. id and for are set per clone. -->
+<template id="bld-field-template">
+  <div class="rux--form-item">
+    <div class="rux--text-area__label-wrapper">
+      <label class="rux--label"></label>
+    </div>
+    <div class="rux--text-area__wrapper">
+      <textarea class="rux--text-area" rows="2"></textarea>
+    </div>
+    <div class="rux--form__helper-text"></div>
+  </div>
+</template>
+<template id="bld-no-fields-template">
+  <p class="rux--form__helper-text">This block has no text to edit.</p>
+</template>
 
 <script src="js/overlay.js"></script>
 <script src="js/popover.js"></script>
