@@ -16,11 +16,19 @@
    own radios, and the preview shows the result in an iframe at a chosen
    width. Every block on the page is offered by label, its editable text is
    listed, and an edit is written back through applyTextEdits, keyed by the
-   INSTANCE (`id@n`) so two copies edit apart. The round trip shown in the
-   status line is always measured on the template's own slots, unedited and
-   unarranged, so nothing the reader does can make it read "identical" for
-   the wrong reason; the integrity reading beside it — duplicate ids,
-   unresolved references — is measured on the page they actually built.
+   INSTANCE (`id@n`) so two copies edit apart. Every one of those actions can
+   be UNDONE, and the whole session survives a reload as a draft.
+
+   ONE HISTORY, AND ONE ENTRY PER ACTION. builder/session.mjs holds the
+   history and the draft; this file decides what an action IS. Every user
+   action goes through change() or typed(), which snapshot before, run the
+   whole action — Remove touches both the edits and the model, and that is
+   ONE entry, not two — and record only if something actually moved. The
+   low-level setters below (setEdit, dropEdits, setPage) never touch history
+   themselves, which is what keeps an action atomic. Navigation records
+   nothing: switching template, slot, block, catalogue or width is not a
+   change, so undo and redo instead SELECT the template the action happened
+   on, and say so in the button's name.
 
    THE PREVIEW IS A BLOB URL, not srcdoc. A srcdoc document inherits the
    parent's base URL, so `href="#main-content"` — every template's skip link
@@ -32,18 +40,21 @@
    NOTHING HERE CONSTRUCTS rux-- MARKUP. The chrome is in the generated page,
    where check-classes reads it; this file only fills <select>s, toggles
    aria-pressed and disabled, writes an iframe's src and size, and CLONES the
-   two <template>s builder.html ships — #bld-field-template for a text field
-   and #bld-no-fields-template for a block with none. A field row is real
-   component markup, so it is authored in the generator and cloned here,
-   never assembled out of class-name strings.
+   four <template>s builder.html ships — a text field, the no-fields line,
+   and the two notices. Real component markup is authored in the generator
+   and cloned here, never assembled out of class-name strings.
 
-   NOT YET: undo (the model is a plain value so a history is all it needs)
-   and export as a download. Those are the next stages of the approved plan.
+   NOT YET: export as a download, and the guided mode. Those are the next
+   stages of the approved plan.
    ========================================================================== */
 import { compose, previewPage, exportPage, textFieldsOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
+import { emptyHistory, pushed, undone, redone, runKey, sameRun,
+         toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
 
 const ROOT = new URL('.', location.href).href;
+const DRAFT_KEY = 'rux.draft';
+const SAVE_MS = 500;
 const $ = s => document.querySelector(s);
 const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-status'), integrityLine = $('#bld-integrity');
 
@@ -55,10 +66,19 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // index, an empty map is deleted outright, and removing a block drops its
 // edits — so the count in the status line and Reset's disabled state cannot
 // drift from it.
-const state = { template: 'app-shell', block: '', slot: '', catalogue: '', theme: 'white', prefix: '', name: '', title: '', page: '', width: 'fit', edits: {}, pages: {} };
+//
+// THE SNAPSHOT IS `pages`, `edits` AND THE FIVE ANSWERS, and nothing else.
+// `template`, `block`, `slot`, `catalogue` and `width` are where the reader
+// is standing and what they are looking through, not what they have made.
+const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
+const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, pages: {} };
 let manifest = null;
-const templates = new Map();   // name → source text
-const blocks = new Map();      // id → manifest block
+let history = emptyHistory();
+let run = null;                  // the typing run in progress, or null
+let saveTimer = null, saveBlocked = false, unopened = false;
+const templates = new Map();     // name → source text
+const blocks = new Map();        // id → manifest block
 
 const answers = () => {
   const prefix = state.prefix.trim() || 'Rux';
@@ -89,6 +109,180 @@ const editsFor = (tpl, key) => (state.edits[tpl] ?? {})[key] ?? {};
 // A block is native when it is the template's own, at instance 1.
 const isNative = (e, t) => e.n === 1 && blocks.get(e.id).source === t.path;
 const short = cls => (cls ?? '').split(/\s+/).filter(Boolean).map(c => c.replace(/^rux--/, '')).join(' ');
+const labelOf = key => blocks.get(entryOf(key)?.id)?.label ?? 'block';
+
+// ── HISTORY ────────────────────────────────────────────────────────────────
+
+// A COPY, ALWAYS. Handing back live references made change() compare an
+// object with itself — fn() mutates state.pages in place, so `before` moved
+// with it, every action looked like a no-op and the first browser run
+// recorded an empty history after add, edit and remove. Copying here makes
+// that mistake unavailable to every caller rather than fixing it at one.
+const snapshot = () => copy({
+  pages: state.pages,
+  edits: state.edits,
+  answers: Object.fromEntries(ANSWERS.map(k => [k, state[k]])),
+});
+
+// Put a restored snapshot back, controls included. The five answers are DOM
+// state as well as data, so they are written back here rather than left for
+// a render to notice.
+function applySnapshot(s) {
+  state.pages = copy(s.pages);
+  state.edits = copy(s.edits);
+  for (const k of ANSWERS) state[k] = s.answers[k] ?? FRESH[k];
+  for (const r of document.querySelectorAll('input[name="bld-theme"]')) r.checked = r.value === state.theme;
+  for (const [id, key] of FIELDS) $(`#${id}`).value = state[key];
+}
+
+const FIELDS = [['bld-prefix', 'prefix'], ['bld-name', 'name'], ['bld-title', 'title'], ['bld-page', 'page']];
+
+const endRun = () => { run = null; };
+
+// ONE ACTION, ONE ENTRY. Snapshot, run the whole thing, and record only if
+// it moved: a move at the end of a slot, a Reset with nothing to reset and a
+// field typed back to its original all call a setter and change nothing, and
+// none of them is worth an entry the reader would have to press twice.
+function change(label, fn) {
+  const before = snapshot(), template = state.template;
+  fn();
+  if (identical(before, snapshot())) return false;
+  history = pushed(history, before, label, template);
+  endRun();
+  syncHistory();
+  saveSoon();
+  return true;
+}
+
+// A keystroke. The FIRST of a run records the state before the run; the rest
+// join it. Every boundary that ENDS a run is elsewhere — blur, navigation,
+// any change(), undo, redo — because those are events, not values.
+function typed(where, label, fn) {
+  const key = runKey(state.template, where), now = Date.now();
+  const before = snapshot(), template = state.template;
+  fn();
+  if (identical(before, snapshot())) return;
+  if (!sameRun(run, key, now)) history = pushed(history, before, label, template);
+  run = { key, at: now };
+  syncHistory();
+  saveSoon();
+}
+
+function step(way) {
+  const moved = way === 'undo' ? undone(history, snapshot()) : redone(history, snapshot());
+  if (!moved) return;
+  history = moved.history;
+  endRun();
+  applySnapshot(moved.state);
+  // Reveal where it happened, in BOTH directions: the entry's template, not
+  // the one the reader is standing on and not the snapshot's, either.
+  state.template = moved.entry.template;
+  $('#bld-template').value = state.template;
+  fillSlots();
+  fillPicker();
+  render();
+  syncHistory();
+  saveSoon();
+}
+
+function syncHistory() {
+  const u = $('#bld-undo'), r = $('#bld-redo');
+  const last = history.past[history.past.length - 1], next = history.future[history.future.length - 1];
+  u.disabled = !last;
+  r.disabled = !next;
+  u.setAttribute('aria-label', last ? `Undo ${last.label}` : 'Undo');
+  r.setAttribute('aria-label', next ? `Redo ${next.label}` : 'Redo');
+}
+
+// ── THE DRAFT ──────────────────────────────────────────────────────────────
+
+// Every read and write is wrapped: a private window, a full quota or a store
+// the browser has blocked must not break the page.
+function writeDraft() {
+  if (saveBlocked || unopened) return;
+  saveTimer = null;
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(toDraft(snapshot(), id => blocks.get(id)?.html)));
+  } catch (e) {
+    // NOT THE STATUS LINE. render() rewrites it on every keystroke and would
+    // erase this within the second.
+    saveBlocked = true;
+    alertNotice('Your work is not being saved',
+      `The browser refused to store this draft (${e.name || 'error'}), so a reload will lose it. Export the page when you are done.`);
+  }
+}
+
+const saveSoon = () => {
+  if (saveBlocked || unopened) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(writeDraft, SAVE_MS);
+};
+
+const flushSave = () => { if (saveTimer !== null) { clearTimeout(saveTimer); writeDraft(); } };
+const cancelSave = () => { clearTimeout(saveTimer); saveTimer = null; };
+const clearDraft = () => { try { localStorage.removeItem(DRAFT_KEY); } catch { /* nothing to do */ } };
+
+// Cloned, never constructed: the two notices are real component markup and
+// live in builder.html where check-classes reads them.
+function showNotice(templateId, title, subtitle, action, onAction) {
+  const box = $('#bld-notice');
+  box.textContent = '';
+  const node = $(`#${templateId}`).content.cloneNode(true);
+  node.querySelector('.rux--actionable-notification__title').textContent = title;
+  node.querySelector('.rux--actionable-notification__subtitle').textContent = subtitle;
+  const button = node.querySelector('.rux--actionable-notification__action-button');
+  if (button) {
+    if (action) { button.textContent = action; button.addEventListener('click', onAction); }
+    else button.remove();
+  }
+  box.append(node);
+}
+
+const alertNotice = (title, subtitle) => showNotice('bld-alert-template', title, subtitle, null, null);
+
+// On load, before the first render. A draft is opened only when session.mjs
+// can establish that it still fits this manifest; anything else is left
+// exactly where it is until Discard or Start over explicitly removes it.
+function openDraft() {
+  let raw = null;
+  try { raw = localStorage.getItem(DRAFT_KEY); } catch { return; }
+  if (!raw) return;
+  const read = fromDraft(raw, manifest);
+  if (!read.ok) {
+    unopened = true;   // and nothing is saved over it while it sits there
+    showNotice('bld-notice-template', 'A saved draft was left unopened',
+      `${read.reason}. Nothing has been changed or removed. Discard it to start saving again.`,
+      'Discard', () => { unopened = false; clearDraft(); $('#bld-notice').textContent = ''; saveSoon(); });
+    return;
+  }
+  applySnapshot(read.state);
+  if (state.pages[state.template] === undefined) {
+    const first = Object.keys(read.state.pages)[0];
+    if (first) state.template = first;
+  }
+  showNotice('bld-notice-template', 'Picked up where you left off',
+    `This draft was saved ${agoOf(read.savedAt)}. Start over to clear it and begin again.`,
+    'Start over', startOver);
+}
+
+function startOver() {
+  change('start over', () => {
+    state.pages = {};
+    state.edits = {};
+    for (const k of ANSWERS) state[k] = FRESH[k];
+  });
+  applySnapshot(snapshot());          // write the cleared answers into the controls
+  // The key goes, and nothing rewrites it until the reader changes something.
+  cancelSave();
+  clearDraft();
+  unopened = false;                 // Start over also discards an incompatible draft
+  $('#bld-notice').textContent = '';
+  fillSlots();
+  fillPicker();
+  render();
+}
+
+// ── THE PAGE ───────────────────────────────────────────────────────────────
 
 // The composed page and its two readings. `roundTrip` is deliberately
 // measured on the template's OWN slot records, unedited and unarranged — that
@@ -139,12 +333,23 @@ function renderFieldPanel(key, html) {
     area.id = id;
     const original = decodeText(f.raw);
     area.value = Object.hasOwn(saved, i) ? saved[i] : original;
-    area.addEventListener('input', () => { setEdit(key, i, area.value, original); later(); });
+    area.addEventListener('input', event => {
+      // A NATIVE FIELD UNDO IS NOT PART OF THE RUN. The browser owns the
+      // undo stack inside a textarea; when it fires one, end our run so the
+      // change gets an entry of its own rather than joining the typing it
+      // just reversed. The two stacks stay separate, which is stated rather
+      // than papered over.
+      if (event.inputType && event.inputType.startsWith('history')) endRun();
+      typed(`${key}#${i}`, `edit text in ${labelOf(key)}`, () => setEdit(key, i, area.value, original));
+      later();
+    });
+    area.addEventListener('blur', endRun);
     box.append(row);
   });
 }
 
-// Record or prune one field's override, then keep Reset honest.
+// Record or prune one field's override, then keep Reset honest. No history
+// of its own: typed() wraps it.
 function setEdit(key, i, value, original) {
   const forTemplate = state.edits[state.template] ??= {};
   const forEntry = forTemplate[key] ??= {};
@@ -237,8 +442,8 @@ function blockNote(e) {
     ? `Attested in the kitchen sink, ${b.source}.`
     : `Attested in ${b.source.replace(/^templates\//, '').replace(/\.html$/, '')}: ${short(b.column) || 'no column'} · ${b.stack ? short(b.stack) : 'no stack'}.`;
   const u = unitOf(pageOf(), e.key);
-  const rides = e.follows ? ` Moves and goes with ${blocks.get(entryOf(u.keys[0]).id).label}.`
-    : u.keys.length > 1 ? ` ${u.keys.slice(1).map(k => blocks.get(entryOf(k).id).label).join(', ')} moves and goes with it.` : '';
+  const rides = e.follows ? ` Moves and goes with ${labelOf(u.keys[0])}.`
+    : u.keys.length > 1 ? ` ${u.keys.slice(1).map(labelOf).join(', ')} moves and goes with it.` : '';
   note.textContent = where + rides;
 }
 
@@ -342,20 +547,25 @@ function setWidth(w) {
 let timer;
 const later = () => { clearTimeout(timer); timer = setTimeout(render, 250); };
 
-// The three arrangements. Each replaces the model with the value the pure
-// transition returns, re-fills the picker and re-renders; nothing else holds
-// arrangement state.
+// The three arrangements. Each is one transaction: the pure transition, the
+// edits that go with it, and nothing else.
 function addBlock() {
-  setPage(add(pageOf(), state.slot, state.catalogue, manifest));
-  const list = pageOf().slots[state.slot];
-  fillPicker(unitOf(pageOf(), list[list.length - 1].key).keys[0]);
+  const label = blocks.get(state.catalogue)?.label ?? 'block';
+  let placed = null;
+  change(`add ${label}`, () => {
+    setPage(add(pageOf(), state.slot, state.catalogue, manifest));
+    const list = pageOf().slots[state.slot];
+    placed = unitOf(pageOf(), list[list.length - 1].key).keys[0];
+  });
+  fillPicker(placed ?? state.block);
   render();
 }
 
 function moveBlock(dir) {
   if (!state.block) return;
-  setPage(move(pageOf(), state.block, dir));
-  fillPicker(state.block);
+  const label = labelOf(state.block), key = state.block;
+  change(`move ${label} ${dir < 0 ? 'up' : 'down'}`, () => setPage(move(pageOf(), key, dir)));
+  fillPicker(key);
   render();
 }
 
@@ -364,8 +574,14 @@ function removeBlock() {
   const es = entries();
   const u = unitOf(pageOf(), state.block);
   const at = es.findIndex(e => e.key === u.keys[0]);
-  dropEdits(u.keys);
-  setPage(remove(pageOf(), state.block));
+  const label = labelOf(u.keys[0]);
+  // ONE ENTRY, THOUGH IT TOUCHES TWO THINGS. The block's text goes with the
+  // block; undo brings both back together or the reader has lost their words
+  // to a button that said Remove.
+  change(`remove ${label}`, () => {
+    dropEdits(u.keys);
+    setPage(remove(pageOf(), state.block));
+  });
   const rest = entries();
   fillPicker(rest[Math.min(at, rest.length - 1)]?.key ?? '');
   render();
@@ -381,48 +597,86 @@ async function init() {
   for (const b of manifest.blocks) blocks.set(b.id, b);
   const select = $('#bld-template');
   for (const t of manifest.templates) select.append(option(t.name, t.name));
+
+  openDraft();                       // before the first render, after the manifest
+
   select.value = state.template;
-  select.addEventListener('change', () => { state.template = select.value; fillSlots(); fillPicker(); render(); });
+  select.addEventListener('change', () => { endRun(); state.template = select.value; fillSlots(); fillPicker(); render(); });
   const slot = $('#bld-slot');
-  slot.addEventListener('change', () => { state.slot = slot.value; slotNote(); });
+  slot.addEventListener('change', () => { endRun(); state.slot = slot.value; slotNote(); });
   const catalogue = $('#bld-catalogue');
-  catalogue.addEventListener('change', () => { state.catalogue = catalogue.value; });
+  catalogue.addEventListener('change', () => { endRun(); state.catalogue = catalogue.value; });
   $('#bld-add').addEventListener('click', addBlock);
   $('#bld-up').addEventListener('click', () => moveBlock(-1));
   $('#bld-down').addEventListener('click', () => moveBlock(+1));
   $('#bld-remove').addEventListener('click', removeBlock);
+  $('#bld-undo').addEventListener('click', () => step('undo'));
+  $('#bld-redo').addEventListener('click', () => step('redo'));
+  $('#bld-start-over').addEventListener('click', startOver);
   const picker = $('#bld-block');
-  picker.addEventListener('change', () => { state.block = picker.value; showBlock(); });
+  picker.addEventListener('change', () => { endRun(); state.block = picker.value; showBlock(); });
   $('#bld-reset').addEventListener('click', () => {
-    dropEdits([state.block]);
+    const key = state.block;
+    change(`reset ${labelOf(key)}`, () => dropEdits([key]));
     showBlock();
     later();
   });
   for (const r of document.querySelectorAll('input[name="bld-theme"]')) {
-    r.addEventListener('change', () => { if (r.checked) { state.theme = r.value; render(); } });
+    r.addEventListener('change', () => {
+      if (!r.checked) return;
+      change(`theme ${r.nextElementSibling?.textContent.trim() || r.value}`, () => { state.theme = r.value; });
+      render();
+    });
   }
-  for (const [id, key] of [['bld-prefix', 'prefix'], ['bld-name', 'name'], ['bld-title', 'title'], ['bld-page', 'page']]) {
-    $(`#${id}`).addEventListener('input', e => { state[key] = e.target.value; later(); });
+  for (const [id, key] of FIELDS) {
+    const input = $(`#${id}`);
+    input.addEventListener('input', event => {
+      if (event.inputType && event.inputType.startsWith('history')) endRun();
+      typed(id, `${key === 'page' ? 'file name' : key}`, () => { state[key] = input.value; });
+      later();
+    });
+    input.addEventListener('blur', endRun);
   }
   for (const b of document.querySelectorAll('[data-width]')) b.addEventListener('click', () => setWidth(b.dataset.width));
   window.addEventListener('resize', () => { if (state.width !== 'fit') setWidth(state.width); });
+
+  // The field's own undo owns the field. Everywhere else, ours does.
+  document.addEventListener('keydown', event => {
+    if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'z') return;
+    const t = event.target;
+    if (t && (t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && t.type === 'text'))) return;
+    event.preventDefault();
+    step(event.shiftKey ? 'redo' : 'undo');
+  });
+  // A debounce is a promise to write in half a second, which a reload does
+  // not wait for. Both events, because neither fires reliably alone.
+  window.addEventListener('pagehide', flushSave);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
+
   fillCatalogue();
   fillSlots();
   fillPicker();
+  syncHistory();
   render();
 }
 
 // For the console and the gates' operator: the page the export would write,
-// the model, and the three arrangements driven without the buttons.
+// the model, the history, and every action driven without the buttons.
 window.RuxBuilder = {
   state,
   page: async () => exportPage((await composed()).page, answers()),
   roundTrip: async () => (await composed()).roundTrip,
   integrity: async () => (await composed()).integrity,
   model: () => pageOf(),
+  history: () => ({ past: history.past.map(e => e.label), future: history.future.map(e => e.label) }),
+  run: () => (run ? { key: run.key, age: Date.now() - run.at } : null),
   add: (slot, id) => { state.slot = slot; state.catalogue = id; addBlock(); },
   move: (key, dir) => { state.block = key; moveBlock(dir); },
   remove: key => { state.block = key; removeBlock(); },
+  undo: () => step('undo'),
+  redo: () => step('redo'),
+  startOver,
+  flushSave,
   // Exposed so the no-fields branch — which no shipped block triggers — can be
   // driven through the real clone-into-DOM path rather than left untested.
   renderFieldPanel,

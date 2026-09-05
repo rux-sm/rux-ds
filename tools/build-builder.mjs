@@ -14,9 +14,24 @@
 // reproduce an unedited template byte for byte has no business editing one and
 // that round trip is proved first. Then the catalogue and the arrangement: a
 // slot, every marked block to add to it, and move and remove on the selected
-// one, with the page model in builder/page.mjs. Undo and export are still
-// later stages. The icon assertion at the foot is unchanged: the added
-// controls are text buttons and two more selects, no new <use>.
+// one, with the page model in builder/page.mjs. Then undo, redo and a draft
+// that survives a reload, so nothing after this stage grows what can be
+// edited without a way back. Export is the next stage.
+//
+// TWO NOTICE TEMPLATES, BOTH FULLY WRITTEN HERE. The draft notice and the
+// save-failure alert are the same attested composition in two variants, and
+// each is spelled out rather than built by swapping a modifier at runtime,
+// because the icon differs — the assertion at the foot reads the glyphs in
+// THIS file and cannot see builder.js, so a `<use>` only JavaScript names
+// would go unchecked. Both are sink/notification.html's ACTIONABLE specimen,
+// which is where an action button beside a close button is attested.
+//
+// AND THEY ARE <template>s, NOT `hidden` MARKUP. `.rux--actionable-notification`
+// is display:flex, which beats the browser's `[hidden]` on origin — the exact
+// defect fixed for `.rux--btn[hidden]` on 2026-09-02 (css/rux-overrides.css).
+// Cloning also keeps check-runtime-classes honest: DOMParser does not descend
+// into template content, so these classes are invisible to both its sides
+// until one is cloned, when they read as ADDED, the harmless direction.
 //
 // NO SPRITE MARKERS. tools/lib/sources.mjs spritePages() hands any root page
 // carrying SPRITE:BEGIN to `npm run icons` as a writer; this file is already
@@ -115,10 +130,16 @@ ${sprite}
           <h1>Page builder</h1>
           <p>Start from a template and see the page it makes. The preview is the real page in a frame of its own; what it cannot promise is the composition — every part is attested, the arrangement is yours, and <code>docs/composing-pages.md</code> §3.10 says what that means.</p>
         </div>
+        <div id="bld-notice"></div>
         <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
 
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-5">
             <div class="rux--stack-vertical rux--stack-scale-7">
+              <div class="bld-row" role="group" aria-label="History">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-undo" disabled>Undo</button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-redo" disabled>Redo</button>
+                <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" id="bld-start-over">Start over</button>
+              </div>
               <h2>Choices</h2>
               <div class="rux--form-item">
                 <div class="rux--select">
@@ -235,6 +256,51 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
 </template>
 <template id="bld-no-fields-template">
   <p class="rux--form__helper-text">This block has no text to edit.</p>
+</template>
+<template id="bld-notice-template">
+  <div class="rux--actionable-notification rux--actionable-notification--info" role="alertdialog">
+    <span class="rux--visually-hidden" role="link">Beginning of notification</span>
+    <div class="rux--actionable-notification__focus-wrapper">
+      <div class="rux--actionable-notification__details">
+        <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-information--filled"/></svg>
+        <div class="rux--actionable-notification__text-wrapper">
+          <div class="rux--actionable-notification__content">
+            <div class="rux--actionable-notification__title"></div>
+            <div class="rux--actionable-notification__subtitle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rux--actionable-notification__button-wrapper">
+        <button type="button" class="rux--actionable-notification__action-button rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm"></button>
+        <button type="button" class="rux--actionable-notification__close-button" aria-label="Close">
+          <svg class="rux--actionable-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+    </div>
+    <span class="rux--visually-hidden" role="link">End of notification</span>
+  </div>
+</template>
+<template id="bld-alert-template">
+  <div class="rux--actionable-notification rux--actionable-notification--error" role="alertdialog">
+    <span class="rux--visually-hidden" role="link">Beginning of notification</span>
+    <div class="rux--actionable-notification__focus-wrapper">
+      <div class="rux--actionable-notification__details">
+        <svg class="rux--inline-notification__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-error--filled"/></svg>
+        <div class="rux--actionable-notification__text-wrapper">
+          <div class="rux--actionable-notification__content">
+            <div class="rux--actionable-notification__title"></div>
+            <div class="rux--actionable-notification__subtitle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rux--actionable-notification__button-wrapper">
+        <button type="button" class="rux--actionable-notification__close-button" aria-label="Close">
+          <svg class="rux--actionable-notification__close-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+    </div>
+    <span class="rux--visually-hidden" role="link">End of notification</span>
+  </div>
 </template>
 
 <script src="js/overlay.js"></script>

@@ -84,14 +84,22 @@ stales the builder cells as it should have since stage 3 (0475e3f moved a
 reading and nothing aged). The `fileTargets` drift stage 2 left open. Both
 proposed with what they weaken: nothing, they only age more.
 
-**6, undo.** History per template of `{ page, edits, variants, answers }`
-snapshots. A text edit coalesces while the same field is typed into, one
-entry when the field changes or after a one-second pause; a transition, a
-variant change, a reset and a page setting are one entry each; any new
-change clears redo; cap 100. The whole state is a versioned draft,
-`{ v: 1, … }`, saved to `rux.draft` debounced and restored on load with a
-notice and "start over". A draft naming a block id the manifest no longer
-has drops that entry and says so; another version is offered, not applied.
+**6, undo. Landed 2026-09-05; this note is corrected rather than deleted,
+because what it said was wrong in two ways and the roadmap entry now carries
+the record.** It said a history PER TEMPLATE: that was rejected in review,
+because `answers` — theme, prefix, name, title, file — are global, so a
+per-template history would duplicate them or drop them, and undoing a theme
+change would depend on which template happened to be selected. One
+session-wide history shipped instead, over `{ pages, edits, answers }`, with
+the acting template on the ENTRY so undo and redo both reveal where the
+change happened. And it said a draft naming a missing block "drops that
+entry and says so": that was also rejected. A draft is validated whole
+against the manifest — templates, slots, keys, instance numbers, allocation
+counters, follower relations, and a hash of every block an edit was made
+against — and is left UNOPENED when any of it fails, never partly applied
+and never deleted. Two failures found in review forced that: an orphaned
+follower makes `unitOf` throw, and a field index silently retargets when a
+block's markup changes.
 
 **7, export and parity.** Two outcomes on the page. *A page for an existing
 project*: download `${file}.html`, place it beside the project's

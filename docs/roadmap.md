@@ -3115,6 +3115,91 @@ consumed by a tool; the rows describe, and they described wrongly. What it
 weakens: nothing — cells age on more, and rows name more. `npm run verify`
 exit 0, `check-controls` names `tools/lib/gates.mjs` alone.
 
+**Stage 6, proposed 2026-09-05 and awaiting rux's review — undo, redo, and a
+draft that survives a reload.** `builder/session.mjs`, pure and node-tested,
+holds the history and the draft; `builder.js` decides what an action is.
+ONE SESSION HISTORY over `{ pages, edits, answers }`, not one per template:
+the answers are global, so a per-template history would duplicate them or
+drop them. Navigation records nothing, so the acting template rides on the
+ENTRY and both undo and redo reveal where the change happened — edit on
+app-shell, switch to table-page, undo, and the builder returns to app-shell
+with the edit reverted; redo returns there again. ONE ACTION IS ONE ENTRY:
+Remove touches both the edits and the model and is one, because a block's
+text must come back with the block; the low-level setters never touch
+history, and an action that changes nothing records nothing. A typing run is
+keyed by template, entry and field, and ends on a pause, a blur, navigation,
+any other action, undo, redo, or an `input` whose `inputType` starts with
+`history` — the field's own undo, which gets its own entry rather than
+joining the typing it just reversed. The two stacks stay separate, said
+rather than papered over.
+
+A DRAFT IS OPENED ONLY WHEN IT STILL FITS. Two failures rux found in review
+forced this, both reproduced here first: an orphaned follower makes
+`unitOf` throw, and a field index silently retargets when a block's markup
+changes, because edits are indices into `textFieldsOf` of the CURRENT
+manifest. So the draft carries an FNV-1a hash of every block an edit was
+made against, and validation covers version, shape, templates, slots, key
+grammar, unknown ids, duplicate keys, follower relations, allocation
+counters, edit shape and those hashes. Any failure leaves the draft
+UNOPENED — never partly applied, never deleted, and never overwritten by
+autosave while it sits there — with the reason named and Discard the only
+thing originally described as clearing it. **Review correction, 2026-09-05:**
+Start over also explicitly discards it, and now clears the unopened flag;
+previously it erased the warning while silently leaving autosave disabled.
+The validation claim above also exceeded the implementation: required slots,
+answer types and allowed themes were unchecked, and followers could reach
+across an unrelated block. These cases are now rejected, with followers
+restricted to their current contiguous run. Scratch checks: 25 failing cases
+before, all 42 cases passing after, including valid composition for all ten
+templates. Browser re-verification remains outstanding (server stopped and
+no preview-launch tool in the review session); no ledger cells were stamped.
+Saving is debounced 500ms and flushed on `pagehide`
+and `visibilitychange`, so an edit and an immediate reload survives;
+measured, not assumed. A save failure is shown in the notice region and not
+the status line, which `render()` rewrites on every keystroke and would
+erase. Start over lives permanently beside Undo and Redo rather than only on
+a notice that can be closed, clears every template and answer, and is itself
+undoable.
+
+**One bug found by running it, not by reading it.** `snapshot()` first
+returned live references, so `change()` compared an object with itself,
+every action looked like a no-op, and the first browser run recorded an
+empty history after add, edit and remove. Fixed at the source — the snapshot
+copies — so the mistake is unavailable to every caller rather than patched
+at one. The node suite had passed throughout; it tested the pure module,
+and the defect was in the caller.
+
+Proved in node, 39 assertions, uncommitted: the cap, the round trip, deep
+copies, run keys, the draft round trip, **every row of the validation table
+with a fixture each**, and that a restored draft composes byte for byte on
+all ten templates. Red before trusted: disabling the follower check, the
+hash check and the deep copy failed exactly the four matching assertions.
+Proved in the pane: add, edit, remove then three undos restoring the block
+with its edited text, then its original text, then removing it, with the
+buttons naming each step; five keystrokes at 100ms real gaps are one entry
+and a lapse is two; the worked example both ways; an edit and an immediate
+reload survives; a hand-orphaned draft is left unopened with its reason and
+is not overwritten, and Discard restores saving; Start over and its undo;
+and `check-runtime-classes` 47/51 with 0 stripped on a fresh page, unchanged
+from the recorded reading, going to 47/63 with the notice cloned in — all
+twelve notification classes ADDED, the harmless direction, which is why the
+notice ships in a `<template>` and is cloned. It also could not ship as
+`hidden` markup: `.rux--actionable-notification` is display:flex and beats
+`[hidden]`, the defect fixed for `.rux--btn[hidden]` on 2026-09-02.
+
+**NOT VERIFIED, and it is the harness both times.** `Cmd/Ctrl+Z` was never
+delivered to the page: a capture-phase probe on `document` recorded no
+keydown at all for cmd+z, ctrl+z or Escape, fronted or not, though Tab is
+delivered — the combination is almost certainly taken by the host
+application, which is what Cmd+Z does everywhere. The handler is proved by
+synthetic dispatch, undo and redo both, and by leaving a textarea's own undo
+alone; one human keypress still owes. And a second harness limit worth
+recording beside the Enter one: **an awaited step in the pane takes about a
+second of wall clock**, so a loop with a 30ms sleep between keystrokes
+crosses the 1000ms run window and reads as a coalescing failure. Sub-second
+timing must be measured inside ONE execution with a busy-wait, which is how
+the figures above were taken.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

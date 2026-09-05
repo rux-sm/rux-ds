@@ -12,6 +12,37 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**FIXED IN REVIEW 2026-09-05 — three stage-6 recovery defects.**
+The validation claim in the proposal below was too broad: missing required slots,
+non-string answers, unknown themes and a follower separated from its leader all
+passed. Required slots and answer values are now checked; followers must name a
+member of their current contiguous run, matching `unitOf`. Start over now clears
+the unopened-draft flag as well as storage, so subsequent edits save again.
+Scratch regression checks ran against the actual modules and the caller's action
+functions in a mocked DOM/storage environment: 17 passed and 25 failed before,
+42 passed after, including byte-exact restored composition for all ten templates.
+`npm run verify` exit 0. No controls or baselines were changed for these fixes.
+Browser verification was attempted but the server at port 8642 was stopped
+(connection refused), and this session has no preview-launch tool required by
+`sink-check`. The six dirty browser readings remain unverified and unstamped.
+
+**PROPOSED 2026-09-05 — undo, redo and a draft that survives a reload (§4.12 stage 6).**
+`builder/session.mjs` new (pure, node-tested); `builder.js` on one session history;
+the chrome and two notice templates in `tools/build-builder.mjs`. 39 node assertions
+green, 4 red when the follower check, the hash check and the deep copy were disabled.
+Browser: three undos restoring edited text, then original text, then removing the block;
+five keystrokes at 100ms real gaps = 1 entry; edit-then-immediate-reload survives via the
+pagehide flush; an orphaned draft left unopened, not overwritten, Discard restores saving;
+check-runtime-classes 47/51 fresh (unchanged) and 47/63 with the notice, 0 stripped either
+way. ONE BUG FOUND BY RUNNING IT: snapshot() returned live references, so change() compared
+an object with itself and recorded nothing — fixed at the source. TWO HARNESS LIMITS
+RECORDED: cmd+z is never delivered to the page (a capture probe saw no keydown at all,
+fronted or not, though Tab arrives), so the shortcut is proved only by synthetic dispatch
+and owes one human keypress; and an awaited step in the pane costs ~1s of wall clock, so
+sub-second timing must be measured inside one execution with a busy-wait. `npm run verify`
+exit 0. The three builder.html cells are stale — the first time stage 0's rule has fired.
+Awaiting rux's review.
+
 **DONE 2026-09-05 — add and move a block: the page model (§4.12 stage 5).**
 `builder/page.mjs` new, tier 3; `integrity()` added to `builder/rewrites.mjs`; the
 chrome in `tools/build-builder.mjs`; `builder/builder.js` on the model. Node, all 33
