@@ -92,7 +92,7 @@ ${sprite}
 
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <a class="rux--header__name" href="builder.html"><span aria-hidden="true" style="width:1.5rem;height:1.5rem;margin-right:.5rem;flex:none;border:1px dashed currentColor;opacity:.6"></span><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <a class="rux--header__name" href="builder.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
   <nav class="rux--header__nav" aria-label="rux-ds">
     <ul class="rux--header__menu-bar">
       <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>

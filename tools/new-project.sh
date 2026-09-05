@@ -168,6 +168,12 @@ the pin; do not edit anything under vendor/, the next run overwrites it.
 CHANGES.md in rux-ds names any class that left between two tags.
 PIN
 
+# The logo is the project's, like the two CSS deltas below: seeded once and
+# never overwritten, so moving the pin cannot clobber a mark you replaced.
+# rux-ds ships a placeholder; swapping brand/logo.svg is the whole procedure.
+mkdir -p "$DIR/brand"
+[ -e "$DIR/brand/logo.svg" ] || cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
+
 for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
 /* $f -- this project's own, linked after vendor/rux-ds/css/$f, which is
@@ -189,6 +195,7 @@ else
   sed -e 's|"\.\./css/rux\.css"|"vendor/rux-ds/css/rux.css"|' \
       -e 's|"\.\./css/rux-theme\.css"|"vendor/rux-ds/css/rux-theme.css"|' \
       -e 's|"\.\./css/rux-overrides\.css"|"vendor/rux-ds/css/rux-overrides.css"|' \
+      -e 's|"\.\./brand/|"brand/|g' \
       -e 's|"\.\./assets/|"vendor/rux-ds/assets/|g' \
       -e 's|"\.\./js/|"vendor/rux-ds/js/|g' \
       -e "s|^<html lang=\"en\" data-theme=\"white\">|<html lang=\"en\" data-theme=\"$THEME\">|" \
@@ -204,6 +211,7 @@ fi
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR"
 echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · templates $(ls "$OUT/templates" | wc -l | tr -d ' ') · PIN"
 echo "  rux-theme.css, rux-overrides.css   yours, deltas only; left alone if present"
+echo "  brand/logo.svg   yours; swap it any time, left alone if present"
 if [ -n "$MOVE_ONLY" ]; then
   echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
 else
