@@ -233,15 +233,71 @@ compare against — this page's own compositions, the same ones its own
 header comment already names — so those read "nothing to compare," not
 "correct."
 
+**THE LOGO IS ONE FILE, AND `v0.1.6` IS CUT, 2026-09-05.** `brand/logo.svg` is
+the mark; every shell in every repository embeds it as
+`<img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;…">` — no
+class, so `check-classes` has nothing to resolve, and no build step between the
+file and the page. **Swap that one file and every shell follows on reload**: no
+markup edit in fourteen places, no re-pin. An `<img>` rather than inline SVG is
+what makes the swap free, and it costs nothing that was in use — the shell
+header measures `#161616` with `#f4f4f4` text in ALL FOUR themes, so
+`currentColor` had exactly one value to carry. Sized by HEIGHT with the width
+following, so the file's own aspect governs.
+
+Until 2026-09-04 the mark was inlined geometry copied into every shell, which is
+why the hub and Notes had drifted onto different marks with no gate able to see
+it. `tools/new-project.sh` seeds `brand/logo.svg` and `brand/favicon.svg` only
+when ABSENT — the rule `rux-theme.css` already followed — so moving a pin cannot
+clobber a replaced mark. Exercised for the first time on the `v0.1.6` move and
+confirmed clean in both consumers.
+
+**rux's drawn mark replaced the placeholder, 2026-09-05** (`ca911fb`), stripped
+from a 2150-byte Linearity Curve export to 859 with all 14 `d=` strings byte for
+byte what Curve wrote. As exported it was `#000000`, which measures **1.16:1**
+on the `#161616` header and is invisible — caught by rendering it, not by
+reading it. **THE MARK IS NEUTRAL AND THAT IS THE BRAND RULE**, rux's, 2026-09-05:
+gray-10 `#f4f4f4` on any dark surface, gray-100 `#161616` on a light one, and no
+brand colour anywhere. The blue favicon shipped for a few hours and was rejected
+on sight.
+
+**A favicon ships for the first time**, `brand/favicon.svg`, linked by every page
+here and in both consumers; none had one before. It is a separate file from the
+logo because a favicon gets no CSS from the page, so the light/dark swap lives
+inside it — verified in both emulated schemes, not assumed. `npm run marks` no
+longer holds a drawing: it READS `brand/logo.svg`, copies the geometry verbatim,
+and emits the favicon plus two app icons (`light`, `dark` — four became two when
+blue left, since the blue pair would have been byte-identical to the mono pair).
+**Swapping the logo does NOT regenerate them**; that needs `npm run marks` and a
+copy to each consumer, which is the one thing the swap does not do for you.
+
+**The drawing is on a 16-module grid and stays there.** Every coordinate is a
+multiple of 64, so a module is 1.5px at the 24px header slot — exact on a 2x
+display, slightly soft on a 1x, and whole pixels at 16, 32, 48 and 64. Eight
+modules would be crisp everywhere and was tested rather than argued: 10 of the
+14 rectangles are ONE module thick, so rounding to nearest deletes all five legs
+and snapping outward grows the ink 1.8x into a blob. Redrawing on 8 is a drawing
+decision, and the drawing declined it.
+
+**`--` INSIDE AN XML COMMENT IS ILLEGAL, and it has now cost two rounds.** Such
+an SVG serves `200 OK` and renders 0x0 — invisible in a network tab and in the
+markup, and reasoning about the file catches neither. It shipped once from
+`brand/logo.svg` and once from `make-marks`' own generated comment, four broken
+icons found only by opening the page. `tools/make-marks.mjs` now refuses to
+write one, proved red before it was trusted. It checks that ONE fault and says
+so: node ships no `DOMParser` and nothing is vendored to get one, so an unclosed
+tag would still pass.
+
 **Next, in order:**
 
-1. Creator 3, the page builder, `builder.html` here — stages 1 and 2 of its
-   plan landed 2026-09-04 (markers, the gate, the skeleton round trip, the
-   preview); next are select-and-edit, add-and-move with instance identity,
-   then `check-parity` and export. Roadmap §4.12 item 3 has the account. The
-   tier-2 wiring (`check-blocks` and `npm run builder` in `verify`, the
-   registry, the CI staleness list) was proposed as a proven diff and landed
-   2026-09-04 on rux's acceptance.
+1. Creator 3, the page builder, `builder.html` here — stages 1, 2 and 3 of its
+   plan have landed (markers, the gate, the skeleton round trip, the preview
+   2026-09-04; select-and-edit 2026-09-05). Next are add-and-move with instance
+   identity, then `check-parity` and export. Roadmap §4.12 item 3 has the
+   account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   `verify`, the registry, the CI staleness list) was proposed as a proven diff
+   and landed 2026-09-04 on rux's acceptance.
+2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both
+   carry the mark and the favicon; `npm run gates` reads 41 of 41 current.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template

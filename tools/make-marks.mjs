@@ -35,24 +35,22 @@ if (!paths.length || !viewBox) {
   process.exit(1);
 }
 
-// Carbon tokens, read from @carbon/themes.
-const INK    = '#161616';  // gray-100 -- the mark on a LIGHT surface
-const PAPER  = '#f4f4f4';  // gray-10  -- the mark on a DARK surface
-const BLUE   = '#0f62fe';  // blue-60  -- brand, legible on light  (5.00 on #ffffff)
-const BLUE_D = '#78a9ff';  // blue-40  -- brand, legible on dark   (7.68 on #161616)
+// Carbon tokens, read from @carbon/themes. TWO VALUES, AND THAT IS THE BRAND
+// RULE: the mark is neutral, never coloured. rux decided this on 2026-09-05
+// after seeing the blue favicon live -- black and white or neutral greys, the
+// same off-white the header already uses, and nothing else to keep in step.
+const INK   = '#161616';  // gray-100 -- the mark on a LIGHT surface (18.10 on #ffffff)
+const PAPER = '#f4f4f4';  // gray-10  -- the mark on a DARK surface  (16.45 on #161616)
 
-// The four names are (surface) x (mono | brand), the same axes the retired
-// eleven-by-ten set used. What changed is that the mark is now ONE colour, so
-// a variant is one fill and not three layers -- there is no slab to hold apart
-// from a body any more, and nothing here can invert into a hole.
+// TWO ICONS, not four. The old set crossed (surface) x (mono | brand); with
+// the brand rule above there is no blue arm left, so light-blue and dark-blue
+// would have been byte-identical to their mono twins. Two files that differ is
+// better than four where two are duplicates nobody can tell apart.
 //
-// Contrast is against the surface each name is FOR, not against white in every
-// case: light-* sit on #ffffff, dark-* on #161616.
+// Contrast is against the surface each name is FOR, not against white in both.
 const VARIANTS = {
-  'light-mono': { fill: INK,    on: '#ffffff', ratio: '18.10' },
-  'light-blue': { fill: BLUE,   on: '#ffffff', ratio: '5.00'  },
-  'dark-mono':  { fill: PAPER,  on: INK,       ratio: '16.45' },
-  'dark-blue':  { fill: BLUE_D, on: INK,       ratio: '7.68'  },
+  light: { fill: INK,   on: '#ffffff', ratio: '18.10' },
+  dark:  { fill: PAPER, on: INK,       ratio: '16.45' },
 };
 
 // GUARD, not a parser. A "--" inside an XML comment is illegal, and the SVG
@@ -104,8 +102,9 @@ ${body}
 // --------------------------------------------------------------- 2. favicon
 // Self-theming, because a favicon gets no CSS from the page: the light/dark
 // swap has to live inside the file, and a browser that ignores the media query
-// keeps the light values. Brand colour rather than neutral -- a tab icon is
-// the one place the mark appears with no wordmark beside it to carry identity.
+// keeps the light values. NEUTRAL, not brand colour: gray-100 on a light tab
+// strip, gray-10 on a dark one -- the same off-white the shell header uses, so
+// the tab icon and the header mark are the same drawing in the same value.
 // It goes in brand/, NOT assets/brand/, and that is the ownership rule this
 // repository already uses for logo.svg: brand/ is what a project owns and may
 // replace, assets/brand/ is rux-ds's own generated set. A consumer that swaps
@@ -113,8 +112,8 @@ ${body}
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" ${A11Y}>
 <title>Rux</title>
 <style>
-svg{fill:${BLUE}}
-@media (prefers-color-scheme:dark){svg{fill:${BLUE_D}}}
+svg{fill:${INK}}
+@media (prefers-color-scheme:dark){svg{fill:${PAPER}}}
 </style>
 ${body}
 </svg>
