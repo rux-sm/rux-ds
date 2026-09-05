@@ -28,12 +28,27 @@ const firstPerLine = (lines, from, to) => lines.map(l => l.replace(from, to));
 const everywhere = (lines, from, to) => lines.map(l => l.split(from).join(to));
 
 // The four content substitutions the script makes, steps 6–9.
+//
+// EVERY REPLACEMENT IS A FUNCTION, and that is not a style choice. A STRING
+// replacement expands $$, $&, $` and $' — so a product name of `A$&B` inserted
+// the whole matched text, and `A$'B` inserted the rest of the line, duplicating
+// a close tag. The script escapes its answers with esc() and hands them to sed,
+// where a replacement has no such expansion, so the two disagreed on any answer
+// carrying those pairs. Worse, the aria-label below has always used
+// split().join(), which IS literal: one answer produced two different strings
+// on one page, and the header's visible name disagreed with its accessible one.
+// Found by tools/check-parity.mjs on its first run, 2026-09-05, not by reading.
+//
+// This makes the substitution literal. IT DOES NOT ESCAPE HTML, and neither
+// does the script: an answer carrying " < > or & still lands unescaped in
+// element text and in an attribute value. check-parity says so in its own
+// words, builder.html warns, and the decision is rux's — roadmap §4.12.
 function content(lines, a) {
   const P = a.prefix ?? 'Rux', N = a.name ?? 'DS', T = a.title ?? `${P} ${N}`, theme = a.theme ?? 'white';
   return lines.map(l => {
-    if (l.startsWith('<html lang="en" data-theme="white">')) l = l.replace('<html lang="en" data-theme="white">', `<html lang="en" data-theme="${theme}">`);
-    l = l.replace(/<title>[^<]*<\/title>/, `<title>${T}</title>`);
-    l = l.replace('name--prefix">Rux</span>&nbsp;DS', `name--prefix">${P}</span>&nbsp;${N}`);
+    if (l.startsWith('<html lang="en" data-theme="white">')) l = l.replace('<html lang="en" data-theme="white">', () => `<html lang="en" data-theme="${theme}">`);
+    l = l.replace(/<title>[^<]*<\/title>/, () => `<title>${T}</title>`);
+    l = l.replace('name--prefix">Rux</span>&nbsp;DS', () => `name--prefix">${P}</span>&nbsp;${N}`);
     l = l.split('aria-label="Rux DS"').join(`aria-label="${P} ${N}"`);
     return l;
   });

@@ -200,7 +200,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <p class="rux--type-heading-04">38 of 38 shown</p>
+              <p class="rux--type-heading-04">35 of 38 shown</p>
               <p>3 portal cells reported by npm run gates only</p>
             </div>
           </div>
@@ -801,7 +801,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h2 id="gates">Gates</h2>
-          <p>24 gates. 19 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
+          <p>25 gates. 20 run in <code>npm run verify</code>; 5 need a browser and are recorded by hand in <code>docs/gate-coverage.json</code>.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-header">
               <div>
@@ -948,6 +948,13 @@
                   <td>whether the marked region is the RIGHT part of the fragment — that is a reading</td>
                 </tr>
                 <tr>
+                  <td>check-parity</td>
+                  <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
+                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
+                  <td>builder/rewrites.mjs exportPage disagreeing with the page-writing lines of tools/new-project.sh, for any of the ten templates and any of three answer sets · a substitution added to or removed from the script, which moves the `-e` count · the extracted region no longer being findable, which faults rather than passing</td>
+                  <td>everything the script does outside those lines — the vendored tree, the PIN, the seeded brand and CSS files, the questions, the drift report · any answer it is not given · and WHETHER EITHER SIDE PRODUCES VALID HTML: neither escapes the answers, so a name carrying " &lt; &gt; or &amp; makes markup both sides agree on byte for byte and no browser reads as intended</td>
+                </tr>
+                <tr>
                   <td>build-builder-icons</td>
                   <td><span class="rux--tag rux--tag--blue rux--tag--sm"><span class="rux--tag__label">node</span></span></td>
                   <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">in verify</span></span></td>
@@ -997,7 +1004,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 38 of 38 are current; 0 not current, 0 never run. <code>npm run gates</code> reports all 41, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 35 of 38 are current; 3 not current, 0 never run. <code>npm run gates</code> reports all 41, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -1021,9 +1028,9 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-05</td>
-                  <td>2026-09-05</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1105,9 +1112,9 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-05</td>
-                  <td>2026-09-05</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1196,9 +1203,9 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-05</td>
-                  <td>2026-09-05</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>

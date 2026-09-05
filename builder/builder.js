@@ -44,10 +44,17 @@
    and the two notices. Real component markup is authored in the generator
    and cloned here, never assembled out of class-name strings.
 
-   NOT YET: export as a download, and the guided mode. Those are the next
-   stages of the approved plan.
+   AND IT CAN BE TAKEN AWAY. Two delivery paths, no third: download the page
+   for a project that exists, or copy the whole <main> to replace one; or, for
+   a project that does not exist yet, copy the exact new-project.sh command
+   built from the answers. THE SCRIPT STAYS THE ONE PROJECT CREATOR — the
+   builder writes a page, never a project — and tools/check-parity.mjs holds
+   exportPage to the script's own page-writing lines, run per template.
+
+   NOT YET: the guided mode, and escaping the answers as HTML — neither this
+   nor the script does, and both say so rather than pretending otherwise.
    ========================================================================== */
-import { compose, previewPage, exportPage, textFieldsOf, applyTextEdits, integrity } from './rewrites.mjs';
+import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
 import { emptyHistory, pushed, undone, redone, runKey, sameRun,
          toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
@@ -224,8 +231,17 @@ const clearDraft = () => { try { localStorage.removeItem(DRAFT_KEY); } catch { /
 
 // Cloned, never constructed: the two notices are real component markup and
 // live in builder.html where check-classes reads them.
-function showNotice(templateId, title, subtitle, action, onAction) {
-  const box = $('#bld-notice');
+//
+// TWO REGIONS, AND THAT IS WHY THIS TAKES A BOX. Showing a notice CLEARS its
+// container, so routing export feedback through #bld-notice would delete the
+// "saved draft was left unopened" warning AND ITS DISCARD BUTTON while
+// `unopened` still blocks every save — leaving the reader no way to reach the
+// one control that restores saving, and no sign anything was wrong. The same
+// applies to the save-failure alert. So #bld-notice is the persistent region,
+// owned by the draft and the save, and #bld-export-notice is the transient one
+// beside the buttons that caused it. An export never touches the first.
+function showNotice(templateId, title, subtitle, action, onAction, into = '#bld-notice') {
+  const box = $(into);
   box.textContent = '';
   const node = $(`#${templateId}`).content.cloneNode(true);
   node.querySelector('.rux--actionable-notification__title').textContent = title;
@@ -239,6 +255,8 @@ function showNotice(templateId, title, subtitle, action, onAction) {
 }
 
 const alertNotice = (title, subtitle) => showNotice('bld-alert-template', title, subtitle, null, null);
+const exportNotice = (title, subtitle) => showNotice('bld-notice-template', title, subtitle, null, null, '#bld-export-notice');
+const exportAlert = (title, subtitle) => showNotice('bld-alert-template', title, subtitle, null, null, '#bld-export-notice');
 
 // On load, before the first render. A draft is opened only when session.mjs
 // can establish that it still fits this manifest; anything else is left
@@ -493,6 +511,11 @@ const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 let pending = null;
 async function render() {
   const my = pending = {};
+  // BEFORE THE TRY, because neither depends on the composition: the command is
+  // built from the answers and the template alone, and it must still be right
+  // on a page whose preview failed to build.
+  $('#bld-command').textContent = command();
+  exportWarning();
   try {
     const { page, roundTrip, integrity: ig } = await composed();
     if (pending !== my) return;
@@ -587,6 +610,92 @@ function removeBlock() {
   render();
 }
 
+// ── taking it away ─────────────────────────────────────────────────────────
+//
+// ONE DEFINITION OF THE FILE NAME, used by the download and by the command,
+// because the two would otherwise disagree in a way nobody sees until the
+// script dies. `page` is a FILE NAME, never a path: new-project.sh writes
+// `> "$DIR/$PAGE.html"` and creates no parent directory, so `reports/orders`
+// kills it under `set -e`, while a browser's download attribute quietly
+// flattens the separator and writes the file anyway. A trailing `.html` is
+// stripped rather than rejected — the field says "without .html", and typing
+// it is the obvious slip, not an error worth a lecture.
+function normalisePage() {
+  const raw = state.page.trim().replace(/\.html$/i, '');
+  if (!raw || /[/\\]/.test(raw)) return { name: 'index', why: raw ? `“${raw}” has a path separator; the script writes one file beside the project's own index.html` : '' };
+  return { name: raw, why: '' };
+}
+
+// Every answer single-quoted, so nothing in it is read by the shell. The
+// FOLDER IS DELIBERATELY ABSENT: supplying every other flag leaves the script
+// asking exactly one question, first, with its own default. The builder does
+// not know the reader's folders, and a placeholder path they might run without
+// reading is the trap this avoids.
+const sq = s => `'${String(s).split("'").join("'\\''")}'`;
+function command() {
+  const a = answers();
+  return ['./tools/new-project.sh',
+    '--template', sq(state.template), '--theme', sq(a.theme),
+    '--prefix', sq(a.prefix), '--name', sq(a.name),
+    '--title', sq(a.title), '--page', sq(normalisePage().name)].join(' ');
+}
+
+// NEITHER SIDE ESCAPES HTML, and check-parity says so in its own words: an
+// answer carrying " < > or & lands unescaped in element text and in an
+// aria-label, so it can make markup both sides agree on byte for byte and no
+// browser reads as intended. The builder will not escape unilaterally — that
+// would break the parity contract it just earned — so it says so instead.
+// Whether to escape in both, reject in both, or leave it is rux's: §4.12.
+function exportWarning() {
+  const a = answers();
+  const bad = [['product prefix', a.prefix], ['product name', a.name], ['browser tab title', a.title]]
+    .map(([label, v]) => [label, [...new Set((v.match(/["<>&]/g) ?? []))].join(' ')])
+    .filter(([, chars]) => chars);
+  const line = $('#bld-export-warn');
+  const page = normalisePage();
+  const notes = [
+    bad.length ? `${bad.map(([l, c]) => `the ${l} carries ${c}`).join(', ')} — neither the export nor new-project.sh escapes these, so the page may not read as you intend.` : '',
+    page.why,
+  ].filter(Boolean);
+  line.textContent = notes.join(' ');
+  line.hidden = !notes.length;
+}
+
+async function downloadPage() {
+  try {
+    const doc = exportPage((await composed()).page, answers());
+    const url = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
+    // An unclassed anchor, the way decodeText() makes an unclassed textarea:
+    // this file invents no rux-- markup, and neither of these is any.
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${normalisePage().name}.html`;
+    a.click();
+    // NOT REVOKED ON THE NEXT LINE. The preview's URL is revoked on the
+    // iframe's `load`, because there the consumer announces it has the bytes;
+    // a download announces nothing, and revoking in the same tick as the click
+    // has been observed to abort the save. So it is released on a timer — long
+    // enough that the browser has taken it, short enough that a session of
+    // exports does not accumulate documents in memory.
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    exportNotice('Downloaded', `${a.download} — put it beside the project's own index.html. Its paths already point at vendor/rux-ds/.`);
+  } catch (e) {
+    exportAlert('Could not build the page', e.message);
+  }
+}
+
+async function copyText(what, text, subtitle) {
+  try {
+    await navigator.clipboard.writeText(text);
+    exportNotice(`${what} copied`, subtitle);
+  } catch (e) {
+    // The same call js/copy-button.js makes, and the same reason it does not
+    // go silent: a copy that failed and said nothing is worse than one that
+    // says where to look.
+    exportAlert(`Could not copy the ${what.toLowerCase()}`, `${e.message}. It is on window.RuxBuilder if you need it from the console.`);
+  }
+}
+
 async function init() {
   try {
     manifest = JSON.parse(await fetchText('builder/blocks.json'));
@@ -613,6 +722,16 @@ async function init() {
   $('#bld-undo').addEventListener('click', () => step('undo'));
   $('#bld-redo').addEventListener('click', () => step('redo'));
   $('#bld-start-over').addEventListener('click', startOver);
+  $('#bld-download').addEventListener('click', downloadPage);
+  $('#bld-copy').addEventListener('click', async () => {
+    try {
+      const main = bodyOnly(exportPage((await composed()).page, answers()));
+      if (!main) return exportAlert('Nothing to copy', 'this page has no <main> region.');
+      await copyText('Main region', main, 'It is the whole <main> element, so it REPLACES the main region of the page you paste it into.');
+    } catch (e) { exportAlert('Could not build the page', e.message); }
+  });
+  $('#bld-copy-command').addEventListener('click', () =>
+    copyText('Command', command(), 'Run it from your rux-ds clone; it will ask where to put the project.'));
   const picker = $('#bld-block');
   picker.addEventListener('change', () => { endRun(); state.block = picker.value; showBlock(); });
   $('#bld-reset').addEventListener('click', () => {
@@ -665,6 +784,10 @@ async function init() {
 window.RuxBuilder = {
   state,
   page: async () => exportPage((await composed()).page, answers()),
+  main: async () => bodyOnly(exportPage((await composed()).page, answers())),
+  command,
+  fileName: normalisePage,
+  download: downloadPage,
   roundTrip: async () => (await composed()).roundTrip,
   integrity: async () => (await composed()).integrity,
   model: () => pageOf(),

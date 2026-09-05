@@ -20,6 +20,16 @@
 .bld-frame { display: block; inline-size: 100%; block-size: 48rem; border: 0; background: var(--rux-background); }
 .bld-widths, .bld-row { display: flex; flex-wrap: wrap; gap: var(--rux-spacing-03); }
 .bld-status { color: var(--rux-text-secondary); }
+/* The command is a <code>, not a code-snippet: that component's copy button is
+   the icon-tooltip one, and stage 7's call was a plain button the builder owns
+   (js/copy-button.js: "A page that needs neither owns the click"). So this is
+   a scroller, and it carries no rux-- class for check-classes to resolve. */
+/* WRAPPED, NOT SCROLLED. This column is five of sixteen, and the command is
+   long: at white-space:pre the reader saw "./tools/new-project.sh --template"
+   and had to scroll a code block to read what they were about to run. pre-wrap
+   breaks at the spaces between flags, which is where a shell command reads
+   naturally; overflow-x stays for a single token longer than the column. */
+.bld-command { display: block; background: var(--rux-layer-01); border: 1px solid var(--rux-border-subtle-01); padding: var(--rux-spacing-03); overflow-x: auto; white-space: pre-wrap; overflow-wrap: break-word; }
 </style>
 </head>
 <body>
@@ -270,6 +280,27 @@
               <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
               <div>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
+              </div>
+              <h2>Export</h2>
+              <div id="bld-export-notice"></div>
+              <p class="bld-status" id="bld-export-warn" hidden></p>
+              <div class="rux--stack-vertical rux--stack-scale-5">
+                <div class="rux--stack-vertical rux--stack-scale-3">
+                  <h3 class="rux--type-heading-compact-01">A page for an existing project</h3>
+                  <div class="bld-row" role="group" aria-label="Take the page away">
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-download">Download the page</button>
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy">Copy the main region</button>
+                  </div>
+                  <div class="rux--form__helper-text">The download goes beside the project's <code>index.html</code>, and its paths already point at <code>vendor/rux-ds/</code>. The copy is the whole <code>&lt;main&gt;</code> element, so it REPLACES a page's main region rather than filling it.</div>
+                </div>
+                <div class="rux--stack-vertical rux--stack-scale-3">
+                  <h3 class="rux--type-heading-compact-01">A new project</h3>
+                  <code class="bld-command" id="bld-command"></code>
+                  <div>
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy-command">Copy the command</button>
+                  </div>
+                  <div class="rux--form__helper-text">Run it from your <code>rux-ds</code> clone. It carries every answer above and asks only where to put the project — the builder does not know your folders, and a path you might run without reading is worse than a question. <code>tools/new-project.sh</code> stays the one project creator; the downloaded page then replaces the one it wrote.</div>
+                </div>
               </div>
             </div>
           </div>

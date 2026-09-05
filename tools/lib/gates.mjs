@@ -501,6 +501,29 @@ export const GATES = [
   },
 
   {
+    // THE ONLY GATE THAT RUNS ANOTHER TOOL'S OWN BYTES. It extracts the
+    // page-writing region from tools/new-project.sh and executes it, rather
+    // than reimplementing it: a second implementation would only prove the two
+    // copies here agree. It does not run the WHOLE script, which refuses a
+    // dirty tree and unpushed commits by design -- a gate that did would fail
+    // on every uncommitted change and be routed around.
+    id: 'check-parity',
+    tool: 'tools/check-parity.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: "builder/rewrites.mjs exportPage disagreeing with the page-writing lines of tools/new-project.sh, for any of the ten templates and any of three answer sets · a substitution added to or removed from the script, which moves the `-e` count · the extracted region no longer being findable, which faults rather than passing",
+    blindTo: "everything the script does outside those lines — the vendored tree, the PIN, the seeded brand and CSS files, the questions, the drift report · any answer it is not given · and WHETHER EITHER SIDE PRODUCES VALID HTML: neither escapes the answers, so a name carrying \" < > or & makes markup both sides agree on byte for byte and no browser reads as intended",
+    reads: "the script's own extracted lines, run per template per answer set, against exportPage",
+    fileTargets: ['tools/new-project.sh', 'builder/rewrites.mjs', 'templates'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['tools/new-project.sh', 'builder/rewrites.mjs', 'templates'],
+    redRun: "revert content() in builder/rewrites.mjs to a string replacement and the awkward answer set fails on all ten templates · change one `-e` expression in the script · delete the `> \"$DIR/$PAGE.html\"` line and expect ANCHORS, not a pass",
+    sideEffects: 'writes into a scratch directory under os.tmpdir() and removes it',
+    baseline: '10 templates × 3 answer sets · 30 of 30 byte-identical',
+  },
+
+  {
     // The same shape as build-portal-icons: a gate carried by a build tool. The
     // generator inlines assets/icons.svg and refuses to write a page that uses
     // a glyph the sprite lacks, because a <use> at a missing symbol paints
@@ -688,7 +711,7 @@ export const CONTROL_FILES = [
   'tools/check-behaviour.js', 'tools/check-blocks.mjs', 'tools/check-classes.mjs', 'tools/check-co-classes.mjs',
   'tools/check-compound.mjs', 'tools/check-coverage.mjs', 'tools/check-gates.mjs',
   'tools/check-glyphs.mjs', 'tools/check-headings.mjs', 'tools/check-icons.mjs',
-  'tools/check-inventory.mjs', 'tools/check-provenance.mjs', 'tools/check-rendered.js',
+  'tools/check-inventory.mjs', 'tools/check-parity.mjs', 'tools/check-provenance.mjs', 'tools/check-rendered.js',
   'tools/check-runtime-classes.js', 'tools/check-slots.mjs', 'tools/check-spacing.js',
   'tools/check-tags.mjs', 'tools/check-tokens.mjs',
   'tools/build.mjs', 'tools/build-portal.mjs', 'tools/build-blocks.mjs', 'tools/build-builder.mjs',
@@ -709,8 +732,15 @@ export const CONTROL_FILES = [
   // (the checker): change it and the manifest and its comparison move together.
   'tools/lib/blocks.mjs',
   // The one transformation a template undergoes to become a page, read by
-  // builder.html and, in the next stage, by check-parity against the script.
+  // builder.html and by check-parity against the script.
   'builder/rewrites.mjs',
+  // AND THE SCRIPT IT IS CHECKED AGAINST. new-project.sh became an expected
+  // result the moment a gate started comparing against it: edit the sed
+  // pipeline and check-parity agrees with whatever it now says, exactly as
+  // docs/coverage.json and the Carbon captures do for their gates. It is a
+  // control for the older reason too — it is the one consumer-facing tool, and
+  // it decides what every project starts from.
+  'tools/new-project.sh',
   'tools/lib/staleness.mjs', 'tools/check-controls.mjs',
 
   // The figure generators. tools/lib/stats.mjs answers for every number README
