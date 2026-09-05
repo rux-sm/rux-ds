@@ -3076,6 +3076,45 @@ on `deps`, refusing a placement. The plan, saved as
 `docs/builder-add-and-move-plan.md` while it was reviewed, is folded here
 and deleted in the same commit.
 
+**The guided mode is planned, 2026-09-05, in `docs/builder-guided-plan.md`:
+stages 0 and 6 to 13.** rux's brief: a friendly, finished way to build a
+page and its content — start from nothing, pick the purpose, be walked
+through one section at a time with defaults and reasons, edit the content on
+the way, review, take it away. Revision 1 put it on a page of its own and
+kept content editing in the builder; rux's review asked for one continuous
+session, content in the walkthrough, suggestions that know the page, a
+defined export, defined coverage, undo semantics settled first, and the
+verification debt paid before it is relied on. Revision 2 is what the plan
+file carries: a guided mode inside `builder.html` on the same draft, model
+and editor, flow purpose → sections and content → add sections → review →
+export. Each stage is its own proposal and lands with its own entry here;
+the plan file is trimmed as they do and deleted with the last.
+
+**Stage 0, 2026-09-05, accepted by rux and landed in the commit that
+carries this sentence — the registry debt, so the stages after it are
+verified by cells that can see them.** Two
+corrections to `tools/lib/gates.mjs`, additive. First, `builder.html`'s
+cells never aged on `builder/`: `builder.js`, `page.mjs` and `rewrites.mjs`
+are not in `js/` by design and so were in no gate's inputs, which is why
+0475e3f could move the page's runtime-classes reading from 46/47 to 46/50
+and fce2258 could rebuild the left column without a cell going stale — both
+sweeps happened only because the page itself changed in the same commit.
+`BUILDER_SCRIPTS = { 'builder.html': ['builder'] }` is now a page input on
+all five browser gates, check-runtime-classes included, because a script,
+unlike harness.css, does put classes on elements. Proved red on the tree: an
+uncommitted byte in `builder/page.mjs` turns the three builder cells DIRTY
+and restoring it turns them back; the recorded readings are at fce2258 and
+nothing under `builder/` has moved since, so all 41 stay current. Second,
+the six Node gates whose rows still said `kitchen-sink.html` and
+`portal.html` by hand — check-classes, check-tokens, check-co-classes,
+check-coverage, check-headings, check-aria-roles — now derive `fileTargets`
+(and the four `inputs` carrying the same literal) from `pageFiles()`, the
+discovery `pageTargets()` has used since 2026-08-31, so `builder.html`,
+which all six already read, is finally named by their rows. Neither field is
+consumed by a tool; the rows describe, and they described wrongly. What it
+weakens: nothing — cells age on more, and rows name more. `npm run verify`
+exit 0, `check-controls` names `tools/lib/gates.mjs` alone.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

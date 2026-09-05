@@ -108,6 +108,18 @@ const RENDERED_INPUTS = [
 // static markup, and no stylesheet puts a class on an element.
 const SINK_HARNESS = { 'kitchen-sink.html': ['sink/harness.css'] };
 
+// THE BUILDER'S OWN SCRIPTS, the same finding from the other side. builder.html
+// loads builder/builder.js, which imports builder/page.mjs and
+// builder/rewrites.mjs; none is in js/, by design (they are one page's, not the
+// published module set), so RENDERED_INPUTS never reached them. 0475e3f moved
+// the page's check-runtime-classes reading from 46/47 to 46/50 and fce2258
+// rebuilt the whole left column, and neither aged a cell: both sweeps happened
+// only because the page itself changed in the same commit. Declared per page,
+// for all five browser gates -- unlike harness.css, a script DOES put classes
+// on elements, so check-runtime-classes is the cell it can move most.
+// Roadmap §4.12, the guided-mode plan's stage 0.
+const BUILDER_SCRIPTS = { 'builder.html': ['builder'] };
+
 export const GATES = [
   {
     id: 'build-namespace',
@@ -155,10 +167,16 @@ export const GATES = [
     catches: 'a class used in HTML or `js/` with no CSS behind it · a class whose component was stripped',
     blindTo: 'a class that resolves but renders wrong',
     reads: 'assembled',
-    fileTargets: ['kitchen-sink.html', 'portal.html', 'templates', 'js', 'css/rux-theme.css', 'css/rux-overrides.css'],
+    // ROOT PAGES DISCOVERED, as pageTargets() does. This gate and five below
+    // read every *.html at the root since 2026-08-31 (sources.mjs pageFiles),
+    // and their rows here still said kitchen-sink.html and portal.html by hand
+    // until 2026-09-05 -- so builder.html was read by all six and named by
+    // none. Stage 2 of §4.12 left it open; the guided-mode plan's stage 0
+    // closes it. pageFiles() is the root pages plus templates/.
+    fileTargets: [...pageFiles(), 'js', 'css/rux-theme.css', 'css/rux-overrides.css'],
     pageTargets: [],
     canRun: { sink: true, templates: true },
-    inputs: ['css/rux.css', 'kitchen-sink.html', 'portal.html', 'templates', 'js'],
+    inputs: ['css/rux.css', ...pageFiles(), 'js'],
     redRun: 'add a `rux--nonesuch` class to any fragment',
     sideEffects: null,
     baseline: 'undefined 0 · stripped 0',
@@ -171,10 +189,10 @@ export const GATES = [
     catches: 'a `var(--rux-*)` that resolves to nothing',
     blindTo: 'a token whose *value* moved. check-token-values covers the values DECLARED in css/rux.css and only those: not a value that moves through the cascade, not one declared in css/rux-theme.css or css/rux-overrides.css, and not what a browser finally computes',
     reads: 'assembled',
-    fileTargets: ['css/rux.css', 'sink/harness.css', 'css/rux-theme.css', 'css/rux-overrides.css', 'kitchen-sink.html', 'portal.html', 'templates'],
+    fileTargets: ['css/rux.css', 'sink/harness.css', 'css/rux-theme.css', 'css/rux-overrides.css', ...pageFiles()],
     pageTargets: [],
     canRun: { sink: true, templates: true },
-    inputs: ['css/rux.css', 'sink/harness.css', 'kitchen-sink.html', 'portal.html', 'templates'],
+    inputs: ['css/rux.css', 'sink/harness.css', ...pageFiles()],
     // Proven on 2026-08-29: a placeholder token name written inside a CSS
     // COMMENT in harness.css failed the build as unresolved. The gate parses
     // the file; it does not know what a comment is.
@@ -298,10 +316,10 @@ export const GATES = [
     catches: 'a modifier used without the base class that styles it',
     blindTo: 'a base class Carbon never pairs',
     reads: 'assembled',
-    fileTargets: ['kitchen-sink.html', 'portal.html', 'templates'],
+    fileTargets: pageFiles(),
     pageTargets: [],
     canRun: { sink: true, templates: true },
-    inputs: ['kitchen-sink.html', 'portal.html', 'templates', 'docs/carbon-co-classes.json'],
+    inputs: [...pageFiles(), 'docs/carbon-co-classes.json'],
     redRun: 'use a modifier without its base class in any fragment',
     // Recorded as a gap, not a style note: a finding on a template cannot be
     // located, because the violation block prints the class attribute and no path.
@@ -370,10 +388,10 @@ export const GATES = [
     catches: 'a component exercising fewer classes than `docs/coverage.json` records',
     blindTo: 'standing still — it ratchets, it does not set a floor',
     reads: 'assembled',
-    fileTargets: ['kitchen-sink.html', 'portal.html', 'templates'],
+    fileTargets: pageFiles(),
     pageTargets: [],
     canRun: { sink: true, templates: true },
-    inputs: ['kitchen-sink.html', 'portal.html', 'templates', 'css/rux.css',
+    inputs: [...pageFiles(), 'css/rux.css',
       'docs/inventory.json', 'docs/coverage.json'],
     redRun: 'remove a class from a fragment so its component drops below the recorded figure',
     sideEffects: null,
@@ -417,7 +435,7 @@ export const GATES = [
     catches: 'a page with no heading at all · more than one `h1` · an outline that skips a level',
     blindTo: 'whether a heading says anything useful · heading ORDER against visual order · a heading that is visually a heading and marked up as a div',
     reads: 'every page — templates/ and the generated root pages, comments stripped',
-    fileTargets: ['templates', 'kitchen-sink.html', 'portal.html'],
+    fileTargets: pageFiles(),
     pageTargets: [],
     canRun: { sink: true, templates: true },
     inputs: ['templates', 'sink'],
@@ -441,7 +459,7 @@ export const GATES = [
     catches: 'a `role` on a `rux--` class that Carbon never renders that role on',
     blindTo: 'a role on an unclassed element · a MISSING role · whether required child roles are present · anything turning on `aria-live`, which the extractor does not record',
     reads: 'sink/, templates/ and the root pages against every capture',
-    fileTargets: ['sink', 'templates', 'kitchen-sink.html', 'portal.html'],
+    fileTargets: ['sink', ...pageFiles()],
     pageTargets: [],
     canRun: { sink: true, templates: true },
     inputs: ['sink', 'templates', 'docs/carbon-react-dom.json'],
@@ -533,7 +551,7 @@ export const GATES = [
     canRun: { sink: true, templates: false },
     cannotRunReason: 'its unit is the .ks-sec section; a template has none, and a fallback would report a pass it did not earn',
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: SINK_HARNESS,
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
     redRun: 'flatten a section: #tags [class*="rux--"] { height:1px; min-height:0; padding:0 }',
     // Both bite an operator. The theme reset is not a restore: it writes
     // 'white' whatever the page was on before.
@@ -560,6 +578,7 @@ export const GATES = [
     // running -- no stylesheet puts a class on an element. Declaring CSS
     // here would age twelve readings that cannot move.
     sharedInputs: ['js'],
+    pageInputs: BUILDER_SCRIPTS,
     redRun: 'remove a class from the live DOM by hand; it reports that class stripped',
     // Condition 5 of the sink-check skill, and it conflicts with condition 1:
     // the click check-a11y needs for document.hasFocus() is the kind of press
@@ -579,7 +598,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: ['docs/carbon-react-spacing.json', ...RENDERED_INPUTS],
-    pageInputs: SINK_HARNESS,
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
     redRun: 'change a padding on any compiled class and re-run',
     sideEffects: null,
     // READ THE noReference LIST. Pagination's real defect sat in that bucket
@@ -608,7 +627,7 @@ export const GATES = [
     // height, so a stylesheet can change its result -- it is not a
     // pure-JavaScript reading.
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: SINK_HARNESS,
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
     redRun: 'revert the offset write in js/menu.js and the tabindex pairing in js/data-table.js — expect 3 failures naming an 8px overlap and tabindex [0,0,0] on a hidden bar',
     // Every case restores what it touched, so it is safe to run twice and safe
     // beside the other browser gates. It still runs AFTER check-runtime-classes,
@@ -628,7 +647,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: SINK_HARNESS,
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
     redRun: '.rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important } — expect 12 findings',
     sideEffects: 'moves focus and restores it; injects and removes a transition:none style',
     baseline: 'kitchen-sink 0 findings · 6 notes · focusRingChecked true',
