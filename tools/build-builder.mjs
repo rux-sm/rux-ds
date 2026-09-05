@@ -12,9 +12,11 @@
 // two shells, which is exactly what roadmap §4.12's "no frames" line forbids.
 // A block picker and its text fields came next, because a builder that cannot
 // reproduce an unedited template byte for byte has no business editing one and
-// that round trip is proved first. The catalogue, adding and moving blocks and
-// export are still later stages. The icon assertion at the foot is unchanged:
-// this section adds no <use>.
+// that round trip is proved first. Then the catalogue and the arrangement: a
+// slot, every marked block to add to it, and move and remove on the selected
+// one, with the page model in builder/page.mjs. Undo and export are still
+// later stages. The icon assertion at the foot is unchanged: the added
+// controls are text buttons and two more selects, no new <use>.
 //
 // NO SPRITE MARKERS. tools/lib/sources.mjs spritePages() hands any root page
 // carrying SPRITE:BEGIN to `npm run icons` as a writer; this file is already
@@ -74,7 +76,7 @@ const page = `<!doctype html>
 .bld-preview { background: var(--rux-layer-01); border: 1px solid var(--rux-border-subtle-01); padding: var(--rux-spacing-05); overflow: auto; }
 .bld-frame-wrap { transform-origin: top left; }
 .bld-frame { display: block; inline-size: 100%; block-size: 48rem; border: 0; background: var(--rux-background); }
-.bld-widths { display: flex; flex-wrap: wrap; gap: var(--rux-spacing-03); }
+.bld-widths, .bld-row { display: flex; flex-wrap: wrap; gap: var(--rux-spacing-03); }
 .bld-status { color: var(--rux-text-secondary); }
 </style>
 </head>
@@ -141,17 +143,46 @@ ${THEMES.map(([v, l]) => `                  <div class="rux--radio-button-wrappe
                 </fieldset>
                 <div class="rux--form__helper-text">The page's default. A visitor's own choice, saved in the account panel, wins on the real page; the preview shows the default.</div>
               </div>${textInput('bld-prefix', 'Product prefix', 'Rux', 'The lighter-weight half of the header name.')}${textInput('bld-name', 'Product name', 'DS', 'The header name and its aria-label.')}${textInput('bld-title', 'Browser tab title', 'Prefix and name', 'Defaults to the prefix and the name, as the script does.')}${textInput('bld-page', 'File name', 'index', 'Without .html — what the export downloads as.')}
-              <h2>Edit content</h2>
+              <h2>Blocks</h2>
               <div class="rux--form-item">
                 <div class="rux--select">
-                  <label class="rux--label" for="bld-block">Block</label>
+                  <label class="rux--label" for="bld-slot">Slot</label>
+                  <div class="rux--select-input__wrapper">
+                    <select id="bld-slot" class="rux--select-input"></select>
+                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                  </div>
+                  <div class="rux--form__helper-text" id="bld-slot-note">A container the template already has.</div>
+                </div>
+              </div>
+              <div class="rux--form-item">
+                <div class="rux--select">
+                  <label class="rux--label" for="bld-catalogue">Add from the catalogue</label>
+                  <div class="rux--select-input__wrapper">
+                    <select id="bld-catalogue" class="rux--select-input"></select>
+                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                  </div>
+                  <div class="rux--form__helper-text">Every marked block in <code>sink/</code> and <code>templates/</code>. Each part is attested; the arrangement is yours (<code>docs/composing-pages.md</code> §3.10). Added to the end of the slot.</div>
+                </div>
+              </div>
+              <div>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add">Add to slot</button>
+              </div>
+              <div class="rux--form-item">
+                <div class="rux--select">
+                  <label class="rux--label" for="bld-block">Block on the page</label>
                   <div class="rux--select-input__wrapper">
                     <select id="bld-block" class="rux--select-input"></select>
                     <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
                   </div>
-                  <div class="rux--form__helper-text">The marked regions of the chosen template, in the order they appear in it.</div>
+                  <div class="rux--form__helper-text" id="bld-block-note">Every block on the page, in order; a second copy is numbered.</div>
                 </div>
               </div>
+              <div class="bld-row" role="group" aria-label="Arrange the selected block">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-up">Move up</button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-down">Move down</button>
+                <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" id="bld-remove">Remove</button>
+              </div>
+              <h2>Edit content</h2>
               <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
               <div>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
@@ -166,6 +197,7 @@ ${THEMES.map(([v, l]) => `                  <div class="rux--radio-button-wrappe
 ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-width="${v}" aria-pressed="${v === 'fit'}">${l}</button>`).join('\n')}
               </div>
               <p class="bld-status" id="bld-status">Loading the catalogue…</p>
+              <p class="bld-status" id="bld-integrity" hidden></p>
               <div class="bld-preview">
                 <div class="bld-frame-wrap" id="bld-frame-wrap">
                   <iframe class="bld-frame" id="bld-frame" title="Preview of the composed page"></iframe>

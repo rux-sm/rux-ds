@@ -3025,6 +3025,57 @@ and left for rux, tier 2: `builder.html`'s three browser cells do not age on
 `builder/`, though `builder.js` runs in that page and `0475e3f` moved its
 runtime-classes reading; a `pageInputs` entry would say so.
 
+**Stage 5, 2026-09-05, accepted by rux and landed in the commit that
+carries this sentence — add and move a block, on a page model.** `builder/page.mjs`, a pure module beside
+`rewrites.mjs`: one plain value per template — `{ slots: { body: [ { key,
+id, n, follows } ] }, next }` — with `add`, `move` and `remove` returning a
+new value, and `composePage` turning it into the page through `compose`,
+`instanceOf` and `applyTextEdits`. Instance numbers come from `next` per
+block id, rise, survive a move and are not reused, the contract stage 4
+wrote; the template's own blocks are instance 1, so an untouched page is
+the template byte for byte, asserted on all ten. Four facts shaped it. Every
+slot records identical gaps, so one separator rule reproduces every
+template; `compose` handed fewer gaps than blocks writes the string
+`undefined` into the page (measured — the fuzz first tripped on Carbon's own
+`i-undefined--filled` glyph before it found this), so the model builds the
+slot record itself; sink blocks sit at 2 to 6 spaces and slots at 6 or 8,
+so an inserted footprint is shifted to its slot's depth by leading
+whitespace alone (no block carries `<pre>` or a textarea with content, and
+one that did would not be shifted); and placement is informational by
+`build-blocks.mjs`'s own words and this page's intro — the catalogue offers
+all 33 blocks in every slot and says where each was attested. A foreign
+block gets one `<!-- FROM: source · provenance -->` line above it, the
+comment `rewrites.mjs` promised. A `follows` run is one unit, as the marker
+rule asks: pagination is added, moved and removed with its table and still
+edited on its own. `integrity(html)` in `rewrites.mjs`, additive, reads
+duplicate ids and unresolved references on the composed page for the status
+line, which is how the wizard's Cancel (`data-rux-open="wizard-cancel"`,
+frame not block) and a breadcrumb's three `href="#breadcrumb"` are shown
+rather than refused. Proved in node on all 33 blocks, uncommitted: the
+pristine model identical on all ten templates; 2000 random add, move and
+remove steps keeping every invariant; the stage-4 fixture placed twice on
+`app-shell` reading zero duplicate ids and two radio groups, its second
+footprint at depth 8. Proved in the pane on the served page: the same
+fixture, clicking the second copy's `stl-2-2` checks it and leaves the first
+copy's `stl-1` checked — the mis-binding this whole line of work exists to
+prevent, seen in a browser for the first time; an edit on instance 2
+survives its move and the removal of instance 1; the picker, the highlight
+and the status line follow every step; Tab reaches slot, catalogue, Add,
+picker, Move up and Remove in order, Move down skipped only while disabled
+at the slot's end. NOT PROVED: activating a button by Enter or Space, which
+the pane's synthetic keys do not deliver — the stage-2 width buttons fail
+the same way, so it is the pane and not the page — and the three
+`builder.html` browser cells, stale at this commit until re-swept and
+restamped in the ledger commit that follows, as every stage before it.
+The chrome is `sink/` markup, `rux--btn--danger--ghost` for Remove included,
+and adds no `<use>`. `page.mjs` is tier 3 by the categories — builder state,
+not a gate — and says so in its header for rux to overrule; the two control
+files touched are additive. Not done: undo (the model is a plain value so a
+history is all it needs), export, `check-parity`, cross-slot moves, any rule
+on `deps`, refusing a placement. The plan, saved as
+`docs/builder-add-and-move-plan.md` while it was reviewed, is folded here
+and deleted in the same commit.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

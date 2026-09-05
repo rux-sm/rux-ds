@@ -289,15 +289,17 @@ tag would still pass.
 
 **Next, in order:**
 
-1. Creator 3, the page builder, `builder.html` here — stages 1 to 4 of its
+1. Creator 3, the page builder, `builder.html` here — stages 1 to 5 of its
    plan have landed (markers, the gate, the skeleton round trip, the preview
-   2026-09-04; select-and-edit and instance identity 2026-09-05). Next is the
-   add-and-move page model on top of `instanceOf`, then `check-parity` and
-   export. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   2026-09-04; select-and-edit, instance identity and add-and-move on a page
+   model 2026-09-05). Next is undo, a history of that model, then
+   `check-parity` and export. The three `builder.html` browser cells are to
+   be re-swept after the stage-5 commit. Roadmap §4.12 item 3 has the
+   account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.
 2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both
-   carry the mark and the favicon; `npm run gates` reads 41 of 41 current.
+   carry the mark and the favicon; `npm run gates` holds the cells.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template

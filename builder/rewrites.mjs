@@ -348,3 +348,40 @@ export function instanceOf(html, n) {
   }
   return out + html.slice(cursor);
 }
+
+// ──────────────────────────────────────────────────────────────────────────
+// INTEGRITY — two readings of a composed page, for the status line. Not a
+// transformation: nothing is changed. A duplicate id is the defect instanceOf
+// exists to prevent, and an unresolved reference is what an inserted block
+// leaves behind when its target was frame (the wizard's Cancel opens a
+// dialog that lives outside every block) or a placeholder (a breadcrumb's
+// links point at the sink section they were captured in). Both are SHOWN and
+// neither is refused: the arrangement is the reader's, and a reading they
+// can see is worth more than a rule they cannot. The same walker and the
+// same reference-carrying set as instanceOf, so the two cannot disagree
+// about what a reference is; sprite <use> resolves because <svg> is walked
+// and every template inlines the sprite's <symbol id="i-…">.
+export function integrity(html) {
+  const seen = new Map();
+  const refs = [];
+  TAGS.lastIndex = 0;
+  for (let m; (m = TAGS.exec(html));) {
+    const tok = m[0];
+    if (tok.startsWith('<!--') || tok.startsWith('</') || /^<(script|style)\b/i.test(tok)) continue;
+    for (const a of attrsOf(tok)) {
+      if (a.name === 'id') seen.set(a.value, (seen.get(a.value) ?? 0) + 1);
+      else if (REF_CARRYING.has(a.name)) {
+        const fragment = FRAGMENT.has(a.name);
+        for (const tk of a.value.split(/\s+/)) {
+          if (!tk || tk.startsWith('#') !== fragment) continue;
+          const id = fragment ? tk.slice(1) : tk;
+          if (id) refs.push({ attr: a.name, id });
+        }
+      }
+    }
+  }
+  return {
+    duplicateIds: [...seen].filter(([, n]) => n > 1).map(([id]) => id),
+    unresolved: refs.filter(r => !seen.has(r.id)),
+  };
+}

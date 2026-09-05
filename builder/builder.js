@@ -8,15 +8,19 @@
    belongs to one page in this repository.
 
    WHAT IT DOES, this stage: fetches builder/blocks.json, offers the ten
-   templates and the answers new-project.sh asks, composes the chosen
-   template from its slot records — which, unedited, must give back the
-   template byte for byte, and the status line says whether it did — and
-   previews the result in an iframe at a chosen width. It also offers the
-   chosen template's blocks by label, lists the editable text in the selected
-   one, and writes an edit back through applyTextEdits, which splices bytes
-   and never reserializes a DOM. The round trip shown in the status line is
-   always measured on the UNEDITED composition, so an edit can never make it
-   read "identical" for the wrong reason.
+   templates and the answers new-project.sh asks, and keeps ONE PAGE MODEL
+   PER TEMPLATE (builder/page.mjs) — the template's own blocks to begin with,
+   then whatever the reader adds from the catalogue, moves or removes. The
+   model is composed into the page by composePage, which puts every instance
+   through instanceOf so a block placed twice keeps its labels bound to its
+   own radios, and the preview shows the result in an iframe at a chosen
+   width. Every block on the page is offered by label, its editable text is
+   listed, and an edit is written back through applyTextEdits, keyed by the
+   INSTANCE (`id@n`) so two copies edit apart. The round trip shown in the
+   status line is always measured on the template's own slots, unedited and
+   unarranged, so nothing the reader does can make it read "identical" for
+   the wrong reason; the integrity reading beside it — duplicate ids,
+   unresolved references — is measured on the page they actually built.
 
    THE PREVIEW IS A BLOB URL, not srcdoc. A srcdoc document inherits the
    parent's base URL, so `href="#main-content"` — every template's skip link
@@ -26,30 +30,35 @@
    URL is revoked once the frame has loaded it.
 
    NOTHING HERE CONSTRUCTS rux-- MARKUP. The chrome is in the generated page,
-   where check-classes reads it; this file only fills a <select>, toggles
-   aria-pressed, writes an iframe's src and size, and CLONES the two
-   <template>s builder.html ships — #bld-field-template for a text field and
-   #bld-no-fields-template for a block with none. A field row is real
-   component markup, so it is authored in the generator and cloned here, never
-   assembled out of class-name strings.
+   where check-classes reads it; this file only fills <select>s, toggles
+   aria-pressed and disabled, writes an iframe's src and size, and CLONES the
+   two <template>s builder.html ships — #bld-field-template for a text field
+   and #bld-no-fields-template for a block with none. A field row is real
+   component markup, so it is authored in the generator and cloned here,
+   never assembled out of class-name strings.
 
-   NOT YET: the catalogue, adding and moving blocks, general undo, export.
-   Those are the next stages of the approved plan.
+   NOT YET: undo (the model is a plain value so a history is all it needs)
+   and export as a download. Those are the next stages of the approved plan.
    ========================================================================== */
-import { compose, previewPage, exportPage, textFieldsOf, applyTextEdits } from './rewrites.mjs';
+import { compose, previewPage, exportPage, textFieldsOf, applyTextEdits, integrity } from './rewrites.mjs';
+import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
 
 const ROOT = new URL('.', location.href).href;
 const $ = s => document.querySelector(s);
-const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-status');
+const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-status'), integrityLine = $('#bld-integrity');
 
-// `edits` is namespaced per template, then per block, then by FIELD INDEX
-// into that block's original html: { template: { block: { 0: 'text' } } }.
+// `pages` holds one model per template, made on first use from the manifest
+// and kept when the reader switches away and back. `edits` is namespaced per
+// template, then per ENTRY KEY (`id@n`, so two instances edit apart), then by
+// FIELD INDEX into that block's original html: { template: { key: { 0: 'text' } } }.
 // It is pruned as it goes — typing a value back to the original deletes the
-// index, and an empty block or template map is deleted outright — so the
-// count in the status line and Reset's disabled state cannot drift from it.
-const state = { template: 'app-shell', block: '', theme: 'white', prefix: '', name: '', title: '', page: '', width: 'fit', edits: {} };
+// index, an empty map is deleted outright, and removing a block drops its
+// edits — so the count in the status line and Reset's disabled state cannot
+// drift from it.
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', theme: 'white', prefix: '', name: '', title: '', page: '', width: 'fit', edits: {}, pages: {} };
 let manifest = null;
 const templates = new Map();   // name → source text
+const blocks = new Map();      // id → manifest block
 
 const answers = () => {
   const prefix = state.prefix.trim() || 'Rux';
@@ -68,28 +77,30 @@ async function source(name) {
   return templates.get(name);
 }
 
-// Every block the chosen template is built from, by name.
-const blocksOf = t => Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
 const templateOf = name => manifest.templates.find(x => x.name === name);
-// The saved edits for one block, or an empty map. Never creates the maps.
-const editsFor = (tpl, block) => (state.edits[tpl] ?? {})[block] ?? {};
+// The template's own blocks by name, for the round trip on its own slots.
+const blocksOf = t => Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
+const pageOf = () => (state.pages[state.template] ??= newPage(manifest, state.template));
+const setPage = p => { state.pages[state.template] = p; };
+const entries = () => entriesOf(pageOf(), templateOf(state.template));
+const entryOf = key => entries().find(e => e.key === key);
+// The saved edits for one entry, or an empty map. Never creates the maps.
+const editsFor = (tpl, key) => (state.edits[tpl] ?? {})[key] ?? {};
+// A block is native when it is the template's own, at instance 1.
+const isNative = (e, t) => e.n === 1 && blocks.get(e.id).source === t.path;
+const short = cls => (cls ?? '').split(/\s+/).filter(Boolean).map(c => c.replace(/^rux--/, '')).join(' ');
 
-// The composed page: the template with each slot rebuilt from the manifest,
-// each edited block's html spliced first. `roundTrip` is deliberately measured
-// on the UNEDITED composition — that check asks whether the builder can
-// reproduce the template it was given, and an edit is not supposed to make it
-// fail, so letting an edit change the answer would destroy the only thing it
-// says. The per-entry spread never mutates the object the manifest holds.
+// The composed page and its two readings. `roundTrip` is deliberately
+// measured on the template's OWN slot records, unedited and unarranged — that
+// check asks whether the builder can reproduce the template it was given,
+// and nothing the reader does is supposed to make it fail, so letting the
+// model change the answer would destroy the only thing it says. `integrity`
+// is the opposite: it reads the page the reader actually built.
 async function composed() {
   const src = await source(state.template);
   const t = templateOf(state.template);
-  const byName = blocksOf(t);
-  const edited = {};
-  for (const [name, block] of Object.entries(byName)) {
-    const e = editsFor(state.template, name);
-    edited[name] = Object.keys(e).length ? { ...block, html: applyTextEdits(block.html, e) } : block;
-  }
-  return { page: compose(src, t.slots, edited), roundTrip: compose(src, t.slots, byName) === src };
+  const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {});
+  return { page, roundTrip: compose(src, t.slots, blocksOf(t)) === src, integrity: integrity(page) };
 }
 
 // `field.raw` is a slice of the original HTML SOURCE, so real text carrying an
@@ -103,11 +114,13 @@ function decodeText(raw) {
   return probe.value;
 }
 
-// The field rows for one block. `html` MUST be the block's ORIGINAL html, not
-// an edited derivative: every recorded index, and the original each edit is
-// compared against to decide whether to prune it, is an offset into that exact
-// string. Saved edits are laid over it for display only.
-function renderFieldPanel(blockName, html) {
+// The field rows for one entry. `html` MUST be the block's ORIGINAL html from
+// the manifest, never an instanced or edited derivative: every recorded index,
+// and the original each edit is compared against to decide whether to prune
+// it, is an offset into that exact string. Instancing touches no text, so the
+// indices hold on the page (proved in stage 4). Saved edits are laid over it
+// for display only.
+function renderFieldPanel(key, html) {
   const box = $('#bld-fields');
   box.textContent = '';
   const fields = textFieldsOf(html);
@@ -115,7 +128,7 @@ function renderFieldPanel(blockName, html) {
     box.append($('#bld-no-fields-template').content.cloneNode(true));
     return;
   }
-  const saved = editsFor(state.template, blockName);
+  const saved = editsFor(state.template, key);
   fields.forEach((f, i) => {
     const row = $('#bld-field-template').content.cloneNode(true);
     const id = `bld-field-${i}`;
@@ -126,69 +139,143 @@ function renderFieldPanel(blockName, html) {
     area.id = id;
     const original = decodeText(f.raw);
     area.value = Object.hasOwn(saved, i) ? saved[i] : original;
-    area.addEventListener('input', () => { setEdit(blockName, i, area.value, original); later(); });
+    area.addEventListener('input', () => { setEdit(key, i, area.value, original); later(); });
     box.append(row);
   });
 }
 
 // Record or prune one field's override, then keep Reset honest.
-function setEdit(blockName, i, value, original) {
+function setEdit(key, i, value, original) {
   const forTemplate = state.edits[state.template] ??= {};
-  const forBlock = forTemplate[blockName] ??= {};
-  if (value === original) delete forBlock[i]; else forBlock[i] = value;
-  if (!Object.keys(forBlock).length) delete forTemplate[blockName];
+  const forEntry = forTemplate[key] ??= {};
+  if (value === original) delete forEntry[i]; else forEntry[i] = value;
+  if (!Object.keys(forEntry).length) delete forTemplate[key];
   if (!Object.keys(forTemplate).length) delete state.edits[state.template];
   syncReset();
+}
+
+function dropEdits(keys) {
+  const forTemplate = state.edits[state.template];
+  if (!forTemplate) return;
+  for (const k of keys) delete forTemplate[k];
+  if (!Object.keys(forTemplate).length) delete state.edits[state.template];
 }
 
 const syncReset = () => { $('#bld-reset').disabled = !Object.keys(editsFor(state.template, state.block)).length; };
 const editCount = () => Object.values(state.edits[state.template] ?? {}).reduce((n, b) => n + Object.keys(b).length, 0);
 
-// Fill the block picker from the chosen template, in slot order, by label.
-function fillBlocks() {
-  const t = templateOf(state.template), byName = blocksOf(t);
-  const names = t.slots.flatMap(sl => sl.blocks);
+const option = (value, text) => {
+  const o = document.createElement('option');
+  o.className = 'rux--select-option';
+  o.value = value; o.textContent = text;
+  return o;
+};
+
+// The chosen template's slots, and what the chosen one is a container of.
+function fillSlots() {
+  const t = templateOf(state.template);
+  const select = $('#bld-slot');
+  select.textContent = '';
+  for (const s of t.slots) select.append(option(s.name, s.name));
+  state.slot = t.slots.some(s => s.name === state.slot) ? state.slot : t.slots[0].name;
+  select.value = state.slot;
+  slotNote();
+}
+
+function slotNote() {
+  const s = templateOf(state.template).slots.find(x => x.name === state.slot);
+  const col = s.container?.column ? short(s.container.column) : 'no grid column recorded';
+  const stack = s.container?.stack ? short(s.container.stack) : 'no stack — blocks sit flush (composing-pages §3.5)';
+  $('#bld-slot-note').textContent = `${col} · ${stack}`;
+}
+
+// Every marked block, once, by label and source.
+function fillCatalogue() {
+  const select = $('#bld-catalogue');
+  select.textContent = '';
+  for (const b of manifest.blocks) select.append(option(b.id, `${b.label} · ${b.source.replace(/\.html$/, '')}`));
+  state.catalogue = manifest.blocks[0].id;
+  select.value = state.catalogue;
+}
+
+// Fill the block picker from the model, in document order, by label; a
+// second instance is numbered, and on a template with several slots the slot
+// leads. `keep` is the key to leave selected when it is still on the page.
+function fillPicker(keep = state.block) {
+  const t = templateOf(state.template);
+  const es = entries();
   const select = $('#bld-block');
   select.textContent = '';
-  for (const n of names) {
-    const o = document.createElement('option');
-    o.className = 'rux--select-option';
-    o.value = n; o.textContent = byName[n].label;
-    select.append(o);
+  for (const e of es) {
+    const b = blocks.get(e.id);
+    select.append(option(e.key, `${t.slots.length > 1 ? `${e.slot} · ` : ''}${b.label}${e.n > 1 ? ` (${e.n})` : ''}`));
   }
-  state.block = names[0] ?? '';
+  state.block = es.some(e => e.key === keep) ? keep : (es[0]?.key ?? '');
   select.value = state.block;
   showBlock();
 }
 
-// The panel and the preview highlight for whichever block is selected. Nothing
-// about the composed page changed by choosing one, so the frame is not reloaded.
+// The panel, the note, the buttons and the preview highlight for whichever
+// entry is selected. Nothing about the composed page changed by choosing one,
+// so the frame is not reloaded.
 function showBlock() {
-  const t = templateOf(state.template);
-  const block = manifest.blocks.find(b => b.source === t.path && b.name === state.block);
-  renderFieldPanel(state.block, block ? block.html : '');
+  const e = entryOf(state.block);
+  renderFieldPanel(state.block, e ? blocks.get(e.id).html : '');
+  blockNote(e);
+  syncButtons(e);
   syncReset();
   highlight();
+}
+
+// Where the block was attested, and what it moves with. Information, not a
+// rule: the arrangement is the reader's.
+function blockNote(e) {
+  const note = $('#bld-block-note');
+  if (!e) { note.textContent = 'Nothing on the page. Add a block from the catalogue.'; return; }
+  const b = blocks.get(e.id);
+  const where = b.kind === 'component'
+    ? `Attested in the kitchen sink, ${b.source}.`
+    : `Attested in ${b.source.replace(/^templates\//, '').replace(/\.html$/, '')}: ${short(b.column) || 'no column'} · ${b.stack ? short(b.stack) : 'no stack'}.`;
+  const u = unitOf(pageOf(), e.key);
+  const rides = e.follows ? ` Moves and goes with ${blocks.get(entryOf(u.keys[0]).id).label}.`
+    : u.keys.length > 1 ? ` ${u.keys.slice(1).map(k => blocks.get(entryOf(k).id).label).join(', ')} moves and goes with it.` : '';
+  note.textContent = where + rides;
+}
+
+function syncButtons(e) {
+  const up = $('#bld-up'), down = $('#bld-down'), rm = $('#bld-remove');
+  if (!e) { up.disabled = down.disabled = rm.disabled = true; return; }
+  const page = pageOf(), u = unitOf(page, e.key);
+  up.disabled = u.start === 0;
+  down.disabled = u.end >= page.slots[u.slot].length;
+  rm.disabled = false;
 }
 
 // Best-effort, and only that: the preview is a document of its own and this
 // draws on it. The block's own BLOCK:BEGIN/END comments survive into it, so the
 // run of element siblings between them is the block — a run, not one element,
 // because a block can have several roots (app-shell's page-title is <h1>+<p>).
-// Each target's existing inline outline is saved and restored rather than
-// blanked, so the helper stays non-destructive even though nothing ships one.
+// A page may carry the same marker name more than once — a block placed twice,
+// or two sources that both call theirs `default` — and the k-th marker in the
+// document is the k-th entry with that name in the model, because composePage
+// emits slots in template order and entries in model order. Each target's
+// existing inline outline is saved and restored rather than blanked, so the
+// helper stays non-destructive even though nothing ships one.
 let highlighted = [];
 function highlight() {
   for (const h of highlighted) { h.el.style.outline = h.outline; h.el.style.outlineOffset = h.offset; }
   highlighted = [];
   const doc = frame.contentDocument;
-  if (!doc || !doc.body || !state.block) return;
+  const e = entryOf(state.block);
+  if (!doc || !doc.body || !e) return;
+  const name = blocks.get(e.id).name;
+  const k = entries().filter(x => blocks.get(x.id).name === name).findIndex(x => x.key === e.key);
   const walk = doc.createTreeWalker(doc.body, NodeFilter.SHOW_COMMENT);
-  let begin = null;
-  for (let n; (n = walk.nextNode());) if (n.nodeValue.includes(`BLOCK:BEGIN name=${state.block} `)) { begin = n; break; }
+  let begin = null, seen = 0;
+  for (let n; (n = walk.nextNode());) if (n.nodeValue.includes(`BLOCK:BEGIN name=${name} `) && seen++ === k) { begin = n; break; }
   if (!begin) return;
   for (let n = begin.nextSibling; n; n = n.nextSibling) {
-    if (n.nodeType === Node.COMMENT_NODE && n.nodeValue.includes(`BLOCK:END ${state.block}`)) break;
+    if (n.nodeType === Node.COMMENT_NODE && n.nodeValue.includes(`BLOCK:END ${name}`)) break;
     if (n.nodeType !== Node.ELEMENT_NODE) continue;
     highlighted.push({ el: n, outline: n.style.outline, offset: n.style.outlineOffset });
     n.style.outline = '2px dashed var(--rux-border-interactive)';
@@ -196,19 +283,37 @@ function highlight() {
   }
 }
 
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
 let pending = null;
 async function render() {
   const my = pending = {};
   try {
-    const { page, roundTrip } = await composed();
+    const { page, roundTrip, integrity: ig } = await composed();
     if (pending !== my) return;
     const doc = previewPage(page, answers(), ROOT);
     const url = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
     frame.addEventListener('load', () => { URL.revokeObjectURL(url); highlighted = []; highlight(); }, { once: true });
     frame.src = url;
-    const t = manifest.templates.find(x => x.name === state.template);
+    const t = templateOf(state.template);
+    const es = entries();
+    const natives = t.slots.reduce((n, s) => n + s.blocks.length, 0);
+    const kept = es.filter(e => isNative(e, t)).length;
+    const arranged = [es.length - kept ? `${es.length - kept} added` : '', natives - kept ? `${natives - kept} removed` : ''].filter(Boolean).join(', ');
     const edits = editCount();
-    status.textContent = `${state.template} · ${t.slots.length} slot${t.slots.length === 1 ? '' : 's'}, ${t.slots.reduce((n, s) => n + s.blocks.length, 0)} blocks · round trip ${roundTrip ? 'identical' : 'DIFFERS'} · ${state.width === 'fit' ? 'fit to pane' : `${state.width}px`}${edits ? ` · ${edits} field${edits === 1 ? '' : 's'} edited` : ''}`;
+    status.textContent = [
+      `${state.template} · ${plural(t.slots.length, 'slot')}, ${plural(es.length, 'block')}${arranged ? ` (${arranged})` : ''}`,
+      `round trip ${roundTrip ? 'identical' : 'DIFFERS'}`,
+      ig.duplicateIds.length ? `${plural(ig.duplicateIds.length, 'id')} DUPLICATED` : 'ids unique',
+      ig.unresolved.length ? `${plural(ig.unresolved.length, 'reference')} unresolved` : 'references resolved',
+      state.width === 'fit' ? 'fit to pane' : `${state.width}px`,
+      edits ? `${plural(edits, 'field')} edited` : '',
+    ].filter(Boolean).join(' · ');
+    const named = new Map();
+    for (const id of ig.duplicateIds) named.set(`id="${id}" twice or more`, 1);
+    for (const r of ig.unresolved) { const k = `${r.attr}="${r.attr === 'href' || r.attr === 'xlink:href' ? '#' : ''}${r.id}"`; named.set(k, (named.get(k) ?? 0) + 1); }
+    integrityLine.textContent = named.size ? `On this page: ${[...named].map(([k, n]) => n > 1 ? `${k} ×${n}` : k).join(' · ')}` : '';
+    integrityLine.hidden = !named.size;
   } catch (e) {
     status.textContent = `Could not build the preview: ${e.message}`;
   }
@@ -237,6 +342,35 @@ function setWidth(w) {
 let timer;
 const later = () => { clearTimeout(timer); timer = setTimeout(render, 250); };
 
+// The three arrangements. Each replaces the model with the value the pure
+// transition returns, re-fills the picker and re-renders; nothing else holds
+// arrangement state.
+function addBlock() {
+  setPage(add(pageOf(), state.slot, state.catalogue, manifest));
+  const list = pageOf().slots[state.slot];
+  fillPicker(unitOf(pageOf(), list[list.length - 1].key).keys[0]);
+  render();
+}
+
+function moveBlock(dir) {
+  if (!state.block) return;
+  setPage(move(pageOf(), state.block, dir));
+  fillPicker(state.block);
+  render();
+}
+
+function removeBlock() {
+  if (!state.block) return;
+  const es = entries();
+  const u = unitOf(pageOf(), state.block);
+  const at = es.findIndex(e => e.key === u.keys[0]);
+  dropEdits(u.keys);
+  setPage(remove(pageOf(), state.block));
+  const rest = entries();
+  fillPicker(rest[Math.min(at, rest.length - 1)]?.key ?? '');
+  render();
+}
+
 async function init() {
   try {
     manifest = JSON.parse(await fetchText('builder/blocks.json'));
@@ -244,23 +378,23 @@ async function init() {
     status.textContent = `Could not load builder/blocks.json: ${e.message}. Serve this repository (node tools/serve.mjs) rather than opening the file.`;
     return;
   }
+  for (const b of manifest.blocks) blocks.set(b.id, b);
   const select = $('#bld-template');
-  for (const t of manifest.templates) {
-    const o = document.createElement('option');
-    o.className = 'rux--select-option';
-    o.value = t.name; o.textContent = t.name;
-    select.append(o);
-  }
+  for (const t of manifest.templates) select.append(option(t.name, t.name));
   select.value = state.template;
-  select.addEventListener('change', () => { state.template = select.value; fillBlocks(); render(); });
-  const blocks = $('#bld-block');
-  blocks.addEventListener('change', () => { state.block = blocks.value; showBlock(); });
+  select.addEventListener('change', () => { state.template = select.value; fillSlots(); fillPicker(); render(); });
+  const slot = $('#bld-slot');
+  slot.addEventListener('change', () => { state.slot = slot.value; slotNote(); });
+  const catalogue = $('#bld-catalogue');
+  catalogue.addEventListener('change', () => { state.catalogue = catalogue.value; });
+  $('#bld-add').addEventListener('click', addBlock);
+  $('#bld-up').addEventListener('click', () => moveBlock(-1));
+  $('#bld-down').addEventListener('click', () => moveBlock(+1));
+  $('#bld-remove').addEventListener('click', removeBlock);
+  const picker = $('#bld-block');
+  picker.addEventListener('change', () => { state.block = picker.value; showBlock(); });
   $('#bld-reset').addEventListener('click', () => {
-    const forTemplate = state.edits[state.template];
-    if (forTemplate) {
-      delete forTemplate[state.block];
-      if (!Object.keys(forTemplate).length) delete state.edits[state.template];
-    }
+    dropEdits([state.block]);
     showBlock();
     later();
   });
@@ -272,15 +406,23 @@ async function init() {
   }
   for (const b of document.querySelectorAll('[data-width]')) b.addEventListener('click', () => setWidth(b.dataset.width));
   window.addEventListener('resize', () => { if (state.width !== 'fit') setWidth(state.width); });
-  fillBlocks();
+  fillCatalogue();
+  fillSlots();
+  fillPicker();
   render();
 }
 
-// For the console and the gates' operator: the page the export would write.
+// For the console and the gates' operator: the page the export would write,
+// the model, and the three arrangements driven without the buttons.
 window.RuxBuilder = {
   state,
   page: async () => exportPage((await composed()).page, answers()),
   roundTrip: async () => (await composed()).roundTrip,
+  integrity: async () => (await composed()).integrity,
+  model: () => pageOf(),
+  add: (slot, id) => { state.slot = slot; state.catalogue = id; addBlock(); },
+  move: (key, dir) => { state.block = key; moveBlock(dir); },
+  remove: key => { state.block = key; removeBlock(); },
   // Exposed so the no-fields branch — which no shipped block triggers — can be
   // driven through the real clone-into-DOM path rather than left untested.
   renderFieldPanel,

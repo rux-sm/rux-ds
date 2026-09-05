@@ -12,6 +12,24 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — add and move a block: the page model (§4.12 stage 5).**
+`builder/page.mjs` new, tier 3; `integrity()` added to `builder/rewrites.mjs`; the
+chrome in `tools/build-builder.mjs`; `builder/builder.js` on the model. Node, all 33
+blocks, uncommitted scratch: pristine model identical on 10 of 10 templates; 2000
+random add/move/remove steps, every invariant held; the fixture twice on app-shell,
+0 duplicate ids, 2 radio groups, second footprint at depth 8 with its FROM line;
+wizard actions on app-shell 1 unresolved (`data-rux-open="wizard-cancel"`), breadcrumb
+3 (`href="#breadcrumb"`), every pristine template 0 and 0. Found on the way: `compose`
+writes the string `undefined` on a grown slot, and every template's sprite carries
+Carbon's `i-undefined--filled`, so the assertion counts rather than greps. Served page in
+the pane: `stl-2-2` checked and `stl-1` still checked after clicking the second copy;
+edit on instance 2 survives move and removal of instance 1; pagination moves and goes
+with its table; Tab order slot → catalogue → Add → picker → Move up → Remove, Move down
+disabled at the end. Not delivered by the pane: Enter/Space activation, the shipped
+width buttons failing the same way. `npm run verify` exit 0; `check-controls` names
+`build-builder.mjs` and `rewrites.mjs`; the three `builder.html` cells stale at this
+commit until re-swept. Accepted by rux and landed the same day.
+
 **DONE 2026-09-05 — instance identity for the page builder, measured before written
 (§4.12 stage 4).** Over all 33 blocks in `builder/blocks.json`: 51 ids in 9
 blocks; 49 `for`/`aria-controls`/`aria-labelledby` references, every one inside its own
