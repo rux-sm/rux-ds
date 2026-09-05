@@ -289,15 +289,19 @@ tag would still pass.
 
 **Next, in order:**
 
-1. Creator 3, the page builder, `builder.html` here — stages 0 to 6 of its
+1. Creator 3, the page builder, `builder.html` here — stages 0 to 7 of its
    plan have landed (markers, the gate, the skeleton round trip, the preview
-   2026-09-04; select-and-edit, instance identity and add-and-move on a page
-   model, then the gate registry and undo with a draft that survives a reload
-   2026-09-05). All six browser cells were re-swept and stamped the same day,
-   and `npm run gates` reads 41 of 41 current. What follows is planned as a
-   whole in `docs/builder-guided-plan.md` — export with parity, content
-   editing that reads as content, variants, the catalogue and its map, and the
-   guided mode itself — each stage its own proposal. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   2026-09-04; select-and-edit, instance identity, add-and-move on a page
+   model, the gate registry, undo with a draft that survives a reload, and
+   **export with `check-parity`** 2026-09-05). `npm run gates` reads 41 of 41
+   current. **The page can now be taken away**: download it, copy its
+   `<main>`, or copy the exact `new-project.sh` command — the script stays the
+   one project creator. `tools/check-parity.mjs` runs the script's own
+   extracted lines against `exportPage`, 10 templates × 3 answer sets, and
+   found a real divergence on its first run (roadmap §4.12). What follows is
+   planned in `docs/builder-guided-plan.md` — content editing that reads as
+   content, variants, the catalogue and its map, and the guided mode itself —
+   each stage its own proposal. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.
 2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both

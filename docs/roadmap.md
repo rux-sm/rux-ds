@@ -3211,6 +3211,103 @@ crosses the 1000ms run window and reads as a coalescing failure. Sub-second
 timing must be measured inside ONE execution with a busy-wait, which is how
 the figures above were taken.
 
+**Stage 7, 2026-09-05, accepted by rux and landed in the commit that carries
+this sentence — export and parity.** `ce27ceb`, swept at `587dd70` and
+restamped at `2ed1611`. TWO DELIVERY PATHS AND NO THIRD. For a project that
+exists: download the composed page, or copy the whole `<main>` to replace one.
+For a project that does not: copy the exact `new-project.sh` command built
+from the answers. **The script stays the one project creator** — the builder
+writes a page, never a project — which is why the command is offered rather
+than a second creator being built. The FOLDER IS DELIBERATELY ABSENT from it:
+supplying every other flag leaves the script asking exactly one question,
+first, with its own default, and a placeholder path the reader might run
+without reading is worse than a question. rux's two calls for this stage: the
+gate extracts the script's lines rather than running the whole thing, and the
+copy control is a plain button the builder owns rather than the attested
+icon-only copy-button, which `js/copy-button.js` sanctions in its own header.
+
+**`tools/check-parity.mjs` RUNS THE SCRIPT'S OWN BYTES.** The page-writing
+region is extracted from `tools/new-project.sh` by anchor and executed under
+`sh`; a second implementation would only prove the two copies here agree. It
+does NOT run the whole script, which refuses a dirty tree and unpushed commits
+by design — a gate that did would fail on every uncommitted change and be
+routed around, which is the gate nobody keeps. It asserts the region's shape,
+ten `-e` expressions and one `awk`, and **a region it cannot find faults
+rather than passing**. Ten templates × three answer sets, 30 of 30
+byte-identical.
+
+**IT FOUND A REAL DEFECT ON ITS FIRST RUN, which is the whole argument for
+it.** `content()` substituted the product name with a STRING replacement, so
+JS expanded `$$`, `$&`, `` $` `` and `$'` — a name of `A$&B` inserted the whole
+matched text, and `A$'B` inserted the rest of the line and duplicated a close
+tag. The `aria-label` beside it has always used `split().join()`, which is
+literal, **so one answer produced two different strings on one page and the
+header's visible name disagreed with its accessible one**. The script escapes
+with `esc()` into sed, where a replacement expands nothing. Every replacement
+is a function now. The claim this gate now holds was written down at stage 2
+and proved once, by hand, with DEFAULT ANSWERS — the one set that cannot see
+this. Red before trusted, three ways: the unfixed `content()` faults on all
+ten templates, one altered `sed -e` on all thirty, and a deleted end anchor
+reports ANCHORS and compares nothing.
+
+**BYTE PARITY IS NOT VALID HTML, and the gate says so in its own printed
+words.** Neither side escapes the answers, and they land in element text and
+in an `aria-label`, so a name carrying `"`, `<`, `>` or `&` makes markup both
+sides agree on byte for byte and no browser reads as intended. The awkward
+fixture keeps those characters deliberately: agreement is what is measured and
+agreement is all it means. The builder WARNS rather than escaping
+unilaterally, which would break the parity it just earned. **Open, and rux's:
+escape in both, reject in both, or leave it.**
+
+**Export feedback has a region of its own, and that was a review finding
+before it was code.** `showNotice()` clears its container, so routing export
+feedback through `#bld-notice` would have deleted the "saved draft was left
+unopened" warning AND its Discard button while `unopened` still blocked every
+save — leaving no way back to the one control that restores saving. Read in
+the browser both ways: with that notice standing, all three exports left it
+and its button alone, feedback appeared in `#bld-export-notice`, and Discard
+still cleared the draft afterwards.
+
+**One file-name definition serves the download and the `--page` flag**, because
+the two would otherwise disagree unseen: the script writes
+`> "$DIR/$PAGE.html"` and makes no parent directory, so a separator kills it
+under `set -e`, while a browser's `download` attribute flattens one silently.
+Both fall back to `index` together and the page says why. A trailing `.html` is
+stripped once rather than refused.
+
+Two things only LOOKING caught. The command block was `white-space: pre` in a
+column five of sixteen wide, so the reader saw `./tools/new-project.sh
+--template` and had to scroll a code block to read what they were about to
+run; it wraps at the spaces between flags now. And the download's blob is
+released on a timer rather than the next line — revoking in the same tick as
+the click has been observed to abort the save, where the preview's URL is
+revoked on the iframe's `load` because there the consumer says it has the
+bytes. One measurement error is recorded too: a first pass at the file-name
+cases read them 120ms after typing and reported three bugs that were not
+there. `render()` is 250ms behind typing, by design.
+
+Read in the pane: the download's 40,577 bytes fetched back and compared
+IDENTICAL to `exportPage`; the clipboard string identical to `bodyOnly`,
+opening `<main id="main-content"` and closing `</main>`; the command exact.
+**NOT SHOWN BY THIS HARNESS, and said rather than implied:** a file actually
+landing on disk, and clipboard read-back — `writeText` was stubbed to capture
+its argument, so what is proved is the bytes handed to the clipboard, not the
+system clipboard's contents.
+
+Tier 2, five controls named by `check-controls`: the new gate, its registry
+entry, `build-builder.mjs`, `rewrites.mjs` and the `verify` chain.
+`tools/new-project.sh` joins `CONTROL_FILES`, because it became an expected
+result the moment a gate compared against it. **What it weakens:** `verify`
+grows by one `&&`, so a `check-parity` failure hides every gate after it — the
+cost stage 2's wiring already named. **And the gate judges a fix authored in
+the same run**, which `AGENTS.md` forbids being the last word: the red runs are
+evidence, not that review, and the gate together with the `content()` fix wants
+reading from a session that did not write them.
+
+Not done: stages 8 to 13. No zip, by the no-libraries rule. Escaping the
+answers, above. The two shell toggles are still open and still contradictory as
+`docs/choices.md` writes them.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

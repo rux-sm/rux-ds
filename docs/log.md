@@ -12,6 +12,53 @@ not be. A new pass or an answered decision goes at the top of the block below.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — export and parity (§4.12 stage 7).** `ce27ceb`, swept at
+`587dd70`, restamped at `2ed1611`, `npm run gates` 41 of 41 current. Two
+delivery paths and no third: download the page or copy its `<main>` for a
+project that exists; copy the exact `new-project.sh` command for one that does
+not. The script stays the one project creator, and the FOLDER is deliberately
+left for it to ask.
+
+`tools/check-parity.mjs` is new, tier 2, and it RUNS THE SCRIPT'S OWN BYTES —
+the page-writing region extracted by anchor and executed under `sh`, because
+the whole script refuses a dirty tree and a gate that ran it would fail on
+every uncommitted change. A region it cannot find faults rather than passing.
+30 of 30 byte-identical, 10 templates × 3 answer sets.
+
+**IT FOUND A REAL DEFECT ON ITS FIRST RUN.** `content()` used a STRING
+replacement, so JS expanded `$$`, `$&`, `` $` `` and `$'`; the `aria-label`
+beside it used `split().join()`, which is literal. One answer therefore produced
+two different strings on one page and the header's visible name disagreed with
+its accessible one. Fixed with the function form. The claim was written down at
+stage 2 and proved once by hand with DEFAULT ANSWERS — the one set that cannot
+see it. Red three ways before trusted: the unfixed `content()` (10 faults), one
+altered `sed -e` (30), a deleted end anchor (ANCHORS, nothing compared).
+
+**Byte parity is not valid HTML** — neither side escapes the answers, the gate
+says so in its printed words, and the builder warns rather than escaping
+unilaterally and breaking the parity it just earned. Open for rux: escape in
+both, reject in both, or leave it.
+
+A review finding became code: `showNotice()` clears its container, so export
+feedback in `#bld-notice` would have deleted the unopened-draft warning and its
+Discard while saving stayed blocked. Export has its own region; read both ways
+in the browser. One file-name rule serves the download and `--page`, because
+the script dies on a separator and a browser flattens one.
+
+Two things only looking caught — the command block scrolled sideways in a
+five-of-sixteen column and now wraps, and the download's blob is released on a
+timer rather than the same tick as the click. One measurement error of mine is
+recorded rather than buried: a first read of the file-name cases came 120ms
+after typing, against a 250ms render debounce, and reported three bugs that
+were not there. Not shown by the harness, and said so: a file landing on disk,
+and clipboard read-back.
+
+Five controls touched. `verify` grows by one `&&`, so a `check-parity` failure
+hides what follows it. The gate judges a fix authored in the same run, which
+`AGENTS.md` will not have as the last word: the red runs are evidence, and the
+gate with its `content()` fix still wants reading from a session that did not
+write them.
+
 **SWEPT 2026-09-05 — the six stage-6 cells, and the record above corrected.**
 The entry below says "the six dirty browser readings remain unverified and
 unstamped"; that was true when it was written and is not true now. All six were

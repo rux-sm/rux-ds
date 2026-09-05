@@ -1,7 +1,7 @@
 # Builder — the guided mode, stages 0 and 6 to 13 (roadmap §4.12, creator 3)
 
-**Status, 2026-09-05: approved plan, revision 2; stage 0 landed the same
-day, the rest not yet implemented.**
+**Status, 2026-09-05: approved plan, revision 2; stages 0, 6 and 7 have
+landed, 8 to 13 have not.**
 Saved as the select-and-edit and add-and-move plans were, so a different clone
 can pick it up. Each stage below is its own proposal in the open and lands in
 its own commit; when a stage lands, its roadmap entry in §4.12 is the record
@@ -68,7 +68,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 |---|---|---|---|
 | 0 | Registry: `pageInputs` so `builder/` ages the three `builder.html` cells; the six literal `fileTargets`. | `gates.mjs` | — |
 | 6 | Undo, redo, and a versioned draft that survives reload. | `build-builder.mjs` | 0 |
-| 7 | Export and parity: download, copy `<main>`, the two delivery paths, `check-parity`. | `build-builder.mjs`, `check-parity.mjs`, `gates.mjs` | 6 |
+| 7 | **DONE 2026-09-05.** Export and parity: download, copy `<main>`, the two delivery paths, `check-parity`. | `build-builder.mjs`, `check-parity.mjs`, `gates.mjs` | 6 |
 | 8 | Content editing that reads as content: labels from context, grouping, link targets, per-field reset. | `rewrites.mjs` | 6 |
 | 9 | Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
 | 10 | Manifest depth (`frameDeps`), catalogue growth with a visual pass each, the generated coverage table. | `build-blocks.mjs`, `check-blocks.mjs`, CI | 0 |
@@ -101,14 +101,15 @@ and never deleted. Two failures found in review forced that: an orphaned
 follower makes `unitOf` throw, and a field index silently retargets when a
 block's markup changes.
 
-**7, export and parity.** Two outcomes on the page. *A page for an existing
-project*: download `${file}.html`, place it beside the project's
-`index.html`; "copy the main region" copies `bodyOnly()` with the
-instruction that it replaces the page's `<main>`. *A new project*: the exact
-`new-project.sh` command built from the answers, then the downloaded page
-replaces the one the script wrote; the script stays the one project creator.
-`check-parity` runs the script for all ten templates into a scratch
-directory and diffs against `exportPage`; registering it dirties six cells.
+**7, export and parity. Landed 2026-09-05 (`ce27ceb`); roadmap §4.12 is the
+record.** Two corrections to what this note said. It said `check-parity` "runs
+the script" into a scratch directory: the whole script refuses a dirty tree and
+unpushed commits, so a gate that ran it would fail on every uncommitted change;
+it EXTRACTS the page-writing region and runs those bytes instead, and rux chose
+that over the two alternatives. And the note assumed byte parity was the whole
+contract — it is not, because neither side escapes the answers, so the gate
+names that limit and the builder warns. The gate found a real divergence on its
+first run; §4.12 has it.
 
 **8, content.** `textFieldsOf` gains `context` per field, additive: the tag,
 the nearest enclosing form item, table row, list item or button set, the
