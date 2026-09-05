@@ -173,6 +173,7 @@ PIN
 # rux-ds ships a placeholder; swapping brand/logo.svg is the whole procedure.
 mkdir -p "$DIR/brand"
 [ -e "$DIR/brand/logo.svg" ] || cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
+[ -e "$DIR/brand/favicon.svg" ] || cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
 
 for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
@@ -211,7 +212,7 @@ fi
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR"
 echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · templates $(ls "$OUT/templates" | wc -l | tr -d ' ') · PIN"
 echo "  rux-theme.css, rux-overrides.css   yours, deltas only; left alone if present"
-echo "  brand/logo.svg   yours; swap it any time, left alone if present"
+echo "  brand/logo.svg, brand/favicon.svg   yours; swap any time, left alone if present"
 if [ -n "$MOVE_ONLY" ]; then
   echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
 else

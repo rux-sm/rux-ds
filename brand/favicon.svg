@@ -1,7 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="#f4f4f4" role="img" aria-label="Rux">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Rux">
 <title>Rux</title>
-<!-- #f4f4f4 on #161616, 16.45:1. Generated from brand/logo.svg by tools/make-marks.mjs.
-     Edit that file, not this one. -->
+<style>
+svg{fill:#0f62fe}
+@media (prefers-color-scheme:dark){svg{fill:#78a9ff}}
+</style>
 <path d="M192 576L128 576L128 896L192 896L192 576Z"/>
 <path d="M64 256L128 256L128 576L64 576L64 256Z"/>
 <path d="M320 576L256 576L256 896L320 896L320 576Z"/>
