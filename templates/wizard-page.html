@@ -224,13 +224,16 @@
        which is the rest of what IBM specifies for this control. -->
   <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
 
-  <!-- REPLACE: product name. PLACEHOLDER for the square mark, still being
-       designed (tools/make-marks.mjs, assets/brand/mark.svg): a 24x24
-       dashed box in currentColor, so it reads as a guide and not real art.
-       No invented class -- the box is inline style only, the same approach
-       the finished mark used. Resize the two dimensions together to try
-       other footprints; swap the whole span for the real SVG when it
-       lands. -->
+  <!-- REPLACE: product name. The mark is brand/logo.svg -- SWAP THE FILE,
+       not this markup: every shell here and every page the script exports
+       reads that one path, so a new drawing lands everywhere on reload.
+       What ships today is a dashed placeholder, not a mark. No invented
+       class; the img is inline style only. Sized by HEIGHT with the width
+       following, so the file's own aspect governs -- do not pin a width.
+       currentColor does not reach into an img, so the file carries its own
+       colours; the header ground is #161616 in every theme, so one
+       colourway serves. assets/brand/ is the generated favicon and
+       app-icon set and is NOT this file. -->
   <a class="rux--header__name" href="./"><img src="../brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
 
   <!-- REPLACE: top-level product navigation. The current one carries

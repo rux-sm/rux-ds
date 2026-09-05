@@ -11,8 +11,10 @@
 // script and diffs; when the two disagree, someone decides which is right, and
 // that is the point of having the check rather than a promise.
 //
-// previewPage() is the same page pointed at this repository's own css/, js/
-// and assets/ (builder.html sits at the root, so `../` would climb out), with
+// previewPage() is the same page pointed at this repository's own css/, js/,
+// assets/ and brand/ (builder.html sits at the root, so `../` would climb
+// out; and the preview is a blob: document with no path of its own, so a
+// relative reference does not merely climb out — it fails to resolve), with
 // one preview-only script placed BEFORE js/theme.js: it sandboxes the
 // rux.profile key so the preview shows the theme being configured rather than
 // whatever the reader last chose in the sink — js/theme.js writes the stored
@@ -43,6 +45,11 @@ export function exportPage(templateHtml, answers = {}) {
   lines = firstPerLine(lines, '"../css/rux.css"', '"vendor/rux-ds/css/rux.css"');
   lines = firstPerLine(lines, '"../css/rux-theme.css"', '"vendor/rux-ds/css/rux-theme.css"');
   lines = firstPerLine(lines, '"../css/rux-overrides.css"', '"vendor/rux-ds/css/rux-overrides.css"');
+  // brand/ is the PROJECT'S, not the pin's: the script seeds logo.svg beside
+  // the page and never overwrites it, so the path must not point into
+  // vendor/, which every pin move replaces. Placed here because that is where
+  // the script's own -e sits, and this function reproduces it line for line.
+  lines = everywhere(lines, '"../brand/', '"brand/');
   lines = everywhere(lines, '"../assets/', '"vendor/rux-ds/assets/');
   lines = everywhere(lines, '"../js/', '"vendor/rux-ds/js/');
   lines = content(lines, answers);
@@ -68,6 +75,7 @@ export function previewPage(templateHtml, answers = {}, root = '') {
   lines = firstPerLine(lines, '"../css/rux.css"', `"${root}css/rux.css"`);
   lines = firstPerLine(lines, '"../css/rux-theme.css"', `"${root}css/rux-theme.css"`);
   lines = firstPerLine(lines, '"../css/rux-overrides.css"', `"${root}css/rux-overrides.css"`);
+  lines = everywhere(lines, '"../brand/', `"${root}brand/`);
   lines = everywhere(lines, '"../assets/', `"${root}assets/`);
   lines = everywhere(lines, '"../js/', `"${root}js/`);
   lines = content(lines, answers);
