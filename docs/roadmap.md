@@ -3308,6 +3308,92 @@ Not done: stages 8 to 13. No zip, by the no-libraries rule. Escaping the
 answers, above. The two shell toggles are still open and still contradictory as
 `docs/choices.md` writes them.
 
+**Stage 8, 2026-09-05, accepted by rux and landed in the commit that carries
+this sentence — content editing that reads as content.** `30e91fb`, swept at
+`becea4d`, restamped at `33a244a`. The panel said **"Text 1 of 18"** over
+**"In `<div>`"**; it now says "Helper text" under a group headed "Email", with
+the original beside the field and a reset for that one field. The measured case
+for the change: `div`, `p` and `span` hold **127 of the 241 fields**, and `<th>`
+holds none at all, because a column header wraps its text in a
+`div.rux--table-header-label` — so the tag could never have named them.
+
+**`textFieldsOf` gains `context` and NOTHING ELSE MOVES.** It already built an
+ancestor stack carrying each element's class and content offset and threw it
+away; that is now reported. Proved before anything else: all 241 fields keep
+their `start`, `end`, `raw` and `name` byte for byte. **That is the regression
+that mattered** — edits are indices into this list, and a draft hashes the
+block's MARKUP, so it cannot see the extraction algorithm changing underneath
+it. Grouping is by an ancestor's content offset, unique inside a block, so two
+fields share a group by construction rather than by matching text.
+
+**Four rules came from reading the output, not from reasoning about it.**
+A FIELDSET BEATS ANYTHING NESTED IN IT — form-page's two checkboxes each sit in
+their own `form-item` inside the fieldset while its two radios do not, so
+nearest-unit alone split "Notify me when" across three groups and it rendered
+with no heading at all. A HEADER ROW IS NOT ROW 1 — the `<tr>`s carry no class,
+so `<thead>` tells head from body, without which the first body row read
+"Row 2". AN UNCLASSED WRAPPER TAKES ITS NAME FROM WHAT HOLDS IT — the activity
+list is a bare `<div>` inside `li.rux--list__item` and read "Text 21 of 25".
+And a fallback name is numbered only when two groups share a kind, after the
+button set read **"Actions 7"**, the seventh `div` among its siblings.
+
+A group's heading is its own label, legend or accordion title, and it follows
+the edit LIVE: the panel is not rebuilt while typing, because rebuilding it
+would take the caret. **An edit may be the empty string**, so a cleared label
+falls back to "Form item 2" and the group's accessible name is never empty —
+read in the browser, with focus staying in the field throughout.
+
+**Link targets are the one editable attribute, and the ORDER IS THE CONTRACT.**
+Edits first, instancing last, because they do not commute: repoint a link at
+`#target` and instance 2, and the href must become `#target-2` to reach this
+copy's own id. rux found that in review, where revision 1 of the plan had
+claimed all three operations commute. **No shipped block has both an id and a
+real link**, so a synthetic fixture asserts it — the corpus cannot exercise its
+own contract. `linksOf` offers only non-`#` hrefs: one in the whole catalogue
+against ten fragment ones. `applyLinkEdits` NORMALISES the quoting rather than
+escaping for a delimiter it cannot know, since `attrsOf` accepts double, single
+and unquoted and an apostrophe would terminate one where a space would split
+another; an unedited link is never spliced, so its own quoting survives byte for
+byte, asserted for all three forms because the catalogue's one link is
+double-quoted and cannot prove preservation.
+
+Both stores run the whole lifecycle, which rux's review added and revision 1
+had left at persistence alone: compose, snapshot, restore, run keys (`$` for
+links, so a link run never joins a text run), removal, Start over, reset and the
+edit count. Removing a block drops both in ONE entry and undo restores both.
+`DRAFT_VERSION` does not move — `links` is optional, so a draft written before
+this stage still opens, tested both ways.
+
+**TWO RED RUNS CAME BACK GREEN WITH THE MUTATION VERIFIED APPLIED**, which means
+the suite was measuring nothing and is the finding worth keeping. The
+hostile-value check read back through `href="([^"]*)"`, which truncates at a raw
+quote, so removing the quote escaping passed; and the `composePage` assertions
+used a non-`#` value, which instancing never touches either way, so reversing
+the pipeline passed. Both are exact-match now and both go red. Two mistakes of
+mine are recorded with them: a `git checkout` taken to revert a mutation
+destroyed the real `composePage` change and it had to be reapplied, and a
+`perl` substitution silently failed to match twice, so a "red run" ran against
+unmutated code.
+
+**Found in passing and fixed:** `session.mjs` carried a literal NUL byte as the
+run-key separator, so git diffed the file as `Bin` and grep silently matched
+nothing in it — at `HEAD`, since stage 6. It is `\0` now: same character, same
+key, and the file is text again.
+
+**Reported, not changed: `brand/` is not a declared input to any browser gate.**
+rux's replacement logo, favicon and app icons were uncommitted in the tree
+throughout this stage, and `npm run gates` still read 41 of 41 current — the
+mark on every page's header changed and nothing aged. That is the registry gap
+stage 0 closed for `builder/`, and it is tier 2, so it is rux's to accept. It
+moved no reading here, measured rather than argued: every figure is identical to
+the stage-7 reading taken with the old mark.
+
+Tier 2, two controls: `rewrites.mjs` and `build-builder.mjs`. What it weakens:
+`textFieldsOf` allocates a context per field on every compose, and `composePage`
+grows a parameter. No gate, fixture, baseline or `CONTROL_FILES` entry moves.
+The red runs are evidence, not acceptance. Not done: stages 9 to 13, and
+attributes other than `href`.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

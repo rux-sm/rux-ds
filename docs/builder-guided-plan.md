@@ -1,7 +1,7 @@
 # Builder — the guided mode, stages 0 and 6 to 13 (roadmap §4.12, creator 3)
 
-**Status, 2026-09-05: approved plan, revision 2; stages 0, 6 and 7 have
-landed, 8 to 13 have not.**
+**Status, 2026-09-05: approved plan, revision 2; stages 0, 6, 7 and 8 have
+landed, 9 to 13 have not.**
 Saved as the select-and-edit and add-and-move plans were, so a different clone
 can pick it up. Each stage below is its own proposal in the open and lands in
 its own commit; when a stage lands, its roadmap entry in §4.12 is the record
@@ -69,7 +69,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 | 0 | Registry: `pageInputs` so `builder/` ages the three `builder.html` cells; the six literal `fileTargets`. | `gates.mjs` | — |
 | 6 | Undo, redo, and a versioned draft that survives reload. | `build-builder.mjs` | 0 |
 | 7 | **DONE 2026-09-05.** Export and parity: download, copy `<main>`, the two delivery paths, `check-parity`. | `build-builder.mjs`, `check-parity.mjs`, `gates.mjs` | 6 |
-| 8 | Content editing that reads as content: labels from context, grouping, link targets, per-field reset. | `rewrites.mjs` | 6 |
+| 8 | **DONE 2026-09-05.** Content editing that reads as content: labels from context, grouping, link targets, per-field reset. | `rewrites.mjs` | 6 |
 | 9 | Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
 | 10 | Manifest depth (`frameDeps`), catalogue growth with a visual pass each, the generated coverage table. | `build-blocks.mjs`, `check-blocks.mjs`, CI | 0 |
 | 11 | The guide map `builder/guide.json` with conditions and review records, validated by `check-blocks`. | `check-blocks.mjs` | 9, 10 |
@@ -111,12 +111,15 @@ contract — it is not, because neither side escapes the answers, so the gate
 names that limit and the builder warns. The gate found a real divergence on its
 first run; §4.12 has it.
 
-**8, content.** `textFieldsOf` gains `context` per field, additive: the tag,
-the nearest enclosing form item, table row, list item or button set, the
-role class, and the nearest heading or label text above. The panel renders
-"Heading", "Label: Email", "Helper text under Email", "Column header 2",
-"Row 3, cell 1", "Button: Save", grouped, each with "original" beside it.
-Link targets (`href` not starting with `#`) are an editable attribute field.
+**8, content. Landed 2026-09-05 (`30e91fb`); roadmap §4.12 is the record.**
+Two corrections to what this note said. The context it describes — "the nearest
+enclosing form item, table row, list item or button set" — is not enough on its
+own: ancestors need STABLE IDENTITIES, because tags and classes cannot tell two
+structurally identical form items apart, so the chain carries content offsets.
+And it treated link targets as a free addition; they are not, because a link
+edit and instancing DO NOT COMMUTE, which rux found in review and which made the
+order the contract of the stage. The panel's wording also moved: "Label: Email"
+became a group headed "Email" holding a row called "Label".
 
 **9, variants.** `variantsOf(html)` returns groups — each `rux--btn-set`,
 each toolbar, each lone qualifying button, named by context — and `table`.
