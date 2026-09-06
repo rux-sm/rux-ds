@@ -25,6 +25,7 @@
     "verify": "npm run build && npm run sink && npm run portal && npm run readme && npm run blocks && npm run builder && node tools/check-classes.mjs && node tools/check-tokens.mjs && node tools/check-token-values.mjs && node tools/check-icons.mjs && node tools/check-glyphs.mjs && node tools/check-slots.mjs && node tools/check-co-classes.mjs && node tools/check-compound.mjs && node tools/check-tags.mjs && node tools/check-ancestry.mjs && node tools/check-coverage.mjs && node tools/check-inventory.mjs && node tools/check-headings.mjs && node tools/check-aria-roles.mjs && node tools/check-provenance.mjs && node tools/check-blocks.mjs && node tools/check-parity.mjs && node tools/check-gates.mjs",
     "watch": "sass --load-path=node_modules --no-source-map --watch src/app.scss css/rux.css",
     "serve": "node tools/serve.mjs",
+    "app-check": "node tools/app-check.mjs --self-test",
     "glyphs": "node tools/glyphs.mjs",
     "slots": "node tools/check-slots.mjs --all",
     "check-inventory": "node tools/check-inventory.mjs",
