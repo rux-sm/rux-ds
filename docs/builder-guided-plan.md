@@ -1,7 +1,9 @@
 # Builder — the guided mode, stages 0 and 6 to 13 (roadmap §4.12, creator 3)
 
-**Status, 2026-09-05: approved plan, revision 2; stages 0 and 6 to 9 have
-landed, 10 to 13 have not.**
+**Status, 2026-09-06: approved plan, revision 2; stages 0 and 6 to 11 have
+landed and three growth batches with them, 12 and 13 have not.** This line
+read "6 to 9" for a day after 10 and 11 landed, the table below being right
+the whole time; corrected 2026-09-06.
 Saved as the select-and-edit and add-and-move plans were, so a different clone
 can pick it up. Each stage below is its own proposal in the open and lands in
 its own commit; when a stage lands, its roadmap entry in §4.12 is the record
