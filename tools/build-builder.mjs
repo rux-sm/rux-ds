@@ -16,7 +16,10 @@
 // slot, every marked block to add to it, and move and remove on the selected
 // one, with the page model in builder/page.mjs. Then undo, redo and a draft
 // that survives a reload, so nothing after this stage grows what can be
-// edited without a way back. Export is the next stage.
+// edited without a way back. Then export, with check-parity holding it to
+// tools/new-project.sh. Then content that reads as content: every field named
+// by what it IS, grouped, with its original beside it and a link target where
+// the markup has one.
 //
 // TWO NOTICE TEMPLATES, BOTH FULLY WRITTEN HERE. The draft notice and the
 // save-failure alert are the same attested composition in two variants, and
@@ -273,7 +276,14 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
      and that one was measured rather than reasoned: cols is a flex item's
      min-content floor, so the source's cols="50" rendered 403px wide inside
      this 388px column and overflowed it. The wrapper is already inline-size
-     100%. id and for are set per clone. -->
+     100%. id and for are set per clone.
+     THE HELPER LINE NOW CARRIES THE ORIGINAL, and ships hidden because a
+     row with no edit and a named role has nothing to say there; the reset
+     button ships hidden for the same reason and is revealed only while that
+     one field differs from its source. Both are real markup here rather than
+     constructed in builder.js, the rule this file's header states.
+     (No backticks in this comment: it lives inside a template literal, and
+     one closed the string.) -->
 <template id="bld-field-template">
   <div class="rux--form-item">
     <div class="rux--text-area__label-wrapper">
@@ -282,7 +292,20 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
     <div class="rux--text-area__wrapper">
       <textarea class="rux--text-area" rows="2"></textarea>
     </div>
-    <div class="rux--form__helper-text"></div>
+    <div class="rux--form__helper-text" hidden></div>
+    <div>
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" hidden>Reset this field</button>
+    </div>
+  </div>
+</template>
+<!-- The heading over a group of fields, and the group itself. Both are cloned
+     per group; the h3 is the same rux--type-heading-compact-01 the Export
+     section uses, and the role="group" is the pattern .bld-row already
+     carries. The aria-label is written per clone and is never empty: a
+     cleared label falls back to the structural name. -->
+<template id="bld-group-template">
+  <div role="group" aria-label="">
+    <h3 class="rux--type-heading-compact-01"></h3>
   </div>
 </template>
 <template id="bld-no-fields-template">

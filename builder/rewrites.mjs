@@ -165,6 +165,21 @@ const attrOf = (tag, name) => {
 
 const tagName = (tok, from) => tok.slice(from).replace(/[\s/>][\s\S]*$/, '').toLowerCase();
 
+// WHERE A FIELD SITS, so a caller can say what it IS rather than counting
+// boxes. Structure only: this module reports the markup, and the page decides
+// what to call it — the vocabulary is builder.js's, not a contract here.
+//
+// `at` IS THE GROUP IDENTITY, and it is why the chain carries offsets. A tag
+// and a class cannot tell two structurally identical form items apart, and a
+// cell cannot name its own row without one. `contentStart` is unique within a
+// block and stable across everything this module does, so two fields sharing
+// an ancestor's `at` are in the same group, by definition rather than by guess.
+const contextOf = (ancestors, leaf) => ({
+  chain: ancestors.map(a => ({ tag: a.name, cls: a.cls, at: a.contentStart, nth: a.nth })),
+  cls: leaf.cls,
+  nth: leaf.nth,
+});
+
 function excluded(ancestors, leaf) {
   if (OWNED_LEAF.test(leaf.cls)) return true;
   for (const el of [...ancestors, leaf]) {
@@ -183,7 +198,7 @@ function excluded(ancestors, leaf) {
 // at with a `[^<>]*` pattern, so mixed content (`<p>a <b>b</b> c</p>`) yields
 // only the inner `<b>`, which is the known limitation, not a bug.
 export function textFieldsOf(html) {
-  const fields = [], stack = [];
+  const fields = [], stack = [], rootKids = new Map();
   TOKEN.lastIndex = 0;
   for (let m; (m = TOKEN.exec(html));) {
     const tok = m[0], top = stack[stack.length - 1];
@@ -204,7 +219,7 @@ export function textFieldsOf(html) {
       stack.length = at;                                           // discard anything left open
       if (wasTop && !el.interrupted) {
         const raw = html.slice(el.contentStart, m.index);
-        if (raw.trim() !== '' && !excluded(stack, el)) fields.push({ start: el.contentStart, end: m.index, raw, name: el.name });
+        if (raw.trim() !== '' && !excluded(stack, el)) fields.push({ start: el.contentStart, end: m.index, raw, name: el.name, context: contextOf(stack, el) });
       }
       continue;
     }
@@ -212,6 +227,11 @@ export function textFieldsOf(html) {
     // An open tag. Whatever holds it now has a child, so it is not text-only.
     if (top) top.interrupted = true;
     const name = tagName(tok, 1);
+    // NTH AMONG SIBLINGS OF THE SAME TAG, counted on the parent and counted
+    // for EVERY element including the void ones — a void sibling is still a
+    // sibling, so "Option 2" must not shift because an <input> sits between.
+    const kids = top ? (top.kids ??= new Map()) : rootKids;
+    const nth = kids.set(name, (kids.get(name) ?? 0) + 1).get(name);
     if (VOID.has(name) || /\/\s*>$/.test(tok)) continue;
     stack.push({
       name,
@@ -219,6 +239,8 @@ export function textFieldsOf(html) {
       ariaHidden: attrOf(tok, 'aria-hidden') === 'true',
       contentStart: m.index + tok.length,
       interrupted: false,
+      nth,
+      kids: null,
     });
   }
   return fields;
@@ -240,6 +262,77 @@ export function applyTextEdits(html, edits) {
     if (!Object.hasOwn(edits, i)) return;
     out += html.slice(cursor, f.start) + escapeText(String(edits[i]));
     cursor = f.end;
+  });
+  return out + html.slice(cursor);
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// LINK TARGETS — the one editable attribute, and the order it must run in.
+//
+// WHERE A LINK GOES is content in the sense that matters: the reader wrote the
+// words, and the words point somewhere. Every other attribute stays closed —
+// alt, src, placeholder and aria-label are not offered, deliberately.
+//
+// ONLY A NON-`#` href. A fragment href is a control relation, and instanceOf
+// suffixes one when it names an id inside the block, so offering it as content
+// would put two writers on one value. The catalogue holds one editable link
+// (dashboard-page/table-and-activity, "All activity" → `./`) against ten
+// fragment ones; the machinery is here for the blocks stage 10 admits.
+//
+// EDITS FIRST, INSTANCING LAST — AND THEY DO NOT COMMUTE. Measured, not
+// assumed, on a fixture because no shipped block has both an id and a real
+// link:
+//
+//   edit `./` → `#target`, then instance 2:   href="#target-2"   ← what ships
+//   instance 2, then edit `./` → `#target`:   href="#target"
+//
+// The first is right: the reader means this instance's copy. So composePage
+// applies text, then links, then instanceOf, and page.mjs states the same
+// order. A caller that reverses it gets the second answer, silently.
+//
+// A SEPARATE LIST FROM textFieldsOf, so a link neither shifts a text field's
+// index nor invalidates a draft written before links existed.
+const A_TAG = /^<a\b/i;
+const HREF = /\bhref\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/i;
+const unquote = v => (v[0] === '"' || v[0] === "'") ? v.slice(1, -1) : v;
+
+// Attribute values need what text does NOT: a quote. escapeText leaves quotes
+// alone by design, and a value can arrive double-quoted, single-quoted or bare
+// — so the write emits ONE form, double-quoted, whatever the form in, and an
+// apostrophe or a space in the value cannot terminate or split it.
+const escapeAttr = s => s.split('&').join('&amp;').split('"').join('&quot;')
+  .split('<').join('&lt;').split('>').join('&gt;');
+
+// Every editable link in document order, as [start, end) over the WHOLE href
+// attribute — name, delimiters and value — because the write replaces the
+// attribute rather than splicing inside its quotes. `text` is the anchor's own
+// words, flattened, for naming the field; it is never written back.
+export function linksOf(html) {
+  const links = [];
+  TOKEN.lastIndex = 0;
+  for (let m; (m = TOKEN.exec(html));) {
+    const tok = m[0];
+    if (!A_TAG.test(tok)) continue;
+    const hm = tok.match(HREF);
+    if (!hm) continue;
+    const value = unquote(hm[1]);
+    if (value.startsWith('#')) continue;
+    const close = html.indexOf('</a', m.index + tok.length);
+    const text = close < 0 ? '' : html.slice(m.index + tok.length, close).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    links.push({ start: m.index + hm.index, end: m.index + hm.index + hm[0].length, value, text });
+  }
+  return links;
+}
+
+// `html` with the links named in `links` ({ index: value }) repointed, every
+// other byte untouched. An UNEDITED link is never spliced, so its own quoting
+// survives exactly — which is what makes normalising the edited ones safe.
+export function applyLinkEdits(html, links) {
+  let out = '', cursor = 0;
+  linksOf(html).forEach((l, i) => {
+    if (!Object.hasOwn(links, i)) return;
+    out += html.slice(cursor, l.start) + `href="${escapeAttr(String(links[i]))}"`;
+    cursor = l.end;
   });
   return out + html.slice(cursor);
 }

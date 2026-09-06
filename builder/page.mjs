@@ -47,8 +47,14 @@
 //
 // HOW A MODEL BECOMES A PAGE (composePage), per slot, in template order:
 //   1. each entry's footprint is its block's own marker lines around
-//      instanceOf(applyTextEdits(html, edits), n) — edits first, because
-//      the field panel indexes the ORIGINAL html and the two commute;
+//      instanceOf(applyLinkEdits(applyTextEdits(html, edits), links), n).
+//      THE ORDER IS THE CONTRACT, not a convenience. Text and links first,
+//      because the panel indexes the ORIGINAL html; instancing LAST, because
+//      it and a link edit DO NOT COMMUTE — repoint a link at `#target` and
+//      instance 2, and the href must become `#target-2` to reach this copy's
+//      own id, which only this order produces. rewrites.mjs has the measured
+//      pair. Text edits and link edits do commute with each other: one
+//      writes between tags, the other inside one;
 //   2. the footprint is SHIFTED to the slot's depth: the difference between
 //      the leading spaces of the SLOT:BEGIN line and of the block's own
 //      BLOCK:BEGIN line, added to or taken from every non-empty line. A
@@ -68,7 +74,7 @@
 //      string "undefined" into the page, which is why the record is built
 //      here and never reused as recorded.
 
-import { compose, instanceOf, applyTextEdits } from './rewrites.mjs';
+import { compose, instanceOf, applyTextEdits, applyLinkEdits } from './rewrites.mjs';
 
 const keyOf = (id, n) => `${id}@${n}`;
 const clone = page => JSON.parse(JSON.stringify(page));
@@ -189,14 +195,14 @@ const depthOfLineEndingAt = (src, index) => depthOf(src.slice(src.lastIndexOf('\
 
 // The page: `src` with each slot rebuilt from the model. `edits` is keyed by
 // entry key, then field index, as builder.js keeps it.
-export function composePage(src, template, page, manifest, edits = {}) {
+export function composePage(src, template, page, manifest, edits = {}, links = {}) {
   const slots = [], byKey = {};
   for (const s of template.slots) {
     const list = page.slots[s.name] ?? [];
     const slotDepth = depthOfLineEndingAt(src, s.start);
     for (const e of list) {
       const b = blockById(manifest, e.id);
-      const html = instanceOf(applyTextEdits(b.html, edits[e.key] ?? {}), e.n);
+      const html = instanceOf(applyLinkEdits(applyTextEdits(b.html, edits[e.key] ?? {}), links[e.key] ?? {}), e.n);
       let footprint = shift(b.open + html + b.close, slotDepth - depthOf(b.open));
       if (b.source !== template.path) {
         footprint = `${' '.repeat(slotDepth)}<!-- FROM: ${b.source} · ${b.provenance ?? 'no provenance recorded'} -->\n${footprint}`;

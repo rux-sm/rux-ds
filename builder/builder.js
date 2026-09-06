@@ -54,7 +54,7 @@
    NOT YET: the guided mode, and escaping the answers as HTML — neither this
    nor the script does, and both say so rather than pretending otherwise.
    ========================================================================== */
-import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, applyTextEdits, integrity } from './rewrites.mjs';
+import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, linksOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
 import { emptyHistory, pushed, undone, redone, runKey, sameRun,
          toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
@@ -79,7 +79,7 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // is standing and what they are looking through, not what they have made.
 const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
 const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
-const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, pages: {} };
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, links: {}, pages: {} };
 let manifest = null;
 let history = emptyHistory();
 let run = null;                  // the typing run in progress, or null
@@ -113,6 +113,11 @@ const entries = () => entriesOf(pageOf(), templateOf(state.template));
 const entryOf = key => entries().find(e => e.key === key);
 // The saved edits for one entry, or an empty map. Never creates the maps.
 const editsFor = (tpl, key) => (state.edits[tpl] ?? {})[key] ?? {};
+// The same, for link targets. TWO STORES, ONE SHAPE, and deliberately not one
+// map with mixed keys: a text edit indexes textFieldsOf and a link edit
+// indexes linksOf, so sharing an index space would make either one shift the
+// other — and a draft written before links existed would silently retarget.
+const linksFor = (tpl, key) => (state.links[tpl] ?? {})[key] ?? {};
 // A block is native when it is the template's own, at instance 1.
 const isNative = (e, t) => e.n === 1 && blocks.get(e.id).source === t.path;
 const short = cls => (cls ?? '').split(/\s+/).filter(Boolean).map(c => c.replace(/^rux--/, '')).join(' ');
@@ -128,6 +133,7 @@ const labelOf = key => blocks.get(entryOf(key)?.id)?.label ?? 'block';
 const snapshot = () => copy({
   pages: state.pages,
   edits: state.edits,
+  links: state.links,
   answers: Object.fromEntries(ANSWERS.map(k => [k, state[k]])),
 });
 
@@ -137,6 +143,9 @@ const snapshot = () => copy({
 function applySnapshot(s) {
   state.pages = copy(s.pages);
   state.edits = copy(s.edits);
+  // `?? {}` because a draft written before stage 8 has no links at all, and
+  // an undo entry from earlier in this same session does not either.
+  state.links = copy(s.links ?? {});
   for (const k of ANSWERS) state[k] = s.answers[k] ?? FRESH[k];
   for (const r of document.querySelectorAll('input[name="bld-theme"]')) r.checked = r.value === state.theme;
   for (const [id, key] of FIELDS) $(`#${id}`).value = state[key];
@@ -287,6 +296,7 @@ function startOver() {
   change('start over', () => {
     state.pages = {};
     state.edits = {};
+    state.links = {};
     for (const k of ANSWERS) state[k] = FRESH[k];
   });
   applySnapshot(snapshot());          // write the cleared answers into the controls
@@ -311,7 +321,7 @@ function startOver() {
 async function composed() {
   const src = await source(state.template);
   const t = templateOf(state.template);
-  const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {});
+  const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {}, state.links[state.template] ?? {});
   return { page, roundTrip: compose(src, t.slots, blocksOf(t)) === src, integrity: integrity(page) };
 }
 
@@ -332,60 +342,310 @@ function decodeText(raw) {
 // it, is an offset into that exact string. Instancing touches no text, so the
 // indices hold on the page (proved in stage 4). Saved edits are laid over it
 // for display only.
+// WHAT A FIELD IS CALLED. Every entry is a class this repository already ships
+// and the count it occurs at, taken from the 241 fields in the catalogue rather
+// than imagined: the tag alone is useless because div, p and span hold 127 of
+// them, and <th> holds none at all — a column header wraps its text in a div.
+// The FIRST match down this list wins, so the specific sits above the general.
+// Anything unlisted falls back to the tag, which is what the panel said before
+// this stage; a wrong name is worse than a plain one.
+const ROLES = [
+  [/rux--form__helper-text|rux--form-requirement/, 'Helper text'],
+  [/rux--checkbox-label-text/, 'Checkbox'],
+  [/rux--radio-button__label-text/, 'Radio label'],
+  [/rux--toggle__label-text/, 'Toggle label'],
+  [/rux--table-header-label/, 'Column header'],
+  [/rux--structured-list-th/, 'Column header'],
+  [/rux--structured-list-td/, 'Cell'],
+  [/rux--tabs__nav-item-label/, 'Tab'],
+  [/rux--accordion__title/, 'Section title'],
+  [/rux--tag__label/, 'Status'],
+  [/rux--inline-notification__title/, 'Notification title'],
+  [/rux--inline-notification__subtitle/, 'Notification text'],
+  [/rux--list-box__menu-item__option/, 'Option'],
+  [/rux--select-option/, 'Option'],
+  [/rux--contained-list__label/, 'List label'],
+  [/rux--progress-label/, 'Step'],
+  [/rux--progress-optional/, 'Step note'],
+  [/rux--pagination__/, 'Pagination text'],
+  [/rux--full-page-error__label/, 'Error code'],
+  [/rux--full-page-error__description/, 'Error text'],
+  [/rux--data-table-header__title/, 'Table title'],
+  [/rux--data-table-header__description/, 'Table description'],
+  [/rux--inline-loading__text/, 'Loading text'],
+  [/rux--link/, 'Link'],
+  [/rux--btn/, 'Button'],
+  [/rux--label/, 'Label'],
+  [/rux--list__item/, 'Item'],
+];
+const BY_TAG = { h1: 'Heading', h2: 'Heading', h3: 'Heading', p: 'Paragraph', td: 'Cell', li: 'Item', a: 'Link', button: 'Button', label: 'Label', legend: 'Legend', option: 'Option' };
+
+// A legend is a <legend class="rux--label">, so it must be read before the
+// generic label rule; the tag decides that one, not the class.
+function roleOf(f) {
+  if (f.name === 'legend') return 'Legend';
+  for (const [re, name] of ROLES) if (re.test(f.context.cls)) return name;
+  if (BY_TAG[f.name]) return BY_TAG[f.name];
+  // AN UNCLASSED WRAPPER TAKES ITS NAME FROM WHAT HOLDS IT. The activity list
+  // on dashboard-page is a bare <div> inside li.rux--list__item, and the leaf
+  // alone said nothing — it read "Text 21 of 25". The nearest ancestor that
+  // has a role does, so ask it before falling back to a position.
+  for (const a of [...f.context.chain].reverse()) {
+    for (const [re, name] of ROLES) if (re.test(a.cls)) return name;
+  }
+  return null;
+}
+
+// The group a field belongs to, as a stable identity plus a name. `at` is an
+// ancestor's content offset, unique inside the block, so two fields under the
+// same form item share it by construction rather than by matching text.
+const GROUPS = [
+  [/rux--form-item/, 'Form item'],
+  [/rux--btn-set/, 'Actions'],
+  [/rux--table-header-row/, 'Column headers'],
+  [/rux--structured-list-row/, 'Row'],
+  [/rux--tab-panel/, 'Tab panel'],
+  [/rux--contained-list/, 'List'],
+  [/rux--accordion__item/, 'Section'],
+];
+// The NEAREST enclosing unit wins, so the walk is inside out. A fieldset is
+// matched by its TAG, not a class: the two in form-page carry
+// rux--radio-button-group and rux--checkbox-group and share no class between
+// them, and reading it off the class list is what left "Notify me when"
+// heading-less on the first run.
+function groupOf(f) {
+  const inside = [...f.context.chain].reverse();
+  // A FIELDSET BEATS ANYTHING NESTED IN IT, and that is not a preference — a
+  // fieldset is by definition the set of controls its legend names, so it IS
+  // the group. Nearest-unit alone splits one apart: form-page's two checkboxes
+  // each sit in their own rux--form-item inside the fieldset while its two
+  // radios do not, so "Notify me when" lost its legend to one group and its
+  // options to two others, and rendered with no heading at all. Measured on
+  // the block, not reasoned about.
+  const fs = inside.find(a => a.tag === 'fieldset');
+  if (fs) return { at: fs.at, kind: 'Fieldset' };
+  for (const a of inside) {
+    // The <tr>s carry no class at all, here or in any captured table, so the
+    // head is told from the body by its <thead> — without which the first body
+    // row read "Row 2", the header row having silently taken Row 1.
+    if (a.tag === 'tr') return { at: a.at, kind: inside.some(x => x.tag === 'thead') ? 'Column headers' : 'Row' };
+    for (const [re, kind] of GROUPS) if (re.test(a.cls)) return { at: a.at, kind };
+  }
+  return null;
+}
+
+// The field rows for one entry. `html` MUST be the block's ORIGINAL html from
+// the manifest, never an instanced or edited derivative: every recorded index,
+// and the original each edit is compared against to decide whether to prune
+// it, is an offset into that exact string. Instancing touches no text, so the
+// indices hold on the page (proved in stage 4). Saved edits are laid over it
+// for display only.
 function renderFieldPanel(key, html) {
   const box = $('#bld-fields');
   box.textContent = '';
   const fields = textFieldsOf(html);
-  if (!fields.length) {
+  const links = linksOf(html);
+  if (!fields.length && !links.length) {
     box.append($('#bld-no-fields-template').content.cloneNode(true));
     return;
   }
   const saved = editsFor(state.template, key);
+  const savedLinks = linksFor(state.template, key);
+  const valueOf = (i, original) => Object.hasOwn(saved, i) ? saved[i] : original;
+
+  // Group first, then name, because a group's heading is one of its own
+  // fields: the label or legend inside it. Ungrouped fields keep their order
+  // and stand alone, so a block with no form items reads as it did before.
+  const groups = new Map();
+  const order = [];
   fields.forEach((f, i) => {
-    const row = $('#bld-field-template').content.cloneNode(true);
-    const id = `bld-field-${i}`;
-    const label = row.querySelector('label'), area = row.querySelector('textarea');
-    label.setAttribute('for', id);
-    label.textContent = `Text ${i + 1} of ${fields.length}`;
-    row.querySelector('.rux--form__helper-text').textContent = `In <${f.name}>`;
-    area.id = id;
-    const original = decodeText(f.raw);
-    area.value = Object.hasOwn(saved, i) ? saved[i] : original;
-    area.addEventListener('input', event => {
-      // A NATIVE FIELD UNDO IS NOT PART OF THE RUN. The browser owns the
-      // undo stack inside a textarea; when it fires one, end our run so the
-      // change gets an entry of its own rather than joining the typing it
-      // just reversed. The two stacks stay separate, which is stated rather
-      // than papered over.
-      if (event.inputType && event.inputType.startsWith('history')) endRun();
-      typed(`${key}#${i}`, `edit text in ${labelOf(key)}`, () => setEdit(key, i, area.value, original));
-      later();
-    });
-    area.addEventListener('blur', endRun);
-    box.append(row);
+    const g = groupOf(f);
+    const id = g ? g.at : `solo-${i}`;
+    if (!groups.has(id)) { groups.set(id, { g, rows: [] }); order.push(id); }
+    groups.get(id).rows.push({ f, i });
+  });
+
+  // A FALLBACK NAME IS NUMBERED ONLY WHEN IT HAS TO BE. The first run read
+  // "Actions 7" — the seventh div among its siblings, a number that means
+  // nothing to a reader. So unnamed groups are numbered by their order among
+  // groups of the SAME KIND, and a kind that occurs once stays bare: "Actions",
+  // but "Row 1" … "Row 4".
+  const kinds = new Map();
+  for (const id of order) {
+    const g = groups.get(id).g;
+    if (g) kinds.set(g.kind, (kinds.get(g.kind) ?? 0) + 1);
+  }
+  const seen = new Map();
+  for (const id of order) {
+    const g = groups.get(id).g;
+    if (!g) continue;
+    const n = (seen.get(g.kind) ?? 0) + 1;
+    seen.set(g.kind, n);
+    groups.get(id).fallback = kinds.get(g.kind) > 1 ? `${g.kind} ${n}` : g.kind;
+  }
+
+  for (const id of order) {
+    const { g, rows, fallback } = groups.get(id);
+    let rename = null, namingIndex = -1;
+    // ONE FIELD, NO HEADING. A heading over a single unlabelled row is chrome
+    // for its own sake, and it pushes the eighteen-row panel longer still.
+    if (g && rows.length > 1) {
+      const head = $('#bld-group-template').content.cloneNode(true);
+      const h = head.querySelector('h3');
+      // The heading is the group's own label or legend, and it shows the
+      // EDITED text: rename Email to Work email and the panel must agree with
+      // the preview. An edit may be the empty string — clearing a label is a
+      // legal edit — so a blank one falls back to the structural name, and the
+      // group's accessible name is never empty.
+      // A GROUP IS NAMED BY WHICHEVER OF ITS OWN FIELDS NAMES IT — a legend, a
+      // label, or an accordion's title, which is that section's label in all
+      // but spelling. Without the last one the detail page's sections read
+      // "Section 1" and "Section 2" above rows that already said Environment
+      // and Networking.
+      const NAMES = new Set(['Legend', 'Label', 'Section title', 'Table title']);
+      const naming = rows.find(r => NAMES.has(roleOf(r.f)));
+      const named = naming ? valueOf(naming.i, decodeText(naming.f.raw)).trim() : '';
+      const wrap = head.querySelector('[role="group"]');
+      // LIVE, not only on re-render. The panel is not rebuilt while typing —
+      // that would take the caret with it — so the naming row updates its own
+      // heading as it goes, or the panel keeps saying Email while the preview
+      // says Work email. A blank edit is legal, so the fallback is applied
+      // here too and the accessible name is never empty.
+      rename = v => {
+        h.textContent = (v ?? '').trim() || fallback;
+        if (wrap) wrap.setAttribute('aria-label', h.textContent);
+      };
+      rename(named);
+      namingIndex = naming ? naming.i : -1;
+      box.append(head);
+    }
+    for (const { f, i } of rows) {
+      const original = decodeText(f.raw);
+      const role = roleOf(f);
+      const same = rows.filter(r => roleOf(r.f) === role);
+      const name = role
+        ? (same.length > 1 ? `${role} ${same.findIndex(r => r.i === i) + 1}` : role)
+        : `Text ${i + 1} of ${fields.length}`;
+      box.append(fieldRow({
+        key, i, name,
+        hint: role ? null : `In <${f.name}>`,
+        original,
+        value: valueOf(i, original),
+        store: state.edits,
+        set: (v) => setEdit(key, i, v, original),
+        runKey: `${key}#${i}`,
+        label: `edit text in ${labelOf(key)}`,
+        rename: i === namingIndex ? rename : null,
+      }));
+    }
+  }
+
+  // Link targets last, and only where there are any: a fragment href is a
+  // control relation, not content, and linksOf never offers one.
+  links.forEach((l, i) => {
+    box.append(fieldRow({
+      key, i, name: l.text ? `Link destination — ${l.text}` : 'Link destination',
+      hint: null,
+      original: decodeText(l.value),
+      value: Object.hasOwn(savedLinks, i) ? savedLinks[i] : decodeText(l.value),
+      store: state.links,
+      set: (v) => setLink(key, i, v, decodeText(l.value)),
+      runKey: `${key}$${i}`,          // $ not #, so a link run never joins a text run
+      label: `edit a link in ${labelOf(key)}`,
+      link: true,
+    }));
   });
 }
 
-// Record or prune one field's override, then keep Reset honest. No history
-// of its own: typed() wraps it.
-function setEdit(key, i, value, original) {
-  const forTemplate = state.edits[state.template] ??= {};
+// One row: its name, its value, the original beside it while they differ, and
+// a reset that appears only when there is something to reset.
+function fieldRow({ key, i, name, hint, original, value, store, set, runKey, label, link, rename }) {
+  const row = $('#bld-field-template').content.cloneNode(true);
+  const id = `bld-field-${link ? 'link-' : ''}${i}`;
+  const el = row.querySelector('label'), area = row.querySelector('textarea');
+  el.setAttribute('for', id);
+  el.textContent = name;
+  area.id = id;
+  area.value = value;
+  if (link) area.rows = 1;
+  const help = row.querySelector('.rux--form__helper-text');
+  const reset = row.querySelector('button');
+  const sync = () => {
+    const edited = Object.hasOwn((store[state.template] ?? {})[key] ?? {}, i);
+    // THE ORIGINAL SITS BESIDE THE FIELD while it differs — reset lets someone
+    // undo a change, but only this lets them see what they are changing.
+    help.textContent = edited ? `original: ${original}` : (hint ?? '');
+    help.hidden = !help.textContent;
+    reset.hidden = !edited;
+  };
+  sync();
+  area.addEventListener('input', event => {
+    // A NATIVE FIELD UNDO IS NOT PART OF THE RUN. The browser owns the
+    // undo stack inside a textarea; when it fires one, end our run so the
+    // change gets an entry of its own rather than joining the typing it
+    // just reversed. The two stacks stay separate, which is stated rather
+    // than papered over.
+    if (event.inputType && event.inputType.startsWith('history')) endRun();
+    typed(runKey, label, () => set(area.value));
+    sync();
+    if (rename) rename(area.value);
+    later();
+  });
+  area.addEventListener('blur', endRun);
+  reset.addEventListener('click', () => {
+    change(`reset one field in ${labelOf(key)}`, () => { dropOne(store, key, i); });
+    area.value = original;
+    sync();
+    if (rename) rename(original);
+    // The button it was clicked on has just gone; without this, focus falls to
+    // the document and the reader loses their place mid-panel.
+    area.focus();
+    later();
+  });
+  return row;
+}
+
+// Record or prune one override, then keep Reset honest. No history of its
+// own: typed() wraps it. One function over both stores, so the pruning rule —
+// typing a value back to its original deletes it — cannot drift between them.
+function setIn(store, key, i, value, original) {
+  const forTemplate = store[state.template] ??= {};
   const forEntry = forTemplate[key] ??= {};
   if (value === original) delete forEntry[i]; else forEntry[i] = value;
   if (!Object.keys(forEntry).length) delete forTemplate[key];
-  if (!Object.keys(forTemplate).length) delete state.edits[state.template];
+  if (!Object.keys(forTemplate).length) delete store[state.template];
   syncReset();
 }
+const setEdit = (key, i, value, original) => setIn(state.edits, key, i, value, original);
+const setLink = (key, i, value, original) => setIn(state.links, key, i, value, original);
 
-function dropEdits(keys) {
-  const forTemplate = state.edits[state.template];
-  if (!forTemplate) return;
-  for (const k of keys) delete forTemplate[k];
-  if (!Object.keys(forTemplate).length) delete state.edits[state.template];
+// One field back to its original — the per-field reset. Returns whether it
+// changed anything, so change() can record nothing when it did not.
+function dropOne(store, key, i) {
+  const forTemplate = store[state.template];
+  const forEntry = forTemplate?.[key];
+  if (!forEntry || !Object.hasOwn(forEntry, i)) return false;
+  delete forEntry[i];
+  if (!Object.keys(forEntry).length) delete forTemplate[key];
+  if (!Object.keys(forTemplate).length) delete store[state.template];
+  return true;
 }
 
-const syncReset = () => { $('#bld-reset').disabled = !Object.keys(editsFor(state.template, state.block)).length; };
-const editCount = () => Object.values(state.edits[state.template] ?? {}).reduce((n, b) => n + Object.keys(b).length, 0);
+// REMOVING A BLOCK DROPS BOTH KINDS. Its words and where they pointed go with
+// it, or undo brings back a block carrying half its content.
+function dropEdits(keys) {
+  for (const store of [state.edits, state.links]) {
+    const forTemplate = store[state.template];
+    if (!forTemplate) continue;
+    for (const k of keys) delete forTemplate[k];
+    if (!Object.keys(forTemplate).length) delete store[state.template];
+  }
+}
+
+const countFor = key => Object.keys(editsFor(state.template, key)).length + Object.keys(linksFor(state.template, key)).length;
+const syncReset = () => { $('#bld-reset').disabled = !countFor(state.block); };
+const editCount = () => [state.edits, state.links]
+  .reduce((n, store) => n + Object.values(store[state.template] ?? {}).reduce((m, b) => m + Object.keys(b).length, 0), 0);
 
 const option = (value, text) => {
   const o = document.createElement('option');
