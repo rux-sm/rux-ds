@@ -3115,8 +3115,11 @@ consumed by a tool; the rows describe, and they described wrongly. What it
 weakens: nothing — cells age on more, and rows name more. `npm run verify`
 exit 0, `check-controls` names `tools/lib/gates.mjs` alone.
 
-**Stage 6, proposed 2026-09-05 and awaiting rux's review — undo, redo, and a
-draft that survives a reload.** `builder/session.mjs`, pure and node-tested,
+**Stage 6, 2026-09-05, accepted by rux and landed at `8d651f2` — undo, redo,
+and a draft that survives a reload.** *(This entry opened "proposed … awaiting rux's
+review" until 2026-09-05, when rux's stage-9 review caught it: the stage had
+shipped, its browser cells were current, and the plan file's own note said
+"Landed". Corrected here rather than quietly.)* `builder/session.mjs`, pure and node-tested,
 holds the history and the draft; `builder.js` decides what an action is.
 ONE SESSION HISTORY over `{ pages, edits, answers }`, not one per template:
 the answers are global, so a per-template history would duplicate them or
@@ -3393,6 +3396,78 @@ Tier 2, two controls: `rewrites.mjs` and `build-builder.mjs`. What it weakens:
 grows a parameter. No gate, fixture, baseline or `CONTROL_FILES` entry moves.
 The red runs are evidence, not acceptance. Not done: stages 9 to 13, and
 attributes other than `href`.
+
+**Stage 9, 2026-09-05, accepted by rux and landed in the commit that carries
+this sentence — button size and table density.** `2757625`, swept at `82241a5`,
+restamped at `0ab74cc` — the two things about a block that are a CHOICE rather than
+content. **14 groups across the catalogue**: 5 button sets, 1 toolbar, 4 lone
+buttons, 4 tables, each offering "as attested" first with the size the block
+ships named on it.
+
+**THE KEY IS AN ORDINAL, NOT AN OFFSET, and that is rux's review speaking.**
+The first plan keyed a group by its content offset and applied variants after
+text and links; those two cannot both hold. Measured on
+`templates/form-page/form`: one longer text field moves the button set from
+**7255 to 7289**, so the stored key matches nothing and the reader's choice
+silently does not apply — no error, no fault, a control that quietly does
+nothing. Ordinals are what `edits` and `links` already use, and they are stable,
+proved over every block with a group under a length-changing text edit, a link
+edit and instancing. Variants also run FIRST now, on the block's original
+geometry, so the pass stays correct even if anyone later reintroduces an offset.
+**Revision 1's "all three orders commute" evidence did not cover this**, and the
+reason is worth keeping: the stand-in rewrote classes by regex over the whole
+string, so it never exercised a keyed lookup. It proved the output commutes and
+said nothing about the persisted identity — the same shape of mistake stage 8
+made, one layer further in.
+
+**THE MATRIX IS ASYMMETRIC BECAUSE THE STYLESHEET IS.** There is no
+`rux--btn--lg` and no `rux--btn--xl`: `@carbon/styles`' own `_button.scss` writes
+size rules for xs, sm, md and expressive only, which is what
+`sink/buttons.html:28-34` already said. Large and extra large are
+`rux--layout--size-*` alone, and **large is also the unclassed default** through
+`.rux--btn`'s clamp reading `var(--rux-layout-size-height,
+var(--rux-layout-size-height-lg))`. 16 of the 17 swappable buttons ship bare.
+Picking Large writes the class explicitly anyway — rux's call: the export says
+what it is rather than leaning on a default.
+
+Icon-only is excluded and the CSS says why: `inline-size` AND `block-size` both
+track the size token, so a swap resizes the hit target in both axes, and
+Carbon's own size rules are written `:not(.rux--btn--icon-only)`. No anchor
+carries `cds--btn` in any capture, so `<a class="rux--btn">` is excluded too.
+
+**READ IN THE BROWSER, since no gate reaches any of it.** Button heights track
+the tokens exactly — xs 24, sm 32, md 40, lg 48, xl 64 — and the wizard's button
+set stays **620px at every size with no overflow**: the 196px cap is
+`max-inline-size` and size-independent, so resizing cannot cause the invisible
+horizontal overflow `templates/wizard-page.html` documents at length and that
+cost §4.6's seventh exit attempt.
+
+**One thing only looking found: a row will not shrink below what it holds.** On
+the table with a selection column the checkbox floors every row at 41px, so `xs`
+and `sm` are identical there; without one the heights follow the token — 29, 38,
+40, 48, 64. `docs/choices.md`'s new section says so, because the ladder alone
+would mislead.
+
+**A contradiction in `docs/choices.md`, flagged not fixed, rux's call.** Its
+buttons guidance already recommends "`sm` inside tables and toolbars" and **the
+corpus attests no such thing**: every button in the one toolbar is bare, and the
+only `sm` button sits in a contained list — while the file's preamble promises
+"every option here is attested". Left for rux, the same treatment the open
+shell-toggle contradiction gets.
+
+**A third red run came back GREEN with the mutation applied**, and that is the
+finding worth keeping: the compiled-class check compared the module's matrix
+against a COPY of the matrix declared in the test, so mutating the module changed
+nothing the assertion could see. It reads the emitted classes now. The other two
+went red as intended. Two mistakes of mine are recorded with them: an identifier
+collision with stage 8's own `groups` broke the whole panel until the page was
+opened, and a first pass at the rendered heights read the preview before its
+debounced reload, reporting every value one selection behind.
+
+Tier 2, two controls. What it weakens: `composePage` grows a parameter and every
+compose derives one more group list. No gate, fixture, baseline or
+`CONTROL_FILES` entry moves. Not done: stages 10 to 13, button kind per button,
+and fluid fields.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 

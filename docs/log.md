@@ -59,6 +59,44 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — button size and table density (§4.12 stage 9).** `2757625`,
+swept at `82241a5`, restamped at `0ab74cc` — 14 groups across the catalogue, each
+offering "as attested" first with the size the block ships named on it.
+
+**rux's review caught the one thing that mattered.** The first plan keyed a
+group by its byte offset and applied variants after text and links; measured,
+one longer text field moves `templates/form-page/form`'s button set from 7255 to
+7289, so the stored key matches nothing and the reader's choice silently does
+nothing. Ordinals now, as `edits` and `links` already use, and variants run
+first. **The "all orders commute" evidence I offered did not cover it** — the
+stand-in rewrote classes by regex, so it never exercised a keyed lookup. It
+proved the output commutes and said nothing about the persisted identity.
+
+The matrix is asymmetric because the stylesheet is: no `rux--btn--lg`, no
+`rux--btn--xl`, and large is the unclassed default. Picking Large writes
+`rux--layout--size-lg` anyway, rux's call.
+
+**Read in the browser, since no gate reaches it:** button heights track the
+tokens exactly (xs 24 → xl 64) and the wizard's set stays 620px at every size,
+so the invisible overflow that file documents cannot happen. **One thing only
+looking found:** a row will not shrink below what it holds — a selection
+checkbox floors it at 41px, so `xs` and `sm` are identical on that table.
+
+**A third red run came back GREEN with the mutation applied**: the compiled-class
+check compared the module's matrix against a copy declared in the test. It reads
+the emitted classes now. Two of my own errors are in the roadmap with it — an
+identifier collision that broke the whole panel until the page was opened, and a
+first read of the rendered heights taken before the preview's debounced reload,
+reporting every value one selection behind.
+
+**Flagged, not fixed, rux's call:** `docs/choices.md` recommends "`sm` inside
+tables and toolbars" and the corpus attests no such thing, while its preamble
+promises every option is attested.
+
+**Also corrected, from rux's review:** stage 6 was recorded two ways at once —
+the roadmap still opened "proposed … awaiting rux's review" though it shipped at
+`8d651f2`. Stage 0 had the same gap in the plan's sequence table. Both fixed.
+
 **2026-09-05 — Brand.svg is the mark, everywhere, and the gate charged for it.**
 rux-ds `b11622c`, swept at `5237fcc` and `f2d739f`; Rux Apps `390e272`,
 Rux Notes `4dddf21`. Supersedes Rux logo 2 the same day. The source is

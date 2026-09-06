@@ -292,7 +292,7 @@ tag would still pass.
 
 **Next, in order:**
 
-1. Creator 3, the page builder, `builder.html` here — stages 0 to 8 of its
+1. Creator 3, the page builder, `builder.html` here — stages 0 to 9 of its
    plan have landed (markers, the gate, the skeleton round trip, the preview
    2026-09-04; select-and-edit, instance identity, add-and-move on a page
    model, the gate registry, undo with a draft that survives a reload, and
@@ -304,9 +304,9 @@ tag would still pass.
    found a real divergence on its first run (roadmap §4.12). **The content
    panel now reads as content**: every field named by what it is, grouped, with
    its original beside it, a per-field reset, and a link target where the markup
-   has one. What follows is planned in `docs/builder-guided-plan.md` — variants,
-   the catalogue and its map, and the guided mode itself — each stage its own
-   proposal. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   has one, and **button size and table density are swappable per group**. What
+   follows is planned in `docs/builder-guided-plan.md` — the catalogue and its
+   map, and the guided mode itself — each stage its own proposal. Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.
 2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both

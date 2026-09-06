@@ -1,7 +1,7 @@
 # Builder — the guided mode, stages 0 and 6 to 13 (roadmap §4.12, creator 3)
 
-**Status, 2026-09-05: approved plan, revision 2; stages 0, 6, 7 and 8 have
-landed, 9 to 13 have not.**
+**Status, 2026-09-05: approved plan, revision 2; stages 0 and 6 to 9 have
+landed, 10 to 13 have not.**
 Saved as the select-and-edit and add-and-move plans were, so a different clone
 can pick it up. Each stage below is its own proposal in the open and lands in
 its own commit; when a stage lands, its roadmap entry in §4.12 is the record
@@ -66,11 +66,11 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 
 | stage | what | tier-2 files | needs |
 |---|---|---|---|
-| 0 | Registry: `pageInputs` so `builder/` ages the three `builder.html` cells; the six literal `fileTargets`. | `gates.mjs` | — |
-| 6 | Undo, redo, and a versioned draft that survives reload. | `build-builder.mjs` | 0 |
+| 0 | **DONE 2026-09-05.** Registry: `pageInputs` so `builder/` ages the three `builder.html` cells; the six literal `fileTargets`. | `gates.mjs` | — |
+| 6 | **DONE 2026-09-05.** Undo, redo, and a versioned draft that survives reload. | `build-builder.mjs` | 0 |
 | 7 | **DONE 2026-09-05.** Export and parity: download, copy `<main>`, the two delivery paths, `check-parity`. | `build-builder.mjs`, `check-parity.mjs`, `gates.mjs` | 6 |
 | 8 | **DONE 2026-09-05.** Content editing that reads as content: labels from context, grouping, link targets, per-field reset. | `rewrites.mjs` | 6 |
-| 9 | Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
+| 9 | **DONE 2026-09-05.** Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
 | 10 | Manifest depth (`frameDeps`), catalogue growth with a visual pass each, the generated coverage table. | `build-blocks.mjs`, `check-blocks.mjs`, CI | 0 |
 | 11 | The guide map `builder/guide.json` with conditions and review records, validated by `check-blocks`. | `check-blocks.mjs` | 9, 10 |
 | 12 | Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. | `build-builder.mjs` | 7, 8, 9, 11 |
@@ -121,11 +121,13 @@ edit and instancing DO NOT COMMUTE, which rux found in review and which made the
 order the contract of the stage. The panel's wording also moved: "Label: Email"
 became a group headed "Email" holding a row called "Label".
 
-**9, variants.** `variantsOf(html)` returns groups — each `rux--btn-set`,
-each toolbar, each lone qualifying button, named by context — and `table`.
-`applyVariants` rewrites size classes within a group. "As attested" first,
-then the values with the recommendation for that context. Order: text,
-variants, instance; all three commute.
+**9, variants. Landed 2026-09-05 (`2757625`); roadmap §4.12 is the record.**
+One correction to what this note said. "Order: text, variants, instance; all
+three commute" is not the contract — rux's review found that a group keyed by
+offset breaks the moment an earlier edit changes length, measured at 7255 to
+7289. Variants are keyed by ORDINAL, as edits and links already are, and run
+FIRST. The note also said groups are "named by context"; the module reports
+structure and the panel supplies the words, the split stage 8 established.
 
 **10, manifest and catalogue.** `frameDeps` per block. Growth by the block
 rule, then each new block opened in the preview and looked at, the pass
