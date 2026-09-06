@@ -93,7 +93,7 @@ yet, and does not fail.
 
 Then, by hand:
 
-1. `git init && git config core.hooksPath .githooks`. Create the repository and enable Pages — rux does this; `gh repo create` is refused to an agent.
+1. `git init && git config core.hooksPath .githooks`. Create the repository: an agent may run `gh repo create` once rux has named the app in the conversation (rule changed 2026-09-06; it was rux's alone before). The REST form, `gh api -X POST /user/repos`, is still refused to an agent and is not a fallback. Enabling Pages stays rux's click; the Pages API is refused.
 2. In the hub, add one entry to `switcher.json`: `{ "name", "path": "/<name>/", "description" }`. That is the whole registry; the panel and the launcher read it at runtime, and the hub README no longer carries a copy. `node tools/check.mjs` there.
 3. Open the page in every theme. Commit and push both.
 

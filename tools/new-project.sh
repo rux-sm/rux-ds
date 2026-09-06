@@ -373,7 +373,7 @@ if [ -n "$NEW_APP" ]; then
   echo ""
   echo "  Left to you, in this order (docs/verbs.md, verb 3):"
   echo "    cd $DIR && git init && git config core.hooksPath .githooks"
-  echo "    create the repository and enable Pages -- refused to an agent"
+  echo "    create the repository (gh repo create, once rux has named the app); enable Pages (rux's click)"
   echo "    add {\"name\",\"path\":\"$APP_PATH\",\"description\"} to the hub's switcher.json; node tools/check.mjs there"
   echo "    open the page in every theme, then commit and push both"
 fi
