@@ -311,6 +311,19 @@ tag would still pass.
    and landed 2026-09-04 on rux's acceptance.
 2. Nothing is pending on the brand. Both consumers are on `v0.1.6` and both
    carry the mark and the favicon; `npm run gates` holds the cells.
+3. **A consumer's first ask, received 2026-09-06.** Notes asks for one
+   template and one decision: a **document page** — one record read top to
+   bottom, numbered sections each with a lead line and a table, callouts
+   inline, trailing tables — which no template here has, `detail-page.html`
+   being one record seen several ways through tabs; and a ruling on a **label
+   that must not truncate**, since `.rux--tag` caps at 13rem and ellipsises,
+   and a breadcrumb-like path of three or four segments is the one label a
+   reader needs whole — `.rux--tag-label-tooltip`, a wider variant, or a
+   different component. The memo and its exhibit, a complete page of invented
+   content, are read in place in that repository (`SEND-DS.md`,
+   `template-candidate.html`); nothing from it enters here, by the rule at
+   the top of `AGENTS.md`. A template, if adopted, is authored here against
+   invented content and named for what it is generically.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template
