@@ -9,6 +9,20 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 — Stage 12 landed: the guided mode.** Five sections on one set
+of DOM nodes, shown one at a time behind a clickable vertical stepper or all
+at once; purpose radios beside the template select, an outline beside the
+block select; every suggestion with its own Add passing its slot; a
+plain-words review line and a real "open in a new tab" link; mode, step and
+template under `rux.builder.view`, the draft untouched. Three things the
+browser corrected: `<section>` does not honour `hidden` under Carbon's reset;
+Keep did not re-read its store after a size change; a reload opened the draft
+on the wrong template. Builder cells 72/80 0 stripped, a11y 5 (the adjudicated
+`progress-step-button` cause), spacing 46/42 with 4 unknown all already in the
+ledger. Ten guided compositions through `app-check`: one failure, app-shell's
+three `#breadcrumb` links from the promoted sink breadcrumb. Tab traversal,
+Enter, Space and the new tab are owed to a real browser. Roadmap §4.12.
+
 **2026-09-06 — The map is read: 10 purpose lines, 17 of 20 suggestions and
 17 of 17 variant groups reviewed; 2 suggestions not yet, 1 removed.** Every
 suggestion was composed into its slot by the builder's own functions and looked

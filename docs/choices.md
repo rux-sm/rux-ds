@@ -13,7 +13,7 @@ Three layers offer them, cheapest first:
 |---|---|---|
 | **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, name, title, file | Done |
 | **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Done 2026-09-02, its §2 |
-| **Builder** `builder.html`, here | a page builder: a template, its answers, marked blocks from `sink/` and `templates/`, a live preview, the HTML to take away | Partial 2026-09-05 — the template, the answers, the preview, every marked block added, moved or removed, and the selected block's text edited in place; undo and export follow (roadmap §4.12 item 3) |
+| **Builder** `builder.html`, here | a page builder: a template, its answers, marked blocks from `sink/` and `templates/`, a live preview, the HTML to take away | Done 2026-09-06 — a guided mode (purpose, sections and content, add sections, review, take it away) and a free mode on one draft; every marked block added, moved or removed; text, links, sizes and densities edited in place; undo, a draft that survives a reload, and export held to `new-project.sh` by `check-parity` (roadmap §4.12 item 3) |
 
 ## Page shape — ten, pick one
 

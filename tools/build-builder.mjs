@@ -22,6 +22,41 @@
 // the markup has one. Then the two things about a block that are a CHOICE
 // rather than content: how big its buttons are and how tight its table rows,
 // as class swaps whose spellings Carbon and this repository already attest.
+// Then the GUIDED MODE (stage 12): the same controls, grouped into five
+// sections — Purpose, Sections and content, Add sections, Review, Take it
+// away — shown one at a time behind a vertical progress indicator, or all at
+// once in the free mode. ONE SET OF DOM NODES, TWO WAYS OF SHOWING THEM: the
+// modes share every control, the draft, the model and the history, and a
+// mode is where the reader is standing, never a change.
+//
+// EVERYTHING A MODE HIDES IS WRAPPED IN A PLAIN <div>. `.rux--progress` and
+// `.rux--form-item` are display:flex, and .bld-row is too, so `hidden` on any
+// of them would lose to the author rule on origin — the exact defect fixed for
+// `.rux--btn[hidden]` on 2026-09-02. A classless <div> takes the attribute
+// and the browser's own [hidden] rule holds. A <section> DOES NOT: Carbon's
+// reset sets display:block on the HTML5 sectioning elements, which beats
+// [hidden] the same way, and the first browser run showed every step at once
+// with the attributes correctly set. So the five steps carry .bld-step and
+// the inline style below writes .bld-step[hidden] { display: none } — the
+// override's own pattern, at the builder's own class.
+//
+// THE STEPPER'S GLYPHS ARE SWAPPED AT RUNTIME, and the third one is asserted
+// by name. Carbon draws the vertical indicator's svg at display:inline-block
+// on the button, which beats [hidden], so builder.js changes the <use> rather
+// than toggling three svgs. The file ships step 1 current and four not
+// started, so #i-checkmark--outline never appears in the markup; RUNTIME_GLYPHS
+// below names it, and the assertion at the foot reads that list beside the
+// markup. A glyph builder.js writes and nothing asserts would paint nothing,
+// silently, which is the failure that assertion exists to stop.
+//
+// TWO CONTROLS PER STATE where the guided one has to say more: the template
+// select (free) beside a radio group labelled by the map's purpose line
+// (guided), and the block select (free) beside a contained list of the page's
+// units (guided). Both write the same state through the same handler in
+// builder.js. The purpose lines are read from builder/guide.json HERE, at
+// build time, so the radios are static markup check-classes can read; an
+// unreviewed line keeps its "(not reviewed)" suffix exactly as the page's
+// runtime suggestion list spells it.
 //
 // TWO NOTICE TEMPLATES, BOTH FULLY WRITTEN HERE. The draft notice and the
 // save-failure alert are the same attested composition in two variants, and
@@ -60,7 +95,32 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const sprite = readFileSync('assets/icons.svg', 'utf8').trim();
 const symbols = new Set([...sprite.matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
 
+const guide = JSON.parse(readFileSync('builder/guide.json', 'utf8'));
+// A glyph the page shows only after builder.js writes it. See the header.
+const RUNTIME_GLYPHS = ['i-checkmark--outline'];
+
 const THEMES = [['white', 'White'], ['g10', 'Gray 10'], ['g90', 'Gray 90'], ['g100', 'Gray 100'], ['rux', 'Rux']];
+const STEPS = [['Purpose', 'What the page is for'], ['Sections and content', 'Each part, its words and its size'], ['Add sections', 'What else the page could carry'], ['Review', 'How it looks and whether it holds together'], ['Take it away', 'The file, or the command that makes a project']];
+const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// The purpose radios: sink/radio.html's group, vertical, one per template in
+// the map's order, labelled name first (the identity) and purpose after.
+const PURPOSES = Object.entries(guide.templates).map(([name, t]) => `                  <div class="rux--radio-button-wrapper">
+                    <input id="bld-purpose-${name}" class="rux--radio-button" type="radio" name="bld-purpose" value="${name}"${name === 'app-shell' ? ' checked' : ''}>
+                    <label for="bld-purpose-${name}" class="rux--radio-button__label">
+                      <span class="rux--radio-button__appearance"></span>
+                      <span class="rux--radio-button__label-text">${name} — ${esc(t.purpose)}${t.reviewed ? '' : ' (not reviewed)'}</span>
+                    </label>
+                  </div>`).join('\n');
+// The stepper, sink/progress-indicator.html's vertical specimen with every
+// step CLICKABLE — no --unclickable — so the reader can go back and forth.
+const STEPPER = STEPS.map(([label], i) => `                  <li class="rux--progress-step rux--progress-step--${i === 0 ? 'current' : 'incomplete'}">
+                    <button type="button" class="rux--progress-step-button" data-step="${i + 1}">
+                      <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><use href="#${i === 0 ? 'i-incomplete' : 'i-circle-dash'}"/></svg>
+                      <div class="rux--progress-text"><span class="rux--progress-label">${label}</span></div>
+                      <span class="rux--assistive-text">${i === 0 ? 'Current' : 'Not started'}</span>
+                      <span class="rux--progress-line"></span>
+                    </button>
+                  </li>`).join('\n');
 const WIDTHS = [['375', '375'], ['672', '672'], ['1056', '1056'], ['1280', '1280'], ['1440', '1440'], ['fit', 'Fit']];
 
 const textInput = (id, label, placeholder, helper) => `
@@ -104,6 +164,11 @@ const page = `<!doctype html>
 .bld-warn { color: var(--rux-support-error); }
 .bld-suggest { border-inline-start: 2px solid var(--rux-border-subtle-01); padding-inline-start: var(--rux-spacing-04); }
 .bld-suggest p { margin: 0 0 var(--rux-spacing-02); }
+/* A step shown one at a time. Carbon's reset gives <section> display:block,
+   which beats the browser's [hidden] on origin, so the attribute is honoured
+   here — the same shape as .rux--btn[hidden] in css/rux-overrides.css. */
+.bld-step { min-inline-size: 0; }
+.bld-step[hidden] { display: none; }
 /* The command is a <code>, not a code-snippet: that component's copy button is
    the icon-tooltip one, and stage 7's call was a plain button the builder owns
    (js/copy-button.js: "A page that needs neither owns the click"). So this is
@@ -161,119 +226,214 @@ ${sprite}
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-redo" disabled>Redo</button>
                 <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" id="bld-start-over">Start over</button>
               </div>
-              <h2>Choices</h2>
-              <div class="rux--form-item">
-                <div class="rux--select">
-                  <label class="rux--label" for="bld-template">Template</label>
-                  <div class="rux--select-input__wrapper">
-                    <select id="bld-template" class="rux--select-input"></select>
-                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-                  </div>
-                  <div class="rux--form__helper-text">One of the ten in <code>templates/</code>, as <code>new-project.sh</code> offers them.</div>
-                </div>
+              <div class="bld-row" role="group" aria-label="Mode">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-mode="guided" aria-pressed="true">Guided</button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-mode="free" aria-pressed="false">Free</button>
               </div>
-              <div class="rux--form-item">
-                <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="bld-theme">
-                  <legend class="rux--label">Default theme</legend>
-${THEMES.map(([v, l]) => `                  <div class="rux--radio-button-wrapper">
-                    <input id="bld-theme-${v}" class="rux--radio-button" type="radio" name="bld-theme" value="${v}"${v === 'white' ? ' checked' : ''}>
-                    <label for="bld-theme-${v}" class="rux--radio-button__label">
-                      <span class="rux--radio-button__appearance"></span>
-                      <span class="rux--radio-button__label-text">${l}</span>
-                    </label>
-                  </div>`).join('\n')}
-                </fieldset>
-                <div class="rux--form__helper-text">The page's default. A visitor's own choice, saved in the account panel, wins on the real page; the preview shows the default.</div>
-              </div>${textInput('bld-prefix', 'Product prefix', 'Rux', 'The lighter-weight half of the header name.')}${textInput('bld-name', 'Product name', 'DS', 'The header name and its aria-label.')}${textInput('bld-title', 'Browser tab title', 'Prefix and name', 'Defaults to the prefix and the name, as the script does.')}${textInput('bld-page', 'File name', 'index', 'Without .html — what the export downloads as.')}
-              <h2>Blocks</h2>
-              <div class="rux--form-item">
-                <div class="rux--select">
-                  <label class="rux--label" for="bld-slot">Slot</label>
-                  <div class="rux--select-input__wrapper">
-                    <select id="bld-slot" class="rux--select-input"></select>
-                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-                  </div>
-                  <div class="rux--form__helper-text" id="bld-slot-note">A container the template already has.</div>
-                </div>
+              <div id="bld-stepper">
+                <ul class="rux--progress rux--progress--vertical" aria-label="Steps">
+${STEPPER}
+                </ul>
               </div>
-              <div id="bld-suggestions" hidden></div>
-              <div class="rux--form-item">
-                <div class="rux--select">
-                  <label class="rux--label" for="bld-catalogue">Seen in the same recorded layout</label>
-                  <div class="rux--select-input__wrapper">
-                    <select id="bld-catalogue" class="rux--select-input"></select>
-                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-                  </div>
-                  <div class="rux--form__helper-text" id="bld-catalogue-note">Blocks recorded in a container with the same grid, column and stack classes as this slot. That is evidence, not a verdict: only a block in its own slot is an attested placement. Added to the end of the slot.</div>
-                </div>
-              </div>
-              <div>
-                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add">Add to slot</button>
-              </div>
-              <p class="bld-warn" id="bld-frame-note" hidden></p>
-              <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
-                <li class="rux--accordion__item">
-                  <button type="button" class="rux--accordion__heading" aria-expanded="false" id="bld-rest-toggle">
-                    <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
-                    <div class="rux--accordion__title" id="bld-rest-title">No matching recorded layout</div>
-                  </button>
-                  <div class="rux--accordion__wrapper">
-                    <div class="rux--accordion__content">
-                      <div class="rux--form-item">
-                        <div class="rux--select">
-                          <label class="rux--label" for="bld-rest">Add anyway</label>
-                          <div class="rux--select-input__wrapper">
-                            <select id="bld-rest" class="rux--select-input"></select>
-                            <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
-                          </div>
-                          <div class="rux--form__helper-text">No capture places these here. Every part is still attested on its own; what is unverified is the arrangement, and there may be no fix — <code>docs/composing-pages.md</code> §3.10.</div>
-                        </div>
-                      </div>
-                      <p class="bld-warn" id="bld-rest-frame-note" hidden></p>
-                      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add-rest">Add to slot</button>
+
+              <section class="bld-step" data-step="1" aria-labelledby="bld-h-1">
+                <div class="rux--stack-vertical rux--stack-scale-7">
+                  <h2 id="bld-h-1" tabindex="-1">Purpose</h2>
+                  <div id="bld-purpose">
+                    <div class="rux--form-item">
+                      <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
+                        <legend class="rux--label">What is this page for?</legend>
+${PURPOSES}
+                      </fieldset>
+                      <div class="rux--form__helper-text">The ten shapes in <code>templates/</code>, each a complete page. Pick the nearest job; every part can be changed after.</div>
                     </div>
                   </div>
-                </li>
-              </ul>
-              <div class="rux--form-item">
-                <div class="rux--select">
-                  <label class="rux--label" for="bld-block">Block on the page</label>
-                  <div class="rux--select-input__wrapper">
-                    <select id="bld-block" class="rux--select-input"></select>
-                    <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                  <div id="bld-template-free">
+                    <div class="rux--form-item">
+                      <div class="rux--select">
+                        <label class="rux--label" for="bld-template">Template</label>
+                        <div class="rux--select-input__wrapper">
+                          <select id="bld-template" class="rux--select-input"></select>
+                          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                        </div>
+                        <div class="rux--form__helper-text">One of the ten in <code>templates/</code>, as <code>new-project.sh</code> offers them.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="rux--form__helper-text" id="bld-block-note">Every block on the page, in order; a second copy is numbered.</div>
+                  <div class="rux--form-item">
+                    <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="bld-theme">
+                      <legend class="rux--label">Default theme</legend>
+${THEMES.map(([v, l]) => `                      <div class="rux--radio-button-wrapper">
+                        <input id="bld-theme-${v}" class="rux--radio-button" type="radio" name="bld-theme" value="${v}"${v === 'white' ? ' checked' : ''}>
+                        <label for="bld-theme-${v}" class="rux--radio-button__label">
+                          <span class="rux--radio-button__appearance"></span>
+                          <span class="rux--radio-button__label-text">${l}</span>
+                        </label>
+                      </div>`).join('\n')}
+                    </fieldset>
+                    <div class="rux--form__helper-text">The page's default. A visitor's own choice, saved in the account panel, wins on the real page; the preview shows the default.</div>
+                  </div>${textInput('bld-prefix', 'Product prefix', 'Rux', 'The lighter-weight half of the header name.')}${textInput('bld-name', 'Product name', 'DS', 'The header name and its aria-label.')}${textInput('bld-title', 'Browser tab title', 'Prefix and name', 'Defaults to the prefix and the name, as the script does.')}
                 </div>
-              </div>
-              <div class="bld-row" role="group" aria-label="Arrange the selected block">
-                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-up">Move up</button>
-                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-down">Move down</button>
-                <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" id="bld-remove">Remove</button>
-              </div>
-              <h2>Edit content</h2>
-              <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
-              <div>
-                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
-              </div>
-              <h2>Export</h2>
-              <div id="bld-export-notice"></div>
-              <p class="bld-status" id="bld-export-warn" hidden></p>
-              <div class="rux--stack-vertical rux--stack-scale-5">
-                <div class="rux--stack-vertical rux--stack-scale-3">
-                  <h3 class="rux--type-heading-compact-01">A page for an existing project</h3>
-                  <div class="bld-row" role="group" aria-label="Take the page away">
-                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-download">Download the page</button>
-                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy">Copy the main region</button>
+              </section>
+
+              <section class="bld-step" data-step="2" aria-labelledby="bld-h-2">
+                <div class="rux--stack-vertical rux--stack-scale-7">
+                  <h2 id="bld-h-2" tabindex="-1">Sections and content</h2>
+                  <div id="bld-outline">
+                    <div class="rux--contained-list rux--layout--size-lg rux--contained-list--on-page">
+                      <div class="rux--contained-list__header"><h3 class="rux--contained-list__label">On the page</h3></div>
+                      <ul role="list" id="bld-outline-list"></ul>
+                    </div>
+                    <div class="rux--form__helper-text">Every section in order, top to bottom. Choose one to edit it below; a part that moves with another is named on its row.</div>
                   </div>
-                  <div class="rux--form__helper-text">The download goes beside the project's <code>index.html</code>, and its paths already point at <code>vendor/rux-ds/</code>. The copy is the whole <code>&lt;main&gt;</code> element, so it REPLACES a page's main region rather than filling it.</div>
-                </div>
-                <div class="rux--stack-vertical rux--stack-scale-3">
-                  <h3 class="rux--type-heading-compact-01">A new project</h3>
-                  <code class="bld-command" id="bld-command"></code>
+                  <div id="bld-picker-free">
+                    <div class="rux--form-item">
+                      <div class="rux--select">
+                        <label class="rux--label" for="bld-block">Block on the page</label>
+                        <div class="rux--select-input__wrapper">
+                          <select id="bld-block" class="rux--select-input"></select>
+                          <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                        </div>
+                        <div class="rux--form__helper-text">Every block on the page, in order; a second copy is numbered.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bld-row" role="group" aria-label="Arrange the selected block">
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-up">Move up</button>
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-down">Move down</button>
+                    <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" id="bld-remove">Remove</button>
+                  </div>
+                  <p class="bld-status" id="bld-keep-line">Keeping it. Next moves on; Remove takes it off the page, and Undo brings it back.</p>
+                  <div class="rux--stack-vertical rux--stack-scale-5" id="bld-fields"></div>
+                  <div id="bld-keep-wrap">
+                    <div class="bld-row" role="group" aria-label="Settings for this section">
+                      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-keep" disabled>Keep attested settings</button>
+                    </div>
+                    <div class="rux--form__helper-text" id="bld-keep-note"></div>
+                  </div>
                   <div>
-                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy-command">Copy the command</button>
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-reset" disabled>Reset content</button>
                   </div>
-                  <div class="rux--form__helper-text">Run it from your <code>rux-ds</code> clone. It carries every answer above and asks only where to put the project — the builder does not know your folders, and a path you might run without reading is worse than a question. <code>tools/new-project.sh</code> stays the one project creator; the downloaded page then replaces the one it wrote.</div>
+                  <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
+                    <li class="rux--accordion__item">
+                      <button type="button" class="rux--accordion__heading" aria-expanded="false">
+                        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                        <div class="rux--accordion__title">Details</div>
+                      </button>
+                      <div class="rux--accordion__wrapper">
+                        <div class="rux--accordion__content">
+                          <p class="bld-status" id="bld-block-note"></p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              <section class="bld-step" data-step="3" aria-labelledby="bld-h-3">
+                <div class="rux--stack-vertical rux--stack-scale-7">
+                  <h2 id="bld-h-3" tabindex="-1">Add sections</h2>
+                  <div id="bld-suggestions" hidden></div>
+                  <h3 class="rux--type-heading-compact-01">Inspect the catalogue</h3>
+                  <div class="rux--form-item">
+                    <div class="rux--select">
+                      <label class="rux--label" for="bld-slot">Slot</label>
+                      <div class="rux--select-input__wrapper">
+                        <select id="bld-slot" class="rux--select-input"></select>
+                        <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                      </div>
+                      <div class="rux--form__helper-text" id="bld-slot-note">A container the template already has.</div>
+                    </div>
+                  </div>
+                  <div class="rux--form-item">
+                    <div class="rux--select">
+                      <label class="rux--label" for="bld-catalogue">Seen in the same recorded layout</label>
+                      <div class="rux--select-input__wrapper">
+                        <select id="bld-catalogue" class="rux--select-input"></select>
+                        <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                      </div>
+                      <div class="rux--form__helper-text" id="bld-catalogue-note">Blocks recorded in a container with the same grid, column and stack classes as this slot. That is evidence, not a verdict: only a block in its own slot is an attested placement. Added to the end of the slot.</div>
+                    </div>
+                  </div>
+                  <div>
+                    <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add">Add to slot</button>
+                  </div>
+                  <p class="bld-warn" id="bld-frame-note" hidden></p>
+                  <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
+                    <li class="rux--accordion__item">
+                      <button type="button" class="rux--accordion__heading" aria-expanded="false" id="bld-rest-toggle">
+                        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                        <div class="rux--accordion__title" id="bld-rest-title">No matching recorded layout</div>
+                      </button>
+                      <div class="rux--accordion__wrapper">
+                        <div class="rux--accordion__content">
+                          <div class="rux--form-item">
+                            <div class="rux--select">
+                              <label class="rux--label" for="bld-rest">Add anyway</label>
+                              <div class="rux--select-input__wrapper">
+                                <select id="bld-rest" class="rux--select-input"></select>
+                                <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                              </div>
+                              <div class="rux--form__helper-text">No capture places these here. Every part is still attested on its own; what is unverified is the arrangement, and there may be no fix — <code>docs/composing-pages.md</code> §3.10.</div>
+                            </div>
+                          </div>
+                          <p class="bld-warn" id="bld-rest-frame-note" hidden></p>
+                          <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add-rest">Add to slot</button>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              <section class="bld-step" data-step="4" aria-labelledby="bld-h-4">
+                <div class="rux--stack-vertical rux--stack-scale-7">
+                  <h2 id="bld-h-4" tabindex="-1">Review</h2>
+                  <div class="rux--stack-vertical rux--stack-scale-3">
+                    <h3 class="rux--type-heading-compact-01">Preview width</h3>
+                    <div class="bld-widths" role="group" aria-label="Preview width">
+${WIDTHS.map(([v, l]) => `                      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-width="${v}" aria-pressed="${v === 'fit'}">${l}</button>`).join('\n')}
+                    </div>
+                    <div class="rux--form__helper-text">The preview is the real page in a frame of its own. Try the four widths the grid breaks at, and Fit for the pane.</div>
+                  </div>
+                  <p class="bld-status" id="bld-review"></p>
+                  <div>
+                    <a class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-open" href="#" target="_blank" rel="noopener">Open in a new tab</a>
+                  </div>
+                  <div class="rux--form__helper-text">The same page the frame shows, on its own, so its header and account panel can be tried at full size.</div>
+                </div>
+              </section>
+
+              <section class="bld-step" data-step="5" aria-labelledby="bld-h-5">
+                <div class="rux--stack-vertical rux--stack-scale-7">
+                  <h2 id="bld-h-5" tabindex="-1">Take it away</h2>${textInput('bld-page', 'File name', 'index', 'Without .html — what the export downloads as.')}
+                  <div id="bld-export-notice"></div>
+                  <p class="bld-status" id="bld-export-warn" hidden></p>
+                  <div class="rux--stack-vertical rux--stack-scale-5">
+                    <div class="rux--stack-vertical rux--stack-scale-3">
+                      <h3 class="rux--type-heading-compact-01">A page for an existing project</h3>
+                      <div class="bld-row" role="group" aria-label="Take the page away">
+                        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-download">Download the page</button>
+                        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy">Copy the main region</button>
+                      </div>
+                      <div class="rux--form__helper-text">The download goes beside the project's <code>index.html</code>, and its paths already point at <code>vendor/rux-ds/</code>. The copy is the whole <code>&lt;main&gt;</code> element, so it REPLACES a page's main region rather than filling it.</div>
+                    </div>
+                    <div class="rux--stack-vertical rux--stack-scale-3">
+                      <h3 class="rux--type-heading-compact-01">A new project</h3>
+                      <code class="bld-command" id="bld-command"></code>
+                      <div>
+                        <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-copy-command">Copy the command</button>
+                      </div>
+                      <div class="rux--form__helper-text">Run it from your <code>rux-ds</code> clone. It carries every answer above and asks only where to put the project — the builder does not know your folders, and a path you might run without reading is worse than a question. <code>tools/new-project.sh</code> stays the one project creator; the downloaded page then replaces the one it wrote.</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div id="bld-nav">
+                <div class="bld-row" role="group" aria-label="Move between steps">
+                  <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-back" disabled>Back</button>
+                  <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-next">Next</button>
                 </div>
               </div>
             </div>
@@ -282,9 +442,6 @@ ${THEMES.map(([v, l]) => `                  <div class="rux--radio-button-wrappe
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-11">
             <div class="rux--stack-vertical rux--stack-scale-5">
               <h2>Preview</h2>
-              <div class="bld-widths" role="group" aria-label="Preview width">
-${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-width="${v}" aria-pressed="${v === 'fit'}">${l}</button>`).join('\n')}
-              </div>
               <p class="bld-status" id="bld-status">Loading the catalogue…</p>
               <p class="bld-status" id="bld-integrity" hidden></p>
               <div class="bld-preview">
@@ -380,7 +537,16 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
     <p data-role="reason"></p>
     <p class="bld-status" data-role="unless" hidden></p>
     <p class="bld-warn" data-role="evidence" hidden></p>
+    <p><button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-act="add">Add</button></p>
   </div>
+</template>
+<!-- One row of the outline: sink/contained-list.html's clickable item. The
+     text is written per clone; aria-current marks the unit the panel below
+     is editing. -->
+<template id="bld-outline-item-template">
+  <li class="rux--contained-list-item rux--contained-list-item--clickable">
+    <button type="button" class="rux--contained-list-item__content"></button>
+  </li>
 </template>
 <template id="bld-no-fields-template">
   <p class="rux--form__helper-text">This block has no text to edit.</p>
@@ -450,7 +616,7 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
 
 // Every glyph this page references must exist in the sprite it inlines.
 const body = page.slice(page.indexOf('</svg>') + 6);
-const missing = [...new Set([...body.matchAll(/<use\s+href="#(i-[^"]+)"/g)].map(m => m[1]))].filter(id => !symbols.has(id));
+const missing = [...new Set([...[...body.matchAll(/<use\s+href="#(i-[^"]+)"/g)].map(m => m[1]), ...RUNTIME_GLYPHS])].filter(id => !symbols.has(id));
 if (missing.length) {
   for (const id of missing) console.log(`  build-builder: no <symbol id="${id}"> in assets/icons.svg`);
   process.exit(1);

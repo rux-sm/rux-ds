@@ -51,17 +51,33 @@
    builder writes a page, never a project — and tools/check-parity.mjs holds
    exportPage to the script's own page-writing lines, run per template.
 
-   NOT YET: the guided mode, and escaping the answers as HTML — neither this
-   nor the script does, and both say so rather than pretending otherwise.
+   TWO MODES, ONE PAGE (stage 12). The guided mode shows the five sections
+   one at a time behind a vertical progress indicator, with Back and Next;
+   the free mode shows all five at once. Both share every control, the
+   draft, the model and the history. A mode and a step are WHERE THE READER
+   IS STANDING, like the template and the width: not in history, not in the
+   draft, remembered per browser under a second key so a reload lands on the
+   same step and the draft's validation table does not move. Two controls
+   per state where the guided one has to say more — a purpose radio group
+   beside the template select, an outline beside the block select — and both
+   write the same state through the same handler.
+
+   NOT YET: escaping the answers as HTML — neither this nor the script does,
+   and both say so rather than pretending otherwise.
    ========================================================================== */
 import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, linksOf, variantsOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
-import { matchesContainer, offerFor, frameNeedsOf, frameNeedsMissing, suggestionsFor } from './placement.mjs';
+import { matchesContainer, offerFor, frameNeedsOf, frameNeedsMissing, suggestionsFor, recommendationFor } from './placement.mjs';
 import { emptyHistory, pushed, undone, redone, runKey, sameRun,
          toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
 
 const ROOT = new URL('.', location.href).href;
 const DRAFT_KEY = 'rux.draft';
+// Where the reader is standing: { mode, step, template }. A second key, not a field of
+// the draft, so the draft's validation table is untouched and a view written
+// by a future version cannot make a draft unopenable.
+const VIEW_KEY = 'rux.builder.view';
+const STEPS = 5;
 const SAVE_MS = 500;
 const $ = s => document.querySelector(s);
 const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-status'), integrityLine = $('#bld-integrity');
@@ -80,7 +96,7 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // is standing and what they are looking through, not what they have made.
 const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
 const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
-const state = { template: 'app-shell', block: '', slot: '', catalogue: '', rest: '', width: 'fit', ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', rest: '', width: 'fit', mode: 'guided', step: 1, ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
 let manifest = null;
 // The guide map. Absent is not fatal: the catalogue still splits by evidence,
 // which is derived, and only the purpose line and the suggestions go missing.
@@ -319,8 +335,167 @@ function startOver() {
   unopened = false;                 // Start over also discards an incompatible draft
   $('#bld-notice').textContent = '';
   fillSlots();
+  fillCatalogue();
+  fillPicker();
+  fillPurpose();
+  setMode('guided', false);
+  setStep(1);
+  render();
+}
+
+// ── WHERE THE READER IS STANDING ───────────────────────────────────────────
+//
+// Read and written like the draft, inside try/catch: a blocked store must not
+// break the page, and a view that does not parse is a fresh page.
+function readView() {
+  try {
+    const v = JSON.parse(localStorage.getItem(VIEW_KEY) ?? 'null');
+    if (v && (v.mode === 'guided' || v.mode === 'free') && Number.isInteger(v.step) && v.step >= 1 && v.step <= STEPS) return v;
+  } catch { /* a fresh page */ }
+  return null;
+}
+// The template rides along: it is not in the draft either (session.mjs, "the
+// selected template is NOT in the snapshot"), and a reload that opened the
+// draft on a different template than the one being edited read as a loss.
+const writeView = () => { try { localStorage.setItem(VIEW_KEY, JSON.stringify({ mode: state.mode, step: state.step, template: state.template })); } catch { /* nothing to do */ } };
+
+// EVERYTHING A MODE HIDES IS A PLAIN WRAPPER, never a component root: see
+// build-builder.mjs's header for why `hidden` on a flex component loses.
+function setMode(mode, focus = true) {
+  state.mode = mode;
+  const guided = mode === 'guided';
+  for (const b of document.querySelectorAll('[data-mode]')) b.setAttribute('aria-pressed', String(b.dataset.mode === mode));
+  $('#bld-stepper').hidden = !guided;
+  $('#bld-nav').hidden = !guided;
+  $('#bld-purpose').hidden = !guided;
+  $('#bld-template-free').hidden = guided;
+  $('#bld-outline').hidden = !guided;
+  $('#bld-picker-free').hidden = guided;
+  $('#bld-keep-line').hidden = !guided;
+  for (const sec of document.querySelectorAll('.bld-step')) sec.hidden = guided && Number(sec.dataset.step) !== state.step;
+  writeView();
+  if (focus) $(`#bld-h-${state.step}`).focus();
+}
+
+// The stepper, Back, Next, and which section is shown. Steps before the
+// current one read complete, the current one current, the rest not started —
+// and every one is clickable, because the reader can go back and forth
+// without loss: nothing here is a change.
+const STEP_GLYPH = { complete: 'i-checkmark--outline', current: 'i-incomplete', incomplete: 'i-circle-dash' };
+const STEP_TEXT = { complete: 'Complete', current: 'Current', incomplete: 'Not started' };
+function setStep(n, focus = true) {
+  state.step = Math.min(STEPS, Math.max(1, n));
+  for (const li of document.querySelectorAll('#bld-stepper .rux--progress-step')) {
+    const i = Number(li.querySelector('[data-step]').dataset.step);
+    const st = i < state.step ? 'complete' : i === state.step ? 'current' : 'incomplete';
+    li.classList.remove('rux--progress-step--complete', 'rux--progress-step--current', 'rux--progress-step--incomplete');
+    li.classList.add(`rux--progress-step--${st}`);
+    li.querySelector('use').setAttribute('href', `#${STEP_GLYPH[st]}`);
+    li.querySelector('.rux--assistive-text').textContent = STEP_TEXT[st];
+    li.querySelector('[data-step]').setAttribute('aria-current', i === state.step ? 'step' : 'false');
+  }
+  $('#bld-back').disabled = state.step === 1;
+  $('#bld-next').disabled = state.step === STEPS;
+  if (state.mode === 'guided') for (const sec of document.querySelectorAll('.bld-step')) sec.hidden = Number(sec.dataset.step) !== state.step;
+  writeView();
+  // Focus lands on the step's heading, so Tab continues from the top of the
+  // step rather than from wherever the pressed button was.
+  if (focus) $(`#bld-h-${state.step}`).focus();
+}
+
+// One handler for the template, whichever control chose it.
+function selectTemplate(name) {
+  endRun();
+  state.template = name;
+  $('#bld-template').value = name;
+  const r = document.querySelector(`input[name="bld-purpose"][value="${CSS.escape(name)}"]`);
+  if (r) r.checked = true;
+  fillSlots();
+  fillCatalogue();
   fillPicker();
   render();
+}
+const fillPurpose = () => { const r = document.querySelector(`input[name="bld-purpose"][value="${CSS.escape(state.template)}"]`); if (r) r.checked = true; };
+
+// THE OUTLINE: one row per UNIT — a leader and the followers that ride with
+// it — in document order, cloned from the page's own contained-list item.
+// The row for the unit the panel is editing carries aria-current and says
+// so, because a clickable item has no selected state of its own to show.
+function fillOutline() {
+  const list = $('#bld-outline-list');
+  const had = list.contains(document.activeElement);
+  list.textContent = '';
+  const t = templateOf(state.template);
+  const es = entries();
+  const seen = new Set();
+  let current = null;
+  for (const e of es) {
+    if (seen.has(e.key)) continue;
+    const u = unitOf(pageOf(), e.key);
+    for (const k of u.keys) seen.add(k);
+    const row = $('#bld-outline-item-template').content.cloneNode(true);
+    const btn = row.querySelector('button');
+    const names = u.keys.map(k => { const x = entryOf(k); const b = blocks.get(x.id); return `${b.label}${x.n > 1 ? ` (${x.n})` : ''}`; });
+    const isCurrent = u.keys.includes(state.block);
+    btn.textContent = `${t.slots.length > 1 ? `${e.slot} · ` : ''}${names[0]}${names.length > 1 ? ` · with ${names.slice(1).join(', ')}` : ''}${isCurrent ? ' · editing' : ''}`;
+    btn.setAttribute('aria-current', isCurrent ? 'true' : 'false');
+    btn.dataset.key = u.keys[0];
+    btn.addEventListener('click', () => { endRun(); state.block = u.keys[0]; $('#bld-block').value = state.block; showBlock(); });
+    if (isCurrent) current = btn;
+    list.append(row);
+  }
+  if (!es.length) {
+    const row = $('#bld-outline-item-template').content.cloneNode(true);
+    const btn = row.querySelector('button');
+    btn.textContent = 'Nothing on the page yet — add a section at the next step.';
+    btn.disabled = true;
+    list.append(row);
+  }
+  // A rebuild replaced the row that had focus; put it back on the current one.
+  if (had && current) current.focus();
+}
+
+// "Keep recommended settings", or "Keep attested settings" while the map's
+// recommendation for a group is unreviewed: an unreviewed draft never speaks
+// as a recommendation (stage 11). One button for the unit: it puts every
+// variant group of the selected block at what the map recommends, which is
+// as-attested for every group today, so it drops the overrides.
+function targetsFor(key) {
+  const e = entryOf(key);
+  if (!e) return [];
+  const groups = variantsOf(blocks.get(e.id).html);
+  return groups.map((g, i) => {
+    const rec = recommendationFor(guide, e.id, i);
+    const reviewed = rec?.reviewed === true;
+    const value = rec && rec.recommended !== 'as-attested' && g.values.includes(rec.recommended) ? rec.recommended : '';
+    return { i, value, reviewed };
+  });
+}
+function syncKeep() {
+  const wrap = $('#bld-keep-wrap'), btn = $('#bld-keep'), note = $('#bld-keep-note');
+  const targets = targetsFor(state.block);
+  wrap.hidden = !targets.length;
+  if (!targets.length) return;
+  const saved = variantsFor(state.template, state.block);
+  const allReviewed = targets.every(t => t.reviewed);
+  const atTarget = targets.every(t => (Object.hasOwn(saved, t.i) ? saved[t.i] : '') === t.value);
+  btn.textContent = allReviewed ? 'Keep recommended settings' : 'Keep attested settings';
+  btn.disabled = atTarget;
+  note.textContent = allReviewed
+    ? (atTarget ? 'Sizes and densities are at what the map recommends for this block.' : 'Puts every size and density here back to what the map recommends.')
+    : (atTarget ? 'Sizes and densities are as this block ships them; the map has no reviewed recommendation beyond that.' : 'Puts every size and density here back to what the block ships, which is all the map recommends until its entry is reviewed.');
+}
+function keepSettings() {
+  const key = state.block;
+  const targets = targetsFor(key);
+  if (!targets.length) return;
+  change(`keep settings in ${labelOf(key)}`, () => {
+    for (const t of targets) { if (t.value) setVariant(key, t.i, t.value, ''); else dropOne(state.variants, key, t.i); }
+    syncReset();
+  });
+  showBlock();
+  $('#bld-keep').focus();
+  later();
 }
 
 // ── THE PAGE ───────────────────────────────────────────────────────────────
@@ -637,12 +812,14 @@ function variantRow({ key, i, group, values, value, original }) {
     change(`set ${(GROUP_NAME[group.where] ?? 'group').toLowerCase()} in ${labelOf(key)}`,
       () => setVariant(key, i, select.value, ''));
     sync();
+    syncKeep();          // the Keep button reads the same store
     later();
   });
   reset.addEventListener('click', () => {
     change(`reset one group in ${labelOf(key)}`, () => { dropOne(state.variants, key, i); });
     select.value = '';
     sync();
+    syncKeep();
     select.focus();
     later();
   });
@@ -823,8 +1000,11 @@ function renderSuggestions() {
   box.textContent = '';
   if (!guide) { box.hidden = true; return; }
   const { purpose, purposeReviewed, promoted, drafts } = suggestionsFor(guide, state.template);
-  const here = s => s.slot === state.slot;
-  const mine = promoted.filter(here), draft = drafts.filter(here);
+  // EVERY SLOT'S SUGGESTIONS, not the picked slot's: a suggestion names its
+  // own slot and its Add passes that slot explicitly, so the slot select
+  // below is for inspecting the catalogue and never rewritten behind the
+  // reader's back. Until stage 12 this filtered by state.slot.
+  const mine = promoted, draft = drafts;
   if (!purpose && !mine.length && !draft.length) { box.hidden = true; return; }
   box.hidden = false;
 
@@ -848,9 +1028,16 @@ function renderSuggestions() {
     for (const s of items) {
       const one = $('#bld-suggest-template').content.cloneNode(true);
       const at = r => one.querySelector(`[data-role="${r}"]`);
-      at('reason').textContent = `${blocks.get(s.block)?.label ?? s.block} — ${s.reason}`;
+      const many = templateOf(state.template).slots.length > 1;
+      at('reason').textContent = `${blocks.get(s.block)?.label ?? s.block}${many ? ` in ${s.slot}` : ''} — ${s.reason}`;
       if (s.unless) { at('unless').textContent = `Not when: ${s.unless}`; at('unless').hidden = false; }
       if (s.evidence) { at('evidence').textContent = `Unverified: ${s.evidence}`; at('evidence').hidden = false; }
+      // data-act, not data-role: check-aria-roles reads `role="` wherever it
+      // appears, and a classed button carrying data-role="add" read as a
+      // role Carbon never renders.
+      const add = one.querySelector('[data-act="add"]');
+      add.textContent = `Add ${blocks.get(s.block)?.label ?? 'it'}`;
+      add.addEventListener('click', () => addBlock(s.block, s.slot));
       body.append(one);
     }
     box.append(frag);
@@ -885,6 +1072,8 @@ function showBlock() {
   blockNote(e);
   syncButtons(e);
   syncReset();
+  syncKeep();
+  fillOutline();
   highlight();
 }
 
@@ -947,6 +1136,7 @@ function highlight() {
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 
 let pending = null;
+let openUrl = null;
 async function render() {
   const my = pending = {};
   // BEFORE THE TRY, because neither depends on the composition: the command is
@@ -980,6 +1170,21 @@ async function render() {
     for (const r of ig.unresolved) { const k = `${r.attr}="${r.attr === 'href' || r.attr === 'xlink:href' ? '#' : ''}${r.id}"`; named.set(k, (named.get(k) ?? 0) + 1); }
     integrityLine.textContent = named.size ? `On this page: ${[...named].map(([k, n]) => n > 1 ? `${k} ×${n}` : k).join(' · ')}` : '';
     integrityLine.hidden = !named.size;
+    // THE SAME READINGS IN PLAIN WORDS, for the Review step. The status line
+    // above keeps the gate vocabulary; this says what it means.
+    const problems = [];
+    if (ig.duplicateIds.length) problems.push(`${plural(ig.duplicateIds.length, 'id')} used more than once, so a label or a link can land on the wrong element`);
+    if (ig.unresolved.length) problems.push(`${plural(ig.unresolved.length, 'reference')} pointing at something not on this page`);
+    if (!roundTrip) problems.push('the builder could not reproduce the untouched template byte for byte, which is a builder fault and not yours');
+    $('#bld-review').textContent = problems.length
+      ? `Not yet whole: ${problems.join('; ')}. ${named.size ? `On this page: ${[...named].map(([k, n]) => n > 1 ? `${k} ×${n}` : k).join(' · ')}.` : ''} Remove or repoint the part that does it, or take the page as it is knowing that.`
+      : `Holds together: ${plural(es.length, 'section')}, every id unique, every reference resolved${edits ? `, ${plural(edits, 'field')} edited` : ''}. What no check reads is the arrangement — docs/composing-pages.md §3.10.`;
+    // A real link to the same document, for a real browser's new tab. The
+    // frame's URL is revoked on load, so this is a second one, released when
+    // the next render replaces it.
+    if (openUrl) URL.revokeObjectURL(openUrl);
+    openUrl = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
+    $('#bld-open').href = openUrl;
   } catch (e) {
     status.textContent = `Could not build the preview: ${e.message}`;
   }
@@ -1013,13 +1218,15 @@ const later = () => { clearTimeout(timer); timer = setTimeout(render, 250); };
 // ONE ADD, TWO PATHS INTO IT. The disclosure's button and the matched group's
 // button differ only in which select they read; the transaction is the same, so
 // there is no second code path for an unmatched block to drift down.
-function addBlock(id) {
+// THE SLOT IS A PARAMETER, defaulting to the picked one: a suggestion's Add
+// names its own slot and must not rewrite the select behind the reader.
+function addBlock(id, slot = state.slot) {
   if (!id) return;
   const label = blocks.get(id)?.label ?? 'block';
   let placed = null;
   change(`add ${label}`, () => {
-    setPage(add(pageOf(), state.slot, id, manifest));
-    const list = pageOf().slots[state.slot];
+    setPage(add(pageOf(), slot, id, manifest));
+    const list = pageOf().slots[slot];
     placed = unitOf(pageOf(), list[list.length - 1].key).keys[0];
   });
   fillPicker(placed ?? state.block);
@@ -1158,7 +1365,13 @@ async function init() {
   openDraft();                       // before the first render, after the manifest
 
   select.value = state.template;
-  select.addEventListener('change', () => { endRun(); state.template = select.value; fillSlots(); fillCatalogue(); fillPicker(); render(); });
+  select.addEventListener('change', () => selectTemplate(select.value));
+  for (const r of document.querySelectorAll('input[name="bld-purpose"]')) r.addEventListener('change', () => { if (r.checked) selectTemplate(r.value); });
+  for (const b of document.querySelectorAll('[data-mode]')) b.addEventListener('click', () => { endRun(); setMode(b.dataset.mode); });
+  for (const b of document.querySelectorAll('#bld-stepper [data-step]')) b.addEventListener('click', () => { endRun(); setStep(Number(b.dataset.step)); });
+  $('#bld-back').addEventListener('click', () => { endRun(); setStep(state.step - 1); });
+  $('#bld-next').addEventListener('click', () => { endRun(); setStep(state.step + 1); });
+  $('#bld-keep').addEventListener('click', keepSettings);
   const slot = $('#bld-slot');
   slot.addEventListener('change', () => { endRun(); state.slot = slot.value; slotNote(); fillCatalogue(); });
   const catalogue = $('#bld-catalogue');
@@ -1228,7 +1441,20 @@ async function init() {
   fillSlots();
   fillCatalogue();
   fillPicker();
+  fillPurpose();
   syncHistory();
+  // The view, last: the sections exist and the step's heading can take focus,
+  // but on load nothing is focused — a page that grabs focus on open is a
+  // page that steals it from the address bar.
+  const view = readView() ?? { mode: 'guided', step: 1 };
+  if (view.template && manifest.templates.some(t => t.name === view.template) && view.template !== state.template) {
+    state.template = view.template;
+    select.value = view.template;
+    fillSlots(); fillCatalogue(); fillPicker(); fillPurpose();
+  }
+  state.step = view.step;
+  setMode(view.mode, false);
+  setStep(view.step, false);
   render();
 }
 
@@ -1253,6 +1479,11 @@ window.RuxBuilder = {
   redo: () => step('redo'),
   startOver,
   flushSave,
+  mode: () => state.mode,
+  step: () => state.step,
+  setMode: m => setMode(m, false),
+  setStep: n => setStep(n, false),
+  keepSettings,
   // Exposed so the no-fields branch — which no shipped block triggers — can be
   // driven through the real clone-into-DOM path rather than left untested.
   renderFieldPanel,

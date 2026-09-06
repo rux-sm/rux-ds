@@ -1,10 +1,10 @@
 # Builder — the guided mode, stages 0 and 6 to 13 (roadmap §4.12, creator 3)
 
-**Status, 2026-09-06: approved plan, revision 2; stages 0 and 6 to 11 have
-landed and three growth batches with them. Stage 12 WAITS on the map being
-read — rux's ruling, 2026-09-06 — and 13 has not started.** This line read
-"6 to 9" for a day after 10 and 11 landed, the table below being right the
-whole time; corrected 2026-09-06.
+**Status, 2026-09-06: approved plan, revision 2; stages 0 and 6 to 12 have
+landed and three growth batches with them; 13 has not started.** Stage 12
+waited on the map being read (rux's ruling, 2026-09-06, morning) and landed
+the same day once it was. This line read "6 to 9" for a day after 10 and 11
+landed, the table below being right the whole time; corrected 2026-09-06.
 Saved as the select-and-edit and add-and-move plans were, so a different clone
 can pick it up. Each stage below is its own proposal in the open and lands in
 its own commit; when a stage lands, its roadmap entry in §4.12 is the record
@@ -76,7 +76,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 | 9 | **DONE 2026-09-05.** Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
 | 10 | **DONE 2026-09-05.** Manifest depth (`frameDeps`), a whole-manifest comparison, and the generated coverage table. NO catalogue growth — rux's call: build the measurement first, pick from it after. | `build-blocks.mjs`, `check-blocks.mjs`, `lib/coverage.mjs`, `gates.mjs`, CI | 0 |
 | 11 | **DONE 2026-09-05.** The guide map `builder/guide.json`, and placement evidence derived rather than claimed: the catalogue splits by recorded layout, the rest behind a disclosure. Drafted throughout, nothing reviewed. | `lib/blocks.mjs`, `check-blocks.mjs`, `lib/gates.mjs`, `build-builder.mjs`, `rewrites.mjs`, `placement.mjs` | 9, 10 |
-| 12 | **WAITS, rux's ruling 2026-09-06: the map is read first.** Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. Designed and reviewed 2026-09-06; the stage note carries the design. | `build-builder.mjs` | 7, 8, 9, 11, and every `reviewed` in the map |
+| 12 | **DONE 2026-09-06**, after the map was read the same morning. Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. | `build-builder.mjs` | 7, 8, 9, 11, and the map read |
 | 13 | Repeated items: duplicate, remove, reorder a repeated sibling, ids re-suffixed. v2. | `rewrites.mjs` | 12 |
 | growth | **BATCH ONE DONE 2026-09-05.** Nine sink blocks picked from the coverage table: tabs, progress-indicator, content-switcher, list, code-snippet, card, action-set, checkbox, search. Two of the eleven asked for were dropped on measured grounds. | — | 10 |
 | growth | **BATCH TWO DONE 2026-09-06.** Four more: radio, pagination-nav, options-tile, big-number. Catalogue 46. The ten single form controls are ruled out as ONE decision — blocks cannot nest, so a lone field would sit outside any form; a fieldset is the exception. | — | 10 |
@@ -166,73 +166,13 @@ only a block in its own slot is. What was added beyond the note: `containerOf`
 was a regex lookup that never processed a closing tag, so a CLOSED column above
 a slot was reported as its container.
 
-**12, guided mode.** A mode switch; the left column becomes a stepper over
-five steps, preview on the right: purpose; sections and content (the
-outline walks each unit: keep or remove, fields, variants, "keep recommended
-settings", details in a closed accordion); add sections (reviewed
-suggestions, then the catalogue under the inspect label); review (width row,
-integrity in plain words, open in a new tab); take it away. Acceptance:
-keyboard reach and sensible focus between steps; back and forth without
-loss; 375 and 1280; reload restores the draft; the chrome cells swept; and
-representative composed outputs checked — one guided composition per
-template composed in node into a scratch root, run through the Node gates
-that read markup, and at least three opened in the pane for the browser
-gates, readings recorded in the roadmap entry.
-
-**Why it waits, rux's ruling 2026-09-06.** The map is 47 entries — 20
-suggestions, 10 purpose lines, 17 variant groups — and every one is
-`reviewed: false`, every variant `as-attested` with a null reason. Stage
-11's rule is that an unreviewed draft never speaks as a recommendation, so a
-stepper built on this map ships two middle steps recommending nothing: step
-3 an empty promoted list over a closed "not reviewed" accordion on all ten
-templates, step 2 with nothing recommended to keep. The batch-three plan had
-recorded "stage 12 waits on it" in a plan file outside the repository; asked
-in the open, rux chose the map first over building on drafts. The design
-below was reviewed the same day and stands; only the reading is ahead of it.
-
-**The design, reviewed 2026-09-06, to build from when the map is read.**
-ONE SET OF DOM NODES, TWO WAYS OF SHOWING THEM: the left column becomes five
-`<section>`s with their own `<h2>` — Purpose (purpose picker, theme, prefix,
-name, title); Sections and content (outline, arrange row, `#bld-fields`,
-the settings button, a closed Details accordion); Add sections (each
-suggestion with its own Add, then "Inspect the catalogue" as an `<h3>` over
-today's slot, matched and rest controls — an `<h3>` and not a disclosure,
-because the rest accordion already sits there and nested accordions are not
-attested); Review (the width row, moved here from the preview column in both
-modes, integrity in plain words, open in a new tab); Take it away (the file
-name field, then the export groups). Free mode shows all five, stepper and
-Back/Next hidden — today's page reordered, nothing lost. Guided mode, the
-default on a fresh page, shows the vertical progress indicator from
-`sink/progress-indicator.html` with every step CLICKABLE, one section at a
-time, Back/Next below, disabled at the ends rather than hidden. Two controls
-per state where the guided one must say more, both writing the same state
-through the same handler: the template select (free) beside a radio group
-labelled by `guide.purpose` (guided); the block select (free) beside a
-contained list of the page's UNITS (guided, `sink/contained-list.html`'s
-clickable items, followers named on their leader's row). The mode switch is
-two ghost buttons with `aria-pressed`, the width row's own idiom, not a
-content switcher — that is a `role="tablist"` no `js/` module drives. On a
-step change the shown `<h2>` takes `tabindex="-1"` and focus. `mode` and
-`step` are navigation, not a change: not in history, not in the draft,
-remembered per browser under a second key `rux.builder.view` so
-`session.mjs` and the draft's validation table do not move. A suggestion's
-Add passes its slot EXPLICITLY — `addBlock(id, slot)` with the second
-parameter defaulting to `state.slot` — so it never rewrites the slot select
-behind the reader. "Open in a new tab" is a real `<a target="_blank"
-rel="noopener">` to the preview's blob URL, because a script-driven
-`window.open` on a blob URL returned null in the Browser pane: its acceptance
-is "opens in a real browser, unmeasurable in the pane", joining the
-keypresses owed to a human. The settings button reads "Keep attested
-settings" while a group's recommendation is unreviewed and "Keep recommended
-settings" only when `recommendationFor()` finds `reviewed: true` — a
-deviation from revision 2's wording, listed for rux with the rest: the
-answers split (purpose, theme and names in step 1, file name in step 5),
-guided as the default, the width row leaving the preview column, the view
-key, and the composition harness staying a scratch script rather than a
-gate. What the tier-2 change to `build-builder.mjs` weakens: nothing
-measured — `build-builder-icons` still asserts every glyph, no baseline or
-input moves — at the honest cost that the page carries more chrome and the
-three builder cells are re-swept.
+**12, guided mode. Landed 2026-09-06; roadmap §4.12 is the record.** It
+waited half a day on the map being read, and the design this note carried
+went in as reviewed with three things the browser corrected: a `<section>`
+does not honour `hidden` under Carbon's reset, so `.bld-step[hidden]` is
+written; the Keep button had to re-read its store after a variant change;
+and a reload opened the draft on whichever template came first rather than
+the one being edited, so the view key carries the template too.
 
 **13, repeated items.** A sibling sharing tag and class with a neighbour can
 be duplicated, removed down to one, or reordered, its ids and in-block

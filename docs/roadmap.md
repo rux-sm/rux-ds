@@ -3974,6 +3974,103 @@ without its "(not reviewed)" suffix, dashboard's one draft still closed,
 settings showing one promoted and one draft. Stage 12's precondition is met;
 the reading that had been the last open item ahead of it is done, and the
 guided mode is next from the design in the plan file.
+
+**Stage 12, 2026-09-06, landed in the commit that carries this sentence —
+the guided mode.** `builder.html`'s left column is five sections with their
+own `<h2>` — Purpose, Sections and content, Add sections, Review, Take it
+away — and two ways of showing them on ONE SET OF DOM NODES: the free mode
+shows all five, which is the page as it was reordered and nothing lost; the
+guided mode, the default on a fresh page, shows the vertical progress
+indicator from `sink/progress-indicator.html` with every step clickable,
+one section at a time, Back and Next below it disabled at the ends rather
+than hidden. Two controls per state where the guided one has to say more —
+a radio group of the ten templates labelled name-then-purpose, read from the
+map at build time, beside the template select; a contained list of the
+page's UNITS, followers named on their leader's row and the one being
+edited marked, beside the block select — both writing the same state through
+one handler. Every suggestion carries its own Add, which passes its slot
+explicitly, and the suggestion list now shows every slot's entries rather
+than the picked slot's. The Review step says the integrity readings in plain
+words and offers "Open in a new tab" as a real link to a second blob URL.
+Mode, step and template are where the reader is standing and live under a
+second key, `rux.builder.view`; the draft, `session.mjs` and its validation
+table did not move. Tier 2: `tools/build-builder.mjs`, proposed in the
+approved plan of the same morning with the design and what it weakens, and
+landed on rux's "start on stage 12"; **what it weakens: nothing measured** —
+`build-builder-icons` now also asserts the one glyph `builder.js` swaps in,
+no baseline, input or fixture moves — at the honest cost that the page
+carries more chrome and its three cells were re-swept.
+
+**Three things the browser corrected, none of which reading the code
+found.** A `<section>` DOES NOT HONOUR `hidden`: Carbon's reset gives the
+sectioning elements `display: block`, which beats the browser's `[hidden]`
+on origin exactly as `.rux--btn[hidden]` did on 2026-09-02, and the first
+run showed every step at once with the attributes correctly set — the
+screenshot found it, the attribute reads had all said "shown: 2". The
+inline style now writes `.bld-step[hidden] { display: none }`, and the
+generator's header, which had claimed a classless wrapper always holds, says
+which element does not. Second, "Keep recommended settings" stayed disabled
+after a size was changed, because the variant row's handler never re-read
+the store the button reads; it does now, and the button was then driven:
+set the table's toolbar to `sm`, Keep drops it, one history entry, undo
+restores `sm`, redo drops it. Third, a reload opened the draft on
+`app-shell` while `table-page` was being edited — a pre-existing gap, since
+the template was never in the draft by design (session.mjs), and the view
+key now carries it. A fourth, from a gate: `check-aria-roles` read the Add
+button's `data-role="add"` as a role Carbon never renders on `rux--btn`, so
+the attribute is `data-act`.
+
+**Acceptance, as the plan wrote it.** Back and forth without loss: an edit
+at step 2, an Add at step 3, step 4, back to 2 — both there, history
+exactly two entries. Reload restores the draft AND the step and template.
+Start over lands on step 1, guided. 375 and 1280: `scrollWidth` 375 at every
+step and in free mode, nothing sideways; screenshots at both. Focus on a
+step change measured at the step's `<h2>` (`activeElement` `bld-h-2`).
+**Tab traversal is NOT measured**: the pane's Tab gave the document focus
+and left `activeElement` on `<body>` through sixteen presses, so keyboard
+reach is established structurally — every step, mode and nav control is a
+native `<button>` at `tabIndex` 0 in document order, 32 tabbable controls at
+step 1 and none inside a hidden section — and joins Enter, Space and "Open
+in a new tab" as readings owed to a human in a real browser. The three
+builder cells, on a page with `rux.draft` and the view cleared before the
+load: `check-runtime-classes` 72/80, 0 stripped, 8 added — the open promoted
+accordion, the three contained-list classes the outline clones, the four
+field-row classes; `check-a11y` **5 findings, all `rux--progress-step-button`
+"no visible focus change"** — the false positive adjudicated 2026-08-29 and
+carried by the sink (12) and `wizard-page` (4), Carbon drawing the ring on
+`:focus-visible` which the tool cannot reach; left reported, not
+suppressed; red run 8 with outline and box-shadow stripped, restored 5;
+`check-spacing` 46 checked, 42 matched, 0 known, 4 unknown — the subgrid
+padding as before plus the three `progress-step` `minBlockSize` rows that
+`wizard-page`'s cell already carries as the vertical variant's own — 3 not
+comparable, 8 unreferenced.
+
+**Composed outputs, ten of them, and one real finding.** A scratch script
+(`m/guided/compose-guided.mjs`, gitignored) built one guided composition per
+template — the template plus every PROMOTED suggestion added to its slot,
+one text edit, one variant — exported with `exportPage` into a scratch app
+root with `vendor/rux-ds/` copied in and a PIN, and `tools/app-check.mjs`
+ran over it: **classes 1331 uses resolve, tokens resolve, every relative
+reference on 11 pages exists, pin ok, and ONE failure — `app-shell`'s three
+`href="#breadcrumb"`**, the sink breadcrumb's own section anchors, which the
+map now promotes into app-shell and `linksOf` skips (batch three's tier-2
+gap, `builder/rewrites.mjs:319`). A promoted suggestion ships three dead
+links until that skip is narrowed or the suggestion's `evidence` says so;
+rux's call, not changed here. Three of the ten opened in the pane with the
+browser gates: `app-shell` 124/124, a11y 0, spacing 71/69 with the subgrid
+unknown; `table-page` 136/137 with `table-sort--active` added as on the
+template, a11y 0, spacing 85/82 with the header-label and blue-tag rows the
+sink already lists; `wizard-page` 120/120, a11y 4 on the same
+`progress-step-button` cause, spacing 73/61 with 6 known and the same 6
+`progress` unknowns as the template's cell. Nothing a guided composition
+introduced diverges from what its template already reads.
+
+**Not done.** Stage 13. The Tab, Enter, Space and new-tab readings above.
+The breadcrumb links. The two "not yet" map entries. The guided mode's
+wording for "Add appends to the end of the slot — Move up" that the map
+reading said step 3 should carry: the suggestion rows say where a block
+belongs in their reason and the outline step has Move up, but nothing yet
+says the one follows from the other.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
