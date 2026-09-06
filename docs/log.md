@@ -9,6 +9,15 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 — Answered: stage 12 waits, the map is read first.** Asked in the
+open while planning the guided mode. The map measured 47 entries, none
+reviewed — 20 suggestions, 10 purpose lines, 17 variant groups, every
+variant `as-attested` with a null reason — and a stepper on it ships two
+middle steps recommending nothing. rux chose the map first over drafts. The
+stage 12 design was reviewed the same day and is kept in
+`docs/builder-guided-plan.md`; roadmap §4.12 has the account. Nothing in
+`builder/` or `tools/` moved.
+
 **2026-09-05 — The app contract: four changes in place of the eight-phase plan.**
 A workspace-simplification plan drafted the same day was reviewed against the
 three repositories and withdrawn unimplemented: it proposed a manifest, a

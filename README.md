@@ -310,8 +310,10 @@ tag would still pass.
    `builder/guide.json` with placement derived rather than claimed, and a
    catalogue of 51 blocks with every unmarked fragment carrying its reason.
    This item read "stages 0 to 9" until 2026-09-06, a day after 10 and 11
-   landed. What follows is stage 12, the guided mode itself, then 13,
-   repeated items, each its own proposal in `docs/builder-guided-plan.md`.
+   landed. **Stage 12 waits on the map being read, rux's ruling 2026-09-06**:
+   all 47 entries in `builder/guide.json` are unreviewed, and a guided mode on
+   them recommends nothing. The reading is next, then stage 12 from the
+   design kept in `docs/builder-guided-plan.md`, then 13, repeated items.
    Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.

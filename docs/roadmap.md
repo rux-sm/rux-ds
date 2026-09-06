@@ -3916,6 +3916,30 @@ Tier 3: no gate, registry, baseline or `CONTROL_FILES` entry moves. Not done:
 the three tier-2 gaps above, `pagination` still one deleted attribute from
 markable, and the three status fragments, which the notes mark REOPENABLE
 because they are a judgement rather than a rule.
+
+**Stage 12 WAITS on the map, rux's ruling 2026-09-06, asked in the open
+while the stage was being planned.** The guide map is 47 entries — 20
+suggestions, 10 purpose lines, 17 variant groups — and every one is
+`reviewed: false`, every variant `as-attested` with a null reason, exactly
+the state stage 11 shipped on purpose. Stage 11's own rule is that an
+unreviewed draft never speaks as a recommendation, so a guided mode built on
+this map would ship two middle steps recommending nothing: step 3 an empty
+promoted list over a closed "not reviewed" accordion on all ten templates,
+step 2 with nothing recommended to keep — not the friendly, finished thing
+the brief asked for. The batch-three plan had already recorded "stage 12
+waits on it", but only in a plan file outside this repository; the earlier
+stage-12 plan the same day was silent on the precondition, which review
+caught. rux chose the map first over building on drafts. The stage's design
+was reviewed the same day and is kept in `docs/builder-guided-plan.md`'s
+stage 12 note, with what review corrected: a `window.open` on a blob URL
+returns null in the Browser pane, so "open in a new tab" is a real link
+whose acceptance is a real browser; a suggestion's Add passes its slot
+explicitly rather than rewriting the select; "keep recommended settings"
+reads "keep attested settings" while the recommendation is unreviewed, a
+deviation from revision 2 listed for rux. Next: the reading itself, which
+this file's stage 11 entry says is rux's — every purpose line, suggestion
+and variant group — with a review sheet prepared for it. Nothing in
+`builder/` or `tools/` moved.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
