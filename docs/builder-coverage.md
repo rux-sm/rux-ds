@@ -29,6 +29,81 @@ unmarked fragment is an open candidate: nobody has ruled on it yet. These are
 decisions and are kept by hand; the three below quote the fragments' own source
 rather than adding a judgement.
 
+**Ruled 2026-09-06, batch three, finishing the measurement.** The reasoning is
+stated once per group; the fragments in a group share it. Only the last group is
+a judgement rather than a rule, and it says so.
+
+*Foundations — no component to mark, as `spacing` already is:*
+
+- `grid` — a layout primitive. It has no component of its own to stand in a page.
+- `stack` — the same; `stack-vertical` is what a SLOT carries, not a block.
+- `aspect-ratio` — a ratio applied to something else.
+- `scroll-gradient` — an affordance painted over a scrolling region.
+
+*Frame, not a stack child, as `modal` already is:*
+
+- `dialog` — sits outside the page body, like the modal `wizard-page` keeps at
+  the end of `<main>`.
+- `side-panel` — frame, and the shell owns it.
+- `ui-shell` — the frame itself; `templates/` is where a shell is chosen.
+
+*Attached to a trigger — the overlay has no meaning without the control that
+opens it, and the control is not the block:*
+
+- `menu` — opened by a trigger elsewhere.
+- `menu-button` — the trigger and its menu, but the menu is positioned against it.
+- `overflow-menu` — the same, inside a row or a toolbar.
+- `combo-button` — a button whose secondary actions live in an overlay.
+- `popover` — positioned against whatever opened it.
+- `tooltip` — the same, and never free-standing.
+- `toggletip` — the same.
+- `copy-button` — an affordance on a snippet or a field; `code-snippet` carries
+  its own.
+- `chat-button` — a launcher, positioned by the app.
+- `ai-label` — an inline mark on a field or a container, with its own popover.
+
+*Inline — sits inside text or a control, as `badge-indicator` already does:*
+
+- `tags` — a tag labels something; it is not a region.
+- `links` — a link is inside a sentence.
+- `icon-indicator` — an inline status mark.
+- `shape-indicator` — the same.
+- `user-avatar` — inline beside a name.
+
+*Form controls — batch two's decision, that blocks cannot nest:*
+
+- `slider` — a field; `templates/form-page/form` is what a page wanting fields
+  carries.
+- `edit-in-place` — a field that swaps into an input.
+
+*One thing that is not one thing:*
+
+- `fluid` — demonstrates the fluid field style across thirteen components. There
+  is no `fluid` to mark, only fluid versions of other fragments.
+- `buttons` — the button-row shape ships as `action-set`, which is what a page
+  actually carries at the end of a region.
+
+*A JUDGEMENT, NOT A RULE, AND REOPENABLE.* rux declined these in batch two's
+scope question; the reason is recorded so the decision is visible rather than
+implied, and these three are the only ones here that a later reading could
+reverse without changing a rule:
+
+- `inline-loading` — a status line rather than a region.
+- `loading` — an overlay spinner, nearer frame than stack child.
+- `skeleton` — a placeholder FOR a region rather than a region. Marking it would
+  mean shipping the loading state of a block beside the block.
+
+*And one specimen that cannot be taken from a fragment that is marked:*
+
+**`tabs` is already marked** at its default specimen, which spans the tablist
+and its four panels — so this is not an eligibility key, and the gate would fault
+one. **Its three CONTAINED specimens cannot be marked** — lines 151, 219
+  and 241 each carry `role="tablist"` with `role="tab"` buttons and **zero
+  `aria-controls` and zero `rux--tab-content`**. They demonstrate the contained
+  styling, not a wired tab set, and `check-blocks` passes them precisely because
+  there is no reference to leak. All three are named so the next batch does not
+  try the other two.
+
 - `spacing` — a foundation, not a component. Its own comment: "A FOUNDATION, NOT
   A COMPONENT." It carries zero `rux--` elements.
 - `badge-indicator` — its own comment: "A badge is not a free-standing box." It
@@ -77,15 +152,20 @@ rather than adding a judgement.
   block's own `<div>` unclosed — and `check-blocks` passed that unbalanced block
   with 0 faults, which is a gate hole recorded in the roadmap. Marking this one
   needs an empty specimen in the fragment first.
-- `modal`, `dialog` — frame, not a stack child. `templates/wizard-page.html`
+- `modal` — frame, not a stack child. `templates/wizard-page.html`
   keeps its modal at the end of `<main>`, deliberately outside every block, and
   its Cancel button's `data-rux-open` is the catalogue's only frame dependency.
+
+  *(Batch one wrote this as ``- `modal`, `dialog` —``, which the gate's key
+  pattern never parsed: a comma after the first backticked name ends the match.
+  So `modal` looked ruled and was not. Split 2026-09-06; `dialog` has its own
+  line above.)*
 - `list-box` — its own comment: it is "the primitive under dropdown, combo box
   and multiselect" and "has no story of its own: every reference for it is one
   of those three."
 
 <!-- COVERAGE:BEGIN -->
-_68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 274 candidate regions in the 47 unmarked._
+_68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 274 candidate regions in the 47 unmarked._
 
 | fragment | components | blocks | candidates | text | variants | behaviour | in the builder |
 |---|---|---|---|---|---|---|---|
@@ -97,10 +177,10 @@ _68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 2
 | `big-number` | big-number | 1 | 1 | 2 | 0 | — | yes |
 | `breadcrumb` | breadcrumb, link | 1 | 3 | 3 | 0 | — | yes |
 | `buttons` | button, inline-loading, loading | — | 18 | — | — | — | no |
-| `card` | button, card | 1 | 11 | 5 | 1 | — | yes |
+| `card` | button, card | 2 | 11 | 8 | 1 | — | yes |
 | `chat-button` | button, chat-button | — | 4 | — | — | — | no |
 | `checkbox` | checkbox, form | 1 | 5 | 6 | 0 | — | yes |
-| `code-snippet` | button, code-snippet, copy-button | 1 | 4 | 2 | 1 | copy-button | yes |
+| `code-snippet` | button, code-snippet, copy-button | 2 | 4 | 4 | 1 | copy-button | yes |
 | `combo-box` | combo-box, list-box, text-input | — | 2 | — | — | form-controls, list-box | no |
 | `combo-button` | button, combo-button, menu | — | 4 | — | — | menu | no |
 | `contained-list` | button, contained-list | 1 | 2 | 5 | 1 | — | yes |
@@ -117,7 +197,7 @@ _68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 2
 | `icon-indicator` | icon-indicator | — | 16 | — | — | — | no |
 | `inline-loading` | inline-loading, loading | — | 3 | — | — | — | no |
 | `links` | link | — | 7 | — | — | — | no |
-| `list` | list | 1 | 3 | 2 | 0 | — | yes |
+| `list` | list | 2 | 3 | 5 | 0 | — | yes |
 | `list-box` | list-box | — | 2 | — | — | form-controls, list-box | no |
 | `loading` | loading | — | 2 | — | — | — | no |
 | `menu` | button, menu | — | 6 | — | — | menu | no |
@@ -132,7 +212,7 @@ _68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 2
 | `pagination-nav` | button, pagination-nav | 1 | 2 | 11 | 0 | — | yes |
 | `popover` | button, popover | — | 7 | — | — | copy-button, popover | no |
 | `progress-bar` | progress-bar | — | 4 | — | — | — | no |
-| `progress-indicator` | progress-indicator | 1 | 3 | 5 | 0 | — | yes |
+| `progress-indicator` | progress-indicator | 2 | 3 | 8 | 0 | — | yes |
 | `radio` | form, radio-button | 1 | 5 | 4 | 0 | — | yes |
 | `scroll-gradient` | scroll-gradient | — | 1 | — | — | — | no |
 | `search` | search | 1 | 3 | 1 | 0 | form-controls | yes |
@@ -149,7 +229,7 @@ _68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 2
 | `tags` | tag | — | 20 | — | — | dismiss | no |
 | `text-input` | button, form, popover, text-input, toggle, tooltip | — | 10 | — | — | copy-button, form-controls, list-box, popover | no |
 | `textarea` | form, text-area | — | 5 | — | — | — | no |
-| `tile` | button, link, stack, tile | 1 | 9 | 1 | 0 | tile | yes |
+| `tile` | button, link, stack, tile | 2 | 9 | 2 | 0 | tile | yes |
 | `time-picker` | checkbox, form, select, text-input, time-picker | — | 4 | — | — | form-controls, list-box | no |
 | `toggle` | toggle | — | 7 | — | — | form-controls | no |
 | `toggletip` | dropdown, link, list-box, popover, toggletip | — | 2 | — | — | copy-button, form-controls, list-box, popover | no |

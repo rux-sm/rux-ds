@@ -3830,6 +3830,92 @@ on the page ground with the same ink. Measured AND seen.
 Tier 3: no gate, registry, baseline or `CONTROL_FILES` entry moves. Not done:
 `pagination` pending rux's call on the attribute, the two gate holes, and the
 remaining 47 unmarked fragments holding 274 candidate regions.
+
+**Catalogue growth, batch three, 2026-09-06 — five second specimens, and the
+measurement finished.** The catalogue is **51 blocks, 27 from the sink**. The
+marked fragment count is UNCHANGED at 21, because every one of these five sits
+in a fragment already marked — growth by depth rather than breadth, the seam
+`structured-list` opened with its two blocks.
+
+**THE WELL OF NEW FRAGMENTS IS DRY, and that is the finding that shaped the
+batch.** Of the 47 unmarked fragments, none clearly passes §4.12's rule: they
+are foundations, frame, overlay-attached to a trigger, inline, form controls, a
+variant demo, or the three status ones rux declined. So the durable half of this
+batch is **ruling on the 29 nobody had ruled on**. The coverage doc now carries
+**37 keyed eligibility notes, validated by `check-blocks`**, plus batch two's ten
+form controls as one grouped decision: **37 + 10 = 47. Nothing unmarked is
+unexplained**, and the next batch is a lookup rather than another investigation.
+
+The five: **ordered list, card expressive, tile clickable, code snippet single
+line, progress indicator vertical.** Different in KIND, not in size or state —
+sizes would be near-duplicate entries and states carry batch one's
+`file-uploader` objection, that nobody wants a pre-broken component. Labels
+follow `structured-list/selection`: the base name, then the qualifier.
+
+**A CORRECTION TO MY OWN PREDICTION.** The plan said the candidate count would
+fall by what the five regions hold. **It did not move — 274 before and after —
+and it should not have**: the count covers UNMARKED fragments only, so a second
+block inside an already-marked one changes nothing. The prediction was wrong
+about the table's own definition, not about the work.
+
+**`tabs/contained` was the sixth and is dropped, and review made the finding
+stronger.** The sink's contained specimen is a styling demo:
+`role="tablist"` with `role="tab"` buttons and **zero `aria-controls`, zero
+panels**. `check-blocks` passes it precisely because there is no reference to
+leak — the `file-uploader` problem inverted, a block missing what a reader needs
+rather than carrying what they don't. **All THREE contained specimens are the
+same** — lines 151, 219 and 241, each 0 and 0 — so there was no fallback, and
+the note names all three so the next batch does not try the other two.
+
+**THE TAG-BALANCE HOLE, DEMONSTRATED A SECOND TIME.** The plan asked whether
+truncating the ordered list mid-element would fault, and said to record a third
+gap if not. It is not a third gap: it is batch one's, on a different element and
+a different fragment. Cutting the block after the nested `</ol>` leaves `<ol>` at
+2 opens and 1 close and `<li>` at 4 and 3, and **`check-blocks` passes with 0
+faults**. A first attempt at this test was invalid — the marker landed on a
+`list--nested` mention inside a COMMENT and produced `ORPHAN` and `UNCLOSED`,
+which is a different rule firing correctly; the real cut had to be made between
+the nested close and the outer one.
+
+**A NOTE THAT LOOKED RULED FOR A DAY AND WAS NOT.** Batch one wrote
+``- `modal`, `dialog` — frame, not a stack child``, and the gate's key pattern
+never parsed it: a comma after the first backticked name ends the match. So
+`modal` read as ruled in the prose and was invisible to `check-blocks`. Split
+into two keyed lines, with the reason recorded in place. **The same trap caught
+my own `tabs` note**, which describes a MARKED fragment — a key there would fault
+`CONTRADICTED`, so it is deliberately not a bullet, and says so.
+
+**Red before trusted.** A duplicate block name inside one file faults; a note on
+a now-marked fragment faults `CONTRADICTED`; a note naming a fragment that does
+not exist faults `NO FRAGMENT`. The variant-group claim was **measured with
+`variantsOf`, not read off the markup**, which mattered: the single-line
+snippet's copy button carries `rux--btn--sm` and a size class, exactly the shape
+that makes a group, and is excluded only because it is also icon-only. Zero
+groups on all five, so no `builder/guide.json` entry was forced and the map
+stays at 47.
+
+**LOOKED AT, all five, with screenshots**, on one `app-shell` page at 1280: the
+ordered list nesting to alpha sub-numbering, the expressive card at its larger
+title scale, the clickable tile, `node tools/build.mjs` in the single-line
+snippet, and the vertical stepper with its done, current and pending steps. The
+**g100 pass composited**: expressive card and clickable tile both `rgb(38,38,38)`
+on `rgb(22,22,22)` with `rgb(244,244,244)` text.
+
+**The builder names what it cannot fix.** With `tile/clickable` on the page the
+status line reads *1 reference unresolved* and the integrity line *On this page:
+href="#tile"* — because the tile's destination is the sink's own section id and
+`linksOf` (`builder/rewrites.mjs:319`) skips every `#` href. `breadcrumb` ships
+three such in its block already and `full-page-error` one. **The skip is broader
+than its reason**: it exists so instancing can own in-block `#` references, and
+an `#` pointing outside the block is an ordinary destination a reader would want
+to change. Tier 2 — `builder/rewrites.mjs` is a literal entry in `CONTROL_FILES`
+at `tools/lib/gates.mjs:787`, one of the 58 `check-controls` counts — and not
+fixed here.
+
+Tier 3: no gate, registry, baseline or `CONTROL_FILES` entry moves. Not done:
+the three tier-2 gaps above, `pagination` still one deleted attribute from
+markable, and the three status fragments, which the notes mark REOPENABLE
+because they are a judgement rather than a rule.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend

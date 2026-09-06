@@ -2351,7 +2351,9 @@
       <!-- BLOCK:BEGIN name=basic label="Tile" -->
       <div class="rux--tile"><p>Base tile with some content inside it.</p></div>
       <!-- BLOCK:END basic -->
+      <!-- BLOCK:BEGIN name=clickable label="Tile, clickable" -->
       <a href="#tile" class="rux--tile rux--tile--clickable"><p>Clickable tile</p></a>
+      <!-- BLOCK:END clickable -->
       <!--
         --tile--disabled is only ever written compound with --tile--selectable
         (:.rux--tile--disabled.rux--tile--selectable). On its own it styles
@@ -2576,6 +2578,7 @@
       <!-- BLOCK:END default -->
 
       <!-- expressive -->
+      <!-- BLOCK:BEGIN name=expressive label="Card, expressive" -->
       <div class="rux--card rux--card--expressive">
         <div class="rux--card__header">
           <div class="rux--card__title">
@@ -2585,6 +2588,7 @@
         </div>
         <div class="rux--card__body">The expressive variant sets a larger title scale.</div>
       </div>
+      <!-- BLOCK:END expressive -->
 
       <!--
         CLICKABLE IS role=button + tabindex=0 + aria-labelledby, and the
@@ -3757,6 +3761,7 @@
         <li class="rux--list__item">Second item</li>
       </ul>
       <!-- BLOCK:END unordered -->
+      <!-- BLOCK:BEGIN name=ordered label="Ordered list" -->
       <ol class="rux--list--ordered">
         <li class="rux--list__item">First item</li>
         <li class="rux--list__item">Second item
@@ -3766,6 +3771,7 @@
           </ol>
         </li>
       </ol>
+      <!-- BLOCK:END ordered -->
       <ul class="rux--list--unordered rux--list--expressive">
         <li class="rux--list__item">Expressive spacing</li>
         <li class="rux--list__item">Second item</li>
@@ -5318,6 +5324,7 @@
 
     <div>
       <div class="ks-label">vertical — the variant a narrow column wants</div>
+      <!-- BLOCK:BEGIN name=vertical label="Progress indicator, vertical" -->
       <ul class="rux--progress rux--progress--vertical">
         <li class="rux--progress-step rux--progress-step--complete">
           <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
@@ -5344,6 +5351,7 @@
           </button>
         </li>
       </ul>
+      <!-- BLOCK:END vertical -->
     </div>
 
   </div>
@@ -6789,12 +6797,14 @@
         <code>npm run build</code>
       </button>
     </div>
+    <!-- BLOCK:BEGIN name=single label="Code snippet, single line" -->
     <div class="rux--snippet rux--snippet--single">
       <div class="rux--snippet-container"><pre><code>node tools/build.mjs</code></pre></div>
       <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy">
         <span class="rux--copy-btn__feedback">Copied</span>
       </button>
     </div>
+    <!-- BLOCK:END single -->
     <div class="rux--snippet rux--snippet--single rux--snippet--disabled">
       <div class="rux--snippet-container"><pre><code>npm run verify   # disabled</code></pre></div>
       <button type="button" class="rux--copy-btn rux--copy rux--btn rux--btn--sm rux--layout--size-sm rux--btn--primary rux--btn--icon-only" aria-label="Copy" disabled>

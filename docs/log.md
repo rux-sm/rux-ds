@@ -122,6 +122,41 @@ rule on.** `rux-ds`, `rux-sm.github.io` and `rux-ln-notes` are PUBLIC;
 `rux-backend` and `rux-ln-atlas` are PRIVATE. Five repositories, three of them
 public, exactly as the card says. Nothing in it changes.
 
+**DONE 2026-09-06 — catalogue growth, batch three: five second specimens, and
+the measurement finished.** The catalogue is 51 blocks, 27 from the sink. Marked
+fragments are unchanged at 21 — every one of these five sits in a fragment
+already marked, so this is depth rather than breadth.
+
+The well of new fragments is dry: none of the 47 unmarked clearly passes §4.12's
+rule. So the durable half was **ruling on the 29 nobody had ruled on**. The
+coverage doc carries **37 keyed notes validated by check-blocks**, plus batch
+two's ten form controls as one grouped decision: 37 + 10 = 47. **Nothing
+unmarked is unexplained.**
+
+The five: ordered list, card expressive, tile clickable, code snippet single
+line, progress indicator vertical — different in KIND, not size or state.
+
+A correction to my own prediction: the candidate count did NOT fall, and should
+not have. It covers unmarked fragments only, so a second block inside a marked
+one changes nothing. 274 before and after.
+
+`tabs/contained` was the sixth and is dropped. All THREE contained specimens
+carry zero aria-controls and zero panels — styling demos, not wired tab sets —
+so there was no fallback, and the note names all three.
+
+**The tag-balance hole, demonstrated a second time.** Cutting the ordered list
+after its nested `</ol>` leaves `<ol>` at 2 opens and 1 close and `<li>` at 4 and
+3, and check-blocks passes with 0 faults. Not a third gap — batch one's, on a
+different element. A first attempt at the test was invalid: the marker landed on
+a `list--nested` mention inside a comment and fired ORPHAN and UNCLOSED, which is
+a different rule working correctly.
+
+**A note that looked ruled for a day and was not.** Batch one wrote
+``- `modal`, `dialog` — …`` and the gate's key pattern never parsed it: a comma
+after the first backticked name ends the match. `modal` read as ruled in prose
+and was invisible to the gate. Split into two keyed lines with the reason in
+place.
+
 **DONE 2026-09-06 — catalogue growth, batch two: four blocks, and the line on
 form controls.** The catalogue is 46, 22 from the sink; the table moved 17 marked
 to 21, 284 candidate regions to 274 across 47 unmarked. Every figure was
