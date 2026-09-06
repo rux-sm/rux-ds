@@ -34,6 +34,27 @@ rather than adding a judgement.
 - `badge-indicator` — its own comment: "A badge is not a free-standing box." It
   renders as the last child of an icon-only button, which is what gives the
   absolutely-positioned badge its containing block.
+- `pagination` — **one attribute away, and it is demo spacing rather than
+  attested markup.** Its DEFAULT specimen carries
+  `style="margin-block-end:2rem"` (`sink/pagination.html:59`), and sink blocks
+  forbid inline `style=`. The only mechanically clean region is the second one,
+  which the fragment's own comment says exists to demonstrate the
+  **unknown-total-items** distinction — marking it would put a deliberately
+  non-default pagination in the catalogue under the plain name. Unlike
+  `progress-bar` and `treeview`, that margin expresses nothing about the
+  component: it separates two specimens. Deleting it would unblock this, and
+  that is a sink edit rux has not been asked for. `templates/table-page/pagination`
+  serves the shape meanwhile.
+- **The ten single form controls** — `select`, `textarea`, `number`,
+  `text-input`, `date-picker`, `time-picker`, `dropdown`, `combo-box`,
+  `multiselect`, `toggle` — **one decision, not ten. Blocks cannot nest.**
+  `add()` in `builder/page.mjs` appends to a slot and nothing else, so every
+  block is a direct child of a page's stack: a lone `select` would land beside
+  the page title with no form around it, and `templates/form-page/form` carries
+  a real `<form>` for pages that want fields. A FIELDSET is the exception and is
+  why `checkbox` and `radio` are marked — a labelled group of related choices is
+  a thing a page holds, and Carbon renders it as `<fieldset>` with its own
+  `<legend>`. Revisit this if the builder ever nests.
 - `treeview` — **cannot be a sink block at all, and the reason is a measured
   rule rather than a preference.** Both its regions carry inline
   `style="padding-inline-start:…;margin-inline-start:-…"` on
@@ -64,7 +85,7 @@ rather than adding a judgement.
   of those three."
 
 <!-- COVERAGE:BEGIN -->
-_68 shipped fragments · 17 marked, holding 18 of the catalogue's 42 blocks · 284 candidate regions in the 51 unmarked._
+_68 shipped fragments · 21 marked, holding 22 of the catalogue's 46 blocks · 274 candidate regions in the 47 unmarked._
 
 | fragment | components | blocks | candidates | text | variants | behaviour | in the builder |
 |---|---|---|---|---|---|---|---|
@@ -73,7 +94,7 @@ _68 shipped fragments · 17 marked, holding 18 of the catalogue's 42 blocks · 2
 | `ai-label` | ai-label, button, link, popover, toggletip | — | 7 | — | — | copy-button, popover | no |
 | `aspect-ratio` | aspect-ratio | — | 5 | — | — | — | no |
 | `badge-indicator` | badge-indicator, button | — | 2 | — | — | — | no |
-| `big-number` | big-number | — | 1 | — | — | — | no |
+| `big-number` | big-number | 1 | 1 | 2 | 0 | — | yes |
 | `breadcrumb` | breadcrumb, link | 1 | 3 | 3 | 0 | — | yes |
 | `buttons` | button, inline-loading, loading | — | 18 | — | — | — | no |
 | `card` | button, card | 1 | 11 | 5 | 1 | — | yes |
@@ -105,14 +126,14 @@ _68 shipped fragments · 17 marked, holding 18 of the catalogue's 42 blocks · 2
 | `multiselect` | checkbox, combo-box, form, list-box, multiselect, tag, text-input | — | 3 | — | — | dismiss, form-controls, list-box | no |
 | `notification` | button, notification | 1 | 15 | 2 | 0 | dismiss | yes |
 | `number` | form, number-input | — | 4 | — | — | form-controls | no |
-| `options-tile` | OptionsTile, toggle | — | 2 | — | — | form-controls | no |
+| `options-tile` | OptionsTile, toggle | 1 | 2 | 3 | 0 | form-controls | yes |
 | `overflow-menu` | overflow-menu | — | 2 | — | — | menu | no |
 | `pagination` | form, pagination, select | — | 2 | — | — | form-controls | no |
-| `pagination-nav` | button, pagination-nav | — | 2 | — | — | — | no |
+| `pagination-nav` | button, pagination-nav | 1 | 2 | 11 | 0 | — | yes |
 | `popover` | button, popover | — | 7 | — | — | copy-button, popover | no |
 | `progress-bar` | progress-bar | — | 4 | — | — | — | no |
 | `progress-indicator` | progress-indicator | 1 | 3 | 5 | 0 | — | yes |
-| `radio` | form, radio-button | — | 5 | — | — | — | no |
+| `radio` | form, radio-button | 1 | 5 | 4 | 0 | — | yes |
 | `scroll-gradient` | scroll-gradient | — | 1 | — | — | — | no |
 | `search` | search | 1 | 3 | 1 | 0 | form-controls | yes |
 | `select` | form, select | — | 5 | — | — | form-controls | no |

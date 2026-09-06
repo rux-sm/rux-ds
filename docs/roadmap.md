@@ -3762,6 +3762,74 @@ picture.
 Tier 3 throughout: no gate, registry, baseline or `CONTROL_FILES` entry moves.
 Not done: `file-uploader`, `progress-bar` and `treeview` as named above, the
 tag-balance hole, and the remaining 51 unmarked fragments holding 284 candidate
+
+**Catalogue growth, batch two, 2026-09-06 — four blocks, and the line that stops
+the catalogue filling with form fields.** The catalogue is **46 now, 22 from the
+sink**, and the coverage table moved 17 marked → 21, 284 candidate regions → 274
+across 47 unmarked fragments. **Every figure was predicted before running and
+matched exactly.** Markers only: 13 insertions, 0 deletions, across four
+fragments.
+
+The four: **radio button group, pagination nav, options tile, big number.** All
+compiled, KEEP, mechanically clean before marking. **None carries a variant
+group**, so unlike batch one this forced no `builder/guide.json` entries and the
+map stays at 47.
+
+**THE DECISION WORTH MORE THAN THE FOUR BLOCKS.** Ten form controls are
+mechanically ready — select, textarea, number, text-input, date-picker,
+time-picker, dropdown, combo-box, multiselect, toggle — and are ruled out as
+**one** recorded decision rather than ten deferrals. **Blocks cannot nest**:
+`add()` in `builder/page.mjs` appends to a slot and nothing else, so every block
+is a direct child of a page's stack, and a lone `select` would land beside the
+page title outside any form while `templates/form-page/form` carries a real
+`<form>`. A FIELDSET is the exception, which is why `radio` is in and why batch
+one's `checkbox` was right: a labelled group of related choices is a thing a page
+holds. The note says to revisit it if the builder ever nests.
+
+**`pagination` was in rux's four and is dropped — one attribute away.** Its
+DEFAULT specimen carries `style="margin-block-end:2rem"`
+(`sink/pagination.html:59`) and sink blocks forbid inline `style=`; the only
+clean region is the second, which the fragment's own comment says exists to
+demonstrate the unknown-total-items distinction. **Unlike `progress-bar` and
+`treeview`, the obstruction is pure demo spacing** — it separates two specimens
+and expresses nothing about the component — so deleting one attribute unblocks
+it, which is a sink edit rux has not been asked for. The note names the
+attribute and its line so a later edit can be matched to it.
+
+**A SECOND GATE HOLE, and this one was predicted by rux's review rather than
+stumbled into.** Two of three red runs faulted as expected: `options-tile`'s
+`aria-labelledby` pointed outside its block, and `radio`'s label `for=` pointed
+outside, both `OPEN`. The third **found a gap**: an `<input type="radio"
+name="rb">` placed OUTSIDE the block, sharing the name with the three inside it,
+passes with **0 faults**. A shared `name` is the other way a fieldset leaks and
+`check-blocks` has no rule for it. **It is theoretical today**: across every
+fragment and template, radios outside every block sharing a name with a block's
+radio number **0**. A first count said 4 and was wrong — those were radios inside
+their own blocks. Closing it is tier 2, like the tag-balance hole batch one
+found, and neither is fixed here.
+
+**Why marking a radio group is safe at all, written into the fragment.**
+`builder/rewrites.mjs` suffixes a `name` attribute only when the tag is an
+`input[type=radio]`, so a second instance becomes `name="rb-2"` and keeps its own
+selection rather than merging. That branch is invisible from the markup, so the
+block now carries a comment saying so.
+
+**`role="math"` is new to the catalogue and passes.** `big-number` brings it, and
+`check-aria-roles` reports **0 invented** because the capture attests it at
+`docs/carbon-ibm-products-dom.json:4698`. `options-tile` brings an `<h2>`, which
+ten existing blocks already do.
+
+**LOOKED AT, all four, with screenshots.** Radio group, pagination nav with its
+active page, the options tile with its toggle and disclosure, and the big number
+at "1,284" — all on one `app-shell` page at 1280, the status line reading *round
+trip identical · ids unique · references resolved*. **The g100 pass composited
+this time**, unlike batch one's: the options tile reads `rgb(38,38,38)` on
+`rgb(22,22,22)` with `rgb(244,244,244)` text, and the big number is transparent
+on the page ground with the same ink. Measured AND seen.
+
+Tier 3: no gate, registry, baseline or `CONTROL_FILES` entry moves. Not done:
+`pagination` pending rux's call on the attribute, the two gate holes, and the
+remaining 47 unmarked fragments holding 274 candidate regions.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend

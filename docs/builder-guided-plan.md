@@ -76,6 +76,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 | 12 | Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. | `build-builder.mjs` | 7, 8, 9, 11 |
 | 13 | Repeated items: duplicate, remove, reorder a repeated sibling, ids re-suffixed. v2. | `rewrites.mjs` | 12 |
 | growth | **BATCH ONE DONE 2026-09-05.** Nine sink blocks picked from the coverage table: tabs, progress-indicator, content-switcher, list, code-snippet, card, action-set, checkbox, search. Two of the eleven asked for were dropped on measured grounds. | — | 10 |
+| growth | **BATCH TWO DONE 2026-09-06.** Four more: radio, pagination-nav, options-tile, big-number. Catalogue 46. The ten single form controls are ruled out as ONE decision — blocks cannot nest, so a lone field would sit outside any form; a fieldset is the exception. | — | 10 |
 
 ## Stage notes
 

@@ -11,6 +11,12 @@
        the ai-label fragment. -->
   <div class="ks-row" style="gap:4rem">
     <div class="rux--form-item">
+      <!-- THE THREE INPUTS SHARE name="rb", AND TWO COPIES ON ONE PAGE DO NOT MERGE.
+           builder/rewrites.mjs suffixes a `name` only when the tag is an
+           input[type=radio], so a second instance becomes name="rb-2" and keeps its
+           own selection. That branch is invisible from here, which is why it is
+           written down: without it, marking a radio group would look unsafe. -->
+      <!-- BLOCK:BEGIN name=group label="Radio button group" -->
       <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
         <legend class="rux--label">Pick one</legend>
         <div class="rux--radio-button-wrapper">
@@ -35,6 +41,7 @@
           </label>
         </div>
       </fieldset>
+      <!-- BLOCK:END group -->
     </div>
 
     <div class="rux--form-item">

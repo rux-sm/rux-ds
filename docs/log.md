@@ -122,6 +122,39 @@ rule on.** `rux-ds`, `rux-sm.github.io` and `rux-ln-notes` are PUBLIC;
 `rux-backend` and `rux-ln-atlas` are PRIVATE. Five repositories, three of them
 public, exactly as the card says. Nothing in it changes.
 
+**DONE 2026-09-06 — catalogue growth, batch two: four blocks, and the line on
+form controls.** The catalogue is 46, 22 from the sink; the table moved 17 marked
+to 21, 284 candidate regions to 274 across 47 unmarked. Every figure was
+predicted before running and matched. Markers only: 13 insertions, 0 deletions.
+
+The four: radio button group, pagination nav, options tile, big number. None
+carries a variant group, so no guide.json entry was forced and the map stays at
+47.
+
+Worth more than the four: **the ten single form controls are ruled out as ONE
+decision.** Blocks cannot nest — `add()` appends to a slot and nothing else — so
+a lone select would sit in the page stack outside any form, while
+`templates/form-page/form` carries a real one. A fieldset is the exception,
+which is why radio is in and batch one's checkbox was right.
+
+`pagination` was in the four and is dropped, one attribute away: its default
+specimen carries a demo `margin-block-end:2rem` and sink blocks forbid inline
+style, while the only clean region is deliberately the unknown-total variant.
+Unlike progress-bar and treeview the obstruction expresses nothing about the
+component, so deleting one attribute unblocks it — a sink edit rux has not been
+asked for.
+
+**A SECOND GATE HOLE, predicted by rux's review rather than stumbled into.** An
+`<input type="radio" name="rb">` outside a block, sharing the name with those
+inside it, passes with 0 faults: a shared `name` is the other way a fieldset
+leaks and check-blocks has no rule for it. Theoretical today — 0 such radios
+exist across every fragment and template. A first count said 4 and was wrong;
+those were radios inside their own blocks. Tier 2, like the tag-balance hole,
+and neither is fixed here.
+
+role="math" is new to the catalogue and passes: check-aria-roles reports 0
+invented, because the capture attests it.
+
 **DONE 2026-09-05 — catalogue growth, batch one: nine blocks.** The catalogue
 had not grown since stage 5. It is 42 now, 18 of them from the sink, and the
 coverage table moved 8 marked to 17, 334 candidate regions to 284 across 51

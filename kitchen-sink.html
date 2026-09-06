@@ -1379,6 +1379,12 @@
        the ai-label fragment. -->
   <div class="ks-row" style="gap:4rem">
     <div class="rux--form-item">
+      <!-- THE THREE INPUTS SHARE name="rb", AND TWO COPIES ON ONE PAGE DO NOT MERGE.
+           builder/rewrites.mjs suffixes a `name` only when the tag is an
+           input[type=radio], so a second instance becomes name="rb-2" and keeps its
+           own selection. That branch is invisible from here, which is why it is
+           written down: without it, marking a radio group would look unsafe. -->
+      <!-- BLOCK:BEGIN name=group label="Radio button group" -->
       <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical">
         <legend class="rux--label">Pick one</legend>
         <div class="rux--radio-button-wrapper">
@@ -1403,6 +1409,7 @@
           </label>
         </div>
       </fieldset>
+      <!-- BLOCK:END group -->
     </div>
 
     <div class="rux--form-item">
@@ -6828,6 +6835,7 @@
     every capture. Not written. No module drives this yet; the page buttons
     are static.
   -->
+  <!-- BLOCK:BEGIN name=default label="Pagination nav" -->
   <nav class="rux--pagination-nav rux--layout--size-lg" aria-label="Pagination">
     <ul class="rux--pagination-nav__list">
       <li class="rux--pagination-nav__list-item">
@@ -6873,6 +6881,7 @@
     </ul>
     <div class="rux--pagination-nav__accessibility-label" aria-live="polite">Page 1 of 10</div>
   </nav>
+  <!-- BLOCK:END default -->
 
   <div class="ks-label" style="margin-block-start:1.5rem">current page inside the overflow — `--active` on the select AND its icon wrapper</div>
   <!-- check-compound asked for this one: Carbon writes
@@ -7033,6 +7042,7 @@
     is empty in the only story, so it remains empty here rather than inventing
     a control.
   -->
+  <!-- BLOCK:BEGIN name=default label="Big number" -->
   <figure class="rux--big-number">
     <span class="rux--big-number__row">
       <figcaption class="rux--big-number__label">Completed requests</figcaption>
@@ -7042,6 +7052,7 @@
       <span class="rux--big-number__icon-button"></span>
     </span>
   </figure>
+  <!-- BLOCK:END default -->
 </section>
 
 <section class="ks-sec" id="edit-in-place">
@@ -7147,6 +7158,7 @@
     variants are not inferred.
   -->
   <div class="ks-stack">
+    <!-- BLOCK:BEGIN name=default label="Options tile" -->
     <section class="rux--options-tile rux--options-tile--lg">
       <details class="rux--options-tile__details" open>
         <summary class="rux--options-tile__header rux--options-tile__header--has-toggle">
@@ -7169,6 +7181,7 @@
         <div class="rux--options-tile__content"><p>Choose the maintenance window in the deployment settings.</p></div>
       </details>
     </section>
+    <!-- BLOCK:END default -->
 
     <section class="rux--options-tile rux--options-tile--lg">
       <div class="rux--options-tile__static-content">
