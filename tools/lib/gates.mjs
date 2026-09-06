@@ -98,6 +98,26 @@ export function pageTargets() {
 const RENDERED_INPUTS = [
   'css/rux.css', 'css/rux-theme.css', 'css/rux-overrides.css',
   'assets/fonts/plex.css', 'js',
+  // THE MARK, added 2026-09-05 after a swap aged nothing. Every page links
+  // brand/favicon.svg and embeds brand/logo.svg, so replacing either changes
+  // what these four gates were pointed at -- and on 2026-09-05 the logo,
+  // favicon and both app icons were replaced while `npm run gates` went on
+  // reading 41 of 41 current. That is the hole this gate exists to close,
+  // and it was open on the one file the README calls a free swap.
+  //
+  // IT BUYS NO NEW DETECTION, and the proposal said so rather than implying
+  // otherwise. Measured on app-shell: a zero-sized SVG -- the failure that has
+  // shipped here TWICE, from `--` inside an XML comment -- renders 300px wide
+  // and blows the header out by 276px, and check-a11y, check-spacing and
+  // check-runtime-classes ALL return figure-for-figure identical results. No
+  // gate here reads the mark, because an <img src> whose file changes alters
+  // no class, no attribute and no box property of any classed element.
+  //
+  // What it buys is a ledger that stops claiming a reading is current for a
+  // page whose header has changed, and the human pass that follows -- which is
+  // the only thing that has ever caught a broken mark here, both times by
+  // someone opening the page.
+  'brand',
 ];
 
 // FINDING 14. sink/harness.css positions the kitchen sink's specimens and is
@@ -596,10 +616,12 @@ export const GATES = [
     fileTargets: [],
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
-    // NOT THE STYLESHEETS. This gate compares the live DOM's class sets
-    // against the static markup, and the difference is made by MODULES
-    // running -- no stylesheet puts a class on an element. Declaring CSS
-    // here would age twelve readings that cannot move.
+    // NOT THE STYLESHEETS, AND NOT THE MARK. This gate compares the live DOM's
+    // class sets against the static markup, and the difference is made by
+    // MODULES running -- no stylesheet puts a class on an element, and neither
+    // does an image. Declaring either here would age thirteen readings that
+    // cannot move: proved for brand/ on 2026-09-05 by rendering a broken mark
+    // 300px wide and reading 63/63 with 0 stripped, unchanged.
     sharedInputs: ['js'],
     pageInputs: BUILDER_SCRIPTS,
     redRun: 'remove a class from the live DOM by hand; it reports that class stripped',
