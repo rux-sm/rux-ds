@@ -59,6 +59,43 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**2026-09-05 — brand/ becomes a browser-gate input, and the first sweep it
+forced.** `754219b` (the gate), `d8fd169` (Rux logo 2), `63742f5` and `9270fb4`
+(the ledger). Proposed after stage 8 found the hole: the logo, favicon and both
+app icons were replaced on every page's header while `npm run gates` went on
+reading 41 of 41 current. Accepted by rux with the cost stated — **28 cells now
+age on a mark change**, so swapping the logo stops being the free operation the
+README advertises.
+
+**It buys no new detection, and that was measured before it was proposed rather
+than discovered after.** A zero-sized SVG — the failure that has shipped here
+twice, from `--` inside an XML comment — renders **300px wide** on app-shell and
+blows the header out by 276px, and check-a11y, check-spacing and
+check-runtime-classes all return figure-for-figure identical results. No gate
+reads the mark: an `<img src>` whose file changes alters no class, no attribute
+and no box property of any classed element. check-runtime-classes is therefore
+excluded, on the same ground as the stylesheets it already excludes, proved the
+same way. What the change buys is a ledger that stops claiming currency it has
+not earned, and the human pass that follows — the only thing that has ever
+caught a broken mark here, both times by someone opening the page.
+
+The sweep: thirteen pages, 29 cells, every figure identical to the reading it
+replaced — the sink's 29 findings and 6 notes with the standing date-picker
+calendar, wizard-page's four adjudicated progress-step-button false positives,
+47 of 47 behaviour cases, 68 rendered sections with 0 collapsed and 0 escaped in
+all five themes. Each a11y reading proved red in the same execution and
+restored. The mark was measured on every page rather than assumed: 24x24 CSS px
+in each header.
+
+**Two things found while sweeping for a logo.** `check-rendered`'s `emptySvgs`
+rule is the one rule in the set that could catch a zero-sized drawing, and it
+cannot see this one, because the logo is an `<img src>` and not an inline
+`<svg>` — a 0x0 mark still passes every gate. And the registry's `baseline`
+field for check-a11y still reads "kitchen-sink 0 findings · 6 notes" where the
+honest standing figure has been 29 findings and 6 notes since 2026-09-04;
+`baseline` is documented as a record rather than an assertion, so it is left for
+rux rather than edited inside a sweep commit.
+
 **DONE 2026-09-05 — content editing that reads as content (§4.12 stage 8).**
 `30e91fb`, swept at `becea4d`, restamped at `33a244a`, 41 of 41 current. The
 panel said "Text 1 of 18" over "In `<div>`"; it now names every field by what it
