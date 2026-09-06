@@ -122,7 +122,7 @@ stronger reason recorded below.
 > gzipped; §2.1 now has no KB target at all, and the reason is in this table.** The
 > recommendation was sound against 40 and arbitrary in itself — 55 was the measured
 > floor rounded up to the next multiple of five, and that floor was 1.3 KB understated.
-> More decisively, **not one of the 44 CUT and DEFER rows below was decided on CSS
+> More decisively, **not one of the 6 CUT and DEFER rows below was decided on CSS
 > bytes.** They were decided on overlap with something already shipping, on whether a
 > named page shape needs the component, and on Phase 1 provenance. The nine rows that
 > mention size mostly use it to argue something is *cheap enough to add back*; the one
@@ -242,14 +242,22 @@ Sorted KEEP, then DEFER, then CUT, each by size. "Needed by" counts other compon
 | `resizer` | **CUT** | 1 | 11 | 0 | no reference on either Storybook origin; 1 KB, niche |
 | `truncated-text` | **CUT** | 1 | 5 | 0 | no reference, and its expand toggle has an unfixable button-reset gap (§4.1.5) |
 
-**36 KEEP · 11 DEFER · 28 CUT** — 75 rows, every row decided. It read 33/14/28 until
+**71 KEEP · 1 DEFER · 3 CUT** — 75 rows, every row decided. It read 33/14/28 until
 2026-08-31, when `progress-indicator`'s own DEFER reversal was finally tallied and
-`toggletip`, `time-picker` and `date-picker` were admitted. A row changed without the
-tally under it is how this drifted before; both move together now.
+`toggletip`, `time-picker` and `date-picker` were admitted, and **36/11/28 until
+2026-09-05**, when §4.9's admission batches were finally counted here: they moved
+thirty-five rows into KEEP and this line was not restamped for any of them.
+
+**"A row changed without the tally under it is how this drifted before; both move
+together now" is what this line used to say, and it was wrong.** They did not move
+together — the batches landed and the tally sat still for weeks. The sentence is kept
+here as the claim the drift disproves, not repeated as a promise. What actually holds
+the file honest is narrower and worth saying plainly: `check-inventory` fails on a
+component with no row and on a row with no disposition, and **reads no tally at all**.
 
 **That tally covers the original 75 only.** Carbon 1.114 ships 83. The eight new ones
 have rows in the section directly below, and all eight are now decided — one DEFER and
-seven CUT, 2026-08-31 — so the full count is **36 KEEP · 12 DEFER · 35 CUT**, 83 rows,
+seven CUT, 2026-08-31 — so the full count is **77 KEEP · 2 DEFER · 4 CUT**, 83 rows,
 every row decided. `npm run verify` holds it there: `check-inventory` fails on a Carbon
 component with no row, and on a row that carries no disposition.
 

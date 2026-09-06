@@ -90,6 +90,38 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**CORRECTED 2026-09-05 — two stale tallies, two missing gate rows, and a
+retraction of my own.**
+
+`docs/inventory.md` carried two tallies over two different scopes and both were
+stale. Counted with the regex `tools/check-inventory.mjs:72` itself uses: the
+line scoped to the original 75 rows read 36 KEEP / 11 DEFER / 28 CUT and the rows
+say **71 / 1 / 3**; the line scoped to all 83 read 36 / 12 / 35 and the rows say
+**77 / 2 / 4**, its row TOTAL of 83 being the one figure that was right; and "the
+44 CUT and DEFER rows below" is **6**. §4.9's admission batches moved
+thirty-five rows into KEEP and neither tally was restamped for any of them. No
+disposition was touched — those are rux's — only the counts.
+
+**The line above the first tally used to promise "A row changed without the tally
+under it is how this drifted before; both move together now." They did not**, and
+the sentence is now kept there as the claim the drift disproves rather than
+repeated as a promise. What actually holds the file is narrower and now says so:
+`check-inventory` fails on a component with no row and on a row with no
+disposition, and reads no tally at all. That gap stays; a gate that reads prose
+totals was considered and not proposed.
+
+README's gate table carried **23 rows against 25 registry entries**.
+`check-parity.mjs` and `build-builder.mjs` now have rows, and the table is at 25.
+Whether a build tool belongs in a table headed "gates" needed no ruling: it
+already carried `build.mjs` and `build-portal.mjs`.
+
+**A RETRACTION.** The commit that added `docs/verbs.md` said in its body that the
+card "says drafted from the three public repositories and its own table lists
+five", and left it for rux to rule on. **That was wrong and there is nothing to
+rule on.** `rux-ds`, `rux-sm.github.io` and `rux-ln-notes` are PUBLIC;
+`rux-backend` and `rux-ln-atlas` are PRIVATE. Five repositories, three of them
+public, exactly as the card says. Nothing in it changes.
+
 **DONE 2026-09-05 — the guide map, and placement evidence that does not
 overclaim (§4.12 stage 11).** The catalogue offered all 33 blocks flat, in
 manifest order, identically for every slot. It now splits by what the repository
