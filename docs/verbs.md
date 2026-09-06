@@ -9,7 +9,13 @@ Where a verb takes more than one command today, the card says so and names
 what it should be. A command listed here exists; a target marked **not yet**
 does not, and is the next thing to build for that verb.
 
-Drafted 2026-09-05 from the three public repositories at `v0.1.6`.
+Drafted 2026-09-05 from the three public repositories at `v0.1.6`. Revised
+the same day, after the eight-phase workspace plan was withdrawn for four
+changes: verbs 3 and 4 have their commands, and an app's check is rux-ds's,
+vendored with the pin (`tools/app-check.mjs`, `tools/app-skeleton/`,
+`tools/roll-out.sh`, `new-project.sh --tag`). The hub and Notes pick those up
+at their next pin move to a tag that carries them; until then the rows below
+say which of today's steps still apply to them.
 
 ---
 
@@ -37,9 +43,9 @@ authored by rux alone. `AGENTS.md` is the policy; this card is the routine.
 | | |
 |---|---|
 | How | Skill `rux-ds-page`. Copy the nearest `templates/*.html`; never start from scratch or from a guess. Markup is diffed against `docs/carbon-*.json` (`node tools/diff-fragment.mjs <name>`). |
-| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. Hub and Notes: `node tools/serve.mjs` → `http://localhost:8643`. |
-| Check | rux-ds: `npm run verify`. Hub or an app: `node tools/check.mjs`. Browser gates: skill `sink-check`; `npm run gates` says which page was last swept and fails on one never swept. |
-| Look | The page, in the browser, both themes. The template's `BEHAVIOUR:` comment says what was verified and what was not. |
+| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. An app: `node tools/serve.mjs` → `http://localhost:8643`. |
+| Check | rux-ds: `npm run verify`. An app: `node tools/check.mjs` — rux-ds's shared check from `vendor/rux-ds/tools/app-check.mjs` (classes, tokens, local references, ids, the pin), then the app's own gates. Browser gates: skill `sink-check`; `npm run gates` says which page was last swept and fails on one never swept. |
+| Look | The page, in the browser, in every theme — white, g10, g90, g100, rux — from the account panel. The template's `BEHAVIOUR:` comment says what was verified and what was not. |
 
 One command today. Notes is the exception: its pages are generated, so the
 edit goes in `tools/build.mjs`, then `node tools/build.mjs`, then the check.
@@ -57,8 +63,8 @@ edit goes in `tools/build.mjs`, then `node tools/build.mjs`, then the check.
 
 | | |
 |---|---|
-| Check | rux-ds: `npm run verify` — `check-tokens` refuses a token the theme file invents, `check-classes` a class either file selects that `rux.css` does not compile. An app has no gate for this; copy the page into rux-ds's root, run `verify`, delete the copy. |
-| Look | The component, in the sink or on the page, in both themes. A rule that should not have changed anything: measure before and after. |
+| Check | rux-ds: `npm run verify` — `check-tokens` refuses a token the theme file invents, `check-classes` a class either file selects that `rux.css` does not compile. An app: `node tools/check.mjs` — the vendored check refuses a class the pinned `rux.css` does not compile and a `var(--rux-*)` nothing declares, in the page, the two delta files and local scripts. Nothing is ever copied into rux-ds to check it. Hub and Notes: their own class check until the next pin move, and nothing checks a token there yet. |
+| Look | The component, in the sink or on the page, in every theme. A rule that should not have changed anything: measure before and after. |
 
 One edit today. A rule promoted from an app's pair into rux-ds's is not
 finished until a tag carries it, every pin has moved, and the app deletes its
@@ -68,22 +74,28 @@ own copy in the same commit as its pin move (`docs/roadmap.md` §4.13).
 
 *A new module on rux-ds, joining the switcher on every site.*
 
-Today, nine steps, seven by hand. **Target: two by hand** — create the repo,
-add one line to `switcher.json`.
+One command, then two things by hand — create the repository, add one line
+to `switcher.json`. (Until 2026-09-05: nine steps, seven by hand.)
 
 ```sh
-# from rux-ds, clean and at a tag
-sh tools/new-project.sh ~/Developer/<name> --name <Name> --title "Rux <Name>"
+# from rux-ds on main, naming a tag that carries tools/app-check.mjs
+sh tools/new-project.sh ~/Developer/<name> --tag vX.Y.Z \
+   --name <Name> --title "Rux <Name>" --path /<name>/
 ```
 
-Then, by hand until the script does it (**not yet**):
+It asks the template, theme and file name it was not given, vendors the
+release, writes the page with its switcher set to Home and this app and
+`/switcher.js` linked, copies `tools/app-skeleton/` — the check and serve
+launchers, the hook, the Pages workflow, `AGENTS.md`, `launch.json`,
+`.gitignore` — runs the new app's `node tools/check.mjs`, and prints what is
+left. From a tag older than the check it says the launchers point at nothing
+yet, and does not fail.
 
-1. Create the repository and enable Pages — rux does this; `gh repo create` is refused to an agent.
-2. Copy from the hub: `.github/workflows/pages.yml`, `.githooks/commit-msg`, `tools/serve.mjs`, `tools/check.mjs`, `.claude/launch.json`, `.gitignore`. Arm the hook: `git config core.hooksPath .githooks`.
-3. In the new page, replace the template's switcher entries ("Rux DS / Deployments / Billing") with Home and this app, and add `<script src="/switcher.js"></script>` before `</body>`. The drift report cannot see either.
-4. In the hub, add one entry to `switcher.json`: `{ "name", "path": "/<name>/", "description" }`. That is the whole registry; the panel and the launcher read it at runtime.
-5. Delete the hub README's Apps table or update it — it is a second copy of the list. (**Target:** deleted.)
-6. `node tools/check.mjs` in the hub, then in the app. Commit and push both.
+Then, by hand:
+
+1. `git init && git config core.hooksPath .githooks`. Create the repository and enable Pages — rux does this; `gh repo create` is refused to an agent.
+2. In the hub, add one entry to `switcher.json`: `{ "name", "path": "/<name>/", "description" }`. That is the whole registry; the panel and the launcher read it at runtime, and the hub README no longer carries a copy. `node tools/check.mjs` there.
+3. Open the page in every theme. Commit and push both.
 
 | | |
 |---|---|
@@ -97,21 +109,24 @@ Do this when `CHANGES.md` gained a line, the drift report names a shell
 change, or an app needs a component that arrived — not on every tag. `PIN`
 records which tag each app is on either way.
 
-Today, per app (**target: `sh tools/roll-out.sh vX.Y.Z`, one command for
-every app, the rux-ds clone never leaves `main` — not yet**):
+One command for every app, from rux-ds on `main`, which it never leaves:
 
 ```sh
-git -C ~/Developer/rux-ds fetch --tags && git -C ~/Developer/rux-ds checkout vX.Y.Z
-sh ~/Developer/rux-ds/tools/new-project.sh ~/Developer/<app>      # asks nothing, moves the pin, prints drift
-git -C ~/Developer/rux-ds checkout main                          # easy to forget
-git -C ~/Developer/<app> diff --stat vendor/
+git -C ~/Developer/rux-ds fetch --tags
+sh ~/Developer/rux-ds/tools/roll-out.sh vX.Y.Z          # --app <name> for one; --dry-run to see
 ```
 
-Read the drift report. Apply by hand only what it names — it compares the
+It finds every sibling folder with a `vendor/rux-ds/PIN`, refuses the lot if
+any is dirty, lacks an upstream or has no `tools/check.mjs`, then per app
+exports the tag (`new-project.sh <app> --tag vX.Y.Z`, usable alone), runs
+that app's own check, and stops at the first failure with the restore
+command printed. Only `vendor/` changes. It commits nothing.
+
+Read each drift report. Apply by hand only what it names — it compares the
 page's `<head>` resources and header skeleton to the vendored `app-shell` and
 blocks nothing. Read `CHANGES.md` between the two tags: a class that left is
-the one hazard. Then `node tools/check.mjs`, commit
-`chore(vendor): Move the pin to rux-ds vX.Y.Z`, push. Repeat for the next app.
+the one hazard a green check does not show. Then per app, commit
+`chore(vendor): Move the pin to rux-ds vX.Y.Z`, push.
 
 | | |
 |---|---|
@@ -151,6 +166,8 @@ git push origin vX.Y.Z    # two commands; one carrying both is refused
 | `rux-backend` | the one Supabase project's configuration; no secrets | — |
 | `rux-ln-atlas` | private; nothing from it appears anywhere public | — |
 
-An app is `index.html`, `vendor/rux-ds/`, two delta CSS files and one check.
-Notes carries more for one reason, privacy; that reason does not travel to
-the next app.
+An app is `index.html`, `vendor/rux-ds/`, two delta CSS files, and the
+launchers `tools/app-skeleton/` writes — a check, a server and a hook that
+each run rux-ds's vendored copy, so the rules move with the pin. Notes
+carries more for one reason, privacy; that reason does not travel to the
+next app.

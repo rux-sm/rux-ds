@@ -9,6 +9,37 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-05 — The app contract: four changes in place of the eight-phase plan.**
+A workspace-simplification plan drafted the same day was reviewed against the
+three repositories and withdrawn unimplemented: it proposed a manifest, a
+launcher CLI, checksums, schema versioning and eight Tier 2 phases for a class
+of "standard app" with zero instances. What was actually duplicated measured
+small — one class check in two copies (8 and 99 lines), one server in three,
+one Pages workflow in two, a pin move that checked the clone out at a tag and
+back — and four changes landed instead. `tools/app-check.mjs`: `--self-test`
+10 cases, 0 wrong (each rule red alone, a valid app green); against the live
+hub 125 class uses and 2 pages pass, against Notes 1931 uses, 48 token reads
+and 24 pages pass. The first run reported every responsive class as `rux--lg`
+— one selector pattern scanned class attributes — and now three extractors
+read attributes, scripts and stylesheets each their own way. `new-project.sh
+--tag v0.1.6` on the hub and on Notes, from this clone on `main` with an
+unrelated dirty tree: only `PIN`'s date line and one sentence changed;
+`check-parity` 30 pages, 0 faults with the page-writing region untouched;
+`v9.9.9` and `main` refused. `tools/roll-out.sh v0.1.6`: refused the hub while
+it carried two untracked files and moved nothing; clean, moved both, both
+checks passed, diffs `PIN` only, both restored. A scratch app scaffolded from
+a clean worktree: eight skeleton files written, switcher set to Home and
+`/rux-example/`, `/switcher.js` linked, the served page returned the right
+title, the hook wrapper refused `bad subject line` and accepted a good one,
+and the app's own check failed on exactly the pin rule, the worktree not
+being at a tag. **Not done:** the hub and Notes still run their own checks
+and hooks until a tag carries `tools/app-check.mjs` and their pins move;
+the checker is not in `npm run verify` nor the gates registry, and
+`tools/app-check.mjs`, `tools/roll-out.sh` and `tools/app-skeleton/` are not
+in `CONTROL_FILES` — that file was mid-edit in the builder session, and the
+entry is for the judging session to add. The self-test is the author's proof;
+a session that did not write it re-runs it.
+
 **2026-09-05 — Rux logo 2 confirmed as the official brand everywhere.**
 User chose the newest cleaned Rux logo 2 for all branding and favicons.
 Copied the design-system master and generated favicon into Rux Apps and

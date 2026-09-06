@@ -1,11 +1,16 @@
 # Starting a project
 
-One step, from a clone of rux-ds at a tag:
+One step, from a clone of rux-ds with the tags fetched:
 
 ```sh
-git clone --depth 1 --branch v0.1.0 https://github.com/rux-sm/rux-ds.git
-sh rux-ds/tools/new-project.sh ~/Developer/my-app
+git clone https://github.com/rux-sm/rux-ds.git
+sh rux-ds/tools/new-project.sh ~/Developer/my-app --tag v0.1.7 --path /my-app/
 ```
+
+`--tag` takes the files from that tag without checking it out; without it the
+script vendors the working tree and refuses a dirty or unpushed one. `--path`
+is where the app will live under the account root, used once, for the
+switcher entries it writes.
 
 Open `~/Developer/my-app/index.html` in a browser. It is the app-shell
 template: header, side nav, a page of content, every module running, IBM Plex
@@ -35,18 +40,33 @@ listed by running the script with a name it does not have.
 
 ```
 my-app/
-├── index.html            yours — the template, paths pointed at vendor/
+├── index.html            yours — the template, paths pointed at vendor/,
+│                         switcher set to Home and this app, /switcher.js linked
 ├── rux-theme.css         yours — token deltas only, ships empty
 ├── rux-overrides.css     yours — component-rule deltas only, ships empty
-└── vendor/rux-ds/        rux-ds's — never edited, overwritten by every run
+├── brand/                yours — logo.svg and favicon.svg, seeded once
+├── AGENTS.md, CLAUDE.md  yours — the app's policy, short; imports nothing else
+├── tools/check.mjs       runs vendor/rux-ds/tools/app-check.mjs; your gates after it
+├── tools/serve.mjs       runs vendor/rux-ds/tools/serve.mjs on 8643
+├── .githooks/commit-msg  runs vendor/rux-ds/githooks/commit-msg
+├── .github/workflows/pages.yml   check, then deploy; no rule of its own
+├── .claude/launch.json, .gitignore
+└── vendor/rux-ds/        rux-ds's — never edited, replaced whole by every run
     ├── PIN                 which tag and commit this is
     ├── css/rux.css         the stylesheet; rux.min.css beside it
     ├── css/rux-theme.css   the canonical theme, the same in every app
     ├── css/rux-overrides.css  the canonical rules, the same in every app
     ├── js/                 the behaviour modules the page links
     ├── assets/             icons.svg and fonts/ with its licence
-    └── templates/          what the drift report compares your shell to
+    ├── templates/          what the drift report compares your shell to
+    ├── tools/              app-check.mjs and serve.mjs, from a tag that has them
+    └── githooks/           commit-msg
 ```
+
+The launchers and `AGENTS.md` come from `tools/app-skeleton/` on the first
+run only, each file only if absent; a pin move never touches them. From a tag
+older than `tools/app-check.mjs` the launchers point at files `vendor/` does
+not have, and the script says so rather than failing.
 
 Three kinds of file. The script writes `vendor/` every time and the other
 three only when they are missing, so re-running it moves the pin without
@@ -76,24 +96,29 @@ Themes: `data-theme` on `<html>` is `white`, `g10`, `g90`, `g100`, or `rux`
 for the block in your theme file. The app shell's header carries its own
 `g100` and keeps it whatever the page is set to.
 
-A class the stylesheet does not compile has no gate here to catch it. rux-ds
-reads every `*.html` at its own root, so a page copied there and put through
-`npm run verify` gets `check-classes` and `check-tokens` for free; delete the
-copy afterwards.
+`node tools/check.mjs` is the gate: rux-ds's shared check, from the vendored
+copy, refuses a class the pinned `rux.css` does not compile, a `var(--rux-*)`
+nothing declares, a relative `href` or `src` that names nothing, a duplicate
+or dangling id, and a `PIN` that names no tag. Nothing is copied into rux-ds
+to check it — a consumer page never enters that repository, even for a
+minute. What the check cannot see is how the page looks; it prints which
+pages to open and names the five themes.
 
 ## Moving the pin
 
 ```sh
-git -C rux-ds fetch --tags && git -C rux-ds checkout v0.2.0
-sh rux-ds/tools/new-project.sh ~/Developer/my-app
-git -C rux-ds checkout main
+git -C rux-ds fetch --tags
+sh rux-ds/tools/new-project.sh ~/Developer/my-app --tag v0.2.0
 git -C ~/Developer/my-app diff --stat vendor/
 ```
 
 With a `PIN` already under `vendor/rux-ds/` and nothing else named, the script
 asks nothing and writes no page — it moves the pin and stops. Name a template
-or a page to add one. The third line puts your rux-ds clone back on `main`;
-without it the clone sits on a detached tag until you notice.
+or a page to add one. `--tag` exports the tag's tree; your rux-ds clone stays
+on `main`, and a tag that is not on origin is refused. Every app at once is
+`sh rux-ds/tools/roll-out.sh v0.2.0` (`docs/verbs.md`, verb 4). Until
+2026-09-05 this was checkout, run, checkout `main` — and the third line was
+the one forgotten.
 
 Additions are safe. A class that LEFT is the one hazard, and `CHANGES.md` in
 rux-ds is the list, newest first, with the commit; read it between the two
