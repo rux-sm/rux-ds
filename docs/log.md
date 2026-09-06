@@ -59,6 +59,39 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**2026-09-05 — Brand.svg is the mark, everywhere, and the gate charged for it.**
+rux-ds `b11622c`, swept at `5237fcc` and `f2d739f`; Rux Apps `390e272`,
+Rux Notes `4dddf21`. Supersedes Rux logo 2 the same day. The source is
+`~/Developer/Brand.svg`, already drawn on a 16x16 grid with integer
+coordinates; `brand/logo.svg` is the cleaned master, 23 paths down to 14.
+
+**The cleanup was verified by rasterising, not by reading.** All 256 grid cells
+compared between export and master: 86 filled, identical, bounds x=1..15 and
+y=3..14 — one cell of padding left and right, three above, two below, which is
+what rux's own README edit already claimed and it is right. No path carries a
+fractional coordinate. `npm run marks` regenerated the favicon and both app
+icons, and regenerating again produced byte-identical files. None carries a
+`--` inside an XML comment.
+
+**Opened and looked at**, which is the only thing that catches a bad mark: the
+drawing renders as intended at 360px; app-shell loads it at 24x24 CSS px with
+naturalWidth 150 and complete true; the favicon serves 200 with its own
+`<style>` and flips ink by scheme, measured `rgb(22,22,22)` under light and
+gray-10 under dark; icon-light carries dark ink and icon-dark light ink on a
+transparent ground.
+
+**The gate accepted at `754219b` did exactly what it was accepted to do**: the
+mark changed and 28 cells went stale, so the sweep was owed rather than
+optional. Thirteen pages re-read, every figure identical to the reading it
+replaced. That is the second sweep brand/ has forced and the first that was
+routine.
+
+Both consumers carry byte-identical logo and favicon copies. NOT DONE: neither
+consumer page was rendered — the preview pane cannot load files outside the
+project folder — so their commits say so rather than implying a look that did
+not happen. Every `brand/` reference in both repositories resolves to a file
+that exists.
+
 **2026-09-05 — brand/ becomes a browser-gate input, and the first sweep it
 forced.** `754219b` (the gate), `d8fd169` (Rux logo 2), `63742f5` and `9270fb4`
 (the ledger). Proposed after stage 8 found the hole: the logo, favicon and both
