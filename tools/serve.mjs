@@ -6,10 +6,14 @@
 //
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { extname, normalize, join } from 'node:path';
+import { existsSync } from 'node:fs';
+import { extname, normalize, join, basename } from 'node:path';
 
 const PORT = process.env.PORT ?? 8642;
 const ROOT = process.cwd();
+// Vendored into every app since 2026-09-05 (tools/app-skeleton/tools/serve.mjs
+// imports it): at rux-ds's root `/` is the sink, in an app it is index.html.
+const HOME = existsSync(join(ROOT, 'kitchen-sink.html')) ? '/kitchen-sink.html' : '/index.html';
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
@@ -18,7 +22,7 @@ const TYPES = {
 
 createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
-  const rel = normalize(url === '/' ? '/kitchen-sink.html' : url).replace(/^(\.\.[/\\])+/, '');
+  const rel = normalize(url === '/' ? HOME : url).replace(/^(\.\.[/\\])+/, '');
   const path = join(ROOT, rel);
   if (!path.startsWith(ROOT)) { res.writeHead(403).end('forbidden'); return; }
   try {
@@ -30,4 +34,4 @@ createServer(async (req, res) => {
   } catch {
     res.writeHead(404, { 'content-type': 'text/plain' }).end(`404 ${rel}`);
   }
-}).listen(PORT, () => console.log(`  rux-ds → http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`  ${basename(ROOT)} → http://localhost:${PORT}`));
