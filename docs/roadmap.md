@@ -4191,9 +4191,19 @@ and is the list to update.
    until cross-app data exists.
 7. **Roll out.** Both modules to the same tag. Verify shell, theme, switcher
    and profile in each, in the browser, and record it in `docs/log.md`.
-8. **Scheduler**, when it starts: its own schema, events with owner,
+8. ~~**Scheduler**, when it starts: its own schema, events with owner,
    timestamps and time zone, user-scoped CRUD, RLS and tests. Reminders only
-   after the model works.
+   after the model works.~~ **Struck 2026-09-06, rux's decision.** The
+   scheduler is a frontend replacement for the bus/trip app in `rux-ui`, on
+   the tables that app already has in the one project — `trips`, `buses`,
+   `drivers`, `trip_assignments`, `trip_drivers`, `trip_stops` and the rest
+   — with no schema of its own and no schema change. `rux-scheduler` holds
+   the two inventories it starts from. What this step keeps: platform
+   sign-in from the first commit, which the old app's permissive policies
+   allow without breaking it; tightening those policies is a cutover
+   migration in `rux-backend` when `rux-ui` retires, and reminders still
+   wait. Only the week grid and the trip bar are written from scratch,
+   as that app's own `sch-` components; everything else composes from here.
 9. **Creator 3** (§4.12 item 3) stays last and is untouched by any of this.
 
 **Steps 1 and 2 done 2026-09-02**, the same evening: hub pushed and live, Notes
