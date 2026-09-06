@@ -51,12 +51,14 @@
 // but outside any block. Each must fail.
 import { readFileSync, existsSync } from 'node:fs';
 import { markupFiles } from './lib/sources.mjs';
-import { scan, idOf, provenanceIndex, idsIn, refsIn, glyphsIn, markers, assemble } from './lib/blocks.mjs';
+import { scan, idOf, provenanceIndex, idsIn, refsIn, glyphsIn, markers, assemble, manifestOf } from './lib/blocks.mjs';
+import { COVERAGE, BEGIN, END, coverageTable, reasonsIn, fragments } from './lib/coverage.mjs';
 
 const MANIFEST = 'builder/blocks.json';
 const faults = [];
 const symbols = new Set([...readFileSync('assets/icons.svg', 'utf8').matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
 
+let expectedBlocks = null;      // the re-derived blocks, shared with the coverage check
 const found = new Map();        // block id → { block, path }
 const scanned = new Map();      // path → { html, blocks, slots }
 let files = 0, slotCount = 0;
@@ -65,7 +67,7 @@ for (const f of markupFiles(['sink', 'templates'])) {
   const html = readFileSync(f.path, 'utf8');
   const r = scan(html, f.path);
   faults.push(...r.faults);
-  scanned.set(f.path, { html, ...r });
+  scanned.set(f.path, { html, root: f.root, ...r });
   const marked = r.blocks.length || r.slots.length || markers(html).length;
   if (f.root === 'templates' && !r.slots.length) faults.push(['NO SLOT', f.path, `a template with no SLOT — the builder can preview and export it but not edit it; mark the container its blocks live in`]);
   if (!marked) continue;
@@ -117,27 +119,93 @@ if (!existsSync(MANIFEST)) {
   try { manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')); }
   catch (e) { faults.push(['UNREADABLE', MANIFEST, e.message]); }
   if (manifest) {
-    const listed = new Map(manifest.blocks.map(b => [b.id, b]));
-    for (const [id, { block, path }] of found) {
-      const m = listed.get(id);
-      if (!m) faults.push(['STALE', MANIFEST, `${id} is marked in ${path} but not in the manifest — run \`npm run blocks\``]);
-      else if (m.html !== block.html) faults.push(['STALE', MANIFEST, `${id} differs from its source region in ${path}:${block.line} — run \`npm run blocks\``]);
-    }
-    for (const id of listed.keys()) if (!found.has(id)) faults.push(['STALE', MANIFEST, `${id} is in the manifest but no longer marked — run \`npm run blocks\``]);
+    // THE WHOLE MANIFEST, NOT A FIELD LIST. Re-derive what build-blocks would
+    // write from the same lib and compare structurally. Until 2026-09-05 this
+    // compared each block's `html` and nothing else, which left two holes
+    // demonstrated rather than reasoned about: `deps` pointed at a block that
+    // does not exist and a rewritten `label` both passed with 0 faults, and
+    // deleting wizard-page's ENTIRE template record -- three slots -- also
+    // passed, because the loop below used to iterate only the records still
+    // present. A structure has nothing to forget.
+    const expected = manifestOf([...scanned].map(([path, e]) => ({ path, root: e.root, html: e.html, scan: e })));
+    const say = v => JSON.stringify(v);
+    expectedBlocks = expected.blocks;
 
-    // Reassembly: the manifest's slot record plus its blocks must be the file.
-    for (const t of manifest.templates ?? []) {
+    const want = new Map(expected.blocks.map(b => [b.id, b]));
+    const got = new Map(manifest.blocks.map(b => [b.id, b]));
+    for (const [id, b] of want) {
+      const m = got.get(id);
+      if (!m) { faults.push(['STALE', MANIFEST, `${id} is marked in ${b.source} but not in the manifest — run \`npm run blocks\``]); continue; }
+      for (const k of Object.keys(b)) {
+        if (say(m[k]) !== say(b[k])) {
+          const detail = k === 'html' ? `differs from its source region in ${b.source}:${b.line}` : `${k} is ${say(m[k])}, the source says ${say(b[k])}`;
+          faults.push(['STALE', MANIFEST, `${id}: ${detail} — run \`npm run blocks\``]);
+        }
+      }
+      for (const k of Object.keys(m)) if (!(k in b)) faults.push(['STALE', MANIFEST, `${id}: ${k} is in the manifest and not in the source — run \`npm run blocks\``]);
+    }
+    for (const id of got.keys()) if (!want.has(id)) faults.push(['STALE', MANIFEST, `${id} is in the manifest but no longer marked — run \`npm run blocks\``]);
+    // ORDER IS PART OF THE FILE. The catalogue is offered in manifest order.
+    if (say(manifest.blocks.map(b => b.id)) !== say(expected.blocks.map(b => b.id)) && want.size === got.size) {
+      faults.push(['STALE', MANIFEST, `the blocks are in a different order from their sources — run \`npm run blocks\``]);
+    }
+    const dupes = manifest.blocks.map(b => b.id).filter((id, i, a) => a.indexOf(id) !== i);
+    for (const id of new Set(dupes)) faults.push(['DUPLICATE', MANIFEST, `${id} appears more than once in the manifest — run \`npm run blocks\``]);
+
+    // The template side, which nothing checked at all: a whole record could
+    // vanish and the reassembly loop simply would not run for it.
+    if (say(manifest.templates) !== say(expected.templates)) {
+      const names = t => (t ?? []).map(x => x.name);
+      const missing = names(expected.templates).filter(n => !names(manifest.templates).includes(n));
+      const extra = names(manifest.templates).filter(n => !names(expected.templates).includes(n));
+      for (const n of missing) faults.push(['STALE', MANIFEST, `template ${n} is marked but not in the manifest — run \`npm run blocks\``]);
+      for (const n of extra) faults.push(['STALE', MANIFEST, `template ${n} is in the manifest but no longer marked — run \`npm run blocks\``]);
+      if (!missing.length && !extra.length) faults.push(['STALE', MANIFEST, `a template record disagrees with its source — slots, offsets, containers or gaps — run \`npm run blocks\``]);
+    }
+
+    // Reassembly stays, because it proves something the comparison cannot: that
+    // the recorded blocks and gaps REBUILD the file, not merely that they match
+    // what the writer would emit.
+    for (const t of expected.templates) {
       const src = scanned.get(t.path);
-      if (!src) { faults.push(['STALE', MANIFEST, `${t.path} is in the manifest but was not scanned — run \`npm run blocks\``]); continue; }
-      const byName = Object.fromEntries(manifest.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
+      const byName = Object.fromEntries(expected.blocks.filter(b => b.source === t.path).map(b => [b.name, b]));
       for (const s of t.slots) {
         const live = src.slots.find(x => x.name === s.name);
-        if (!live) { faults.push(['STALE', MANIFEST, `${t.path}: SLOT ${s.name} is in the manifest but no longer marked — run \`npm run blocks\``]); continue; }
-        if (s.blocks.some(n => !(n in byName))) { faults.push(['STALE', MANIFEST, `${t.path}: SLOT ${s.name} names a block the manifest lacks — run \`npm run blocks\``]); continue; }
+        if (!live) continue;
         if (assemble(s, byName) !== src.html.slice(live.start, live.end)) {
           faults.push(['REASSEMBLY', `${t.path}:${live.line}`, `SLOT ${s.name}: the manifest's blocks and gaps do not rebuild this slot byte for byte — run \`npm run blocks\``]);
         }
       }
+    }
+  }
+}
+
+// THE COVERAGE PAGE, same arrangement as the manifest: lib/coverage.mjs derives
+// the table, build-blocks writes it, and this re-derives it and compares. Only
+// the region between the markers is generated; the eligibility notes beside it
+// are decisions kept by hand, and what is checked about them is that they still
+// name something that exists.
+if (!existsSync(COVERAGE)) {
+  faults.push(['NO COVERAGE', COVERAGE, `not found — the catalogue's own measurement; run \`npm run blocks\``]);
+} else {
+  const md = readFileSync(COVERAGE, 'utf8');
+  const a = md.indexOf(BEGIN), b = md.indexOf(END);
+  if (a === -1 || b === -1) {
+    faults.push(['NO MARKERS', COVERAGE, `needs ${BEGIN} and ${END} — build-blocks writes only between them`]);
+  } else if (expectedBlocks) {
+    const have = md.slice(a + BEGIN.length, b).trim();
+    if (have !== coverageTable(expectedBlocks).trim()) {
+      faults.push(['STALE', COVERAGE, `the generated table disagrees with the repository — run \`npm run blocks\``]);
+    }
+    const shipped = new Set(fragments());
+    const marked = new Set(expectedBlocks.filter(x => x.source.startsWith('sink/')).map(x => x.source.slice(5, -5)));
+    const outside = md.slice(0, a) + md.slice(b + END.length);
+    const seen = new Set();
+    for (const name of reasonsIn(outside)) {
+      if (!shipped.has(name)) faults.push(['NO FRAGMENT', COVERAGE, `an eligibility note names \`${name}\` — no sink/${name}.html; the decision has outlived the file`]);
+      else if (marked.has(name)) faults.push(['CONTRADICTED', COVERAGE, `\`${name}\` is listed as one that will not be marked, and it is marked — one of the two is wrong`]);
+      if (seen.has(name)) faults.push(['DUPLICATE', COVERAGE, `two eligibility notes for \`${name}\``]);
+      seen.add(name);
     }
   }
 }

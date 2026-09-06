@@ -3469,6 +3469,108 @@ compose derives one more group list. No gate, fixture, baseline or
 `CONTROL_FILES` entry moves. Not done: stages 10 to 13, button kind per button,
 and fluid fields.
 
+**Stage 10, 2026-09-05, accepted by rux and landed in the commit that carries
+this sentence — a gate that reads the whole manifest, and a table that measures
+the gap.** No catalogue growth: rux's call was to build the measurement first
+and pick from it after, so the catalogue stays at **33 blocks in 18 files, 12
+slots, 10 templates**.
+
+**THREE THINGS PASSED THE OLD GATE THAT SHOULD NOT HAVE, and they were
+demonstrated rather than reasoned about.** `check-blocks` compared each block's
+`html` and nothing else. So a hand-edited `deps` pointing at a block that does
+not exist passed with **0 faults**; a rewritten `label` passed with **0 faults**;
+and deleting `wizard-page`'s ENTIRE template record — three slots — passed with
+**0 faults**, still printing "12 slots", because that count comes from the scan
+and the reassembly loop only iterates records that are still there. That last
+one is rux's finding and it is why the fix is a whole-manifest comparison rather
+than a longer field list: `manifestOf` in `lib/blocks.mjs` now derives the
+complete expected manifest and `check-blocks` deep-compares blocks and templates
+alike, order and duplicates included. A structure has nothing to forget; a field
+list drifts the first time the writer gains a field.
+
+**`deps` HAS BEEN EMPTY SINCE IT WAS WRITTEN AND STRUCTURALLY COULD NOT FILL.**
+It recorded, per template block, the other blocks in the same file whose ids it
+references — then dropped every reference whose owner is `null`. A null owner
+means the id resolves in the FRAME, which is the one case that exists. Measured
+across the catalogue: **1 reference resolves outside its block, 0 block-to-block,
+1 frame** — `templates/wizard-page/actions` opening `wizard-cancel`. `frameDeps`
+keeps what the filter discarded, as `{ attr, id }`. **Nothing reads it this
+stage**; the first plan claimed it lets the builder state a dependency before a
+block is added, and that was wrong — neither `page.mjs` nor `builder.js` reads
+`deps` or would read this. It is groundwork for stage 11's `requiresFrame`, and
+what stops it rotting the way `deps` did is not a UI but the comparison above.
+**The 1 is an acceptance measurement, not a rule** — rux's point, and a good one:
+asserting "exactly one frame dependency" would make a legitimate second one
+require editing a tier-2 control. What IS asserted is the classification: every
+reference resolving outside its block appears exactly once, in `deps` or in
+`frameDeps`, decided by whether a block owns the id.
+
+**60 OF 68 SHIPPED FRAGMENTS CARRY NO MARKER, and until now nothing counted
+them**, so which to admit next was a guess against memory.
+`docs/builder-coverage.md` counts them, every column derived and none asserted:
+components through `owner()`, behaviour modules through `classesInJs`, editable
+text and variant groups through `rewrites.mjs` **per marked block only** — an
+unmarked fragment has no block, and counting its whole demo catalogue would be a
+number about nothing.
+
+**The row key is the FRAGMENT, and that is forced rather than chosen.** The
+plan's first revision keyed by component; there is no usable mapping.
+`sink/fluid.html` demos **13 components**, `form` owns no fragment at all and
+appears only inside other people's, and `sink/spacing.html` resolves to **none** —
+which is how a foundation names itself.
+
+**A NUMBER OFFERED AS EVIDENCE NEEDS THE ALGORITHM THAT MADE IT.** Revision 1
+quoted "341 candidate regions" without defining a candidate, and the figure was
+not reproducible. The rule now lives in `lib/coverage.mjs` as code — an element
+carrying a `rux--` class none of whose ancestors carries one — and reads **334 in
+the 60 unmarked**. It is an upper bound on what could be marked, not a forecast:
+§4.12's rule, "a region that can stand as a direct child of a page's stack",
+disqualifies most of them.
+
+**Only the table is generated.** Revision 1 contradicted itself by putting a
+hand-kept "deferred, and why" column inside a generated table. The split follows
+`build-readme.mjs`: the table sits between `COVERAGE:BEGIN`/`END` and the
+eligibility notes live outside them as a keyed list, so `check-blocks` can fault
+a note naming a fragment that is gone, one already marked, or one named twice.
+Three notes are there today and each quotes the fragment's own source rather than
+adding a judgement.
+
+**RED BEFORE TRUSTED, eleven mutations.** Six on the manifest — `deps`, `label`,
+a deleted template record, a `frameDeps` entry, a changed offset, a reordering —
+of which the first three passed before. Five on the coverage page — a hand-edited
+cell, a note naming a fragment that does not exist, a note on an already-marked
+fragment, a removed end marker, a duplicated note. All eleven fault. And the
+table was proved to MOVE: marking a probe block in `sink/tags.html` took it from
+68 fragments · 8 marked · 33 blocks · 334 candidates to 9 marked · 34 blocks ·
+**314** candidates, with the `tags` row gaining `blocks 1, text 1, variants 0,
+yes`. Prose appended outside the markers survived a rebuild. Two mistakes of mine
+are recorded with them: `scanned` lost `root`, so `manifestOf` read every file as
+a sink fragment and produced 20 spurious faults; and a first attempt to lift the
+derivation into `lib/coverage.mjs` by string-slicing the original produced a file
+that would not parse.
+
+**One row order changed and it is not cosmetic.** The first generation sorted
+`*.html` filenames, so `list-box` sorted BEFORE `list` — `-` precedes `.`. The
+lib sorts the stripped names, which is what the column displays.
+
+`npm run verify` exits 0 and is idempotent — both artefacts hash identically on a
+second run — and `docs/builder-coverage.md` joins CI's stale-artefact diff, or a
+stale copy ships unnoticed.
+
+Tier 2, five controls: `build-blocks.mjs`, `check-blocks.mjs`, `lib/blocks.mjs`,
+`lib/gates.mjs` and the workflow, plus a new `lib/coverage.mjs` added to
+`CONTROL_FILES` on the same footing as `lib/blocks.mjs` — read by the writer and
+the checker both. **The unusual direction is that it makes the gate stronger.**
+What it weakens: nothing measured. No baseline is lowered and no target removed;
+`check-blocks` gains one re-derivation per run. The coverage DOC is deliberately
+not a control file — it is derived, and its notes let nothing past a gate; they
+only say a fragment has been ruled on rather than left open. The red runs are
+evidence, not acceptance. Not done: stages 11 to 13, catalogue growth itself, and
+`docs/inventory.md`'s own stale tallies — line 246 reads "36 KEEP · 11 DEFER · 28
+CUT" where the rows parse to **77 KEEP, 2 DEFER, 4 CUT** after §4.9's admission
+batches. `check-inventory` verifies every component HAS a row, not that the prose
+counting them is right. It is a decision document, so its numbers are rux's.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

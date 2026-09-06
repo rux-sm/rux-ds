@@ -221,6 +221,61 @@ export function idsIn(html) {
   return new Set([...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]));
 }
 
+// THE MANIFEST, DERIVED ONCE. build-blocks WRITES what this returns and
+// check-blocks RE-DERIVES it and compares, so the two cannot describe the
+// catalogue differently — the property this file's CONTROL_FILES entry already
+// claims ("change it and the manifest and its comparison move together").
+//
+// It takes entries rather than paths so it stays free of `fs`: the callers read
+// and scan, this decides what a record IS.
+//
+// WHY A WHOLE STRUCTURE AND NOT A FIELD LIST. Until 2026-09-05 check-blocks
+// compared only each block's `html`, so every other field was unguarded: `deps`
+// could be pointed at a block that does not exist and a `label` rewritten to
+// anything, both passing with 0 faults. Worse, it iterated only the template
+// records still PRESENT, so deleting one whole — wizard-page and its three
+// slots, measured — skipped reassembly validation and passed. A structural
+// comparison has no list to forget, and a field added to a record here is
+// covered by the checker the same day.
+export function manifestOf(entries) {
+  const blocks = [], templates = [];
+  for (const { path, root, html, scan: r } of entries) {
+    if (!r.blocks.length && !r.slots.length) continue;
+    const provenance = provenanceOf(html);
+    const slotOf = Object.fromEntries(r.slots.map(s => [s.name, s]));
+    const owner = id => r.blocks.find(b => idsIn(b.html).has(id))?.name ?? null;
+
+    for (const b of r.blocks) {
+      const own = idsIn(b.html);
+      // A reference that leaves the block resolves in one of two places, and
+      // the two are different facts. Another BLOCK owns it -> deps, and the
+      // builder must move them together. NOTHING owns it -> the id is in the
+      // FRAME, the page around the slot, and a block carrying one is only whole
+      // where that frame exists. `deps`'s own filter dropped the second case
+      // silently, which is why it read [] on all 33 blocks while the one real
+      // dependency in the corpus -- wizard-page's Cancel opening a dialog kept
+      // deliberately outside every block -- went unrecorded.
+      const outward = root === 'templates' ? refsIn(b.html).filter(x => !own.has(x.id)) : [];
+      const deps = [...new Set(outward.map(x => owner(x.id)).filter(n => n && n !== b.name))];
+      const frameDeps = outward.filter(x => !owner(x.id)).map(x => ({ attr: x.attr, id: x.id }));
+      const container = b.slot ? slotOf[b.slot].container : null;
+      blocks.push({
+        id: idOf(path, b.name), source: path, name: b.name, label: b.label,
+        kind: root === 'sink' ? 'component' : 'composition',
+        slot: b.slot, follows: b.follows, deps, frameDeps, line: b.line, provenance,
+        column: container?.column ?? null, stack: container?.stack ?? null,
+        open: b.open, html: b.html, close: b.close,
+      });
+    }
+    if (root === 'templates') {
+      templates.push({ name: path.replace(/^templates\//, '').replace(/\.html$/, ''), path,
+        slots: r.slots.map(s => ({ name: s.name, line: s.line, start: s.start, end: s.end,
+          container: s.container, blocks: s.blocks, pre: s.pre, gaps: s.gaps, post: s.post })) });
+    }
+  }
+  return { blocks, templates };
+}
+
 export function refsIn(html) {
   const out = [];
   for (const attr of REF_ATTRS) {

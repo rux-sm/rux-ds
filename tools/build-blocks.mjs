@@ -28,53 +28,41 @@
 //
 // DETERMINISTIC. No timestamp, sorted by source then position, so `npm run
 // verify` leaves a clean tree when nothing changed and CI can diff the file.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { markupFiles } from './lib/sources.mjs';
-import { scan, idOf, provenanceOf, idsIn, refsIn } from './lib/blocks.mjs';
+import { scan, manifestOf } from './lib/blocks.mjs';
+import { COVERAGE, BEGIN, END, coverageTable, coverageRows } from './lib/coverage.mjs';
 
 const OUT = 'builder/blocks.json';
 const faults = [];
-const blocks = [], templates = [];
 
+const entries = [];
 for (const f of markupFiles(['sink', 'templates'])) {
   const html = readFileSync(f.path, 'utf8');
   const r = scan(html, f.path);
   faults.push(...r.faults);
-  if (!r.blocks.length && !r.slots.length) continue;
-  const provenance = provenanceOf(html);
-  const slotOf = Object.fromEntries(r.slots.map(s => [s.name, s]));
-
-  // A template block that references an id in ANOTHER block of the same file
-  // depends on it: the builder removes them together or refuses. Sink blocks
-  // are closed by the gate and have no deps.
-  const owner = id => r.blocks.find(b => idsIn(b.html).has(id))?.name ?? null;
-
-  for (const b of r.blocks) {
-    const own = idsIn(b.html);
-    const deps = f.root === 'templates'
-      ? [...new Set(refsIn(b.html).filter(x => !own.has(x.id)).map(x => owner(x.id)).filter(n => n && n !== b.name))]
-      : [];
-    const container = b.slot ? slotOf[b.slot].container : null;
-    blocks.push({
-      id: idOf(f.path, b.name), source: f.path, name: b.name, label: b.label,
-      kind: f.root === 'sink' ? 'component' : 'composition',
-      slot: b.slot, follows: b.follows, deps, line: b.line, provenance,
-      column: container?.column ?? null, stack: container?.stack ?? null,
-      open: b.open, html: b.html, close: b.close,
-    });
-  }
-  if (f.root === 'templates') {
-    templates.push({ name: f.name.replace(/^templates\//, ''), path: f.path,
-      // start/end are byte offsets into the template file, for compose():
-      // the builder splices a rebuilt slot into the template text it fetched.
-      slots: r.slots.map(s => ({ name: s.name, line: s.line, start: s.start, end: s.end, container: s.container, blocks: s.blocks, pre: s.pre, gaps: s.gaps, post: s.post })) });
-  }
+  entries.push({ path: f.path, root: f.root, html, scan: r });
 }
 
-for (const [tag, where, why] of faults) {
-  console.log(`  ${tag.padEnd(14)}${where}`);
-  console.log(`  ${''.padEnd(14)}${why}`);
+// WHAT A RECORD IS lives in lib/blocks.mjs, so check-blocks re-derives it with
+// this same code and compares. Nothing about the catalogue is decided here.
+const { blocks, templates } = manifestOf(entries);
+
+// The table is derived in lib/coverage.mjs so check-blocks re-derives it with
+// the same code. Only the region between the markers is ours; everything else
+// on that page is hand-written, the arrangement build-readme.mjs uses on README.
+function writeCoverage() {
+  const body = readFileSync(COVERAGE, 'utf8');
+  const a = body.indexOf(BEGIN), b = body.indexOf(END);
+  if (a === -1 || b === -1) {
+    faults.push(['NO MARKERS', COVERAGE, `needs ${BEGIN} and ${END} — the generated table goes between them and nothing else is touched`]);
+    return;
+  }
+  writeFileSync(COVERAGE, body.slice(0, a + BEGIN.length) + '\n' + coverageTable(blocks) + '\n' + body.slice(b));
+  const rows = coverageRows(blocks);
+  console.log(`  ${COVERAGE} — ${rows.length} fragments · ${rows.filter(r => r.blocks).length} marked`);
 }
+
 if (faults.length) {
   console.log(`\n  build-blocks: ${faults.length} marker fault${faults.length === 1 ? '' : 's'} — nothing written`);
   process.exit(1);
@@ -89,3 +77,4 @@ writeFileSync(OUT, JSON.stringify(manifest, null, 2) + '\n');
 const files = new Set(blocks.map(b => b.source)).size;
 const slots = templates.reduce((n, t) => n + t.slots.length, 0);
 console.log(`  ${OUT} — ${blocks.length} blocks in ${files} files · ${templates.length} templates · ${slots} slots`);
+if (existsSync(COVERAGE)) writeCoverage();

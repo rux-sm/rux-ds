@@ -508,16 +508,19 @@ export const GATES = [
     tool: 'tools/check-blocks.mjs',
     kind: 'node',
     inVerify: true,
-    catches: 'a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json that is not a byte-exact copy of what the markers enclose, or whose slot records do not rebuild the file',
-    blindTo: 'whether the marked region is the RIGHT part of the fragment — that is a reading',
+    catches: 'a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json disagreeing with its sources in ANY field, in order, or by a duplicate or a missing template record, and slot records that do not rebuild the file · a docs/builder-coverage.md whose generated table has drifted, or whose eligibility notes name a fragment that is gone, is already marked, or is named twice',
+    blindTo: 'whether the marked region is the RIGHT part of the fragment, and whether an unmarked fragment SHOULD be marked — both are readings. The coverage table counts candidates; it does not rank them',
     reads: 'per-file',
-    fileTargets: ['sink', 'templates', 'builder/blocks.json'],
+    fileTargets: ['sink', 'templates', 'builder/blocks.json', 'docs/builder-coverage.md'],
     pageTargets: [],
     canRun: { sink: true, templates: true },
-    inputs: ['sink', 'templates', 'assets/icons.svg', 'builder/blocks.json'],
-    redRun: 'swap two BLOCK:END names in sink/structured-list.html, or change one byte inside a marked region without `npm run blocks`',
+    // js/ and src/app.scss are inputs because lib/coverage.mjs resolves each
+    // fragment's behaviour modules and compiled components through
+    // lib/ownership.mjs, which reads the inventory and the compiled stylesheet.
+    inputs: ['sink', 'templates', 'assets/icons.svg', 'builder/blocks.json', 'docs/builder-coverage.md', 'builder/rewrites.mjs', 'js', 'src/app.scss', 'docs/inventory.json'],
+    redRun: 'swap two BLOCK:END names in sink/structured-list.html; change one byte inside a marked region without `npm run blocks`; hand-edit a block\'s `deps` or `label`; delete a whole template record; hand-edit one cell of the coverage table; point an eligibility note at a fragment that does not exist',
     sideEffects: null,
-    baseline: '33 blocks in 18 files · 12 slots',
+    baseline: '33 blocks in 18 files · 12 slots · 68 fragments, 8 marked, 334 candidate regions',
   },
 
   {
@@ -768,6 +771,12 @@ export const CONTROL_FILES = [
   // The block-marker parser, read by build-blocks (the writer) and check-blocks
   // (the checker): change it and the manifest and its comparison move together.
   'tools/lib/blocks.mjs',
+  // The coverage table's derivation, on the same footing and for the same
+  // reason: build-blocks writes docs/builder-coverage.md from it and
+  // check-blocks re-derives from it to compare. The DOC is not listed -- it is
+  // derived, and its hand-kept eligibility notes let nothing past a gate; they
+  // only say a fragment has been ruled on rather than left open.
+  'tools/lib/coverage.mjs',
   // The one transformation a template undergoes to become a page, read by
   // builder.html and by check-parity against the script.
   'builder/rewrites.mjs',

@@ -59,6 +59,35 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — the gate reads the whole manifest, and a table measures the
+gap (§4.12 stage 10).** No catalogue growth — rux's call: build the measurement
+first, pick from it after. The catalogue stays at 33 blocks in 18 files, 12 slots.
+
+Three things passed the old gate that should not have, each demonstrated: a
+hand-edited `deps` pointing at a block that does not exist, a rewritten `label`,
+and deleting `wizard-page`'s entire template record — three slots — all returned
+**0 faults**, the last still printing "12 slots" because that count comes from
+the scan and the reassembly loop only iterates records still present. That is
+rux's finding, and it is why the fix is a whole-manifest comparison rather than a
+longer field list. Eleven mutations now fault: six on the manifest, five on the
+coverage page.
+
+`deps` had been empty since it was written and structurally could not fill: it
+dropped every reference whose owner is null, and a null owner means the id
+resolves in the frame, which is the only case that exists. Measured: **1 outside
+reference, 0 block-to-block, 1 frame** — `templates/wizard-page/actions` opening
+`wizard-cancel`. `frameDeps` keeps it. The 1 is an acceptance measurement, not a
+rule; what is asserted is the classification, exactly once in one list or the
+other.
+
+`docs/builder-coverage.md` counts what nobody counted: **68 shipped fragments, 8
+marked, 334 candidate regions in the 60 unmarked**. Every column derived, the row
+key the fragment rather than the component — `sink/fluid.html` demos 13
+components and `sink/spacing.html` resolves to none. The candidate rule lives in
+code because the first figure quoted, 341, was not reproducible. Only the table
+is generated; the eligibility notes sit outside the markers as a keyed list the
+gate validates.
+
 **DONE 2026-09-05 — button size and table density (§4.12 stage 9).** `2757625`,
 swept at `82241a5`, restamped at `0ab74cc` — 14 groups across the catalogue, each
 offering "as attested" first with the size the block ships named on it.
