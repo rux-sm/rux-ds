@@ -54,7 +54,7 @@
    NOT YET: the guided mode, and escaping the answers as HTML — neither this
    nor the script does, and both say so rather than pretending otherwise.
    ========================================================================== */
-import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, linksOf, applyTextEdits, integrity } from './rewrites.mjs';
+import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, linksOf, variantsOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
 import { emptyHistory, pushed, undone, redone, runKey, sameRun,
          toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
@@ -79,7 +79,7 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // is standing and what they are looking through, not what they have made.
 const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
 const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
-const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, links: {}, pages: {} };
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
 let manifest = null;
 let history = emptyHistory();
 let run = null;                  // the typing run in progress, or null
@@ -118,6 +118,12 @@ const editsFor = (tpl, key) => (state.edits[tpl] ?? {})[key] ?? {};
 // indexes linksOf, so sharing an index space would make either one shift the
 // other — and a draft written before links existed would silently retarget.
 const linksFor = (tpl, key) => (state.links[tpl] ?? {})[key] ?? {};
+// And the same for variants — button size per group, table density. THREE
+// STORES, ONE SHAPE. Each keys by an ORDINAL into a list derived from the
+// block's markup: a field index, a link index, a group index. rux's review of
+// stage 9 caught the alternative — keying a group by its byte offset — which
+// breaks the moment an earlier edit changes length.
+const variantsFor = (tpl, key) => (state.variants[tpl] ?? {})[key] ?? {};
 // A block is native when it is the template's own, at instance 1.
 const isNative = (e, t) => e.n === 1 && blocks.get(e.id).source === t.path;
 const short = cls => (cls ?? '').split(/\s+/).filter(Boolean).map(c => c.replace(/^rux--/, '')).join(' ');
@@ -134,6 +140,7 @@ const snapshot = () => copy({
   pages: state.pages,
   edits: state.edits,
   links: state.links,
+  variants: state.variants,
   answers: Object.fromEntries(ANSWERS.map(k => [k, state[k]])),
 });
 
@@ -146,6 +153,7 @@ function applySnapshot(s) {
   // `?? {}` because a draft written before stage 8 has no links at all, and
   // an undo entry from earlier in this same session does not either.
   state.links = copy(s.links ?? {});
+  state.variants = copy(s.variants ?? {});
   for (const k of ANSWERS) state[k] = s.answers[k] ?? FRESH[k];
   for (const r of document.querySelectorAll('input[name="bld-theme"]')) r.checked = r.value === state.theme;
   for (const [id, key] of FIELDS) $(`#${id}`).value = state[key];
@@ -297,6 +305,7 @@ function startOver() {
     state.pages = {};
     state.edits = {};
     state.links = {};
+    state.variants = {};
     for (const k of ANSWERS) state[k] = FRESH[k];
   });
   applySnapshot(snapshot());          // write the cleared answers into the controls
@@ -321,7 +330,7 @@ function startOver() {
 async function composed() {
   const src = await source(state.template);
   const t = templateOf(state.template);
-  const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {}, state.links[state.template] ?? {});
+  const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {}, state.links[state.template] ?? {}, state.variants[state.template] ?? {});
   return { page, roundTrip: compose(src, t.slots, blocksOf(t)) === src, integrity: integrity(page) };
 }
 
@@ -540,6 +549,28 @@ function renderFieldPanel(key, html) {
     }
   }
 
+  // Variants before the link rows: they are the block's SHAPE rather than its
+  // words, and a reader scanning for "how big are these buttons" should not
+  // have to pass every field to find it. Keyed by GROUP INDEX, never by the
+  // group's offset — see variantsFor.
+  const savedVariants = variantsFor(state.template, key);
+  const variantGroups = variantsOf(html);
+  if (variantGroups.length) {
+    const head = $('#bld-group-template').content.cloneNode(true);
+    head.querySelector('h3').textContent = 'Size and density';
+    const w = head.querySelector('[role="group"]');
+    if (w) w.setAttribute('aria-label', 'Size and density');
+    box.append(head);
+  }
+  variantGroups.forEach((g, i) => {
+    const values = g.kind === 'table' ? DENSITY_VALUES : SIZE_VALUES;
+    box.append(variantRow({
+      key, i, group: g, values,
+      value: Object.hasOwn(savedVariants, i) ? savedVariants[i] : '',
+      original: g.current,
+    }));
+  });
+
   // Link targets last, and only where there are any: a fragment href is a
   // control relation, not content, and linksOf never offers one.
   links.forEach((l, i) => {
@@ -555,6 +586,55 @@ function renderFieldPanel(key, html) {
       link: true,
     }));
   });
+}
+
+// WHAT A VARIANT GROUP IS CALLED. The module reports structure; these are the
+// words, the same split stage 8 uses. `where` is btn-set, toolbar, lone or
+// table.
+const GROUP_NAME = { 'btn-set': 'Button set', toolbar: 'Toolbar buttons', lone: 'Button', table: 'Table rows' };
+const SIZE_VALUES = [['xs', 'Extra small'], ['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large'], ['xl', 'Extra large']];
+const DENSITY_VALUES = SIZE_VALUES;
+
+// One variant row: a select, "as attested" first with the size the block ships
+// named on it, then the five values. Choosing the attested value again is not
+// the same as leaving it alone -- picking Large WRITES rux--layout--size-lg,
+// which a bare button does not carry, and that is rux's call: the export says
+// what it is rather than leaning on a default.
+function variantRow({ key, i, group, values, value, original }) {
+  const row = $('#bld-variant-template').content.cloneNode(true);
+  const id = `bld-variant-${i}`;
+  const label = row.querySelector('label'), select = row.querySelector('select');
+  const named = values.find(([v]) => v === original)?.[1] ?? original;
+  label.setAttribute('for', id);
+  label.textContent = `${GROUP_NAME[group.where] ?? 'Group'}${group.kind === 'buttons' && group.targets.length > 1 ? ` (${group.targets.length})` : ''}`;
+  select.id = id;
+  select.append(option('', `As attested — ${String(named).toLowerCase()}`));
+  for (const [v, text] of values) select.append(option(v, text));
+  select.value = value;
+  const help = row.querySelector('.rux--form__helper-text');
+  const reset = row.querySelector('button');
+  const sync = () => {
+    const edited = Object.hasOwn((state.variants[state.template] ?? {})[key] ?? {}, i);
+    help.textContent = edited ? `as attested: ${String(named).toLowerCase()}` : '';
+    help.hidden = !help.textContent;
+    reset.hidden = !edited;
+  };
+  sync();
+  select.addEventListener('change', () => {
+    endRun();
+    change(`set ${(GROUP_NAME[group.where] ?? 'group').toLowerCase()} in ${labelOf(key)}`,
+      () => setVariant(key, i, select.value, ''));
+    sync();
+    later();
+  });
+  reset.addEventListener('click', () => {
+    change(`reset one group in ${labelOf(key)}`, () => { dropOne(state.variants, key, i); });
+    select.value = '';
+    sync();
+    select.focus();
+    later();
+  });
+  return row;
 }
 
 // One row: its name, its value, the original beside it while they differ, and
@@ -618,6 +698,7 @@ function setIn(store, key, i, value, original) {
 }
 const setEdit = (key, i, value, original) => setIn(state.edits, key, i, value, original);
 const setLink = (key, i, value, original) => setIn(state.links, key, i, value, original);
+const setVariant = (key, i, value, original) => setIn(state.variants, key, i, value, original);
 
 // One field back to its original — the per-field reset. Returns whether it
 // changed anything, so change() can record nothing when it did not.
@@ -634,7 +715,7 @@ function dropOne(store, key, i) {
 // REMOVING A BLOCK DROPS BOTH KINDS. Its words and where they pointed go with
 // it, or undo brings back a block carrying half its content.
 function dropEdits(keys) {
-  for (const store of [state.edits, state.links]) {
+  for (const store of [state.edits, state.links, state.variants]) {
     const forTemplate = store[state.template];
     if (!forTemplate) continue;
     for (const k of keys) delete forTemplate[k];
@@ -642,9 +723,9 @@ function dropEdits(keys) {
   }
 }
 
-const countFor = key => Object.keys(editsFor(state.template, key)).length + Object.keys(linksFor(state.template, key)).length;
+const countFor = key => Object.keys(editsFor(state.template, key)).length + Object.keys(linksFor(state.template, key)).length + Object.keys(variantsFor(state.template, key)).length;
 const syncReset = () => { $('#bld-reset').disabled = !countFor(state.block); };
-const editCount = () => [state.edits, state.links]
+const editCount = () => [state.edits, state.links, state.variants]
   .reduce((n, store) => n + Object.values(store[state.template] ?? {}).reduce((m, b) => m + Object.keys(b).length, 0), 0);
 
 const option = (value, text) => {

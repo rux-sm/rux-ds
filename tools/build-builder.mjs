@@ -19,7 +19,9 @@
 // edited without a way back. Then export, with check-parity holding it to
 // tools/new-project.sh. Then content that reads as content: every field named
 // by what it IS, grouped, with its original beside it and a link target where
-// the markup has one.
+// the markup has one. Then the two things about a block that are a CHOICE
+// rather than content: how big its buttons are and how tight its table rows,
+// as class swaps whose spellings Carbon and this repository already attest.
 //
 // TWO NOTICE TEMPLATES, BOTH FULLY WRITTEN HERE. The draft notice and the
 // save-failure alert are the same attested composition in two variants, and
@@ -303,6 +305,26 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
      section uses, and the role="group" is the pattern .bld-row already
      carries. The aria-label is written per clone and is never empty: a
      cleared label falls back to the structural name. -->
+<!-- A VARIANT ROW: the select, the "as attested" note and the reset, cloned
+     per group. It is sink/select.html's own composition, the same one the
+     Choices column uses, because the values are a short closed list rather
+     than free text. The helper line and the reset ship hidden for the reason
+     the field row's do: a group nobody has changed has nothing to say. -->
+<template id="bld-variant-template">
+  <div class="rux--form-item">
+    <div class="rux--select">
+      <label class="rux--label"></label>
+      <div class="rux--select-input__wrapper">
+        <select class="rux--select-input"></select>
+        <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+      </div>
+      <div class="rux--form__helper-text" hidden></div>
+    </div>
+    <div>
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" hidden>Reset this group</button>
+    </div>
+  </div>
+</template>
 <template id="bld-group-template">
   <div role="group" aria-label="">
     <h3 class="rux--type-heading-compact-01"></h3>

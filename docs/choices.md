@@ -87,6 +87,24 @@ list-box family have no fluid form.
 - **States**: disabled, loading, selected. They are states the page sets,
   not choices made at creation.
 
+## Data tables — five row densities
+
+- **Densities**, five: `xs` `sm` `md` `lg` `xl`, written as
+  `rux--data-table--<size>` on the `<table>` itself, never on a wrapper. All
+  five are attested in Carbon's captures and demoed in `sink/table.html`.
+  `lg` is the default twice over — it is what every table in this repository
+  uses, and `.rux--data-table tr` is already 3rem without any density class.
+  Suggestion: `lg` for a table people read a row at a time, `sm` or `xs` when
+  the point is to see many rows at once; `xl` only where a row holds two lines.
+- **A row will not shrink below what it holds**, measured 2026-09-05: on a
+  table with a selection column the checkbox floors every row at 41px, so `xs`
+  and `sm` look identical there. Without one, the rendered heights follow the
+  token — 29, 38, 40, 48 and 64px for the five. Pick density for a table you
+  have looked at, not from the ladder alone.
+- **The toolbar does not shrink with the table.** Carbon pairs a small table
+  with `cds--table-toolbar--sm`, and that class is not compiled here, so a
+  toolbar stays its own size whatever the rows do.
+
 ## Content blocks — 68 fragments by name, 33 marked as blocks
 
 Anything in `sink/` can be dropped into a page body; the kitchen sink is the

@@ -338,6 +338,119 @@ export function applyLinkEdits(html, links) {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
+// VARIANTS — the two things about a block that are a CHOICE, not content.
+//
+// How big its buttons are and how tight its table rows are. Both are class
+// swaps with spellings Carbon and this repository already attest; nothing here
+// invents one, and every value written is checked against css/rux.css by the
+// stage's own suite.
+//
+// THE KEY IS AN ORDINAL, NOT AN OFFSET, and that is the whole of what rux's
+// review corrected. Keying a group by its content offset breaks the moment an
+// earlier text or link edit changes length: measured on templates/form-page/form,
+// one longer field moved the button set from 7255 to 7289, so the stored key
+// matched nothing and the reader's choice silently did not apply. Ordinals are
+// what `edits` and `links` already use, and they are stable — proved over every
+// block carrying a group, under a length-changing text edit, a link edit and
+// instancing.
+//
+// THE SIZE MATRIX IS ASYMMETRIC because the stylesheet is. There is no
+// rux--btn--lg and no rux--btn--xl: @carbon/styles' own _button.scss writes size
+// rules for xs, sm, md and expressive only, which is why sink/buttons.html says
+// "btn--xl and btn--lg stay off for the usual §4.1.12 reason: no rule in the
+// CSS." Large and extra large are the layout class alone. Large is ALSO the
+// unclassed default, through .rux--btn's clamp reading
+// var(--rux-layout-size-height, var(--rux-layout-size-height-lg)) — so a bare
+// button is already large, and choosing Large writes the class explicitly
+// rather than leaving the reader to infer it (rux's call, 2026-09-05).
+const SIZES = {
+  xs: ['rux--btn--xs', 'rux--layout--size-xs'],
+  sm: ['rux--btn--sm', 'rux--layout--size-sm'],
+  md: ['rux--btn--md', 'rux--layout--size-md'],
+  lg: ['rux--layout--size-lg'],
+  xl: ['rux--layout--size-xl'],
+};
+const DENSITIES = ['xs', 'sm', 'md', 'lg', 'xl'];
+
+// ICON-ONLY IS EXCLUDED and the stylesheet says why: .rux--btn--icon-only sets
+// inline-size AND block-size from the size token, so a swap resizes the hit
+// target in both axes, and Carbon's own size rules are written
+// :not(.rux--btn--icon-only). <a class="rux--btn"> is excluded too — no anchor
+// carries cds--btn in any capture.
+const qualifies = (name, cls) => name === 'button' && /\brux--btn\b/.test(cls) && !/\brux--btn--icon-only\b/.test(cls);
+const BTN_GROUP = /\brux--btn-set\b|\brux--table-toolbar\b/;
+
+const sizeOf = cls => (cls.match(/\brux--layout--size-(xs|sm|md|lg|xl)\b/) ?? cls.match(/\brux--btn--(xs|sm|md)\b/) ?? [, 'lg'])[1];
+const densityOf = cls => (cls.match(/\brux--data-table--(xs|sm|md|lg|xl)\b/) ?? [, 'lg'])[1];
+
+// Every swappable group in document order. `at` is here so the panel can name
+// and order what it shows; it is NEVER the stored key.
+export function variantsOf(html) {
+  const groups = [], stack = [];
+  const span = (m, tok) => {
+    const a = attrsOf(tok).find(x => x.name === 'class');
+    return a ? { start: m.index + a.start, end: m.index + a.end } : null;
+  };
+  TOKEN.lastIndex = 0;
+  for (let m; (m = TOKEN.exec(html));) {
+    const tok = m[0];
+    if (tok.startsWith('<!--') || /^<(script|style|svg)\b/i.test(tok)) continue;
+    if (tok.startsWith('</')) {
+      const name = tagName(tok, 2);
+      for (let i = stack.length - 1; i >= 0; i--) if (stack[i].name === name) { stack.length = i; break; }
+      continue;
+    }
+    const name = tagName(tok, 1);
+    const cls = attrOf(tok, 'class');
+    const closed = VOID.has(name) || /\/\s*>$/.test(tok);
+    const at = m.index + tok.length;
+
+    if (name === 'table' && /\brux--data-table\b/.test(cls)) {
+      const t = span(m, tok);
+      if (t) groups.push({ kind: 'table', where: 'table', at, current: densityOf(cls), targets: [t] });
+    } else if (BTN_GROUP.test(cls)) {
+      // The container opens a group; its qualifying buttons join it, so one
+      // choice moves the whole set rather than each button separately.
+      const g = { kind: 'buttons', where: /btn-set/.test(cls) ? 'btn-set' : 'toolbar', at, current: null, targets: [] };
+      groups.push(g);
+      if (!closed) stack.push({ name, group: g });
+      continue;
+    } else if (qualifies(name, cls)) {
+      const t = span(m, tok);
+      const host = stack.findLast(s => s.group);
+      if (t && host) { host.group.targets.push(t); host.group.current ??= sizeOf(cls); }
+      else if (t) groups.push({ kind: 'buttons', where: 'lone', at, current: sizeOf(cls), targets: [t] });
+    }
+    if (!closed) stack.push({ name, group: null });
+  }
+  // A set or toolbar holding no qualifying button is not a group: the reader
+  // would be offered a control that changes nothing.
+  return groups.filter(g => g.targets.length).map(g => ({ ...g, current: g.current ?? 'lg' }));
+}
+
+const rewriteClass = (kind, cls, value) => kind === 'table'
+  ? `${cls.replace(/\s*\brux--data-table--(?:xs|sm|md|lg|xl)\b/g, '')} rux--data-table--${value}`.replace(/\s+/g, ' ').trim()
+  : `${cls.replace(/\s*\brux--btn--(?:xs|sm|md)\b/g, '').replace(/\s*\brux--layout--size-(?:xs|sm|md|lg|xl)\b/g, '')} ${SIZES[value].join(' ')}`.replace(/\s+/g, ' ').trim();
+
+// `html` with the groups named in `variants` ({ index: value }) reclassed, and
+// every other byte untouched. A GROUP ABSENT FROM THE MAP IS NEVER SPLICED, so
+// "as attested" is byte-identical by construction rather than by care.
+export function applyVariants(html, variants) {
+  const groups = variantsOf(html);
+  const spans = [];
+  groups.forEach((g, i) => {
+    if (!Object.hasOwn(variants, i)) return;
+    const value = String(variants[i]);
+    if (g.kind === 'table' ? !DENSITIES.includes(value) : !Object.hasOwn(SIZES, value)) return;
+    for (const t of g.targets) spans.push({ ...t, value: rewriteClass(g.kind, html.slice(t.start, t.end), value) });
+  });
+  spans.sort((a, b) => a.start - b.start);
+  let out = '', cursor = 0;
+  for (const s of spans) { out += html.slice(cursor, s.start) + s.value; cursor = s.end; }
+  return out + html.slice(cursor);
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 // INSTANCE IDENTITY — the same block twice on one page, each copy its own.
 //
 // A block's ids are written once, in its source. Inserted twice, every id is

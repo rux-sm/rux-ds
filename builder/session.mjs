@@ -149,11 +149,12 @@ export const DRAFT_VERSION = 1;
 // affect them. `htmlOf(id)` is the caller's lookup into the manifest.
 export function toDraft(state, htmlOf, now = Date.now()) {
   const sources = {};
-  // BOTH STORES. A link edit is an index into linksOf(html) exactly as a text
-  // edit is an index into textFieldsOf(html), so it retargets on a markup
-  // change the same way and needs the same hash. Hashing only `edits` would
-  // let a link edit survive a change that moved it.
-  for (const store of [state.edits ?? {}, state.links ?? {}]) {
+  // ALL THREE STORES. A link edit is an index into linksOf(html) and a size
+  // choice an index into variantsOf(html), exactly as a text edit is an index
+  // into textFieldsOf(html) -- so each retargets on a markup change the same
+  // way and needs the same hash. Hashing only `edits` would let the other two
+  // survive a change that moved them.
+  for (const store of [state.edits ?? {}, state.links ?? {}, state.variants ?? {}]) {
     for (const perTemplate of Object.values(store)) {
       for (const key of Object.keys(perTemplate)) {
         const id = key.slice(0, key.lastIndexOf('@'));
@@ -164,7 +165,7 @@ export function toDraft(state, htmlOf, now = Date.now()) {
       }
     }
   }
-  return { v: DRAFT_VERSION, savedAt: now, ...clone({ pages: state.pages, edits: state.edits, links: state.links ?? {}, answers: state.answers }), sources };
+  return { v: DRAFT_VERSION, savedAt: now, ...clone({ pages: state.pages, edits: state.edits, links: state.links ?? {}, variants: state.variants ?? {}, answers: state.answers }), sources };
 }
 
 const no = reason => ({ ok: false, state: null, reason });
@@ -239,7 +240,8 @@ export function fromDraft(raw, manifest) {
   // OPTIONAL — a draft written before stage 8 has none, and must still open,
   // which is why DRAFT_VERSION did not move.
   if (d.links !== undefined && !isObj(d.links)) return no('it is missing part of its state');
-  for (const [what, store] of [['edits', d.edits], ['link targets', d.links ?? {}]]) {
+  if (d.variants !== undefined && !isObj(d.variants)) return no('it is missing part of its state');
+  for (const [what, store] of [['edits', d.edits], ['link targets', d.links ?? {}], ['size choices', d.variants ?? {}]]) {
     for (const [name, perTemplate] of Object.entries(store)) {
       if (!templates.has(name)) return no(`it holds ${what} for a template this version does not have (${name})`);
       if (!isObj(perTemplate)) return no(`its ${what} for ${name} are not readable`);
@@ -259,7 +261,7 @@ export function fromDraft(raw, manifest) {
     }
   }
 
-  return { ok: true, state: clone({ pages: d.pages, edits: d.edits, links: d.links ?? {}, answers: d.answers }), reason: null, savedAt: d.savedAt ?? null };
+  return { ok: true, state: clone({ pages: d.pages, edits: d.edits, links: d.links ?? {}, variants: d.variants ?? {}, answers: d.answers }), reason: null, savedAt: d.savedAt ?? null };
 }
 
 // "just now", "4 minutes ago" — for the notice. Deliberately coarse: the
