@@ -1261,6 +1261,7 @@
       - `checkbox-label-text` is a div.
   -->
   <div class="ks-row" style="gap:4rem">
+    <!-- BLOCK:BEGIN name=group label="Checkbox group" -->
     <fieldset class="rux--checkbox-group" aria-disabled="false">
       <legend class="rux--label">Group label</legend>
       <div class="rux--form-item rux--checkbox-wrapper">
@@ -1290,6 +1291,7 @@
       </div>
       <div class="rux--checkbox-group__validation-msg"></div>
     </fieldset>
+    <!-- BLOCK:END group -->
 
     <fieldset class="rux--checkbox-group rux--checkbox-group--invalid" aria-disabled="false">
       <legend class="rux--label">Invalid group</legend>
@@ -1597,6 +1599,7 @@
     the pairing is right and the reference simply has no example.
   -->
   <div style="display:grid;gap:1.5rem;max-width:34rem">
+    <!-- BLOCK:BEGIN name=default label="Search" -->
     <div class="rux--search rux--layout--size-lg">
       <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
       <label class="rux--label" for="sr-1">Large</label>
@@ -1605,6 +1608,7 @@
         <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
+    <!-- BLOCK:END default -->
     <div class="rux--search rux--layout--size-md">
       <div class="rux--search-magnifier"><svg class="rux--search-magnifier-icon" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-search"/></svg></div>
       <label class="rux--label" for="sr-2">Medium · with value</label>
@@ -2548,6 +2552,7 @@
     <div class="ks-grid">
 
       <!-- base, productive -->
+      <!-- BLOCK:BEGIN name=default label="Card" -->
       <div class="rux--card rux--card--productive">
         <div class="rux--card__header">
           <div class="rux--card__title">
@@ -2561,6 +2566,7 @@
           <button type="button" class="rux--btn rux--btn--md rux--layout--size-md rux--btn--tertiary">Action</button>
         </div>
       </div>
+      <!-- BLOCK:END default -->
 
       <!-- expressive -->
       <div class="rux--card rux--card--expressive">
@@ -3111,6 +3117,7 @@
          actually overflows, and a --close--hidden div after each tab. They were
          missing here, which no gate could see: check-ancestry reads ancestors,
          and these are SIBLINGS. -->
+    <!-- BLOCK:BEGIN name=default label="Tabs" -->
     <div class="rux--tabs">
         <button type="button" class="rux--tab--overflow-nav-button rux--tab--overflow-nav-button--previous rux--tab--overflow-nav-button--hidden" aria-hidden="true" tabindex="-1"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg></button>
       <div class="rux--tab--list" role="tablist" aria-label="Tabs example">
@@ -3161,6 +3168,7 @@
     <div class="rux--tab-content" role="tabpanel" id="panel-disabled" aria-labelledby="tab-disabled" tabindex="0" hidden>
       <p>Never reachable — its tab is disabled.</p>
     </div>
+    <!-- BLOCK:END default -->
 
     <!--
       Dismissible tabs. The close control is a sibling of the tab, not a child:
@@ -3736,10 +3744,12 @@
       off that class and this fragment had no nested list at all to hang them on.
     -->
     <div class="ks-grid">
+      <!-- BLOCK:BEGIN name=unordered label="Unordered list" -->
       <ul class="rux--list--unordered">
         <li class="rux--list__item">First item</li>
         <li class="rux--list__item">Second item</li>
       </ul>
+      <!-- BLOCK:END unordered -->
       <ol class="rux--list--ordered">
         <li class="rux--list__item">First item</li>
         <li class="rux--list__item">Second item
@@ -5233,6 +5243,7 @@
 
     <div>
       <div class="ks-label">horizontal — complete · current · incomplete · disabled</div>
+      <!-- BLOCK:BEGIN name=default label="Progress indicator" -->
       <ul class="rux--progress">
         <li class="rux--progress-step rux--progress-step--complete">
           <button type="button" class="rux--progress-step-button rux--progress-step-button--unclickable">
@@ -5270,6 +5281,7 @@
           </button>
         </li>
       </ul>
+      <!-- BLOCK:END default -->
     </div>
 
     <div>
@@ -6662,6 +6674,7 @@
       wrapper. Nothing else differs.
   -->
   <div class="ks-row">
+    <!-- BLOCK:BEGIN name=default label="Content switcher" -->
     <div class="rux--content-switcher rux--content-switcher--sm rux--layout--size-sm rux--layout-constraint--size__default-md rux--layout-constraint--size__min-sm rux--layout-constraint--size__max-lg" role="tablist">
       <button type="button" class="rux--content-switcher-btn rux--content-switcher--selected" role="tab" aria-selected="true" tabindex="0">
         <span class="rux--content-switcher__label">First</span>
@@ -6673,6 +6686,7 @@
         <span class="rux--content-switcher__label">Third</span>
       </button>
     </div>
+    <!-- BLOCK:END default -->
   </div>
   <!--
     --content-switcher-popover--disabled sits on the __wrapper, never on the
@@ -6780,6 +6794,7 @@
         <span class="rux--copy-btn__feedback">Copied</span>
       </button>
     </div>
+    <!-- BLOCK:BEGIN name=multi label="Code snippet" -->
     <div class="rux--snippet rux--snippet--multi">
       <div class="rux--snippet-container"><pre><code>@use "@carbon/styles/scss/config" with ($prefix: "rux");
 @use "@carbon/styles/scss/theme";
@@ -6788,6 +6803,7 @@
         <span class="rux--snippet-btn--text">Show more</span>
       </button>
     </div>
+    <!-- BLOCK:END multi -->
   </div>
 </section>
 
@@ -7873,10 +7889,12 @@
       <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
     </div>
 
+    <!-- BLOCK:BEGIN name=default label="Action set" -->
     <div class="rux--action-set rux--btn-set rux--action-set--row-double rux--action-set--lg">
       <button type="button" class="rux--btn rux--btn--secondary rux--action-set__action-button">Cancel</button>
       <button type="button" class="rux--btn rux--btn--primary rux--action-set__action-button">Save</button>
     </div>
+    <!-- BLOCK:END default -->
 
     <div class="rux--action-set rux--btn-set rux--action-set--row-triple rux--action-set--lg">
       <button type="button" class="rux--btn rux--btn--ghost rux--action-set__action-button rux--action-set__action-button--ghost">Discard</button>

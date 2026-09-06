@@ -57,6 +57,7 @@
          actually overflows, and a --close--hidden div after each tab. They were
          missing here, which no gate could see: check-ancestry reads ancestors,
          and these are SIBLINGS. -->
+    <!-- BLOCK:BEGIN name=default label="Tabs" -->
     <div class="rux--tabs">
         <button type="button" class="rux--tab--overflow-nav-button rux--tab--overflow-nav-button--previous rux--tab--overflow-nav-button--hidden" aria-hidden="true" tabindex="-1"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg></button>
       <div class="rux--tab--list" role="tablist" aria-label="Tabs example">
@@ -107,6 +108,7 @@
     <div class="rux--tab-content" role="tabpanel" id="panel-disabled" aria-labelledby="tab-disabled" tabindex="0" hidden>
       <p>Never reachable — its tab is disabled.</p>
     </div>
+    <!-- BLOCK:END default -->
 
     <!--
       Dismissible tabs. The close control is a sibling of the tab, not a child:

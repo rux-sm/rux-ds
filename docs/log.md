@@ -122,6 +122,36 @@ rule on.** `rux-ds`, `rux-sm.github.io` and `rux-ln-notes` are PUBLIC;
 `rux-backend` and `rux-ln-atlas` are PRIVATE. Five repositories, three of them
 public, exactly as the card says. Nothing in it changes.
 
+**DONE 2026-09-05 — catalogue growth, batch one: nine blocks.** The catalogue
+had not grown since stage 5. It is 42 now, 18 of them from the sink, and the
+coverage table moved 8 marked to 17, 334 candidate regions to 284 across 51
+unmarked fragments. Markers only; no markup edited.
+
+The nine: tabs, progress-indicator, content-switcher, unordered list,
+code-snippet, card, action-set, checkbox group, search — each compiled, KEEP,
+and mechanically clean before marking.
+
+Two of the eleven asked for were dropped on measured grounds. `progress-bar`
+expresses a determinate value with an inline `transform: scaleX()`, which sink
+blocks forbid, leaving only a state and a size. `file-uploader` ships no empty
+specimen — one carries a rejected file, the other is disabled and invalid — so a
+reader would get an uploader mid-error they could not edit away.
+
+**A GATE HOLE, found by trying to carve the uploader open.** Its file rows are
+siblings inside `.rux--form-item`, so an end marker before them leaves the
+block's own `<div>` unclosed — and `check-blocks` passed that unbalanced block
+with **0 faults**. It checks that markers pair, references close and bytes
+match, never that a block's tags balance. A first sweep for the same fault
+across the catalogue flagged nine blocks; that was my scratch checker
+mishandling self-closing SVG tags, and a real tag walk flags one,
+`templates/table-page/table`, which is also a false positive — its `<button>`
+tags are 10 open and 10 closed. **No shipped block is known to be unbalanced.**
+Closing the hole is tier 2 and is rux's to rule on.
+
+Growth also forced three `builder/guide.json` entries: stage 11's gate requires
+a recommendation per variant group, and three of the nine carry one. The map is
+47 entries now, and **the review artifact published earlier today lists 44**.
+
 **DONE 2026-09-05 — the guide map, and placement evidence that does not
 overclaim (§4.12 stage 11).** The catalogue offered all 33 blocks flat, in
 manifest order, identically for every slot. It now splits by what the repository

@@ -292,6 +292,21 @@
       "recommended": "as-attested",
       "reason": null,
       "reviewed": false
+    },
+    "sink/action-set/default#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "sink/card/default#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "sink/code-snippet/multi#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
     }
   }
 }

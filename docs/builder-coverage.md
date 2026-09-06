@@ -34,31 +34,56 @@ rather than adding a judgement.
 - `badge-indicator` — its own comment: "A badge is not a free-standing box." It
   renders as the last child of an icon-only button, which is what gives the
   absolutely-positioned badge its containing block.
+- `treeview` — **cannot be a sink block at all, and the reason is a measured
+  rule rather than a preference.** Both its regions carry inline
+  `style="padding-inline-start:…;margin-inline-start:-…"` on
+  `.rux--tree-node__label`: that is how Carbon renders per-depth indentation, so
+  it is attested page markup — but `check-blocks` forbids inline `style=` inside
+  a SINK block, and only templates are exempt. Marking it would mean either
+  editing attested markup or weakening the rule.
+- `progress-bar` — the same trap, one step further. A determinate bar expresses
+  its value with `style="transform:scaleX(0.42)"` on `.rux--progress-bar__bar`,
+  so the plain form is unmarkable. What is left is `--indeterminate` (which also
+  carries `--small`), `--finished` and `--error` — a state and a size, not the
+  component. Offering one of those as "Progress bar" would name a general thing
+  and hand over a particular one.
+- `file-uploader` — **the sink ships no empty uploader.** Its first specimen
+  carries two file rows, one of them rejected with "File exceeds 500 KB"; its
+  second is disabled AND invalid. A block is copied byte for byte, so a reader
+  adding "File uploader" would get one mid-error and could not edit the state
+  away. Carving the drop zone out was tried and abandoned: the file rows are
+  siblings INSIDE `.rux--form-item`, so an end marker before them leaves the
+  block's own `<div>` unclosed — and `check-blocks` passed that unbalanced block
+  with 0 faults, which is a gate hole recorded in the roadmap. Marking this one
+  needs an empty specimen in the fragment first.
+- `modal`, `dialog` — frame, not a stack child. `templates/wizard-page.html`
+  keeps its modal at the end of `<main>`, deliberately outside every block, and
+  its Cancel button's `data-rux-open` is the catalogue's only frame dependency.
 - `list-box` — its own comment: it is "the primitive under dropdown, combo box
   and multiselect" and "has no story of its own: every reference for it is one
   of those three."
 
 <!-- COVERAGE:BEGIN -->
-_68 shipped fragments · 8 marked, holding 9 of the catalogue's 33 blocks · 334 candidate regions in the 60 unmarked._
+_68 shipped fragments · 17 marked, holding 18 of the catalogue's 42 blocks · 284 candidate regions in the 51 unmarked._
 
 | fragment | components | blocks | candidates | text | variants | behaviour | in the builder |
 |---|---|---|---|---|---|---|---|
 | `accordion` | accordion | 1 | 1 | 6 | 0 | accordion | yes |
-| `action-set` | action-set, button | — | 7 | — | — | — | no |
+| `action-set` | action-set, button | 1 | 7 | 2 | 1 | — | yes |
 | `ai-label` | ai-label, button, link, popover, toggletip | — | 7 | — | — | copy-button, popover | no |
 | `aspect-ratio` | aspect-ratio | — | 5 | — | — | — | no |
 | `badge-indicator` | badge-indicator, button | — | 2 | — | — | — | no |
 | `big-number` | big-number | — | 1 | — | — | — | no |
 | `breadcrumb` | breadcrumb, link | 1 | 3 | 3 | 0 | — | yes |
 | `buttons` | button, inline-loading, loading | — | 18 | — | — | — | no |
-| `card` | button, card | — | 11 | — | — | — | no |
+| `card` | button, card | 1 | 11 | 5 | 1 | — | yes |
 | `chat-button` | button, chat-button | — | 4 | — | — | — | no |
-| `checkbox` | checkbox, form | — | 5 | — | — | — | no |
-| `code-snippet` | button, code-snippet, copy-button | — | 4 | — | — | copy-button | no |
+| `checkbox` | checkbox, form | 1 | 5 | 6 | 0 | — | yes |
+| `code-snippet` | button, code-snippet, copy-button | 1 | 4 | 2 | 1 | copy-button | yes |
 | `combo-box` | combo-box, list-box, text-input | — | 2 | — | — | form-controls, list-box | no |
 | `combo-button` | button, combo-button, menu | — | 4 | — | — | menu | no |
 | `contained-list` | button, contained-list | 1 | 2 | 5 | 1 | — | yes |
-| `content-switcher` | button, content-switcher | — | 3 | — | — | — | no |
+| `content-switcher` | button, content-switcher | 1 | 3 | 3 | 0 | — | yes |
 | `copy-button` | button, copy-button, popover, tooltip | — | 2 | — | — | copy-button, popover | no |
 | `date-picker` | date-picker, form | — | 8 | — | — | date-picker | no |
 | `dialog` | button, dialog | — | 2 | — | — | — | no |
@@ -71,7 +96,7 @@ _68 shipped fragments · 8 marked, holding 9 of the catalogue's 33 blocks · 334
 | `icon-indicator` | icon-indicator | — | 16 | — | — | — | no |
 | `inline-loading` | inline-loading, loading | — | 3 | — | — | — | no |
 | `links` | link | — | 7 | — | — | — | no |
-| `list` | list | — | 3 | — | — | — | no |
+| `list` | list | 1 | 3 | 2 | 0 | — | yes |
 | `list-box` | list-box | — | 2 | — | — | form-controls, list-box | no |
 | `loading` | loading | — | 2 | — | — | — | no |
 | `menu` | button, menu | — | 6 | — | — | menu | no |
@@ -86,10 +111,10 @@ _68 shipped fragments · 8 marked, holding 9 of the catalogue's 33 blocks · 334
 | `pagination-nav` | button, pagination-nav | — | 2 | — | — | — | no |
 | `popover` | button, popover | — | 7 | — | — | copy-button, popover | no |
 | `progress-bar` | progress-bar | — | 4 | — | — | — | no |
-| `progress-indicator` | progress-indicator | — | 3 | — | — | — | no |
+| `progress-indicator` | progress-indicator | 1 | 3 | 5 | 0 | — | yes |
 | `radio` | form, radio-button | — | 5 | — | — | — | no |
 | `scroll-gradient` | scroll-gradient | — | 1 | — | — | — | no |
-| `search` | search | — | 3 | — | — | form-controls | no |
+| `search` | search | 1 | 3 | 1 | 0 | form-controls | yes |
 | `select` | form, select | — | 5 | — | — | form-controls | no |
 | `shape-indicator` | shape-indicator | — | 13 | — | — | — | no |
 | `side-panel` | action-set, ai-label, button, popover, side-panel, toggletip, tooltip | — | 1 | — | — | copy-button, popover | no |
@@ -99,7 +124,7 @@ _68 shipped fragments · 8 marked, holding 9 of the catalogue's 33 blocks · 334
 | `stack` | button, stack, tile | — | 3 | — | — | tile | no |
 | `structured-list` | structured-list | 2 | 2 | 12 | 0 | form-controls | yes |
 | `table` | button, checkbox, data-table, overflow-menu, radio-button, search, tag | 1 | 6 | 9 | 1 | data-table, dismiss, form-controls, menu, overlay | yes |
-| `tabs` | popover, tabs, tooltip | — | 11 | — | — | copy-button, popover, tabs | no |
+| `tabs` | popover, tabs, tooltip | 1 | 11 | 8 | 0 | copy-button, popover, tabs | yes |
 | `tags` | tag | — | 20 | — | — | dismiss | no |
 | `text-input` | button, form, popover, text-input, toggle, tooltip | — | 10 | — | — | copy-button, form-controls, list-box, popover | no |
 | `textarea` | form, text-area | — | 5 | — | — | — | no |

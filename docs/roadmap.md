@@ -3683,6 +3683,87 @@ one more field per group, and the ancestor walk is a real parse where a regex
 lookup used to be. The red runs are evidence, not acceptance. Not done: stages
 12 and 13, the keyboard reading above, and every `reviewed` in the map.
 
+**Catalogue growth, batch one, 2026-09-05 — nine blocks, picked from the table
+rather than from memory.** The catalogue had not grown since stage 5: 33 blocks,
+9 of them from `sink/`, against 60 unmarked fragments. It is **42 now, 18 from
+the sink**, and the coverage table moved 8 marked → 17, 334 candidate regions →
+284 across 51 unmarked fragments.
+
+The nine: **tabs, progress-indicator, content-switcher, unordered list,
+code-snippet, card, action-set, checkbox group, search.** Every one is
+`compiled()`, KEEP in `docs/inventory.md`, and was mechanically clean before it
+was marked — no `ks-` class, no inline `style=`, every reference closing inside
+the region, every glyph in the sprite — measured across all 60 unmarked
+fragments rather than assumed. **No markup was edited. Markers only.**
+
+**TWO OF THE ELEVEN rux ASKED FOR WERE DROPPED, both on measured grounds, and
+both are recorded in the coverage doc's eligibility notes.**
+
+`progress-bar` — a determinate bar expresses its value with
+`style="transform:scaleX(0.42)"` on `.rux--progress-bar__bar`, and sink blocks
+forbid inline `style=`. What is left is `--indeterminate` (which also carries
+`--small`), `--finished` and `--error`: a state and a size, not the component.
+The plan proposed shipping the indeterminate one under a qualified label; on
+measuring it, two qualifications is past what a catalogue entry called "Progress
+bar" can honestly carry. `treeview` fails the same rule harder — its per-depth
+indentation is inline `padding-inline-start` on every node label, which is how
+Carbon renders a tree, so it cannot be a sink block at all without editing
+attested markup or weakening the rule.
+
+`file-uploader` — **found by looking, which is the whole reason the visual pass
+exists.** The sink ships no empty uploader: the first specimen carries two file
+rows, one rejected with "File exceeds 500 KB", and the second is disabled AND
+invalid. A block is copied byte for byte, so a reader adding "File uploader"
+would get one mid-error with no way to edit the state away.
+
+**AND CARVING IT OPEN A GATE HOLE.** The drop zone alone is a complete empty
+uploader, so the end marker was moved before the file rows — which are siblings
+INSIDE `.rux--form-item`. That leaves the block's own `<div>` unclosed, and
+**`check-blocks` passed the unbalanced block with 0 faults**: it verifies
+markers pair, references close and bytes match, and **never that a block's tags
+balance**. The block was reverted and the fragment left unmarked. A first sweep
+for the same fault across the shipped catalogue flagged nine blocks; that was my
+scratch checker mishandling self-closing SVG tags, and on a real tag walk it is
+**one**, `templates/table-page/table`, whose `<button>` tags are 10 open and 10
+closed — a false positive too. **So no shipped block is known to be unbalanced,
+and the hole is demonstrated only by the block I made.** Closing it is a tier-2
+change to `check-blocks` and is not made here; it is rux's to rule on.
+
+**Growth forced three `builder/guide.json` entries, which the plan said it would
+not touch.** Stage 11's own gate requires a recommendation for every variant
+group, and `action-set`, `card` and `code-snippet` each carry one. They were
+added as `as-attested`, `reason: null`, `reviewed: false` — identical to the
+existing fourteen — taking the map from 44 entries to 47. **The review artifact
+published earlier today lists 44 and is now one short of the catalogue.**
+
+**Red before trusted, on the two regions whose spans are load-bearing.** Moving
+`tabs`' end marker above its panels — the naive span, and the one a reader would
+write — faults with three `OPEN` findings, because the panels are siblings of
+`.rux--tabs` and carry the `aria-controls` targets; `templates/detail-page/tabs`
+marks the same span for the same reason. Pointing a checkbox label's `for=`
+outside its own block faults likewise. Both restored.
+
+**LOOKED AT, which is the cost of the stage and the only thing that finds what
+the gates cannot.** All nine added to one `app-shell` page in the builder's
+preview at 1280 and read in three screenshots: the list, search, code snippet,
+content switcher, stepper, tab set with its panel, card, checkbox group and
+action set all render as their fragments do. With all nine on one page the
+status line read **"round trip identical · ids unique · references resolved"**,
+and adding a second copy of each — 20 blocks — kept ids unique, which exercises
+stage 4's suffixing across the new markup.
+
+**One reading is measured rather than looked at, and is recorded as such.** The
+card carries its own surface, so it was checked in `g100`: body `rgb(22,22,22)`,
+card `rgb(38,38,38)`, text `rgb(244,244,244)` — a distinct, legible surface, and
+not §3.1's invisible-tile hazard. The screenshot never settled to the dark theme
+while the computed values had, so the dark pass has numbers behind it and no
+picture.
+
+Tier 3 throughout: no gate, registry, baseline or `CONTROL_FILES` entry moves.
+Not done: `file-uploader`, `progress-bar` and `treeview` as named above, the
+tag-balance hole, and the remaining 51 unmarked fragments holding 284 candidate
+regions.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

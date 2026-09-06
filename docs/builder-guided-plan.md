@@ -75,6 +75,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 | 11 | **DONE 2026-09-05.** The guide map `builder/guide.json`, and placement evidence derived rather than claimed: the catalogue splits by recorded layout, the rest behind a disclosure. Drafted throughout, nothing reviewed. | `lib/blocks.mjs`, `check-blocks.mjs`, `lib/gates.mjs`, `build-builder.mjs`, `rewrites.mjs`, `placement.mjs` | 9, 10 |
 | 12 | Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. | `build-builder.mjs` | 7, 8, 9, 11 |
 | 13 | Repeated items: duplicate, remove, reorder a repeated sibling, ids re-suffixed. v2. | `rewrites.mjs` | 12 |
+| growth | **BATCH ONE DONE 2026-09-05.** Nine sink blocks picked from the coverage table: tabs, progress-indicator, content-switcher, list, code-snippet, card, action-set, checkbox, search. Two of the eleven asked for were dropped on measured grounds. | — | 10 |
 
 ## Stage notes
 
