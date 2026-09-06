@@ -753,8 +753,9 @@ function renderFieldPanel(key, html) {
     }));
   });
 
-  // Link targets last, and only where there are any: a fragment href is a
-  // control relation, not content, and linksOf never offers one.
+  // Link targets last, and only where there are any. A fragment href INTO
+  // the block is a control relation instanceOf owns and linksOf never offers;
+  // one pointing outside the block is a destination like any other.
   links.forEach((l, i) => {
     box.append(fieldRow({
       key, i, name: l.text ? `Link destination — ${l.text}` : 'Link destination',

@@ -273,11 +273,13 @@ export function applyTextEdits(html, edits) {
 // words, and the words point somewhere. Every other attribute stays closed —
 // alt, src, placeholder and aria-label are not offered, deliberately.
 //
-// ONLY A NON-`#` href. A fragment href is a control relation, and instanceOf
-// suffixes one when it names an id inside the block, so offering it as content
-// would put two writers on one value. The catalogue holds one editable link
-// (dashboard-page/table-and-activity, "All activity" → `./`) against ten
-// fragment ones; the machinery is here for the blocks stage 10 admits.
+// NOT A FRAGMENT INTO THE BLOCK ITSELF. That href is a control relation, and
+// instanceOf suffixes it when it names an id inside the block, so offering it
+// as content would put two writers on one value. A fragment pointing OUTSIDE
+// the block is offered, since 2026-09-06 (linksOf says why): the catalogue
+// then holds twelve editable links, eleven of them fragments — the sink
+// breadcrumb's three, the templates' `#main-content` Home links — against
+// one non-fragment (dashboard-page/table-and-activity, "All activity" → `./`).
 //
 // EDITS FIRST, INSTANCING LAST — AND THEY DO NOT COMMUTE. Measured, not
 // assumed, on a fixture because no shipped block has both an id and a real
@@ -307,8 +309,29 @@ const escapeAttr = s => s.split('&').join('&amp;').split('"').join('&quot;')
 // attribute — name, delimiters and value — because the write replaces the
 // attribute rather than splicing inside its quotes. `text` is the anchor's own
 // words, flattened, for naming the field; it is never written back.
+//
+// A FRAGMENT HREF IS SKIPPED ONLY WHEN ITS TARGET IS INSIDE THE BLOCK. That
+// one is a control relation instanceOf owns — it re-suffixes the id and the
+// href together so a second copy reaches itself — and offering it would let
+// an edit fight the instancing. A fragment pointing OUTSIDE the block is an
+// ordinary destination: the sink breadcrumb's three `#breadcrumb` are its own
+// sink section, dead on any page it is placed on, and the templates' Home
+// links are `#main-content`, the page's own main. Until 2026-09-06 every `#`
+// was skipped, which shipped those three dead links through a promoted
+// suggestion (roadmap §4.12, stage 12's composed outputs); rux ruled to
+// narrow the skip. Measured before narrowing: no block carried an in-block
+// fragment at all, and none of the seven with out-of-block ones offered any
+// other link, so no draft's link index moves.
 export function linksOf(html) {
   const links = [];
+  const ids = new Set();
+  TOKEN.lastIndex = 0;
+  for (let m; (m = TOKEN.exec(html));) {
+    const tok = m[0];
+    if (tok.startsWith('<!--') || tok.startsWith('</') || /^<(script|style|svg)\b/i.test(tok)) continue;
+    const id = attrOf(tok, 'id');
+    if (id) ids.add(id);
+  }
   TOKEN.lastIndex = 0;
   for (let m; (m = TOKEN.exec(html));) {
     const tok = m[0];
@@ -316,7 +339,7 @@ export function linksOf(html) {
     const hm = tok.match(HREF);
     if (!hm) continue;
     const value = unquote(hm[1]);
-    if (value.startsWith('#')) continue;
+    if (value.startsWith('#') && ids.has(value.slice(1))) continue;
     const close = html.indexOf('</a', m.index + tok.length);
     const text = close < 0 ? '' : html.slice(m.index + tok.length, close).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
     links.push({ start: m.index + hm.index, end: m.index + hm.index + hm[0].length, value, text });

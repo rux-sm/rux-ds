@@ -9,6 +9,14 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 — The fragment skip narrowed, rux's ruling on stage 12's one
+composed-output finding.** `linksOf` skips a `#` href only when its target id is
+inside the block; an out-of-block one is a destination and is offered. Measured
+first: no block carries an in-block fragment, seven carry out-of-block ones and
+none of them offered any other link, so no draft moves. Offered links 1 → 12.
+The ten guided compositions with the breadcrumb repointed pass every
+`app-check` rule. Builder cells re-swept. Roadmap §4.12.
+
 **2026-09-06 — Stage 12 landed: the guided mode.** Five sections on one set
 of DOM nodes, shown one at a time behind a clickable vertical stepper or all
 at once; purpose radios beside the template select, an outline beside the

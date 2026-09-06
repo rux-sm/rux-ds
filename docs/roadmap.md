@@ -4066,11 +4066,42 @@ sink already lists; `wizard-page` 120/120, a11y 4 on the same
 introduced diverges from what its template already reads.
 
 **Not done.** Stage 13. The Tab, Enter, Space and new-tab readings above.
-The breadcrumb links. The two "not yet" map entries. The guided mode's
+The breadcrumb links *(closed the same afternoon; next entry)*. The two "not
+yet" map entries. The guided mode's
 wording for "Add appends to the end of the slot — Move up" that the map
 reading said step 3 should carry: the suggestion rows say where a block
 belongs in their reason and the outline step has Move up, but nothing yet
 says the one follows from the other.
+
+**The fragment skip is narrowed, 2026-09-06, rux's ruling on the breadcrumb
+finding above: `linksOf` now skips a `#` href only when its target id is
+INSIDE the block.** That one is a control relation `instanceOf` owns — it
+re-suffixes the id and the href together so a second copy reaches itself —
+and offering it would put two writers on one value; the skip was written for
+it and was broader than its reason, which batch three had already named as a
+tier-2 gap. A fragment pointing outside the block is an ordinary destination,
+and it was measured before the change: **no block in the catalogue carries an
+in-block fragment at all**, seven carry out-of-block ones (the sink
+breadcrumb's three `#breadcrumb`, `full-page-error` and `tile/clickable` one
+each into their sink sections, and the templates' page-header, empty-state,
+empty-table and error-state Home links to `#main-content`), and **none of
+those seven offered any other link**, so no draft's link index moves and
+`DRAFT_VERSION` stays at 1. Offered links go from 1 to 12. Proved in node: the
+breadcrumb offers its three; a synthetic block with `<a href="#panel">` beside
+`id="panel"` still withholds that one and offers `#elsewhere`; a link edited
+TO an in-block id and then instanced to 2 becomes `#panel-2`, the stage-8
+contract unchanged. Read in the builder: add the breadcrumb to app-shell, the
+panel shows "Link destination — Home / Section / Current", the review step
+says three references point at nothing; repoint all three at `#main-content`
+and it reads "Holds together", three history entries, the exported page
+carrying the three new hrefs. The ten guided compositions re-run with the
+dead links repointed the way a reader would: `tools/app-check.mjs` **ok on all
+five rules** — pin, classes 1331, tokens, files on 11 pages, ids unique and
+every reference resolved — where before it failed ids on app-shell. Tier 2,
+`builder/rewrites.mjs`, on rux's "fix the breadcrumb links, narrow the skip";
+what it weakens: nothing — `check-parity` reads `exportPage`, not `linksOf`,
+and every gate that read the old function reads the new one on the same
+inputs. The three builder cells age on it and are re-swept.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
