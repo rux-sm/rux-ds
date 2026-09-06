@@ -9,8 +9,90 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-05 — Rux logo 2 confirmed as the official brand everywhere.**
+User chose the newest cleaned Rux logo 2 for all branding and favicons.
+Copied the design-system master and generated favicon into Rux Apps and
+Rux Notes; both consumer repositories were clean before this change.
+All three projects' logo and favicon files compare byte for byte. Checked
+78 brand/favicon references across 38 standalone HTML pages: all resolve
+to matching files, including nested pages. The first scratch path scan
+incorrectly treated sink fragments as standalone pages; rerun on complete
+HTML documents, including the assembled kitchen sink, passed. The fragments
+are consumed relative to the assembled page, not their source directory.
+Both consumer checks passed. Opened both local consumer home pages and
+inspected their headers; the new logo loaded at 24x24 CSS pixels on each,
+and each favicon link resolves to its own updated brand directory.
+No template or pinned vendor files changed. New projects inherit the master
+through the existing seeding script. No commits, pushes or deployments were
+made; this records the local rollout, not live publication.
+
+**2026-09-05 — Rux logo 2 supersedes Untitled 2 in the working assets.**
+User asked to adjust and check the newer export. It already restores
+gray-10 and adds the ear bridge; its wider neck is retained. Squared the
+ear's 0.09972-unit corner rounding so every edge follows the pixel grid.
+Removed redundant and zero-area paths after that adjustment, reducing 22
+paths to 13 without changing the resulting 91 occupied cells. Bounds remain
+x=1..15, y=2..14. Regenerated favicon and light/dark app icons; all parse as
+XML and carry exactly the master's paths and viewBox. Opened app-shell and
+inspected the header: image loaded, 24x24 CSS pixels, devicePixelRatio 2.
+`npm run verify` exit 0. Native tab-strip and 1x-display rendering were not
+measured. Consumer copies and deployment remain unchanged; no commit made.
+
+**2026-09-05 — Untitled 2 adopted as the shared drawing in rux-ds.**
+User approved the reviewed 16x16 design for the logo, favicon and app icons.
+Cleaned the Linearity export without redrawing: removed the zero-area path,
+two fully covered paths, per-path export attributes and point dimensions.
+Compared the occupied grid cells before and after: identical, 92 cells.
+`npm run marks` regenerated the favicon and both neutral app icons; XML
+parsing and exact comparison confirmed all three carry the master's 13
+path strings and viewBox. `npm run verify` exit 0. Opened app-shell in the
+browser: logo loaded at 24x24 CSS pixels, devicePixelRatio 2, header ground
+rgb(22,22,22); inspected the rendered header. Opened the favicon SVG:
+no parser error, 13 paths, dark preference resolved fill rgb(244,244,244).
+This did not measure a native browser tab-strip icon or emulate a 1x
+display; the 1x sizing guidance is grid arithmetic, not a screenshot result.
+No shell layout or generator changed. Consumer repositories, deployment and
+platform-specific launcher packaging were not updated; this pass changes
+the design-system master and generated assets only. Brand docs corrected
+where they still prescribed blue icons or an 8x8 grid.
+
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
+
+**DONE 2026-09-05 — content editing that reads as content (§4.12 stage 8).**
+`30e91fb`, swept at `becea4d`, restamped at `33a244a`, 41 of 41 current. The
+panel said "Text 1 of 18" over "In `<div>`"; it now names every field by what it
+is, groups them, shows the original beside each and resets one at a time. The
+case for it is measured: `div`, `p` and `span` hold 127 of the 241 fields and
+`<th>` holds none.
+
+`textFieldsOf` gains `context` and nothing else moves — all 241 fields keep
+their offsets and text byte for byte, asserted before anything else, because
+edits are indices into that list and a draft hashes the block's markup rather
+than the algorithm. Link targets are the one editable attribute, and the ORDER
+is the contract: edits first, instancing last, since a link repointed at
+`#target` must become `#target-2` on instance 2. No shipped block has both an id
+and a real link, so a fixture asserts it.
+
+**Four naming rules came from LOOKING at the output**: a fieldset beats anything
+nested in it (or "Notify me when" loses its heading), a header row is not Row 1,
+an unclassed wrapper takes its name from what holds it, and a fallback is
+numbered only when two groups share a kind — which is what "Actions 7" was.
+
+**Two red runs came back GREEN with the mutation verified applied**, so the
+suite was measuring nothing: a read-back regex truncated at a raw quote, and a
+composePage assertion used a value instancing never touches. Both are
+exact-match now and both go red. My own two errors on the way are recorded in
+the roadmap rather than tidied away: a `git checkout` destroyed the real change
+I was mutating, and a `perl` substitution silently failed to match twice.
+
+Found in passing: `session.mjs` carried a literal NUL byte as its run-key
+separator since stage 6, which made git diff it as `Bin` and grep match nothing
+in it. Now `\0` — same key, and the file is text.
+
+**Reported, not changed:** `brand/` is not a declared input to any browser gate.
+rux's replacement mark was uncommitted throughout, every page's header changed,
+and `npm run gates` still read 41 of 41 current. Tier 2, so rux's to accept.
 
 **DONE 2026-09-05 — export and parity (§4.12 stage 7).** `ce27ceb`, swept at
 `587dd70`, restamped at `2ed1611`, `npm run gates` 41 of 41 current. Two
