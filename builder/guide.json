@@ -1,9 +1,9 @@
 {
-  "_": "HAND-WRITTEN, and every `reviewed` is false until rux says otherwise. Holds only what cannot be derived: the purpose line, which slot is recommended, and the prose. Placement EVIDENCE is derived by builder/placement.mjs and is never written here. tools/check-blocks.mjs validates every block, slot and variant key against builder/blocks.json, and requires `evidence` on any suggestion whose recorded layout does not match the slot's. Purpose lines are docs/choices.md's own \"Use it when\" column, not new prose.",
+  "_": "HAND-WRITTEN. `reviewed: true` is rux's record of a reading (2026-09-06 for the first pass, from a sheet that composed every suggestion into its slot); false means not yet read. Holds only what cannot be derived: the purpose line, which slot is recommended, and the prose. Placement EVIDENCE is derived by builder/placement.mjs and is never written here. tools/check-blocks.mjs validates every block, slot and variant key against builder/blocks.json, and requires `evidence` on any suggestion whose recorded layout does not match the slot's. Purpose lines are docs/choices.md's own \"Use it when\" column, not new prose.",
   "templates": {
     "app-shell": {
       "purpose": "Nav and header, nothing else yet — the shell a page starts from before it knows what it holds.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/detail-page/page-header",
@@ -11,7 +11,7 @@
           "reason": "A shell with nothing in it needs a heading before it needs anything else, and this one carries its own actions.",
           "unless": "The page has a page title already — the two are alternatives, not a pair.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "templates/detail-page/metric-row",
@@ -19,7 +19,7 @@
           "reason": "Four numbers across is the fastest way to make an empty shell say what the page is about.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "templates/detail-page/tabs",
@@ -27,7 +27,7 @@
           "reason": "Tabs give a shell somewhere to put a second view without a second page.",
           "unless": "There is only one view — tabs holding one panel read as a mistake.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "sink/breadcrumb/default",
@@ -35,13 +35,13 @@
           "reason": "A shell deep in a hierarchy wants a way back up.",
           "unless": null,
           "evidence": "No template places a breadcrumb, and the fragment carries no grid ancestry: the spacing above the first block is unverified. docs/composing-pages.md §3.10.",
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "dashboard-page": {
       "purpose": "A few numbers and a table, read more than edited.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "sink/tile/basic",
@@ -55,7 +55,7 @@
     },
     "table-page": {
       "purpose": "A list of records: sort, select, page.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/empty-state/empty-table",
@@ -63,7 +63,7 @@
           "reason": "Every table page needs the state where the query returns nothing.",
           "unless": "The empty case is handled outside the page.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "templates/error-state/inline-error",
@@ -71,13 +71,13 @@
           "reason": "The load failed but the page did not — the error belongs above the table, not instead of it.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "form-page": {
       "purpose": "Create or edit one record.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/settings-page/form",
@@ -85,7 +85,7 @@
           "reason": "A second form, for a record that saves in two independent parts.",
           "unless": "The two parts save together — one form with a fieldset each is the honest shape.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "sink/notification/inline-error",
@@ -93,13 +93,13 @@
           "reason": "A validation summary above the fields, where a per-field message is not enough.",
           "unless": null,
           "evidence": "No template places an inline notification in a form body: its spacing against the form below is unverified. §3.10.",
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "detail-page": {
       "purpose": "Read one record, with actions.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/app-shell/page-title",
@@ -107,13 +107,13 @@
           "reason": "A plain title, where the page header's actions are not wanted.",
           "unless": "The page header is already there — they are alternatives.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "settings-page": {
       "purpose": "Grouped controls that save.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/form-page/form",
@@ -121,7 +121,7 @@
           "reason": "A group of controls that save together, beside the ones already here.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "sink/accordion/default",
@@ -135,7 +135,7 @@
     },
     "wizard-page": {
       "purpose": "One step of a multi-step flow.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "sink/notification/inline-error",
@@ -143,7 +143,7 @@
           "reason": "A step that failed validation says so at the top of its own panel.",
           "unless": null,
           "evidence": "The wizard grid carries css-grid--with-row-gap, which its source calls load-bearing below lg, so no block outside this template shares its layout. Placement here is unverified.",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "sink/structured-list/condensed",
@@ -151,13 +151,13 @@
           "reason": "A read-only list of what the earlier steps collected, above the fields of this one.",
           "unless": "The summary block is already saying that.",
           "evidence": "Same as above: nothing outside this template matches the wizard panel's layout.",
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "schedule-page": {
       "purpose": "Dates and times.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/form-page/form",
@@ -165,7 +165,7 @@
           "reason": "The details that go with the dates — who, what, and why — in the shape the form page attests.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "templates/form-page/page-title",
@@ -173,13 +173,13 @@
           "reason": "A plain title where the schedule's own heading is not wanted.",
           "unless": "The page title is already there.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "empty-state": {
       "purpose": "Nothing to show yet.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/error-state/inline-error",
@@ -187,7 +187,7 @@
           "reason": "Empty because something failed is a different message from empty because nothing has been made yet.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         },
         {
           "block": "templates/table-page/table",
@@ -195,13 +195,13 @@
           "reason": "A table with its headings and no rows says what WILL be here, which an illustration cannot.",
           "unless": "The empty table block is already doing that.",
           "evidence": null,
-          "reviewed": false
+          "reviewed": true
         }
       ]
     },
     "error-state": {
       "purpose": "Something failed.",
-      "reviewed": false,
+      "reviewed": true,
       "suggestions": [
         {
           "block": "templates/empty-state/empty-table",
@@ -209,15 +209,7 @@
           "reason": "A failed load and an empty result look the same to a reader; the table shell keeps the shape.",
           "unless": null,
           "evidence": null,
-          "reviewed": false
-        },
-        {
-          "block": "templates/table-page/pagination",
-          "slot": "body",
-          "reason": "Kept with the table when an error replaces its rows rather than the whole page.",
-          "unless": "The error replaced the table too — pagination over nothing is noise.",
-          "evidence": null,
-          "reviewed": false
+          "reviewed": true
         }
       ]
     }
@@ -225,88 +217,88 @@
   "variants": {
     "sink/contained-list/on-page#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "sink/table/basic#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/dashboard-page/table-and-activity#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/detail-page/page-header#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/empty-state/empty-state#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/empty-state/empty-table#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/error-state/error-state#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/form-page/form#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/schedule-page/form#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/settings-page/form#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/table-page/table#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/table-page/table#1": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/wizard-page/actions#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "templates/wizard-page/actions#1": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "sink/action-set/default#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "sink/card/default#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     },
     "sink/code-snippet/multi#0": {
       "recommended": "as-attested",
-      "reason": null,
-      "reviewed": false
+      "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
+      "reviewed": true
     }
   }
 }

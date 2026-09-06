@@ -3940,6 +3940,40 @@ deviation from revision 2 listed for rux. Next: the reading itself, which
 this file's stage 11 entry says is rux's — every purpose line, suggestion
 and variant group — with a review sheet prepared for it. Nothing in
 `builder/` or `tools/` moved.
+
+**THE MAP IS READ, 2026-09-06, the same day.** The sheet composed every one of
+the 20 suggestions into its slot on its template — `page.mjs` and
+`rewrites.mjs` in node, `previewPage` at root, the same functions
+`builder.js`'s `composed()` runs — and each was looked at at 1280 in white
+beside the map's reason, unless and evidence and the derived placement
+evidence, with a live half-scale frame per row; rux ruled on my recommended
+ruling per row and accepted it whole. **Purpose lines: 10 of 10 reviewed**,
+each being `docs/choices.md`'s own cell. **Suggestions: 17 reviewed, 2 not
+yet, 1 removed.** Not yet: `dashboard-page` ← `sink/tile/basic`, unverified
+both ways by its own evidence and composed as a lone body-width tile saying
+nothing a metric card does not; `settings-page` ← `sink/accordion/default`,
+whose sink specimen ships a DISABLED section a page cannot remove until
+stage 13. Removed: `error-state` ← `templates/table-page/pagination` — a
+FOLLOWER offered as a leader composes as a pagination bar over nothing,
+which its own `unless` described; the map was suggesting the case it warned
+against. Three more readings, none a fault in the map but each something
+stage 12's wording must carry: **Add appends to the end of the slot**, so
+the breadcrumb (row 4), the table-page error (7) and the form's validation
+summary (9) land BELOW where their reasons say they belong and the reader
+must Move up; and page-title on detail (10) and schedule (16) put a second
+`h1` on the page, the alternatives case the map already names. **Variant
+groups: 17 of 17 reviewed, `as-attested` standing**, with the reason written
+in that stage 11 left null on purpose — the block's own size is the attested
+one — because the contradiction stage 9 flagged is now ruled: `docs/choices.md`
+said "`sm` inside tables and toolbars" as a suggestion and the corpus attests
+every template button bare, the one toolbar included, so the line now says
+what is attested and names Carbon's guidance as unattested here.
+`check-blocks` 0 faults on the edited map; `builder.html` read live —
+app-shell's four suggestions open under "Suggested here", the purpose line
+without its "(not reviewed)" suffix, dashboard's one draft still closed,
+settings showing one promoted and one draft. Stage 12's precondition is met;
+the reading that had been the last open item ahead of it is done, and the
+guided mode is next from the design in the plan file.
 regions.
 
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend

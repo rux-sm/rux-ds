@@ -9,6 +9,19 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 — The map is read: 10 purpose lines, 17 of 20 suggestions and
+17 of 17 variant groups reviewed; 2 suggestions not yet, 1 removed.** Every
+suggestion was composed into its slot by the builder's own functions and looked
+at at 1280 white on a review sheet served from `m/review/` (gitignored); rux
+accepted the recommended ruling per row. Removed: error-state ← pagination, a
+follower offered as a leader that composes as a bar over nothing. Not yet: the
+dashboard's lone basic tile and the settings accordion with its disabled
+section. The `docs/choices.md` size line now says what the corpus attests
+(every template button bare, `lg`) and names Carbon's "sm in toolbars" as
+unattested here; all 17 variant reasons cite it. `check-blocks` 0 faults;
+`builder.html` promotes the reviewed entries, read live. Roadmap §4.12 has the
+account. Stage 12's precondition is met.
+
 **2026-09-06 — Answered: stage 12 waits, the map is read first.** Asked in the
 open while planning the guided mode. The map measured 47 entries, none
 reviewed — 20 suggestions, 10 purpose lines, 17 variant groups, every

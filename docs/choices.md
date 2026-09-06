@@ -81,8 +81,11 @@ list-box family have no fluid form.
   tertiary, danger ghost. Suggestion: one primary per view, secondary beside
   it, ghost for the quiet action, danger only for the destructive one.
 - **Sizes**, five: `xs` `sm` `md` `lg` `xl`, and `lg` is the default with no
-  size class. Suggestion: `lg` in forms and dialogs, `sm` inside tables and
-  toolbars, `xl` only for a hero action; `expressive` is a type-scale
+  size class. What the corpus attests: every template button is bare, `lg`,
+  the one toolbar (`table-page`) included. Carbon's own guidance, unattested
+  here, is `sm` inside tables and toolbars and `xl` only for a hero action;
+  this line said so as a suggestion until 2026-09-06, when stage 9's finding
+  that nothing here attests it was ruled on. `expressive` is a type-scale
   variant, not a size.
 - **States**: disabled, loading, selected. They are states the page sets,
   not choices made at creation.
