@@ -629,7 +629,12 @@ export const GATES = [
     // the click check-a11y needs for document.hasFocus() is the kind of press
     // the overlay kernel acts on. Run this FIRST, on an untouched page.
     sideEffects: null,
-    baseline: 'kitchen-sink 0 stripped / 3 added · app-shell 0/0 · table-page 0/1 · form-page 0/0',
+    // CORRECTED 2026-09-05: the sink's added count read 3 and is 4. The fourth
+    // is date-picker__day, which the module writes when it builds the calendar
+    // -- so it appeared the day date-picker was admitted and nothing noticed.
+    // The three template figures were re-read at the same time and were right.
+    // All four at 1280x900 on a freshly loaded page, before any interaction.
+    baseline: 'kitchen-sink 0 stripped / 4 added · app-shell 0/0 · table-page 0/1 · form-page 0/0',
   },
   {
     id: 'check-spacing',
@@ -678,7 +683,12 @@ export const GATES = [
     // beside the other browser gates. It still runs AFTER check-runtime-classes,
     // which needs a page nobody has touched.
     sideEffects: 'clicks through every component and restores each; leaves the page as it found it',
-    baseline: '18 of 18 cases passing on the sink',
+    // CORRECTED 2026-09-05: this read 18 and is 47, across fourteen modules --
+    // data-table, menu, tabs, accordion, modal, ui-shell, profile, theme, tile,
+    // popover, dismiss, form-controls, list-box and overlay. The gate grew with
+    // every module admitted since; the record never moved with it, and nothing
+    // reads baseline, so nothing said so.
+    baseline: '47 of 47 cases passing on the sink, across 14 modules',
   },
   {
     id: 'check-a11y',
