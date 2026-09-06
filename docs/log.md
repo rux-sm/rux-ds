@@ -22,6 +22,15 @@ on the wrong template. Builder cells 72/80 0 stripped, a11y 5 (the adjudicated
 ledger. Ten guided compositions through `app-check`: one failure, app-shell's
 three `#breadcrumb` links from the promoted sink breadcrumb. Tab traversal,
 Enter, Space and the new tab are owed to a real browser. Roadmap §4.12.
+**One unexplained build, the same afternoon:** a single `npm run verify`
+left `css/rux.css` with its licence banner TWICE and README's size figure at
+1024.5 KB, and the `portal.html` generated in that run — committed at
+`33a0f39` — read 12 of 38 cells shown. Both files were restored from git;
+`npm run build` alone and two further `verify` runs on the clean tree did not
+reproduce it. `tools/build.mjs`'s `brand()` has no guard against input that
+already carries the banner, which would double it on any path that fed
+compiled CSS back through it — a hypothesis, not a result. Tier 2, not
+changed; recorded so the next occurrence has a first.
 
 **2026-09-06 — The map is read: 10 purpose lines, 17 of 20 suggestions and
 17 of 17 variant groups reviewed; 2 suggestions not yet, 1 removed.** Every
