@@ -42,6 +42,13 @@ const ICONS = [
   'pending--filled', 'unknown--filled', 'warning-square--filled',
   // state demos in the sink: the icon-only content switcher and a disabled menu item
   'list', 'grid', 'location', 'download',
+  // EQUIPMENT ON A VEHICLE, asked for by rux-scheduler 2026-09-06: a bus row
+  // says what the bus HAS, and the sprite had no way to say it. `accessibility`
+  // is Carbon's own wheelchair mark, the one every product uses for a lift or a
+  // ramp; `hotel` is its bed, which is what a sleeper coach is. Neither is
+  // scheduler-specific -- any app with a row of equipment flags needs them --
+  // so they belong here rather than spliced into one app's page.
+  'accessibility', 'hotel',
 ];
 
 const symbols = [], missing = [], from = {};
