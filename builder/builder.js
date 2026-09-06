@@ -56,6 +56,7 @@
    ========================================================================== */
 import { compose, previewPage, exportPage, bodyOnly, textFieldsOf, linksOf, variantsOf, applyTextEdits, integrity } from './rewrites.mjs';
 import { newPage, add, move, remove, unitOf, entriesOf, composePage } from './page.mjs';
+import { matchesContainer, offerFor, frameNeedsOf, frameNeedsMissing, suggestionsFor } from './placement.mjs';
 import { emptyHistory, pushed, undone, redone, runKey, sameRun,
          toDraft, fromDraft, agoOf, copy, identical } from './session.mjs';
 
@@ -79,8 +80,11 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // is standing and what they are looking through, not what they have made.
 const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
 const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
-const state = { template: 'app-shell', block: '', slot: '', catalogue: '', width: 'fit', ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
+const state = { template: 'app-shell', block: '', slot: '', catalogue: '', rest: '', width: 'fit', ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
 let manifest = null;
+// The guide map. Absent is not fatal: the catalogue still splits by evidence,
+// which is derived, and only the purpose line and the suggestions go missing.
+let guide = null;
 let history = emptyHistory();
 let run = null;                  // the typing run in progress, or null
 let saveTimer = null, saveBlocked = false, unopened = false;
@@ -329,6 +333,9 @@ function startOver() {
 // is the opposite: it reads the page the reader actually built.
 async function composed() {
   const src = await source(state.template);
+  // The frame note reads the destination template's own ids, and the source is
+  // fetched lazily, so the first render is where it can first be right.
+  frameNote();
   const t = templateOf(state.template);
   const page = composePage(src, t, pageOf(), manifest, state.edits[state.template] ?? {}, state.links[state.template] ?? {}, state.variants[state.template] ?? {});
   return { page, roundTrip: compose(src, t.slots, blocksOf(t)) === src, integrity: integrity(page) };
@@ -563,7 +570,7 @@ function renderFieldPanel(key, html) {
     box.append(head);
   }
   variantGroups.forEach((g, i) => {
-    const values = g.kind === 'table' ? DENSITY_VALUES : SIZE_VALUES;
+    const values = g.values.map(v => [v, VALUE_WORDS[v] ?? v]);
     box.append(variantRow({
       key, i, group: g, values,
       value: Object.hasOwn(savedVariants, i) ? savedVariants[i] : '',
@@ -592,8 +599,13 @@ function renderFieldPanel(key, html) {
 // words, the same split stage 8 uses. `where` is btn-set, toolbar, lone or
 // table.
 const GROUP_NAME = { 'btn-set': 'Button set', toolbar: 'Toolbar buttons', lone: 'Button', table: 'Table rows' };
-const SIZE_VALUES = [['xs', 'Extra small'], ['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large'], ['xl', 'Extra large']];
-const DENSITY_VALUES = SIZE_VALUES;
+// THE WORDS ONLY. Which values a group offers comes from the group itself --
+// variantsOf returns `values` -- because until 2026-09-05 this file carried a
+// second copy of the list that rewrites.mjs already held, and stage 11's
+// validator would have made a third. rux's review: one shared source. A value
+// with no word here shows its own key rather than disappearing, so adding one
+// to the matrix cannot silently drop it from the select.
+const VALUE_WORDS = { xs: 'Extra small', sm: 'Small', md: 'Medium', lg: 'Large', xl: 'Extra large' };
 
 // One variant row: a select, "as attested" first with the size the block ships
 // named on it, then the five values. Choosing the attested value again is not
@@ -753,13 +765,98 @@ function slotNote() {
   $('#bld-slot-note').textContent = `${col} · ${stack}`;
 }
 
-// Every marked block, once, by label and source.
+// THE CATALOGUE, IN TWO GROUPS, AND NOTHING IS REFUSED. page.mjs:45 decided
+// that every block is offered in every slot; this sorts and labels, it does not
+// gate. The first select holds the blocks whose RECORDED LAYOUT matches this
+// slot's -- same grid, column and stack classes -- and the disclosure below
+// holds the rest. That is evidence about a placement and never a verdict on
+// one: only a block in its own slot is an attested placement, which is why the
+// label reads "seen in the same recorded layout" and not "attested here".
+//
+// Both groups are refilled whenever the SLOT changes, because the split is a
+// property of the slot and not of the catalogue.
 function fillCatalogue() {
-  const select = $('#bld-catalogue');
-  select.textContent = '';
-  for (const b of manifest.blocks) select.append(option(b.id, `${b.label} · ${b.source.replace(/\.html$/, '')}`));
-  state.catalogue = manifest.blocks[0].id;
-  select.value = state.catalogue;
+  const slot = templateOf(state.template).slots.find(x => x.name === state.slot);
+  const { matched, unmatched } = offerFor(manifest, templateOf(state.template), slot);
+  const fill = (sel, list, keep) => {
+    sel.textContent = '';
+    for (const b of list) sel.append(option(b.id, `${b.label} · ${b.source.replace(/\.html$/, '')}`));
+    sel.disabled = !list.length;
+    const want = list.some(b => b.id === keep) ? keep : list[0]?.id ?? '';
+    sel.value = want;
+    return want;
+  };
+  state.catalogue = fill($('#bld-catalogue'), matched, state.catalogue);
+  state.rest = fill($('#bld-rest'), unmatched, state.rest);
+  $('#bld-rest-title').textContent = `No matching recorded layout (${unmatched.length})`;
+  $('#bld-catalogue-note').textContent = matched.length
+    ? `${matched.length} of ${manifest.blocks.length} blocks were recorded in a container with this slot's grid, column and stack classes. That is evidence, not a verdict: only a block in its own slot is an attested placement. Added to the end of the slot.`
+    : `No block in the catalogue was recorded in a layout like this one, so everything is under the disclosure below. Added to the end of the slot.`;
+  frameNote();
+  renderSuggestions();
+}
+
+// WHAT THE BLOCK NEEDS FROM THE FRAME, BEFORE IT IS ADDED. The composed page's
+// integrity() already reports the same {attr, id} records AFTER an add; this
+// says it first, off the destination template's own ids, so the reader is not
+// told about a broken reference only once they have made one.
+function frameNote() {
+  const t = templateOf(state.template);
+  const src = templates.get(state.template);
+  for (const [sel, note] of [['#bld-catalogue', '#bld-frame-note'], ['#bld-rest', '#bld-rest-frame-note']]) {
+    const el = $(note), b = blocks.get($(sel).value);
+    const missing = b && src ? frameNeedsMissing(b, src) : [];
+    el.hidden = !missing.length;
+    if (missing.length) {
+      el.textContent = `${b.label} points at ${missing.map(n => `${n.attr}="${n.id}"`).join(' and ')}, which ${t.name} does not have. `
+        + `In ${b.source.replace(/^templates\//, '').replace(/\.html$/, '')} that target sits in the frame, outside every block, so it does not travel with this one.`;
+    }
+  }
+}
+
+// THE MAP'S SUGGESTIONS. PROMOTED IS reviewed === true AND NOTHING ELSE --
+// rux's review: visual priority is authority whatever a badge says, so a draft
+// never takes the top of the list. Everything ships unreviewed, so this section
+// is a closed "not reviewed" disclosure today and that is the intended state.
+function renderSuggestions() {
+  const box = $('#bld-suggestions');
+  box.textContent = '';
+  if (!guide) { box.hidden = true; return; }
+  const { purpose, purposeReviewed, promoted, drafts } = suggestionsFor(guide, state.template);
+  const here = s => s.slot === state.slot;
+  const mine = promoted.filter(here), draft = drafts.filter(here);
+  if (!purpose && !mine.length && !draft.length) { box.hidden = true; return; }
+  box.hidden = false;
+
+  if (purpose) {
+    const p = document.createElement('p');
+    p.className = 'bld-status';
+    p.textContent = purposeReviewed ? purpose : `${purpose} (not reviewed)`;
+    box.append(p);
+  }
+  const list = (items, heading, open) => {
+    if (!items.length) return;
+    // The accordion comes from the page's own <template>, the idiom every other
+    // panel here uses: the markup stays in builder.html where the markup gates
+    // and the sink diff can see it, rather than in a string in this file.
+    const frag = $('#bld-suggest-group-template').content.cloneNode(true);
+    const item = frag.querySelector('.rux--accordion__item');
+    const head = frag.querySelector('.rux--accordion__heading');
+    if (open) { item.classList.add('rux--accordion__item--active'); head.setAttribute('aria-expanded', 'true'); }
+    frag.querySelector('.rux--accordion__title').textContent = `${heading} (${items.length})`;
+    const body = frag.querySelector('.rux--accordion__content');
+    for (const s of items) {
+      const one = $('#bld-suggest-template').content.cloneNode(true);
+      const at = r => one.querySelector(`[data-role="${r}"]`);
+      at('reason').textContent = `${blocks.get(s.block)?.label ?? s.block} — ${s.reason}`;
+      if (s.unless) { at('unless').textContent = `Not when: ${s.unless}`; at('unless').hidden = false; }
+      if (s.evidence) { at('evidence').textContent = `Unverified: ${s.evidence}`; at('evidence').hidden = false; }
+      body.append(one);
+    }
+    box.append(frag);
+  };
+  list(mine, 'Suggested here', true);
+  list(draft, 'Draft suggestions — not reviewed', false);
 }
 
 // Fill the block picker from the model, in document order, by label; a
@@ -913,11 +1010,15 @@ const later = () => { clearTimeout(timer); timer = setTimeout(render, 250); };
 
 // The three arrangements. Each is one transaction: the pure transition, the
 // edits that go with it, and nothing else.
-function addBlock() {
-  const label = blocks.get(state.catalogue)?.label ?? 'block';
+// ONE ADD, TWO PATHS INTO IT. The disclosure's button and the matched group's
+// button differ only in which select they read; the transaction is the same, so
+// there is no second code path for an unmatched block to drift down.
+function addBlock(id) {
+  if (!id) return;
+  const label = blocks.get(id)?.label ?? 'block';
   let placed = null;
   change(`add ${label}`, () => {
-    setPage(add(pageOf(), state.slot, state.catalogue, manifest));
+    setPage(add(pageOf(), state.slot, id, manifest));
     const list = pageOf().slots[state.slot];
     placed = unitOf(pageOf(), list[list.length - 1].key).keys[0];
   });
@@ -1045,18 +1146,27 @@ async function init() {
     return;
   }
   for (const b of manifest.blocks) blocks.set(b.id, b);
+  // THE MAP IS NOT LOAD-BEARING. The catalogue's split is derived from the
+  // manifest, so a missing or unreadable guide.json costs the purpose line and
+  // the suggestions and nothing else. It is validated by check-blocks; there is
+  // no second validation here that could disagree with it.
+  try { guide = JSON.parse(await fetchText('builder/guide.json')); }
+  catch { guide = null; }
   const select = $('#bld-template');
   for (const t of manifest.templates) select.append(option(t.name, t.name));
 
   openDraft();                       // before the first render, after the manifest
 
   select.value = state.template;
-  select.addEventListener('change', () => { endRun(); state.template = select.value; fillSlots(); fillPicker(); render(); });
+  select.addEventListener('change', () => { endRun(); state.template = select.value; fillSlots(); fillCatalogue(); fillPicker(); render(); });
   const slot = $('#bld-slot');
-  slot.addEventListener('change', () => { endRun(); state.slot = slot.value; slotNote(); });
+  slot.addEventListener('change', () => { endRun(); state.slot = slot.value; slotNote(); fillCatalogue(); });
   const catalogue = $('#bld-catalogue');
-  catalogue.addEventListener('change', () => { endRun(); state.catalogue = catalogue.value; });
-  $('#bld-add').addEventListener('click', addBlock);
+  catalogue.addEventListener('change', () => { endRun(); state.catalogue = catalogue.value; frameNote(); });
+  const rest = $('#bld-rest');
+  rest.addEventListener('change', () => { endRun(); state.rest = rest.value; frameNote(); });
+  $('#bld-add').addEventListener('click', () => addBlock(state.catalogue));
+  $('#bld-add-rest').addEventListener('click', () => addBlock(state.rest));
   $('#bld-up').addEventListener('click', () => moveBlock(-1));
   $('#bld-down').addEventListener('click', () => moveBlock(+1));
   $('#bld-remove').addEventListener('click', removeBlock);
@@ -1113,8 +1223,10 @@ async function init() {
   window.addEventListener('pagehide', flushSave);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
 
-  fillCatalogue();
+  // FILL THE SLOTS FIRST. The catalogue's split is a property of the SLOT, so
+  // it cannot be computed before state.slot has a value.
   fillSlots();
+  fillCatalogue();
   fillPicker();
   syncHistory();
   render();
@@ -1134,7 +1246,7 @@ window.RuxBuilder = {
   model: () => pageOf(),
   history: () => ({ past: history.past.map(e => e.label), future: history.future.map(e => e.label) }),
   run: () => (run ? { key: run.key, age: Date.now() - run.at } : null),
-  add: (slot, id) => { state.slot = slot; state.catalogue = id; addBlock(); },
+  add: (slot, id) => { state.slot = slot; addBlock(id); },
   move: (key, dir) => { state.block = key; moveBlock(dir); },
   remove: key => { state.block = key; removeBlock(); },
   undo: () => step('undo'),

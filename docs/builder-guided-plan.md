@@ -72,7 +72,7 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 | 8 | **DONE 2026-09-05.** Content editing that reads as content: labels from context, grouping, link targets, per-field reset. | `rewrites.mjs` | 6 |
 | 9 | **DONE 2026-09-05.** Variant edits: button size per group, table density, "as attested" default; the data-table section in `choices.md`. | `rewrites.mjs`, `build-builder.mjs` | 6, 8 |
 | 10 | **DONE 2026-09-05.** Manifest depth (`frameDeps`), a whole-manifest comparison, and the generated coverage table. NO catalogue growth — rux's call: build the measurement first, pick from it after. | `build-blocks.mjs`, `check-blocks.mjs`, `lib/coverage.mjs`, `gates.mjs`, CI | 0 |
-| 11 | The guide map `builder/guide.json` with conditions and review records, validated by `check-blocks`. | `check-blocks.mjs` | 9, 10 |
+| 11 | **DONE 2026-09-05.** The guide map `builder/guide.json`, and placement evidence derived rather than claimed: the catalogue splits by recorded layout, the rest behind a disclosure. Drafted throughout, nothing reviewed. | `lib/blocks.mjs`, `check-blocks.mjs`, `lib/gates.mjs`, `build-builder.mjs`, `rewrites.mjs`, `placement.mjs` | 9, 10 |
 | 12 | Guided mode in `builder.html`: stepper, outline, five steps, acceptance criteria. | `build-builder.mjs` | 7, 8, 9, 11 |
 | 13 | Repeated items: duplicate, remove, reorder a repeated sibling, ids re-suffixed. v2. | `rewrites.mjs` | 12 |
 
@@ -144,12 +144,21 @@ it after, so the catalogue stays at 33. What was added beyond the note: a
 whole-manifest comparison, because a hand-edited `deps`, a rewritten `label`
 and a DELETED template record each passed the old gate with 0 faults.
 
-**11, the map.** `builder/guide.json`: per template the purpose line and
-ordered suggestions with `block`, `reason`, `slot`, `unless`,
-`requiresFrame`, `reviewed`; per variant family values, default, reason.
-Validated by `check-blocks`. The wider catalogue stays offered under
-"not reviewed here: inspect the preview". Prose in `docs/choices.md`,
-drafted, then edited by rux.
+**11, the map. Landed 2026-09-05; roadmap §4.12 is the record.** Three
+corrections to what this note said. It listed `requiresFrame` as a field of the
+map: it is DERIVED from stage 10's `frameDeps` and is never written down —
+exactly one block has any, and the builder now warns before the add rather than
+after. It described `slot` as a field alongside the others without saying which
+side of the line it falls on; rux's review settled that, and it is the right
+side: a container comparison is evidence ABOUT a proposed placement and cannot
+decide which slot rux recommends, so `slot` stays hand-written while the
+evidence for it is derived. And it said the wider catalogue stays offered under
+"not reviewed here: inspect the preview" — the label is wrong, because the split
+is not about review at all. It is "seen in the same recorded layout" against "no
+matching recorded layout", and a matching layout is not an attested placement:
+only a block in its own slot is. What was added beyond the note: `containerOf`
+was a regex lookup that never processed a closing tag, so a CLOSED column above
+a slot was reported as its container.
 
 **12, guided mode.** A mode switch; the left column becomes a stepper over
 five steps, preview on the right: purpose; sections and content (the

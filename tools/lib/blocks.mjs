@@ -66,18 +66,69 @@ export function markers(html) {
   return out;
 }
 
-// The containers a slot sits in, read from the template source above it: the
-// nearest enclosing grid column's classes and, inside that, the nearest stack.
-// Informational — it is what lets the builder say "this block was attested in
-// a col-span-100 column" — and derived from markup this repository writes, so
-// it is a lookup, not a parse.
+// The containers a slot sits in: the enclosing grid, the grid column inside it,
+// and the stack inside that. This is what lets the builder say a block was
+// recorded in a layout like this one, so it has to be the ANCESTORS and not
+// merely the markup above.
+//
+// IT WAS A REGEX LOOKUP UNTIL 2026-09-05 AND IT WAS WRONG. The old version took
+// the last matching OPENING tag before the marker and never processed a closing
+// tag, so a column and a stack that CLOSE above a slot were reported as that
+// slot's container. Measured on a fixture whose real parent is a plain wrapper:
+// it returned the closed decoys, with 0 faults. Nothing in the repository
+// tripped it -- a real walk agrees with all twelve recorded containers at the
+// commit this landed -- but stage 11 builds placement evidence on this value,
+// and check-blocks compares the manifest by RE-DERIVING it with this same
+// function, so a fault here is invisible to the gate by construction. Its own
+// comment used to concede it was "a lookup, not a parse". Now it parses.
+//
+// THE GRID IS PART OF THE SIGNATURE, and leaving it out made six false matches.
+// form-page opens `css-grid`; wizard-page opens `css-grid css-grid--with-row-gap`
+// and its source calls that "LOAD-BEARING AND ONLY BELOW lg". Their columns and
+// stacks are byte-identical, so without the grid wizard-page/panel and the three
+// form bodies read as one layout.
+//
+// CLASSES ARE NORMALISED to a sorted set: two orderings of one layout must not
+// produce two signatures.
+const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+  'link', 'meta', 'param', 'source', 'track', 'wbr']);
+const TAG_SCAN = /<!--[\s\S]*?-->|<script\b[\s\S]*?<\/script\s*>|<style\b[\s\S]*?<\/style\s*>|<svg\b[\s\S]*?<\/svg\s*>|<\/?[a-zA-Z][^>]*>/g;
+
+export const normalizeClasses = cls => (cls ? cls.trim().split(/\s+/).filter(Boolean).sort().join(' ') : null) || null;
+
+// The open elements at a byte index, outermost first.
+function ancestorsAt(html, index) {
+  const stack = [];
+  TAG_SCAN.lastIndex = 0;
+  for (let m; (m = TAG_SCAN.exec(html));) {
+    if (m.index >= index) break;
+    const t = m[0];
+    if (t.startsWith('<!--') || /^<(script|style|svg)\b/i.test(t)) continue;
+    if (t.startsWith('</')) {
+      const name = t.slice(2).replace(/[\s>].*/, '').toLowerCase();
+      for (let i = stack.length - 1; i >= 0; i--) if (stack[i].name === name) { stack.length = i; break; }
+      continue;
+    }
+    const name = t.slice(1).replace(/[\s/>].*/, '').toLowerCase();
+    if (VOID_TAGS.has(name) || /\/\s*>$/.test(t)) continue;
+    stack.push({ name, cls: (t.match(/\sclass="([^"]*)"/) ?? [, ''])[1] });
+  }
+  return stack;
+}
+
 function containerOf(html, index) {
-  const before = html.slice(0, index);
-  const col = [...before.matchAll(/<div class="([^"]*\brux--css-grid-column\b[^"]*)"/g)].pop();
-  const stackAfterCol = col
-    ? [...before.slice(col.index).matchAll(/<div class="([^"]*\brux--stack-vertical\b[^"]*)"/g)].pop()
-    : null;
-  return { column: col ? col[1] : null, stack: stackAfterCol ? stackAfterCol[1] : null };
+  const open = ancestorsAt(html, index);
+  const isGrid = x => /\brux--css-grid\b/.test(x.cls) && !/\brux--css-grid-column\b/.test(x.cls);
+  const isColumn = x => /\brux--css-grid-column\b/.test(x.cls);
+  const gridAt = open.findLastIndex(isGrid);
+  const columnAt = open.findLastIndex(isColumn);
+  // The stack must be INSIDE the column, or it belongs to something else.
+  const stackAt = open.findLastIndex((x, i) => i > columnAt && /\brux--stack-vertical\b/.test(x.cls));
+  return {
+    grid: gridAt === -1 ? null : normalizeClasses(open[gridAt].cls),
+    column: columnAt === -1 ? null : normalizeClasses(open[columnAt].cls),
+    stack: columnAt === -1 || stackAt === -1 ? null : normalizeClasses(open[stackAt].cls),
+  };
 }
 
 const blank = s => /^\s*$/.test(s);
@@ -263,6 +314,12 @@ export function manifestOf(entries) {
         id: idOf(path, b.name), source: path, name: b.name, label: b.label,
         kind: root === 'sink' ? 'component' : 'composition',
         slot: b.slot, follows: b.follows, deps, frameDeps, line: b.line, provenance,
+        // THE LAYOUT THIS BLOCK WAS RECORDED IN -- grid, column, stack -- which
+        // is evidence about a proposed placement and never a verdict on one. A
+        // block in its OWN slot is an attested placement; a block whose layout
+        // merely matches another slot's is not, and builder/placement.mjs keeps
+        // that distinction in its names.
+        grid: container?.grid ?? null,
         column: container?.column ?? null, stack: container?.stack ?? null,
         open: b.open, html: b.html, close: b.close,
       });

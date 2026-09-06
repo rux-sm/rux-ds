@@ -372,6 +372,12 @@ const SIZES = {
 };
 const DENSITIES = ['xs', 'sm', 'md', 'lg', 'xl'];
 
+// THE ONE SOURCE OF WHAT A GROUP OFFERS, derived from the tables above and
+// returned on every group by variantsOf. builder.js reads it for the select and
+// check-blocks reads it to validate a recommendation, so a value cannot be
+// offered in one place and refused in the other.
+export const valuesFor = kind => (kind === 'table' ? [...DENSITIES] : Object.keys(SIZES));
+
 // ICON-ONLY IS EXCLUDED and the stylesheet says why: .rux--btn--icon-only sets
 // inline-size AND block-size from the size token, so a swap resizes the hit
 // target in both axes, and Carbon's own size rules are written
@@ -425,7 +431,14 @@ export function variantsOf(html) {
   }
   // A set or toolbar holding no qualifying button is not a group: the reader
   // would be offered a control that changes nothing.
-  return groups.filter(g => g.targets.length).map(g => ({ ...g, current: g.current ?? 'lg' }));
+  //
+  // `values` IS RETURNED, NOT RE-DECLARED BY THE CALLER. Until 2026-09-05 the
+  // list of offered values existed twice — SIZES and DENSITIES here, and a
+  // second copy in builder.js — and stage 11's validator would have made a
+  // third. rux's review: one shared source, read off this function. The caller
+  // supplies only the display words.
+  return groups.filter(g => g.targets.length)
+    .map(g => ({ ...g, current: g.current ?? 'lg', values: valuesFor(g.kind) }));
 }
 
 const rewriteClass = (kind, cls, value) => kind === 'table'

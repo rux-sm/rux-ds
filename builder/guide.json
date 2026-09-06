@@ -1,0 +1,297 @@
+{
+  "_": "HAND-WRITTEN, and every `reviewed` is false until rux says otherwise. Holds only what cannot be derived: the purpose line, which slot is recommended, and the prose. Placement EVIDENCE is derived by builder/placement.mjs and is never written here. tools/check-blocks.mjs validates every block, slot and variant key against builder/blocks.json, and requires `evidence` on any suggestion whose recorded layout does not match the slot's. Purpose lines are docs/choices.md's own \"Use it when\" column, not new prose.",
+  "templates": {
+    "app-shell": {
+      "purpose": "Nav and header, nothing else yet — the shell a page starts from before it knows what it holds.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/detail-page/page-header",
+          "slot": "body",
+          "reason": "A shell with nothing in it needs a heading before it needs anything else, and this one carries its own actions.",
+          "unless": "The page has a page title already — the two are alternatives, not a pair.",
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/detail-page/metric-row",
+          "slot": "body",
+          "reason": "Four numbers across is the fastest way to make an empty shell say what the page is about.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/detail-page/tabs",
+          "slot": "body",
+          "reason": "Tabs give a shell somewhere to put a second view without a second page.",
+          "unless": "There is only one view — tabs holding one panel read as a mistake.",
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "sink/breadcrumb/default",
+          "slot": "body",
+          "reason": "A shell deep in a hierarchy wants a way back up.",
+          "unless": null,
+          "evidence": "No template places a breadcrumb, and the fragment carries no grid ancestry: the spacing above the first block is unverified. docs/composing-pages.md §3.10.",
+          "reviewed": false
+        }
+      ]
+    },
+    "dashboard-page": {
+      "purpose": "A few numbers and a table, read more than edited.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "sink/tile/basic",
+          "slot": "body",
+          "reason": "A single tile carries one figure that does not belong in the metric row.",
+          "unless": "It would sit inside anything painting layer — §3.1: a tile on layer-two is invisible on a plain page.",
+          "evidence": "The dashboard grid is its own layout and no block outside this template matches it. Placement here is unverified in both directions.",
+          "reviewed": false
+        }
+      ]
+    },
+    "table-page": {
+      "purpose": "A list of records: sort, select, page.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/empty-state/empty-table",
+          "slot": "body",
+          "reason": "Every table page needs the state where the query returns nothing.",
+          "unless": "The empty case is handled outside the page.",
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/error-state/inline-error",
+          "slot": "body",
+          "reason": "The load failed but the page did not — the error belongs above the table, not instead of it.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        }
+      ]
+    },
+    "form-page": {
+      "purpose": "Create or edit one record.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/settings-page/form",
+          "slot": "body",
+          "reason": "A second form, for a record that saves in two independent parts.",
+          "unless": "The two parts save together — one form with a fieldset each is the honest shape.",
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "sink/notification/inline-error",
+          "slot": "body",
+          "reason": "A validation summary above the fields, where a per-field message is not enough.",
+          "unless": null,
+          "evidence": "No template places an inline notification in a form body: its spacing against the form below is unverified. §3.10.",
+          "reviewed": false
+        }
+      ]
+    },
+    "detail-page": {
+      "purpose": "Read one record, with actions.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/app-shell/page-title",
+          "slot": "body",
+          "reason": "A plain title, where the page header's actions are not wanted.",
+          "unless": "The page header is already there — they are alternatives.",
+          "evidence": null,
+          "reviewed": false
+        }
+      ]
+    },
+    "settings-page": {
+      "purpose": "Grouped controls that save.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/form-page/form",
+          "slot": "body",
+          "reason": "A group of controls that save together, beside the ones already here.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "sink/accordion/default",
+          "slot": "body",
+          "reason": "Settings nobody changes belong behind a disclosure rather than on the page.",
+          "unless": null,
+          "evidence": "No template places an accordion in a page body. Its own margins against a stack are unverified. §3.10.",
+          "reviewed": false
+        }
+      ]
+    },
+    "wizard-page": {
+      "purpose": "One step of a multi-step flow.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "sink/notification/inline-error",
+          "slot": "panel",
+          "reason": "A step that failed validation says so at the top of its own panel.",
+          "unless": null,
+          "evidence": "The wizard grid carries css-grid--with-row-gap, which its source calls load-bearing below lg, so no block outside this template shares its layout. Placement here is unverified.",
+          "reviewed": false
+        },
+        {
+          "block": "sink/structured-list/condensed",
+          "slot": "panel",
+          "reason": "A read-only list of what the earlier steps collected, above the fields of this one.",
+          "unless": "The summary block is already saying that.",
+          "evidence": "Same as above: nothing outside this template matches the wizard panel's layout.",
+          "reviewed": false
+        }
+      ]
+    },
+    "schedule-page": {
+      "purpose": "Dates and times.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/form-page/form",
+          "slot": "body",
+          "reason": "The details that go with the dates — who, what, and why — in the shape the form page attests.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/form-page/page-title",
+          "slot": "body",
+          "reason": "A plain title where the schedule's own heading is not wanted.",
+          "unless": "The page title is already there.",
+          "evidence": null,
+          "reviewed": false
+        }
+      ]
+    },
+    "empty-state": {
+      "purpose": "Nothing to show yet.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/error-state/inline-error",
+          "slot": "body",
+          "reason": "Empty because something failed is a different message from empty because nothing has been made yet.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/table-page/table",
+          "slot": "body",
+          "reason": "A table with its headings and no rows says what WILL be here, which an illustration cannot.",
+          "unless": "The empty table block is already doing that.",
+          "evidence": null,
+          "reviewed": false
+        }
+      ]
+    },
+    "error-state": {
+      "purpose": "Something failed.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/empty-state/empty-table",
+          "slot": "body",
+          "reason": "A failed load and an empty result look the same to a reader; the table shell keeps the shape.",
+          "unless": null,
+          "evidence": null,
+          "reviewed": false
+        },
+        {
+          "block": "templates/table-page/pagination",
+          "slot": "body",
+          "reason": "Kept with the table when an error replaces its rows rather than the whole page.",
+          "unless": "The error replaced the table too — pagination over nothing is noise.",
+          "evidence": null,
+          "reviewed": false
+        }
+      ]
+    }
+  },
+  "variants": {
+    "sink/contained-list/on-page#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "sink/table/basic#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/dashboard-page/table-and-activity#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/detail-page/page-header#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/empty-state/empty-state#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/empty-state/empty-table#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/error-state/error-state#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/form-page/form#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/schedule-page/form#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/settings-page/form#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/table-page/table#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/table-page/table#1": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/wizard-page/actions#0": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    },
+    "templates/wizard-page/actions#1": {
+      "recommended": "as-attested",
+      "reason": null,
+      "reviewed": false
+    }
+  }
+}

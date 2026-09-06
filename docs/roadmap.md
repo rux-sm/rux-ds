@@ -3571,6 +3571,118 @@ CUT" where the rows parse to **77 KEEP, 2 DEFER, 4 CUT** after §4.9's admission
 batches. `check-inventory` verifies every component HAS a row, not that the prose
 counting them is right. It is a decision document, so its numbers are rux's.
 
+**Stage 11, 2026-09-05, accepted by rux and landed in the commit that carries
+this sentence — the guide map, and placement evidence that does not
+overclaim.** The catalogue offered all **33 blocks, flat, in manifest order,
+identically for every slot**. It now splits by what the repository has actually
+seen, and carries a hand-written map of purpose lines and suggestions.
+
+**A MATCHING CONTAINER IS NOT AN ATTESTED PLACEMENT, and the first plan called
+it one.** That is rux's finding and it renamed the whole design. A metric row
+captured in Detail was not thereby captured in App Shell. So: **an attested
+placement is a block in its own source slot and nothing else earns the word**;
+a layout match is *evidence about* a proposed placement; the function is
+`matchesContainer`, never `attestedIn`; and the page says "Seen in the same
+recorded layout" and "No matching recorded layout". The distinction is kept in
+`builder/placement.mjs`'s names so it cannot quietly erode.
+
+**`containerOf` DID NOT FIND ANCESTORS.** It took the last matching OPENING tag
+before the marker and never processed a closing tag — its own comment conceded
+it was "a lookup, not a parse". On a fixture whose real parent is a plain
+wrapper, with a column and a stack CLOSED above the slot, it returned the closed
+decoys with **0 faults**, and stage 10's whole-manifest comparison cannot catch
+that because the writer and the checker share the derivation. **Latent, not
+active**: a real tag walk agrees with all twelve recorded containers, 0 of 12
+differ, and stripping `grid` and normalising class order makes the new manifest
+byte-identical to the old. It parses now.
+
+**THE GRID IS PART OF THE SIGNATURE, and leaving it out would have made 15
+false claims.** `form-page` opens `css-grid`; `wizard-page` opens `css-grid
+css-grid--with-row-gap`, which its own source calls **"LOAD-BEARING AND ONLY
+BELOW lg"**. Their columns and stacks are byte-identical. Without the grid,
+**15 block-and-slot pairs across 9 blocks** read as matching — every one between
+the wizard's panel and the three form bodies. **A correction to my own plan,
+which said six**: six is the number of blocks that changed tier, not the number
+of claims, and the claims are what would have been shown to a reader. With the
+grid: 12 slots reduce to **7 layouts**, and of 33 blocks **16 match more than
+one slot, 8 match exactly one, and 9 — every sink block — match none**, because
+a sink fragment has no grid ancestry.
+
+**THE HAND-WRITTEN `slot` IS NOT DUPLICATED DATA**, which the first plan also
+got wrong by calling it the `deps` mistake repeating. A container comparison is
+evidence about a proposed placement; it cannot decide which slot rux
+*recommends*. Only the evidence is derived. `requiresFrame` genuinely was
+duplicated and is now derived from stage 10's `frameDeps`.
+
+**`unless` AND `evidence` ARE DIFFERENT FIELDS**, rux's finding, and the first
+plan conflated them. `unless` says when the recommendation should not be
+followed; `evidence` says what has not been verified. The gate requires
+`evidence` exactly when the layouts do not match, and **faults it when they
+do** — a field that can be added freely stops meaning anything. **The gate does
+not forbid an unmatched suggestion. It forbids making one silently.**
+
+**UNREVIEWED DRAFTS DO NOT OUTRANK MEASURED EVIDENCE.** rux's finding: visual
+priority is authority whatever a badge says. Only `reviewed: true` is promoted;
+everything else sits in a closed "Draft suggestions — not reviewed" section.
+Since **all 20 suggestions, all 10 purpose lines and all 14 variant
+recommendations ship `reviewed: false`**, this stage promotes NOTHING, and that
+is the intended state rather than an oversight. **The 14 variant entries all
+recommend "as-attested" with a null reason on purpose**: the repository's only
+guidance on button size in context is `docs/choices.md`'s "`sm` inside tables
+and toolbars", which stage 9 recorded as contradicted by the corpus and left for
+rux, and drafting on top of an open contradiction would launder it.
+
+**ONE SOURCE FOR WHAT A VARIANT OFFERS.** `SIZES` and `DENSITIES` lived in
+`rewrites.mjs` and were copied in `builder.js`; a validator would have been a
+third. `variantsOf` returns `values` now and both callers read it. **Proved by
+mutation, off the output**: drop `xs` from `SIZES` and the same recommendation
+goes from accepted to refused, the gate naming the values it read off the group.
+The first attempt at that red run came back GREEN because I aimed it at the
+TABLE group, which reads `DENSITIES` — my test was wrong, not the code, and it
+is the same trap stage 9's third red run fell into.
+
+**Eleven red runs on the map**, each mutation verified applied: a block that
+does not exist, a slot the template lacks, a duplicate block-and-slot, an
+unmatched suggestion with no `evidence`, `evidence` where the layouts DO match,
+a variant ordinal out of range, a value the group refuses, a non-boolean
+`reviewed`, a template with no entry, a blank reason, and a hand-edited `grid`
+against the whole-manifest comparison. All eleven fault. **Red before trusted**:
+giving `table-page`'s grid a row gap takes its slot from 6 matches to 2.
+
+**READ IN THE BROWSER, since no gate reaches any of it.** All **12 slots sum to
+33** — 4+29 on app-shell, 6+27 on the six body slots, 1+32 on the wizard's title
+and steps, 3+30 on its panel. Both Add paths place a block through one shared
+transaction. The frame warning fires **before** the add — *"Actions points at
+`data-rux-open="wizard-cancel"`, which app-shell does not have"* — stays silent
+on `wizard-page` itself where the target exists, and the composed page's
+`integrity()` still reports it after. The disclosure opens and closes by
+pointer. A draft survives a reload with the split intact. 375px scrolls nothing
+sideways and nothing overflows.
+
+**TWO THINGS NOT DONE, AND A CORRECTION.** The disclosure's **keyboard
+activation is unmeasured**: the pane delivers Enter and Space as keydown with no
+click, and here the keydown did not arrive at all, so this joins the undo
+shortcut as a keypress owed to a human. The heading is a real `<button>` at
+`tabIndex 0` and takes focus, and `js/accordion.js` binds `click`, which a real
+browser's Enter and Space produce — but that is reasoning, not a measurement.
+**The 375px pass was measured, not looked at**, because the Browser pane was
+hidden; one screenshot at 1280 is the only visual reading. And a correction I
+made in the open during the pass: I reported a `SyntaxError` on every template
+page and it was **my own console buffer leaking across navigations in a reused
+tab** — a fresh tab is clean. No such defect exists.
+
+Tier 2, six controls: `lib/blocks.mjs`, `check-blocks.mjs`, `lib/gates.mjs`,
+`build-builder.mjs`, `builder/rewrites.mjs`, and a new `builder/placement.mjs`
+joining `CONTROL_FILES` on `rewrites.mjs`'s footing — read by the page in the
+browser and the gate in node, so the two cannot disagree about what the
+repository has seen. **What it weakens: nothing measured.** No baseline is
+lowered, no target removed, and nothing became refusable that was not.
+`builder/guide.json` is deliberately NOT a control: it is hand-kept data a gate
+validates, and it lets nothing past. Two honest costs: `variantsOf` allocates
+one more field per group, and the ancestor walk is a real parse where a regex
+lookup used to be. The red runs are evidence, not acceptance. Not done: stages
+12 and 13, the keyboard reading above, and every `reviewed` in the map.
+
 ### 4.13 Phase 13 — The platform: every theme, a profile everywhere, one backend
 
 **Added 2026-09-02**, from a conversation the same day, and decided by rux the

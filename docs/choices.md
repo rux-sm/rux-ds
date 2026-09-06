@@ -115,3 +115,44 @@ template's `<main>` — because a fragment dropped in whole brings `ks-`
 wrappers that `css/rux.css` does not style and specimens a page does not
 want. `builder/blocks.json` is the list, and `tools/check-blocks.mjs` keeps it
 a verbatim copy of its sources.
+
+## Where a block may go — evidence, not permission
+
+*Drafted 2026-09-05 by the stage-11 pass. Every figure is measured; the
+judgement in the last paragraph is rux's to make.*
+
+**Nothing refuses a block.** The builder offers all 33 in every slot, which is
+`builder/page.mjs`'s standing decision and is not reopened here. What stage 11
+added is a **sort and a label**, so the reader can tell one kind of choice from
+another.
+
+| | |
+|---|---|
+| **An attested placement** | a block in **its own source slot**. `templates/detail-page/metric-row` in `detail-page/body`, and nowhere else, ever. |
+| **The same recorded layout** | a slot whose enclosing grid, grid column and stack classes are identical to the ones the block was marked in. **Evidence about a placement, never a verdict on one.** |
+
+Of the 33 blocks, **16 have a layout matching more than one slot, 8 match
+exactly one, and 9 match none** — those nine are every `sink/` block, because a
+sink fragment has no grid ancestry to record. The twelve slots reduce to
+**seven distinct layouts**.
+
+**Why the grid is in the signature, which is the worked example.**
+`form-page` opens `<div class="rux--css-grid">` and `wizard-page` opens
+`<div class="rux--css-grid rux--css-grid--with-row-gap">`, which
+`templates/wizard-page.html` calls *load-bearing and only below `lg`*. Their
+columns and stacks are byte-identical. Comparing only those two would have
+reported **15 block-and-slot pairs as matching that do not**, all of them
+between the wizard's panel and the three form bodies.
+
+**What the comparison cannot see, and why a reading still governs.** Layer,
+siblings, what sits above in the same stack, the frame, the theme — and every
+one of the thirteen hazards in `docs/composing-pages.md`. §3.1 is the standing
+proof: a `rux--tile` inside `layer-two` is invisible on a plain page, measured
+`rgb(255,255,255)` on `rgb(255,255,255)`, and no class signature sees it. §3.10
+is the general rule — an unattested composition inherits no spacing, there may
+be no fix, and no gate reads it.
+
+So a matching layout means the repository has *seen* an arrangement like this
+one. It does not mean this one works. That is what `builder/guide.json`'s
+`reviewed` field is for, and **at the commit this landed every entry in it is
+`false`**.

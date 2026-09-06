@@ -59,6 +59,39 @@ where they still prescribed blue icons or an 8x8 grid.
 Everything below is in the repo, so a fresh clone is the whole handover — nothing lives
 in an editor session or a machine-local note.
 
+**DONE 2026-09-05 — the guide map, and placement evidence that does not
+overclaim (§4.12 stage 11).** The catalogue offered all 33 blocks flat, in
+manifest order, identically for every slot. It now splits by what the repository
+has actually seen: 12 slots reduce to 7 layouts, and of 33 blocks 16 match more
+than one slot, 8 match exactly one, and 9 — every sink block — match none.
+
+A matching container is NOT an attested placement, and the first plan called it
+one. rux's finding, and it renamed the design: an attested placement is a block
+in its own source slot and nothing else earns the word; a layout match is
+evidence about a placement, never a verdict on one. The page says "Seen in the
+same recorded layout" and "No matching recorded layout".
+
+`containerOf` did not find ancestors: it took the last matching OPENING tag and
+never processed a closing one, so a column and stack CLOSED above a slot were
+reported as its container, with 0 faults, and stage 10's whole-manifest
+comparison cannot catch that because the writer and the checker share the
+derivation. Latent, not active — a real walk agrees with all 12 recorded
+containers. Adding the grid to the signature removed 15 false block-and-slot
+claims across 9 blocks, all between the wizard's panel and the three form
+bodies; the wizard's grid carries `css-grid--with-row-gap`, which its own source
+calls load-bearing below lg. My plan said six of these; six is the number of
+blocks that changed tier, not the number of claims.
+
+`unless` and `evidence` are separate fields with separate meanings, and the gate
+faults `evidence` supplied where the layouts DO match as well as missing where
+they do not. Everything ships `reviewed: false` — 20 suggestions, 10 purpose
+lines, 14 variant recommendations — so nothing is promoted, which is intended.
+Eleven red runs on the map all fault.
+
+Owed to a human: the disclosure's keyboard activation. The pane delivers Enter
+as keydown with no click and here no keydown arrived at all, so it joins the
+undo shortcut. The 375px pass was measured, not looked at.
+
 **DONE 2026-09-05 — the gate reads the whole manifest, and a table measures the
 gap (§4.12 stage 10).** No catalogue growth — rux's call: build the measurement
 first, pick from it after. The catalogue stays at 33 blocks in 18 files, 12 slots.

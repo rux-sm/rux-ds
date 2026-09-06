@@ -20,6 +20,12 @@
 .bld-frame { display: block; inline-size: 100%; block-size: 48rem; border: 0; background: var(--rux-background); }
 .bld-widths, .bld-row { display: flex; flex-wrap: wrap; gap: var(--rux-spacing-03); }
 .bld-status { color: var(--rux-text-secondary); }
+/* A warning about the page being composed, not about the builder. Tokens only:
+   --rux-support-error is the theme's own, so it follows a theme change like
+   everything else on the page. */
+.bld-warn { color: var(--rux-support-error); }
+.bld-suggest { border-inline-start: 2px solid var(--rux-border-subtle-01); padding-inline-start: var(--rux-spacing-04); }
+.bld-suggest p { margin: 0 0 var(--rux-spacing-02); }
 /* The command is a <code>, not a code-snippet: that component's copy button is
    the icon-tooltip one, and stage 7's call was a plain button the builder owns
    (js/copy-button.js: "A page that needs neither owns the click"). So this is
@@ -248,19 +254,45 @@
                   <div class="rux--form__helper-text" id="bld-slot-note">A container the template already has.</div>
                 </div>
               </div>
+              <div id="bld-suggestions" hidden></div>
               <div class="rux--form-item">
                 <div class="rux--select">
-                  <label class="rux--label" for="bld-catalogue">Add from the catalogue</label>
+                  <label class="rux--label" for="bld-catalogue">Seen in the same recorded layout</label>
                   <div class="rux--select-input__wrapper">
                     <select id="bld-catalogue" class="rux--select-input"></select>
                     <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
                   </div>
-                  <div class="rux--form__helper-text">Every marked block in <code>sink/</code> and <code>templates/</code>. Each part is attested; the arrangement is yours (<code>docs/composing-pages.md</code> §3.10). Added to the end of the slot.</div>
+                  <div class="rux--form__helper-text" id="bld-catalogue-note">Blocks recorded in a container with the same grid, column and stack classes as this slot. That is evidence, not a verdict: only a block in its own slot is an attested placement. Added to the end of the slot.</div>
                 </div>
               </div>
               <div>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add">Add to slot</button>
               </div>
+              <p class="bld-warn" id="bld-frame-note" hidden></p>
+              <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
+                <li class="rux--accordion__item">
+                  <button type="button" class="rux--accordion__heading" aria-expanded="false" id="bld-rest-toggle">
+                    <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+                    <div class="rux--accordion__title" id="bld-rest-title">No matching recorded layout</div>
+                  </button>
+                  <div class="rux--accordion__wrapper">
+                    <div class="rux--accordion__content">
+                      <div class="rux--form-item">
+                        <div class="rux--select">
+                          <label class="rux--label" for="bld-rest">Add anyway</label>
+                          <div class="rux--select-input__wrapper">
+                            <select id="bld-rest" class="rux--select-input"></select>
+                            <svg class="rux--select__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--down"/></svg>
+                          </div>
+                          <div class="rux--form__helper-text">No capture places these here. Every part is still attested on its own; what is unverified is the arrangement, and there may be no fix — <code>docs/composing-pages.md</code> §3.10.</div>
+                        </div>
+                      </div>
+                      <p class="bld-warn" id="bld-rest-frame-note" hidden></p>
+                      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="bld-add-rest">Add to slot</button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
               <div class="rux--form-item">
                 <div class="rux--select">
                   <label class="rux--label" for="bld-block">Block on the page</label>
@@ -391,6 +423,26 @@
 <template id="bld-group-template">
   <div role="group" aria-label="">
     <h3 class="rux--type-heading-compact-01"></h3>
+  </div>
+</template>
+<template id="bld-suggest-group-template">
+  <ul class="rux--accordion rux--accordion--end rux--layout--size-md">
+    <li class="rux--accordion__item">
+      <button type="button" class="rux--accordion__heading" aria-expanded="false">
+        <svg class="rux--accordion__arrow" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+        <div class="rux--accordion__title"></div>
+      </button>
+      <div class="rux--accordion__wrapper">
+        <div class="rux--accordion__content"></div>
+      </div>
+    </li>
+  </ul>
+</template>
+<template id="bld-suggest-template">
+  <div class="bld-suggest">
+    <p data-role="reason"></p>
+    <p class="bld-status" data-role="unless" hidden></p>
+    <p class="bld-warn" data-role="evidence" hidden></p>
   </div>
 </template>
 <template id="bld-no-fields-template">

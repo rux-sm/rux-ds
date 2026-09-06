@@ -508,19 +508,19 @@ export const GATES = [
     tool: 'tools/check-blocks.mjs',
     kind: 'node',
     inVerify: true,
-    catches: 'a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json disagreeing with its sources in ANY field, in order, or by a duplicate or a missing template record, and slot records that do not rebuild the file · a docs/builder-coverage.md whose generated table has drifted, or whose eligibility notes name a fragment that is gone, is already marked, or is named twice',
-    blindTo: 'whether the marked region is the RIGHT part of the fragment, and whether an unmarked fragment SHOULD be marked — both are readings. The coverage table counts candidates; it does not rank them',
+    catches: 'a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a ks- class or an inline style, uses a glyph the sprite lacks, or references an id outside its own region · a slot carrying markup outside any block, or a template with no slot · a builder/blocks.json disagreeing with its sources in ANY field, in order, or by a duplicate or a missing template record, and slot records that do not rebuild the file · a docs/builder-coverage.md whose generated table has drifted, or whose eligibility notes name a fragment that is gone, is already marked, or is named twice · a builder/guide.json naming a block or slot that does not exist, suggesting the same block into one slot twice, leaving a template with no purpose line, recommending a variant value the group does not offer, or making a suggestion whose recorded layout does not match the slot WITHOUT saying what is unverified',
+    blindTo: 'whether the marked region is the RIGHT part of the fragment, and whether an unmarked fragment SHOULD be marked — both are readings. The coverage table counts candidates; it does not rank them. AND WHETHER A SUGGESTION IS GOOD: it checks the map is consistent with the catalogue, never that the advice is sound, and a matching container is evidence about a placement and not a verdict on one — layer, siblings, the frame and the 13 hazards in composing-pages.md are all invisible to it',
     reads: 'per-file',
-    fileTargets: ['sink', 'templates', 'builder/blocks.json', 'docs/builder-coverage.md'],
+    fileTargets: ['sink', 'templates', 'builder/blocks.json', 'docs/builder-coverage.md', 'builder/guide.json'],
     pageTargets: [],
     canRun: { sink: true, templates: true },
     // js/ and src/app.scss are inputs because lib/coverage.mjs resolves each
     // fragment's behaviour modules and compiled components through
     // lib/ownership.mjs, which reads the inventory and the compiled stylesheet.
-    inputs: ['sink', 'templates', 'assets/icons.svg', 'builder/blocks.json', 'docs/builder-coverage.md', 'builder/rewrites.mjs', 'js', 'src/app.scss', 'docs/inventory.json'],
-    redRun: 'swap two BLOCK:END names in sink/structured-list.html; change one byte inside a marked region without `npm run blocks`; hand-edit a block\'s `deps` or `label`; delete a whole template record; hand-edit one cell of the coverage table; point an eligibility note at a fragment that does not exist',
+    inputs: ['sink', 'templates', 'assets/icons.svg', 'builder/blocks.json', 'docs/builder-coverage.md', 'builder/guide.json', 'builder/rewrites.mjs', 'builder/placement.mjs', 'js', 'src/app.scss', 'docs/inventory.json'],
+    redRun: 'swap two BLOCK:END names in sink/structured-list.html; change one byte inside a marked region without `npm run blocks`; hand-edit a block\'s `deps`, `label` or `grid`; delete a whole template record; hand-edit one cell of the coverage table; point an eligibility note at a fragment that does not exist; in builder/guide.json name a block or slot that does not exist, duplicate a block+slot, clear the `evidence` on an unmatched suggestion, add `evidence` to a matched one, put a recommendation on an ordinal the block does not have, or recommend a value the group refuses',
     sideEffects: null,
-    baseline: '33 blocks in 18 files · 12 slots · 68 fragments, 8 marked, 334 candidate regions',
+    baseline: '33 blocks in 18 files · 12 slots · 68 fragments, 8 marked, 334 candidate regions · 10 templates mapped, 20 suggestions, 14 variant groups, 0 reviewed',
   },
 
   {
@@ -777,6 +777,11 @@ export const CONTROL_FILES = [
   // derived, and its hand-kept eligibility notes let nothing past a gate; they
   // only say a fragment has been ruled on rather than left open.
   'tools/lib/coverage.mjs',
+  // Placement evidence, read by builder.js in the browser and by check-blocks in
+  // node, so the page and the gate cannot disagree about what the repository has
+  // seen. builder/guide.json is NOT listed for the same reason the coverage doc
+  // is not: it is hand-kept data a gate validates, and it lets nothing past.
+  'builder/placement.mjs',
   // The one transformation a template undergoes to become a page, read by
   // builder.html and by check-parity against the script.
   'builder/rewrites.mjs',

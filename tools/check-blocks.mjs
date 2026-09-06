@@ -53,12 +53,16 @@ import { readFileSync, existsSync } from 'node:fs';
 import { markupFiles } from './lib/sources.mjs';
 import { scan, idOf, provenanceIndex, idsIn, refsIn, glyphsIn, markers, assemble, manifestOf } from './lib/blocks.mjs';
 import { COVERAGE, BEGIN, END, coverageTable, reasonsIn, fragments } from './lib/coverage.mjs';
+import { variantsOf } from '../builder/rewrites.mjs';
+import { matchesContainer, variantKey } from '../builder/placement.mjs';
 
 const MANIFEST = 'builder/blocks.json';
+const GUIDE = 'builder/guide.json';
 const faults = [];
 const symbols = new Set([...readFileSync('assets/icons.svg', 'utf8').matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
 
-let expectedBlocks = null;      // the re-derived blocks, shared with the coverage check
+let expectedBlocks = null;      // the re-derived blocks, shared with the coverage and guide checks
+let expectedTemplates = null;
 const found = new Map();        // block id → { block, path }
 const scanned = new Map();      // path → { html, blocks, slots }
 let files = 0, slotCount = 0;
@@ -130,6 +134,7 @@ if (!existsSync(MANIFEST)) {
     const expected = manifestOf([...scanned].map(([path, e]) => ({ path, root: e.root, html: e.html, scan: e })));
     const say = v => JSON.stringify(v);
     expectedBlocks = expected.blocks;
+    expectedTemplates = expected.templates;
 
     const want = new Map(expected.blocks.map(b => [b.id, b]));
     const got = new Map(manifest.blocks.map(b => [b.id, b]));
@@ -207,6 +212,81 @@ if (!existsSync(COVERAGE)) {
       if (seen.has(name)) faults.push(['DUPLICATE', COVERAGE, `two eligibility notes for \`${name}\``]);
       seen.add(name);
     }
+  }
+}
+
+// THE GUIDE MAP. Hand-written data -- the purpose line, which slot is
+// recommended, and the prose -- validated against the manifest it names.
+// PLACEMENT EVIDENCE IS NOT IN IT: builder/placement.mjs derives whether a
+// block's recorded layout matches a slot's, and this gate re-derives it with
+// that same module, the arrangement lib/blocks.mjs and lib/coverage.mjs already
+// have. A hand-written copy of a derivable fact is what `deps` was.
+//
+// `unless` AND `evidence` ARE DIFFERENT FIELDS AND ARE CHECKED DIFFERENTLY --
+// rux's review, and the distinction is the point. `unless` says when the
+// recommendation should not be followed; `evidence` says what has not been
+// verified, and is REQUIRED exactly when the layouts do not match. The gate
+// does not forbid an unmatched suggestion. It forbids making one silently.
+if (!existsSync(GUIDE)) {
+  faults.push(['NO GUIDE', GUIDE, `not found — the builder reads it for the purpose line and the suggestions`]);
+} else if (expectedBlocks) {
+  let guide;
+  try { guide = JSON.parse(readFileSync(GUIDE, 'utf8')); }
+  catch (e) { faults.push(['UNREADABLE', GUIDE, e.message]); }
+  if (guide) {
+    const byId = new Map(expectedBlocks.map(b => [b.id, b]));
+    const templates = new Map(expectedTemplates.map(t => [t.name, t]));
+    const entries = guide.templates ?? {};
+
+    for (const name of templates.keys()) {
+      if (!(name in entries)) faults.push(['NO ENTRY', GUIDE, `${name} is a template and the map has no entry for it — every shape needs a purpose line, even an unreviewed one`]);
+    }
+    for (const [name, e] of Object.entries(entries)) {
+      const t = templates.get(name);
+      if (!t) { faults.push(['NO TEMPLATE', GUIDE, `${name} has a map entry and is not a template — the shape has gone`]); continue; }
+      if (typeof e.purpose !== 'string' || !e.purpose.trim()) faults.push(['NO PURPOSE', GUIDE, `${name}: purpose is missing or blank — the one line the guided mode opens with`]);
+      if (typeof e.reviewed !== 'boolean') faults.push(['NOT BOOLEAN', GUIDE, `${name}: reviewed is ${JSON.stringify(e.reviewed)} — it is rux's record that a human read this, and is never inferred`]);
+
+      const seen = new Set();
+      for (const s of e.suggestions ?? []) {
+        const at = `${name} → ${s.block ?? '(no block)'}`;
+        const b = byId.get(s.block);
+        if (!b) { faults.push(['NO BLOCK', GUIDE, `${at}: no such block in the catalogue — run \`npm run blocks\`, or the suggestion has outlived its block`]); continue; }
+        const slot = t.slots.find(x => x.name === s.slot);
+        if (!slot) { faults.push(['NO SLOT', GUIDE, `${at}: ${name} has no slot "${s.slot}" — it has ${t.slots.map(x => x.name).join(', ')}`]); continue; }
+        const pair = `${s.block}@${s.slot}`;
+        if (seen.has(pair)) faults.push(['DUPLICATE', GUIDE, `${at}: suggested into ${s.slot} twice`]);
+        seen.add(pair);
+        if (typeof s.reason !== 'string' || !s.reason.trim()) faults.push(['NO REASON', GUIDE, `${at}: a suggestion with no reason is an instruction, not advice`]);
+        if (s.unless != null && (typeof s.unless !== 'string' || !s.unless.trim())) faults.push(['BAD UNLESS', GUIDE, `${at}: unless must be a non-empty string or null — it says when NOT to follow this`]);
+        if (typeof s.reviewed !== 'boolean') faults.push(['NOT BOOLEAN', GUIDE, `${at}: reviewed is ${JSON.stringify(s.reviewed)}`]);
+
+        const matched = matchesContainer(b, slot);
+        const has = typeof s.evidence === 'string' && s.evidence.trim();
+        if (!matched && !has) faults.push(['NO EVIDENCE', GUIDE, `${at}: ${s.block}'s recorded layout does not match ${name}/${s.slot} — say what is unverified in \`evidence\`, or do not suggest it. The suggestion is allowed; making it silently is not`]);
+        if (matched && has) faults.push(['SPURIOUS EVIDENCE', GUIDE, `${at}: the layouts DO match, so \`evidence\` claims a doubt the derivation does not have — clear it, or the field stops meaning anything`]);
+      }
+    }
+
+    // The variant recommendations, keyed "<block id>#<ordinal>" -- stage 9's
+    // ordinal identity, never an offset. The accepted values come from the
+    // group itself, so the map, the select and this gate cannot disagree.
+    for (const [key, v] of Object.entries(guide.variants ?? {})) {
+      const at = key.lastIndexOf('#');
+      const b = byId.get(key.slice(0, at));
+      const i = Number(key.slice(at + 1));
+      if (at === -1 || !b || !Number.isInteger(i)) { faults.push(['NO GROUP', GUIDE, `${key} does not name a block and an ordinal`]); continue; }
+      const groups = variantsOf(b.html);
+      if (!groups[i]) { faults.push(['NO GROUP', GUIDE, `${key}: ${b.id} has ${groups.length} variant group${groups.length === 1 ? '' : 's'}, so ordinal ${i} names nothing`]); continue; }
+      if (typeof v.reviewed !== 'boolean') faults.push(['NOT BOOLEAN', GUIDE, `${key}: reviewed is ${JSON.stringify(v.reviewed)}`]);
+      if (v.recommended !== 'as-attested' && !groups[i].values.includes(v.recommended)) {
+        faults.push(['NO VALUE', GUIDE, `${key}: recommends ${JSON.stringify(v.recommended)}, which this group does not offer — it offers as-attested, ${groups[i].values.join(', ')}`]);
+      }
+    }
+    for (const b of expectedBlocks) variantsOf(b.html).forEach((g, i) => {
+      const k = variantKey(b.id, i);
+      if (!(k in (guide.variants ?? {}))) faults.push(['NO ENTRY', GUIDE, `${k} is a variant group with no recommendation — "as-attested" is a decision and is written down like any other`]);
+    });
   }
 }
 
