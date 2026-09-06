@@ -12,14 +12,13 @@ build step between the file and the page:
 Replace `logo.svg` and every shell in that project picks it up on reload.
 Other repositories hold their own copy; changing this one does not update them.
 
-The official mark is rux's **Rux logo 2**, confirmed 2026-09-05 for every
-Rux brand and favicon use. `rux-ds/brand/logo.svg` is the cleaned master;
-Rux Apps and Rux Notes carry byte-identical logo and favicon copies. Its 16x16
-viewBox contains 91 filled grid cells, with one cell of padding left/right
-and two top/bottom. The ear corners were squared from the export’s 0.09972-unit rounding.
-Redundant and zero-area paths were then removed; the occupied grid cells
-before and after that cleanup were compared and are identical. The ear
-bridge and wider neck are the user’s Rux logo 2 geometry.
+The official mark is rux's **Brand.svg**, confirmed 2026-09-05 as the final
+revision for now, superseding Rux logo 2. `rux-ds/brand/logo.svg` is the
+cleaned master; Rux Apps and Rux Notes carry byte-identical logo and favicon
+copies. Its 16x16 viewBox contains 86 filled grid cells, with one cell of
+padding left/right, three above and two below. Cleanup removes redundant
+export shapes and point dimensions without changing any visible geometry
+or placement; all occupied grid cells were compared before and after.
 
 ## What the file has to be
 
