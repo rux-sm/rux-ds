@@ -322,6 +322,8 @@ ${sprite}
     <ul class="rux--header__menu-bar">
       <li><a class="rux--header__menu-item rux--header__menu-item--current" href="portal.html" aria-current="page"><span class="rux--text-truncate-end">Portal</span></a></li>
       <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
+      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
+      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
     </ul>
   </nav>
   <div class="rux--header__global">
@@ -465,6 +467,8 @@ ${matrixRows}
           <ul class="rux--list--unordered">
             <li class="rux--list__item"><a class="rux--link" href="kitchen-sink.html">Kitchen sink</a> — ${COMPILED.size} compiled components as live specimens</li>
             <li class="rux--list__item"><a class="rux--link" href="templates/app-shell.html">App shell</a> — the frame every template is built on</li>
+            <li class="rux--list__item"><a class="rux--link" href="builder.html">Page builder</a> — start from a template, add and edit sections, take the page away</li>
+            <li class="rux--list__item"><a class="rux--link" href="theme-creator.html">Theme creator</a> — pick a Carbon hue family or fine-tune each token by hex, preview live, take the CSS block away</li>
             <li class="rux--list__item">${tokenCount} <code>--rux-*</code> tokens · ${classCount} <code>.rux--*</code> classes</li>
           </ul>
         </div>

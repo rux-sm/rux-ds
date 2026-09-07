@@ -204,6 +204,7 @@ ${sprite}
       <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
       <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
       <li><a class="rux--header__menu-item rux--header__menu-item--current" href="builder.html" aria-current="page"><span class="rux--text-truncate-end">Builder</span></a></li>
+      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
     </ul>
   </nav>
 </header>

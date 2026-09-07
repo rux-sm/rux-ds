@@ -140,6 +140,13 @@ const SINK_HARNESS = { 'kitchen-sink.html': ['sink/harness.css'] };
 // Roadmap §4.12, the guided-mode plan's stage 0.
 const BUILDER_SCRIPTS = { 'builder.html': ['builder'] };
 
+// THE SAME FINDING A THIRD TIME. theme-creator.html loads
+// theme-creator/theme-creator.js, also outside RENDERED_INPUTS for the same
+// reason builder/ is: one page's script, not the published module set.
+// Declared per page, for the same five browser gates BUILDER_SCRIPTS feeds.
+// Phase 14, roadmap §4.14.
+const THEME_CREATOR_SCRIPTS = { 'theme-creator.html': ['theme-creator'] };
+
 export const GATES = [
   {
     id: 'build-namespace',
@@ -547,6 +554,24 @@ export const GATES = [
   },
 
   {
+    // The same shape as build-builder-icons, one page over. Phase 14,
+    // roadmap §4.14.
+    id: 'build-theme-creator-icons',
+    tool: 'tools/build-theme-creator.mjs',
+    kind: 'node',
+    inVerify: true,
+    catches: 'a `#i-name` emitted into theme-creator.html that the committed sprite has no `<symbol>` for',
+    blindTo: 'every page it does not generate - its unit is theme-creator.html alone, and never the page inside its preview',
+    reads: 'the emitted theme-creator markup against assets/icons.svg',
+    fileTargets: ['tools/build-theme-creator.mjs'],
+    pageTargets: [],
+    canRun: { sink: true, templates: true },
+    inputs: ['assets/icons.svg'],
+    redRun: 'reference #i-nothing from the generator and run npm run theme-creator',
+    sideEffects: 'writes theme-creator.html',
+    baseline: '0 unresolved sprite references',
+  },
+  {
     // The same shape as build-portal-icons: a gate carried by a build tool. The
     // generator inlines assets/icons.svg and refuses to write a page that uses
     // a glyph the sprite lacks, because a <use> at a missing symbol paints
@@ -597,7 +622,7 @@ export const GATES = [
     canRun: { sink: true, templates: false },
     cannotRunReason: 'its unit is the .ks-sec section; a template has none, and a fallback would report a pass it did not earn',
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS, ...THEME_CREATOR_SCRIPTS },
     redRun: 'flatten a section: #tags [class*="rux--"] { height:1px; min-height:0; padding:0 }',
     // Both bite an operator. The theme reset is not a restore: it writes
     // 'white' whatever the page was on before.
@@ -626,7 +651,7 @@ export const GATES = [
     // cannot move: proved for brand/ on 2026-09-05 by rendering a broken mark
     // 300px wide and reading 63/63 with 0 stripped, unchanged.
     sharedInputs: ['js'],
-    pageInputs: BUILDER_SCRIPTS,
+    pageInputs: { ...BUILDER_SCRIPTS, ...THEME_CREATOR_SCRIPTS },
     redRun: 'remove a class from the live DOM by hand; it reports that class stripped',
     // Condition 5 of the sink-check skill, and it conflicts with condition 1:
     // the click check-a11y needs for document.hasFocus() is the kind of press
@@ -651,7 +676,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: ['docs/carbon-react-spacing.json', ...RENDERED_INPUTS],
-    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS, ...THEME_CREATOR_SCRIPTS },
     redRun: 'change a padding on any compiled class and re-run',
     sideEffects: null,
     // READ THE noReference LIST. Pagination's real defect sat in that bucket
@@ -680,7 +705,7 @@ export const GATES = [
     // height, so a stylesheet can change its result -- it is not a
     // pure-JavaScript reading.
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS, ...THEME_CREATOR_SCRIPTS },
     redRun: 'revert the offset write in js/menu.js and the tabindex pairing in js/data-table.js — expect 3 failures naming an 8px overlap and tabindex [0,0,0] on a hidden bar',
     // Every case restores what it touched, so it is safe to run twice and safe
     // beside the other browser gates. It still runs AFTER check-runtime-classes,
@@ -705,7 +730,7 @@ export const GATES = [
     pageTargets: pageTargets(),
     canRun: { sink: true, templates: true },
     sharedInputs: [...RENDERED_INPUTS],
-    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS },
+    pageInputs: { ...SINK_HARNESS, ...BUILDER_SCRIPTS, ...THEME_CREATOR_SCRIPTS },
     redRun: '.rux--checkbox:focus + .rux--checkbox-label::before { outline: none !important } — expect 12 findings',
     sideEffects: 'moves focus and restores it; injects and removes a transition:none style',
     // CORRECTED 2026-09-05. This read 0 findings while the ledger had recorded
@@ -755,6 +780,7 @@ export const CONTROL_FILES = [
   'tools/check-runtime-classes.js', 'tools/check-slots.mjs', 'tools/check-spacing.js',
   'tools/check-tags.mjs', 'tools/check-tokens.mjs',
   'tools/build.mjs', 'tools/build-portal.mjs', 'tools/build-blocks.mjs', 'tools/build-builder.mjs',
+  'tools/build-theme-creator.mjs', 'tools/build-theme-families.mjs',
 
   // PHASE 8'S TOKEN SNAPSHOT, ALL FOUR PIECES. The gate is obvious; the other
   // three are here because each one decides what passes. build-token-values
