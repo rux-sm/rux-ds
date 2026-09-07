@@ -70,8 +70,8 @@
     },
     "theme-creator.html": {
       "date": "2026-09-06",
-      "commit": "4ded06f",
-      "result": "SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. 0 findings, 0 notes, focusRingChecked true. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content -- the family picker, a fine-tune hex edit, undo, the reserved-name validator and the Blob preview against both kitchen-sink.html and templates/table-page.html were all exercised live before this reading, on a reload beforehand."
+      "commit": "46d89d2",
+      "result": "RE-SWEPT 2026-09-06 at 46d89d2, Phase 15's Surfaces section. 0 findings, 0 notes, focusRingChecked true. 1280x900, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content -- base radios, a surface hex edit past its contrast threshold, and the compound-selector preview against templates/dashboard-page.html were all exercised live before this reading, confirming data-theme and data-rux-surface both land on the iframe's <html> and only the four surface tokens move. PRIOR READING: SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. 0 findings, 0 notes, focusRingChecked true. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content -- the family picker, a fine-tune hex edit, undo, the reserved-name validator and the Blob preview against both kitchen-sink.html and templates/table-page.html were all exercised live before this reading, on a reload beforehand."
     }
   },
   "check-runtime-classes": {
@@ -142,8 +142,8 @@
     },
     "theme-creator.html": {
       "date": "2026-09-06",
-      "commit": "4ded06f",
-      "result": "SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. Read on a freshly loaded page before any focus, click or hover: 40/40, 0 stripped, 0 added. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content."
+      "commit": "46d89d2",
+      "result": "RE-SWEPT 2026-09-06 at 46d89d2, Phase 15's Surfaces section (base radios, surface-name field, four surface rows, their own export block). Read on a freshly loaded page before any focus, click or hover: 48/48, 0 stripped, 0 added. 1280x900, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content. PRIOR READING: SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. Read on a freshly loaded page before any focus, click or hover: 40/40, 0 stripped, 0 added. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content."
     }
   },
   "check-spacing": {
@@ -214,8 +214,8 @@
     },
     "theme-creator.html": {
       "date": "2026-09-06",
-      "commit": "4ded06f",
-      "result": "SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. 22 checked, 21 matched, 1 diverges (.rux--subgrid.rux--subgrid--wide.rux--subgrid--with-row-gap, the same unmatched paddingBlockStart/End 32px divergence builder.html and portal.html already carry for the identical class), 6 no reference. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content."
+      "commit": "46d89d2",
+      "result": "RE-SWEPT 2026-09-06 at 46d89d2, Phase 15's Surfaces section. 29 checked, 28 matched, 1 diverges (.rux--subgrid.rux--subgrid--wide.rux--subgrid--with-row-gap, the same unmatched paddingBlockStart/End 32px divergence builder.html and portal.html already carry for the identical class), 6 no reference. 1280x900, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content. PRIOR READING: SWEPT 2026-09-06 at 4ded06f, theme-creator.html's first sweep, phase 14. 22 checked, 21 matched, 1 diverges (.rux--subgrid.rux--subgrid--wide.rux--subgrid--with-row-gap, the same unmatched paddingBlockStart/End 32px divergence builder.html and portal.html already carry for the identical class), 6 no reference. 1280x720, white asserted by --rux-field-hover (#e8e8e8), focus taken with Tab then blurred (hasFocus true), transitions and animations suppressed, IBM Plex serving, pointer parked off content."
     }
   },
   "check-rendered": {
