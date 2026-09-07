@@ -18,6 +18,13 @@ below rather than repeating them. **Phase 6's guide to BUILDING a page is comple
 built on it. The kitchen sink remains the worked
 example and `sink/*.html` the markup to copy for a component no template carries.
 
+**rux-ds is itself an app now, published at https://rux-sm.github.io/rux-ds/ and
+listed in the switcher as "Design System" since 2026-09-07.** `index.html` is its
+hand-authored home page — the only root page here that is not generated — and it
+opens on the four tools (`portal.html`, `kitchen-sink.html`, `builder.html`,
+`theme-creator.html`) and the ten templates. Unlike every app built on it, the site
+is not pinned to a tag: it serves the working tree, the system as it stands.
+
 ## Status
 
 **Phase 3 complete — stripped.** Carbon compiles under the `rux` namespace, every
@@ -59,6 +66,19 @@ ability to admit.
 execution order it used to end — 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8 — stands for the rest;
 the phase numbers are names, not positions. Roadmap §4.4.
 
+**Phases 12 and 14 through 16 are the current work, and this file said nothing about
+14 to 16 for a day.** They landed 2026-09-06 and the Status block above was written
+as though the plan still ended at §4.13 — exactly the drift the opening paragraph
+warns about, recorded here rather than quietly fixed. What they are: **Phase 14**,
+the Theme Creator (`theme-creator.html`) — a theme built from a Carbon hue family or
+free hex per token, with the first contrast math in this repository, warning but never
+blocking; **Phase 15**, surface overlays, after a first draft proposing a fifth
+compiled theme was killed in review (changing one key stops Carbon's `matches()`
+selecting `g100`, and 67 tokens would have moved, not one); **Phase 16**,
+`js/custom-themes.js`, saved themes in the account panel platform-wide, five runtime
+bugs caught in review before anything was written. **Phase 12** is the builder, at
+stage 12 of 13. Roadmap §4.12 and §4.14–§4.16 hold all four.
+
 ### Picking this up
 
 A fresh clone is the whole handover — nothing lives in an editor session or a
@@ -66,7 +86,18 @@ machine-local note. This section is the current state and the next steps only.
 Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
-**Where this stopped, 2026-09-03.** Phases 9, 10 and 11 are done. Phase 7's
+**Where this stopped, 2026-09-07 — `v0.1.11`, clean tree, `npm run verify` exit 0,
+47 of 47 sweep cells current.** Four apps are in the hub's `switcher.json` and that
+list is the only one: Home (`/`), Notes, Scheduler and Design System (`/rux-ds/`).
+Scheduler joined as module three; the design system joined as module four when this
+repository gained the site described at the top of this file. **The hub's landing grid
+no longer carries a tile for the page it is on** (hub `acea009`, 2026-09-07): a Home
+card on Home is not a destination, so `switcher.js` filters the current app out of the
+grid by the same test that marks the panel entry. The panel is unchanged and still
+marks it `aria-current` — where you are and where you can go are different jobs.
+
+The paragraphs below are the state as it was recorded, oldest claims last. Phases 9,
+10 and 11 are done. Phase 7's
 component index is implemented and swept — `npm run gates` holds the
 cells: `portal.html` carries a Reference column from `docs/component-docs.json`, every compiled
 component accounted for and all 135 URLs live, with `action-set` and

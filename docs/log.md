@@ -9,6 +9,35 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-07 - the README is brought current, and what it omitted is named.**
+Asked for the status of the project, and the answer was that every automated
+check passes - `npm run verify` exit 0, 47 of 47 sweep cells current at
+`v0.1.11` - while `README.md` did not contain the string "theme creator",
+"Phase 14", "Phase 15" or "Phase 16" anywhere. Those three phases landed
+2026-09-06; the Status block still read as though the plan ended at §4.13, and
+"Where this stopped" was dated 2026-09-03. Corrected in place, with the
+omission stated in the Status block rather than papered over: this file's own
+opening paragraph warns that a rule stated twice drifts, and a state described
+in prose beside a generated table is the same failure.
+
+Also recorded there for the first time: **rux-ds is an app**, published at
+`/rux-ds/` and in `switcher.json` as "Design System", with `index.html` its
+hand-authored home over the four tools and ten templates, serving the working
+tree rather than a pin. Four apps are now in the list - Home, Notes, Scheduler,
+Design System.
+
+**The hub's grid stopped carrying Home** the same day (`rux-sm.github.io`
+`acea009`), on rux's read of the live page: a card whose destination is the
+page under it is not a destination. `switcher.js` filters the current app out
+of the LANDING GRID by the same `current()` test that marks the PANEL entry, so
+the rule is general rather than a Home-shaped exception, and the panel is
+untouched - it still lists Home marked `aria-current`, which is the opposite
+job. The shipped fallback tiles, two apps stale, were brought level with
+`switcher.json` at the same time. Read live at localhost:8643 after the change:
+grid Notes, Scheduler, Design System; panel Home [current], Notes, Scheduler,
+Design System; no console errors. Nothing in `rux-ds` renders the grid, so
+nothing here moved.
+
 **2026-09-07 - the fourth drawing, and the safe area comes back.** rux
 disliked a brand mark that differed from the favicon and drew the answer
 instead: the same dachshund inside x=1..15 and y=1..15, one cell of air on
