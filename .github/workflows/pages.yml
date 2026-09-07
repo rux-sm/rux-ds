@@ -1,0 +1,128 @@
+name: pages
+
+# Publishes this repository at https://rux-sm.github.io/rux-ds/ — the design
+# system as an app on the platform, alongside Notes and Scheduler.
+#
+# WHY THIS REPOSITORY AND NOT A SITE REPOSITORY. Every other module vendors
+# rux-ds at a pinned tag into vendor/rux-ds/. rux-ds cannot vendor itself, and
+# builder.html and theme-creator.html are live tools: they need the real css/,
+# js/, builder/ and theme-creator/, not a copy. A separate site repository
+# would have to duplicate exactly what this repository exists to stop being
+# duplicated. So the site is this tree.
+#
+# WHICH MAKES IT THE ONE APP NOT ON A TAG. Notes shows rux-ds as it was at
+# v0.1.6 and Scheduler at v0.1.8; this site shows main. That is defensible for
+# a design system's own site — it is what you get if you move your pin today —
+# but it is not the same guarantee the modules have, so index.html stamps the
+# commit it was built from and says so on the page.
+#
+# THE CHECK IS npm run verify, THE SAME ONE gates.yml RUNS. It is defined once
+# in package.json, so a new gate is picked up here with no second list. This
+# workflow runs it AGAIN rather than depending on gates.yml: a workflow_run
+# trigger deploys from a ref resolved separately from the run that passed, and
+# a design system serving a page its own gates never saw is the one failure
+# this is meant to prevent. The cost is one duplicated run per push to main.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# WIDER THAN gates.yml, WHICH HAS contents: read AND NOTHING ELSE. Deploying to
+# Pages needs pages: write and id-token: write, and that is a real privilege
+# increase for this repository's Actions — recorded here because it is the kind
+# of change that is invisible once it is normal.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A second push supersedes the first. cancel-in-progress is safe on the deploy
+# because the deployment itself is atomic: the last completed one keeps serving.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  # The gates, exactly as gates.yml runs them. If this fails nothing deploys and
+  # the previous deployment keeps serving, so a broken main is in git but not on
+  # the web.
+  #
+  # WHAT THIS DOES NOT COVER, said plainly: the five BROWSER gates —
+  # check-a11y, check-rendered, check-runtime-classes, check-spacing and
+  # check-behaviour — are not in `verify` and cannot run here. `npm run gates`
+  # reports whether their readings are current and DOES NOT FAIL, by design
+  # (tools/lib/gates.mjs). So a push can go live with every browser reading
+  # stale. That was already true of the repository; publishing makes it public.
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      # --ignore-scripts for the same reason gates.yml gives: every @carbon/*
+      # and @ibm/plex package runs an ibmtelemetry postinstall, and nothing in
+      # the build path needs one.
+      - run: npm ci --ignore-scripts
+
+      - run: npm run verify
+
+      # The build writes tracked files, and a deploy from a tree whose committed
+      # output is stale would serve a page that does not match its own source.
+      # Same list gates.yml checks.
+      - name: Committed build output is up to date
+        run: |
+          if ! git diff --quiet -- css kitchen-sink.html portal.html README.md builder/blocks.json builder.html docs/builder-coverage.md theme-creator.html theme-creator/families.json; then
+            echo "::error::Committed build output is stale — run 'npm run verify' and commit the result."
+            git diff --stat -- css kitchen-sink.html portal.html README.md builder/blocks.json builder.html docs/builder-coverage.md theme-creator.html theme-creator/families.json
+            exit 1
+          fi
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # A FRESH CHECKOUT, not an artifact from the check job. The check job has
+      # node_modules in it after npm ci, and the published site must be the
+      # committed tree and nothing else. Nothing is built here: css/rux.css,
+      # the four generated pages and builder/blocks.json are committed, which
+      # is the same property that lets a consumer fetch them from a raw URL.
+      - uses: actions/checkout@v7
+
+      # THE BUILD STAMP. index.html ships the placeholder "the working tree",
+      # which is the honest answer when the page is served from a checkout.
+      # Substituted HERE and never committed: a stamp written into the file at
+      # build time would leave index.html dirty after every single commit, the
+      # churn portal.html avoids by changing only when its data does.
+      - name: Stamp the commit onto the home page
+        run: |
+          SHA="$(git rev-parse --short HEAD)"
+          DATE="$(git log -1 --format=%cs)"
+          sed -i "s|<span id=\"build-commit\">the working tree</span>|<span id=\"build-commit\">commit <code>${SHA}</code>, ${DATE}</span>|" index.html
+          grep -q "id=\"build-commit\">commit" index.html || { echo "::error::The build stamp did not substitute — index.html's placeholder has moved."; exit 1; }
+
+      # NEITHER BELONGS ON A WEB SERVER, and the upload action tars whatever it
+      # is given. .git is the whole history at every push; .github is workflow
+      # definitions. Removing them from the checkout is local to this runner.
+      - name: Drop what is not the site
+        run: rm -rf .git .github
+
+      - uses: actions/configure-pages@v5
+
+      # The tree itself. sink/ is included on purpose — 69 component fragments
+      # that portal.html's Reference column can point at — and so are
+      # templates/, docs/ and the captures, all of which are already public in
+      # the repository and cost nothing to serve.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
