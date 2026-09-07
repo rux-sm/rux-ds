@@ -2829,6 +2829,16 @@ collapsed, and fills `#apps-grid` where a page has one. If the fetch fails the
 shipped entries stay and nothing reports it, which is why they must be real.
 Adding a module is one entry in the file and nothing anywhere else.
 
+**The contract gained a fourth key, optional, 2026-09-07: `icon`.** An absolute
+path to an SVG the module itself serves (`/rux-ds/brand/icon.svg`), absolute
+because `switcher.js` writes it into a `src` on every site and a relative path
+would resolve per origin; the hub's `tools/check.mjs` refuses any other shape,
+proved red before it was trusted. No app names one yet. Until one does, the
+grid draws a 32px outlined square in its place, so the icon a module adds later
+takes space that is already reserved and moves nothing else on the page. The
+switcher PANEL takes no icon — Carbon's switcher is a list of names, and adding
+a glyph there would be markup Carbon does not compile.
+
 **Notes is module two in fact, 2026-09-02** (`48786ce` there): button, panel,
 `/switcher.js`, verified live against the root with Notes marked current. Its
 `check-links` learned that a root-absolute reference is the hub's to answer —

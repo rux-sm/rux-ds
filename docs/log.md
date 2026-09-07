@@ -55,6 +55,25 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**THE STRIPPED TILE WAS WRONG AND THE MEASUREMENT SAID SO, same day.** Asked
+for an opinion on the new layout against the old, the answer was that the new
+one was better and not finished: at 1440x900 each tile measured 304x64 with a
+five-letter label at one end and an arrow at the other, roughly 230px of dead
+space between a word and its own arrow. The box was still sized for the
+description it had lost. rux's answer was to put content back rather than
+shrink the box - a very short line, and a placeholder reserving the space for
+app icons that do not exist yet. Both landed (`rux-sm.github.io` `953cfa5`):
+tiles now 304x128, a 32px icon, the name, three or four words. The arrow went;
+a whole clickable tile promises nothing further to read.
+
+**The manifest contract gained an optional `icon` key** (roadmap §4.12, edited
+above): an absolute path to an SVG the module serves, absolute because
+`switcher.js` writes it into a `src` on every site. Nothing names one yet, and
+the grid draws a 32px outlined square until something does, so the icon rux
+draws later takes space already reserved. The hub's `tools/check.mjs` refuses
+any other shape, driven red on a relative path and restored before it was
+trusted. Read live in both themes, settled: three tiles, equal 128px heights.
+
 ONE READING WAS WRONG BY METHOD AND IS CORRECTED HERE. The white-theme
 screenshot taken immediately after flipping `data-theme` showed dark tiles with
 unreadable text, which would have been a real defect; it was Carbon's own
