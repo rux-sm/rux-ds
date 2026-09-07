@@ -1,6 +1,6 @@
 ---
 name: sink-check
-description: Run rux-ds browser-only gates against the kitchen sink, portal, and templates, including check-a11y.js, check-rendered.js, check-runtime-classes.js, check-spacing.js, and check-behaviour.js. Use when asked to run browser checks, sweep pages after a batch, verify the sink or templates in a browser, measure focus rings or contrast, or update gate-coverage readings. Encodes seven conditions and the repeatable per-page loop that prevent confident wrong answers.
+description: Run rux-ds browser-only gates against the kitchen sink, portal, and templates, including check-a11y.js, check-rendered.js, check-runtime-classes.js, check-spacing.js, and check-behaviour.js. Use when asked to run browser checks, sweep pages after a batch, verify the sink or templates in a browser, measure focus rings or contrast, or update gate-coverage readings. Encodes eight conditions and the repeatable per-page loop that prevent confident wrong answers.
 ---
 
 # Running the browser-only gates
@@ -26,7 +26,7 @@ The cache-buster matters after you edit a tool. Both tools RETURN their result o
 read the return value rather than the console. `check-a11y` returns
 `{findings, notes, byRule, focusRingChecked}`; `check-rendered` returns its own summary.
 
-## Seven conditions, each of which has produced a wrong answer here
+## Eight conditions, each of which has produced a wrong answer here
 
 **1. The document must have focus — GET IT WITH Tab, THEN BLUR. Not with a click.**
 `check-a11y` reports `focusRingChecked: false` and skips its focus-ring check entirely
@@ -93,6 +93,9 @@ Run `check-runtime-classes` FIRST on a freshly loaded page, or reload before it.
 (`side-nav--expanded`, 2026-08-28) survived long enough to be written up as a defect before
 a clean re-run showed 0 at every width.
 
+*"Untouched" means untouched by INTERACTION, not un-settled — waiting is not touching, and
+condition 8 says why waiting is required.*
+
 **6. A green run proves nothing until you have seen it go red.** Delete the thing you are
 checking and confirm the check fails, then restore. For focus rings:
 
@@ -126,6 +129,33 @@ whole difference between a harness limit and a bug — and it was checked agains
 source too: `js/overlay.js:224` preventDefaults on Escape alone, and nothing in `js/`
 touches Enter or Space. This is why `check-behaviour` drives clicks rather than keys.
 
+**8. A PAGE THAT FETCHES IS NOT SETTLED WHEN IT HAS LOADED.** `check-runtime-classes`
+compares the file against the live DOM, so a module that rewrites markup after an async read
+makes the two AGREE before it runs and disagree after. Read too early and the gate reports a
+clean page it never saw.
+
+**Measured 2026-09-07 sweeping `rux-scheduler`, and the wrong answer was the reassuring
+one.** The first reading said `122 / 122, 0 stripped` — which reads as a page whose modules
+change nothing. `sch-data.js` had not yet replaced `#sch-status`, so the `inline-loading`
+spinner was still in the DOM and matched the file it came from. Read again once
+`.rux--inline-loading` was gone: `122 / 117`, five stripped, the adjudicated spinner set the
+ledger has carried since 2026-09-06. Nothing about the page changed between the two reads
+except time.
+
+*This never shows on rux-ds's own pages* — the sink and the templates settle synchronously,
+so `check-runtime-classes` is right the instant it loads and every reading in this
+repository's ledger was taken that way. It bites the moment the target fetches anything,
+which is every consumer page worth sweeping.
+
+**Wait on a marker, never on a timer.** Assert in the SAME execution as the gate that the
+thing the module removes is gone, or the thing it adds is present, and stop if it is not:
+
+    // rux-scheduler: sch-data.js replaces the status the moment the first read returns
+    if (document.querySelector('.rux--inline-loading')) throw 'not settled';
+
+A `setTimeout` long enough to work on a fast machine is a reading that will be wrong on a
+slow one, and it will be wrong in the direction that looks clean.
+
 ## Sweep every page after a batch
 
 Let `npm run gates` name the required cells. Sweep the assembled sink, `portal.html`,
@@ -133,8 +163,9 @@ and every template it lists; do not maintain a second target list here.
 
 For `portal.html` and each template, use this loop in order:
 
-1. Navigate to the page afresh. Run `check-runtime-classes` before focusing, clicking,
-   hovering, or changing state.
+1. Navigate to the page afresh. Wait for it to SETTLE, not merely to load — condition 8,
+   and assert the marker rather than sleeping — then run `check-runtime-classes` before
+   focusing, clicking, hovering, or changing state.
 2. Give the document focus with Tab, blur the focused control, suppress transitions and
    animations, set the white theme, and read back `document.hasFocus()`, a resolved
    theme token, the viewport width, and IBM Plex availability. Stop if any condition is
