@@ -237,7 +237,15 @@ NEW="$OUT.new"
 rm -rf "$NEW"
 mkdir -p "$NEW/css" "$NEW/js" "$NEW/assets/fonts" "$NEW/templates"
 cp "$SRC/css/rux.css" "$SRC/css/rux.min.css" "$SRC/css/rux-theme.css" "$SRC/css/rux-overrides.css" "$NEW/css/"
-cp "$SRC/templates/"*.html "$NEW/templates/"
+# THE VENDORED TEMPLATES POINT AT THE PROJECT'S OWN MARK, not at a copy.
+# templates/ says "../brand/", which is right in rux-ds and resolves to
+# vendor/rux-ds/brand/ here -- a directory that has never existed, so every
+# vendored template served a broken logo and no favicon. Three levels up is
+# the project's own brand/, the same file its real pages use, so a project
+# that swaps its logo sees the swap here too and no fourth copy can drift.
+for t in "$SRC/templates/"*.html; do
+  sed 's|"\.\./brand/|"../../../brand/|g' "$t" > "$NEW/templates/$(basename "$t")"
+done
 cp "$SRC/js/"*.js "$NEW/js/"
 cp "$SRC/assets/icons.svg" "$NEW/assets/"
 # The typeface is part of the design system: rux.css names IBM Plex Sans and
