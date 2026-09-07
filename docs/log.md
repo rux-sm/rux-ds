@@ -38,6 +38,34 @@ grid Notes, Scheduler, Design System; panel Home [current], Notes, Scheduler,
 Design System; no console errors. Nothing in `rux-ds` renders the grid, so
 nothing here moved.
 
+FOLLOWED THE SAME DAY BY A STRIP, on rux's brief: minimum UI, no descriptions.
+The page had said "app" seven times - the header name, an h1 repeating it, an
+"Apps" heading repeating that, three times in an intro about how the sites are
+built, once in the Foundations footnote - and now says it once, in the header.
+The h1 stays as `.rux--visually-hidden`, Carbon's own class, so the document is
+still titled for a screen reader. The Foundations link out to this repository
+went with rux's ruling that the running system is a card and the source is a
+bookmark.
+
+**A list beat tiles on paper and lost on sight.** The first draft replaced the
+tiles with three 32px links, which is what the minimal reading argues for -
+chrome removed, hierarchy from type and space. rux read it live and rejected
+it: on one background the links blend into a single block, and the tile edge is
+what says these are separate apps. The tiles came back carrying a name and the
+arrow, no description. Recorded because the reasoned answer and the looked-at
+answer disagreed, which is the fourth time this week.
+
+ONE READING WAS WRONG BY METHOD AND IS CORRECTED HERE. The white-theme
+screenshot taken immediately after flipping `data-theme` showed dark tiles with
+unreadable text, which would have been a real defect; it was Carbon's own
+background transition caught mid-flight. Re-read once settled: light tiles,
+dark text, blue arrow, correct. That is the settling condition `a0196fa` added
+to the sweep skill this morning, met by waiting rather than by the skill. NOT
+VERIFIED: the focus ring on the tiles - `document.hasFocus()` was false in the
+automated pane, the same limit `check-a11y.js` refuses its ring check under.
+The tile markup is unchanged apart from the dropped description, so nothing
+about the ring moved.
+
 **2026-09-07 - the fourth drawing, and the safe area comes back.** rux
 disliked a brand mark that differed from the favicon and drew the answer
 instead: the same dachshund inside x=1..15 and y=1..15, one cell of air on
