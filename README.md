@@ -300,7 +300,7 @@ tag would still pass.
    current. **The page can now be taken away**: download it, copy its
    `<main>`, or copy the exact `new-project.sh` command — the script stays the
    one project creator. `tools/check-parity.mjs` runs the script's own
-   extracted lines against `exportPage`, 10 templates × 3 answer sets, and
+   extracted lines against `exportPage`, 10 templates × 4 answer sets, and
    found a real divergence on its first run (roadmap §4.12). **The content
    panel now reads as content**: every field named by what it is, grouped, with
    its original beside it, a per-field reset, and a link target where the markup
@@ -374,7 +374,7 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Components | **77 / 83 compiled** in 80 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 4 — white, g10, g90, g100 — plus `rux`, a token override block in `css/rux-theme.css`, not a compile |
 | Tokens · classes | **626** `--rux-*` defined, 10 more read through a fallback · **1,798** `.rux--*` |
-| Kitchen sink | **68** sections · **976** classes with `templates/` and `js/` |
+| Kitchen sink | **68** sections · **977** classes with `templates/` and `js/` |
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **72 `rendered-dom` · 6 `source` · 0 `inferred`** across 78 files |
@@ -514,7 +514,7 @@ None is sufficient alone — roadmap §4.1.2 has the bug that proved it — and 
 | `check-headings.mjs` | a page with no heading at all · more than one `h1` · an outline that skips a level. Pages only — `sink/*.html` fragments are specimens, not documents | whether a heading says anything useful · a heading that looks like one and is marked up as a `div` |
 | `check-aria-roles.mjs` | a `role` on a `rux--` class Carbon never renders that role on — the first gate to read the captures' attribute data | a role on an unclassed element · a MISSING role · whether required child roles exist · anything turning on `aria-live`, which the extractor does not record |
 | `check-blocks.mjs` | a BLOCK or SLOT marker that does not pair, sits above PROVENANCE, encloses a `ks-` class or an inline style, or references an id outside its own region · a `builder/blocks.json` disagreeing with its sources in ANY field, in order, or by a duplicate or a missing template record · a `docs/builder-coverage.md` whose table has drifted, or whose eligibility notes name a fragment that is gone, is already marked, or is named twice · a `builder/guide.json` naming a block or slot that does not exist, leaving a template with no purpose line, recommending a variant value the group refuses, or suggesting a placement whose recorded layout does not match the slot **without saying what is unverified** | whether the marked region is the RIGHT part of the fragment, and whether an unmarked fragment SHOULD be marked — both are readings · **whether a suggestion is good**: it checks the map agrees with the catalogue, never that the advice is sound |
-| `check-parity.mjs` | `builder/rewrites.mjs`'s `exportPage` disagreeing with the page-writing lines of `tools/new-project.sh`, for any of the ten templates and any of three answer sets · a substitution added to or removed from the script · the extracted region no longer being findable, which faults rather than passing | everything the script does outside those lines — the vendored tree, the PIN, the questions, the drift report · and **whether either side produces valid HTML**: neither escapes the answers, so a name carrying `" < > &` makes markup both sides agree on byte for byte and no browser reads as intended |
+| `check-parity.mjs` | `builder/rewrites.mjs`'s `exportPage` disagreeing with the page-writing lines of `tools/new-project.sh`, for any of the ten templates and any of four answer sets, the fourth being the only one that asks for `--grid full` · a substitution added to or removed from the script · the extracted region no longer being findable, which faults rather than passing | everything the script does outside those lines — the vendored tree, the PIN, the questions, the drift report · and **whether either side produces valid HTML**: neither escapes the answers, so a name carrying `" < > &` makes markup both sides agree on byte for byte and no browser reads as intended |
 | `check-provenance.mjs` | a fragment that does not say where its markup came from · a template that does not say what its BEHAVIOUR was verified against, with a URL and a date | whether either label is true |
 | `check-rendered.js` | default browser chrome · collapsed · escaped elements | anything it has no rule for · a section it has nothing to measure in |
 | `check-runtime-classes.js` | a class in the markup that no longer exists once the modules have run — what `check-coverage` counts and nobody sees | anything behind an interaction; it is load-time only |

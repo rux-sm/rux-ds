@@ -19,7 +19,7 @@
 // WHAT IT CHECKS, and what each rule is paid for by:
 //
 //   anchors     the extracted region is found and has the shape it must:
-//               the esc() definition, ten `-e` expressions, one awk, and the
+//               the esc() definition, eleven `-e` expressions, one awk, and the
 //               template read. A REGION IT CANNOT FIND MUST NEVER READ AS A
 //               PASS -- an extractor that silently matched nothing would turn
 //               this whole gate green and mean nothing, which is the failure
@@ -28,7 +28,8 @@
 //               own lines write equals exportPage() byte for byte. The first
 //               differing line and column is reported, not just "differs".
 //
-// THREE ANSWER SETS, AND THE THIRD IS THE ONE THAT EARNS THIS. The script
+// FOUR ANSWER SETS. THE THIRD IS THE ONE THAT EARNED THIS, and the fourth,
+// added 2026-09-06, is the only one that asks for `--grid full`. The script
 // escapes its answers with esc() and hands them to sed, where a replacement has
 // no $-expansion; exportPage substitutes with String.replace(string, string),
 // where JS expands $$, $&, $` and $'. So a name of A$&B is literal on one side
@@ -70,17 +71,23 @@ const faults = [];
 // theme is not varied for its own sake: it is one of five the script validates,
 // and the substitution is the same for all five. The third set is the fixture
 // this gate exists for; see the header.
+// grid: the first three sets stay `capped`, which must leave every template
+// byte-identical to before the option existed -- that is the property the
+// default is chosen for. The fourth exercises `full` alone, so a divergence
+// there names the one substitution it can come from.
 const ANSWERS = [
-  { label: 'defaults', theme: 'white', prefix: 'Rux', name: 'DS', title: 'Rux DS', page: 'index' },
-  { label: 'ordinary', theme: 'g100', prefix: 'Acme', name: 'Console', title: 'Acme Console', page: 'home' },
+  { label: 'defaults', theme: 'white', grid: 'capped', prefix: 'Rux', name: 'DS', title: 'Rux DS', page: 'index' },
+  { label: 'ordinary', theme: 'g100', grid: 'capped', prefix: 'Acme', name: 'Console', title: 'Acme Console', page: 'home' },
   {
     label: 'awkward',
     theme: 'g10',
+    grid: 'capped',
     prefix: 'A&B|C\\D',
     name: "E$&F$$G$`H$'I",
     title: '<J>"K"&L — Ünïcøde',
     page: 'index',
   },
+  { label: 'full width', theme: 'white', grid: 'full', prefix: 'Rux', name: 'DS', title: 'Rux DS', page: 'index' },
 ];
 
 // ── extract the region ─────────────────────────────────────────────────────
@@ -103,7 +110,7 @@ if (!faults.length) {
   region = lines.slice(start, end + 1).join('\n');
   where = `${SCRIPT}:${start + 1}-${end + 1}`;
   const dashE = (region.match(/-e /g) ?? []).length;
-  if (dashE !== 10) faults.push(['ANCHORS', where, `${dashE} \`-e\` expressions, expected 10 — the substitutions have changed and this gate no longer covers them`]);
+  if (dashE !== 11) faults.push(['ANCHORS', where, `${dashE} \`-e\` expressions, expected 11 — the substitutions have changed and this gate no longer covers them`]);
   if (!/\|\s*awk /.test(region)) faults.push(['ANCHORS', where, 'no `| awk` in the region — the two project stylesheet links are inserted there']);
   if (!region.includes('"$HERE/templates/$TPL.html"')) faults.push(['ANCHORS', where, 'the region does not read `$HERE/templates/$TPL.html` — it is not reading a template']);
 }
@@ -130,6 +137,7 @@ try {
         `DIR=${q(work)}`,
         `PAGE=${q(a.page)}`,
         `THEME=${q(a.theme)}`,
+        `GRID=${q(a.grid)}`,
         `NAME=${q(a.name)}`,
         `PREFIX=${q(a.prefix)}`,
         `TITLE=${q(a.title)}`,

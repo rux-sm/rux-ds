@@ -27,7 +27,7 @@
 const firstPerLine = (lines, from, to) => lines.map(l => l.replace(from, to));
 const everywhere = (lines, from, to) => lines.map(l => l.split(from).join(to));
 
-// The four content substitutions the script makes, steps 6–9.
+// The five content substitutions the script makes, steps 6–10.
 //
 // EVERY REPLACEMENT IS A FUNCTION, and that is not a style choice. A STRING
 // replacement expands $$, $&, $` and $' — so a product name of `A$&B` inserted
@@ -45,11 +45,18 @@ const everywhere = (lines, from, to) => lines.map(l => l.split(from).join(to));
 // words, builder.html warns, and the decision is rux's — roadmap §4.12.
 function content(lines, a) {
   const P = a.prefix ?? 'Rux', N = a.name ?? 'DS', T = a.title ?? `${P} ${N}`, theme = a.theme ?? 'white';
+  const gc = a.grid === 'full' ? ' rux--css-grid--full-width' : '';
   return lines.map(l => {
     if (l.startsWith('<html lang="en" data-theme="white">')) l = l.replace('<html lang="en" data-theme="white">', () => `<html lang="en" data-theme="${theme}">`);
     l = l.replace(/<title>[^<]*<\/title>/, () => `<title>${T}</title>`);
     l = l.replace('name--prefix">Rux</span>&nbsp;DS', () => `name--prefix">${P}</span>&nbsp;${N}`);
     l = l.split('aria-label="Rux DS"').join(`aria-label="${P} ${N}"`);
+    // The grid's width. Anchored on the two-space indent every template's
+    // outer grid opens at, so a nested `rux--css-grid-column` is never touched;
+    // the optional group keeps wizard-page's `--with-row-gap`. With `gc` empty
+    // the line is rewritten to itself, which is what keeps a capped page
+    // byte-identical to the script's -- the same shape as its sed.
+    l = l.replace(/^  <div class="rux--css-grid( [^"]*)?">/, (m, g1) => `  <div class="rux--css-grid${g1 ?? ''}${gc}">`);
     return l;
   });
 }

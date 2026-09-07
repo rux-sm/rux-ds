@@ -100,6 +100,7 @@ const guide = JSON.parse(readFileSync('builder/guide.json', 'utf8'));
 const RUNTIME_GLYPHS = ['i-checkmark--outline'];
 
 const THEMES = [['white', 'White'], ['g10', 'Gray 10'], ['g90', 'Gray 90'], ['g100', 'Gray 100'], ['rux', 'Rux']];
+const GRIDS = [['capped', 'Capped at 99rem'], ['full', 'Full width']];
 const STEPS = [['Purpose', 'What the page is for'], ['Sections and content', 'Each part, its words and its size'], ['Add sections', 'What else the page could carry'], ['Review', 'How it looks and whether it holds together'], ['Take it away', 'The file, or the command that makes a project']];
 const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // The purpose radios: sink/radio.html's group, vertical, one per template in
@@ -273,6 +274,19 @@ ${THEMES.map(([v, l]) => `                      <div class="rux--radio-button-wr
                       </div>`).join('\n')}
                     </fieldset>
                     <div class="rux--form__helper-text">The page's default. A visitor's own choice, saved in the account panel, wins on the real page; the preview shows the default.</div>
+                  </div>
+                  <div class="rux--form-item">
+                    <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="bld-grid">
+                      <legend class="rux--label">Grid width</legend>
+${GRIDS.map(([v, l]) => `                      <div class="rux--radio-button-wrapper">
+                        <input id="bld-grid-${v}" class="rux--radio-button" type="radio" name="bld-grid" value="${v}"${v === 'capped' ? ' checked' : ''}>
+                        <label for="bld-grid-${v}" class="rux--radio-button__label">
+                          <span class="rux--radio-button__appearance"></span>
+                          <span class="rux--radio-button__label-text">${l}</span>
+                        </label>
+                      </div>`).join('\n')}
+                    </fieldset>
+                    <div class="rux--form__helper-text">Capped is Carbon's reading width, centred, and right for prose and forms. Full width is Carbon's own modifier for a page that is scanned rather than read &mdash; a board, a wide table &mdash; and only shows above 99rem.</div>
                   </div>${textInput('bld-prefix', 'Product prefix', 'Rux', 'The lighter-weight half of the header name.')}${textInput('bld-name', 'Product name', 'DS', 'The header name and its aria-label.')}${textInput('bld-title', 'Browser tab title', 'Prefix and name', 'Defaults to the prefix and the name, as the script does.')}
                 </div>
               </section>

@@ -9,6 +9,83 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 - a grid-width choice, proposed as a diff and not landed.** rux
+asked, after the scheduler went full width, whether the page builder should
+offer both: Carbon's 99rem reading width and the full available content
+width. It should, and
+it is the SCRIPT's layer that offers it -- `docs/choices.md` defines that layer
+as what a text substitution on a template can do, and this is one class on
+one line. Not a builder variant: variants are per block, and the outer grid is
+page structure outside every marked block.
+
+**Tier 2, so this is a proposal.** `tools/check-parity.mjs` anchors on
+exactly ten `-e` expressions and this adds an eleventh, which trips the gate
+by design; the diff therefore changes the control that judges it, and
+AGENTS.md says that is rux's to accept from outside the run that wrote it.
+`tools/check-controls.mjs` names five controls touched: check-parity,
+build-builder, rewrites.mjs, new-project.sh and the gate registry
+`tools/lib/gates.mjs`. Nothing is committed; the working tree holds the change
+and `git diff` is the proposal.
+
+**Revised before acceptance, on rux's review of the first draft.** It had
+named four controls: the registry entry for check-parity still said three
+answer sets and held a `30 of 30` baseline, and the generated README and portal
+faithfully republished that -- generation reproduces a stale registry rather
+than correcting it, which is the review's own point and worth keeping. It
+also saved `grid` into a draft without validating it on restore, so a draft
+carrying `grid: "wide"` would have opened with no radio checked, a capped
+preview, and `--grid 'wide'` in the copied command for the script to reject.
+And it said "the whole screen" for a modifier that only lifts the grid's own
+`max-inline-size`: the measurement below shows 160px still on each side, the
+shell's gutters, so "the full available content width" is what it is.
+
+**What it is.** `new-project.sh --grid capped|full`, asked after the theme
+with `capped` the default; the eleventh sed expression, anchored on the
+two-space indent every template's outer grid opens at, appends
+`rux--css-grid--full-width` and with the default rewrites the line to itself.
+`rewrites.mjs` mirrors it with a function replacement. The builder gains a
+Grid width radio beside Default theme in step 1, threaded through ANSWERS,
+the draft, undo and the copyable command. `sink/grid.html` gains the specimen
+that attests the markup against `elements-grid--full-width`; `docs/choices.md`
+gains the section and the layer row. check-parity's fourth answer set is the
+one that exercises `full`.
+
+**What was proved, and what only agreement proves.** `npm run verify` exits 0
+with parity at 40 of 40, 10 templates by 4 sets. Exactly one line differs per
+template between capped and full, and a capped export is byte-identical to one
+made with no grid key at all -- the property the default was chosen for. The
+RED RUN: with the JS rewrite commented out, parity reports 10 faults, every one
+labelled `full width`, and 0 once restored -- so a divergence on this
+substitution is one the gate names. On an exported page at 2000px the grid
+reads `max-inline-size: 1584px` capped and `100%` full, 1584 wide with 208px
+dead each side against 1680 and 160, the rest being the shell's own gutters.
+In the builder, the radio defaults to capped, and choosing full updates the
+command to `--grid 'full'` and the preview's grid class. Draft compatibility
+was run by hand against `fromDraft` and recorded here rather than shipped as a
+gate: a draft with no grid opens as capped, one with `full` keeps it, one with
+`wide` is refused by name. BUT parity checks
+that the script and the export AGREE, and both halves are mine: if the sed and
+the regex were wrong the same way, parity would pass. The precision check and
+the rendered measurement are the evidence against that, not the gate.
+
+**What it weakens or costs, said plainly.** The eleventh expression widens
+the region the gate must find, so the anchor count moved with it. The sink
+specimen attests markup, not effect: `.ks-main` is capped at 64rem, below the
+99rem the modifier lifts, so the two grids draw identically there and the
+effect is measurable only on a wider page. And the sink and builder markup
+changed, so `npm run gates` reads ELEVEN readings no longer current: 8 dirty --
+five kitchen-sink cells and three builder cells across the browser gates --
+and 3 stale portal cells, because portal.html was regenerated carrying the
+changed coverage state. The re-sweep after acceptance is owed for all eleven
+and follows the portal's own two-pass rule (`tools/build-portal.mjs:150`):
+record the other pages and commit, then the portal. GNU sed was not run: `\{0,1\}` and a
+back-reference to an unmatched optional group are POSIX and behaved on BSD
+sed here; CI's runner is where GNU proves it.
+
+Not changed: `docs/roadmap.md` line 3238 still records "ten `-e`
+expressions" as the gate's shape when it was written, which is history, not
+an error.
+
 **2026-09-06 — The fragment skip narrowed, rux's ruling on stage 12's one
 composed-output finding.** `linksOf` skips a `#` href only when its target id is
 inside the block; an out-of-block one is a destination and is offered. Measured

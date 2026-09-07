@@ -11,7 +11,7 @@ Three layers offer them, cheapest first:
 
 | Layer | Offers | Status |
 |---|---|---|
-| **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, name, title, file | Done |
+| **Script** `tools/new-project.sh` | what a text substitution on a template can do: shape, theme, grid width, name, title, file | Done; grid width added 2026-09-06 |
 | **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Done 2026-09-02, its §2 |
 | **Builder** `builder.html`, here | a page builder: a template, its answers, marked blocks from `sink/` and `templates/`, a live preview, the HTML to take away | Done 2026-09-06 — a guided mode (purpose, sections and content, add sections, review, take it away) and a free mode on one draft; every marked block added, moved or removed; text, links, sizes and densities edited in place; undo, a draft that survives a reload, and export held to `new-project.sh` by `check-parity` (roadmap §4.12 item 3) |
 
@@ -65,6 +65,20 @@ page offers all five in its account panel and a visitor's choice wins; what
 a project chooses is the DEFAULT, on `<html>`. Suggestion: `white` or `g10`
 for a page read at length, `g10` when cards should stand off the page, `g90`
 or `g100` for a dark tool.
+
+## Grid width — capped or full
+
+Carbon's grid caps content at 99rem (1584px) and centres it: a reading
+width, right for prose and forms, and the default on every template. Its
+own `--full-width` modifier lifts the cap, and is the choice for a page that
+is scanned rather than read — a board, a wide table. Attested by
+`elements-grid--full-width` and `sink/grid.html`; measured on the scheduler
+at 2000px, 2026-09-06, where the cap left about 200px dead each side while
+the board scrolled for want of room. Below 99rem the two are identical.
+Suggestion: `capped` unless the page's main thing is wider than a paragraph.
+One class on the page's outer grid, so a project can flip it by hand later;
+`--grid full` in the script and Grid width in the builder set it at the
+start.
 
 ## Fields — regular or fluid
 

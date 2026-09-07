@@ -10,8 +10,8 @@
 // ── HISTORY ────────────────────────────────────────────────────────────────
 //
 // ONE HISTORY FOR THE SESSION, not one per template. The editable state is
-// { pages, edits, answers }, and `answers` — theme, prefix, name, title,
-// file — is global: a per-template history would have to duplicate it or
+// { pages, edits, answers }, and `answers` — theme, grid, prefix, name,
+// title, file — is global: a per-template history would have to duplicate it or
 // drop it, and undoing a theme change would depend on which template
 // happened to be selected when you pressed the button.
 //
@@ -187,6 +187,16 @@ export function fromDraft(raw, manifest) {
   if (!['white', 'g10', 'g90', 'g100', 'rux'].includes(d.answers.theme)) {
     return no(`it names a theme this version does not have (${d.answers.theme})`);
   }
+  // THE GRID ANSWER ARRIVED 2026-09-06, so a draft saved before then has none
+  // -- and that is a capped page, which is what every page was, not a corrupt
+  // draft. A draft that names a width this version does not have is refused
+  // exactly as an unknown theme is: opened, neither radio would be checked,
+  // the preview would quietly draw capped, and the copied command would carry
+  // `--grid 'wide'` for the script to reject. Not mutated here; the default is
+  // supplied in the state returned below.
+  if (d.answers.grid !== undefined && !['capped', 'full'].includes(d.answers.grid)) {
+    return no(`it names a grid width this version does not have (${JSON.stringify(d.answers.grid)})`);
+  }
   if (d.sources !== undefined && !isObj(d.sources)) return no('it is missing part of its state');
 
   const blocks = new Map(manifest.blocks.map(b => [b.id, b]));
@@ -261,7 +271,7 @@ export function fromDraft(raw, manifest) {
     }
   }
 
-  return { ok: true, state: clone({ pages: d.pages, edits: d.edits, links: d.links ?? {}, variants: d.variants ?? {}, answers: d.answers }), reason: null, savedAt: d.savedAt ?? null };
+  return { ok: true, state: clone({ pages: d.pages, edits: d.edits, links: d.links ?? {}, variants: d.variants ?? {}, answers: { ...d.answers, grid: d.answers.grid ?? 'capped' } }), reason: null, savedAt: d.savedAt ?? null };
 }
 
 // "just now", "4 minutes ago" — for the notice. Deliberately coarse: the

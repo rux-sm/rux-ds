@@ -94,8 +94,8 @@ const frame = $('#bld-frame'), wrap = $('#bld-frame-wrap'), status = $('#bld-sta
 // THE SNAPSHOT IS `pages`, `edits` AND THE FIVE ANSWERS, and nothing else.
 // `template`, `block`, `slot`, `catalogue` and `width` are where the reader
 // is standing and what they are looking through, not what they have made.
-const ANSWERS = ['theme', 'prefix', 'name', 'title', 'page'];
-const FRESH = { theme: 'white', prefix: '', name: '', title: '', page: '' };
+const ANSWERS = ['theme', 'grid', 'prefix', 'name', 'title', 'page'];
+const FRESH = { theme: 'white', grid: 'capped', prefix: '', name: '', title: '', page: '' };
 const state = { template: 'app-shell', block: '', slot: '', catalogue: '', rest: '', width: 'fit', mode: 'guided', step: 1, ...FRESH, edits: {}, links: {}, variants: {}, pages: {} };
 let manifest = null;
 // The guide map. Absent is not fatal: the catalogue still splits by evidence,
@@ -110,7 +110,7 @@ const blocks = new Map();        // id → manifest block
 const answers = () => {
   const prefix = state.prefix.trim() || 'Rux';
   const name = state.name.trim() || 'DS';
-  return { theme: state.theme, prefix, name, title: state.title.trim() || `${prefix} ${name}` };
+  return { theme: state.theme, grid: state.grid, prefix, name, title: state.title.trim() || `${prefix} ${name}` };
 };
 
 async function fetchText(url) {
@@ -164,7 +164,7 @@ const snapshot = () => copy({
   answers: Object.fromEntries(ANSWERS.map(k => [k, state[k]])),
 });
 
-// Put a restored snapshot back, controls included. The five answers are DOM
+// Put a restored snapshot back, controls included. The six answers are DOM
 // state as well as data, so they are written back here rather than left for
 // a render to notice.
 function applySnapshot(s) {
@@ -176,6 +176,7 @@ function applySnapshot(s) {
   state.variants = copy(s.variants ?? {});
   for (const k of ANSWERS) state[k] = s.answers[k] ?? FRESH[k];
   for (const r of document.querySelectorAll('input[name="bld-theme"]')) r.checked = r.value === state.theme;
+  for (const r of document.querySelectorAll('input[name="bld-grid"]')) r.checked = r.value === state.grid;
   for (const [id, key] of FIELDS) $(`#${id}`).value = state[key];
 }
 
@@ -1285,7 +1286,7 @@ const sq = s => `'${String(s).split("'").join("'\\''")}'`;
 function command() {
   const a = answers();
   return ['./tools/new-project.sh',
-    '--template', sq(state.template), '--theme', sq(a.theme),
+    '--template', sq(state.template), '--theme', sq(a.theme), '--grid', sq(a.grid),
     '--prefix', sq(a.prefix), '--name', sq(a.name),
     '--title', sq(a.title), '--page', sq(normalisePage().name)].join(' ');
 }
@@ -1409,6 +1410,13 @@ async function init() {
     r.addEventListener('change', () => {
       if (!r.checked) return;
       change(`theme ${r.nextElementSibling?.textContent.trim() || r.value}`, () => { state.theme = r.value; });
+      render();
+    });
+  }
+  for (const r of document.querySelectorAll('input[name="bld-grid"]')) {
+    r.addEventListener('change', () => {
+      if (!r.checked) return;
+      change(`grid ${r.nextElementSibling?.textContent.trim() || r.value}`, () => { state.grid = r.value; });
       render();
     });
   }

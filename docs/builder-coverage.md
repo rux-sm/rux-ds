@@ -165,7 +165,7 @@ one. **Its three CONTAINED specimens cannot be marked** — lines 151, 219
   of those three."
 
 <!-- COVERAGE:BEGIN -->
-_68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 274 candidate regions in the 47 unmarked._
+_68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 275 candidate regions in the 47 unmarked._
 
 | fragment | components | blocks | candidates | text | variants | behaviour | in the builder |
 |---|---|---|---|---|---|---|---|
@@ -193,7 +193,7 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 2
 | `file-uploader` | file-uploader, form, popover, tooltip | — | 2 | — | — | copy-button, popover | no |
 | `fluid` | checkbox, combo-box, date-picker, dropdown, form, list-box, multiselect, number-input, search, select, text-area, text-input, time-picker | — | 18 | — | — | date-picker, form-controls, list-box | no |
 | `full-page-error` | FullPageError, link | 1 | 1 | 3 | 0 | — | yes |
-| `grid` | — | — | 4 | — | — | — | no |
+| `grid` | — | — | 5 | — | — | — | no |
 | `icon-indicator` | icon-indicator | — | 16 | — | — | — | no |
 | `inline-loading` | inline-loading, loading | — | 3 | — | — | — | no |
 | `links` | link | — | 7 | — | — | — | no |

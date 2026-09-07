@@ -15,12 +15,14 @@
 #   sh tools/new-project.sh <dir> --path /name/  the app's path under the
 #                                             account root (default: /<dir>/),
 #                                             used once, for the switcher
+#   sh tools/new-project.sh <dir> --grid full   the grid uncapped within the
+#                                             page (default: capped at 99rem)
 #
 # Every question offers only what the templates and sink attest; the list of
 # what a project can choose, and which layer offers it, is docs/choices.md.
 # What THIS script chooses is what a text substitution on a template can do:
-# the template, the theme on <html>, the product name in the header, the
-# page title and the file name. Which fields, which buttons, which shell
+# the template, the theme on <html>, the grid's width on the outer grid, the
+# product name in the header, the page title and the file name. Which fields, which buttons, which shell
 # parts — that is composition, and the rux-ds-page skill does it.
 #
 # Run from THIS checkout. Without --tag it vendors the working tree and
@@ -71,24 +73,31 @@ set -e
 
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 THEMES="white g10 g90 g100 rux"
+# capped is Carbon's default, max-inline-size 99rem and centred -- a reading
+# width. full is its own --full-width modifier, attested by
+# elements-grid--full-width, for a page that is scanned rather than read: a
+# board, a wide table. Measured 2026-09-06 on the scheduler at 2000px, the cap
+# left ~200px dead each side while the board scrolled for want of room.
+GRIDS="capped full"
 TEMPLATES="$(ls "$HERE/templates" | sed 's/\.html$//')"
 
 has() { for x in $2; do [ "$x" = "$1" ] && return 0; done; return 1; }
 esc() { printf '%s' "$1" | sed 's/[&|\\]/\\&/g'; }
 
 # ---- arguments ------------------------------------------------------------
-DIR=""; TPL=""; THEME=""; NAME=""; PREFIX="Rux"; TITLE=""; PAGE=""; TAG_ARG=""; APP_PATH=""
+DIR=""; TPL=""; THEME=""; GRID=""; NAME=""; PREFIX="Rux"; TITLE=""; PAGE=""; TAG_ARG=""; APP_PATH=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --template) TPL="$2"; shift 2 ;;
     --theme)    THEME="$2"; shift 2 ;;
+    --grid)     GRID="$2"; shift 2 ;;
     --name)     NAME="$2"; shift 2 ;;
     --prefix)   PREFIX="$2"; shift 2 ;;
     --title)    TITLE="$2"; shift 2 ;;
     --page)     PAGE="$2"; shift 2 ;;
     --tag)      TAG_ARG="$2"; shift 2 ;;
     --path)     APP_PATH="$2"; shift 2 ;;
-    -h|--help)  sed -n '3,21p' "$0"; exit 0 ;;
+    -h|--help)  sed -n '3,23p' "$0"; exit 0 ;;
     --*)        echo "unknown flag $1"; exit 1 ;;
     *) if [ -z "$DIR" ]; then DIR="$1"; elif [ -z "$TPL" ]; then TPL="$1"; elif [ -z "$PAGE" ]; then PAGE="$1"; fi; shift ;;
   esac
@@ -102,7 +111,7 @@ done
 # theme, name, title or page named, the run is a pin move; name any of
 # those and it is a second page, asked for as before.
 MOVE_ONLY=""
-if [ -n "$DIR" ] && [ -e "$DIR/vendor/rux-ds/PIN" ] && [ -z "$TPL$THEME$NAME$TITLE$PAGE" ]; then
+if [ -n "$DIR" ] && [ -e "$DIR/vendor/rux-ds/PIN" ] && [ -z "$TPL$THEME$GRID$NAME$TITLE$PAGE" ]; then
   MOVE_ONLY=1
   OLD_PIN="$(sed -n 's/^commit  *//p' "$DIR/vendor/rux-ds/PIN" | cut -c1-7)"
 fi
@@ -138,6 +147,12 @@ if [ -z "$THEME" ]; then
   ask THEME "Theme" "white" "$THEMES"
 fi
 has "$THEME" "$THEMES" || { echo "no theme $THEME; one of: $THEMES"; exit 1; }
+if [ -z "$GRID" ]; then
+  echo "The grid's width: capped at 99rem and centred, Carbon's reading width, or"
+  echo "the full available content width for a page that is scanned rather than read:"
+  ask GRID "Grid" "capped" "$GRIDS"
+fi
+has "$GRID" "$GRIDS" || { echo "no grid $GRID; one of: $GRIDS"; exit 1; }
 if [ -z "$NAME" ]; then
   echo "The product name in the header, after the '$PREFIX' prefix:"
   ask NAME "Name" "DS" ""
@@ -283,6 +298,9 @@ else
   # so in tag mode HERE points at the export for exactly these lines.
   TREE="$HERE"; HERE="$SRC"
   N="$(esc "$NAME")"; P="$(esc "$PREFIX")"; T="$(esc "$TITLE")"
+  # The class the grid gains, or nothing: with GC empty the expression below
+  # rewrites the line to itself, so a capped page is byte-identical to before.
+  case "$GRID" in full) GC=" rux--css-grid--full-width" ;; *) GC="" ;; esac
   sed -e 's|"\.\./css/rux\.css"|"vendor/rux-ds/css/rux.css"|' \
       -e 's|"\.\./css/rux-theme\.css"|"vendor/rux-ds/css/rux-theme.css"|' \
       -e 's|"\.\./css/rux-overrides\.css"|"vendor/rux-ds/css/rux-overrides.css"|' \
@@ -293,11 +311,12 @@ else
       -e "s|<title>[^<]*</title>|<title>$T</title>|" \
       -e "s|name--prefix\">Rux</span>&nbsp;DS|name--prefix\">$P</span>\&nbsp;$N|" \
       -e "s|aria-label=\"Rux DS\"|aria-label=\"$P $N\"|g" \
+      -e "s|^  <div class=\"rux--css-grid\( [^\"]*\)\{0,1\}\">|  <div class=\"rux--css-grid\1$GC\">|" \
       "$HERE/templates/$TPL.html" \
   | awk '{ print } /href="vendor\/rux-ds\/css\/rux-overrides\.css"/ { print "<link rel=\"stylesheet\" href=\"rux-theme.css\">"; print "<link rel=\"stylesheet\" href=\"rux-overrides.css\">" }' \
   > "$DIR/$PAGE.html"
   HERE="$TREE"
-  PAGE_NOTE="written from templates/$TPL.html · theme $THEME · '$PREFIX $NAME'"
+  PAGE_NOTE="written from templates/$TPL.html · theme $THEME · grid $GRID · '$PREFIX $NAME'"
 
   # ---- the app step: the switcher, and /switcher.js ----------------------
   # A template's switcher lists three invented apps so the panel has something
