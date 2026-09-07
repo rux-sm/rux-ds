@@ -9,6 +9,41 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 - the eleven readings the grid-width change owed, in two passes.**
+Accepted by rux after one revision, landed at 647d5b4, and the sweep it owed
+found one defect on the way: the sink specimen's first draft carried
+margin-block-end on the narrow grid above it and check-spacing reported it at
+once -- marginBlockEnd 24px against Carbon's none -- because Carbon components
+carry no margin and the gate reads that rule. KNOWN adjudicates the plain and
+condensed grids' demo margins by name and never the narrow one; rather than
+grow that list, the gap moved to the sink's own label at 611f11e, which no
+gate measures. The sweep then ran against 611f11e.
+
+**Every figure reproduced its predecessor.** Sink: runtime-classes 0 stripped,
+the same 4 added; a11y 29, which is 28 adjudicated plus the standing calendar
+finding this ledger has kept reported since 2026-09-01 -- re-measured this
+sweep, the grid paints nothing on itself and ArrowRight moves `.focused` to a
+day that paints outline solid 2px rgb(15, 98, 254), the settled shape;
+spacing 456/406/35/15/35/309, one more checked and matched than before, the
+--full-width grid; rendered 68 sections clean in all five themes; behaviour
+47 of 47. Builder: 72/80 with the same 8 added, a11y 5 all adjudicated,
+spacing 46/42/4/3/8. Portal, second pass at 0b55817: 0 findings, spacing
+25/23/1 with the subgrid as the one divergence, and runtime-classes 64/64
+against the prior 65/65 -- the one class is rux--tag--red, drawn only while a
+cell is not current, so its absence is the page being true. 44 of 44 current.
+
+**Two measurement lessons, both paid for here.** The builder's first reading
+restored a draft my own earlier test had saved -- rux.draft and
+rux.builder.view in localStorage -- and read 20 added classes and 56 spacing
+checks against the prior 8 and 46; an untouched page includes its storage.
+And the sink's a11y count depends on run order: the first run after setup
+reads 29 with the calendar open, and any later run on the same page reads 28,
+because the tool's own focus cycling dismisses the calendar. The first run is
+the one recorded, as every prior sweep did; a reading taken second would have
+looked like an improvement that was not one. The pane was not displayed, so
+the sink gave no readable screenshot, which its cells say; the builder and
+the portal rendered.
+
 **2026-09-06 - a grid-width choice, proposed as a diff and not landed.** rux
 asked, after the scheduler went full width, whether the page builder should
 offer both: Carbon's 99rem reading width and the full available content
