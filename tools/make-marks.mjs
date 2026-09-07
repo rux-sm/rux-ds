@@ -92,12 +92,17 @@ const emit = (name, svg) => {
 };
 
 // ------------------------------------------------------------- 1. app icons
-// The canvas is the drawing's own, untouched. rux centred the mark inside it
-// with one cell of air on every side since 2026-09-06 (it was one left and
-// right and two top and bottom before), which is already inside the
-// 28-of-32 safe area an icon wants -- so there is nothing to scale
-// and no origin to compute, and no chance of the 1.10x stretch the old hand
-// exports had. Transparent ground: a launcher supplies its own.
+// The canvas is the drawing's own, untouched: nothing to scale, no origin to
+// compute, and no chance of the 1.10x stretch the old hand exports had.
+// Transparent ground: a launcher supplies its own.
+//
+// THE MARGIN IS GONE SINCE 2026-09-07. Until then rux centred the mark with
+// one cell of air on every side, inside the 28-of-32 safe area an icon wants.
+// The dachshund fills all 16 columns, so these icons bleed left and right and
+// a launcher mask can clip the tail and the muzzle. rux took that knowingly
+// and will adapt the drawing to a padded brand size. This tool copies
+// whatever brand/logo.svg holds and checks nothing about its bounds, then or
+// now: the margin was never enforced here, only described.
 for (const [name, { fill, on, ratio }] of Object.entries(VARIANTS)) {
   emit(`icon-${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" fill="${fill}" ${A11Y}>
 <title>Rux</title>
