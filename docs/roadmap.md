@@ -4478,6 +4478,78 @@ account panel is untested against one; and the panel still has no positive
 "signed in as X" indicator — only the negative signal of the button's
 absence, which answers "are you signed in" but not "as whom."
 
+### 4.14 Phase 14 — Theme Creator
+
+**Added 2026-09-06**, from a conversation the same day. `css/rux-theme.css`
+has one custom theme, `rux`: twenty `--rux-*` tokens under
+`[data-theme="rux"]`, IBM's purple grade standing in for each blue grade in
+`white`, chosen only to prove the override mechanism works and explicitly
+recorded in §4.10 as "not a decision." Nothing lets someone try a different
+accent without hand-editing twenty hex values and re-running the browser
+gates by hand to see if it still holds together.
+
+**Two decisions, both reversing or extending an earlier one, both made in
+the open:**
+
+1. **Both a Carbon hue-family picker and free-hex entry per token**, the
+   free-hex side carrying a live WCAG contrast readout that warns on
+   failure but never blocks. No contrast math exists anywhere in this repo
+   today; Phase 14 is the first.
+2. **General theme authoring, not a `rux`-only editor** — this reopens
+   §4.10's "one custom theme, proving the mechanism" line. The tool
+   overrides the ~20 interactive-family tokens layered over the compiled
+   `white` theme; it does not author Carbon's ~600-token theme surface, and
+   a candidate theme may not be named `white`, `g10`, `g90` or `g100` —
+   those would silently override a compiled Carbon theme's own tokens
+   rather than layer over `white`. `rux` stays an allowed name, since
+   replacing its placeholder value is exactly what the tool is for.
+
+**The twenty tokens' actual Carbon shade keys, verified against
+`node_modules/@carbon/colors` rather than assumed from the file's own
+comment:** `purple20, purple30, purple40, purple60, purple70, purple70Hover,
+purple80` — seven shades cover all twenty. One mismatch the comment's
+"grade-for-grade" framing hid: `--rux-button-primary-hover` and
+`--rux-button-tertiary-hover` both store `#7c3dd6`, which is
+`purple70Hover`, not `purple60Hover` (`#7822fb`). **Open, for rux, before the
+family-substitution logic generalizes this pattern to other hues:** keep
+today's values as-is (they ship and pass every gate; "grade-for-grade"
+becomes a documented near-miss rather than a broken promise), or correct
+the two hover tokens to a true `purple60Hover` derivation first.
+
+**Explicitly deferred, said so rather than dropped silently:**
+
+- Wiring an arbitrary theme name into the account panel's five-option
+  theme radio group (`js/profile.js`, every template's
+  `#rux-profile-theme` fieldset) — a separate, larger change touching ten
+  templates plus `docs/choices.md`'s "Theme — five, all offered" section.
+  The tool's own preview forces `data-theme` directly, the way the sink's
+  `data-set-theme` demo buttons already do.
+- A freshness gate for the new hue-family catalogue, mirroring
+  `check-blocks.mjs`'s check on `builder/blocks.json`. Proposed and
+  reviewed on its own once the tool's shape has settled.
+- Fixing `portal.html`'s missing "Builder" nav entry as a standalone
+  patch — folded instead into the coordinated four-page nav update Phase
+  14 itself requires (below), since adding a fourth generated page and
+  leaving three different nav lists across it would be its own new,
+  undetected gap.
+
+**The verification wiring is the larger half of this phase, tier 2 under
+AGENTS.md, proposed and accepted as its own diff before any runtime or
+generator code is written** — the same change must not both add a control
+and judge it acceptable. What it touches: `tools/lib/gates.mjs`'s `GATES`
+array (a `build-theme-creator-icons` invariant, the same shape as the
+existing `build-builder-icons`), a `THEME_CREATOR_SCRIPTS` page-specific
+staleness input mirroring `BUILDER_SCRIPTS` (`theme-creator/` sits outside
+`RENDERED_INPUTS`, same as `builder/`), `CONTROL_FILES` (the two new
+`tools/build-theme-*.mjs` scripts), `package.json`'s `scripts.verify` chain
+and its `devDependencies` (`@carbon/colors`, today reachable only
+transitively through `@carbon/elements`), `.github/workflows/gates.yml`'s
+committed-output freshness list, and three new browser-gate cells
+(`check-runtime-classes`, `check-spacing`, `check-a11y`) that
+`tools/lib/sources.mjs`'s root-page auto-discovery will expect the moment
+`theme-creator.html` exists, to be swept and recorded via the `sink-check`
+skill after it does.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
