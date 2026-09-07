@@ -4550,6 +4550,56 @@ committed-output freshness list, and three new browser-gate cells
 `theme-creator.html` exists, to be swept and recorded via the `sink-check`
 skill after it does.
 
+### 4.15 Phase 15 — Theme Creator: surface overlays
+
+**Added 2026-09-06**, the same day as Phase 14, from rux asking how many
+surface tokens there actually are (not two — `background`, `layer`,
+`field`, each with numbered depth steps and interaction-state variants,
+596 tokens total in `:root`) and wanting an OLED-style dark theme,
+darkest surface at `#000000`.
+
+**First draft was wrong, caught by review before any file was touched.**
+The proposal was a fifth *compiled* theme —
+`map.merge(themes.$g100, (background: #000000))` — reasoned as a
+one-key diff. It is not. `node_modules/@carbon/themes/scss/_theme.scss`'s
+`matches()` function (lines 56-75) requires an active theme map to equal
+*exactly* one of Carbon's registered snapshots before it will select
+that snapshot's component-token values (buttons, tags, notifications,
+and more); change one key and the whole map stops matching `$g100`, and
+every component-token lookup falls through to `$fallback` (`white`).
+Compiled in review: 67 tokens would have differed from `g100`, not one —
+`button-tertiary` reading blue instead of white, notification
+backgrounds reading light. The Sass-merge approach is invalid and
+nothing was built on it.
+
+**What replaced it**: don't compile a new theme. Layer a surface
+override on top of an existing compiled one, in the CSS cascade, exactly
+the mechanism the shipped `rux` accent theme already uses — a compound
+selector, `[data-theme="<base>"][data-rux-surface="<name>"]`, naming
+only the tokens it overrides. Carbon's Sass never sees the override, so
+`matches()` and every component-token lookup stay untouched.
+
+**Shipped**: a second, independent section in `theme-creator.html`,
+"Surfaces" — pick one of the four compiled bases (`white`/`g10`/`g90`/
+`g100`, not `rux`), edit exactly four tokens (`background`, `layer-01`,
+`layer-02`, `layer-03`), advisory contrast against the base's own fixed
+`text-primary`, live preview via the same Blob-URL mechanism the accent
+section already had, export as the compound-selector block plus its
+`<html>` usage line. No field/border/text/icon editing, no auto-derived
+hover/active/selected shades — deliberately, per rux's own scoping
+("just want a way to map the few base layers... a few surfaces").
+
+No control-file surface: `background`/`layer-01/02/03` already exist in
+every compiled theme, so `check-tokens.mjs` sees no invented name, and
+`check-token-values.mjs` never reads `css/rux-theme.css` at all, so an
+override block is invisible to it by construction, not by exception.
+
+**Explicitly deferred**: wiring `data-rux-surface` into `js/theme.js`/
+the account panel/the profile shape (a platform decision, not a Theme
+Creator concern); a real shipped example in this repository's own
+`css/rux-theme.css` (the tool's own preview proves the mechanism, same
+restraint Phase 10 took with the placeholder accent hue).
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early

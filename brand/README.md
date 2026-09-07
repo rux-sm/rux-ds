@@ -12,13 +12,16 @@ build step between the file and the page:
 Replace `logo.svg` and every shell in that project picks it up on reload.
 Other repositories hold their own copy; changing this one does not update them.
 
-The official mark is rux's **Brand.svg**, confirmed 2026-09-05 as the final
-revision for now, superseding Rux logo 2. `rux-ds/brand/logo.svg` is the
-cleaned master; Rux Apps and Rux Notes carry byte-identical logo and favicon
-copies. Its 16x16 viewBox contains 86 filled grid cells, with one cell of
-padding left/right, three above and two below. Cleanup removes redundant
-export shapes and point dimensions without changing any visible geometry
-or placement; all occupied grid cells were compared before and after.
+The official mark is rux's **rux-logo-16x16.svg**, drawn 2026-09-06 and
+superseding Brand.svg of 2026-09-05, which had superseded Rux logo 2.
+`rux-ds/brand/logo.svg` is the cleaned master; Rux Apps, Rux Notes and Rux
+Scheduler carry byte-identical logo and favicon copies. Its 16x16 viewBox
+contains 110 filled grid cells with one cell of padding on every side, so the
+mark is square. Cleanup reduced the export's 21 overlapping shapes, one
+carrying a stray fractional point on a straight edge, to 15 rectangles and
+dropped the point dimensions, without changing any visible geometry or
+placement; the set of occupied grid cells was compared before and after and
+is identical.
 
 ## What the file has to be
 

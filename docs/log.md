@@ -9,6 +9,25 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 - the square mark.** rux drew a new 16-grid mark,
+rux-logo-16x16.svg, and asked for a review and for it to go everywhere. The
+review: 110 filled cells against the old 86, bounds x=1..14 and y=1..14, one
+cell of air on every side where the old had three above and two below -- so
+the footprint is square, which is what was asked for, and it still lands on
+whole device pixels at every size divisible by 16. The same motif: the crown
+moved up two rows and its pillars grew, the base gained a full-width foot row,
+the feet doubled. The Linearity export carried 21 shapes, nine of them wholly
+covered by others, and one stray fractional point (y=11.3525) on a straight
+edge -- invisible, but not a master. It reduces to 15 rectangles that
+reproduce all 110 cells exactly, proved by comparing the two cell sets, and
+that is what brand/logo.svg now holds. `npm run marks` regenerated the favicon
+and both app icons from it. No page changed: every shell reads the mark by
+<img src> and the favicon by <link>, which is the whole point of the
+brand/ rule. Copied byte for byte into Rux Apps, Rux Notes and Rux Scheduler,
+which hold their own brand/ that a pin move never overwrites. Not seen
+rendered: the pane was not displayed, so no screenshot; the 16x16 grid was
+read as text, which for a pixel mark is the drawing itself.
+
 **2026-09-06 - the eleven readings the grid-width change owed, in two passes.**
 Accepted by rux after one revision, landed at 647d5b4, and the sweep it owed
 found one defect on the way: the sink specimen's first draft carried

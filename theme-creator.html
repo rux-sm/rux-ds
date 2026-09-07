@@ -548,6 +548,135 @@
         <span class="thc-badge" data-token="chat-avatar-user" data-scenario="0" data-threshold="3" title="avatar background; assumed to carry a light icon or initial like the sibling chat-avatar-agent/chat-avatar-bot tokens (css/rux.css:30824-30826), not confirmed against actual avatar markup">default — checking…</span></div>
       </div>
               </div>
+
+              <p class="thc-status">Undo and redo above cover this section too — one history for the whole page, in the order things were actually edited.</p>
+
+              <div class="rux--form-item">
+                <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="thc-surf-base-group">
+                  <legend class="rux--label">Base theme</legend>
+                    <div class="rux--radio-button-wrapper">
+                      <input id="thc-surf-base-white" class="rux--radio-button" type="radio" name="thc-surf-base" value="white" checked>
+                      <label for="thc-surf-base-white" class="rux--radio-button__label">
+                        <span class="rux--radio-button__appearance"></span>
+                        <span class="rux--radio-button__label-text">white</span>
+                      </label>
+                    </div>
+                    <div class="rux--radio-button-wrapper">
+                      <input id="thc-surf-base-g10" class="rux--radio-button" type="radio" name="thc-surf-base" value="g10">
+                      <label for="thc-surf-base-g10" class="rux--radio-button__label">
+                        <span class="rux--radio-button__appearance"></span>
+                        <span class="rux--radio-button__label-text">g10</span>
+                      </label>
+                    </div>
+                    <div class="rux--radio-button-wrapper">
+                      <input id="thc-surf-base-g90" class="rux--radio-button" type="radio" name="thc-surf-base" value="g90">
+                      <label for="thc-surf-base-g90" class="rux--radio-button__label">
+                        <span class="rux--radio-button__appearance"></span>
+                        <span class="rux--radio-button__label-text">g90</span>
+                      </label>
+                    </div>
+                    <div class="rux--radio-button-wrapper">
+                      <input id="thc-surf-base-g100" class="rux--radio-button" type="radio" name="thc-surf-base" value="g100">
+                      <label for="thc-surf-base-g100" class="rux--radio-button__label">
+                        <span class="rux--radio-button__appearance"></span>
+                        <span class="rux--radio-button__label-text">g100</span>
+                      </label>
+                    </div>
+                </fieldset>
+                <div class="rux--form__helper-text">One of Carbon's four compiled themes. Picking one sets the four surfaces below to its own values, in one step.</div>
+              </div>
+
+              <div class="rux--form-item rux--text-input-wrapper">
+                <div class="rux--text-input__label-wrapper">
+                  <label class="rux--label" for="thc-surf-name">Surface name</label>
+                </div>
+                <div class="rux--text-input__field-outer-wrapper">
+                  <div class="rux--text-input__field-wrapper">
+                    <input id="thc-surf-name" class="rux--text-input" type="text" placeholder="oled">
+                  </div>
+                </div>
+                <div class="rux--form__helper-text" id="thc-surf-name-helper">Lowercase letters, digits and hyphens. Becomes the <code>data-rux-surface</code> value.</div>
+              </div>
+
+              <h2 class="rux--type-heading-compact-01">Surfaces</h2>
+              <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
+              <div id="thc-surface-rows">
+      <div class="thc-row" data-token="background">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-background">Page background</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-background" class="rux--text-input" type="text" inputmode="text" value="#ffffff" data-token="background">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-background" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="background" title="the base theme's own text-primary against this surface">checking…</span>
+        </div>
+      </div>
+
+      <div class="thc-row" data-token="layer-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-01">Surface 1</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-01" class="rux--text-input" type="text" inputmode="text" value="#f4f4f4" data-token="layer-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-01" title="the base theme's own text-primary against this surface">checking…</span>
+        </div>
+      </div>
+
+      <div class="thc-row" data-token="layer-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-02">Surface 2</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-02" class="rux--text-input" type="text" inputmode="text" value="#ffffff" data-token="layer-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-02" title="the base theme's own text-primary against this surface">checking…</span>
+        </div>
+      </div>
+
+      <div class="thc-row" data-token="layer-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-03">Surface 3</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-03" class="rux--text-input" type="text" inputmode="text" value="#f4f4f4" data-token="layer-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-03" title="the base theme's own text-primary against this surface">checking…</span>
+        </div>
+      </div>
+              </div>
             </div>
           </div>
 
@@ -597,6 +726,14 @@
               <div class="thc-row-group">
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-copy">Copy the CSS block</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-download">Download rux-theme.css</button>
+              </div>
+
+              <h2 class="rux--type-heading-compact-01">Surfaces: take it away</h2>
+              <p>The compound selector, and the two attributes it needs on <code>&lt;html&gt;</code> — this pairs with, and can sit in the same file as, the block above.</p>
+              <code class="thc-command" id="thc-surface-export"></code>
+              <div class="thc-row-group">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-copy">Copy the CSS block</button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-download">Download rux-theme.css</button>
               </div>
             </div>
           </div>

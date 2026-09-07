@@ -16,6 +16,19 @@
 // stepper, no guided/free split: unlike the page builder this composes
 // nothing from parts, so there is one screen, not a sequence.
 //
+// A SECOND, INDEPENDENT SECTION — SURFACES — was added in Phase 15
+// (roadmap §4.15), after a first attempt to compile a fifth Carbon theme by
+// merging a Sass map was found broken by review: Carbon's component tokens
+// are selected by matching the ENTIRE active theme map against a known
+// snapshot (node_modules/@carbon/themes/scss/_theme.scss's `matches()`), so
+// changing one key silently breaks every component-token lookup for that
+// theme. Surfaces instead overrides four tokens — background, layer-01,
+// layer-02, layer-03 — in the CSS cascade, on a compound
+// `[data-theme="<base>"][data-rux-surface="<name>"]` selector, the same
+// mechanism the shipped `rux` accent theme already uses on `:root`. Carbon's
+// Sass never sees it, so nothing about the chosen base's own component
+// tokens, text, icons, borders or interaction states can move.
+//
 // THE TWENTY ROWS ARE STATIC MARKUP, not cloned at runtime. Builder.html
 // clones because its blocks are a variable, per-template catalogue; this
 // page's twenty tokens and their scenarios are fixed by scenarios.json at
@@ -84,6 +97,21 @@ for (const [name] of TOKENS) {
   if (!(name in DEFAULTS)) { console.log(`  build-theme-creator: css/rux-theme.css has no --rux-${name}, but TOKENS names it`); process.exit(1); }
 }
 
+// The four compiled bases a surface overlay may sit on — never `rux`, which
+// keeps "base" meaning exactly "one of Carbon's compiled themes" — each with
+// its own resting background/layer-01/02/03 (read from css/rux.css, roadmap
+// §4.15) and the fixed text-primary the contrast readout checks against.
+// Not `rux`-derived, not read from a file: these four are Carbon's, and
+// this is the one place their values are transcribed, so a Carbon bump that
+// moves one is a diff here to notice, not a silent drift.
+const BASES = {
+  white: { text: '#161616', tokens: { background: '#ffffff', 'layer-01': '#f4f4f4', 'layer-02': '#ffffff', 'layer-03': '#f4f4f4' } },
+  g10: { text: '#161616', tokens: { background: '#f4f4f4', 'layer-01': '#ffffff', 'layer-02': '#f4f4f4', 'layer-03': '#ffffff' } },
+  g90: { text: '#f4f4f4', tokens: { background: '#262626', 'layer-01': '#393939', 'layer-02': '#525252', 'layer-03': '#6f6f6f' } },
+  g100: { text: '#f4f4f4', tokens: { background: '#161616', 'layer-01': '#262626', 'layer-02': '#393939', 'layer-03': '#525252' } },
+};
+const SURFACE_TOKENS = [['background', 'Page background'], ['layer-01', 'Surface 1'], ['layer-02', 'Surface 2'], ['layer-03', 'Surface 3']];
+
 const TEMPLATES = ['app-shell', 'dashboard-page', 'detail-page', 'empty-state', 'error-state', 'form-page', 'schedule-page', 'settings-page', 'table-page', 'wizard-page'];
 const WIDTHS = [['375', '375'], ['672', '672'], ['1056', '1056'], ['1280', '1280'], ['1440', '1440'], ['fit', 'Fit']];
 const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -120,6 +148,39 @@ const rows = TOKENS.map(([name, label]) => {
         <div class="thc-row__badges">${badges || '<span class="thc-status">not read against a scenario</span>'}</div>
       </div>`;
 }).join('\n');
+
+// The base-theme radios: sink/radio.html's group, vertical, one per BASES
+// entry, white checked by default.
+const baseOptions = Object.keys(BASES).map(name => `                    <div class="rux--radio-button-wrapper">
+                      <input id="thc-surf-base-${name}" class="rux--radio-button" type="radio" name="thc-surf-base" value="${name}"${name === 'white' ? ' checked' : ''}>
+                      <label for="thc-surf-base-${name}" class="rux--radio-button__label">
+                        <span class="rux--radio-button__appearance"></span>
+                        <span class="rux--radio-button__label-text">${esc(name)}</span>
+                      </label>
+                    </div>`).join('\n');
+
+// One row per surface token: hex field, swatch, one contrast badge against
+// the chosen base's own fixed text-primary. Same shape as the accent rows
+// above, at a quarter the count — this section names exactly four tokens.
+const surfaceRows = SURFACE_TOKENS.map(([name, label]) => `
+      <div class="thc-row" data-token="${name}">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-${name}">${esc(label)}</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-${name}" class="rux--text-input" type="text" inputmode="text" value="${BASES.white.tokens[name]}" data-token="${name}">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-${name}" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="${name}" title="the base theme's own text-primary against this surface">checking…</span>
+        </div>
+      </div>`).join('\n');
 
 const page = `<!doctype html>
 <html lang="en" data-theme="white">
@@ -238,6 +299,33 @@ ${familyOptions}
               <h2 class="rux--type-heading-compact-01">Twenty tokens</h2>
               <div id="thc-rows">${rows}
               </div>
+
+              <p class="thc-status">Undo and redo above cover this section too — one history for the whole page, in the order things were actually edited.</p>
+
+              <div class="rux--form-item">
+                <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="thc-surf-base-group">
+                  <legend class="rux--label">Base theme</legend>
+${baseOptions}
+                </fieldset>
+                <div class="rux--form__helper-text">One of Carbon's four compiled themes. Picking one sets the four surfaces below to its own values, in one step.</div>
+              </div>
+
+              <div class="rux--form-item rux--text-input-wrapper">
+                <div class="rux--text-input__label-wrapper">
+                  <label class="rux--label" for="thc-surf-name">Surface name</label>
+                </div>
+                <div class="rux--text-input__field-outer-wrapper">
+                  <div class="rux--text-input__field-wrapper">
+                    <input id="thc-surf-name" class="rux--text-input" type="text" placeholder="oled">
+                  </div>
+                </div>
+                <div class="rux--form__helper-text" id="thc-surf-name-helper">Lowercase letters, digits and hyphens. Becomes the <code>data-rux-surface</code> value.</div>
+              </div>
+
+              <h2 class="rux--type-heading-compact-01">Surfaces</h2>
+              <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
+              <div id="thc-surface-rows">${surfaceRows}
+              </div>
             </div>
           </div>
 
@@ -272,6 +360,14 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
               <div class="thc-row-group">
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-copy">Copy the CSS block</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-download">Download rux-theme.css</button>
+              </div>
+
+              <h2 class="rux--type-heading-compact-01">Surfaces: take it away</h2>
+              <p>The compound selector, and the two attributes it needs on <code>&lt;html&gt;</code> — this pairs with, and can sit in the same file as, the block above.</p>
+              <code class="thc-command" id="thc-surface-export"></code>
+              <div class="thc-row-group">
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-copy">Copy the CSS block</button>
+                <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-download">Download rux-theme.css</button>
               </div>
             </div>
           </div>
