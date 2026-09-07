@@ -6,6 +6,12 @@
 #   sh tools/roll-out.sh vX.Y.Z --app name   one of them
 #   sh tools/roll-out.sh vX.Y.Z --dry-run    say what would move, move nothing
 #
+# AN APP THAT ALREADY HOLDS THOSE BYTES IS LEFT ALONE. Since the PIN carries a
+# sha256 of the vendored tree, new-project.sh declines a move to a tag whose
+# vendored files are identical, so a run can legitimately change nothing. The
+# summary separates moved from already-holding and prints a commit command
+# only for the first; a run where nothing moved says so and asks for none.
+#
 # WHAT IT IS. A loop over `tools/new-project.sh <app> --tag vX.Y.Z`, with the
 # checks a person forgets done first and for every target before any target
 # changes: the tag resolves here; each app is a git repository, clean, with an
@@ -65,14 +71,24 @@ done
 [ -z "$DRY" ] || { echo ""; echo "dry run: nothing moved."; exit 0; }
 
 # ---- one at a time, stop at the first failure -----------------------------
-MOVED=""
+# CHANGED AND UNCHANGED ARE NOT THE SAME OUTCOME. Since the pin carries a
+# checksum, new-project.sh declines to write when the app already holds the
+# bytes the tag carries, so a run can legitimately move nothing. Preflight
+# refused every app that was not clean, so anything present afterwards is this
+# run's. Read with `status --porcelain`, not `diff`, because a release that
+# ADDS a file leaves it untracked and a diff would call that unchanged.
+MOVED=""; UNMOVED=""
 for app in $APPS; do
   name="$(basename "$app")"
   echo ""; echo "══ $name"
   sh "$HERE/tools/new-project.sh" "$app" --tag "$TAG"
   echo ""; echo "── $name: node tools/check.mjs"
   if ( cd "$app" && node tools/check.mjs ); then
-    MOVED="$MOVED $name"
+    if [ -n "$(git -C "$app" status --porcelain -- vendor/)" ]; then
+      MOVED="$MOVED $name"
+    else
+      UNMOVED="$UNMOVED $name"
+    fi
   else
     echo ""
     echo "$name FAILED its check on $TAG. Nothing is committed. To put it back:"
@@ -82,11 +98,23 @@ for app in $APPS; do
   fi
 done
 
-echo ""; echo "══ moved to $TAG:$MOVED"
+echo ""
+[ -n "$MOVED" ] && echo "══ moved to $TAG:$MOVED"
+[ -n "$UNMOVED" ] && echo "══ already holding these bytes, PIN unchanged:$UNMOVED"
 for app in $APPS; do
-  echo ""; echo "  $(basename "$app")"; git -C "$app" diff --stat -- vendor/ | sed 's/^/    /'
+  name="$(basename "$app")"
+  case " $UNMOVED " in
+    *" $name "*) echo ""; echo "  $name"; echo "    vendor/ already holds these bytes; PIN unchanged" ;;
+    *) echo ""; echo "  $name"; git -C "$app" status --porcelain -- vendor/ | sed 's/^/    /' ;;
+  esac
 done
 echo ""
-echo "  Nothing is committed. Per app: read the drift report above and CHANGES.md"
-echo "  between the tags, open the site, then"
-echo "    git commit -am 'chore(vendor): Move the pin to rux-ds $TAG' && git push"
+if [ -z "$MOVED" ]; then
+  echo "  NOTHING TO COMMIT. Every app already held the bytes $TAG carries, so each"
+  echo "  PIN still names the earliest tag that delivered them. That is the pin doing"
+  echo "  its job: it names bytes, not the newest tag."
+else
+  echo "  Nothing is committed. For each app under \"moved\" above: read the drift"
+  echo "  report and CHANGES.md between the tags, open the site, then"
+  echo "    git commit -am 'chore(vendor): Move the pin to rux-ds $TAG' && git push"
+fi

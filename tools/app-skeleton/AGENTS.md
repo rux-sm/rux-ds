@@ -15,8 +15,9 @@ it.
 - **Yours:** the pages at the root, `rux-theme.css` and `rux-overrides.css`
   (deltas only — empty is the normal state), `brand/`, `tools/`, this file.
 - **rux-ds's:** everything under `vendor/rux-ds/`. Never edited; a pin move
-  overwrites it. A missing component or rule is a request to rux-ds with
-  invented content, never a local rule.
+  overwrites it, and `vendor/rux-ds/PIN` carries a `sha256` of those bytes so
+  `tools/check.mjs` FAILS on an edit made here. A missing component or rule is
+  a request to rux-ds with invented content, never a local rule.
 - Every `rux--*` class comes from `vendor/rux-ds/css/rux.css`. A colour goes
   in `rux-theme.css` inside a `[data-theme]` block; a component rule in
   `rux-overrides.css` at Carbon's own specificity; never `!important`.
@@ -40,6 +41,13 @@ From a rux-ds clone on `main`, with the tag fetched:
 
 Only `vendor/rux-ds/` changes. Read the drift report it prints, then
 `CHANGES.md` in rux-ds between the two tags, then `node tools/check.mjs`.
+
+**It may write nothing, and that is a result, not a failure.** The `PIN`
+records a `sha256` of the vendored tree; a tag whose vendored files are
+byte-identical is declined and the `PIN` keeps naming the earlier tag. The pin
+names bytes, not the newest tag, so an app that already holds them is not out
+of date. A `PIN` written before checksums says so in `tools/check.mjs` as a
+note rather than a failure, and gains one on its first move.
 
 ## Commits
 

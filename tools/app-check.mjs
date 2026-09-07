@@ -10,6 +10,9 @@
 //                                          else the working directory
 //   node tools/app-check.mjs --self-test   drive every rule red in a scratch
 //                                          app, then remove it
+//   node tools/app-check.mjs --hash <dir>  print the tree checksum of <dir>
+//                                          and nothing else; how
+//                                          new-project.sh records one in a PIN
 //
 // WHY IT EXISTS. Until 2026-09-05 the hub carried an eight-line class check
 // and Notes a ninety-nine-line one, and neither checked a token; the recipe
@@ -25,7 +28,8 @@
 //   files     every relative href/src on a page names a file that exists
 //   ids       ids are unique per page, and every aria-controls, aria-labelledby,
 //             aria-describedby, aria-owns, for= and #fragment resolves to one
-//   pin       vendor/rux-ds/PIN exists and names a tag
+//   pin       vendor/rux-ds/PIN exists, names a tag, and -- when it carries a
+//             sha256 line -- the bytes under vendor/rux-ds/ still hash to it
 //
 // WHAT IT CANNOT SEE, said plainly because a green run is easy to over-read:
 //   * whether a class is the RIGHT one -- btn--secondary where btn--danger was
@@ -37,6 +41,15 @@
 //   * an id built at runtime, a class an app-specific check knows better,
 //     spacing, contrast, behaviour, or how the page LOOKS. It prints which
 //     pages to open and names the five themes; the looking is the owner's.
+//   * WHETHER THE PIN IS HONEST. The checksum is an INTEGRITY check, not
+//     provenance: it catches an accidental or partial edit under vendor/, and
+//     anyone who edits the tree and its PIN together can forge agreement. The
+//     trusted tie to a tag is that new-project.sh exported that tag and wrote
+//     the PIN in the same run. The checksum covers vendored paths and file
+//     BYTES -- not permissions and not empty directories, so a vendored
+//     githooks/commit-msg that lost its executable bit would hash identically
+//     while no longer running. Hashing mode is umask- and platform-fragile,
+//     so the limit is recorded here rather than chased.
 //
 // The hub keeps its registry rules and Notes its privacy, data, order,
 // ancestry and generator gates beside this; nothing app-specific lives here.
@@ -48,6 +61,7 @@
 // that exactly that rule fails, and removes the directory.
 //
 import { readFileSync, readdirSync, existsSync, statSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join, relative, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -63,6 +77,36 @@ function defaultRoot() {
   if (basename(dirname(dirname(self))) === 'rux-ds' && basename(dirname(dirname(dirname(self)))) === 'vendor') return up3;
   return process.cwd();
 }
+
+// ── the vendored tree's checksum ────────────────────────────────────────────
+// THE SAME SHAPE rux-ln-notes/tools/check-data.mjs USES for data/guides/, so
+// there is one format in the family rather than two: sha256 of each file's
+// BYTES, a listing of `<hash>  <relative path>` sorted by path, then sha256 of
+// that listing. Bytes, never decoded text -- the fonts and icons.svg are
+// binary. Sorted with an explicit comparator so it does not depend on a
+// locale. The root PIN is the one exclusion, because it carries the answer.
+//
+// It is deliberately NOT a hash of the tag's tree: new-project.sh rewrites the
+// templates' brand paths on the way in, so the vendored bytes are their own
+// thing and this hashes what is actually there.
+export function treeHash(dir) {
+  const files = [];
+  const collect = (d) => {
+    for (const e of readdirSync(d, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))) {
+      const p = join(d, e.name);
+      if (e.isDirectory()) collect(p);
+      else if (!(d === dir && e.name === 'PIN')) files.push(p);
+    }
+  };
+  collect(dir);
+  const sha = (buf) => createHash('sha256').update(buf).digest('hex');
+  const lines = files
+    .map((p) => [relative(dir, p), sha(readFileSync(p))])
+    .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+    .map(([path, h]) => `${h}  ${path}\n`);
+  return sha(lines.join(''));
+}
+const shortHash = h => (h ? h.slice(0, 12) : h);
 
 // ── reading ─────────────────────────────────────────────────────────────────
 function walk(dir, ext, out = []) {
@@ -96,11 +140,30 @@ export function check(root) {
 
   // pin
   const pinPath = join(root, 'vendor/rux-ds/PIN');
-  let pinTag = null;
+  let pinTag = null, pinRecorded = null, pinComputed = null;
   if (!existsSync(pinPath)) fail('pin', 'vendor/rux-ds/PIN', 'missing -- this is not a project on rux-ds, or vendor/ was not committed');
   else {
-    pinTag = readFileSync(pinPath, 'utf8').match(/^tag\s+(v\d\S*)/m)?.[1] ?? null;
+    const pinText = readFileSync(pinPath, 'utf8');
+    pinTag = pinText.match(/^tag\s+(v\d\S*)/m)?.[1] ?? null;
     if (!pinTag) fail('pin', 'vendor/rux-ds/PIN', 'names no tag; a pin between tags is not a release a consumer can be on');
+    // THE BYTES, not only the label. Only reached with a PIN present, so the
+    // missing-PIN message above stays the controlled diagnostic rather than
+    // becoming an uncaught error from hashing a directory that is not there.
+    pinRecorded = pinText.match(/^sha256\s+([0-9a-f]{64})\b/m)?.[1] ?? null;
+    if (pinRecorded) {
+      try {
+        pinComputed = treeHash(join(root, 'vendor/rux-ds'));
+      } catch (e) {
+        fail('pin', 'vendor/rux-ds', `its checksum could not be computed: ${e.message}`);
+      }
+      if (pinComputed && pinComputed !== pinRecorded) {
+        fail('pin', 'vendor/rux-ds',
+          `the vendored tree does not match its PIN -- recorded ${shortHash(pinRecorded)}, found ${shortHash(pinComputed)}. ` +
+          'Something under vendor/ was edited or partially copied; re-run rux-ds tools/new-project.sh against this app to put the release back.');
+      }
+    } else {
+      notes.push('vendor/rux-ds/PIN carries no sha256 line, so its bytes cannot be verified -- a pin written before checksums. The next pin move records one.');
+    }
   }
 
   // what the pinned release defines
@@ -164,7 +227,7 @@ export function check(root) {
   }
   if (absolute) notes.push(`${absolute} root-absolute reference${absolute === 1 ? '' : 's'} (/…) not checked: they name files on the account's root site, not in this app`);
 
-  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, pinTag };
+  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, pinTag, pinRecorded, pinComputed };
 }
 
 // ── printing ────────────────────────────────────────────────────────────────
@@ -173,7 +236,7 @@ function report(root, r) {
   for (const rule of rules) {
     const fs = r.failures.filter(f => f.rule === rule);
     console.log(`  ${fs.length ? 'FAIL' : ' ok '}  ${rule.padEnd(8)}${fs.length ? '' : ({
-      pin: `vendor/rux-ds at ${r.pinTag}`,
+      pin: `vendor/rux-ds at ${r.pinTag}${r.pinRecorded ? `, bytes verified ${shortHash(r.pinRecorded)}` : ''}`,
       classes: `${r.classUses} uses resolve against ${r.defined} compiled`,
       tokens: `${r.tokenUses} var(--rux-*) reads resolve`,
       files: `every relative href and src on ${r.pages.length} page${r.pages.length === 1 ? '' : 's'} exists`,
@@ -192,9 +255,12 @@ function report(root, r) {
 function selfTest() {
   const work = mkdtempSync(join(tmpdir(), 'rux-app-check-'));
   const w = (p, s) => { mkdirSync(dirname(join(work, p)), { recursive: true }); writeFileSync(join(work, p), s); };
+  // THE PIN IS WRITTEN LAST, and its checksum is computed from the fixture that
+  // was just built -- exactly the order new-project.sh uses. Writing it first
+  // with a hand-typed hash would make every case fail on a mismatch nobody
+  // meant to test.
   const good = () => {
     rmSync(work, { recursive: true, force: true });
-    w('vendor/rux-ds/PIN', 'tag     v0.0.0\ncommit  0000000\n');
     w('vendor/rux-ds/css/rux.css', '.rux--btn{--rux-x:1}.rux--btn--primary{color:var(--rux-x)}.rux--lg\\:col-span-8{}');
     w('vendor/rux-ds/css/rux-theme.css', '[data-theme=white]{--rux-y:2}');
     w('vendor/rux-ds/css/rux-overrides.css', '');
@@ -215,7 +281,9 @@ function selfTest() {
       '<script src="app.js"></script><script>document.body.classList.add("rux--btn")</script>',
       '</body></html>',
     ].join('\n'));
+    w('vendor/rux-ds/PIN', `tag     v0.0.0\ncommit  0000000\nsha256  ${treeHash(join(work, 'vendor/rux-ds'))}\n`);
   };
+  const pinNoSha = 'tag     v0.0.0\ncommit  0000000\n';
   const cases = [
     ['a valid app passes', null, () => {}],
     ['classes', 'classes', () => w('page.html', '<html><body class="rux--invented"></body></html>')],
@@ -227,16 +295,28 @@ function selfTest() {
     ['ids: dangling #fragment', 'ids', () => w('page.html', '<html><body><a href="#gone">x</a></body></html>')],
     ['pin without a tag', 'pin', () => w('vendor/rux-ds/PIN', 'tag     (none: a commit between tags)\ncommit  0000000\n')],
     ['pin missing', 'pin', () => rmSync(join(work, 'vendor/rux-ds/PIN'))],
+    // The checksum rule. Drift is one appended byte under vendor/, which is
+    // what a hand edit or a half-finished copy looks like from here.
+    ['pin: tree drifted', 'pin', () => w('vendor/rux-ds/css/rux.css',
+      readFileSync(join(work, 'vendor/rux-ds/css/rux.css'), 'utf8') + '\n')],
+    // A pin written before checksums existed. It must NOT fail, and the note
+    // is asserted rather than assumed: the harness compares rule sets, so
+    // without this a silently missing note would read as a pass.
+    ['pin: legacy, no sha256', null, () => w('vendor/rux-ds/PIN', pinNoSha), /cannot be verified/],
   ];
   let bad = 0;
   try {
-    for (const [label, rule, mutate] of cases) {
+    for (const [label, rule, mutate, wantNote] of cases) {
       good(); mutate();
       const r = check(work);
       const rules = [...new Set(r.failures.map(f => f.rule))];
-      const ok = rule === null ? rules.length === 0 : rules.length === 1 && rules[0] === rule;
+      const rulesOk = rule === null ? rules.length === 0 : rules.length === 1 && rules[0] === rule;
+      const noteOk = !wantNote || r.notes.some(n => wantNote.test(n));
+      const ok = rulesOk && noteOk;
       if (!ok) bad++;
-      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${rule === null ? 'no failure' : `only ${rule}`}, got ${rules.length ? rules.join(', ') : 'none'}`);
+      const want = rule === null ? 'no failure' : `only ${rule}`;
+      const got = rules.length ? rules.join(', ') : 'none';
+      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${want}${wantNote ? ' and the note' : ''}, got ${got}${wantNote ? (noteOk ? ' and the note' : ' and NO note') : ''}`);
     }
   } finally {
     rmSync(work, { recursive: true, force: true });
@@ -250,6 +330,24 @@ function selfTest() {
 // ── main ────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 if (args.includes('--self-test')) selfTest();
+// ONE CHECKSUM ON STDOUT AND NOTHING ELSE, so tools/new-project.sh can capture
+// it with a command substitution and record it in the PIN it is about to
+// write. Exits non-zero rather than printing something a shell would happily
+// store: a release whose checksum could not be computed must stop the run, not
+// become a pin nobody can verify.
+else if (args.includes('--hash')) {
+  const dir = args[args.indexOf('--hash') + 1];
+  if (!dir || dir.startsWith('--')) {
+    console.error('--hash needs a directory: node tools/app-check.mjs --hash <vendor-dir>');
+    process.exit(2);
+  }
+  try {
+    process.stdout.write(treeHash(resolve(dir)) + '\n');
+  } catch (e) {
+    console.error(`--hash ${dir}: ${e.message}`);
+    process.exit(2);
+  }
+}
 else {
   const root = resolve(args.find(a => !a.startsWith('--')) ?? defaultRoot());
   const r = check(root);

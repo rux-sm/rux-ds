@@ -114,7 +114,15 @@ git -C ~/Developer/my-app diff --stat vendor/
 
 With a `PIN` already under `vendor/rux-ds/` and nothing else named, the script
 asks nothing and writes no page — it moves the pin and stops. Name a template
-or a page to add one. `--tag` exports the tag's tree; your rux-ds clone stays
+or a page to add one.
+
+**It may also write nothing at all.** The `PIN` records a `sha256` of the
+vendored tree, and a move to a tag whose vendored files are byte-identical is
+declined: the script says so and leaves the `PIN` naming the earlier tag. Your
+app is not out of date — the pin names bytes, and it has them. A tag that
+changes no vendored file delivers nothing to an app. The first move away from
+a `PIN` written before checksums always writes, so the app gains one; until
+then its own check reports the bytes as unverifiable rather than failing. `--tag` exports the tag's tree; your rux-ds clone stays
 on `main`, and a tag that is not on origin is refused. Every app at once is
 `sh rux-ds/tools/roll-out.sh v0.2.0` (`docs/verbs.md`, verb 4). Until
 2026-09-05 this was checkout, run, checkout `main` — and the third line was

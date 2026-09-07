@@ -122,6 +122,14 @@ exports the tag (`new-project.sh <app> --tag vX.Y.Z`, usable alone), runs
 that app's own check, and stops at the first failure with the restore
 command printed. Only `vendor/` changes. It commits nothing.
 
+**AN APP THAT ALREADY HOLDS THOSE BYTES IS LEFT ALONE, PIN AND ALL.** Since
+the `PIN` carries a `sha256` of the vendored tree, a move to a tag whose
+vendored files are identical writes nothing and the app keeps naming the
+earliest tag that delivered them. That is the pin doing its job — it names
+bytes, not the newest tag — and the roll-out separates *moved* from *already
+holding these bytes*, printing a commit command only for the first. A run
+where every app is unchanged says so and asks for no commit.
+
 Read each drift report. Apply by hand only what it names — it compares the
 page's `<head>` resources and header skeleton to the vendored `app-shell` and
 blocks nothing. Read `CHANGES.md` between the two tags: a class that left is

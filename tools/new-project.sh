@@ -8,7 +8,9 @@
 #                           --name "Orders" --title "Orders" --page orders
 #   sh tools/new-project.sh <dir>             on a project that has a PIN:
 #                                             moves the pin, asks nothing,
-#                                             writes no page
+#                                             writes no page -- and writes
+#                                             NOTHING AT ALL when the app
+#                                             already holds those bytes
 #   sh tools/new-project.sh <dir> --tag vX.Y.Z   the same, from that tag's
 #                                             tree, this clone staying where
 #                                             it is; refuses a tag not on origin
@@ -31,9 +33,15 @@
 # looking precise. With --tag the tree is not read at all.
 #
 # THREE KINDS OF FILE, AND THE SCRIPT TREATS THEM DIFFERENTLY.
-#   vendor/rux-ds/          rux-ds's. Overwritten on every run; never edit it,
-#                           the next run erases the edit and the fix belongs
-#                           upstream. PIN says which tag and commit it is.
+#   vendor/rux-ds/          rux-ds's. Overwritten on every run THAT WOULD
+#                           CHANGE IT; never edit it, the next run erases the
+#                           edit and the fix belongs upstream. PIN says which
+#                           tag and commit it is, and since 2026-09-07 a
+#                           sha256 of these bytes: app-check fails on an edit
+#                           made here, and a pin move to a tag carrying
+#                           identical bytes writes nothing and leaves the PIN
+#                           naming the earlier tag. The pin names bytes, not
+#                           the newest tag.
 #                           Since 2026-09-02 (roadmap §4.13) it also carries
 #                           css/rux-theme.css and css/rux-overrides.css — the
 #                           canonical theme and rules, the same in every app —
@@ -264,11 +272,67 @@ if [ -e "$SRC/tools/app-check.mjs" ]; then
   cp "$SRC/.githooks/commit-msg" "$NEW/githooks/"
 fi
 
+# THE CHECKSUM OF WHAT WAS STAGED, so the app's own check can refuse a
+# vendor/ that no longer holds these bytes. Computed by the app-check BEING
+# VENDORED, never this clone's, so the hash is always made by the same
+# implementation that will later verify it.
+#
+# THREE CASES, NOT TWO, and the middle one is why this asks the staged checker
+# what it can do rather than whether it exists:
+#   v0.1.0-v0.1.6   no vendored app-check at all
+#   v0.1.7-v0.1.11  a vendored app-check with NO --hash mode
+#   this tag on     --hash
+# Handing `--hash` to a checker that predates it is not a no-op: the flag falls
+# through to that version's default branch, which runs a FULL check against the
+# staging directory and prints its report. Measured 2026-09-07 while building
+# this: v0.1.11 returned 4893 failures into the variable meant to hold a hash.
+#
+# NO `|| true` ONCE THE CHECKER CLAIMS THE MODE. A release that has --hash and
+# still cannot produce 64 hex characters must stop the run; the alternative is
+# a pin nobody can verify, written silently, which is the failure this field
+# exists to catch. A release without the mode leaves the field empty, and
+# app-check then says the bytes are unverifiable rather than failing.
+TREE=""
+if [ -e "$NEW/tools/app-check.mjs" ] && grep -q -- '--hash' "$NEW/tools/app-check.mjs"; then
+  TREE="$(node "$NEW/tools/app-check.mjs" --hash "$NEW")"
+  case "$TREE" in
+    [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
+    *) echo "the staged release's checksum is not 64 hex characters: '$TREE'"; exit 1 ;;
+  esac
+fi
+
+# ---- a pin move that would change nothing ---------------------------------
+# THREE VALUES, NOT TWO. The old PIN's checksum, the old tree's actual
+# checksum, and the staged tree's. Comparing only the PIN against the staged
+# tree would skip over a vendor/ that had drifted and leave the drift in
+# place; requiring the old tree to match its own PIN as well means a skip is
+# only ever taken over a tree that was already correct.
+#
+# A PIN with no checksum is replaced once even when the bytes match, which is
+# how an app written before this migrates to a verifiable pin. Only a move is
+# guarded: a run that is also writing a page has more to do than this.
+if [ -n "$MOVE_ONLY" ] && [ -n "$TREE" ] && [ -e "$OUT/PIN" ]; then
+  OLD_SHA="$(sed -n 's/^sha256  *//p' "$OUT/PIN")"
+  if [ -n "$OLD_SHA" ]; then
+    OLD_TREE="$(node "$NEW/tools/app-check.mjs" --hash "$OUT")"
+    if [ "$OLD_SHA" = "$OLD_TREE" ] && [ "$OLD_TREE" = "$TREE" ]; then
+      echo ""
+      echo "  vendor/rux-ds already holds the bytes ${TAG:-$SHA} carries"
+      echo "  sha256 $(printf %.12s "$TREE")  matching the pin's own"
+      echo ""
+      echo "  PIN left naming $(sed -n 's/^tag  *//p' "$OUT/PIN"), the earliest tag that delivered them."
+      echo "  Nothing written. A tag that changes no vendored file delivers nothing."
+      exit 0
+    fi
+  fi
+fi
+
 cat > "$NEW/PIN" <<PIN
 tag     ${TAG:-(none: a commit between tags)}
 commit  $SHA
 date    $(date -u +%Y-%m-%dT%H:%M:%SZ)
-subject $(git -C "$HERE" log -1 --format=%s "$SHA")
+subject $(git -C "$HERE" log -1 --format=%s "$SHA")${TREE:+
+sha256  $TREE}
 
 Written by rux-ds tools/new-project.sh${TAG_ARG:+ from the tag, not the tree}. Re-run it to move
 the pin; do not edit anything under vendor/, the next run overwrites it.

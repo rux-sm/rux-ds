@@ -2740,6 +2740,35 @@ minute, the runtime class check on it reading nothing stripped. NOT done: the
 portal's `sync-ds.sh` still exists in its own repository and is not replaced by
 this; the recipe for a project that is a GitHub Pages site is that script.
 
+**Amended 2026-09-07 — the PIN records a checksum of the bytes it names, and a
+pin move that would change nothing writes nothing.** Until now the `PIN`
+recorded a tag and a commit and `app-check`'s `pin` rule checked only that the
+file existed and named a tag: nothing compared `vendor/rux-ds/`'s actual bytes
+with anything, so a `PIN` could name `v0.1.11` while the directory held
+anything at all. It now carries `sha256 <64 hex>` of a listing of every
+vendored file's path and SHA-256, the same format
+`rux-ln-notes/tools/check-data.mjs` already uses for `data/guides/`, and
+`app-check` recomputes and fails on a mismatch.
+
+The same field answers a second question the family had been guessing at.
+`new-project.sh` declines a pin move when the old `PIN`'s checksum, the old
+tree's actual checksum and the staged tree's checksum all agree — three
+values, not two, so a `vendor/` that had drifted is repaired rather than
+skipped over. **The app then keeps naming the earliest tag that delivered
+those bytes**, which is the decision here: a pin names bytes, not the newest
+tag. What prompted it: on 2026-09-07 v0.1.10 and v0.1.11 each changed one
+non-vendored file and cost two tag pushes, six pin commits and six gate runs
+to deliver nothing.
+
+REJECTED, and worth recording: hashing file modes as well as bytes. It is
+umask- and platform-fragile, and the cost of leaving it out is named in
+`app-check`'s own limits — a vendored `githooks/commit-msg` that lost its
+executable bit hashes identically while no longer running.
+
+The checksum is an INTEGRITY check and not provenance: anyone who edits the
+tree and its `PIN` together can forge agreement. The trusted tie to a tag
+remains that `new-project.sh` exported that tag and wrote the `PIN` in one run.
+
 **Amended 2026-09-02 (§4.13):** `rux-theme.css` AND `rux-overrides.css` join
 `vendor/` — copied and overwritten on every run, so the `rux` theme and the one
 live rule are the same in every app — and the project's own pair stays, written
