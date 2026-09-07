@@ -88,6 +88,63 @@ a 159-cell edge-to-edge mark, a 139-cell dachshund with two-cell legs, and a
 were superseded the same day by the 114-cell drawing above, which is the
 first since 2026-09-06 to keep a safe area.
 
+## App tile icons
+
+**One monochrome silhouette per app, 32px in the grid on Rux Home.** An app
+names its own file in the hub's `switcher.json` — `"icon": "/rux-ds/brand/icon.svg"`,
+an absolute path to a file that app serves — and until it does, the tile draws
+a filled 32px swatch holding exactly that space. Adding one moves nothing else
+on the page.
+
+**The file's own colours are IGNORED, and that is the whole design.** The tile
+uses it as a CSS mask over the tile's text colour, so the theme colours it:
+gray-100 on the white and g10 tiles, gray-10 on g90 and g100. This is the
+opposite case from `logo.svg` above, which is an `<img>` and must bake its
+colour in — the header is `#161616` in all four themes, so one colourway
+serves; a tile is `#f4f4f4` in two themes and `#262626` in the other two, so a
+baked colourway would be wrong in half of them. Decided and proved on
+2026-09-07 by masking `logo.svg` into a tile and reading both themes.
+
+What that means when drawing: **everything opaque becomes ink and everything
+transparent becomes nothing.** A white shape you drew to punch a hole will
+render as ink, not as a hole. Counters must be real holes in the path — the
+mark's eyes and ear gap are exactly that.
+
+### The spec
+
+- **16x16 viewBox, integer coordinates, one cell of air on every side.** Live
+  area 14x14, the same as `logo.svg`, so a mark and an icon read as one family.
+  At the 32px tile slot each cell is 2 device pixels on a 1x display and 4 on
+  a 2x — whole pixels, no seams.
+- **One `<path>` of closed loops**, not abutting rectangles: rectangles that
+  share an edge anti-alias it at fractional scales. Nonzero fill rule, outer
+  loop one way and counters the other.
+- **Minimum feature one cell; use two for anything that must survive 24px.**
+  Measured on the mark's own legs: at 20 CSS pixels a one-cell row is 2 solid
+  device pixels against 14 partly transparent, which reads as a grey band. The
+  tile is 32px today, where one cell holds up; a launcher or a favicon is not.
+- **No strokes, no gradients, no text, no `width`/`height` attributes.**
+  Convert strokes to outlines before exporting; keep the square viewBox and
+  size it at the use site.
+- **No `--` inside an XML comment.** Such a file serves 200 and renders 0x0,
+  invisible in a network tab and in the markup. It has cost this project two
+  rounds; `tools/make-marks.mjs` refuses to write one.
+
+### Where to draw it
+
+`.brand/` (gitignored working material) holds the grid templates, regenerated
+by `node .brand/make-template.mjs`:
+
+    node .brand/make-template.mjs                    # rux-template-32u.svg, the logo master
+    UNIT=64 MARGIN=1 node .brand/make-template.mjs   # rux-template-16u.svg, an app tile icon
+
+Both are a 1024px canvas with the grid, the golden sections, Fibonacci circles
+and the safe area drawn on it — 28 of 32 units on the master, 14 of 16 on the
+icon template. Draw on the template, export the silhouette alone, and check it
+in place: put the file in that app's `brand/`, add the `icon` key, and open Rux
+Home in a light theme and a dark one. It has to read at 32px without becoming
+a blob, and it will be the only coloured-by-theme mark on the page.
+
 ## What is NOT here
 
 `assets/brand/` holds two scalable app icons: `icon-light.svg` is dark ink for

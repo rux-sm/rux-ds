@@ -2859,14 +2859,25 @@ shipped entries stay and nothing reports it, which is why they must be real.
 Adding a module is one entry in the file and nothing anywhere else.
 
 **The contract gained a fourth key, optional, 2026-09-07: `icon`.** An absolute
-path to an SVG the module itself serves (`/rux-ds/brand/icon.svg`), absolute
-because `switcher.js` writes it into a `src` on every site and a relative path
-would resolve per origin; the hub's `tools/check.mjs` refuses any other shape,
+path to a MONOCHROME SVG the module itself serves (`/rux-ds/brand/icon.svg`),
+absolute because `switcher.js` writes it into a URL on every site and a
+relative path would resolve per origin; the hub's `tools/check.mjs` refuses any other shape,
 proved red before it was trusted. No app names one yet. Until one does, the
 grid draws a 32px outlined square in its place, so the icon a module adds later
 takes space that is already reserved and moves nothing else on the page. The
 switcher PANEL takes no icon — Carbon's switcher is a list of names, and adding
 a glyph there would be markup Carbon does not compile.
+
+**It is a MASK, not an image, corrected the same day it was written.** The key
+first shipped rendering an `<img>`, which cannot take colour from the page: a
+tile is `#f4f4f4` in two themes and `#262626` in the other two, so one baked
+colourway would have been wrong in half of them — the flaw sat in the contract
+for the exact case the contract exists for. `switcher.js` now masks the file
+over the tile's own text colour, so one silhouette per app is coloured by the
+theme, which is rux's standing rule for the mark. Proved by masking
+`brand/logo.svg` into a tile and reading it in both: `#161616` on white,
+`#f4f4f4` on g100. The spec an app draws against is `brand/README.md`,
+"App tile icons".
 
 **Notes is module two in fact, 2026-09-02** (`48786ce` there): button, panel,
 `/switcher.js`, verified live against the root with Notes marked current. Its

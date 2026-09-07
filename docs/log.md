@@ -55,6 +55,42 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**2026-09-07 - the icon contract was wrong for its own use case, and the spec
+is written.** rux asked what to draw app tile icons against, which is the
+question that found it: the `icon` key shipped that morning rendered an `<img>`,
+and `currentColor` does not reach inside one. A tile is `#f4f4f4` in the white
+and g10 themes and `#262626` in g90 and g100, so a single baked colourway would
+have been wrong in half of them, and two files per app is the thing the mark's
+own history argues against. `switcher.js` now uses the file as a CSS MASK over
+the tile's text colour: one monochrome silhouette per app, coloured by the
+theme, which is rux's standing rule for the mark (gray-10 on dark, gray-100 on
+light) arriving for free. Proved by pointing an icon at `brand/logo.svg` and
+reading both themes on the served page - `#161616` on white, `#f4f4f4` on g100,
+32x32 - then reverted, since no app names an icon yet. `logo.svg` in the header
+stays an `<img>`: that header is `#161616` in all four themes and has one
+colour to carry.
+
+**`brand/README.md` gains "App tile icons"**, the spec to draw against: 16x16
+viewBox with one cell of air, live area 14x14 matching the mark cell for cell,
+one path of closed loops, minimum feature one cell and two for anything that
+must survive 24px, no strokes or gradients or text, and no `--` in a comment.
+It says the thing that is easy to get wrong under a mask: everything opaque
+becomes ink, so a white shape drawn to punch a hole renders as ink and a
+counter must be a real hole in the path.
+
+`.brand/make-template.mjs` (gitignored working material) now takes `UNIT` and
+`MARGIN` from the environment and names its output for the grid, so the same
+generator emits `rux-template-32u.svg`, the logo master with its 28-of-32 safe
+area, and `UNIT=64 MARGIN=1` emits `rux-template-16u.svg` at 14 of 16 - the
+icon grid. Its Fibonacci circles now drop any that overflow the canvas; at 16
+units the 21u circle did.
+
+**The hub's header reads "Rux Home".** Every switcher on the platform lists
+that site as "Home" while its own header said "Rux Apps", so the page
+disagreed with the list naming it; §4.13's rule is "Rux <Name>" in the header
+and <Name> in the list. `/account/` follows. "Rux Apps" stays the family name
+in that repository's README and AGENTS, which is what it always described.
+
 **2026-09-07 - the placeholder is filled, and the second line is quieted.**
 Asked for an honest design read of the finished page, measured at 2000x1223
 rather than described: the outlined icon placeholder blends to rgb(100,100,100)
