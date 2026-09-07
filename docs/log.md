@@ -9,6 +9,33 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-07 - the mark is drawn a third time, and the thin legs are kept
+on purpose.** rux drew another grid: the 2026-09-06 mark's ONE-cell legs and
+its tail standing clear of the body, given the longer body and the muzzle run
+out to column 15. Transcribed and confirmed cell for cell against Chrome's
+own raster before anything was said about it. 124 filled cells against 139,
+22 cells from the 2026-09-06 mark and 27 from the one it replaces.
+
+THE OBJECTION WAS RAISED, MEASURED, AND OVERRULED, WHICH IS THE POINT OF
+RECORDING IT. One-cell legs are the most fragile feature a 16-grid mark can
+carry, and the two leg rows were measured in Chrome rather than argued about:
+at 16 CSS pixels the row is 4 solid device pixels alternating with single
+gaps, where the two-cell legs gave 8; at 20 pixels it is 2 solid and 14
+partly transparent, which reads as a grey band and not as four legs; at 24
+pixels, 4 solid and 4 partly transparent. The whole mark carries 17
+one-cell-wide strokes against 8. Sizes divisible by 16 are unaffected, so a
+2x tab strip at 16 CSS pixels - the common case - is fine.
+
+A two-cell-leg version of the same drawing was offered (132 cells, 9 thin
+strokes, leg-row ink restored) and rux preferred the finer legs. That is
+rux's call on rux's mark, and it is taken. What this entry owes the next
+reader is the number, not the argument: brand/README.md and both SVG comments
+now carry the 20-pixel measurement, so nobody later mistakes indistinct legs
+for a regression and 'fixes' them.
+
+Adopted in both files, geometry byte-identical, and `npm run marks`
+regenerated both app icons from it.
+
 **2026-09-07 - the three consumers take the mark, and the sweep is
 recorded.** Two follow-ups the dachshund commit listed as owed, both closed
 the same day.

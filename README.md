@@ -270,11 +270,15 @@ blue left, since the blue pair would have been byte-identical to the mono pair).
 **Swapping the logo does NOT regenerate them**; that needs `npm run marks` and a
 copy to each consumer, which is the one thing the swap does not do for you.
 
-**The dachshund is the mark in every place, 2026-09-07 afternoon.** The
-edge-to-edge favicon that landed this morning (159 cells) was replaced the
-same day by a shorter, longer-bodied drawing: 139 filled cells, bounds
-x=0..16 and y=1..15, the tail cut to four rows so it stops level with the top
-of the muzzle and the head owns the highest point. `brand/logo.svg` now holds
+**The dachshund is the mark in every place, 2026-09-07, third drawing of the
+day.** The edge-to-edge favicon that landed that morning (159 cells) became a
+shorter, longer-bodied dachshund (139), and then this one: 124 filled cells,
+bounds x=0..16 and y=1..15, the tail cut to four rows so it stops level with
+the top of the muzzle and the head owns the highest point. The last revision
+took the 2026-09-06 mark's ONE-CELL legs and separated tail back, against the
+measured cost — at 20 CSS pixels the leg row reads as 2 solid device pixels
+against 14 partly transparent, a grey band rather than four legs. rux chose
+the finer legs with that in hand; `brand/README.md` keeps the numbers. `brand/logo.svg` now holds
 the SAME geometry byte for byte, chosen for one mark everywhere, and the two
 app icons follow it. **The logo therefore bleeds left and right**, where every
 drawing before it kept one cell of air on every side; rux will adapt the
@@ -283,8 +287,7 @@ its own box and the app icons carry no margin of their own.
 
 Both files are one `<path>` of three closed loops — the boundary of the
 filled region, not abutting rectangles, which anti-alias their shared edges
-at fractional scales. Measured in Chrome: 84 partly transparent pixels at
-24px against 135 for the rectangle form, and none at 16, 32, 48 or 64.
+at fractional scales. Whole-pixel sizes stay exact: none at 16, 32, 48 or 64.
 `brand/favicon.svg` stays hand-owned exactly like `brand/logo.svg`, and
 `npm run marks` reads it for the `--` fault and the light/dark swap instead
 of writing it. **The three consumers took both files the same day** — Rux

@@ -14,12 +14,23 @@ Other repositories hold their own copy; changing this one does not update them.
 
 The official mark is the **dachshund**, drawn by rux on 2026-09-07 and
 superseding rux-logo-16x16.svg of 2026-09-06, which had superseded Brand.svg.
+It was revised twice that day; this is the third and current drawing.
 `rux-ds/brand/logo.svg` is the master; Rux Apps, Rux Notes and Rux Scheduler
-took it on 2026-09-07 and carry byte-identical copies, confirmed by hashing
-the files their live sites serve. Its 16x16
-viewBox contains 139 filled grid cells, bounds x=0..16 and y=1..15. The tail
-rises four rows above the back and stops level with the top of the muzzle,
-both at row 4, so the head owns the highest point.
+carry byte-identical copies, confirmed by hashing the files their live sites
+serve. Its 16x16 viewBox contains 124 filled grid cells, bounds x=0..16 and
+y=1..15. The tail rises four rows above the back and stops level with the top
+of the muzzle, both at row 4, so the head owns the highest point.
+
+**The legs and the tail are one cell wide, chosen with the cost measured.**
+The revision this replaced used two-cell legs. rux preferred the finer ones
+and kept them after seeing the numbers, which are recorded here rather than
+lost: measured in Chrome across the two leg rows, at 16 CSS pixels the row is
+4 solid device pixels alternating with single gaps against 8 before, at 20
+pixels it is 2 solid and 14 partly transparent — a grey band rather than four
+legs — and at 24 pixels 4 solid and 4 partly transparent. Sizes divisible by
+16 are unaffected. The mark carries 17 one-cell-wide strokes against 8. If a
+future reader finds the legs indistinct at a fractional size, this is why, and
+it is not a regression to fix silently.
 
 **It bleeds left and right.** Every drawing before it sat inside x=1..14 with
 one cell of air on every side; this one fills all 16 columns, so the header
@@ -31,10 +42,9 @@ property this file still has.
 
 The file is one `<path>` of three closed loops: the boundary of the filled
 region rather than abutting rectangles, because abutting rectangles
-anti-alias their shared edges at fractional scales. Measured in Chrome, 84
-partly transparent pixels at 24px against 135 for the rectangle form, and
-none at 16, 32, 48 or 64. It uses the default nonzero fill rule; the outer
-loops wind clockwise and the two counters anticlockwise.
+anti-alias their shared edges at fractional scales. It uses the default
+nonzero fill rule; the outer loop winds clockwise and the two counters
+anticlockwise.
 
 ## What the file has to be
 
@@ -68,10 +78,10 @@ byte for byte, because rux chose one mark for every place. They can diverge
 again the moment either is swapped; nothing enforces the match, and no gate
 compares them.
 
-An earlier version of this section described a 159-cell edge-to-edge drawing
-adopted that morning. That drawing was replaced the same day by the
-dachshund above, which is shorter: 139 cells against 159, and rows 0 and 15
-left empty where the morning drawing filled them.
+Two earlier versions of this section described drawings that lasted hours:
+a 159-cell edge-to-edge mark adopted that morning, then a 139-cell dachshund
+with two-cell legs. Both were superseded the same day by the 124-cell drawing
+above.
 
 It exists separately because a favicon gets no CSS from the page, so the
 light/dark swap has to live inside the file: gray-100 `#161616` on a light
