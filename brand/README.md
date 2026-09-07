@@ -15,7 +15,8 @@ Other repositories hold their own copy; changing this one does not update them.
 The official mark is the **dachshund**, drawn by rux on 2026-09-07 and
 superseding rux-logo-16x16.svg of 2026-09-06, which had superseded Brand.svg.
 `rux-ds/brand/logo.svg` is the master; Rux Apps, Rux Notes and Rux Scheduler
-still carry the 2026-09-06 drawing until it is copied to them. Its 16x16
+took it on 2026-09-07 and carry byte-identical copies, confirmed by hashing
+the files their live sites serve. Its 16x16
 viewBox contains 139 filled grid cells, bounds x=0..16 and y=1..15. The tail
 rises four rows above the back and stops level with the top of the muzzle,
 both at row 4, so the head owns the highest point.

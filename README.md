@@ -287,8 +287,9 @@ at fractional scales. Measured in Chrome: 84 partly transparent pixels at
 24px against 135 for the rectangle form, and none at 16, 32, 48 or 64.
 `brand/favicon.svg` stays hand-owned exactly like `brand/logo.svg`, and
 `npm run marks` reads it for the `--` fault and the light/dark swap instead
-of writing it. The three consumers hold the padded 2026-09-06 drawing until
-it is copied to them.
+of writing it. **The three consumers took both files the same day** — Rux
+Apps, Rux Notes and Rux Scheduler — and all six live files hash identical to
+this repository's, checked over HTTPS rather than on disk.
 
 **Brand.svg is the official drawing, confirmed 2026-09-05.** It uses integer
 coordinates in a 16x16 viewBox, replacing the earlier 1024-unit drawing.
@@ -338,10 +339,10 @@ tag would still pass.
    Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
    `verify`, the registry, the CI staleness list) was proposed as a proven diff
    and landed 2026-09-04 on rux's acceptance.
-2. The brand owes one copy. The consumers carry the mark, and both their
-   `brand/logo.svg` and `brand/favicon.svg` are the padded 2026-09-06 drawing
-   the dachshund replaced on 2026-09-07; a pin move never overwrites either,
-   so each takes the new files by hand. `npm run gates` holds the cells.
+2. The brand copy is made. All three consumers took `brand/logo.svg` and
+   `brand/favicon.svg` on 2026-09-07 and their live files hash identical to
+   this repository's. A pin move never overwrites `brand/`, so the next mark
+   change is another hand copy. `npm run gates` holds the cells.
 3. **A consumer's first ask, received 2026-09-06.** Notes asks for one
    template and one decision: a **document page** — one record read top to
    bottom, numbered sections each with a lead line and a table, callouts

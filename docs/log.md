@@ -9,6 +9,53 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-07 - the three consumers take the mark, and the sweep is
+recorded.** Two follow-ups the dachshund commit listed as owed, both closed
+the same day.
+
+THE RESWEEP. brand/ is a declared RENDERED_INPUT, so 33 of the 47 sweep cells
+aged the moment the mark changed - all 15 check-a11y, all 15 check-spacing,
+check-rendered and check-behaviour on the sink, and check-runtime-classes on
+portal.html alone, that gate not declaring brand/ because an `<img src>`
+carries no class. All 15 pages were swept and every figure came back identical
+to the reading it replaced, which is what the gate's own comment predicts. The
+sink's red run raised it from 29 findings to 41, the documented +12, and
+restoring gave 29 back, so the greens mean something. 47 of 47 cells are now
+current, 0 stale, 0 never run.
+
+CAUGHT MID-SWEEP AND WORTH KEEPING: the sink's first spacing reading was taken
+at 1013px and read 451 checked against the recorded 456. That was the pane's
+width, not the page's; re-run at 1280x900 it matched. The cell says so rather
+than quietly recording the right number, because the next sweep will meet the
+same trap. Two portal figures did move - 65/65 to 64/64 and 11 no-reference to
+10 - and the cause is the ledger write itself: every stale row became current,
+so `rux--tag--red` went from 30 occurrences to 0, measured with `git show`
+against the working copy rather than inferred. The portal always needs two
+passes for that reason, and the second regenerated no portal.html, which is
+the convergence it exists to reach.
+
+THE CONSUMERS. Rux Apps, Rux Notes and Rux Scheduler took brand/logo.svg and
+brand/favicon.svg. Each repository's own `node tools/check.mjs` passes, and
+the header embed was compared before trusting it: all four repositories carry
+the character-identical `<img src="brand/logo.svg" style="height:1.5rem;
+width:auto;margin-right:.5rem;flex:none">`, with no CSS anywhere sizing the
+logo, so the mark lands 24x24 in each. All three live sites were opened and
+the logo measured 24x24 with naturalWidth 150 on each, and all six live files
+were hashed over HTTPS: identical to this repository's, sha1 3310689 for the
+logo and b184fa6 for the favicon. Byte-identity checked in production, not
+only on disk.
+
+NOT DONE, AND SAID PLAINLY. The consumer favicons carry a comment naming
+tools/make-marks.mjs, which does not exist in any of them. It was kept rather
+than trimmed: byte-identity with this repository is what lets a checksum
+answer whether an app is in step, and that is worth more than one stale
+sentence. THE BROWSER PANE CANNOT SERVE A SIBLING REPOSITORY from a session
+rooted here, so the consumers were looked at on their deployed sites rather
+than locally; a local pre-push look was not taken. rux-scheduler's hand-kept
+docs/gate-coverage.md was not re-swept - the mark is not an input to its own
+check.mjs, and re-running the browser gates there means copying this
+repository's tools in, which nobody asked for.
+
 **2026-09-07 - the dachshund replaces it, and becomes the logo too.** The
 edge-to-edge favicon below lasted a morning. rux asked for a review of five
 candidate drawings, then sketched a shorter one on a 16 grid and asked
