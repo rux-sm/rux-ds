@@ -14,31 +14,36 @@ Other repositories hold their own copy; changing this one does not update them.
 
 The official mark is the **dachshund**, drawn by rux on 2026-09-07 and
 superseding rux-logo-16x16.svg of 2026-09-06, which had superseded Brand.svg.
-It was revised twice that day; this is the third and current drawing.
-`rux-ds/brand/logo.svg` is the master; Rux Apps, Rux Notes and Rux Scheduler
-carry byte-identical copies, confirmed by hashing the files their live sites
-serve. Its 16x16 viewBox contains 124 filled grid cells, bounds x=0..16 and
-y=1..15. The tail rises four rows above the back and stops level with the top
-of the muzzle, both at row 4, so the head owns the highest point.
+It was revised four times that day; this is the current drawing, and
+`favicon.svg` carries it byte for byte, so the header, the tab strip and the
+app icons are one mark. `rux-ds/brand/logo.svg` is the master; Rux Apps, Rux
+Notes and Rux Scheduler carry byte-identical copies, confirmed by hashing the
+files their live sites serve.
+
+Its 16x16 viewBox contains 114 filled grid cells, bounds x=1..15 and y=1..15:
+**one cell of air on every side**, so the mark is square. The 16 columns go
+tail 1, back 2, ear 2, ear gap 1, head 5, muzzle 3, with a column spare on
+each edge. The tail rises four rows above the back and stops level with the
+top of the muzzle, so the head owns the highest point.
+
+**The air is what the app icons need, and it was measured rather than
+assumed.** The revision before this one filled all 16 columns. Against the
+masks a launcher actually applies, that drawing lost 3 filled cells to a
+circular mask (the tail tip, the muzzle tip, and one more), 0 to an iOS
+superellipse and 8 to the 28-of-32 safe area. This drawing loses **none under
+any of the three**. The padding also costs nothing at fractional sizes and
+gains there: 85 partly transparent pixels at 20px and 72 at 24px, against 88
+and 93 for the wider mark, and none at 16, 32, 48 or 64.
 
 **The legs and the tail are one cell wide, chosen with the cost measured.**
-The revision this replaced used two-cell legs. rux preferred the finer ones
-and kept them after seeing the numbers, which are recorded here rather than
-lost: measured in Chrome across the two leg rows, at 16 CSS pixels the row is
-4 solid device pixels alternating with single gaps against 8 before, at 20
-pixels it is 2 solid and 14 partly transparent — a grey band rather than four
-legs — and at 24 pixels 4 solid and 4 partly transparent. Sizes divisible by
-16 are unaffected. The mark carries 17 one-cell-wide strokes against 8. If a
-future reader finds the legs indistinct at a fractional size, this is why, and
-it is not a regression to fix silently.
-
-**It bleeds left and right.** Every drawing before it sat inside x=1..14 with
-one cell of air on every side; this one fills all 16 columns, so the header
-logo touches its own box and the generated app icons carry no margin of their
-own. rux chose this on 2026-09-07 for one mark in every place, having seen
-the header at 24px both ways, and will adapt the drawing to a padded brand
-size later. Until then, treat the icon safe area as a known gap rather than a
-property this file still has.
+An earlier revision used two-cell legs. rux preferred the finer ones and kept
+them after seeing the numbers, which are recorded here rather than lost:
+measured in Chrome across the two leg rows, at 16 CSS pixels the row is 4
+solid device pixels alternating with single gaps against 8 for two-cell legs,
+and at 20 pixels it is 2 solid and 14 partly transparent, which reads as a
+grey band. The mark carries 17 one-cell-wide strokes. If a future reader finds
+the legs indistinct at a fractional size, this is why, and it is not a
+regression to fix silently.
 
 The file is one `<path>` of three closed loops: the boundary of the filled
 region rather than abutting rectangles, because abutting rectangles
@@ -73,27 +78,15 @@ it.
 
 Since 2026-09-07 it is no longer generated from `logo.svg`. It is still a
 separate file a person edits, and `tools/make-marks.mjs` holds neither
-drawing — but as of that afternoon the two files carry the SAME geometry,
-byte for byte, because rux chose one mark for every place. They can diverge
-again the moment either is swapped; nothing enforces the match, and no gate
-compares them.
+drawing — but the two files carry the SAME geometry, byte for byte, because
+rux chose one mark for every place. They can diverge the moment either is
+swapped; **nothing enforces the match and no gate compares them.**
 
-Two earlier versions of this section described drawings that lasted hours:
-a 159-cell edge-to-edge mark adopted that morning, then a 139-cell dachshund
-with two-cell legs. Both were superseded the same day by the 124-cell drawing
-above.
-
-It exists separately because a favicon gets no CSS from the page, so the
-light/dark swap has to live inside the file: gray-100 `#161616` on a light
-scheme, gray-10 `#f4f4f4` on a dark one. `npm run marks` no longer writes
-the file, but it still reads it and fails on the two faults a hand-edited
-SVG here can carry: `--` inside an XML comment, which has shipped, and a
-missing swap rule.
-
-Until 2026-09-07 this section said a logo swap did not update the favicon,
-because the favicon was derived from the logo by `npm run marks`. That
-caveat went with the derivation: the two files share no geometry now, and
-each is swapped on its own. A consumer copies whichever it takes.
+Three earlier versions of this section described drawings that lasted hours:
+a 159-cell edge-to-edge mark, a 139-cell dachshund with two-cell legs, and a
+124-cell one with fine legs that still bled to the left and right edges. All
+were superseded the same day by the 114-cell drawing above, which is the
+first since 2026-09-06 to keep a safe area.
 
 ## What is NOT here
 

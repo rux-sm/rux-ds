@@ -9,6 +9,53 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-07 - the fourth drawing, and the safe area comes back.** rux
+disliked a brand mark that differed from the favicon and drew the answer
+instead: the same dachshund inside x=1..15 and y=1..15, one cell of air on
+every side, 114 cells. Transcribed and confirmed cell for cell against
+Chrome's raster before anything was said about it. Adopted in both files byte
+for byte, so the header, the tab strip and the app icons are one mark for the
+first time since the padded logo of 2026-09-06.
+
+A padded version had been drafted here first and was WORSE. It took its two
+columns out of the back AND the snout, dropping the muzzle from three cells
+to two; rux took both out of the back and kept the muzzle whole. The head,
+the ear, the ear gap and both eyes are untouched in rux's version. That is
+the second time this session a drawn answer beat a reasoned one.
+
+WHAT DECIDED IT, MEASURED RATHER THAN ASSERTED. The question put was whether
+to pad the brand mark or widen it to match the favicon, and the app icons
+settled it. Against the masks a launcher actually applies, the edge-to-edge
+mark lost 3 filled cells to a circular mask - the tail tip at column 0, the
+muzzle tip at column 15, and one more at column 2 - 0 to an iOS superellipse,
+and 8 to the 28-of-32 safe area. The padded drawing loses none under any of
+the three. It is also cleaner at fractional sizes, which was not expected: 85
+partly transparent pixels at 20px and 72 at 24px against 88 and 93, because
+fewer edges sit on the frame boundary. The cost is 114 ink cells against 124,
+about 8 per cent less presence at 16px, and a mocked tab strip at 16 CSS
+pixels showed that difference is not perceptible beside a tab label.
+
+The one-cell legs and tail carry over unchanged, with their measurement.
+
+NOTICED AND NOT FIXED. In that tab-strip mock the marks were invisible on the
+LIGHT strip: the SVG's prefers-color-scheme follows the operating system, not
+the strip, and this machine is in dark mode, so the file painted gray-10 on a
+light ground. That is the self-theming decision working as designed and
+biting in the case it cannot see. It predates every drawing here and is
+recorded rather than quietly worked around.
+
+ALSO AUDITED, ON THE WAY. Every page that should carry the mark does: 15 in
+rux-ds, 24 in Rux Notes, 2 each in Rux Scheduler and Rux Apps, favicon and
+logo on all of them. Two pages carry none and correctly so -
+docs/operating-card.html, which says in its own comment that it is not a
+rux-ds page, and rux-ln-notes/template-candidate.html, a doc specimen with no
+shell. One real gap is NOT mine and is NOT fixed: the 30 vendored template
+copies in the three consumers ask for ../brand/logo.svg, which resolves to
+vendor/rux-ds/brand/ and has never existed. Confirmed live, 404 in all three.
+Nothing in any app links to those pages. Closing it means either teaching the
+pin to copy brand/ or accepting a fourth copy per repo that drifts, and that
+is a decision about the pin rather than about the mark.
+
 **2026-09-07 - the mark is drawn a third time, and the thin legs are kept
 on purpose.** rux drew another grid: the 2026-09-06 mark's ONE-cell legs and
 its tail standing clear of the body, given the longer body and the muzzle run
