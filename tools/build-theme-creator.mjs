@@ -150,12 +150,15 @@ const rows = TOKENS.map(([name, label]) => {
 }).join('\n');
 
 // The base-theme radios: sink/radio.html's group, vertical, one per BASES
-// entry, white checked by default.
+// entry, white checked by default. Labels match the account panel's own
+// (templates/*.html's #rux-profile-theme fieldset) rather than the raw
+// data-theme value.
+const BASE_LABELS = { white: 'White', g10: 'Gray 10', g90: 'Gray 90', g100: 'Gray 100' };
 const baseOptions = Object.keys(BASES).map(name => `                    <div class="rux--radio-button-wrapper">
                       <input id="thc-surf-base-${name}" class="rux--radio-button" type="radio" name="thc-surf-base" value="${name}"${name === 'white' ? ' checked' : ''}>
                       <label for="thc-surf-base-${name}" class="rux--radio-button__label">
                         <span class="rux--radio-button__appearance"></span>
-                        <span class="rux--radio-button__label-text">${esc(name)}</span>
+                        <span class="rux--radio-button__label-text">${esc(BASE_LABELS[name])}</span>
                       </label>
                     </div>`).join('\n');
 
@@ -231,9 +234,16 @@ const page = `<!doctype html>
      Carbon's: it derives twenty token values from a Carbon hue family or
      individual hex edits, previews them on an existing page, and computes
      WCAG contrast against theme-creator/scenarios.json's named pairings.
-     NOT COVERED, by construction: anything inside the preview iframe —
-     check-a11y, check-spacing and check-runtime-classes read the top
-     document only. The contrast readout is advisory only and is not a
+     A second, independent section (Surfaces, roadmap §4.15) overrides four
+     surface tokens on top of a chosen compiled base theme, via a compound
+     [data-theme][data-rux-surface] selector rather than a new compiled
+     theme — Carbon's own component-token matching breaks if a theme map is
+     edited and merely re-applied, so this stays entirely in the CSS
+     cascade instead. One shared preview and undo history serve both
+     sections; whichever was edited most recently is what the preview
+     shows. NOT COVERED, by construction: anything inside the preview
+     iframe — check-a11y, check-spacing and check-runtime-classes read the
+     top document only. The contrast readout is advisory only and is not a
      gate. -->
 
 ${sprite}
@@ -257,7 +267,7 @@ ${sprite}
       <div class="rux--stack-vertical rux--stack-scale-7">
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h1>Theme creator</h1>
-          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why.</p>
+          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why. Further down, <strong>Surfaces</strong> is a second, smaller tool: pick one of Carbon's own compiled themes and remap just its four resting surfaces — a base for something like an OLED-dark variant, without touching anything else that theme already gets right.</p>
         </div>
         <div id="thc-notice"></div>
         <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">

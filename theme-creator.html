@@ -47,9 +47,16 @@
      Carbon's: it derives twenty token values from a Carbon hue family or
      individual hex edits, previews them on an existing page, and computes
      WCAG contrast against theme-creator/scenarios.json's named pairings.
-     NOT COVERED, by construction: anything inside the preview iframe —
-     check-a11y, check-spacing and check-runtime-classes read the top
-     document only. The contrast readout is advisory only and is not a
+     A second, independent section (Surfaces, roadmap §4.15) overrides four
+     surface tokens on top of a chosen compiled base theme, via a compound
+     [data-theme][data-rux-surface] selector rather than a new compiled
+     theme — Carbon's own component-token matching breaks if a theme map is
+     edited and merely re-applied, so this stays entirely in the CSS
+     cascade instead. One shared preview and undo history serve both
+     sections; whichever was edited most recently is what the preview
+     shows. NOT COVERED, by construction: anything inside the preview
+     iframe — check-a11y, check-spacing and check-runtime-classes read the
+     top document only. The contrast readout is advisory only and is not a
      gate. -->
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -139,7 +146,7 @@
       <div class="rux--stack-vertical rux--stack-scale-7">
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h1>Theme creator</h1>
-          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why.</p>
+          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why. Further down, <strong>Surfaces</strong> is a second, smaller tool: pick one of Carbon's own compiled themes and remap just its four resting surfaces — a base for something like an OLED-dark variant, without touching anything else that theme already gets right.</p>
         </div>
         <div id="thc-notice"></div>
         <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
@@ -558,28 +565,28 @@
                       <input id="thc-surf-base-white" class="rux--radio-button" type="radio" name="thc-surf-base" value="white" checked>
                       <label for="thc-surf-base-white" class="rux--radio-button__label">
                         <span class="rux--radio-button__appearance"></span>
-                        <span class="rux--radio-button__label-text">white</span>
+                        <span class="rux--radio-button__label-text">White</span>
                       </label>
                     </div>
                     <div class="rux--radio-button-wrapper">
                       <input id="thc-surf-base-g10" class="rux--radio-button" type="radio" name="thc-surf-base" value="g10">
                       <label for="thc-surf-base-g10" class="rux--radio-button__label">
                         <span class="rux--radio-button__appearance"></span>
-                        <span class="rux--radio-button__label-text">g10</span>
+                        <span class="rux--radio-button__label-text">Gray 10</span>
                       </label>
                     </div>
                     <div class="rux--radio-button-wrapper">
                       <input id="thc-surf-base-g90" class="rux--radio-button" type="radio" name="thc-surf-base" value="g90">
                       <label for="thc-surf-base-g90" class="rux--radio-button__label">
                         <span class="rux--radio-button__appearance"></span>
-                        <span class="rux--radio-button__label-text">g90</span>
+                        <span class="rux--radio-button__label-text">Gray 90</span>
                       </label>
                     </div>
                     <div class="rux--radio-button-wrapper">
                       <input id="thc-surf-base-g100" class="rux--radio-button" type="radio" name="thc-surf-base" value="g100">
                       <label for="thc-surf-base-g100" class="rux--radio-button__label">
                         <span class="rux--radio-button__appearance"></span>
-                        <span class="rux--radio-button__label-text">g100</span>
+                        <span class="rux--radio-button__label-text">Gray 100</span>
                       </label>
                     </div>
                 </fieldset>

@@ -9,6 +9,23 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 - Phase 15's Surfaces section lands, closing the gap 8b70c72 opened.**
+The continuation the correction above described as "not mine to stage, revert
+or touch" is now complete and committed on its own: `theme-creator/theme-
+creator.js` gained the behaviour half (surface state, its own undo-history
+entries sharing the accent section's stack, contrast against each base's own
+`text-primary`, the compound-selector preview and export), so the Surfaces
+section 8b70c72 half-published now has a script behind it, matching the
+markup that shipped there. Staged by name, not `git add -A` — `css/rux-
+theme.css`, `theme-creator.html`, `theme-creator/theme-creator.js` and
+`tools/build-theme-creator.mjs` only, nothing swept from anyone else's tree.
+`docs/roadmap.md` §4.15 needed no further edit: its entry, also caught in
+8b70c72, already stood complete and correct, just misattributed to the wrong
+commit's subject line. `npm run verify` regenerates `theme-creator.html`
+identically from the now-complete source; the three browser cells it owns
+(`check-runtime-classes`, `check-spacing`, `check-a11y`) are re-swept
+separately, since the markup moved again with the completed rows.
+
 **2026-09-06 - CORRECTION: 8b70c72 carries work that is not the brand's.**
 The brand commit was staged with `git add -A` in a tree someone else was
 editing, and it swept in `tools/build-theme-creator.mjs` mid-edit -- 96 lines

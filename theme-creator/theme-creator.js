@@ -1,15 +1,37 @@
-// theme-creator.html's behaviour. Phase 14, roadmap §4.14.
+// theme-creator.html's behaviour. Phase 14, roadmap §4.14; the Surfaces
+// section, Phase 15, roadmap §4.15.
 //
 // Lives outside js/ for the reason builder/ does: tools/new-project.sh
 // vendors everything under js/ into every consumer project, and this tool
 // belongs only here.
 //
-// STATE is { name, tokens }, tokens keyed by the twenty short names
+// STATE is { name, tokens, surface }. `name`/`tokens` are the accent
+// section from Phase 14: tokens keyed by the twenty short names
 // tools/build-theme-creator.mjs wrote rows for (e.g. "button-primary", not
 // "--rux-button-primary"). SHADE_MAP below must name the same twenty tokens
 // the generator's own TOKENS table does — a mismatch would apply the wrong
 // shade silently, since nothing currently gates the two lists against each
 // other (deferred per roadmap §4.14, alongside the family-freshness gate).
+//
+// `surface` is Phase 15: { base, name, tokens }, tokens keyed by exactly
+// four names — background, layer-01, layer-02, layer-03 — matching
+// tools/build-theme-creator.mjs's SURFACE_TOKENS. Deliberately not a fifth
+// compiled Carbon theme: a first attempt at that (map.merge over
+// themes.$g100) was found broken by review before any file was written —
+// Carbon's component tokens are matched against a theme map's COMPLETE
+// contents (_theme.scss's `matches()`), so changing one key breaks every
+// component-token lookup for that theme, silently. Surfaces instead
+// overrides its four tokens in the CSS cascade, on a compound
+// [data-theme][data-rux-surface] selector, exactly the mechanism the
+// shipped `rux` accent theme already uses on `:root` — Carbon's Sass never
+// sees it.
+//
+// ONE SHARED HISTORY, ONE SHARED PREVIEW. Both sections push onto the same
+// undo/redo stack (`copy(state)` already snapshots both halves together),
+// and `activeSection` says which one the live preview and status line
+// currently reflect — whichever was edited most recently, the same
+// "navigation records nothing, editing does" rule builder/session.mjs
+// documents for its own history.
 import { runKey, sameRun, RUN_MS, copy, CAP } from '../builder/session.mjs';
 import { contrastRatio, meetsThreshold } from './contrast.mjs';
 
@@ -40,6 +62,21 @@ const FIXED_SURFACES = {
   'text-primary': '#161616',
 };
 
+// The four compiled bases a surface overlay may sit on, and the fixed
+// text-primary the contrast readout checks each surface against. Never
+// `rux` — "base" means exactly one of Carbon's compiled themes. Mirrors
+// tools/build-theme-creator.mjs's BASES table (roadmap §4.15); a mismatch
+// between the two would seed the wrong defaults silently, the same
+// SHADE_MAP-vs-TOKENS risk above.
+const BASES = {
+  white: { text: '#161616', tokens: { background: '#ffffff', 'layer-01': '#f4f4f4', 'layer-02': '#ffffff', 'layer-03': '#f4f4f4' } },
+  g10: { text: '#161616', tokens: { background: '#f4f4f4', 'layer-01': '#ffffff', 'layer-02': '#f4f4f4', 'layer-03': '#ffffff' } },
+  g90: { text: '#f4f4f4', tokens: { background: '#262626', 'layer-01': '#393939', 'layer-02': '#525252', 'layer-03': '#6f6f6f' } },
+  g100: { text: '#f4f4f4', tokens: { background: '#161616', 'layer-01': '#262626', 'layer-02': '#393939', 'layer-03': '#525252' } },
+};
+const SURFACE_TOKENS = ['background', 'layer-01', 'layer-02', 'layer-03'];
+const defaultSurface = () => ({ base: 'white', name: '', tokens: { ...BASES.white.tokens } });
+
 const DRAFT_KEY = 'rux.theme-draft';
 const DRAFT_VERSION = 1;
 const $ = id => document.getElementById(id);
@@ -50,9 +87,10 @@ const tokenNames = Object.keys(defaults);
 let scenarios = [];
 let families = {};
 
-let state = { name: 'rux', tokens: copy(defaults) };
+let state = { name: 'rux', tokens: copy(defaults), surface: defaultSurface() };
 let history = { past: [], future: [] };
 let openRun = null; // { key, at } — see builder/session.mjs's own comment on runs.
+let activeSection = 'accent'; // 'accent' | 'surface' — which one the preview/status line reflects.
 
 function pushSnapshot() {
   history.past.push(copy(state));
@@ -72,14 +110,14 @@ function undo() {
   history.future.push(copy(state));
   state = history.past.pop();
   openRun = null;
-  renderAll();
+  renderEverything();
 }
 function redo() {
   if (!history.future.length) return;
   history.past.push(copy(state));
   state = history.future.pop();
   openRun = null;
-  renderAll();
+  renderEverything();
 }
 
 function editToken(token, hex, { coalesce } = { coalesce: true }) {
@@ -95,6 +133,29 @@ function applyFamily(familyName) {
   if (!family) return;
   pushSnapshot();
   for (const [token, shade] of Object.entries(SHADE_MAP)) state.tokens[token] = family[shade];
+}
+
+// ── surfaces (Phase 15) ─────────────────────────────────────────────────
+function editSurfaceToken(token, hex) {
+  const key = runKey('theme-creator-surface', token);
+  const now = Date.now();
+  if (!sameRun(openRun, key, now)) pushSnapshot();
+  openRun = { key, at: now };
+  state.surface.tokens[token] = hex;
+}
+
+function applyBase(baseName) {
+  const base = BASES[baseName];
+  if (!base) return;
+  pushSnapshot();
+  state.surface.base = baseName;
+  state.surface.tokens = { ...base.tokens };
+}
+
+function surfaceNameProblem(name) {
+  if (!name) return 'name the surface first';
+  if (!NAME_RE.test(name)) return 'must start with a letter and hold only lowercase letters, digits and hyphens';
+  return null;
 }
 
 // ── name validation ─────────────────────────────────────────────────────
@@ -141,6 +202,41 @@ function renderAll() {
   scheduleSave();
 }
 
+function renderSurfaceRow(token) {
+  const input = $(`thc-surf-${token}`);
+  const value = state.surface.tokens[token];
+  if (document.activeElement !== input) input.value = value;
+  const swatch = $(`thc-surf-swatch-${token}`);
+  if (swatch) swatch.style.background = /^#[0-9a-f]{3,8}$/i.test(value) ? value : 'transparent';
+}
+
+function renderSurfaceContrast() {
+  const text = BASES[state.surface.base].text;
+  for (const token of SURFACE_TOKENS) {
+    const el = document.querySelector(`#thc-surface-rows .thc-badge[data-token="${token}"]`);
+    if (!el) continue;
+    const ratio = contrastRatio(text, state.surface.tokens[token]);
+    if (ratio === null) { el.textContent = 'unreadable colour'; el.className = 'thc-badge'; continue; }
+    const pass = meetsThreshold(ratio, 4.5);
+    el.textContent = `text-primary — ${ratio.toFixed(1)}:1 (needs 4.5:1)`;
+    el.className = `thc-badge ${pass ? 'thc-badge--pass' : 'thc-badge--warn'}`;
+  }
+}
+
+function renderSurfaceAll() {
+  for (const t of SURFACE_TOKENS) renderSurfaceRow(t);
+  renderSurfaceContrast();
+  renderHistoryButtons();
+  renderSurfaceExport();
+  schedulePreview();
+  scheduleSave();
+}
+
+function renderEverything() {
+  renderAll();
+  renderSurfaceAll();
+}
+
 // ── export ──────────────────────────────────────────────────────────────
 function cssBlock() {
   const lines = tokenNames.map(t => `  --rux-${t}: ${state.tokens[t]};`);
@@ -154,15 +250,35 @@ function renderExport() {
     : 'Lowercase letters, digits and hyphens; not white, g10, g90 or g100 — those are compiled Carbon themes, not a surface to layer over.';
 }
 
+// The compound selector — background/layer-01/02/03 only, on top of the
+// chosen base, never a fifth compiled theme. See the header comment for why.
+function surfaceCssBlock() {
+  const name = state.surface.name || 'your-surface';
+  const lines = SURFACE_TOKENS.map(t => `  --rux-${t}: ${state.surface.tokens[t]};`);
+  return `[data-theme="${state.surface.base}"][data-rux-surface="${name}"] {\n${lines.join('\n')}\n}\n`;
+}
+function renderSurfaceExport() {
+  const name = state.surface.name || 'your-surface';
+  const usage = `<!-- on <html>: data-theme="${state.surface.base}" data-rux-surface="${name}" -->\n`;
+  $('thc-surface-export').textContent = usage + surfaceCssBlock();
+  const problem = surfaceNameProblem(state.surface.name);
+  $('thc-surf-name-helper').textContent = problem
+    ? `Not usable as a surface name yet: ${problem}.`
+    : 'Lowercase letters, digits and hyphens. Becomes the data-rux-surface value.';
+}
+
 // ── draft ───────────────────────────────────────────────────────────────
 function scheduleSave() {
   clearTimeout(scheduleSave._t);
   scheduleSave._t = setTimeout(() => {
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: DRAFT_VERSION, name: state.name, tokens: state.tokens, savedAt: Date.now() }));
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: DRAFT_VERSION, name: state.name, tokens: state.tokens, surface: state.surface, savedAt: Date.now() }));
     } catch { /* storage may be unavailable; the draft is a convenience, not a promise */ }
   }, 500);
 }
+// `surface` is read tolerantly, not version-gated: it's an additive field a
+// Phase-14-era draft never had, so a missing or malformed one falls back to
+// defaultSurface() rather than invalidating a draft that is otherwise fine.
 function loadDraft() {
   let raw;
   try { raw = localStorage.getItem(DRAFT_KEY); } catch { return null; }
@@ -171,7 +287,13 @@ function loadDraft() {
   try { d = JSON.parse(raw); } catch { return null; }
   if (!d || d.v !== DRAFT_VERSION || typeof d.name !== 'string' || typeof d.tokens !== 'object' || !d.tokens) return null;
   for (const t of tokenNames) if (typeof d.tokens[t] !== 'string') return null;
-  return { name: d.name, tokens: d.tokens };
+  let surface = defaultSurface();
+  const s = d.surface;
+  if (s && typeof s === 'object' && BASES[s.base] && typeof s.name === 'string' && s.tokens
+    && SURFACE_TOKENS.every(t => typeof s.tokens[t] === 'string')) {
+    surface = { base: s.base, name: s.name, tokens: { ...s.tokens } };
+  }
+  return { name: d.name, tokens: d.tokens, surface };
 }
 
 // ── preview ─────────────────────────────────────────────────────────────
@@ -206,7 +328,8 @@ let previewObjectUrl = null;
 async function buildPreview() {
   const target = $('thc-target').value;
   const status = $('thc-preview-status');
-  const problem = nameProblem(state.name);
+  const onSurface = activeSection === 'surface';
+  const problem = onSurface ? surfaceNameProblem(state.surface.name) : nameProblem(state.name);
   if (problem) { status.textContent = `Preview paused: ${problem}.`; return; }
   let html;
   try {
@@ -216,9 +339,11 @@ async function buildPreview() {
     return;
   }
   html = rebase(html);
-  html = html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${state.name}"`);
+  html = onSurface
+    ? html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${state.surface.base}" data-rux-surface="${state.surface.name}"`)
+    : html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${state.name}"`);
   html = html.replace(/(<script[^>]*\ssrc="js\/theme\.js")/, `${PROFILE_SHIM}\n$1`);
-  html = html.replace('</head>', `<style>${cssBlock()}</style>\n</head>`);
+  html = html.replace('</head>', `<style>${onSurface ? surfaceCssBlock() : cssBlock()}</style>\n</head>`);
 
   const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   const frame = $('thc-frame');
@@ -226,7 +351,9 @@ async function buildPreview() {
   previewObjectUrl = url;
   frame.addEventListener('load', () => { if (prior) URL.revokeObjectURL(prior); }, { once: true });
   frame.src = url;
-  status.textContent = `Previewing ${target}.`;
+  status.textContent = onSurface
+    ? `Previewing ${target} — surface "${state.surface.name}" on ${state.surface.base}.`
+    : `Previewing ${target}.`;
 }
 function schedulePreview() {
   clearTimeout(schedulePreview._t);
@@ -248,21 +375,22 @@ function setWidth(px) {
 // ── wiring ──────────────────────────────────────────────────────────────
 function init() {
   for (const t of tokenNames) {
-    $(`thc-tok-${t}`).addEventListener('input', e => { editToken(t, e.target.value); renderRow(t); renderExport(); schedulePreview(); scheduleSave(); });
+    $(`thc-tok-${t}`).addEventListener('input', e => { activeSection = 'accent'; editToken(t, e.target.value); renderRow(t); renderExport(); schedulePreview(); scheduleSave(); });
     $(`thc-tok-${t}`).addEventListener('blur', () => { openRun = null; });
   }
   $('thc-family').addEventListener('change', e => {
     if (!e.target.value) return;
+    activeSection = 'accent';
     applyFamily(e.target.value);
     renderAll();
   });
-  $('thc-name').addEventListener('input', e => { state.name = e.target.value; renderExport(); schedulePreview(); scheduleSave(); });
+  $('thc-name').addEventListener('input', e => { activeSection = 'accent'; state.name = e.target.value; renderExport(); schedulePreview(); scheduleSave(); });
   $('thc-undo').addEventListener('click', undo);
   $('thc-redo').addEventListener('click', redo);
   $('thc-start-over').addEventListener('click', () => {
     pushSnapshot();
-    state = { name: 'rux', tokens: copy(defaults) };
-    renderAll();
+    state = { name: 'rux', tokens: copy(defaults), surface: defaultSurface() };
+    renderEverything();
   });
   $('thc-target').addEventListener('change', schedulePreview);
   document.querySelectorAll('[data-width]').forEach(b => b.addEventListener('click', () => setWidth(b.dataset.width)));
@@ -280,10 +408,43 @@ function init() {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  const draft = loadDraft();
-  if (draft) state = { name: draft.name, tokens: draft.tokens };
+  // ── surfaces ──────────────────────────────────────────────────────────
+  for (const t of SURFACE_TOKENS) {
+    $(`thc-surf-${t}`).addEventListener('input', e => {
+      activeSection = 'surface';
+      editSurfaceToken(t, e.target.value);
+      renderSurfaceRow(t); renderSurfaceContrast(); renderSurfaceExport();
+      schedulePreview(); scheduleSave();
+    });
+    $(`thc-surf-${t}`).addEventListener('blur', () => { openRun = null; });
+  }
+  document.querySelectorAll('input[name="thc-surf-base"]').forEach(r => r.addEventListener('change', e => {
+    activeSection = 'surface';
+    applyBase(e.target.value);
+    renderSurfaceAll();
+  }));
+  $('thc-surf-name').addEventListener('input', e => {
+    activeSection = 'surface';
+    state.surface.name = e.target.value;
+    renderSurfaceExport(); schedulePreview(); scheduleSave();
+  });
+  $('thc-surface-copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(surfaceCssBlock()); $('thc-preview-status').textContent = 'Copied.'; }
+    catch { $('thc-preview-status').textContent = 'Could not copy — select the text and copy it by hand.'; }
+  });
+  $('thc-surface-download').addEventListener('click', () => {
+    const blob = new Blob([surfaceCssBlock()], { type: 'text/css' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'rux-theme.css';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
 
-  renderAll();
+  const draft = loadDraft();
+  if (draft) state = { name: draft.name, tokens: draft.tokens, surface: draft.surface };
+
+  renderEverything();
   setWidth('fit');
 }
 
