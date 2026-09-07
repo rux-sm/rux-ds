@@ -9,6 +9,28 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-06 - CORRECTION: 8b70c72 carries work that is not the brand's.**
+The brand commit was staged with `git add -A` in a tree someone else was
+editing, and it swept in `tools/build-theme-creator.mjs` mid-edit -- 96 lines
+of Phase 15's Surfaces section (roadmap §4.15): the four compiled bases, the
+surface-token rows, the base radios -- and `npm run verify` then regenerated
+`theme-creator.html` from that source, 137 lines. The file's mtime is 22:32:19
+against the commit at 22:31:57. The behaviour half, `theme-creator/theme-
+creator.js`, was NOT staged, so at 8b70c72 the published theme creator shows
+a Surfaces section with no script behind it: a half-landed feature under a
+message that says "no page changes", which that makes false.
+
+The working tree holds the continuation of that work -- 149 further lines in
+theme-creator.js and 22 in the build -- and it is not mine to stage, revert or
+touch. Left exactly as found. How 8b70c72 is repaired is rux's call: their
+own commit of the behaviour half makes the page whole, or a follow-up revert
+of those hunks if the section should land as one commit later. No history
+rewrite here; main is pushed.
+
+The process error is mine and is named so it does not recur: `git add -A` in
+a shared working tree stages what one did not write. Every commit from this
+session from here on stages paths by name.
+
 **2026-09-06 - the square mark.** rux drew a new 16-grid mark,
 rux-logo-16x16.svg, and asked for a review and for it to go everywhere. The
 review: 110 filled cells against the old 86, bounds x=1..14 and y=1..14, one
