@@ -32,6 +32,15 @@
 // currently reflect — whichever was edited most recently, the same
 // "navigation records nothing, editing does" rule builder/session.mjs
 // documents for its own history.
+//
+// PHASE 16 (roadmap §4.16): Save on either section writes through
+// window.Rux.customThemes (js/custom-themes.js), the platform-wide store
+// js/theme.js resolves at apply() time — a saved theme needs no CSS shipped
+// anywhere, and appears as a real radio in every rux-ds app's account panel
+// on this origin (js/profile.js clones it in). `previewingSaved` is a third,
+// read-only preview source alongside the two sections' own live edits: any
+// edit to either section clears it, so live editing always wins the shared
+// preview back.
 import { runKey, sameRun, RUN_MS, copy, CAP } from '../builder/session.mjs';
 import { contrastRatio, meetsThreshold } from './contrast.mjs';
 
@@ -162,6 +171,23 @@ function surfaceNameProblem(name) {
 function nameProblem(name) {
   if (!NAME_RE.test(name)) return 'must start with a letter and hold only lowercase letters, digits and hyphens';
   if (RESERVED.has(name)) return `"${name}" is a compiled Carbon theme, not a surface this tool layers over`;
+  return null;
+}
+
+// ── saving (Phase 16) ───────────────────────────────────────────────────
+// Stricter than nameProblem/surfaceNameProblem, and only for the Save
+// button: previewing under the name "rux" — this section's own default
+// seed, since its values start from the shipped rux theme — stays fine,
+// exactly as it always has; persisting a NEW saved theme under that name,
+// or under one already saved as the other kind, is what gets refused.
+// `forKind` is the kind this section would save as, so a theme already
+// saved under the SAME kind is not a collision — that is an overwrite,
+// decided inside Rux.customThemes.save() itself.
+function saveNameProblem(name, forKind, generalProblem) {
+  if (generalProblem) return generalProblem;
+  if (name === 'rux') return '"rux" is the shipped accent theme — pick a different name to save your own';
+  const existing = window.Rux?.customThemes?.get(name);
+  if (existing && existing.kind !== forKind) return `"${name}" is already saved as a${existing.kind === 'accent' ? 'n' : ''} ${existing.kind} theme`;
   return null;
 }
 
@@ -324,13 +350,37 @@ function rebase(html) {
   });
 }
 
+// Set to a saved record while its own Preview button is the last thing
+// clicked; cleared the moment any accent/surface field is edited again, so
+// live editing always wins back the shared preview.
+let previewingSaved = null;
+
+function savedCssBlock(t) {
+  const lines = Object.entries(t.tokens).map(([k, v]) => `  --rux-${k}: ${v};`);
+  const selector = t.kind === 'surface' ? `[data-theme="${t.base}"][data-rux-surface="${t.id}"]` : `[data-theme="${t.id}"]`;
+  return `${selector} {\n${lines.join('\n')}\n}\n`;
+}
+
 let previewObjectUrl = null;
 async function buildPreview() {
   const target = $('thc-target').value;
   const status = $('thc-preview-status');
   const onSurface = activeSection === 'surface';
-  const problem = onSurface ? surfaceNameProblem(state.surface.name) : nameProblem(state.name);
-  if (problem) { status.textContent = `Preview paused: ${problem}.`; return; }
+  let dataTheme, dataSurface, styleBlock, label;
+  if (previewingSaved) {
+    const t = previewingSaved;
+    dataTheme = t.kind === 'surface' ? t.base : 'white';
+    dataSurface = t.kind === 'surface' ? t.id : null;
+    styleBlock = savedCssBlock(t);
+    label = `saved theme "${t.id}"`;
+  } else {
+    const problem = onSurface ? surfaceNameProblem(state.surface.name) : nameProblem(state.name);
+    if (problem) { status.textContent = `Preview paused: ${problem}.`; return; }
+    dataTheme = onSurface ? state.surface.base : state.name;
+    dataSurface = onSurface ? state.surface.name : null;
+    styleBlock = onSurface ? surfaceCssBlock() : cssBlock();
+    label = onSurface ? `surface "${state.surface.name}" on ${state.surface.base}` : null;
+  }
   let html;
   try {
     html = await fetch(target, { cache: 'no-store' }).then(r => r.text());
@@ -339,11 +389,9 @@ async function buildPreview() {
     return;
   }
   html = rebase(html);
-  html = onSurface
-    ? html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${state.surface.base}" data-rux-surface="${state.surface.name}"`)
-    : html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${state.name}"`);
+  html = html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${dataTheme}"${dataSurface ? ` data-rux-surface="${dataSurface}"` : ''}`);
   html = html.replace(/(<script[^>]*\ssrc="js\/theme\.js")/, `${PROFILE_SHIM}\n$1`);
-  html = html.replace('</head>', `<style>${onSurface ? surfaceCssBlock() : cssBlock()}</style>\n</head>`);
+  html = html.replace('</head>', `<style>${styleBlock}</style>\n</head>`);
 
   const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   const frame = $('thc-frame');
@@ -351,13 +399,57 @@ async function buildPreview() {
   previewObjectUrl = url;
   frame.addEventListener('load', () => { if (prior) URL.revokeObjectURL(prior); }, { once: true });
   frame.src = url;
-  status.textContent = onSurface
-    ? `Previewing ${target} — surface "${state.surface.name}" on ${state.surface.base}.`
-    : `Previewing ${target}.`;
+  status.textContent = label ? `Previewing ${target} — ${label}.` : `Previewing ${target}.`;
 }
 function schedulePreview() {
   clearTimeout(schedulePreview._t);
   schedulePreview._t = setTimeout(buildPreview, 250);
+}
+
+// ── saved themes (Phase 16) ──────────────────────────────────────────────
+function renderSavedThemes() {
+  const list = $('thc-saved-list');
+  const empty = $('thc-saved-empty');
+  const template = $('thc-saved-theme-template');
+  if (!list || !template) return;
+  const saved = window.Rux?.customThemes?.list() ?? [];
+  empty.hidden = saved.length > 0;
+  list.textContent = '';
+  for (const t of saved) {
+    const row = template.content.cloneNode(true);
+    const label = row.querySelector('[data-role="label"]');
+    label.textContent = t.kind === 'surface' ? `${t.id} — surface on ${t.base}` : `${t.id} — accent`;
+    row.querySelector('[data-act="preview"]').addEventListener('click', () => {
+      previewingSaved = t;
+      buildPreview();
+    });
+    row.querySelector('[data-act="delete"]').addEventListener('click', () => {
+      if (!confirm(`Delete the saved theme "${t.id}"? This removes it from every rux-ds app's account panel on this browser.`)) return;
+      window.Rux.customThemes.remove(t.id);
+      if (previewingSaved?.id === t.id) previewingSaved = null;
+      renderSavedThemes();
+      schedulePreview();
+    });
+    list.appendChild(row);
+  }
+}
+
+function saveAccentTheme() {
+  const status = $('thc-save-status');
+  const problem = saveNameProblem(state.name, 'accent', nameProblem(state.name));
+  if (problem) { status.textContent = `Not saved: ${problem}.`; return; }
+  const result = window.Rux.customThemes.save({ id: state.name, kind: 'accent', tokens: { ...state.tokens } });
+  status.textContent = result.ok ? `Saved as "${state.name}".` : `Not saved: ${result.reason}.`;
+  if (result.ok) renderSavedThemes();
+}
+
+function saveSurfaceTheme() {
+  const status = $('thc-surface-save-status');
+  const problem = saveNameProblem(state.surface.name, 'surface', surfaceNameProblem(state.surface.name));
+  if (problem) { status.textContent = `Not saved: ${problem}.`; return; }
+  const result = window.Rux.customThemes.save({ id: state.surface.name, kind: 'surface', base: state.surface.base, tokens: { ...state.surface.tokens } });
+  status.textContent = result.ok ? `Saved as "${state.surface.name}".` : `Not saved: ${result.reason}.`;
+  if (result.ok) renderSavedThemes();
 }
 
 // ── width ───────────────────────────────────────────────────────────────
@@ -375,16 +467,18 @@ function setWidth(px) {
 // ── wiring ──────────────────────────────────────────────────────────────
 function init() {
   for (const t of tokenNames) {
-    $(`thc-tok-${t}`).addEventListener('input', e => { activeSection = 'accent'; editToken(t, e.target.value); renderRow(t); renderExport(); schedulePreview(); scheduleSave(); });
+    $(`thc-tok-${t}`).addEventListener('input', e => { activeSection = 'accent'; previewingSaved = null; editToken(t, e.target.value); renderRow(t); renderExport(); schedulePreview(); scheduleSave(); });
     $(`thc-tok-${t}`).addEventListener('blur', () => { openRun = null; });
   }
   $('thc-family').addEventListener('change', e => {
     if (!e.target.value) return;
     activeSection = 'accent';
+    previewingSaved = null;
     applyFamily(e.target.value);
     renderAll();
   });
-  $('thc-name').addEventListener('input', e => { activeSection = 'accent'; state.name = e.target.value; renderExport(); schedulePreview(); scheduleSave(); });
+  $('thc-name').addEventListener('input', e => { activeSection = 'accent'; previewingSaved = null; state.name = e.target.value; renderExport(); schedulePreview(); scheduleSave(); });
+  $('thc-save').addEventListener('click', saveAccentTheme);
   $('thc-undo').addEventListener('click', undo);
   $('thc-redo').addEventListener('click', redo);
   $('thc-start-over').addEventListener('click', () => {
@@ -412,6 +506,7 @@ function init() {
   for (const t of SURFACE_TOKENS) {
     $(`thc-surf-${t}`).addEventListener('input', e => {
       activeSection = 'surface';
+      previewingSaved = null;
       editSurfaceToken(t, e.target.value);
       renderSurfaceRow(t); renderSurfaceContrast(); renderSurfaceExport();
       schedulePreview(); scheduleSave();
@@ -420,14 +515,17 @@ function init() {
   }
   document.querySelectorAll('input[name="thc-surf-base"]').forEach(r => r.addEventListener('change', e => {
     activeSection = 'surface';
+    previewingSaved = null;
     applyBase(e.target.value);
     renderSurfaceAll();
   }));
   $('thc-surf-name').addEventListener('input', e => {
     activeSection = 'surface';
+    previewingSaved = null;
     state.surface.name = e.target.value;
     renderSurfaceExport(); schedulePreview(); scheduleSave();
   });
+  $('thc-surface-save').addEventListener('click', saveSurfaceTheme);
   $('thc-surface-copy').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(surfaceCssBlock()); $('thc-preview-status').textContent = 'Copied.'; }
     catch { $('thc-preview-status').textContent = 'Could not copy — select the text and copy it by hand.'; }
@@ -441,10 +539,14 @@ function init() {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
+  window.addEventListener('rux:customthemeschange', renderSavedThemes);
+  window.addEventListener('storage', e => { if (e.key === window.Rux?.customThemes?.KEY) renderSavedThemes(); });
+
   const draft = loadDraft();
   if (draft) state = { name: draft.name, tokens: draft.tokens, surface: draft.surface };
 
   renderEverything();
+  renderSavedThemes();
   setWidth('fit');
 }
 

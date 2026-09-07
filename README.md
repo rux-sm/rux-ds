@@ -380,7 +380,7 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Markup provenance | **72 `rendered-dom` · 6 `source` · 0 `inferred`** across 78 files |
 | Icons | 61 symbols in a 16.8 KB sprite — 51 referenced, 10 nothing points at |
 | Size | 1023.9 KB raw · 920.9 KB min · **91 KB gzipped** |
-| Behaviour JS | **16** modules · **48 KB gzipped** · 164.6 KB raw, 61% of it comment · 64.9 KB of code |
+| Behaviour JS | **17** modules · **52 KB gzipped** · 176.5 KB raw, 60% of it comment · 71.0 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from
 `tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the

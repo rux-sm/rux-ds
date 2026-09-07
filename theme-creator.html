@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
+<script src="js/custom-themes.js"></script>
 <script src="js/theme.js"></script>
 <style>
 /* The theme creator's own layout, thc- so check-classes ignores it the way
@@ -28,6 +29,8 @@
 .thc-badge--pass { color: var(--rux-support-success); border-color: var(--rux-support-success); }
 .thc-badge--warn { color: var(--rux-support-error); border-color: var(--rux-support-error); }
 .thc-command { display: block; background: var(--rux-layer-01); border: 1px solid var(--rux-border-subtle-01); padding: var(--rux-spacing-03); overflow-x: auto; white-space: pre-wrap; overflow-wrap: break-word; }
+.thc-saved-list { list-style: none; margin: 0; padding: 0; }
+.thc-saved-row { display: flex; align-items: center; justify-content: space-between; gap: var(--rux-spacing-03); padding-block: var(--rux-spacing-03); border-block-end: 1px solid var(--rux-border-subtle-01); }
 /* Carbon's reset gives <section> display:block, which would beat a bare
    [hidden] on origin — the same finding builder.html and
    css/rux-overrides.css's .rux--btn[hidden] both record. Nothing on this
@@ -54,7 +57,14 @@
      edited and merely re-applied, so this stays entirely in the CSS
      cascade instead. One shared preview and undo history serve both
      sections; whichever was edited most recently is what the preview
-     shows. NOT COVERED, by construction: anything inside the preview
+     shows. A third capability, Phase 16 (roadmap §4.16): Save on either
+     section writes through window.Rux.customThemes (js/custom-themes.js)
+     so the theme appears as a real, extra radio in every rux-ds app's
+     account panel on this origin — js/theme.js resolves it at apply()
+     time via inline custom-property overrides, no compiled CSS involved.
+     The Saved themes list clones thc-saved-theme-template once per saved
+     theme and offers Preview (loads it into the shared preview) and
+     Delete. NOT COVERED, by construction: anything inside the preview
      iframe — check-a11y, check-spacing and check-runtime-classes read the
      top document only. The contrast readout is advisory only and is not a
      gate. -->
@@ -146,7 +156,7 @@
       <div class="rux--stack-vertical rux--stack-scale-7">
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h1>Theme creator</h1>
-          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why. Further down, <strong>Surfaces</strong> is a second, smaller tool: pick one of Carbon's own compiled themes and remap just its four resting surfaces — a base for something like an OLED-dark variant, without touching anything else that theme already gets right.</p>
+          <p>Pick a Carbon hue family or fine-tune each token by hex, watch an existing page re-render, and take the CSS block away. The contrast readout is advisory: it warns on a ratio below the threshold a token's own use calls for, and never blocks — <code>theme-creator/scenarios.json</code> says what each token is checked against and why. Further down, <strong>Surfaces</strong> is a second, smaller tool: pick one of Carbon's own compiled themes and remap just its four resting surfaces — a base for something like an OLED-dark variant, without touching anything else that theme already gets right. Either section can be saved: a saved theme shows up as a real option in every rux-ds app's account panel on this browser, and can be deleted again from the list at the bottom of this page.</p>
         </div>
         <div id="thc-notice"></div>
         <div class="rux--subgrid rux--subgrid--wide rux--subgrid--with-row-gap">
@@ -731,17 +741,26 @@
               <p>Paste this into a project's own <code>css/rux-theme.css</code> — never written for you; this tool only ever offers text to copy.</p>
               <code class="thc-command" id="thc-export"></code>
               <div class="thc-row-group">
+                <button type="button" class="rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm" id="thc-save">Save theme</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-copy">Copy the CSS block</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-download">Download rux-theme.css</button>
               </div>
+              <p class="thc-status" id="thc-save-status" role="status"></p>
 
               <h2 class="rux--type-heading-compact-01">Surfaces: take it away</h2>
               <p>The compound selector, and the two attributes it needs on <code>&lt;html&gt;</code> — this pairs with, and can sit in the same file as, the block above.</p>
               <code class="thc-command" id="thc-surface-export"></code>
               <div class="thc-row-group">
+                <button type="button" class="rux--btn rux--btn--primary rux--btn--sm rux--layout--size-sm" id="thc-surface-save">Save theme</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-copy">Copy the CSS block</button>
                 <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" id="thc-surface-download">Download rux-theme.css</button>
               </div>
+              <p class="thc-status" id="thc-surface-save-status" role="status"></p>
+
+              <h2 class="rux--type-heading-compact-01">Saved themes</h2>
+              <p>Saved themes appear as extra options in every rux-ds app's account panel, on this browser and this origin — <code>js/custom-themes.js</code> is what every app shares, the same way the profile already is.</p>
+              <p class="thc-status" id="thc-saved-empty">Nothing saved yet.</p>
+              <ul class="thc-saved-list" id="thc-saved-list" role="list"></ul>
             </div>
           </div>
 
@@ -750,6 +769,20 @@
     </div>
   </div>
 </main>
+
+<!-- CLONED, NEVER CONSTRUCTED — the saved-themes list is genuinely
+     variable-length, so its one row shape lives here, where check-classes
+     can read it, and theme-creator.js only ever clones it and fills in
+     text. The same rule builder.html's own outline-item-template states. -->
+<template id="thc-saved-theme-template">
+  <li class="thc-saved-row">
+    <span data-role="label"></span>
+    <div class="thc-row-group">
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--sm rux--layout--size-sm" data-act="preview">Preview</button>
+      <button type="button" class="rux--btn rux--btn--danger--ghost rux--btn--sm rux--layout--size-sm" data-act="delete">Delete</button>
+    </div>
+  </li>
+</template>
 
 <script src="js/overlay.js"></script>
 <script src="js/popover.js"></script>

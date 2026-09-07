@@ -4600,6 +4600,76 @@ Creator concern); a real shipped example in this repository's own
 `css/rux-theme.css` (the tool's own preview proves the mechanism, same
 restraint Phase 10 took with the placeholder accent hue).
 
+### 4.16 Phase 16 — Saved custom themes, platform-wide
+
+**Added 2026-09-06**, the day after Phase 15, from rux asking for the
+step both Phase 14 and 15 had explicitly deferred in almost the same
+words — a custom theme wired into the account panel and the shared
+profile — plus the ability to delete one. "Platform-wide" here means
+exactly what the profile already means: the same browser profile, the
+same origin (`rux-sm.github.io` and its subpaths), no backend, no
+device- or account-wide sync — nothing new was built to make that true,
+because it was already true of `js/theme.js`/`js/profile.js`'s shared
+`localStorage['rux.profile']` key.
+
+**A first draft was caught with five real runtime bugs by review before
+anything was written**, named here rather than dropped quietly: the
+radio `change` handler wrote `data-theme` directly without ever calling
+`theme.apply()`, so a saved theme's base and inline overrides would
+never actually render; `render()` compared radios against
+`document.documentElement.dataset.theme`, which for a surface-kind
+theme resolves to its *base* (e.g. `g100`), not its own id, so its own
+radio could never show checked; `js/profile.js`'s radio list was a
+frozen array queried once with listeners bound to that fixed snapshot,
+so a radio cloned in after page load would carry no listener; the
+browser's `storage` event never fires in the tab that made the write,
+so deleting the active theme in the same tab (including
+`theme-creator.html` itself, which loads `js/theme.js` but has no
+account panel) needed a same-tab signal, not only a cross-tab one;
+and stored records were treated as trusted input, with no allow-list
+stopping an arbitrary stored key from reaching `style.setProperty`.
+
+**Shipped, corrected**: `js/custom-themes.js`, a new vendored primitive
+that owns `localStorage['rux.custom-themes']` and validates every field
+against a fixed allow-list (id shape, `kind`, `base` for surface
+records, token names, hex-shaped values), capped at 50 records —
+`get()`/`list()` drop a malformed record rather than throwing or
+partially applying it, `builder/session.mjs`'s `fromDraft` is the
+existing precedent for that rule. `js/theme.js`'s `apply()` now runs a
+fixed sequence every time: clear all twenty-four possible inline
+overrides and the `data-rux-surface`/`data-rux-custom-theme`
+attributes, resolve the stored id, apply the compiled base, and only
+then set the identity attributes and validated tokens — listening for
+both `storage` (cross-tab) and a new `rux:customthemeschange` event
+(same-tab) that `save()`/`remove()` dispatch. An id that matches the
+name shape but resolves to nothing (a theme deleted elsewhere) corrects
+the stored preference to `white` rather than leaving the picker pointing
+at a ghost. `js/profile.js` clones the existing `rux` radio's own
+wrapper — real, already-compiled markup, nothing invented — once per
+saved theme, wires the fieldset with one delegated listener instead of
+per-radio listeners so later clones aren't inert, and renders selection
+from the stored preference rather than the resolved DOM attribute.
+`theme-creator.html` gained a Save button on each of its two sections
+and a Saved-themes list with Preview and Delete; `RESERVED` widened to
+include `rux` now that saving is persistent and cross-app rather than a
+one-off export.
+
+**Explicitly deferred**: `tools/new-project.sh`/`tools/app-check.mjs`'s
+fixed theme lists (build-time scaffolding, not this runtime store);
+`builder/session.mjs`'s own reserved-theme array (a separate, smaller
+question about a builder draft's default theme); cross-origin sync
+(no backend exists, same as the profile today).
+
+**Control-file checkpoint, covering more than one file this time**:
+`tools/build-builder.mjs` and `tools/build-theme-creator.mjs` (each
+gains one `<script>` tag) are both in `CONTROL_FILES`; `js/theme.js`/
+`js/profile.js` sit inside `RENDERED_INPUTS`' shared `js` entry, so this
+change ages the *entire* 44-cell browser-gate matrix, not a handful of
+pages — the same scale Phase 13's original rollout recorded. New
+`check-behaviour.js` coverage for the resolution and delete-fallback
+paths is proposed on its own, once the mechanism works, not folded into
+the commit that writes it.
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early

@@ -213,7 +213,7 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 2
 | `popover` | button, popover | — | 7 | — | — | copy-button, popover | no |
 | `progress-bar` | progress-bar | — | 4 | — | — | — | no |
 | `progress-indicator` | progress-indicator | 2 | 3 | 8 | 0 | — | yes |
-| `radio` | form, radio-button | 1 | 5 | 4 | 0 | — | yes |
+| `radio` | form, radio-button | 1 | 5 | 4 | 0 | profile | yes |
 | `scroll-gradient` | scroll-gradient | — | 1 | — | — | — | no |
 | `search` | search | 1 | 3 | 1 | 0 | form-controls | yes |
 | `select` | form, select | — | 5 | — | — | form-controls | no |
@@ -224,7 +224,7 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 2
 | `spacing` | — | — | 0 | — | — | — | no |
 | `stack` | button, stack, tile | — | 3 | — | — | tile | no |
 | `structured-list` | structured-list | 2 | 2 | 12 | 0 | form-controls | yes |
-| `table` | button, checkbox, data-table, overflow-menu, radio-button, search, tag | 1 | 6 | 9 | 1 | data-table, dismiss, form-controls, menu, overlay | yes |
+| `table` | button, checkbox, data-table, overflow-menu, radio-button, search, tag | 1 | 6 | 9 | 1 | data-table, dismiss, form-controls, menu, overlay, profile | yes |
 | `tabs` | popover, tabs, tooltip | 1 | 11 | 8 | 0 | copy-button, popover, tabs | yes |
 | `tags` | tag | — | 20 | — | — | dismiss | no |
 | `text-input` | button, form, popover, text-input, toggle, tooltip | — | 10 | — | — | copy-button, form-controls, list-box, popover | no |
@@ -235,6 +235,6 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 51 blocks · 2
 | `toggletip` | dropdown, link, list-box, popover, toggletip | — | 2 | — | — | copy-button, form-controls, list-box, popover | no |
 | `tooltip` | button, popover, tooltip | — | 3 | — | — | copy-button, popover | no |
 | `treeview` | treeview | — | 2 | — | — | — | no |
-| `ui-shell` | button, form, radio-button, stack, text-input, ui-shell | — | 3 | — | — | list-box, ui-shell | no |
+| `ui-shell` | button, form, radio-button, stack, text-input, ui-shell | — | 3 | — | — | list-box, profile, ui-shell | no |
 | `user-avatar` | user-avatar | — | 16 | — | — | — | no |
 <!-- COVERAGE:END -->

@@ -45,6 +45,7 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
+<script src="js/custom-themes.js"></script>
 <script src="js/theme.js"></script>
 <link rel="stylesheet" href="sink/harness.css">
 </head>
