@@ -44,6 +44,36 @@ light ground. That is the self-theming decision working as designed and
 biting in the case it cannot see. It predates every drawing here and is
 recorded rather than quietly worked around.
 
+CORRECTED 2026-09-07, SAME DAY, AND THE PARAGRAPH ABOVE IS LEFT STANDING SO
+THE CORRECTION IS VISIBLE. Two things in it are wrong. First,
+prefers-color-scheme does NOT follow the operating system: in Chrome, Safari
+and Firefox it follows the BROWSER's own appearance setting, which is also
+what paints the tab strip, so the two normally agree and the mark is right.
+Second, "the marks were invisible on the LIGHT strip" describes a mock page
+written for that comparison - a light div behind a 16px img while the browser
+was in dark mode - and not a browser tab strip. No real tab strip was observed
+to disagree with the media query, and none could be made to from that session.
+The finding was mine, from my own harness, and it was reported as if it were
+the product's.
+
+WHAT IS ACTUALLY TRUE, measured rather than reasoned. The mechanism is
+confirmed: with prefers-color-scheme dark the file paints gray-10, read back
+from a canvas. The exposure is narrower than the paragraph above implies - a
+Chrome CUSTOM THEME with a light strip while Chrome is in dark mode, and the
+surfaces that are not the tab strip at all, the bookmark bar and the new-tab
+tiles, whose ground the browser picks on its own. The base rule is already the
+defensive one: fill gray-100 with dark as the override, so a browser that
+ignores the query gets dark ink on a light ground.
+
+WHY NOTHING WAS CHANGED. No CSS inside an SVG can know the tab strip's colour;
+prefers-color-scheme is the only signal there is. Not depending on it means one
+fill for both grounds, and the arithmetic was run: the best any single neutral
+can do is 4.04:1 on both (#777777), or 4.57 and 3.60 for gray-60. Today's mark
+measures 18.10:1 and 16.45:1 whenever the query is right, which is every case
+that could be demonstrated. Trading that for 4:1 everywhere, to cover a case
+this session could not reproduce, is a worse mark on the evidence available.
+rux was given the numbers and a rendering of both, and left the fill alone.
+
 ALSO AUDITED, ON THE WAY. Every page that should carry the mark does: 15 in
 rux-ds, 24 in Rux Notes, 2 each in Rux Scheduler and Rux Apps, favicon and
 logo on all of them. Two pages carry none and correctly so -
