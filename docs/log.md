@@ -9,6 +9,86 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-07 - the dachshund replaces it, and becomes the logo too.** The
+edge-to-edge favicon below lasted a morning. rux asked for a review of five
+candidate drawings, then sketched a shorter one on a 16 grid and asked
+whether it could read more like a dachshund without being stretched
+vertically. It cannot be stretched at all: the viewBox is square and the
+cells are square, so what the shorter drawing actually trades is air, and
+that is what was reported back. Longer-and-lower options were drawn and
+measured by body length to body depth (the sketch 2.6:1, a real dachshund
+about 3.5 to 4); rux kept the sketch and asked only for a shorter tail. Five
+tail lengths were drawn. rux chose four rows because the tail then stops
+level with the top of the muzzle - checked rather than repeated, both are
+row 4 - and that also stops the tail tying with the head for the highest
+point in the mark, which was the actual fault.
+
+The drawing: 139 filled cells, bounds x=0..16 and y=1..15, against the
+morning drawing's 159 filling all sixteen rows. Chrome rasterises it to
+exactly the intended cells at 16px with no partly transparent pixels, and
+none at 32, 48 or 64.
+
+WHAT THE MEASURING FOUND, worth more than the drawing. Minimal abutting
+rectangles - the form every mark in this repository has used - anti-alias
+their shared INTERNAL edges at fractional scales, because the renderer fills
+each rectangle separately and the shared edges do not cancel. At 20 and 24
+CSS pixels that cost 135 partly transparent pixels against 84 for the same
+cells written as one path tracing the boundary of the filled region. The
+morning favicon and the 2026-09-06 logo both carried it. Both files now hold
+one path of three closed loops, default nonzero fill, outer loops clockwise
+and the two counters anticlockwise; `npm run marks` reads one shape where it
+read thirteen and fifteen, and its two checks still pass.
+
+CORRECTED IN PASSING. The review of the five candidates claimed that the one
+with a Bezier corner would anti-alias into grey at 16px. Measured, it does
+not: that corner has a radius of a quarter cell and rounds away completely,
+0 partly transparent pixels at 16px, the same as every integer drawing. The
+real objection to it was structural - it is the only one that cannot reduce
+to exact rectangles - and that is a much weaker reason than the one given.
+
+THE DECISION THIS FORCED. The drawing fills all 16 columns, and
+brand/logo.svg was documented as 14 wide with one cell of air on every side,
+which the header spacing and the app icons' safe area both rest on. Three
+ways out were put to rux with the header rendered at 24px both ways: leave
+the logo alone and let the two files hold different dogs, take the bleed, or
+redraw the dachshund at 14 wide and lose the head's two-cell tooth. rux chose
+the bleed for one mark in every place, and will adapt the drawing to a padded
+brand size later. So the logo now touches its own box in the header and both
+app icons carry no margin of their own; brand/README.md names that as a known
+gap rather than quietly dropping the sentence that claimed it.
+
+Not done: tools/make-marks.mjs still says the mark sits "with one cell of air
+on every side", which is now false. It carries two checks on the favicon, so
+the comment fix is left as a diff for rux rather than edited in the same run
+that made it stale. Not done: the three consumers hold the 2026-09-06 drawing
+for both files; a pin move never overwrites brand/, so each takes them by
+hand. Not done: the browser cells this ages, for the same reason the entry
+below gives.
+
+**2026-09-07 - the favicon becomes its own drawing, edge to edge.** rux drew
+a new favicon, Favicon.svg, that uses the full 16x16 space, and asked for it
+to go in. Read as a grid: 159 filled cells against the derived favicon's
+110, bounds x=0..16 and y=0..16 against x=1..15 and y=1..15, so the tab icon
+uses all sixteen pixels where the logo keeps one cell of air on every side.
+Same motif redrawn larger, the feet two cells wide, the pillar on the edge.
+The Curve export carried 14 shapes, overlapping, with two zero coordinates
+written as -3.55e-15; it reduces to 13 rectangles that reproduce all 159
+cells exactly, proved by comparing the two cell sets, and that is what
+brand/favicon.svg now holds, with the same self-theming style block as
+before. The decision this forced: the favicon was generated FROM
+brand/logo.svg by `npm run marks`, and a full-bleed drawing cannot be, since
+the logo's air is what the header and the app icons want. So the favicon is a
+second hand-owned drawing, swapped like the logo, and make-marks writes
+nothing to it: it reads the file and fails on `--` inside a comment or a
+missing light/dark rule, both driven red by hand before trusting the green.
+`npm run marks` left both app icons byte-identical (checksums compared).
+brand/README.md, README.md and the tool's header say which file is which.
+Not done: the three consumers' copies, byte-identical to the derived favicon
+until now, are not updated; a pin move never overwrites brand/, so each takes
+the file by hand. Not done: the 44 browser cells this commit ages, since
+brand/ is a RENDERED_INPUT; the gate says why that is by design and buys no
+detection for a mark change, and the resweep is owed on the next batch.
+
 **2026-09-06 - Phase 15's Surfaces section lands, closing the gap 8b70c72 opened.**
 The continuation the correction above described as "not mine to stage, revert
 or touch" is now complete and committed on its own: `theme-creator/theme-

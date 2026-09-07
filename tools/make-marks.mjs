@@ -1,12 +1,19 @@
-// make-marks.mjs -- the favicon and app icons, derived from brand/logo.svg.
+// make-marks.mjs -- the app icons, derived from brand/logo.svg, and a check
+// of brand/favicon.svg, which is its own drawing.
 //
-// THE DRAWING LIVES IN ONE PLACE AND IT IS NOT HERE. brand/logo.svg is the
-// mark; rux swaps that file and every shell picks it up on reload with no
-// build step. This tool reads it and emits the things a shell CANNOT get from
-// an <img>: a favicon, which gets no CSS from the page and so has to carry its
-// own light/dark swap, and four 1024px app icons in the colourways a launcher
-// or a store listing needs. Swap logo.svg, run `npm run marks`, and these
-// follow. Nothing here holds a second copy of the geometry.
+// THE DRAWINGS LIVE IN brand/ AND NOT HERE. brand/logo.svg is the mark; rux
+// swaps that file and every shell picks it up on reload with no build step.
+// This tool reads it and emits what a shell CANNOT get from an <img>: two
+// scalable app icons in the colourways a launcher or a store listing needs.
+// Swap logo.svg, run `npm run marks`, and these follow. Nothing here holds a
+// second copy of the geometry.
+//
+// THE FAVICON STOPPED BEING DERIVED ON 2026-09-07. Until then this tool wrote
+// brand/favicon.svg from the logo's paths. rux then redrew the mark edge to
+// edge for the tab strip, filling the 16-pixel grid where the logo keeps one
+// cell of air, so the favicon is a second drawing and a second file a person
+// edits, owned exactly like the logo. This tool now reads it and checks it,
+// section 2 below, and writes nothing to it.
 //
 // WHY THIS REPLACED A MODULE MAP. Until 2026-09-05 this file WAS the drawing:
 // an 11x10 ASCII grid traced from a Linearity export, with three layers and
@@ -86,8 +93,9 @@ const emit = (name, svg) => {
 
 // ------------------------------------------------------------- 1. app icons
 // The canvas is the drawing's own, untouched. rux centred the mark inside it
-// with a module of air left and right and two top and bottom, which is already
-// inside the 28-of-32 safe area an icon wants -- so there is nothing to scale
+// with one cell of air on every side since 2026-09-06 (it was one left and
+// right and two top and bottom before), which is already inside the
+// 28-of-32 safe area an icon wants -- so there is nothing to scale
 // and no origin to compute, and no chance of the 1.10x stretch the old hand
 // exports had. Transparent ground: a launcher supplies its own.
 for (const [name, { fill, on, ratio }] of Object.entries(VARIANTS)) {
@@ -99,28 +107,36 @@ ${body}
 </svg>`);
 }
 
-// --------------------------------------------------------------- 2. favicon
-// Self-theming, because a favicon gets no CSS from the page: the light/dark
-// swap has to live inside the file, and a browser that ignores the media query
-// keeps the light values. NEUTRAL, not brand colour: gray-100 on a light tab
-// strip, gray-10 on a dark one -- the same off-white the shell header uses, so
-// the tab icon and the header mark are the same drawing in the same value.
-// It goes in brand/, NOT assets/brand/, and that is the ownership rule this
-// repository already uses for logo.svg: brand/ is what a project owns and may
-// replace, assets/brand/ is rux-ds's own generated set. A consumer that swaps
-// its logo swaps its favicon in the same folder.
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" ${A11Y}>
-<title>Rux</title>
-<style>
-svg{fill:${INK}}
-@media (prefers-color-scheme:dark){svg{fill:${PAPER}}}
-</style>
-${body}
-</svg>
-`.replace(/\n{2,}/g, '\n').trim() + '\n';
-assertNoDoubleHyphen('brand/favicon.svg', favicon);
-writeFileSync('brand/favicon.svg', favicon);
-console.log('  brand/favicon.svg');
+// ------------------------------------------------- 2. favicon, checked only
+// NOT WRITTEN HERE since 2026-09-07; see the header. brand/favicon.svg is a
+// hand-owned drawing, and what this tool still owes it is the guard above,
+// because the fault it catches shipped from a hand-edited SVG on 2026-09-04,
+// plus one check the file's job demands: the light/dark swap. A favicon gets
+// no CSS from the page, so the swap lives inside the file, gray-100 on a
+// light tab strip and gray-10 on a dark one, and a browser that ignores the
+// media query keeps the light value. A favicon that lost its <style> would
+// serve 200 OK and paint one colour on both tab strips, and no other gate
+// reads the file. It stays in brand/, NOT assets/brand/: brand/ is what a
+// project owns and may replace, assets/brand/ is rux-ds's own generated set.
+const FAV = 'brand/favicon.svg';
+const fav = readFileSync(FAV, 'utf8');
+assertNoDoubleHyphen(FAV, fav);
+const favPaths = [...fav.matchAll(/<path d="([^"]+)"\s*\/>/g)];
+const favViewBox = fav.match(/viewBox="([^"]+)"/)?.[1];
+if (!favPaths.length || !favViewBox) {
+  console.error(`${FAV}: no <path d="..."/> or no viewBox.`);
+  process.exit(1);
+}
+const swap = [`svg{fill:${INK}}`, `@media (prefers-color-scheme:dark){svg{fill:${PAPER}}}`];
+for (const rule of swap) {
+  if (!fav.includes(rule)) {
+    console.error(`${FAV}: missing the light/dark swap rule ${rule}`);
+    console.error('A favicon gets no CSS from the page; the swap has to be in the file.');
+    process.exit(1);
+  }
+}
+console.log(`  ${FAV}  checked, not written: ${favPaths.length} shapes, viewBox ${favViewBox}`);
 
 console.log(`\n  ${paths.length} shapes read from ${SRC}, viewBox ${viewBox}`);
 console.log('  Geometry copied verbatim. Swap brand/logo.svg and re-run to follow it.');
+console.log('  The favicon is its own drawing; swap brand/favicon.svg directly.');

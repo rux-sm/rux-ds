@@ -12,16 +12,28 @@ build step between the file and the page:
 Replace `logo.svg` and every shell in that project picks it up on reload.
 Other repositories hold their own copy; changing this one does not update them.
 
-The official mark is rux's **rux-logo-16x16.svg**, drawn 2026-09-06 and
-superseding Brand.svg of 2026-09-05, which had superseded Rux logo 2.
-`rux-ds/brand/logo.svg` is the cleaned master; Rux Apps, Rux Notes and Rux
-Scheduler carry byte-identical logo and favicon copies. Its 16x16 viewBox
-contains 110 filled grid cells with one cell of padding on every side, so the
-mark is square. Cleanup reduced the export's 21 overlapping shapes, one
-carrying a stray fractional point on a straight edge, to 15 rectangles and
-dropped the point dimensions, without changing any visible geometry or
-placement; the set of occupied grid cells was compared before and after and
-is identical.
+The official mark is the **dachshund**, drawn by rux on 2026-09-07 and
+superseding rux-logo-16x16.svg of 2026-09-06, which had superseded Brand.svg.
+`rux-ds/brand/logo.svg` is the master; Rux Apps, Rux Notes and Rux Scheduler
+still carry the 2026-09-06 drawing until it is copied to them. Its 16x16
+viewBox contains 139 filled grid cells, bounds x=0..16 and y=1..15. The tail
+rises four rows above the back and stops level with the top of the muzzle,
+both at row 4, so the head owns the highest point.
+
+**It bleeds left and right.** Every drawing before it sat inside x=1..14 with
+one cell of air on every side; this one fills all 16 columns, so the header
+logo touches its own box and the generated app icons carry no margin of their
+own. rux chose this on 2026-09-07 for one mark in every place, having seen
+the header at 24px both ways, and will adapt the drawing to a padded brand
+size later. Until then, treat the icon safe area as a known gap rather than a
+property this file still has.
+
+The file is one `<path>` of three closed loops: the boundary of the filled
+region rather than abutting rectangles, because abutting rectangles
+anti-alias their shared edges at fractional scales. Measured in Chrome, 84
+partly transparent pixels at 24px against 135 for the rectangle form, and
+none at 16, 32, 48 or 64. It uses the default nonzero fill rule; the outer
+loops wind clockwise and the two counters anticlockwise.
 
 ## What the file has to be
 
@@ -42,18 +54,35 @@ is identical.
 
 ## favicon.svg, beside it
 
-`favicon.svg` is generated FROM `logo.svg` by `npm run marks`, and it is here
-rather than in `assets/` for the same reason: a project owns it and may replace
-it. Every page links it as `<link rel="icon" href="brand/favicon.svg">`.
+`favicon.svg` is the favicon's OWN drawing, and the same rule applies: swap
+the file and every page picks it up on reload, since every page links it as
+`<link rel="icon" href="brand/favicon.svg">`. It is here rather than in
+`assets/` for the same reason as the logo: a project owns it and may replace
+it.
+
+Since 2026-09-07 it is no longer generated from `logo.svg`. It is still a
+separate file a person edits, and `tools/make-marks.mjs` holds neither
+drawing — but as of that afternoon the two files carry the SAME geometry,
+byte for byte, because rux chose one mark for every place. They can diverge
+again the moment either is swapped; nothing enforces the match, and no gate
+compares them.
+
+An earlier version of this section described a 159-cell edge-to-edge drawing
+adopted that morning. That drawing was replaced the same day by the
+dachshund above, which is shorter: 139 cells against 159, and rows 0 and 15
+left empty where the morning drawing filled them.
 
 It exists separately because a favicon gets no CSS from the page, so the
 light/dark swap has to live inside the file: gray-100 `#161616` on a light
-scheme, gray-10 `#f4f4f4` on a dark one. The earlier blue guidance here was
-stale; the adopted brand rule is neutral throughout.
+scheme, gray-10 `#f4f4f4` on a dark one. `npm run marks` no longer writes
+the file, but it still reads it and fails on the two faults a hand-edited
+SVG here can carry: `--` inside an XML comment, which has shipped, and a
+missing swap rule.
 
-**Swapping `logo.svg` does NOT update `favicon.svg`.** Re-run `npm run marks`
-in rux-ds, and copy the result to any consumer. That is the one thing the swap
-does not do for you.
+Until 2026-09-07 this section said a logo swap did not update the favicon,
+because the favicon was derived from the logo by `npm run marks`. That
+caveat went with the derivation: the two files share no geometry now, and
+each is swapped on its own. A consumer copies whichever it takes.
 
 ## What is NOT here
 
