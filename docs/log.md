@@ -55,6 +55,38 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**2026-09-07 - the placeholder is filled, and the second line is quieted.**
+Asked for an honest design read of the finished page, measured at 2000x1223
+rather than described: the outlined icon placeholder blends to rgb(100,100,100)
+and sits at 2.56:1 against the tile, which is the worst place to be - too
+visible to read as texture, too faint to read as an icon - and three of them on
+a four-element page read as images that had failed to load. It is now a FILLED
+swatch on `layer-accent-01`, chosen against `layer-02` by the token values in
+all four themes: accent is #e0e0e0 over the white theme's #f4f4f4 tile and
+#393939 over g100's #262626, where layer-02 would be #ffffff on white and all
+but invisible. The paragraph below calling it "a 32px outlined square" describes
+what shipped this morning and is left standing.
+
+The tile's name and its line were both text-primary, so only size separated a
+20px heading from a 14px line; the line now takes `text-secondary` through
+Carbon's own classes at one class of specificity. Measured after a RELOAD in
+both themes - name 13.76:1 on g100 and 16.45:1 on white, line 8.86:1 and
+7.10:1, swatch 1.31:1 and 1.20:1.
+
+TWICE TODAY A LIVE THEME SWAP GAVE A FALSE READING. Setting the theme in the
+running page and measuring left the tile reporting the OLD theme's layer while
+the page background had already moved - once mid-transition, once still wrong
+700ms later. Only a reload gave numbers that matched what the screen showed.
+The sweep skill's settling condition covers the first case and not the second;
+the rule that held is to reload before measuring a theme, not to wait.
+
+Three things were named and NOT done, so they are not lost: the tile is a
+352x128 letterbox holding a text column ~230px wide, which is a KPI-card shape
+rather than a launcher's; the row is centred while the header's mark is hard
+left, so the page carries two alignments; and at 2000px the row is 56% of the
+width and 10% of the height. rux took the two cheapest of the five and left
+these.
+
 **2026-09-07 - the landing page is centred, and Notes becomes LN Notes.** Three
 changes on rux's call, all read live before they were committed. The tile row
 sat top-left in a 1440x900 viewport with the rest of the page empty; it is now
