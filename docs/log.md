@@ -55,6 +55,40 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**2026-09-07 - the landing page is centred, and Notes becomes LN Notes.** Three
+changes on rux's call, all read live before they were committed. The tile row
+sat top-left in a 1440x900 viewport with the rest of the page empty; it is now
+centred on both axes, 232px clear either side, tiles at 410-538 of 900. Both
+rules live in the hub's own `rux-overrides.css` and are SCOPED to the page that
+has the grid - `/account/` links the same file and was confirmed unmoved after
+the change, top of content still at 48px. rux-ds compiles no `.rux--offset-*`
+classes, so the horizontal centring moves the first tile's column start with
+the tile count read in the selector: three span-4 tiles start at column 3, two
+at 5, one at 7, four fill the grid, five or more wrap and stay left. Only at lg
+and up, where the grid has its 16 columns; at 900 the tiles wrap two-and-one
+and at 375 they stack, neither overflowing.
+
+**The tile lines are rux's sense in fewer words**: "Step-by-step scenario
+guides", "Fleet scheduling and dispatch", "The system these are built on". The
+first deliberately does not read "Notes on LN scenarios", which rux offered as
+the sense - the tile says LN Notes 4px above it, and this page was stripped
+precisely to stop saying a word twice on one screen. The third avoids "app" for
+the same reason.
+
+**Notes is LN Notes, header and all** (`rux-ln-notes` `2e2a8dd`): the hub's list
+was renamed first, which left the site's own header reading "Rux Notes" against
+a switcher saying "LN Notes" on the same screen. §4.13's rule is "Rux <Name>"
+in the header and <Name> in the list, so both moved. One string in that repo's
+`tools/build.mjs`, where all its markup lives.
+
+**A SEPARATE DEFECT SURFACED IN THAT REBUILD and was committed on its own**
+(`rux-ln-notes` `17200b0`): moving that repository's pin to `v0.1.11` changed
+the vendored sprite and never rebuilt the pages, so all 25 generated pages were
+two symbols short - `i-accessibility` and `i-hotel`. Found only because a
+rename forced a rebuild and the diff was read; nothing there compares a built
+page against what the generator would write today. Committed before the rename
+so the two are separable.
+
 **THE STRIPPED TILE WAS WRONG AND THE MEASUREMENT SAID SO, same day.** Asked
 for an opinion on the new layout against the old, the answer was that the new
 one was better and not finished: at 1440x900 each tile measured 304x64 with a
@@ -84,6 +118,56 @@ VERIFIED: the focus ring on the tiles - `document.hasFocus()` was false in the
 automated pane, the same limit `check-a11y.js` refuses its ring check under.
 The tile markup is unchanged apart from the dropped description, so nothing
 about the ring moved.
+
+**2026-09-07 - the PIN gets a checksum, and a pin move that changes nothing
+writes nothing.** Two gaps closed by one field. `app-check`'s `pin` rule
+checked that the file existed and named a tag and nothing else, so a `PIN`
+could name v0.1.11 while `vendor/rux-ds/` held anything; and nothing computed
+whether a release contained anything a consumer receives, which is how
+v0.1.10 and v0.1.11 came to cost two tag pushes, six pin commits and six gate
+runs each to deliver zero vendored bytes.
+
+The `PIN` now carries `sha256` of a listing of every vendored file's path and
+SHA-256 - the format rux-ln-notes/tools/check-data.mjs already uses for
+data/guides/, reused rather than invented. `app-check` recomputes it and fails
+on a mismatch; `new-project.sh` writes it, and declines a move when the old
+PIN's checksum, the old tree's actual checksum and the staged tree's all
+agree. Three values, not two: comparing only the PIN against the staged tree
+would skip over a drifted vendor/ and leave the drift in place.
+
+A FACT I ASSERTED WAS WRONG AND THE PLAN CARRIED IT. I checked which tags
+ship tools/app-check.mjs with a shell loop that silently failed - zsh gave
+`git cat-file -e "$t:..."` exit 128 for every tag - and reported that none of
+v0.1.0 through v0.1.11 has it. rux wrote that into the plan as verified.
+v0.1.7 through v0.1.11 DO ship it, and none of the five has a `--hash` mode,
+so the case the plan said did not exist is on five released tags. It surfaced
+as a real failure rather than an argument: handing `--hash` to v0.1.11's
+checker falls through to that version's default branch, which ran a full check
+against the staging directory and returned 4893 failures into the variable
+meant to hold a hash. The script now asks the staged checker whether it has
+the mode instead of whether the file exists, which is three cases and not two.
+
+PROVED IN A LAB, NOT ON THE APPS. new-project.sh refuses a dirty tree and
+--tag refuses a tag that is not on origin, so uncommitted work cannot be
+tested against the real tags. A scratch clone with a local bare origin carried
+three tags: A with the implementation, B differing from A only in docs/, C by
+one vendored byte. Scaffolding A wrote a checksum that --hash reproduces; a
+byte appended under vendor/ produced exactly one `pin` failure; re-running A
+while drifted repaired rather than skipped; A to B printed the skip, exited 0,
+left the PIN naming A and `git status --short` empty; A to C moved and changed
+the checksum. Pinning the real v0.1.11 writes no checksum and the new checker
+reports its bytes unverifiable as a note, not a failure.
+
+RED RUN ON BOTH NEW SELF-TEST CASES. Disabling the mismatch comparison made
+`pin: tree drifted` fail; removing the legacy note made `pin: legacy, no
+sha256` fail. The harness gained a fourth field for that second one - it
+compared rule sets only, so a silently missing note would have read as a pass.
+
+Not done: `npm run app-check` is the self-test, it is not in `npm run verify`
+and no workflow calls it, so these cases run only when someone types the
+command. Named rather than fixed. Not done: tools/app-check.mjs is a gate that
+ships to every app and CONTROL_FILES does not list it; that omission is
+reported, not corrected here.
 
 **2026-09-07 - the fourth drawing, and the safe area comes back.** rux
 disliked a brand mark that differed from the favicon and drew the answer
