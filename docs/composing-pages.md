@@ -100,6 +100,41 @@ Three widths, easily confused: bare `.rux--side-nav` is 3rem,
 use. Picking the wrong one silently breaks 3.2's padding, since the padding
 assumes 16rem.
 
+### 3.3a Two shells, and one class picks which one you have
+
+`__menu-toggle__hidden` is written by **your markup**. `rux.css` never adds it;
+it only acts on it above 66rem. So the class is how a page declares its shell,
+and the two behave differently in ways no gate will tell you about.
+
+| | toggle | nav | at desktop |
+| :--- | :--- | :--- | :--- |
+| **persistent** | carries `__hidden` | `--side-nav--ux` | nav always open, button hidden |
+| **collapsible** | no `__hidden` | `--side-nav--ux --side-nav--hidden` | button present, nav opens over the page |
+
+**All ten templates ship the persistent shell.** Take it unless the page cannot
+afford a permanent 16rem column — a wide board or table is the case that
+cannot, and `rux-scheduler` is the consumer that hit it.
+
+**If you take the collapsible shell, two things follow.**
+
+**Drop §3.2's `padding-inline-start: 18rem`.** It indents the content past a nav
+that is no longer always there; keep it and the page is indented past nothing
+for as long as the nav is closed.
+
+**Your app name moves to 8px and `check-spacing` will report it.** Carbon's
+`.rux--header__menu-toggle:not(.__hidden) ~ .rux--header__name` sets
+`padding-inline-start: 0.5rem` with no media query, so it fires at every width
+in this shell and never in the other one. The captures are all of the
+persistent shell, so the gate has nothing right to compare against and reports
+8px where the capture has 16. **That is the rule working, not a defect** — but
+it is a permanent divergence in that consumer's sweep until a capture of this
+shell exists.
+
+*Measured 2026-09-08 at 1440, above the breakpoint, transitions off:
+`ux+hidden` is 0 wide, adding `--expanded` gives 256 with `aria-expanded` true,
+removing it gives 0. Recorded in `js/ui-shell.js`, whose comment said this
+state did not exist until the same day.*
+
 ### 3.4 The sprite must be inlined into every page
 
 Referencing `../assets/icons.svg#i-name` from a `<use>` **fails silently in two

@@ -9,6 +9,50 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-08 - a shell state this repository called invented, and ships three
+rules for.** Raised by `rux-scheduler`, which uses it: that app's header name
+sits at 8px of inline start where the captures have 16, and `check-spacing` has
+reported it on both its pages in every sweep since the first. It was
+adjudicated there as Carbon-caused and not a defect, and had to be re-argued
+each time, because `js/ui-shell.js` said the configuration causing it was not a
+real one -- "a template showing the button at desktop invents a state IBM's
+design does not have".
+
+**THE COMMENT WAS WRONG AND THE STYLESHEET SAYS SO THREE TIMES.**
+`__menu-toggle__hidden` is applied by MARKUP; `rux.css` only acts on it under
+`@media (min-width: 66rem)`, so "Carbon hides it above 66rem" describes a
+consumer's markup rather than the design. The spacing rule
+`__menu-toggle:not(.__hidden) ~ __header__name` carries no media query, and
+because a persistent-shell page writes `__hidden` at every width, the selector
+misses the one case a responsive-only reading needs it for -- the button on
+screen below 66rem. And `--side-nav--hidden` (0) is declared after `--ux`'s
+16rem with `--expanded` (16rem) after that, an ordering that does no work below
+66rem, where `--ux` is already 0.
+
+**MEASURED RATHER THAN ARGUED**, at 1440 with transitions off, on the consumer
+using it: `ux+hidden` 0, add `--expanded` 256 with `aria-expanded` true and the
+label at "Close menu", remove it 0. The nav does open at desktop. The old
+second claim -- that `--expanded` "changes nothing above" the breakpoint -- is
+true only of a nav without `--hidden`.
+
+**WHAT CHANGED IS DOCTRINE AND DOCUMENTATION, NOT CSS OR MARKUP.** The rules
+are right and both shells work; what was missing was anyone saying the second
+one is allowed. `js/ui-shell.js` now names both and what each implies.
+`docs/composing-pages.md` gains §3.3a beside the nav-width section, because the
+choice is made at the same moment: it carries the table, the warning that §3.2's
+18rem indent must be dropped with the persistent nav, and the 8px consequence.
+**All ten templates still ship the persistent shell** and none was touched --
+the default is fine, it was the alternative that had no name.
+
+**LEFT UNDONE, AND IT IS TIER 2.** The real repair for the divergence is a
+capture of the collapsible shell for `check-spacing` to compare against, and
+captures are fixtures. Proposed to rux rather than done: `tools/extract/` would
+need a story rendering the toggle without `__hidden`, and until one exists the
+consumer's sweep carries a permanent, correct, unmatchable 8px reading. What it
+would make weaker: nothing measured, but it adds a second expected value for
+one selector, so a real regression to 8px on a persistent-shell page would then
+have a capture that accepts it. That is the trade to weigh, and it is rux's.
+
 **2026-09-07 - the README is brought current, and what it omitted is named.**
 Asked for the status of the project, and the answer was that every automated
 check passes - `npm run verify` exit 0, 47 of 47 sweep cells current at
