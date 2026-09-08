@@ -382,10 +382,11 @@ tag would still pass.
    `brand/favicon.svg` on 2026-09-07 and their live files hash identical to
    this repository's. A pin move never overwrites `brand/`, so the next mark
    change is another hand copy. `npm run gates` holds the cells.
-3. **Notes' ask, received 2026-09-06**, the first this repository was sent.
-   Notes asks for one template and one decision: a **document page** — one
-   record read top to bottom, numbered sections each with a lead line and a
-   table, callouts inline, trailing tables — which no template here has,
+3. **NEXT: Notes' ask, received 2026-09-06**, the first this repository was
+   sent, and the task the 2026-09-08 session stopped in front of. Notes asks
+   for one template and one decision: a **document page** — one record read
+   top to bottom, numbered sections each with a lead line and a table,
+   callouts inline, trailing tables — which no template here has,
    `detail-page.html` being one record seen several ways through tabs; and a
    ruling on a **label that must not truncate**, since `.rux--tag` caps at
    13rem and ellipsises, and a breadcrumb-like path of three or four
@@ -396,6 +397,34 @@ tag would still pass.
    nothing from it enters here, by the rule at the top of `AGENTS.md`. A
    template, if adopted, is authored here against invented content and named
    for what it is generically.
+
+   **What picking this up costs, surveyed 2026-09-08 so the next pass does
+   not find it out halfway.** An eleventh template is not one file. It is
+   registered in `builder/guide.json` and `builder/blocks.json`,
+   `docs/choices.md`, `docs/composing-pages.md`, `index.html` and the
+   `rux-ds-page` skill — and in seven CONTROL_FILES:
+   `builder/placement.mjs`, `builder/rewrites.mjs`, `tools/build-portal.mjs`,
+   `tools/build-theme-creator.mjs`'s `TEMPLATES`, `tools/check-a11y.js`,
+   `tools/check-ancestry.mjs`, `tools/check-blocks.mjs` and
+   `tools/lib/blocks.mjs`.
+
+   **THREE GATE BASELINES MOVE, which makes this a tier 2 change before it is
+   a design one.** `tools/lib/gates.mjs` asserts "10 templates verified-live"
+   (provenance), "10 templates mapped" (blocks) and "10 templates × 4 answer
+   sets · 40 of 40 byte-identical" (parity). Raising each to 11 and 44 is not
+   lowering a baseline, but it is still editing expected results, so it is
+   drafted as a diff and proposed rather than applied — and by the rule in
+   `AGENTS.md`, the change must not be judged by a control edited in the same
+   run. `npm run gates` also grows from 47 cells to 50, and the new three are
+   swept before they are recorded.
+
+   **Two things gate the work itself.** The template needs a `BEHAVIOUR:`
+   comment naming the running Carbon page it was verified against, its date,
+   and what was not covered (`docs/verifying-templates.md`) — so a Carbon page
+   has to be opened, which needs rux, because the browser pane cannot reach
+   Storybook cross-origin. And the truncating-label ruling is rux's: it may
+   decide the markup, so answering it first avoids authoring the sections
+   twice.
 4. **Scheduler's asks, four of them, 2026-09-07 and -08.** Read in place in
    that repository (`docs/rux-ds-requests.md`); nothing from it enters here,
    by the same rule as item 3. Two are additions: **`events` and
