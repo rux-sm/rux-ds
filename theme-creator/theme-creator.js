@@ -42,7 +42,7 @@
 // edit to either section clears it, so live editing always wins the shared
 // preview back.
 import { runKey, sameRun, RUN_MS, copy, CAP } from '../builder/session.mjs';
-import { contrastRatio, meetsThreshold } from './contrast.mjs';
+import { contrastRatio, meetsThreshold, normaliseHex } from './contrast.mjs';
 
 const NAME_RE = /^[a-z][a-z0-9-]*$/;
 const RESERVED = new Set(['white', 'g10', 'g90', 'g100']);
@@ -134,7 +134,7 @@ function editToken(token, hex, { coalesce } = { coalesce: true }) {
   const now = Date.now();
   if (!(coalesce && sameRun(openRun, key, now))) pushSnapshot();
   openRun = { key, at: now };
-  state.tokens[token] = hex;
+  state.tokens[token] = normaliseHex(hex) ?? hex;
 }
 
 function applyFamily(familyName) {
@@ -145,12 +145,17 @@ function applyFamily(familyName) {
 }
 
 // ── surfaces (Phase 15) ─────────────────────────────────────────────────
+// normaliseHex, not the raw field text: a bare "000000" reads as a colour to
+// the contrast badge and to nothing else, so storing it raw drew a green
+// ratio next to a transparent swatch over a preview that never moved. The
+// raw value is still kept when it does not parse at all, so a half-typed
+// hex behaves as it always has — no verdict yet rather than a warning.
 function editSurfaceToken(token, hex) {
   const key = runKey('theme-creator-surface', token);
   const now = Date.now();
   if (!sameRun(openRun, key, now)) pushSnapshot();
   openRun = { key, at: now };
-  state.surface.tokens[token] = hex;
+  state.surface.tokens[token] = normaliseHex(hex) ?? hex;
 }
 
 function applyBase(baseName) {
@@ -173,6 +178,23 @@ function nameProblem(name) {
   if (RESERVED.has(name)) return `"${name}" is a compiled Carbon theme, not a surface this tool layers over`;
   return null;
 }
+
+// THE NAME A PREVIEW AND ITS EXPORT BLOCK BOTH USE. Until 2026-09-08 an
+// unusable name PAUSED the preview outright, which read as a dead tool:
+// someone editing colours saw nothing move, and the reason printed in a
+// status line at the top of the page, far above the fields being typed in.
+// The colours are what a person is judging; the name is what they fill in
+// last. So an unusable name — empty, malformed, or one of Carbon's compiled
+// themes — previews under a placeholder instead.
+//
+// BOTH CALLERS MUST RESOLVE IT THE SAME WAY. The preview writes this into
+// <html data-theme>, and the CSS block writes it into the selector; if they
+// disagree the selector matches nothing and the preview shows the base with
+// NO override, silently and looking plausible. The `|| 'your-theme'` these
+// replaced covered only the empty case, so a reserved name like "g10" would
+// have done exactly that.
+const previewThemeName = () => (nameProblem(state.name) ? 'your-theme' : state.name);
+const previewSurfaceName = () => (surfaceNameProblem(state.surface.name) ? 'your-surface' : state.surface.name);
 
 // ── saving (Phase 16) ───────────────────────────────────────────────────
 // Stricter than nameProblem/surfaceNameProblem, and only for the Save
@@ -266,7 +288,7 @@ function renderEverything() {
 // ── export ──────────────────────────────────────────────────────────────
 function cssBlock() {
   const lines = tokenNames.map(t => `  --rux-${t}: ${state.tokens[t]};`);
-  return `[data-theme="${state.name || 'your-theme'}"] {\n${lines.join('\n')}\n}\n`;
+  return `[data-theme="${previewThemeName()}"] {\n${lines.join('\n')}\n}\n`;
 }
 function renderExport() {
   $('thc-export').textContent = cssBlock();
@@ -279,12 +301,12 @@ function renderExport() {
 // The compound selector — background/layer-01/02/03 only, on top of the
 // chosen base, never a fifth compiled theme. See the header comment for why.
 function surfaceCssBlock() {
-  const name = state.surface.name || 'your-surface';
+  const name = previewSurfaceName();
   const lines = SURFACE_TOKENS.map(t => `  --rux-${t}: ${state.surface.tokens[t]};`);
   return `[data-theme="${state.surface.base}"][data-rux-surface="${name}"] {\n${lines.join('\n')}\n}\n`;
 }
 function renderSurfaceExport() {
-  const name = state.surface.name || 'your-surface';
+  const name = previewSurfaceName();
   const usage = `<!-- on <html>: data-theme="${state.surface.base}" data-rux-surface="${name}" -->\n`;
   $('thc-surface-export').textContent = usage + surfaceCssBlock();
   const problem = surfaceNameProblem(state.surface.name);
@@ -374,12 +396,16 @@ async function buildPreview() {
     styleBlock = savedCssBlock(t);
     label = `saved theme "${t.id}"`;
   } else {
+    // Never pauses. An unusable name stands in as a placeholder and the
+    // status line says so, rather than withholding the preview someone is
+    // editing colours to see.
     const problem = onSurface ? surfaceNameProblem(state.surface.name) : nameProblem(state.name);
-    if (problem) { status.textContent = `Preview paused: ${problem}.`; return; }
-    dataTheme = onSurface ? state.surface.base : state.name;
-    dataSurface = onSurface ? state.surface.name : null;
+    const name = onSurface ? previewSurfaceName() : previewThemeName();
+    dataTheme = onSurface ? state.surface.base : name;
+    dataSurface = onSurface ? name : null;
     styleBlock = onSurface ? surfaceCssBlock() : cssBlock();
-    label = onSurface ? `surface "${state.surface.name}" on ${state.surface.base}` : null;
+    label = onSurface ? `surface "${name}" on ${state.surface.base}` : `theme "${name}"`;
+    if (problem) label += ` — placeholder name, ${problem}`;
   }
   let html;
   try {
@@ -391,7 +417,22 @@ async function buildPreview() {
   html = rebase(html);
   html = html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${dataTheme}"${dataSurface ? ` data-rux-surface="${dataSurface}"` : ''}`);
   html = html.replace(/(<script[^>]*\ssrc="js\/theme\.js")/, `${PROFILE_SHIM}\n$1`);
-  html = html.replace('</head>', `<style>${styleBlock}</style>\n</head>`);
+  // js/theme.js's clearOverrides() removes data-rux-surface the moment it
+  // runs — right on a real page, where it is switching away from a custom
+  // theme, and fatal here, because it strips the attribute written on the
+  // line above and the surface block's compound selector then matches
+  // nothing. The preview showed the untouched base and looked plausible.
+  // THE SURFACES PREVIEW HAD NEVER APPLIED; found 2026-09-08 by reading the
+  // frame, not the code, since every gate and both files were individually
+  // correct. Re-asserted here rather than before </head> by accident: this
+  // runs after theme.js because theme.js is earlier in the same <head>. The
+  // accent section was never affected — clearOverrides leaves data-theme
+  // alone, and apply() returns before setting one when the shimmed profile
+  // reads null.
+  const reassert = dataSurface
+    ? `<script>/* preview only — not in the export */document.documentElement.setAttribute('data-rux-surface',${JSON.stringify(dataSurface)});</script>`
+    : '';
+  html = html.replace('</head>', `<style>${styleBlock}</style>${reassert}\n</head>`);
 
   const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   const frame = $('thc-frame');

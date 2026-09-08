@@ -6,18 +6,40 @@
 // this into a gate. It backs a live warning in theme-creator.html that a
 // person can see and still choose to ignore.
 
+// The one shape both readers below accept. No /g flag, so .exec is safe to
+// reuse — a stateful regex shared between two exported functions would skip
+// every other call.
+const HEX = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
+
 // Accepts "#abc", "abc", "#aabbcc", "aabbcc", any case. Returns null for
 // anything else rather than throwing — a person mid-keystroke in a hex
 // field passes through invalid strings on every character before landing
 // on a valid one, and the caller decides what an unparsable value means
 // for its readout (typically: no verdict yet, not a warning).
 export function hexToRgb(hex) {
-  const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex);
+  const m = HEX.exec(hex);
   if (!m) return null;
   let h = m[1];
   if (h.length === 3) h = [...h].map(c => c + c).join('');
   const n = parseInt(h, 16);
   return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+// The SAME strings hexToRgb accepts, returned with the leading "#" that the
+// rest of the system requires — theme-creator.js's own swatch test and
+// js/custom-themes.js's HEX_RE both demand it, and CSS will not parse a
+// declaration without it. Added 2026-09-08 to close a three-way
+// disagreement about one typed value: "000000" scored a confident green
+// 19.1:1 in the contrast readout, drew a TRANSPARENT swatch beside it,
+// emitted `--rux-background: 000000` (invalid, dropped silently by the
+// browser, so the preview never moved), and would have been refused on
+// save. Normalising where the value enters state is what makes the four
+// agree. The digits are returned exactly as typed — case and 3-vs-6 length
+// are preserved, since both are valid CSS and rewriting what someone typed
+// is not this function's job.
+export function normaliseHex(hex) {
+  const m = HEX.exec(hex);
+  return m ? `#${m[1]}` : null;
 }
 
 // WCAG's own piecewise sRGB-to-linear step, applied per channel.

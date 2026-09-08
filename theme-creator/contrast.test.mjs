@@ -7,7 +7,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { hexToRgb, relativeLuminance, contrastRatio, meetsThreshold } from './contrast.mjs';
+import { hexToRgb, relativeLuminance, contrastRatio, meetsThreshold, normaliseHex } from './contrast.mjs';
 
 test('hexToRgb parses 6-digit and 3-digit, with and without #, any case', () => {
   assert.deepEqual(hexToRgb('#8a3ffc'), { r: 138, g: 63, b: 252 });
@@ -60,4 +60,32 @@ test('meetsThreshold: boundary is inclusive at exactly 3.0 and 4.5', () => {
 
 test('meetsThreshold propagates an unparsable ratio as null, not a false pass', () => {
   assert.equal(meetsThreshold(null, 4.5), null);
+});
+
+// The 2026-09-08 fix. A bare "000000" used to reach state raw: the contrast
+// readout parsed it (# optional), the swatch and js/custom-themes.js did not
+// (# required), and it emitted invalid CSS that the browser dropped without
+// a word. These pin the invariant that closed it.
+test('normaliseHex adds the missing # and leaves the digits alone', () => {
+  assert.equal(normaliseHex('000000'), '#000000');
+  assert.equal(normaliseHex('#000000'), '#000000');
+  assert.equal(normaliseHex('8A3FFC'), '#8A3FFC');
+  assert.equal(normaliseHex('abc'), '#abc');
+});
+
+test('normaliseHex rejects exactly what hexToRgb rejects', () => {
+  for (const bad of ['', '#', 'red', '#12345', '#1234567', 'gggggg', null, undefined]) {
+    assert.equal(normaliseHex(bad), null);
+  }
+});
+
+// The invariant itself, stated as a property rather than as examples: the
+// store's gate is a literal copy of HEX_RE in js/custom-themes.js, which is
+// an IIFE with no export to import from here.
+test('anything hexToRgb accepts, normaliseHex makes saveable', () => {
+  const HEX_RE = /^#[0-9a-f]{3,8}$/i;
+  for (const raw of ['000000', '#000000', 'fff', '#FFF', 'ABC', '8a3ffc', '#8A3FFC']) {
+    assert.notEqual(hexToRgb(raw), null, `${raw} should parse`);
+    assert.match(normaliseHex(raw), HEX_RE, `${raw} should normalise into a saveable value`);
+  }
 });
