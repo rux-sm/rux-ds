@@ -2754,9 +2754,12 @@ The same field answers a second question the family had been guessing at.
 `new-project.sh` declines a pin move when the old `PIN`'s checksum, the old
 tree's actual checksum and the staged tree's checksum all agree — three
 values, not two, so a `vendor/` that had drifted is repaired rather than
-skipped over. **The app then keeps naming the earliest tag that delivered
-those bytes**, which is the decision here: a pin names bytes, not the newest
-tag. What prompted it: on 2026-09-07 v0.1.10 and v0.1.11 each changed one
+skipped over. **The app then keeps naming the tag it already named**, which is
+the decision here: a pin names bytes, not a position in the tag order. Not
+"the earliest tag that carried those bytes" — the algorithm preserves what is
+recorded, and a project scaffolded from a later byte-identical tag keeps that
+later one. The wording was corrected 2026-09-07 after a review session showed
+the message contradicting itself on screen. What prompted it: on 2026-09-07 v0.1.10 and v0.1.11 each changed one
 non-vendored file and cost two tag pushes, six pin commits and six gate runs
 to deliver nothing.
 
@@ -2878,6 +2881,19 @@ theme, which is rux's standing rule for the mark. Proved by masking
 `brand/logo.svg` into a tile and reading it in both: `#161616` on white,
 `#f4f4f4` on g100. The spec an app draws against is `brand/README.md`,
 "App tile icons".
+
+**The key takes a second shape, `#i-name`, added the same day.** A Carbon glyph
+from the sprite the page already inlines, rendered as `<use>` inside an
+`<svg fill="currentColor">`, which needs no file and no mask because it inherits
+the tile's own colour. A sprite id resolves only where that symbol is inlined,
+so a path stays the general answer and an id is the shortcut for the hub's own
+grid; `switcher.js` falls back to the placeholder swatch when the symbol is
+absent, proved by pointing one at a name the page does not carry. This is what
+the three tiles use today — `#i-document`, `#i-calendar`, `#i-grid` — which is
+IBM's UI glyph set standing in for product marks, and it is meant to be replaced
+by drawn ones. **The note is here rather than in `brand/README.md` on purpose**:
+`brand/` is a declared RENDERED_INPUT as a whole directory, and the Markdown
+edit that added the icon spec there aged all 33 browser cells.
 
 **Notes is module two in fact, 2026-09-02** (`48786ce` there): button, panel,
 `/switcher.js`, verified live against the root with Notes marked current. Its
