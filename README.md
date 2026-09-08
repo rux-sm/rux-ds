@@ -22,7 +22,7 @@ example and `sink/*.html` the markup to copy for a component no template carries
 listed in the switcher as "Design System" since 2026-09-07.** `index.html` is its
 hand-authored home page — the only root page here that is not generated — and it
 opens on the four tools (`portal.html`, `kitchen-sink.html`, `builder.html`,
-`theme-creator.html`) and the ten templates. Unlike every app built on it, the site
+`theme-creator.html`) and the eleven templates. Unlike every app built on it, the site
 is not pinned to a tag: it serves the working tree, the system as it stands.
 
 ## Status
@@ -382,21 +382,46 @@ tag would still pass.
    `brand/favicon.svg` on 2026-09-07 and their live files hash identical to
    this repository's. A pin move never overwrites `brand/`, so the next mark
    change is another hand copy. `npm run gates` holds the cells.
-3. **NEXT: Notes' ask, received 2026-09-06**, the first this repository was
-   sent, and the task the 2026-09-08 session stopped in front of. Notes asks
-   for one template and one decision: a **document page** — one record read
-   top to bottom, numbered sections each with a lead line and a table,
-   callouts inline, trailing tables — which no template here has,
-   `detail-page.html` being one record seen several ways through tabs; and a
-   ruling on a **label that must not truncate**, since `.rux--tag` caps at
-   13rem and ellipsises, and a breadcrumb-like path of three or four
-   segments is the one label a reader needs whole —
-   `.rux--tag-label-tooltip`, a wider variant, or a different component. The
-   memo and its exhibit, a complete page of invented content, are read in
-   place in that repository (`SEND-DS.md`, `template-candidate.html`);
-   nothing from it enters here, by the rule at the top of `AGENTS.md`. A
-   template, if adopted, is authored here against invented content and named
-   for what it is generically.
+3. **Notes' ask, received 2026-09-06, is ANSWERED — both halves, 2026-09-08.**
+   It was the first thing this repository was ever sent. `templates/document-page.html`
+   is the eleventh template: one record read top to bottom, numbered sections
+   each with a kicker, a route line and a table, callouts inline, reference
+   tables at the end. It is authored here against invented content — a
+   service-restore runbook — and nothing crossed from that repository, by the
+   rule at the top of `AGENTS.md`.
+
+   **THE RULING: A ROUTE IS A BREADCRUMB, NOT A TAG.** Measured on running
+   Carbon at 1280 rather than argued from the stylesheet. `cds--tag`
+   read-only caps at `max-inline-size: 208px` with its label clipped at 192,
+   and the same four-segment route reported scrollWidth 278 against
+   clientWidth 192 — **86px lost to the ellipsis**. `cds--breadcrumb` has
+   `max-inline-size: none`, wraps at `flex-wrap: wrap`, and in a 280px track
+   put the route on three rows with every segment's scrollWidth equal to its
+   clientWidth. **`.rux--tag-label-tooltip` was rejected on evidence, not
+   taste**: every capture that renders it wraps an INTERACTIVE tag
+   (`button.cds--tag--operational|dismissible|selectable`) in a popover, so
+   it would make ~45 tab stops of a document's routes and still truncate on
+   paper and on touch. Segments are bare `<span>`s — measured
+   `rgb(22,22,22)`, cursor auto, so they read as text — with the last taking
+   the captured `--current` markup; `a.cds--link` there is link-blue with a
+   pointer cursor and would claim a menu name is clickable.
+
+   **THREE OF ITS OWN GATES CAUGHT THIS TEMPLATE**, which is the answer to
+   §3 of that memo: check-tags (tags on `<span>` where Carbon renders
+   `<div>`, and `stack-vertical` on `<section>`), check-ancestry
+   (`checkbox--inline` outside the selection column it lives in in all seven
+   captures) and check-aria-roles (an invented `role="note"` — Carbon renders
+   `role="status"` on that class five times out of five). **The first two are
+   also true of `template-candidate.html`**, which is worth sending back.
+
+   **WHAT IS NOT DONE.** The three gate baselines in `tools/lib/gates.mjs`
+   still read "10 templates"/"40 of 40" and are now stale. They are a record
+   and not an assertion (`gates.mjs:35`), so nothing fails, but editing them
+   is tier 2 and they are proposed rather than applied — as is
+   `tools/build-theme-creator.mjs`'s `TEMPLATES` list, which is a
+   CONTROL_FILE. `builder/guide.json`'s eight new entries are marked
+   `reviewed: false`: the purpose line and the seven table-density
+   recommendations are mine and have not been read by rux.
 
    **What picking this up costs, surveyed 2026-09-08 so the next pass does
    not find it out halfway.** An eleventh template is not one file. It is
@@ -482,10 +507,10 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Components | **77 / 83 compiled** in 80 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 4 — white, g10, g90, g100 — plus `rux`, a token override block in `css/rux-theme.css`, not a compile |
 | Tokens · classes | **626** `--rux-*` defined, 10 more read through a fallback · **1,798** `.rux--*` |
-| Kitchen sink | **68** sections · **977** classes with `templates/` and `js/` |
+| Kitchen sink | **68** sections · **985** classes with `templates/` and `js/` |
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
-| Markup provenance | **72 `rendered-dom` · 6 `source` · 0 `inferred`** across 78 files |
+| Markup provenance | **73 `rendered-dom` · 6 `source` · 0 `inferred`** across 79 files |
 | Icons | 62 symbols in a 17.3 KB sprite — 51 referenced, 11 nothing points at |
 | Size | 1023.9 KB raw · 920.9 KB min · **91 KB gzipped** |
 | Behaviour JS | **17** modules · **53 KB gzipped** · 179.5 KB raw, 60% of it comment · 71.5 KB of code |

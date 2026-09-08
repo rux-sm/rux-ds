@@ -13,7 +13,7 @@ work; go to the document for why any line here is true.
 
 ## 1. Copy a template — never start from scratch
 
-Ten exist, each a **complete page**, shell included.
+Eleven exist, each a **complete page**, shell included.
 
 | page | start from |
 | :--- | :--- |
@@ -21,6 +21,7 @@ Ten exist, each a **complete page**, shell included.
 | list of records, sortable, selectable | `templates/table-page.html` |
 | create or edit one record | `templates/form-page.html` |
 | view one record | `templates/detail-page.html` |
+| read one record top to bottom | `templates/document-page.html` |
 | nothing to show yet | `templates/empty-state.html` |
 | one step of a multi-step flow | `templates/wizard-page.html` |
 | an overview of many things | `templates/dashboard-page.html` |

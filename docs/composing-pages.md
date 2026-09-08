@@ -27,6 +27,7 @@ runnable skeletons. Copy the nearest shape and delete what you do not need.
 | a list of records, sortable, selectable | `templates/table-page.html` |
 | creating or editing one record | `templates/form-page.html` |
 | viewing one record | `templates/detail-page.html` |
+| reading one record top to bottom, in order | `templates/document-page.html` |
 | nothing to show yet | `templates/empty-state.html` |
 | something went wrong | `templates/error-state.html` |
 
@@ -111,7 +112,7 @@ and the two behave differently in ways no gate will tell you about.
 | **persistent** | carries `__hidden` | `--side-nav--ux` | nav always open, button hidden |
 | **collapsible** | no `__hidden` | `--side-nav--ux --side-nav--hidden` | button present, nav opens over the page |
 
-**All ten templates ship the persistent shell.** Take it unless the page cannot
+**All eleven templates ship the persistent shell.** Take it unless the page cannot
 afford a permanent 16rem column — a wide board or table is the case that
 cannot, and `rux-scheduler` is the consumer that hit it.
 

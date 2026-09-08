@@ -212,6 +212,11 @@
           "reviewed": true
         }
       ]
+    },
+    "document-page": {
+      "purpose": "Read one document top to bottom, in order.",
+      "reviewed": false,
+      "suggestions": []
     }
   },
   "variants": {
@@ -299,6 +304,41 @@
       "recommended": "as-attested",
       "reason": "The block's own size is the attested one; docs/choices.md's \"sm inside tables and toolbars\" is Carbon's guidance and unattested here, every template button being bare (lg). Read by rux 2026-09-06.",
       "reviewed": true
+    },
+    "templates/document-page/at-a-glance#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/section-plain#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/section-note#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/section-warning#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/run-record#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/troubleshooting#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/document-page/downstream#0": {
+      "recommended": "sm",
+      "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
     }
   }
 }

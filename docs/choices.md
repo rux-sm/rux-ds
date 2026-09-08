@@ -27,6 +27,7 @@ the second column is the suggestion.
 | `table-page` | a list of records: sort, select, page |
 | `form-page` | create or edit one record |
 | `detail-page` | read one record, with actions |
+| `document-page` | read one record top to bottom, in order |
 | `settings-page` | grouped controls that save |
 | `wizard-page` | one step of a multi-step flow |
 | `schedule-page` | dates and times |
