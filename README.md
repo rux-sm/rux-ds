@@ -382,19 +382,36 @@ tag would still pass.
    `brand/favicon.svg` on 2026-09-07 and their live files hash identical to
    this repository's. A pin move never overwrites `brand/`, so the next mark
    change is another hand copy. `npm run gates` holds the cells.
-3. **A consumer's first ask, received 2026-09-06.** Notes asks for one
-   template and one decision: a **document page** — one record read top to
-   bottom, numbered sections each with a lead line and a table, callouts
-   inline, trailing tables — which no template here has, `detail-page.html`
-   being one record seen several ways through tabs; and a ruling on a **label
-   that must not truncate**, since `.rux--tag` caps at 13rem and ellipsises,
-   and a breadcrumb-like path of three or four segments is the one label a
-   reader needs whole — `.rux--tag-label-tooltip`, a wider variant, or a
-   different component. The memo and its exhibit, a complete page of invented
-   content, are read in place in that repository (`SEND-DS.md`,
-   `template-candidate.html`); nothing from it enters here, by the rule at
-   the top of `AGENTS.md`. A template, if adopted, is authored here against
-   invented content and named for what it is generically.
+3. **Notes' ask, received 2026-09-06**, the first this repository was sent.
+   Notes asks for one template and one decision: a **document page** — one
+   record read top to bottom, numbered sections each with a lead line and a
+   table, callouts inline, trailing tables — which no template here has,
+   `detail-page.html` being one record seen several ways through tabs; and a
+   ruling on a **label that must not truncate**, since `.rux--tag` caps at
+   13rem and ellipsises, and a breadcrumb-like path of three or four
+   segments is the one label a reader needs whole —
+   `.rux--tag-label-tooltip`, a wider variant, or a different component. The
+   memo and its exhibit, a complete page of invented content, are read in
+   place in that repository (`SEND-DS.md`, `template-candidate.html`);
+   nothing from it enters here, by the rule at the top of `AGENTS.md`. A
+   template, if adopted, is authored here against invented content and named
+   for what it is generically.
+4. **Scheduler's asks, four of them, 2026-09-07 and -08.** Read in place in
+   that repository (`docs/rux-ds-requests.md`); nothing from it enters here,
+   by the same rule as item 3. Two are additions: **`events` and
+   `user--multiple` for the sprite**, both 32-unit drawings to be judged at
+   16px side by side, with no change asked for if neither reads; and a **date
+   picker whose trigger the consuming page owns**, since `js/date-picker.js`
+   requires the trigger to be `__icon` inside the picker's own root and every
+   way round it puts a Carbon class on an app element or an app rule on a
+   Carbon part. One is a gate: **`check-behaviour` scoped to the document**
+   rather than to kitchen-sink section ids, which makes it report 4 of 18
+   against a consumer and call the other 14 absent where they are present and
+   were measured by hand. **The fourth is half answered here already** —
+   `js/ui-shell.js` calling a desktop hamburger a state IBM does not have,
+   corrected 2026-09-08 — and what remains of it is a capture of the
+   collapsible shell for `check-spacing` to compare against, which is tier 2
+   and is proposed in `docs/log.md` with its trade rather than taken.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template
