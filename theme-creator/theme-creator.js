@@ -71,19 +71,24 @@ const FIXED_SURFACES = {
   'text-primary': '#161616',
 };
 
-// The four compiled bases a surface overlay may sit on, and the fixed
-// text-primary the contrast readout checks each surface against. Never
-// `rux` — "base" means exactly one of Carbon's compiled themes. Mirrors
-// tools/build-theme-creator.mjs's BASES table (roadmap §4.15); a mismatch
-// between the two would seed the wrong defaults silently, the same
-// SHADE_MAP-vs-TOKENS risk above.
-const BASES = {
-  white: { text: '#161616', tokens: { background: '#ffffff', 'layer-01': '#f4f4f4', 'layer-02': '#ffffff', 'layer-03': '#f4f4f4' } },
-  g10: { text: '#161616', tokens: { background: '#f4f4f4', 'layer-01': '#ffffff', 'layer-02': '#f4f4f4', 'layer-03': '#ffffff' } },
-  g90: { text: '#f4f4f4', tokens: { background: '#262626', 'layer-01': '#393939', 'layer-02': '#525252', 'layer-03': '#6f6f6f' } },
-  g100: { text: '#f4f4f4', tokens: { background: '#161616', 'layer-01': '#262626', 'layer-02': '#393939', 'layer-03': '#525252' } },
-};
-const SURFACE_TOKENS = ['background', 'layer-01', 'layer-02', 'layer-03'];
+// The four compiled bases a surface overlay may sit on, their fixed
+// text-primary and text-on-color, and the twenty-nine tokens the section
+// offers with what each one's contrast badge is measured against. Never
+// `rux` — "base" means exactly one of Carbon's compiled themes.
+//
+// READ FROM THE PAGE, NOT MIRRORED. This was a hand-kept copy of
+// tools/build-theme-creator.mjs's BASES until 2026-09-08, and the comment
+// here named the risk it carried: "a mismatch between the two would seed
+// the wrong defaults silently". Four tokens made that a comment; twenty-nine
+// across four bases would have made it a hundred and sixteen values kept in
+// step by discipline. The generator now reads them out of css/rux.css and
+// emits them as JSON, and this parses that. A missing or malformed block is
+// fatal on purpose — seeding an empty base would look like a theme whose
+// every surface is blank rather than like a build fault.
+const surfaceData = JSON.parse(document.getElementById('thc-surface-data').textContent);
+const BASES = surfaceData.bases;
+const SURFACE_TOKENS = surfaceData.tokens.map(([name]) => name);
+const SURFACE_CHECK = Object.fromEntries(surfaceData.tokens);
 const defaultSurface = () => ({ base: 'white', name: '', tokens: { ...BASES.white.tokens } });
 
 const DRAFT_KEY = 'rux.theme-draft';
@@ -258,15 +263,47 @@ function renderSurfaceRow(token) {
   if (swatch) swatch.style.background = /^#[0-9a-f]{3,8}$/i.test(value) ? value : 'transparent';
 }
 
+// ONE THRESHOLD DOES NOT FIT TWENTY-NINE TOKENS. Until 2026-09-08 every
+// surface was scored against text-primary at 4.5:1, which was right while
+// the section offered four backgrounds and nothing else. A hairline is not
+// a background: scoring border-subtle-01 against body text would report
+// every border Carbon ships in its OWN themes as a failure, and a warning
+// that is always on is a warning nobody reads. So each token carries what
+// it is measured against:
+//
+//   text      the base's text-primary on this surface, 4.5:1
+//   on-color  the secondary button's fixed white label, 4.5:1
+//   edge      an outline drawn ON the base's background, 3:1 — WCAG's
+//             non-text threshold, which border-strong meets in all four of
+//             Carbon's themes (3.02 in g10 up to 8.86 in g90)
+//   hairline  REPORTED, NOT JUDGED. border-subtle is below 3:1 against its
+//             own background in eleven of sixteen Carbon cases (white 1.32
+//             and 1.71, g10 1.20 and 1.55, g100 1.57 and 2.32) because it
+//             is a faint divider by design. Giving it a threshold would
+//             have shown red on an unedited theme, so it gets a neutral
+//             badge with the number and no verdict.
+//
+// The comparison colour for an edge or a hairline is the base's own
+// background, not the edited one: a border is judged against the ground
+// Carbon puts it on.
 function renderSurfaceContrast() {
-  const text = BASES[state.surface.base].text;
+  const base = BASES[state.surface.base];
+  const AGAINST = { 'on-color': base.onColor, edge: base.tokens.background, hairline: base.tokens.background, text: base.text };
+  const LABEL = { 'on-color': 'text-on-color', edge: 'on the page background', hairline: 'on the page background', text: 'text-primary' };
   for (const token of SURFACE_TOKENS) {
     const el = document.querySelector(`#thc-surface-rows .thc-badge[data-token="${token}"]`);
     if (!el) continue;
-    const ratio = contrastRatio(text, state.surface.tokens[token]);
+    const kind = SURFACE_CHECK[token] ?? 'text';
+    const ratio = contrastRatio(AGAINST[kind], state.surface.tokens[token]);
     if (ratio === null) { el.textContent = 'unreadable colour'; el.className = 'thc-badge'; continue; }
-    const pass = meetsThreshold(ratio, 4.5);
-    el.textContent = `text-primary — ${ratio.toFixed(1)}:1 (needs 4.5:1)`;
+    if (kind === 'hairline') {
+      el.textContent = `${LABEL[kind]} — ${ratio.toFixed(1)}:1 (no threshold)`;
+      el.className = 'thc-badge';
+      continue;
+    }
+    const threshold = kind === 'edge' ? 3 : 4.5;
+    const pass = meetsThreshold(ratio, threshold);
+    el.textContent = `${LABEL[kind]} — ${ratio.toFixed(1)}:1 (needs ${threshold}:1)`;
     el.className = `thc-badge ${pass ? 'thc-badge--pass' : 'thc-badge--warn'}`;
   }
 }

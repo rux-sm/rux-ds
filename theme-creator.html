@@ -690,8 +690,11 @@
 
               <h2 class="rux--type-heading-compact-01">Surfaces</h2>
               <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
-              <p><strong>Input fields are not on this ladder.</strong> They read <code>--rux-field-01</code>/<code>02</code>, which this section does not offer, so a field keeps the base's own colour whatever you set here. Neither are the hover, selected and active variants: move a surface far from its base's own value and its hover stays the base's — a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
+              <p><strong>Each group below is its own ladder, and Carbon derives none of them from the others.</strong> A page background alone leaves the table header, the fields, the row rules and the secondary button at the base's values — which is what makes a half-set dark theme look patchwork. The hover, selected and active fills are here for the same reason: without them a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
+              <p>Still not offered, and still the base's: text and icon colours, the focus ring, and every status colour. The accent section above owns the interactive family.</p>
+              <p>Two things the readouts do on an <em>unedited</em> theme, both deliberate. Hairlines carry a ratio and no threshold, because <code>border-subtle</code> sits below 3:1 against its own background in eleven of Carbon's sixteen theme-and-rung combinations — it is a faint divider by design, and marking all eleven red would be a warning nobody reads. And three cells warn before you touch anything: <code>layer-accent-03</code> and <code>layer-active-02</code> on Gray 90, and <code>layer-active-03</code> on Gray 100, all Carbon's own <code>#8d8d8d</code> at exactly 3.0:1 under <code>#f4f4f4</code> text. Those are Carbon's values, not a mistake you made — they are left warning because light text on gray-50 really is hard to read.</p>
               <div id="thc-surface-rows">
+      <h3 class="rux--type-heading-compact-01">Page and layers</h3>
       <div class="thc-row" data-token="background">
         <div class="thc-row__field">
           <div class="rux--form-item rux--text-input-wrapper">
@@ -707,7 +710,7 @@
           <span class="thc-swatch" id="thc-surf-swatch-background" aria-hidden="true"></span>
         </div>
         <div class="thc-row__badges">
-          <span class="thc-badge" data-token="background" title="the base theme's own text-primary against this surface">checking…</span>
+          <span class="thc-badge" data-token="background" title="text-primary on this surface, 4.5:1">checking…</span>
         </div>
         <div class="rux--form__helper-text">The page ground itself, and what most components draw directly against — buttons, tags, tabs, popovers, selects. NOT the UI shell: its header carries its own data-theme=&quot;g100&quot;, which re-declares this token there, so the shell stays dark whatever you set here.</div>
       </div>
@@ -727,7 +730,7 @@
           <span class="thc-swatch" id="thc-surf-swatch-layer-01" aria-hidden="true"></span>
         </div>
         <div class="thc-row__badges">
-          <span class="thc-badge" data-token="layer-01" title="the base theme's own text-primary against this surface">checking…</span>
+          <span class="thc-badge" data-token="layer-01" title="text-primary on this surface, 4.5:1">checking…</span>
         </div>
         <div class="rux--form__helper-text">The first layer above the page. :root sets --rux-layer to this, so anything sitting ON a layer takes it unless nested — tiles, list boxes, tabs, side panels, modals, contained lists.</div>
       </div>
@@ -747,7 +750,7 @@
           <span class="thc-swatch" id="thc-surf-swatch-layer-02" aria-hidden="true"></span>
         </div>
         <div class="thc-row__badges">
-          <span class="thc-badge" data-token="layer-02" title="the base theme's own text-primary against this surface">checking…</span>
+          <span class="thc-badge" data-token="layer-02" title="text-primary on this surface, 4.5:1">checking…</span>
         </div>
         <div class="rux--form__helper-text">One level in: what --rux-layer becomes inside .rux--layer-one. Overflow-menu options, data-table toolbar actions, a tile within an already-layered region.</div>
       </div>
@@ -767,9 +770,515 @@
           <span class="thc-swatch" id="thc-surf-swatch-layer-03" aria-hidden="true"></span>
         </div>
         <div class="thc-row__badges">
-          <span class="thc-badge" data-token="layer-03" title="the base theme's own text-primary against this surface">checking…</span>
+          <span class="thc-badge" data-token="layer-03" title="text-primary on this surface, 4.5:1">checking…</span>
         </div>
         <div class="rux--form__helper-text">Two levels in, inside .rux--layer-two. The deepest rung Carbon ships.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Table headers</h3>
+      <div class="thc-row" data-token="layer-accent-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-accent-01">Table header 1</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-accent-01" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-accent-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-accent-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-accent-01" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">--rux-layer-accent, which .rux--data-table th draws its background from. This is the one that leaves a header grey on a dark theme when only the layers are moved.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-accent-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-accent-02">Table header 2</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-accent-02" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-accent-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-accent-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-accent-02" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The same, one level in, inside .rux--layer-one.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-accent-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-accent-03">Table header 3</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-accent-03" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-accent-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-accent-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-accent-03" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">Two levels in, inside .rux--layer-two.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Fields</h3>
+      <div class="thc-row" data-token="field-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-field-01">Field 1</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-field-01" class="rux--text-input" type="text" inputmode="text" value="#f4f4f4" data-token="field-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-field-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="field-01" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">--rux-field: the inside of every text input, select, textarea, search and number input. A parallel ladder to the layers, which is why a field keeps the base’s colour when only Surface 1 is moved.</div>
+      </div>
+
+      <div class="thc-row" data-token="field-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-field-02">Field 2</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-field-02" class="rux--text-input" type="text" inputmode="text" value="#ffffff" data-token="field-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-field-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="field-02" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">What --rux-field becomes inside .rux--layer-two — the fields in a modal, and in a data-table combo box.</div>
+      </div>
+
+      <div class="thc-row" data-token="field-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-field-03">Field 3</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-field-03" class="rux--text-input" type="text" inputmode="text" value="#f4f4f4" data-token="field-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-field-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="field-03" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">Inside .rux--layer-three. It exists: this section said &quot;field-01/02&quot; until 2026-09-08 and was wrong.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Hairlines</h3>
+      <div class="thc-row" data-token="border-subtle-00">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-subtle-00">Hairline 0</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-subtle-00" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="border-subtle-00">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-subtle-00" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-subtle-00" title="reported, not judged — Carbon’s own subtle borders sit below 3:1 by design">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">--rux-border-subtle at the page level. THE NUMBERING IS OFFSET BY ONE against the layers: :root and .rux--layer-one both resolve to 00, not 01.</div>
+      </div>
+
+      <div class="thc-row" data-token="border-subtle-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-subtle-01">Hairline 1</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-subtle-01" class="rux--text-input" type="text" inputmode="text" value="#c6c6c6" data-token="border-subtle-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-subtle-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-subtle-01" title="reported, not judged — Carbon’s own subtle borders sit below 3:1 by design">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">What .rux--data-table td and tbody th rule their rows with at the page level, and what --rux-border-subtle becomes inside .rux--layer-one.</div>
+      </div>
+
+      <div class="thc-row" data-token="border-subtle-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-subtle-02">Hairline 2</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-subtle-02" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="border-subtle-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-subtle-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-subtle-02" title="reported, not judged — Carbon’s own subtle borders sit below 3:1 by design">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">Row rules inside .rux--layer-two, and --rux-border-subtle inside .rux--layer-three.</div>
+      </div>
+
+      <div class="thc-row" data-token="border-subtle-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-subtle-03">Hairline 3</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-subtle-03" class="rux--text-input" type="text" inputmode="text" value="#c6c6c6" data-token="border-subtle-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-subtle-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-subtle-03" title="reported, not judged — Carbon’s own subtle borders sit below 3:1 by design">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">Row rules inside .rux--layer-three. The deepest rule Carbon draws.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Outlines</h3>
+      <div class="thc-row" data-token="border-strong-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-strong-01">Outline 1</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-strong-01" class="rux--text-input" type="text" inputmode="text" value="#8d8d8d" data-token="border-strong-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-strong-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-strong-01" title="this outline against the page background, 3:1 (WCAG non-text)">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">--rux-border-strong: the 1px outline around a text input, and the stronger divider Carbon uses where a hairline would be too faint.</div>
+      </div>
+
+      <div class="thc-row" data-token="border-strong-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-strong-02">Outline 2</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-strong-02" class="rux--text-input" type="text" inputmode="text" value="#8d8d8d" data-token="border-strong-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-strong-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-strong-02" title="this outline against the page background, 3:1 (WCAG non-text)">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The same inside .rux--layer-two.</div>
+      </div>
+
+      <div class="thc-row" data-token="border-strong-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-border-strong-03">Outline 3</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-border-strong-03" class="rux--text-input" type="text" inputmode="text" value="#8d8d8d" data-token="border-strong-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-border-strong-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="border-strong-03" title="this outline against the page background, 3:1 (WCAG non-text)">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The same inside .rux--layer-three.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Secondary button</h3>
+      <div class="thc-row" data-token="button-secondary">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-button-secondary">Button, secondary</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-button-secondary" class="rux--text-input" type="text" inputmode="text" value="#393939" data-token="button-secondary">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-button-secondary" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="button-secondary" title="the button’s fixed white label, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">FLAT, NOT A LADDER: .rux--btn--secondary reads this directly at any nesting depth, so there is one value rather than three. Its label is --rux-text-on-color, which is #ffffff in all four themes, and that is what the ratio below is against.</div>
+      </div>
+
+      <div class="thc-row" data-token="button-secondary-hover">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-button-secondary-hover">Button, secondary (hover)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-button-secondary-hover" class="rux--text-input" type="text" inputmode="text" value="#474747" data-token="button-secondary-hover">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-button-secondary-hover" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="button-secondary-hover" title="the button’s fixed white label, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The hover fill, same fixed white label.</div>
+      </div>
+
+      <div class="thc-row" data-token="button-secondary-active">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-button-secondary-active">Button, secondary (active)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-button-secondary-active" class="rux--text-input" type="text" inputmode="text" value="#6f6f6f" data-token="button-secondary-active">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-button-secondary-active" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="button-secondary-active" title="the button’s fixed white label, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The pressed fill, same fixed white label.</div>
+      </div>
+
+      <h3 class="rux--type-heading-compact-01">Interaction states</h3>
+      <div class="thc-row" data-token="layer-hover-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-hover-01">Surface 1 (hover)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-hover-01" class="rux--text-input" type="text" inputmode="text" value="#e8e8e8" data-token="layer-hover-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-hover-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-hover-01" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">Carbon does NOT derive these from the layer you set, so moving Surface 1 without moving this is what makes a near-black tile flash light grey under the pointer. Three rungs, matching the layers.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-hover-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-hover-02">Surface 2 (hover)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-hover-02" class="rux--text-input" type="text" inputmode="text" value="#e8e8e8" data-token="layer-hover-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-hover-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-hover-02" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The hover fill for Surface 2.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-hover-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-hover-03">Surface 3 (hover)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-hover-03" class="rux--text-input" type="text" inputmode="text" value="#e8e8e8" data-token="layer-hover-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-hover-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-hover-03" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The hover fill for Surface 3.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-selected-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-selected-01">Surface 1 (selected)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-selected-01" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-selected-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-selected-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-selected-01" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">A selected row or tile at the page level.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-selected-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-selected-02">Surface 2 (selected)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-selected-02" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-selected-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-selected-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-selected-02" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The same one level in.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-selected-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-selected-03">Surface 3 (selected)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-selected-03" class="rux--text-input" type="text" inputmode="text" value="#e0e0e0" data-token="layer-selected-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-selected-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-selected-03" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The same two levels in.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-active-01">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-active-01">Surface 1 (active)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-active-01" class="rux--text-input" type="text" inputmode="text" value="#c6c6c6" data-token="layer-active-01">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-active-01" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-active-01" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The pressed state, page level.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-active-02">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-active-02">Surface 2 (active)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-active-02" class="rux--text-input" type="text" inputmode="text" value="#c6c6c6" data-token="layer-active-02">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-active-02" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-active-02" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The pressed state, one level in.</div>
+      </div>
+
+      <div class="thc-row" data-token="layer-active-03">
+        <div class="thc-row__field">
+          <div class="rux--form-item rux--text-input-wrapper">
+            <div class="rux--text-input__label-wrapper">
+              <label class="rux--label" for="thc-surf-layer-active-03">Surface 3 (active)</label>
+            </div>
+            <div class="rux--text-input__field-outer-wrapper">
+              <div class="rux--text-input__field-wrapper">
+                <input id="thc-surf-layer-active-03" class="rux--text-input" type="text" inputmode="text" value="#c6c6c6" data-token="layer-active-03">
+              </div>
+            </div>
+          </div>
+          <span class="thc-swatch" id="thc-surf-swatch-layer-active-03" aria-hidden="true"></span>
+        </div>
+        <div class="thc-row__badges">
+          <span class="thc-badge" data-token="layer-active-03" title="text-primary on this surface, 4.5:1">checking…</span>
+        </div>
+        <div class="rux--form__helper-text">The pressed state, two levels in.</div>
       </div>
               </div>
               <!-- Trailing space so the preview stays pinned through the last
@@ -886,6 +1395,11 @@
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
 <script type="application/json" id="thc-defaults">{"interactive":"#8a3ffc","icon-interactive":"#8a3ffc","border-interactive":"#8a3ffc","background-brand":"#8a3ffc","focus":"#8a3ffc","highlight":"#e8daff","link-primary":"#8a3ffc","link-primary-hover":"#6929c4","link-secondary":"#6929c4","link-inverse":"#be95ff","link-inverse-hover":"#d4bbff","button-primary":"#8a3ffc","button-primary-hover":"#7c3dd6","button-primary-active":"#491d8b","button-tertiary":"#8a3ffc","button-tertiary-hover":"#7c3dd6","button-tertiary-active":"#491d8b","chat-button":"#8a3ffc","chat-button-text-hover":"#6929c4","chat-avatar-user":"#8a3ffc"}</script>
+<!-- The surface ladder's seeds and its per-token contrast check, generated
+     from css/rux.css by tools/build-theme-creator.mjs. Data, not script:
+     theme-creator.js parses it rather than keeping a second copy that
+     could drift. -->
+<script type="application/json" id="thc-surface-data">{"bases":{"white":{"text":"#161616","onColor":"#ffffff","tokens":{"background":"#ffffff","layer-01":"#f4f4f4","layer-02":"#ffffff","layer-03":"#f4f4f4","layer-accent-01":"#e0e0e0","layer-accent-02":"#e0e0e0","layer-accent-03":"#e0e0e0","field-01":"#f4f4f4","field-02":"#ffffff","field-03":"#f4f4f4","border-subtle-00":"#e0e0e0","border-subtle-01":"#c6c6c6","border-subtle-02":"#e0e0e0","border-subtle-03":"#c6c6c6","border-strong-01":"#8d8d8d","border-strong-02":"#8d8d8d","border-strong-03":"#8d8d8d","button-secondary":"#393939","button-secondary-hover":"#474747","button-secondary-active":"#6f6f6f","layer-hover-01":"#e8e8e8","layer-hover-02":"#e8e8e8","layer-hover-03":"#e8e8e8","layer-selected-01":"#e0e0e0","layer-selected-02":"#e0e0e0","layer-selected-03":"#e0e0e0","layer-active-01":"#c6c6c6","layer-active-02":"#c6c6c6","layer-active-03":"#c6c6c6"}},"g10":{"text":"#161616","onColor":"#ffffff","tokens":{"background":"#f4f4f4","layer-01":"#ffffff","layer-02":"#f4f4f4","layer-03":"#ffffff","layer-accent-01":"#e0e0e0","layer-accent-02":"#e0e0e0","layer-accent-03":"#e0e0e0","field-01":"#ffffff","field-02":"#f4f4f4","field-03":"#ffffff","border-subtle-00":"#c6c6c6","border-subtle-01":"#e0e0e0","border-subtle-02":"#c6c6c6","border-subtle-03":"#e0e0e0","border-strong-01":"#8d8d8d","border-strong-02":"#8d8d8d","border-strong-03":"#8d8d8d","button-secondary":"#393939","button-secondary-hover":"#474747","button-secondary-active":"#6f6f6f","layer-hover-01":"#e8e8e8","layer-hover-02":"#e8e8e8","layer-hover-03":"#e8e8e8","layer-selected-01":"#e0e0e0","layer-selected-02":"#e0e0e0","layer-selected-03":"#e0e0e0","layer-active-01":"#c6c6c6","layer-active-02":"#c6c6c6","layer-active-03":"#c6c6c6"}},"g90":{"text":"#f4f4f4","onColor":"#ffffff","tokens":{"background":"#262626","layer-01":"#393939","layer-02":"#525252","layer-03":"#6f6f6f","layer-accent-01":"#525252","layer-accent-02":"#6f6f6f","layer-accent-03":"#8d8d8d","field-01":"#393939","field-02":"#525252","field-03":"#6f6f6f","border-subtle-00":"#525252","border-subtle-01":"#6f6f6f","border-subtle-02":"#8d8d8d","border-subtle-03":"#8d8d8d","border-strong-01":"#8d8d8d","border-strong-02":"#a8a8a8","border-strong-03":"#c6c6c6","button-secondary":"#6f6f6f","button-secondary-hover":"#5e5e5e","button-secondary-active":"#393939","layer-hover-01":"#474747","layer-hover-02":"#636363","layer-hover-03":"#5e5e5e","layer-selected-01":"#525252","layer-selected-02":"#6f6f6f","layer-selected-03":"#525252","layer-active-01":"#6f6f6f","layer-active-02":"#8d8d8d","layer-active-03":"#393939"}},"g100":{"text":"#f4f4f4","onColor":"#ffffff","tokens":{"background":"#161616","layer-01":"#262626","layer-02":"#393939","layer-03":"#525252","layer-accent-01":"#393939","layer-accent-02":"#525252","layer-accent-03":"#6f6f6f","field-01":"#262626","field-02":"#393939","field-03":"#525252","border-subtle-00":"#393939","border-subtle-01":"#525252","border-subtle-02":"#6f6f6f","border-subtle-03":"#6f6f6f","border-strong-01":"#6f6f6f","border-strong-02":"#8d8d8d","border-strong-03":"#a8a8a8","button-secondary":"#6f6f6f","button-secondary-hover":"#5e5e5e","button-secondary-active":"#393939","layer-hover-01":"#333333","layer-hover-02":"#474747","layer-hover-03":"#636363","layer-selected-01":"#393939","layer-selected-02":"#525252","layer-selected-03":"#6f6f6f","layer-active-01":"#525252","layer-active-02":"#6f6f6f","layer-active-03":"#8d8d8d"}}},"tokens":[["background","text"],["layer-01","text"],["layer-02","text"],["layer-03","text"],["layer-accent-01","text"],["layer-accent-02","text"],["layer-accent-03","text"],["field-01","text"],["field-02","text"],["field-03","text"],["border-subtle-00","hairline"],["border-subtle-01","hairline"],["border-subtle-02","hairline"],["border-subtle-03","hairline"],["border-strong-01","edge"],["border-strong-02","edge"],["border-strong-03","edge"],["button-secondary","on-color"],["button-secondary-hover","on-color"],["button-secondary-active","on-color"],["layer-hover-01","text"],["layer-hover-02","text"],["layer-hover-03","text"],["layer-selected-01","text"],["layer-selected-02","text"],["layer-selected-03","text"],["layer-active-01","text"],["layer-active-02","text"],["layer-active-03","text"]]}</script>
 <script type="module" src="theme-creator/theme-creator.js"></script>
 </body>
 </html>

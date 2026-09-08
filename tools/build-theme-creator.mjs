@@ -97,44 +97,137 @@ for (const [name] of TOKENS) {
   if (!(name in DEFAULTS)) { console.log(`  build-theme-creator: css/rux-theme.css has no --rux-${name}, but TOKENS names it`); process.exit(1); }
 }
 
-// The four compiled bases a surface overlay may sit on — never `rux`, which
-// keeps "base" meaning exactly "one of Carbon's compiled themes" — each with
-// its own resting background/layer-01/02/03 (read from css/rux.css, roadmap
-// §4.15) and the fixed text-primary the contrast readout checks against.
-// Not `rux`-derived, not read from a file: these four are Carbon's, and
-// this is the one place their values are transcribed, so a Carbon bump that
-// moves one is a diff here to notice, not a silent drift.
-const BASES = {
-  white: { text: '#161616', tokens: { background: '#ffffff', 'layer-01': '#f4f4f4', 'layer-02': '#ffffff', 'layer-03': '#f4f4f4' } },
-  g10: { text: '#161616', tokens: { background: '#f4f4f4', 'layer-01': '#ffffff', 'layer-02': '#f4f4f4', 'layer-03': '#ffffff' } },
-  g90: { text: '#f4f4f4', tokens: { background: '#262626', 'layer-01': '#393939', 'layer-02': '#525252', 'layer-03': '#6f6f6f' } },
-  g100: { text: '#f4f4f4', tokens: { background: '#161616', 'layer-01': '#262626', 'layer-02': '#393939', 'layer-03': '#525252' } },
-};
-// Name, label, and WHAT READS IT. The third field is prose and no gate can
-// check it, which is stated here rather than left to be discovered: it is
-// derived from css/rux.css as compiled today, and a Carbon release that
-// re-plumbs the layer model would leave it quietly wrong. Same class of gap
-// roadmap §4.7 already records for portal.html's Reference column.
+// EVERY SURFACE-ISH TOKEN THE SECTION OFFERS, grouped as the page shows
+// them. Four until 2026-09-08, which left an OLED-dark theme visibly
+// patchwork: the data-table header stayed grey, every field stayed grey,
+// the row rules stayed grey, and the secondary button stayed grey, because
+// each of those reads a DIFFERENT ladder that the four did not touch.
 //
-// The ladder these three sit on, read out of css/rux.css rather than
-// remembered: `:root` and `.rux--layer-one` both set
-// `--rux-layer: var(--rux-layer-01)`, `.rux--layer-two` sets it to
-// `--rux-layer-02`, `.rux--layer-three` to `--rux-layer-03`. So a component
-// almost never names layer-01 itself — it reads `--rux-layer` and gets
-// whichever rung its nesting puts it on. Grepping for direct consumers of
-// layer-01 therefore UNDERSTATES it badly (11 classes), which is the wrong
-// answer to give someone asking what a token does.
-const SURFACE_TOKENS = [
-  ['background', 'Page background',
-   'The page ground itself, and what most components draw directly against — buttons, tags, tabs, popovers, selects. NOT the UI shell: its header carries its own data-theme="g100", which re-declares this token there, so the shell stays dark whatever you set here.'],
-  ['layer-01', 'Surface 1',
-   'The first layer above the page. :root sets --rux-layer to this, so anything sitting ON a layer takes it unless nested — tiles, list boxes, tabs, side panels, modals, contained lists.'],
-  ['layer-02', 'Surface 2',
-   'One level in: what --rux-layer becomes inside .rux--layer-one. Overflow-menu options, data-table toolbar actions, a tile within an already-layered region.'],
-  ['layer-03', 'Surface 3',
-   'Two levels in, inside .rux--layer-two. The deepest rung Carbon ships.'],
+// THE LADDERS, read out of css/rux.css rather than remembered. `:root` and
+// `.rux--layer-one` set the contextual token to rung 01, `.rux--layer-two`
+// to 02, `.rux--layer-three` to 03:
+//
+//   --rux-layer          layer-01/02/03          tiles, modals, side panels
+//   --rux-layer-accent   layer-accent-01/02/03   .rux--data-table th
+//   --rux-field          field-01/02/03          every input, select, area
+//   --rux-border-subtle  border-subtle-00/01/02  hairlines (note the OFFSET)
+//   --rux-border-strong  border-strong-01/02/03  the outline on a field
+//
+// So a component almost never names a rung itself — it reads the contextual
+// token and gets whichever rung its nesting puts it on. Grepping for direct
+// consumers of layer-01 UNDERSTATES it badly (11 classes), which is the
+// wrong answer to give someone asking what a token does.
+//
+// `check` is what the contrast readout measures each value against, because
+// one threshold does not fit all of these: a surface is judged against the
+// text that lands on it, an outline against the ground it is drawn on, and
+// the secondary button against its own fixed white label.
+//
+// A HAIRLINE IS REPORTED AND NOT JUDGED, and that is measured rather than
+// assumed. border-subtle is BELOW 3:1 against its own page background in
+// Carbon's own themes in eleven of sixteen cases — white 1.32 and 1.71, g10
+// 1.20 and 1.55, g100 1.57 and 2.32 — because it is a deliberately faint
+// divider, not a meaningful boundary. Scoring it at WCAG's non-text
+// threshold would have painted every one of those red on a theme nobody had
+// edited yet, and a warning that is on by default is one nobody reads.
+// border-strong is the opposite case and keeps the 3:1: Carbon meets it in
+// every theme, from 3.02 in g10 to 8.86 in g90, so a warning there means
+// the person editing has broken something real.
+const SURFACE_GROUPS = [
+  ['Page and layers', [
+    ['background', 'Page background', 'text',
+     'The page ground itself, and what most components draw directly against — buttons, tags, tabs, popovers, selects. NOT the UI shell: its header carries its own data-theme="g100", which re-declares this token there, so the shell stays dark whatever you set here.'],
+    ['layer-01', 'Surface 1', 'text',
+     'The first layer above the page. :root sets --rux-layer to this, so anything sitting ON a layer takes it unless nested — tiles, list boxes, tabs, side panels, modals, contained lists.'],
+    ['layer-02', 'Surface 2', 'text',
+     'One level in: what --rux-layer becomes inside .rux--layer-one. Overflow-menu options, data-table toolbar actions, a tile within an already-layered region.'],
+    ['layer-03', 'Surface 3', 'text',
+     'Two levels in, inside .rux--layer-two. The deepest rung Carbon ships.'],
+  ]],
+  ['Table headers', [
+    ['layer-accent-01', 'Table header 1', 'text',
+     '--rux-layer-accent, which .rux--data-table th draws its background from. This is the one that leaves a header grey on a dark theme when only the layers are moved.'],
+    ['layer-accent-02', 'Table header 2', 'text', 'The same, one level in, inside .rux--layer-one.'],
+    ['layer-accent-03', 'Table header 3', 'text', 'Two levels in, inside .rux--layer-two.'],
+  ]],
+  ['Fields', [
+    ['field-01', 'Field 1', 'text',
+     '--rux-field: the inside of every text input, select, textarea, search and number input. A parallel ladder to the layers, which is why a field keeps the base’s colour when only Surface 1 is moved.'],
+    ['field-02', 'Field 2', 'text', 'What --rux-field becomes inside .rux--layer-two — the fields in a modal, and in a data-table combo box.'],
+    ['field-03', 'Field 3', 'text', 'Inside .rux--layer-three. It exists: this section said "field-01/02" until 2026-09-08 and was wrong.'],
+  ]],
+  ['Hairlines', [
+    ['border-subtle-00', 'Hairline 0', 'hairline',
+     '--rux-border-subtle at the page level. THE NUMBERING IS OFFSET BY ONE against the layers: :root and .rux--layer-one both resolve to 00, not 01.'],
+    ['border-subtle-01', 'Hairline 1', 'hairline',
+     'What .rux--data-table td and tbody th rule their rows with at the page level, and what --rux-border-subtle becomes inside .rux--layer-one.'],
+    ['border-subtle-02', 'Hairline 2', 'hairline', 'Row rules inside .rux--layer-two, and --rux-border-subtle inside .rux--layer-three.'],
+    ['border-subtle-03', 'Hairline 3', 'hairline', 'Row rules inside .rux--layer-three. The deepest rule Carbon draws.'],
+  ]],
+  ['Outlines', [
+    ['border-strong-01', 'Outline 1', 'edge',
+     '--rux-border-strong: the 1px outline around a text input, and the stronger divider Carbon uses where a hairline would be too faint.'],
+    ['border-strong-02', 'Outline 2', 'edge', 'The same inside .rux--layer-two.'],
+    ['border-strong-03', 'Outline 3', 'edge', 'The same inside .rux--layer-three.'],
+  ]],
+  ['Secondary button', [
+    ['button-secondary', 'Button, secondary', 'on-color',
+     'FLAT, NOT A LADDER: .rux--btn--secondary reads this directly at any nesting depth, so there is one value rather than three. Its label is --rux-text-on-color, which is #ffffff in all four themes, and that is what the ratio below is against.'],
+    ['button-secondary-hover', 'Button, secondary (hover)', 'on-color', 'The hover fill, same fixed white label.'],
+    ['button-secondary-active', 'Button, secondary (active)', 'on-color', 'The pressed fill, same fixed white label.'],
+  ]],
+  ['Interaction states', [
+    ['layer-hover-01', 'Surface 1 (hover)', 'text',
+     'Carbon does NOT derive these from the layer you set, so moving Surface 1 without moving this is what makes a near-black tile flash light grey under the pointer. Three rungs, matching the layers.'],
+    ['layer-hover-02', 'Surface 2 (hover)', 'text', 'The hover fill for Surface 2.'],
+    ['layer-hover-03', 'Surface 3 (hover)', 'text', 'The hover fill for Surface 3.'],
+    ['layer-selected-01', 'Surface 1 (selected)', 'text', 'A selected row or tile at the page level.'],
+    ['layer-selected-02', 'Surface 2 (selected)', 'text', 'The same one level in.'],
+    ['layer-selected-03', 'Surface 3 (selected)', 'text', 'The same two levels in.'],
+    ['layer-active-01', 'Surface 1 (active)', 'text', 'The pressed state, page level.'],
+    ['layer-active-02', 'Surface 2 (active)', 'text', 'The pressed state, one level in.'],
+    ['layer-active-03', 'Surface 3 (active)', 'text', 'The pressed state, two levels in.'],
+  ]],
 ];
+const SURFACE_TOKENS = SURFACE_GROUPS.flatMap(([, rows]) => rows);
 
+// THE FOUR COMPILED BASES, READ RATHER THAN TRANSCRIBED. Until 2026-09-08
+// these four rows were typed out by hand, on the reasoning (roadmap §4.15)
+// that a Carbon bump moving one would then show up as a diff here rather
+// than drifting silently. That held at sixteen values. At twenty-nine
+// tokens across four bases it is a hundred and sixteen hand-entered hexes
+// that no gate checks, where one wrong digit seeds a wrong default and
+// looks entirely plausible — so the tripwire had become likelier to be the
+// fault than to catch one. rux reopened §4.15 and chose reading, 2026-09-08.
+// tools/check-token-values.mjs is the baseline that actually notices Carbon
+// moving a value; that is its job, not this table's.
+//
+// The selectors are UNQUOTED in the compiled output — `[data-theme=g10]`,
+// not `[data-theme="g10"]` — and white has no attribute selector at all
+// because src/app.scss emits it at `:root`. A reader that assumes either
+// finds nothing and silently seeds an empty base, so both are asserted.
+function readBases(css) {
+  const need = [...SURFACE_TOKENS.map(([n]) => n), 'text-primary', 'text-on-color'];
+  const wanted = { white: ':root', g10: '[data-theme=g10]', g90: '[data-theme=g90]', g100: '[data-theme=g100]' };
+  const out = {};
+  for (const [name, selector] of Object.entries(wanted)) {
+    let body = null;
+    for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      if (m[1].trim() === selector && m[2].includes('--rux-layer-01:')) { body = m[2]; break; }
+    }
+    if (body === null) { console.log(`  build-theme-creator: no ${selector} block in css/rux.css declaring the theme tokens`); process.exit(1); }
+    const tokens = {};
+    for (const t of need) {
+      const m = new RegExp(`--rux-${t.replace(/[-]/g, '\\-')}:\\s*(#[0-9a-f]{3,8});`, 'i').exec(body);
+      if (!m) { console.log(`  build-theme-creator: ${selector} does not declare --rux-${t}`); process.exit(1); }
+      tokens[t] = m[1];
+    }
+    out[name] = { text: tokens['text-primary'], onColor: tokens['text-on-color'], tokens };
+    delete tokens['text-primary']; delete tokens['text-on-color'];
+  }
+  return out;
+}
+const BASES = readBases(readFileSync('css/rux.css', 'utf8'));
 const TEMPLATES = ['app-shell', 'dashboard-page', 'detail-page', 'empty-state', 'error-state', 'form-page', 'schedule-page', 'settings-page', 'table-page', 'wizard-page'];
 const WIDTHS = [['375', '375'], ['672', '672'], ['1056', '1056'], ['1280', '1280'], ['1440', '1440'], ['fit', 'Fit']];
 const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -185,10 +278,25 @@ const baseOptions = Object.keys(BASES).map(name => `                    <div cla
                       </label>
                     </div>`).join('\n');
 
-// One row per surface token: hex field, swatch, one contrast badge against
-// the chosen base's own fixed text-primary. Same shape as the accent rows
-// above, at a quarter the count — this section names exactly four tokens.
-const surfaceRows = SURFACE_TOKENS.map(([name, label, note]) => `
+// One row per surface token — hex field, swatch, one contrast badge, the
+// note — under a heading per group. Twenty-nine rows is too many to read as
+// one undivided list, and the groups are the ladders themselves, so the
+// heading is doing real work rather than decorating.
+//
+// WHAT EACH BADGE MEASURES comes from the token's own `check`, not from one
+// rule for the section: `text` is the base's text-primary on this surface at
+// 4.5:1, `on-color` its fixed white button label at 4.5:1, and `surface` is
+// a line drawn ON the base's background at 3:1, which is the non-text
+// threshold. Scoring a hairline against body text would have reported every
+// border in Carbon's own themes as a failure.
+const CHECK_LABEL = {
+  text: 'text-primary on this surface, 4.5:1',
+  'on-color': 'the button’s fixed white label, 4.5:1',
+  edge: 'this outline against the page background, 3:1 (WCAG non-text)',
+  hairline: 'reported, not judged — Carbon’s own subtle borders sit below 3:1 by design',
+};
+const surfaceRows = SURFACE_GROUPS.map(([group, rows]) => `
+      <h3 class="rux--type-heading-compact-01">${esc(group)}</h3>` + rows.map(([name, label, check, note]) => `
       <div class="thc-row" data-token="${name}">
         <div class="thc-row__field">
           <div class="rux--form-item rux--text-input-wrapper">
@@ -204,10 +312,21 @@ const surfaceRows = SURFACE_TOKENS.map(([name, label, note]) => `
           <span class="thc-swatch" id="thc-surf-swatch-${name}" aria-hidden="true"></span>
         </div>
         <div class="thc-row__badges">
-          <span class="thc-badge" data-token="${name}" title="the base theme's own text-primary against this surface">checking…</span>
+          <span class="thc-badge" data-token="${name}" title="${esc(CHECK_LABEL[check])}">checking…</span>
         </div>
         <div class="rux--form__helper-text">${esc(note)}</div>
-      </div>`).join('\n');
+      </div>`).join('\n')).join('\n');
+
+// THE TABLE AND THE BASES TRAVEL WITH THE PAGE, so theme-creator.js reads
+// them instead of keeping a second copy. It used to mirror BASES by hand and
+// its own comment named the risk — "a mismatch between the two would seed
+// the wrong defaults silently". At four tokens that was a comment; at
+// twenty-nine it would be a hundred and sixteen values kept in step by
+// discipline alone. JSON in the page removes the question.
+const surfaceData = JSON.stringify({
+  bases: BASES,
+  tokens: SURFACE_TOKENS.map(([name, , check]) => [name, check]),
+}).replace(/</g, '\\u003c');
 
 const page = `<!doctype html>
 <html lang="en" data-theme="white">
@@ -440,7 +559,9 @@ ${baseOptions}
 
               <h2 class="rux--type-heading-compact-01">Surfaces</h2>
               <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
-              <p><strong>Input fields are not on this ladder.</strong> They read <code>--rux-field-01</code>/<code>02</code>, which this section does not offer, so a field keeps the base's own colour whatever you set here. Neither are the hover, selected and active variants: move a surface far from its base's own value and its hover stays the base's — a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
+              <p><strong>Each group below is its own ladder, and Carbon derives none of them from the others.</strong> A page background alone leaves the table header, the fields, the row rules and the secondary button at the base's values — which is what makes a half-set dark theme look patchwork. The hover, selected and active fills are here for the same reason: without them a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
+              <p>Still not offered, and still the base's: text and icon colours, the focus ring, and every status colour. The accent section above owns the interactive family.</p>
+              <p>Two things the readouts do on an <em>unedited</em> theme, both deliberate. Hairlines carry a ratio and no threshold, because <code>border-subtle</code> sits below 3:1 against its own background in eleven of Carbon's sixteen theme-and-rung combinations — it is a faint divider by design, and marking all eleven red would be a warning nobody reads. And three cells warn before you touch anything: <code>layer-accent-03</code> and <code>layer-active-02</code> on Gray 90, and <code>layer-active-03</code> on Gray 100, all Carbon's own <code>#8d8d8d</code> at exactly 3.0:1 under <code>#f4f4f4</code> text. Those are Carbon's values, not a mistake you made — they are left warning because light text on gray-50 really is hard to read.</p>
               <div id="thc-surface-rows">${surfaceRows}
               </div>
               <!-- Trailing space so the preview stays pinned through the last
@@ -542,6 +663,11 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
 <script type="application/json" id="thc-defaults">${JSON.stringify(DEFAULTS)}</script>
+<!-- The surface ladder's seeds and its per-token contrast check, generated
+     from css/rux.css by tools/build-theme-creator.mjs. Data, not script:
+     theme-creator.js parses it rather than keeping a second copy that
+     could drift. -->
+<script type="application/json" id="thc-surface-data">${surfaceData}</script>
 <script type="module" src="theme-creator/theme-creator.js"></script>
 </body>
 </html>
