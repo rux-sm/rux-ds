@@ -38,6 +38,78 @@
    in case that changes; a rule that costs nothing until it is needed is
    cheaper than re-discovering the finding. */
 .thc-step[hidden] { display: none; }
+/* THE PREVIEW FOLLOWS THE EDITOR, reported 2026-09-08. The left column runs
+   twenty accent rows and THEN the four surface rows, while the preview
+   starts the right one — so editing a surface scrolled the very thing being
+   judged off the screen.
+
+   Sticky rather than two independently scrolling panes, deliberately. A
+   fixed-height scroller for each column would trap the three sections that
+   sit BELOW the preview in the right-hand column (both export blocks and
+   Saved themes), needs its own tabindex and label to stay keyboard
+   reachable, and takes the page's one natural scrollbar away. Sticky keeps
+   a single scroll and still pins the frame.
+
+   Only at lg (66rem), the width where two columns exist at all: below it
+   they stack, and pinning a 48rem frame over a single column would bury the
+   fields under the preview. The frame is capped to the viewport at the same
+   breakpoint so the sticky block can never be taller than what it sticks to
+   — setWidth() writes only inline-size and a transform, so nothing here
+   fights it.
+
+   THE OFFSET CLEARS THE SHELL HEADER, and the first attempt did not. The
+   header is position:fixed at z-index 8000 and 3rem tall (measured, not
+   assumed), so a bare spacing-05 offset pinned the preview at 16px and slid
+   its top 32px UNDER the header — the frame stayed put, so it read as
+   working until you looked at the top edge. 3rem for the header plus the
+   same spacing token. The frame cap tightened from 16rem to 8rem to match:
+   the pane now starts 64px down and still has to finish inside the
+   viewport, chrome (32px padding, 2px border) included.
+
+   THE RIGHT COLUMN IS THE PREVIEW AND NOTHING ELSE, since 2026-09-08. Both
+   export blocks and Saved themes moved out to a full-width row beneath both
+   columns: they are what you reach for once, at the end, not while editing,
+   and keeping them out of the sticky column means the pinned region has one
+   job. The left column keeps every control.
+
+   .thc-col IS LOAD-BEARING, not decoration. A sticky element is held by its
+   CONTAINING BLOCK, and .thc-preview's is the stack around it — measured at
+   1948px against a 4552px page, so the frame pinned for about a thousand
+   pixels and then scrolled away, while still reporting a computed position
+   of sticky. The grid column already stretches to the row; the stack inside
+   it did not, so it is given the column's height.
+
+   align-content IS NOT OPTIONAL HERE, and leaving it out shipped a visibly
+   broken page for one build. rux--stack-vertical is display:grid, so a
+   height of 100% on a 4190px column stretched every ROW to fill it — the
+   Save button grew to hundreds of pixels tall and the export blocks landed
+   on top of the preview. Height for the sticky range, start-packed rows so
+   the height changes nothing else.
+
+   THE LAST FIELDS NEEDED THE TRAILING SPACE. Sticky holds only while its
+   container lasts, so the usable range is the row's height MINUS the pinned
+   block's — the final ~680px of scrolling always released it. Measured
+   before this padding: editing Page background and Surface 1 kept the whole
+   preview, Surface 2 kept 86% of it and Surface 3 only 61%. The editor
+   column is what sets the row's height, so giving it a trailing half-screen
+   extends the range past the last field and all four now pin at 100%. The
+   whitespace it adds is beside the pinned preview, not below an empty
+   column, and it is scoped to the same breakpoint — stacked, it would just
+   be a hole between the fields and the export blocks.
+
+   IT IS ITS OWN ELEMENT FOR A MEASURED REASON. The first attempt put
+   padding-block-end on the editor stack, which carries
+   rux--stack-vertical rux--stack-scale-7 — and check-spacing immediately
+   reported a SECOND divergence on that class, because the rule had changed
+   a Carbon-classed element's box. Correct of it. An empty div with only a
+   thc- class has no rux-- class to compare, so the space costs the gate
+   nothing and the reading goes back to the one adjudicated subgrid. */
+@media (min-width: 66rem) {
+  .thc-tail { block-size: 50vh; }
+  .thc-col { block-size: 100%; align-content: start; }
+  .thc-preview { position: sticky; top: calc(3rem + var(--rux-spacing-05)); }
+  .thc-preview .thc-frame { block-size: clamp(20rem, calc(100vh - 8rem), 48rem); }
+}
 </style>
 </head>
 <body>
@@ -618,6 +690,7 @@
 
               <h2 class="rux--type-heading-compact-01">Surfaces</h2>
               <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
+              <p><strong>Input fields are not on this ladder.</strong> They read <code>--rux-field-01</code>/<code>02</code>, which this section does not offer, so a field keeps the base's own colour whatever you set here. Neither are the hover, selected and active variants: move a surface far from its base's own value and its hover stays the base's — a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
               <div id="thc-surface-rows">
       <div class="thc-row" data-token="background">
         <div class="thc-row__field">
@@ -636,6 +709,7 @@
         <div class="thc-row__badges">
           <span class="thc-badge" data-token="background" title="the base theme's own text-primary against this surface">checking…</span>
         </div>
+        <div class="rux--form__helper-text">The page ground itself, and what most components draw directly against — buttons, tags, tabs, popovers, selects. NOT the UI shell: its header carries its own data-theme=&quot;g100&quot;, which re-declares this token there, so the shell stays dark whatever you set here.</div>
       </div>
 
       <div class="thc-row" data-token="layer-01">
@@ -655,6 +729,7 @@
         <div class="thc-row__badges">
           <span class="thc-badge" data-token="layer-01" title="the base theme's own text-primary against this surface">checking…</span>
         </div>
+        <div class="rux--form__helper-text">The first layer above the page. :root sets --rux-layer to this, so anything sitting ON a layer takes it unless nested — tiles, list boxes, tabs, side panels, modals, contained lists.</div>
       </div>
 
       <div class="thc-row" data-token="layer-02">
@@ -674,6 +749,7 @@
         <div class="thc-row__badges">
           <span class="thc-badge" data-token="layer-02" title="the base theme's own text-primary against this surface">checking…</span>
         </div>
+        <div class="rux--form__helper-text">One level in: what --rux-layer becomes inside .rux--layer-one. Overflow-menu options, data-table toolbar actions, a tile within an already-layered region.</div>
       </div>
 
       <div class="thc-row" data-token="layer-03">
@@ -693,13 +769,21 @@
         <div class="thc-row__badges">
           <span class="thc-badge" data-token="layer-03" title="the base theme's own text-primary against this surface">checking…</span>
         </div>
+        <div class="rux--form__helper-text">Two levels in, inside .rux--layer-two. The deepest rung Carbon ships.</div>
       </div>
               </div>
+              <!-- Trailing space so the preview stays pinned through the last
+                   surface field; see the .thc-tail rule. An element of its
+                   own, carrying no rux-- class, because padding on the stack
+                   itself changed a Carbon-classed element's box and
+                   check-spacing correctly reported it as a second
+                   divergence. -->
+              <div class="thc-tail"></div>
             </div>
           </div>
 
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-11">
-            <div class="rux--stack-vertical rux--stack-scale-5">
+            <div class="rux--stack-vertical rux--stack-scale-5 thc-col">
               <h2>Preview</h2>
               <div class="rux--form-item">
                 <div class="rux--select">
@@ -737,7 +821,11 @@
                   <iframe class="thc-frame" id="thc-frame" title="Preview of the candidate theme"></iframe>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <div class="rux--css-grid-column rux--col-span-100">
+            <div class="rux--stack-vertical rux--stack-scale-7">
               <h2 class="rux--type-heading-compact-01">Take it away</h2>
               <p>Paste this into a project's own <code>css/rux-theme.css</code> — never written for you; this tool only ever offers text to copy.</p>
               <code class="thc-command" id="thc-export"></code>

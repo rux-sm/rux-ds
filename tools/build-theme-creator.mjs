@@ -110,7 +110,30 @@ const BASES = {
   g90: { text: '#f4f4f4', tokens: { background: '#262626', 'layer-01': '#393939', 'layer-02': '#525252', 'layer-03': '#6f6f6f' } },
   g100: { text: '#f4f4f4', tokens: { background: '#161616', 'layer-01': '#262626', 'layer-02': '#393939', 'layer-03': '#525252' } },
 };
-const SURFACE_TOKENS = [['background', 'Page background'], ['layer-01', 'Surface 1'], ['layer-02', 'Surface 2'], ['layer-03', 'Surface 3']];
+// Name, label, and WHAT READS IT. The third field is prose and no gate can
+// check it, which is stated here rather than left to be discovered: it is
+// derived from css/rux.css as compiled today, and a Carbon release that
+// re-plumbs the layer model would leave it quietly wrong. Same class of gap
+// roadmap §4.7 already records for portal.html's Reference column.
+//
+// The ladder these three sit on, read out of css/rux.css rather than
+// remembered: `:root` and `.rux--layer-one` both set
+// `--rux-layer: var(--rux-layer-01)`, `.rux--layer-two` sets it to
+// `--rux-layer-02`, `.rux--layer-three` to `--rux-layer-03`. So a component
+// almost never names layer-01 itself — it reads `--rux-layer` and gets
+// whichever rung its nesting puts it on. Grepping for direct consumers of
+// layer-01 therefore UNDERSTATES it badly (11 classes), which is the wrong
+// answer to give someone asking what a token does.
+const SURFACE_TOKENS = [
+  ['background', 'Page background',
+   'The page ground itself, and what most components draw directly against — buttons, tags, tabs, popovers, selects. NOT the UI shell: its header carries its own data-theme="g100", which re-declares this token there, so the shell stays dark whatever you set here.'],
+  ['layer-01', 'Surface 1',
+   'The first layer above the page. :root sets --rux-layer to this, so anything sitting ON a layer takes it unless nested — tiles, list boxes, tabs, side panels, modals, contained lists.'],
+  ['layer-02', 'Surface 2',
+   'One level in: what --rux-layer becomes inside .rux--layer-one. Overflow-menu options, data-table toolbar actions, a tile within an already-layered region.'],
+  ['layer-03', 'Surface 3',
+   'Two levels in, inside .rux--layer-two. The deepest rung Carbon ships.'],
+];
 
 const TEMPLATES = ['app-shell', 'dashboard-page', 'detail-page', 'empty-state', 'error-state', 'form-page', 'schedule-page', 'settings-page', 'table-page', 'wizard-page'];
 const WIDTHS = [['375', '375'], ['672', '672'], ['1056', '1056'], ['1280', '1280'], ['1440', '1440'], ['fit', 'Fit']];
@@ -165,7 +188,7 @@ const baseOptions = Object.keys(BASES).map(name => `                    <div cla
 // One row per surface token: hex field, swatch, one contrast badge against
 // the chosen base's own fixed text-primary. Same shape as the accent rows
 // above, at a quarter the count — this section names exactly four tokens.
-const surfaceRows = SURFACE_TOKENS.map(([name, label]) => `
+const surfaceRows = SURFACE_TOKENS.map(([name, label, note]) => `
       <div class="thc-row" data-token="${name}">
         <div class="thc-row__field">
           <div class="rux--form-item rux--text-input-wrapper">
@@ -183,6 +206,7 @@ const surfaceRows = SURFACE_TOKENS.map(([name, label]) => `
         <div class="thc-row__badges">
           <span class="thc-badge" data-token="${name}" title="the base theme's own text-primary against this surface">checking…</span>
         </div>
+        <div class="rux--form__helper-text">${esc(note)}</div>
       </div>`).join('\n');
 
 const page = `<!doctype html>
@@ -225,6 +249,78 @@ const page = `<!doctype html>
    in case that changes; a rule that costs nothing until it is needed is
    cheaper than re-discovering the finding. */
 .thc-step[hidden] { display: none; }
+/* THE PREVIEW FOLLOWS THE EDITOR, reported 2026-09-08. The left column runs
+   twenty accent rows and THEN the four surface rows, while the preview
+   starts the right one — so editing a surface scrolled the very thing being
+   judged off the screen.
+
+   Sticky rather than two independently scrolling panes, deliberately. A
+   fixed-height scroller for each column would trap the three sections that
+   sit BELOW the preview in the right-hand column (both export blocks and
+   Saved themes), needs its own tabindex and label to stay keyboard
+   reachable, and takes the page's one natural scrollbar away. Sticky keeps
+   a single scroll and still pins the frame.
+
+   Only at lg (66rem), the width where two columns exist at all: below it
+   they stack, and pinning a 48rem frame over a single column would bury the
+   fields under the preview. The frame is capped to the viewport at the same
+   breakpoint so the sticky block can never be taller than what it sticks to
+   — setWidth() writes only inline-size and a transform, so nothing here
+   fights it.
+
+   THE OFFSET CLEARS THE SHELL HEADER, and the first attempt did not. The
+   header is position:fixed at z-index 8000 and 3rem tall (measured, not
+   assumed), so a bare spacing-05 offset pinned the preview at 16px and slid
+   its top 32px UNDER the header — the frame stayed put, so it read as
+   working until you looked at the top edge. 3rem for the header plus the
+   same spacing token. The frame cap tightened from 16rem to 8rem to match:
+   the pane now starts 64px down and still has to finish inside the
+   viewport, chrome (32px padding, 2px border) included.
+
+   THE RIGHT COLUMN IS THE PREVIEW AND NOTHING ELSE, since 2026-09-08. Both
+   export blocks and Saved themes moved out to a full-width row beneath both
+   columns: they are what you reach for once, at the end, not while editing,
+   and keeping them out of the sticky column means the pinned region has one
+   job. The left column keeps every control.
+
+   .thc-col IS LOAD-BEARING, not decoration. A sticky element is held by its
+   CONTAINING BLOCK, and .thc-preview's is the stack around it — measured at
+   1948px against a 4552px page, so the frame pinned for about a thousand
+   pixels and then scrolled away, while still reporting a computed position
+   of sticky. The grid column already stretches to the row; the stack inside
+   it did not, so it is given the column's height.
+
+   align-content IS NOT OPTIONAL HERE, and leaving it out shipped a visibly
+   broken page for one build. rux--stack-vertical is display:grid, so a
+   height of 100% on a 4190px column stretched every ROW to fill it — the
+   Save button grew to hundreds of pixels tall and the export blocks landed
+   on top of the preview. Height for the sticky range, start-packed rows so
+   the height changes nothing else.
+
+   THE LAST FIELDS NEEDED THE TRAILING SPACE. Sticky holds only while its
+   container lasts, so the usable range is the row's height MINUS the pinned
+   block's — the final ~680px of scrolling always released it. Measured
+   before this padding: editing Page background and Surface 1 kept the whole
+   preview, Surface 2 kept 86% of it and Surface 3 only 61%. The editor
+   column is what sets the row's height, so giving it a trailing half-screen
+   extends the range past the last field and all four now pin at 100%. The
+   whitespace it adds is beside the pinned preview, not below an empty
+   column, and it is scoped to the same breakpoint — stacked, it would just
+   be a hole between the fields and the export blocks.
+
+   IT IS ITS OWN ELEMENT FOR A MEASURED REASON. The first attempt put
+   padding-block-end on the editor stack, which carries
+   rux--stack-vertical rux--stack-scale-7 — and check-spacing immediately
+   reported a SECOND divergence on that class, because the rule had changed
+   a Carbon-classed element's box. Correct of it. An empty div with only a
+   thc- class has no rux-- class to compare, so the space costs the gate
+   nothing and the reading goes back to the one adjudicated subgrid. */
+@media (min-width: 66rem) {
+  .thc-tail { block-size: 50vh; }
+  .thc-col { block-size: 100%; align-content: start; }
+  .thc-preview { position: sticky; top: calc(3rem + var(--rux-spacing-05)); }
+  .thc-preview .thc-frame { block-size: clamp(20rem, calc(100vh - 8rem), 48rem); }
+}
 </style>
 </head>
 <body>
@@ -344,13 +440,21 @@ ${baseOptions}
 
               <h2 class="rux--type-heading-compact-01">Surfaces</h2>
               <p>Four tokens, layered on the base theme above rather than replacing it — everything else (text, icons, borders, buttons, interaction states) stays exactly the chosen base's own.</p>
+              <p><strong>Input fields are not on this ladder.</strong> They read <code>--rux-field-01</code>/<code>02</code>, which this section does not offer, so a field keeps the base's own colour whatever you set here. Neither are the hover, selected and active variants: move a surface far from its base's own value and its hover stays the base's — a near-black Surface 1 on <code>white</code> still hovers to <code>#e8e8e8</code>.</p>
               <div id="thc-surface-rows">${surfaceRows}
               </div>
+              <!-- Trailing space so the preview stays pinned through the last
+                   surface field; see the .thc-tail rule. An element of its
+                   own, carrying no rux-- class, because padding on the stack
+                   itself changed a Carbon-classed element's box and
+                   check-spacing correctly reported it as a second
+                   divergence. -->
+              <div class="thc-tail"></div>
             </div>
           </div>
 
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-8 rux--lg:col-span-11">
-            <div class="rux--stack-vertical rux--stack-scale-5">
+            <div class="rux--stack-vertical rux--stack-scale-5 thc-col">
               <h2>Preview</h2>
               <div class="rux--form-item">
                 <div class="rux--select">
@@ -373,7 +477,11 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
                   <iframe class="thc-frame" id="thc-frame" title="Preview of the candidate theme"></iframe>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <div class="rux--css-grid-column rux--col-span-100">
+            <div class="rux--stack-vertical rux--stack-scale-7">
               <h2 class="rux--type-heading-compact-01">Take it away</h2>
               <p>Paste this into a project's own <code>css/rux-theme.css</code> — never written for you; this tool only ever offers text to copy.</p>
               <code class="thc-command" id="thc-export"></code>
@@ -445,5 +553,24 @@ if (missing.length) {
   for (const id of missing) console.log(`  build-theme-creator: no <symbol id="${id}"> in assets/icons.svg`);
   process.exit(1);
 }
+// A CSS COMMENT THAT CLOSES EARLY TAKES EVERY RULE AFTER IT WITH IT. The
+// stray `*/` becomes the start of a selector, the parser swallows what
+// follows looking for a block, and the browser drops the lot without a
+// word — the page still serves 200 and still looks nearly right, so
+// nothing downstream notices. It happened THREE TIMES during the
+// 2026-09-08 layout work, each time caught only by reading the generated
+// file by hand, and once after getComputedStyle had already reported the
+// rule as live from the previous build. Balance is cheap to assert, so it
+// is asserted. This checks that ONE fault: a comment left open, or closed
+// once too often. It says nothing about whether the CSS inside is valid.
+const styleBlock = page.match(/<style>([\s\S]*?)<\/style>/);
+if (!styleBlock) { console.log('  build-theme-creator: no <style> block in the generated page'); process.exit(1); }
+const opens = (styleBlock[1].match(/\/\*/g) || []).length;
+const closes = (styleBlock[1].match(/\*\//g) || []).length;
+if (opens !== closes) {
+  console.log(`  build-theme-creator: unbalanced CSS comments in <style> — ${opens} "/*" against ${closes} "*/"; every rule after the imbalance is dropped by the browser`);
+  process.exit(1);
+}
+
 writeFileSync('theme-creator.html', page);
 console.log(`  theme-creator.html — ${(page.length / 1024).toFixed(0)} KB · ${symbols.size} symbols inlined`);
