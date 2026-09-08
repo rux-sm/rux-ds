@@ -384,6 +384,14 @@ function savedCssBlock(t) {
 }
 
 let previewObjectUrl = null;
+
+// WHAT THE FRAME CURRENTLY HOLDS, and the fetched page keyed by target.
+// Both exist to keep a keystroke from reloading the frame — see the
+// in-place path in buildPreview.
+let frameHolds = null;
+const fetchedPages = new Map();
+const INJECTED_ID = 'thc-injected-theme';
+
 async function buildPreview() {
   const target = $('thc-target').value;
   const status = $('thc-preview-status');
@@ -407,12 +415,48 @@ async function buildPreview() {
     label = onSurface ? `surface "${name}" on ${state.surface.base}` : `theme "${name}"`;
     if (problem) label += ` — placeholder name, ${problem}`;
   }
-  let html;
-  try {
-    html = await fetch(target, { cache: 'no-store' }).then(r => r.text());
-  } catch {
-    status.textContent = `Could not load ${target} for the preview.`;
-    return;
+  const setStatus = () => { status.textContent = label ? `Previewing ${target} — ${label}.` : `Previewing ${target}.`; };
+
+  // A KEYSTROKE MUST NOT RELOAD THE FRAME. Every edit used to refetch the
+  // target (kitchen-sink.html is ~490 KB, and cache: 'no-store' meant the
+  // network every time) and assign a fresh Blob to frame.src — a full
+  // reload, so the page reparsed, all seventeen behaviour modules re-ran,
+  // and its scroll position went back to the top. Typing a word did that
+  // several times. It was always so; pinning the preview beside the fields
+  // is what made it impossible to ignore.
+  //
+  // Nothing about a token edit needs a reload: the theme is carried by one
+  // injected <style> and two attributes on <html>. When the frame already
+  // holds this target, rewrite those three in place. The preview then keeps
+  // its scroll and whatever the visitor had open, which is the behaviour
+  // someone comparing two colours actually wants.
+  //
+  // js/theme.js does not re-run on this path, so nothing strips
+  // data-rux-surface and the re-assert below is only needed on a real load.
+  if (frameHolds === target) {
+    const doc = $('thc-frame').contentDocument;
+    const injected = doc && doc.getElementById(INJECTED_ID);
+    if (injected) {
+      injected.textContent = styleBlock;
+      doc.documentElement.dataset.theme = dataTheme;
+      if (dataSurface) doc.documentElement.setAttribute('data-rux-surface', dataSurface);
+      else doc.documentElement.removeAttribute('data-rux-surface');
+      setStatus();
+      return;
+    }
+  }
+
+  // Full load: a different target, or the first build. The fetched page is
+  // kept so switching targets back and forth is not another 490 KB.
+  let html = fetchedPages.get(target);
+  if (html === undefined) {
+    try {
+      html = await fetch(target, { cache: 'no-store' }).then(r => r.text());
+    } catch {
+      status.textContent = `Could not load ${target} for the preview.`;
+      return;
+    }
+    fetchedPages.set(target, html);
   }
   html = rebase(html);
   html = html.replace(/<html\b([^>]*)\sdata-theme="[^"]*"/, `<html$1 data-theme="${dataTheme}"${dataSurface ? ` data-rux-surface="${dataSurface}"` : ''}`);
@@ -432,15 +476,16 @@ async function buildPreview() {
   const reassert = dataSurface
     ? `<script>/* preview only — not in the export */document.documentElement.setAttribute('data-rux-surface',${JSON.stringify(dataSurface)});</script>`
     : '';
-  html = html.replace('</head>', `<style>${styleBlock}</style>${reassert}\n</head>`);
+  html = html.replace('</head>', `<style id="${INJECTED_ID}">${styleBlock}</style>${reassert}\n</head>`);
 
   const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   const frame = $('thc-frame');
   const prior = previewObjectUrl;
   previewObjectUrl = url;
+  frameHolds = target;
   frame.addEventListener('load', () => { if (prior) URL.revokeObjectURL(prior); }, { once: true });
   frame.src = url;
-  status.textContent = label ? `Previewing ${target} — ${label}.` : `Previewing ${target}.`;
+  setStatus();
 }
 function schedulePreview() {
   clearTimeout(schedulePreview._t);
