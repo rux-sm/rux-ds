@@ -40,8 +40,11 @@
 #                           sha256 of these bytes: app-check fails on an edit
 #                           made here, and a pin move to a tag carrying
 #                           identical bytes writes nothing and leaves the PIN
-#                           naming the earlier tag. The pin names bytes, not
-#                           the newest tag.
+#                           naming the tag it already named -- which is not
+#                           necessarily the earliest that carried them: a
+#                           project scaffolded from a later byte-identical tag
+#                           keeps that one. The pin names bytes, not a
+#                           position in the tag order.
 #                           Since 2026-09-02 (roadmap §4.13) it also carries
 #                           css/rux-theme.css and css/rux-overrides.css — the
 #                           canonical theme and rules, the same in every app —
@@ -320,7 +323,7 @@ if [ -n "$MOVE_ONLY" ] && [ -n "$TREE" ] && [ -e "$OUT/PIN" ]; then
       echo "  vendor/rux-ds already holds the bytes ${TAG:-$SHA} carries"
       echo "  sha256 $(printf %.12s "$TREE")  matching the pin's own"
       echo ""
-      echo "  PIN left naming $(sed -n 's/^tag  *//p' "$OUT/PIN"), the earliest tag that delivered them."
+      echo "  PIN left naming $(sed -n 's/^tag  *//p' "$OUT/PIN"), the tag it already named."
       echo "  Nothing written. A tag that changes no vendored file delivers nothing."
       exit 0
     fi

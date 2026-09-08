@@ -44,9 +44,9 @@ Only `vendor/rux-ds/` changes. Read the drift report it prints, then
 
 **It may write nothing, and that is a result, not a failure.** The `PIN`
 records a `sha256` of the vendored tree; a tag whose vendored files are
-byte-identical is declined and the `PIN` keeps naming the earlier tag. The pin
-names bytes, not the newest tag, so an app that already holds them is not out
-of date. A `PIN` written before checksums says so in `tools/check.mjs` as a
+byte-identical is declined and the `PIN` keeps naming the tag it already
+named. The pin names bytes, not a position in the tag order, so an app that
+already holds them is not out of date. A `PIN` written before checksums says so in `tools/check.mjs` as a
 note rather than a failure, and gains one on its first move.
 
 ## Commits

@@ -118,8 +118,8 @@ or a page to add one.
 
 **It may also write nothing at all.** The `PIN` records a `sha256` of the
 vendored tree, and a move to a tag whose vendored files are byte-identical is
-declined: the script says so and leaves the `PIN` naming the earlier tag. Your
-app is not out of date — the pin names bytes, and it has them. A tag that
+declined: the script says so and leaves the `PIN` naming the tag it already
+named. Your app is not out of date — the pin names bytes, and it has them. A tag that
 changes no vendored file delivers nothing to an app. The first move away from
 a `PIN` written before checksums always writes, so the app gains one; until
 then its own check reports the bytes as unverifiable rather than failing. `--tag` exports the tag's tree; your rux-ds clone stays

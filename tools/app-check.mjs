@@ -149,7 +149,24 @@ export function check(root) {
     // THE BYTES, not only the label. Only reached with a PIN present, so the
     // missing-PIN message above stays the controlled diagnostic rather than
     // becoming an uncaught error from hashing a directory that is not there.
-    pinRecorded = pinText.match(/^sha256\s+([0-9a-f]{64})\b/m)?.[1] ?? null;
+    //
+    // MALFORMED IS NOT MISSING, and the difference is the whole rule. Matching
+    // only a well-formed value and letting everything else fall through to the
+    // legacy note would mean truncating or upper-casing the checksum SWITCHES
+    // VERIFICATION OFF -- the one edit this field exists to catch, rewarded
+    // with a pass. So every sha256 line is collected first and the shape is
+    // judged after: none is the legacy case, one well-formed is the check,
+    // and anything else fails. Two lines fail even when one of them is
+    // correct, because a PIN that records two answers records none.
+    const shaLines = pinText.match(/^sha256\b.*$/gm) ?? [];
+    if (shaLines.length > 1) {
+      fail('pin', 'vendor/rux-ds/PIN', `carries ${shaLines.length} sha256 lines; a PIN that records two checksums records none. Re-run rux-ds tools/new-project.sh against this app.`);
+    } else if (shaLines.length === 1) {
+      pinRecorded = shaLines[0].match(/^sha256[ \t]+([0-9a-f]{64})[ \t]*$/)?.[1] ?? null;
+      if (!pinRecorded) {
+        fail('pin', 'vendor/rux-ds/PIN', `its sha256 line is not 64 lowercase hex characters: "${shaLines[0].trim().slice(0, 80)}". A malformed checksum is not an absent one -- it would otherwise disable the very check it names. Re-run rux-ds tools/new-project.sh against this app.`);
+      }
+    }
     if (pinRecorded) {
       try {
         pinComputed = treeHash(join(root, 'vendor/rux-ds'));
@@ -161,7 +178,7 @@ export function check(root) {
           `the vendored tree does not match its PIN -- recorded ${shortHash(pinRecorded)}, found ${shortHash(pinComputed)}. ` +
           'Something under vendor/ was edited or partially copied; re-run rux-ds tools/new-project.sh against this app to put the release back.');
       }
-    } else {
+    } else if (shaLines.length === 0) {
       notes.push('vendor/rux-ds/PIN carries no sha256 line, so its bytes cannot be verified -- a pin written before checksums. The next pin move records one.');
     }
   }
@@ -303,6 +320,11 @@ function selfTest() {
     // is asserted rather than assumed: the harness compares rule sets, so
     // without this a silently missing note would read as a pass.
     ['pin: legacy, no sha256', null, () => w('vendor/rux-ds/PIN', pinNoSha), /cannot be verified/],
+    // MALFORMED IS NOT MISSING. Each of these once passed as "legacy", which
+    // made corrupting the checksum a way to switch the check off.
+    ['pin: sha256 truncated', 'pin', () => w('vendor/rux-ds/PIN', pinNoSha + 'sha256  ' + treeHash(join(work, 'vendor/rux-ds')).slice(0, 40) + '\n')],
+    ['pin: sha256 upper-cased', 'pin', () => w('vendor/rux-ds/PIN', pinNoSha + 'sha256  ' + treeHash(join(work, 'vendor/rux-ds')).toUpperCase() + '\n')],
+    ['pin: two sha256 lines', 'pin', () => w('vendor/rux-ds/PIN', pinNoSha + `sha256  ${treeHash(join(work, 'vendor/rux-ds'))}\nsha256  ${'0'.repeat(64)}\n`)],
   ];
   let bad = 0;
   try {

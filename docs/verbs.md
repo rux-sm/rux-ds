@@ -124,11 +124,18 @@ command printed. Only `vendor/` changes. It commits nothing.
 
 **AN APP THAT ALREADY HOLDS THOSE BYTES IS LEFT ALONE, PIN AND ALL.** Since
 the `PIN` carries a `sha256` of the vendored tree, a move to a tag whose
-vendored files are identical writes nothing and the app keeps naming the
-earliest tag that delivered them. That is the pin doing its job — it names
-bytes, not the newest tag — and the roll-out separates *moved* from *already
-holding these bytes*, printing a commit command only for the first. A run
-where every app is unchanged says so and asks for no commit.
+vendored files are identical writes nothing and the app keeps naming **the tag
+it already named** — not necessarily the earliest that carried those bytes: a
+project scaffolded from a later byte-identical tag keeps that one. That is the
+pin doing its job — it names bytes, not a position in the tag order — and the
+roll-out separates *moved* from *already holding these bytes*, printing a
+commit command only for the first. A run where every app is unchanged says so
+and asks for no commit.
+
+The commit it prints stages `vendor/rux-ds` explicitly rather than relying on
+`commit -a`, because a release that ADDS a vendored file leaves it untracked
+and `-a` would skip it — committing a PIN whose checksum covers a file the
+commit does not contain.
 
 Read each drift report. Apply by hand only what it names — it compares the
 page's `<head>` resources and header skeleton to the vendored `app-shell` and

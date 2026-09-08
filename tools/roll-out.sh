@@ -111,10 +111,16 @@ done
 echo ""
 if [ -z "$MOVED" ]; then
   echo "  NOTHING TO COMMIT. Every app already held the bytes $TAG carries, so each"
-  echo "  PIN still names the earliest tag that delivered them. That is the pin doing"
+  echo "  PIN still names the tag it already named. That is the pin doing"
   echo "  its job: it names bytes, not the newest tag."
 else
   echo "  Nothing is committed. For each app under \"moved\" above: read the drift"
   echo "  report and CHANGES.md between the tags, open the site, then"
-  echo "    git commit -am 'chore(vendor): Move the pin to rux-ds $TAG' && git push"
+  # `commit -am` STAGES NO NEW FILE. A release that ADDS a vendored module
+  # leaves it untracked, -a skips it, and the commit then carries a PIN whose
+  # checksum covers a file the commit does not contain -- so the app fails its
+  # own pin check on the next clone or CI run. Measured 2026-09-07: a tag
+  # adding one js/ file produced exactly that, app-check exit 1 on the
+  # committed tree. Stage the directory, do not rely on -a.
+  echo "    git add -A -- vendor/rux-ds && git commit -m 'chore(vendor): Move the pin to rux-ds $TAG' && git push"
 fi
