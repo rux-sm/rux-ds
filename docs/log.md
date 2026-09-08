@@ -2267,6 +2267,96 @@ captured, because `@carbon/react` renders none of the eight — the same evidenc
 components sat outside the strip where no gate could see them. `check-inventory` is what
 closes that, and §4.2's exit is met again at 83.
 
+### The document template — BUILT 2026-09-08, and the route ruling with it
+
+`templates/document-page.html`, the eleventh, and the answer to `rux-ln-notes`'
+`SEND-DS.md` — the first thing this repository was ever sent. Read in place there;
+nothing crossed. The page here is a service-restore runbook, invented.
+
+**THE RULING: A ROUTE IS A BREADCRUMB, NOT A TAG — measured on running Carbon, not
+argued from `css/rux.css`.** That distinction is the whole point of
+`docs/verifying-templates.md` and it changed the answer here. The stylesheet says
+`.rux--tag` caps at 13rem and `.rux--tag__label` ellipsises, which is true and is
+not the decision. What decided it was reading both components at 1280 with the same
+four-segment route substituted into each:
+
+| | `max-inline-size` | in a 280px track | cut? |
+|---|---|---|---|
+| `cds--tag` read-only | **208px**, label clipped at 192 | ellipsised | **yes — scrollWidth 278 vs clientWidth 192, 86px lost** |
+| `cds--breadcrumb` | **none**, `flex-wrap: wrap` | three rows | **no — every segment scrollWidth == clientWidth** |
+
+That independently reproduces Notes' own measurement, which was 324px against the
+same 192px label.
+
+**`.rux--tag-label-tooltip` was rejected on evidence, and it was the option Notes
+expected to be told to use.** It compiles, and it is Carbon's own answer — but every
+capture that renders it wraps an *interactive* tag:
+`button.cds--tag--operational`, `--dismissible`, `--selectable` and `--with-ai-label`,
+each inside a `popover-container.tooltip.icon-tooltip`. There is **no captured pairing
+with a read-only tag.** Taking it would make a tab stop of every route on a page that
+has dozens, and the text would still be cut on paper and on touch. A tooltip is a
+route's second copy, not its first.
+
+**The segment markup was measured too.** A bare `<span>` in a `breadcrumb-item`
+computes `rgb(22,22,22)` with `cursor: auto` — it already reads as text — while
+`a.cds--link` there is `rgb(15,98,254)` with `cursor: pointer` and would tell a
+reader a menu name is clickable. The last segment takes the captured
+`--current` markup, `span.cds--link[aria-current]`, which is the one non-anchor
+segment Carbon does render. The bare span for the earlier segments is an
+**extrapolation** and is labelled as one in the file: it loses
+`white-space: nowrap`, which matters only for a segment wider than the whole track,
+where wrapping is the right answer anyway. At 500px the three route lines wrapped to
+three and four rows with nothing clipped.
+
+**THE READING MEASURE IS CAPPED, NOT SPANNED, and the first draft got that wrong.**
+`lg:col-span-10` measured **89 characters a line at 1280 and 151 at 1920** — a
+column span is proportional, which is the same shape of error as the grid offset in
+`composing-pages.md` §3.2, something fixed expressed as a fraction. Two caps in the
+head instead: the column at 64rem, the paragraphs at 30rem, which holds **78
+characters at both widths**. Tables keep the column's full width — 664px at 1280,
+1024 at 1920.
+
+**THREE GATES CAUGHT THIS FILE WHILE IT WAS BEING WRITTEN**, which is the answer to
+§3 of that memo — it asked for a `check-ancestry` run over its candidate and said
+that would be worth more than approval:
+
+- **`check-tags`**: tag colours on a `<span>` where Carbon renders `<div>`, and
+  `stack-vertical` on a `<section>` where Carbon renders a `div`. **The first is a
+  repeat** — the same gate caught the same thing on the wizard template on
+  2026-08-31, recorded above. Hoisting the tag out of the `<h2>` was forced by it:
+  a `<div>` inside a heading is invalid, headings taking phrasing content only.
+- **`check-ancestry`**: `checkbox--inline` outside `.rux--table-column-checkbox`,
+  which is where Carbon nests it in **all seven** captures that render it.
+- **`check-aria-roles`**: an invented `role="note"` on `inline-notification`. The
+  argument for it was tidy — a callout is part of the document, not a report of
+  something that changed — and Carbon renders `role="status"` there five times out
+  of five. Reasoning about semantics lost to reading the captures.
+
+**BOTH OF THE FIRST TWO ARE ALSO TRUE OF `template-candidate.html`**, which is worth
+sending back: it sets 45 tags on `<span>` and its sections carry `stack-vertical`.
+
+**WHAT WAS GIVEN UP: "At a glance" has no tick-when-done column.** Two drafts had
+one. The first failed `check-ancestry` as above; the second, a standalone
+`form-item checkbox-wrapper` in a plain `<td>`, passed every class gate and then
+failed `check-spacing` at `marginBlockEnd` -3px against Carbon's 6px/3px and
+`marginBlockStart` -3px against -2px — Carbon writes those margins for a vertical
+group and a table cell is not one. So **Carbon has no attested checkbox in a data
+table except the selection column**, and a document's checklist is not row
+selection: adopting that column hands it to `js/data-table.js:209`, which marks rows
+`--selected` and looks for a batch-action bar the page has none of. Recorded as a
+gap rather than solved with an invented composition.
+
+**A stale claim in `README.md` was corrected by this work, not inherited.** "Picking
+this up" said the browser pane cannot reach Storybook cross-origin, and the whole
+`BEHAVIOUR:` half of this task was described as blocked on rux for that reason. It
+reaches it: `react.carbondesignsystem.com` was read live, DOM and computed styles
+both, and every measurement above came from there. The blocker was a fact that had
+stopped being true and had never been re-tested.
+
+**Also found by looking, with every gate green:** `index.html` said "Ten page
+shapes" and "the frame the other nine are built on" with eleven templates on it. It
+is the one root page that is not generated, so no gate reads its prose.
+
 ---
 
 ## Gates — the record
