@@ -49,6 +49,15 @@ const ICONS = [
   // scheduler-specific -- any app with a row of equipment flags needs them --
   // so they belong here rather than spliced into one app's page.
   'accessibility', 'hotel',
+  // AN APP TILE'S ICON, asked for by rux 2026-09-07. Rux Home's grid gives each
+  // app a 32px glyph until drawn marks exist, and the design system's tile had
+  // no honest candidate in the sprite: `grid` is what the header's app-switcher
+  // button already is, so the same shape would have meant two things on one
+  // screen. `color-palette` is Carbon's own mark for a palette. It is not
+  // referenced by any page HERE -- it is used by rux-sm.github.io, which inlines
+  // this sprite -- which is why check-icons counts it among the symbols nothing
+  // points at rather than failing on it.
+  'color-palette',
 ];
 
 const symbols = [], missing = [], from = {};
