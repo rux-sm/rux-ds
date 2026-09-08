@@ -55,6 +55,39 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**2026-09-07 - Carbon's palette joins the sprite, and the sweep is paid twice in
+one day.** rux asked whether IBM's icons could stand in for app tile marks: yes,
+and better than a mask — the hub's page already inlines 59 Carbon symbols with
+IBM's copyright attributed beside them, so `switcher.js` now takes `#i-name` as
+well as a path and renders `<use>` inside an `<svg fill="currentColor">`, which
+inherits the tile's own colour with no file and no mask. LN Notes took
+`#i-document`, Scheduler `#i-calendar`. **The design system's tile had no honest
+candidate**: `grid` is the header's app-switcher button, so one shape would have
+meant two things on one screen. rux chose `color-palette` with the cost stated —
+`assets/icons.svg` is inlined by every page here, so all 47 cells aged.
+
+`check-glyphs` failed first, as designed: a symbol with no entry in
+`docs/carbon-glyphs.json` cannot be told from an invented name. Regenerating the
+snapshot from @carbon/icons 11.86.0 fixed it, and the glyph is Carbon's own. The
+sprite is 62 symbols; nothing HERE references the palette, so it joins the ones
+`check-icons` counts as unreferenced — it exists for `rux-sm.github.io`, which
+inlines this sprite and now carries the symbol verbatim in `index.html` and
+`account/index.html` (`aba8812` there).
+
+**Full re-sweep, all 47, `d73b490` for the 44 and the portal's three after it.
+Every figure identical to the reading it replaced.** The portal's mid-cycle read
+is worth keeping: with every cell stale it showed `0 of 44 shown`, 44 elements
+matching `.rux--tag--red` and 11 no-reference entries; settled, 44 of 44, 0 red
+tags and 10 — the number the ledger has predicted twice now.
+
+**TWO SWEEPS IN ONE AFTERNOON, one of them avoidable.** The first was aged by a
+Markdown file inside `brand/`; the second by a real change to a real input.
+The proposal to narrow the `brand` input to exclude `*.md` is still unapplied
+and still rux's to accept; today it would have saved one sweep of fifteen pages.
+The note about the new `#i-name` shape was deliberately written into
+`docs/roadmap.md` §4.12 rather than `brand/README.md`, so that documenting it
+did not age the ledger a third time.
+
 **2026-09-07 - the 33 cells a Markdown file aged, re-swept.** Adding the app
 tile icon spec to `brand/README.md` took the browser ledger from 47 current to
 14: `brand` is declared in `RENDERED_INPUTS` as a whole DIRECTORY, so
