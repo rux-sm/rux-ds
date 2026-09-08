@@ -4666,6 +4666,60 @@ Creator concern); a real shipped example in this repository's own
 `css/rux-theme.css` (the tool's own preview proves the mechanism, same
 restraint Phase 10 took with the placeholder accent hue).
 
+**AMENDED 2026-09-08 — four tokens became twenty-nine, and the scoping
+above is what had to give.** The original four were scoped to rux's own
+words ("just want a way to map the few base layers"). Building an
+OLED-dark theme with them produced a patchwork page: the data-table
+header, every field, the row rules and the secondary button all stayed
+the base's grey, because each reads a DIFFERENT ladder. There are five,
+plus one flat token — `--rux-layer`, `--rux-layer-accent` (the table
+header), `--rux-field`, `--rux-border-subtle` (numbered with an OFFSET:
+`:root` resolves to 00, not 01), `--rux-border-strong`, and the flat
+`--rux-button-secondary` — and Carbon derives none of them from the
+layer you set. The hover, selected and active fills are included for the
+same reason: without them a near-black Surface 1 on `white` still hovers
+to `#e8e8e8`. `docs/log.md` has the derivation and the measurements.
+
+**"No auto-derived hover/active/selected shades" still holds and is not
+what changed.** Nothing is derived. Those rungs are offered as their own
+editable tokens, seeded from the base, which is the opposite of deriving
+them.
+
+**§4.15's BASES DECISION IS REVERSED, rux's call, 2026-09-08.** This
+section shipped the four bases as a hand-transcribed table on the stated
+reasoning that a Carbon bump moving one would surface as a diff rather
+than drift silently. That held at sixteen values. Twenty-nine tokens
+across four bases is a hundred and sixteen hand-entered hexes that no
+gate checks, where one wrong digit seeds a wrong default and looks
+entirely plausible — the tripwire had become likelier to be the fault
+than to catch one, and `tools/check-token-values.mjs` is the baseline
+that actually notices Carbon moving a value. `tools/build-theme-creator.mjs`
+now reads `:root` and each `[data-theme=…]` block out of `css/rux.css`
+and hard-fails on a missing block or a missing token. **The rejected
+alternative is recorded rather than dropped**: keeping the transcription,
+which was declined for the reason above. Both failure paths were proven
+red first, including the trap that the compiled output writes
+`[data-theme=g10]` UNQUOTED, so a reader assuming quotes finds nothing
+and would seed four empty bases in silence.
+
+**The contrast readout stopped using one threshold**, also on measurement.
+`border-subtle` sits below 3:1 against its own background in eleven of
+Carbon's sixteen theme-and-rung combinations, so hairlines report a ratio
+with no verdict; marking Carbon's own design red on an unedited theme is a
+warning nobody reads. `border-strong` meets 3:1 in every theme (3.02 to
+8.86) and keeps it. Three cells still warn unedited, all Carbon's own
+`#8d8d8d` at 3.0:1, and the page says so.
+
+**No new control-file surface, and one addition to one.** The twenty-five
+new names already exist in every compiled theme, so `check-tokens.mjs`
+still sees no invented name. `js/custom-themes.js`'s allow-list widened,
+which is backward compatible — a four-token record still validates —
+where NARROWING it would not be, since `list()` drops an unrecognised
+record whole and without a word. `tools/build-theme-creator.mjs` gained a
+guard refusing to write a page whose `<style>` has unbalanced comment
+delimiters, after that fault shipped three times in one day; a tier 2
+change, proven red, and it strengthens rather than weakens the file.
+
 ### 4.16 Phase 16 — Saved custom themes, platform-wide
 
 **Added 2026-09-06**, the day after Phase 15, from rux asking for the

@@ -9,6 +9,115 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-08 - the theme creator's Surfaces section, four tokens to
+twenty-nine, and three defects the gates could not see.** rux built an
+OLED-dark theme in the tool and the result was patchwork: the data-table
+header stayed grey, every field stayed grey, the row rules stayed grey and the
+secondary button stayed grey. Nothing was broken in the sense a gate
+understands -- no class moved, no box moved -- the section simply did not
+offer the tokens those parts read.
+
+**FIVE PARALLEL LADDERS, traced in `css/rux.css` rather than guessed.** `:root`
+and `.rux--layer-one` set each contextual token to rung 01, `.rux--layer-two`
+to 02, `.rux--layer-three` to 03: `--rux-layer` (tiles, modals, side panels),
+`--rux-layer-accent` (`.rux--data-table th`), `--rux-field` (every input,
+select, textarea, search), `--rux-border-subtle` (the hairlines, numbered with
+an OFFSET -- `:root` resolves to 00, not 01) and `--rux-border-strong` (the
+outline on a field). `--rux-button-secondary` is flat, not a ladder, and its
+label is `--rux-text-on-color`, `#ffffff` in all four themes. So a component
+almost never names a rung itself, which is why grepping for direct consumers
+of `layer-01` finds 11 classes and badly understates it. The CSS grid draws no
+border of its own; what reads as grid lines in a data table is
+`border-subtle-01`, stepping to 02 and 03 with nesting.
+
+**ONE THRESHOLD DOES NOT FIT TWENTY-NINE TOKENS, and the numbers decided
+where each one lands.** `border-subtle` measured against its own page
+background is BELOW 3:1 in eleven of Carbon's sixteen theme-and-rung
+combinations -- white 1.32 and 1.71, g10 1.20 and 1.55, g90 1.94, g100 1.57
+and 2.32 -- because it is a faint divider by design. Judging it at WCAG's
+non-text threshold would have painted Carbon's own themes red before anyone
+edited anything, so hairlines now report a ratio and no verdict.
+`border-strong` is the opposite and keeps the 3:1: Carbon meets it in every
+theme, 3.02 in g10 up to 8.86 in g90, so a warning there means the person
+editing broke something. Three cells still warn unedited -- `layer-accent-03`
+and `layer-active-02` on g90, `layer-active-03` on g100, all Carbon's own
+`#8d8d8d` at exactly 3.0:1 under `#f4f4f4` -- and the page says they are
+Carbon's rather than the reader's.
+
+**THE SURFACES PREVIEW HAD NEVER APPLIED, from Phase 15 until this day.**
+`js/theme.js`'s `clearOverrides()` removes `data-rux-surface` the moment it
+runs, which is right on a real page and fatal in a preview that had just
+written it: the compound selector matched nothing and the untouched base
+rendered, looking entirely plausible. Proved by reading the frame rather than
+the code -- the blob source carried
+`<html lang="en" data-theme="white" data-rux-surface="midnight">` and what
+survived was `<html lang="en" data-theme="white">`. Both files were correct
+alone. Re-asserted after `</head>`, which runs after `theme.js` in the same
+head. The accent section was never affected: `clearOverrides` leaves
+`data-theme` alone.
+
+**A typed hex reached state raw, and three validators disagreed about it.**
+`hexToRgb` accepts a bare `000000` (leading `#` optional), the swatch test and
+`js/custom-themes.js`'s `HEX_RE` require the `#`, and the emitted declaration
+was invalid CSS the browser dropped without a word. The visible result was a
+green 19.1:1 badge beside a transparent swatch over a preview that never
+moved. `normaliseHex` now canonicalises at both setters; the digits are kept
+as typed, since case and 3-vs-6 length are both valid CSS.
+
+**The preview also PAUSED on an unusable name**, printing the reason in a
+status line far above the fields being edited, which reads as a dead tool. It
+now previews under a placeholder. Preview and export resolve that name through
+one pair of helpers, because the old `|| 'your-theme'` covered only the empty
+case -- a reserved name like `g10` would have written
+`data-theme="your-theme"` against a `[data-theme="g10"]` selector and shown no
+override at all.
+
+**Typing reloaded the preview.** Every edit refetched the target
+(`kitchen-sink.html` is ~490 KB, and `cache: 'no-store'` meant the network each
+time) and assigned a fresh Blob to `frame.src`, so the page reparsed, all
+seventeen behaviour modules re-ran and the scroll went back to the top. It was
+always so; pinning the preview beside the fields is what made it impossible to
+ignore. A token edit needs no reload -- the theme is one injected `<style>` and
+two attributes -- so those three are now rewritten in place. Measured by
+marking the frame's window and typing a six-character hex one key at a time,
+faster than the debounce: the marker survived, the scroll held at 1200, and
+`--rux-interactive` resolved to the typed value inside the frame.
+
+**Three self-inflicted faults in the layout work, each worth keeping.**
+`rux--stack-vertical` is `display: grid`, so giving it `block-size: 100%` for
+the sticky range stretched every row -- the Save button grew to hundreds of
+pixels and the export blocks landed on the preview; `align-content: start`
+fixes it. A CSS comment that closed one paragraph early turned the whole
+`@media` block into a malformed selector and the browser dropped every rule in
+it, silently, while `getComputedStyle` still reported the rule live from the
+previous build; that happened three times, so
+`tools/build-theme-creator.mjs` now refuses to write a page whose `<style>`
+has unbalanced `/*` and `*/`, proven red before it was trusted. And the
+trailing space that keeps the preview pinned through the last surface field
+was first written as `padding-block-end` on the editor stack, which carries
+`rux--stack-vertical rux--stack-scale-7` -- `check-spacing` immediately
+reported a SECOND divergence on that class, correctly, because the rule had
+moved a Carbon-classed element's box. It now sits on `.thc-tail`, an element
+with no `rux--` class.
+
+**The sticky preview was clipped by the shell header and the measurements did
+not say so.** The header is `position: fixed`, 3rem, at z-index 8000, so a bare
+`spacing-05` offset pinned the preview at 16px with its top 32px underneath.
+Bounding-box checks reported no overlap, no horizontal overflow and the frame
+correctly clamped; rux saw it by looking. The offset is now
+`calc(3rem + var(--rux-spacing-05))` and the frame cap tightened from 16rem to
+8rem to match, verified clear at 1280x900 and at 1280x650.
+
+**WHAT NO GATE SAW, stated because it is the point.** Every defect above
+passed all 26 gates. `check-runtime-classes` read 49 in file and 49 in page
+before and after twenty-five rows were added, because each new row reuses a
+class the page already carried. A data-table header that stays grey moves no
+class and no box. The sweeps were also taken without the visual step: the
+Browser pane was collapsed for the whole session and every screenshot returned
+blank, which is recorded in all 47 cells rather than glossed.
+
+---
+
 **2026-09-08 - a shell state this repository called invented, and ships three
 rules for.** Raised by `rux-scheduler`, which uses it: that app's header name
 sits at 8px of inline start where the captures have 16, and `check-spacing` has
