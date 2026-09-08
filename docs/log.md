@@ -55,6 +55,46 @@ what says these are separate apps. The tiles came back carrying a name and the
 arrow, no description. Recorded because the reasoned answer and the looked-at
 answer disagreed, which is the fourth time this week.
 
+**2026-09-07 - the 33 cells a Markdown file aged, re-swept.** Adding the app
+tile icon spec to `brand/README.md` took the browser ledger from 47 current to
+14: `brand` is declared in `RENDERED_INPUTS` as a whole DIRECTORY, so
+documentation inside it ages every cell that reads a page carrying the mark.
+Full re-sweep of all fifteen pages, `585446f` for the 33 and `585446f` again
+for the portal's own three. **Every reading is identical to the one it
+replaces** - a11y 29/6/28 on the sink, 5 on the builder, 4 on the wizard, 0 on
+the other twelve, focusRingChecked true everywhere; spacing 456/406/35/15/35/309
+on the sink and page for page unchanged elsewhere; check-rendered 68 sections
+with 0 empty SVGs, 0 uaStyled and 0 collapsed or escaped in all five themes;
+check-behaviour 47 of 47; check-runtime-classes 0 stripped on the portal and the
+adjudicated 8 on `schedule-page` (the calendar `js/date-picker.js` builds at
+runtime).
+
+**RED THIS SWEEP RATHER THAN INHERITED.** Stripping `outline` and `box-shadow`
+from every `:focus` and from the label `::before` Carbon draws the ring on took
+`check-a11y` on the sink from 29 findings to **189**; removing that one
+stylesheet restored 29 with 28 adjudicated. A green run that has not been seen
+red is not evidence, and the last red run on record was a different session's.
+
+**THE PORTAL'S SECOND PASS TOOK THREE READS, AND WHY IS WORTH WRITING DOWN.**
+Writing the other 44 cells regenerates `portal.html`, which is an input to its
+own three cells; but the staleness test compares against COMMITTED state, so
+recording the portal against a working tree that had not been committed left it
+dirty however many times it was re-read. It closes by committing the 44 first
+and recording the portal's three at THAT commit. Its mid-cycle spacing reading
+carried an 11th no-reference entry - with cells stale the page renders
+`.rux--tag--red`, a class set Carbon has no reference for - and the settled read
+is 10, with 0 red tags and "44 of 44 shown" counted in the same execution. The
+prior entry predicted both numbers.
+
+**One condition could not be met as the skill words it.** "Pointer parked off
+content" is unreachable in this pane: the pointer is always over the document.
+The readings were taken with it on the side nav (a 5-element `:hover` chain) and
+repeated with it over a table cell (13 elements); identical both times, and that
+is what the cells now say rather than a claimed zero. Also worth knowing:
+`activeElement` reads `A` immediately AFTER `check-a11y`, because the gate
+focuses controls to test their rings and leaves the last one focused - it was
+`BODY` immediately before, which is the condition that matters.
+
 **2026-09-07 - the icon contract was wrong for its own use case, and the spec
 is written.** rux asked what to draw app tile icons against, which is the
 question that found it: the `icon` key shipped that morning rendered an `<img>`,
