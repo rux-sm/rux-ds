@@ -87,27 +87,38 @@ Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
 **Where this stopped, 2026-09-09 — clean tree, `npm run verify` exit 0, `npm run
-gates` every cell current, and `v0.1.11` still the newest tag with everything
-since it unreleased on `main`** (the live item below). This sentence typed
-**47 of 47** from 2026-09-07 until 2026-09-09, by which time `document-page` had
-taken the sweep to 50 — a count in prose, which `AGENTS.md` keeps in
-`npm run gates` for exactly this reason; it points there now instead of carrying
-a number. Four apps are in the hub's `switcher.json` and that
-list is the only one: Home (`/`), Notes, Scheduler and Design System (`/rux-ds/`).
-Scheduler joined as module three; the design system joined as module four when this
-repository gained the site described at the top of this file. **The hub's landing grid
-no longer carries a tile for the page it is on** (hub `acea009`, 2026-09-07): a Home
-card on Home is not a destination, so `switcher.js` filters the current app out of the
-grid by the same test that marks the panel entry. The panel is unchanged and still
-marks it `aria-current` — where you are and where you can go are different jobs.
+gates` every cell current, `v0.1.13` the newest tag, and all three apps' pins
+correctly still naming `v0.1.12`** — `v0.1.13`'s only change was
+`docs/workspace-flow-map.md`, so it changed no vendored byte and the roll-out
+wrote nothing; `git log v0.1.13..main --oneline | wc -l` reads 0. Four apps are
+in the hub's `switcher.json` and that list is the only one: Home (`/`), Notes,
+Scheduler and Design System (`/rux-ds/`). **The hub's landing grid no longer
+carries a tile for the page it is on** (hub `acea009`, 2026-09-07): a Home card
+on Home is not a destination, so `switcher.js` filters the current app out of
+the grid by the same test that marks the panel entry.
 
-**Open, 2026-09-09: roadmap §8.4, the plan for one copy of the design system
-instead of three, drafted and not decided.** It amends §8.3 in one place — the
-site would deploy on a tag, not on every push — and carries the tier-2 pieces
-as diffs for rux to judge. Until rux decides, every app still vendors a pin.
-**Step 0 is done (2026-09-09): `npm run serve:workspace` serves every site on
-one local origin at 8640.** It is tier 3 and stands on its own; nothing after
-it moves without the decision.
+**No app has stopped vendoring — that stays §8.4's decision — but the check
+that would let one can now tell the two shapes apart.** `tools/app-check.mjs`
+learned to resolve rux-ds from `--ds`, `DS` or a sibling when an app has no
+`vendor/`, alongside the vendored shape every app still actually uses;
+reviewed independently by a session that had not written it, which found a
+real false-green defect and fixed it before the merge. Separately, and this
+DID ship to all three: each app's one check gained a gate that catches a page
+whose pasted icons are stale against its own pin, which nothing before today
+ever checked — a rebuild-and-diff for `rux-ln-notes`, which generates its
+pages, and a sprite-currency check adapted from the scheduler's own tool for
+the hub and the scheduler, which do not. All three were already stale when
+the gates were added, and are fixed. `docs/log.md` has the day's second half
+in one entry, log-first per the flow map's own nodes 12–13.
+
+**Open: roadmap §8.4 itself, the plan to stop every app vendoring a copy at
+all, drafted and still not decided.** The two tier-2 pieces it named — the
+shared check's shape detection, and the scaffold's brand seeding — are built,
+reviewed and merged, both driven red before merging and both carrying a real
+found-and-fixed defect (docs/log.md). What remains is §8.4's actual proposal:
+no app has stopped vendoring, and nothing here assumes it will. `npm run
+serve:workspace` — step 0, tier 3, done 2026-09-09 — serves every site on one
+local origin at 8640 regardless of the decision.
 
 The paragraphs below are the state as it was recorded, oldest claims last. Phases 9,
 10 and 11 are done. Phase 7's

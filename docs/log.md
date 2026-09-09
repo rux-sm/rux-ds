@@ -9,6 +9,63 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 - diff A and diff C reviewed independently, fixed, merged;
+two releases; two new gates found stale icons in every app that had them.**
+The long arc, after step 0 and the sweep below.
+
+**Review.** A session that had not written either branch (`local_8b7fac5c`)
+read §8.4 against the code, not the author's prose, and confirmed both
+weaken no check and that `tools/app-check.mjs` is correctly tier 2. It also
+found a real defect: `report()` printed a green line for a rule that never
+ran whenever the `ds` rule failed first, five false passes under one true
+failure -- the exact fault the file's own comment claimed to have avoided.
+Fixed (`094cfd2`), with a 24th self-test case asserting which rules ran, not
+only which failed, since the old harness could not have seen this. Three
+figures the author had quoted turned out wrong on independent re-measurement
+and are corrected in §8.4 itself: 46 resolved and 3 unresolvable out of 49
+found, not 49 resolved; Notes' inlined-symbol count is not quotable, it moved
+from 1525 to 1769 within the hour as atlas published; two icon counts were
+pre-fix readings stated as current. Both branches merged `6c6c8be`, `0c841e9`.
+
+**The control list.** Reviewing the merge found `CONTROL_FILES` held one of
+the two build workflows, not neither as first reported -- `gates.yml` was
+always there, only `pages.yml` was missing, and a comment-only edit to it
+(`4ffe544`) had reported as touching no control. Added, 62 entries (`b3eef08`).
+
+**Release one, v0.1.12, and a roll-out that found something a rehearsal
+could not.** Verified zero classes left against `v0.1.11` (2695 both sides),
+tagged, rolled out to all three real apps for the first time -- the
+2026-09-05 self-test had refused the hub and restored everything afterward,
+nothing had gone live. `rux-ln-notes` then failed at deploy: its generated
+pages carried an outdated icon paste against the sprite that had just moved,
+which the shared check cannot see (it verifies a symbol is somewhere in what
+ships, never that the paste is current), and only Notes' own build-and-diff
+CI step caught it, on push. Fixed with a rebuild there (`c9c0bc6`), then
+closed for good: `tools/check-build.mjs` now rebuilds and diffs FIRST in
+Notes' one check, so a person, `roll-out.sh` or the commit hook all hit it
+before a push (`69c387c`). The hub and the scheduler have no build step, so
+the same gap took a different shape there -- each already had (scheduler) or
+newly gained (hub, adapted from the scheduler's own tool) a `tools/sprite.mjs
+--check`, and running it before wiring it in found BOTH apps already stale:
+the hub missing four icons across both its pages, the scheduler missing two.
+Fixed and wired, each driven red with a committed tamper and restored before
+the real commit (hub `eb3a5b9`/`94a7b6c`, scheduler `94a13dd`/`907b1aa`).
+
+**The workspace flow map, corrected against today rather than left to age.**
+Verb 4 changed from "rehearsed, not confirmed" to a real walk with a genuine
+failure recorded as the map's sixth (`254c0e8`): the Notes build gap, found
+live. Node 20 gained the `push` the card names and the table had dropped. The
+"44 commits past v0.1.11" failure example was this document's own number, not
+README's, and the drift was same-day, not two -- corrected with the true
+attribution. A stale note about `docs/verbs.md`'s scheduler-row gap, itself
+already fixed, was closed rather than left claiming a fault that was gone.
+
+**Release two, v0.1.13, docs only.** The flow-map commit was the only thing
+past `v0.1.12`; zero classes moved (2695 both sides). Tagged, rolled out --
+every app already held the identical bytes, so every pin correctly stayed on
+`v0.1.12` and nothing was written. That is the pin naming bytes, not a
+position in the tag order, doing exactly its job.
+
 **2026-09-09 - the app tile icon, and 35 browser readings owed a re-sweep
 that could not be run.** `brand/icon.svg` is generated from `brand/logo.svg`
 by `tools/make-marks.mjs` rather than drawn a third time: `logo.svg` and
