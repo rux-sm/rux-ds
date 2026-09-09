@@ -344,20 +344,32 @@ PIN
 rm -rf "$OUT"
 mv "$NEW" "$OUT"
 
-# The logo is the project's, like the two CSS deltas below: seeded once and
-# never overwritten, so moving the pin cannot clobber a mark you replaced.
-# rux-ds ships a placeholder; swapping brand/logo.svg is the whole procedure.
-mkdir -p "$DIR/brand"
-[ -e "$DIR/brand/logo.svg" ] || cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
-[ -e "$DIR/brand/favicon.svg" ] || cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
-# THE THIRD FILE, added 2026-09-09. brand/icon.svg is the 32px tile the hub
-# draws for this app, named in switcher.json by absolute path; brand/README.md
-# is the spec. Seeded like the other two -- written only if absent, so a
-# project that drew its own keeps it -- and rux-ds generates its own from
-# brand/logo.svg, which a consumer cannot do because make-marks.mjs is not
-# vendored. Without this line a new app has no tile mark and the hub draws a
-# swatch, which is the documented interim rather than a fault.
-[ -e "$DIR/brand/icon.svg" ] || cp "$HERE/brand/icon.svg" "$DIR/brand/icon.svg"
+# THE BRAND, THREE FILES, AND ONLY ON A FIRST RUN. logo.svg for the header,
+# favicon.svg for the tab, icon.svg for the 32px tile the hub draws; each is
+# the project's to swap, and brand/README.md is the spec.
+#
+# GATED ON NEW_APP, WHICH IT WAS NOT UNTIL 2026-09-09, AND THAT WAS A BUG.
+# These lines ran on every invocation, a pin move included. That was harmless
+# only by luck: every app already had logo.svg and favicon.svg, so the copies
+# did nothing. The moment icon.svg joined the set, a pin move started ADDING an
+# untracked file outside vendor/ -- and docs/verbs.md verb 4 promises "only
+# vendor/ changes", roll-out.sh prints a commit that stages vendor/rux-ds
+# ALONE, and roll-out.sh's own pre-flight refuses any app with an untracked
+# file. So the first roll-out would have left brand/icon.svg untracked in each
+# app and the NEXT one would have refused all of them. Reproduced end to end on
+# a scratch copy of rux-scheduler before this was changed.
+#
+# Gating the whole set, rather than only the new file, is the point: fixing
+# icon.svg alone leaves the same trap armed for the fourth file anyone adds.
+# "Seeded once" is what the old comment claimed and this is what makes it true.
+# An existing app that wants a tile mark gets it by hand, in its own commit,
+# not smuggled in by a pin move.
+if [ -n "$NEW_APP" ]; then
+  mkdir -p "$DIR/brand"
+  cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
+  cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
+  cp "$HERE/brand/icon.svg" "$DIR/brand/icon.svg"
+fi
 
 for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
