@@ -1183,6 +1183,68 @@
       </div>
     </div>
 
+    <!-- A PAGE-OWNED TRIGGER, AND A VALUE READ RATHER THAN SHOWN. Asked for
+         by rux-scheduler 2026-09-07 and answered 2026-09-08; js/date-picker.js
+         has the contract. Two things here are not in any capture, and both are
+         said plainly rather than implied:
+
+         `data-rux-open="<id>"` on the button is THIS LAYER'S contract, the one
+         modal.js and menu.js already keep, not something Carbon renders —
+         Carbon React takes an `open` prop, which markup cannot express. It is
+         allowed here by popover.js's own test: an attribute appears only when
+         trigger and surface are too far apart for the markup to relate them,
+         and a toolbar control beside a calendar in the page body is that case.
+
+         `hidden` ON THE INPUT NEEDS NO CSS. Measured on the built page in
+         Chrome 152: computed `display: none`, box 0x0. The UA sheet's
+         `[hidden]` rule is `!important`, so Carbon's `display: block` does not
+         beat it — which also corrects what js/date-picker.js's header used to
+         claim about the calendar container.
+
+         THE TRIGGER OWES THE NAME. A hidden input is hidden from an assistive
+         technology too, so the button's accessible name carries the value, the
+         way the consuming app's week label already does. Focus returns to the
+         button on close, because a display:none input cannot take it and
+         .focus() on one fails silently. -->
+    <div style="display:flex;align-items:flex-start;gap:.5rem">
+      <button type="button" class="rux--btn rux--btn--ghost rux--btn--icon-only"
+              data-rux-open="dp-owned" aria-label="Change date — 2026-09-21">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-calendar"/></svg>
+      </button>
+      <div class="rux--date-picker rux--date-picker--next rux--date-picker--single" id="dp-owned">
+        <div class="rux--date-picker-container rux--date-picker-container--single">
+          <div class="rux--date-picker-input__wrapper">
+            <span>
+              <input id="dp-owned-input" class="rux--date-picker__input" type="text" value="2026-09-21" aria-label="Selected date" hidden>
+            </span>
+          </div>
+        </div>
+        <div class="rux--date-picker__calendar-container">
+          <div class="rux--date-picker__calendar" role="grid" aria-label="Calendar" tabindex="0">
+            <div class="rux--date-picker__month">
+              <button class="rux--date-picker__month-nav" type="button" aria-label="Previous month">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--left"/></svg>
+              </button>
+              <div class="rux--date-picker__current-month"></div>
+              <button class="rux--date-picker__month-nav" type="button" aria-label="Next month">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-chevron--right"/></svg>
+              </button>
+            </div>
+            <div class="rux--date-picker__weekdays">
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+              <div class="rux--date-picker__weekday"></div>
+            </div>
+            <div class="rux--date-picker__days"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- RANGE. TWO containers, `--from` and `--to`, sharing ONE calendar —
          that is the reference's shape, and the `inRange` day state is what
          makes it read as a range rather than two pickers. -->

@@ -165,7 +165,7 @@ one. **Its three CONTAINED specimens cannot be marked** — lines 151, 219
   of those three."
 
 <!-- COVERAGE:BEGIN -->
-_68 shipped fragments · 21 marked, holding 27 of the catalogue's 60 blocks · 275 candidate regions in the 47 unmarked._
+_68 shipped fragments · 21 marked, holding 27 of the catalogue's 60 blocks · 276 candidate regions in the 47 unmarked._
 
 | fragment | components | blocks | candidates | text | variants | behaviour | in the builder |
 |---|---|---|---|---|---|---|---|
@@ -186,7 +186,7 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 60 blocks · 2
 | `contained-list` | button, contained-list | 1 | 2 | 5 | 1 | — | yes |
 | `content-switcher` | button, content-switcher | 1 | 3 | 3 | 0 | — | yes |
 | `copy-button` | button, copy-button, popover, tooltip | — | 2 | — | — | copy-button, popover | no |
-| `date-picker` | date-picker, form | — | 8 | — | — | date-picker | no |
+| `date-picker` | button, date-picker, form | — | 9 | — | — | date-picker | no |
 | `dialog` | button, dialog | — | 2 | — | — | — | no |
 | `dropdown` | dropdown, form, list-box | — | 8 | — | — | form-controls, list-box | no |
 | `edit-in-place` | EditInPlace, button, popover, text-input, tooltip | — | 3 | — | — | copy-button, form-controls, list-box, popover | no |
