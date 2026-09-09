@@ -9,6 +9,48 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-08 - a template gaining a `<script>` never reaches an app that
+already exists, and three of them had been missing one since Phase 16.**
+Saved custom themes worked here and nowhere else. `js/custom-themes.js` has
+been vendored into every consumer since the `v0.1.9` pin; none of the three
+linked it, because each was scaffolded before Phase 16 added the tag to
+`templates/app-shell.html`, and **a pin move refreshes `vendor/` without
+rewriting a page**. That is the general lesson worth keeping: `vendor/` is
+data, a page is not, and `tools/new-project.sh` runs once per project.
+
+**IT FAILED SILENTLY, WHICH IS WHY NOBODY NOTICED.** `js/theme.js` and
+`js/profile.js` both reach for `window.Rux?.customThemes`, so with the module
+absent `list()` returns `[]` — no radio is cloned — and `get(id)` resolves a
+custom id to undefined. No error anywhere; the panel simply shows the four
+compiled themes and `rux`.
+
+**`tools/new-project.sh` NEEDED NO CHANGE, and the first reading of this said
+it did.** Checked rather than assumed: the scaffold copies the template and
+rewrites `"../js/` to `"vendor/rux-ds/js/`, so running its own substitution on
+`templates/app-shell.html` emits the tag at line 14, before `theme.js` at 15.
+A project started today is already correct. Editing it would also have been
+tier 2 for nothing — it is a CONTROL_FILE that `check-parity` compares against
+`builder/rewrites.mjs`.
+
+Fixed in the consumers, not here: `rux-sm.github.io` `60fcc0d` (both pages),
+`rux-ln-notes` `c21fef7` (its pages are generated, so the line went into
+`tools/build.mjs` and 23 pages were rebuilt; all seven of its gates passed).
+`rux-scheduler` was handed to its own session rather than edited, because it
+had six files dirty and a live session in it.
+
+**WHAT SAVED THEMES STILL ARE NOT.** `localStorage` is per browser profile per
+origin, so a theme does not follow a user to another device, and no other user
+ever sees it. The hub syncs the theme PREFERENCE to Supabase
+(`platform.profiles.theme`) but never the DEFINITION, so a custom id opened on
+a second device should resolve to nothing, fall back to `white`, and have that
+`white` pushed back up over the original choice. **Not tested** — it follows
+from the two behaviours and needs two browser profiles. Publishing a theme for
+other users is unbuilt and is a backend project: a `platform.themes` table with
+owner-write and public-read, a publish action, an identity worth trusting (the
+apps sign in anonymously), and an async load path that does not flash, since
+`custom-themes.js` reads `localStorage` synchronously and `theme.js` applies at
+first paint.
+
 **2026-09-08 - the scheduler's other three asks: two answered, one
 declined, and a shipped defect found on the way.**
 
