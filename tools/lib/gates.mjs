@@ -821,6 +821,18 @@ export const CONTROL_FILES = [
   // The one transformation a template undergoes to become a page, read by
   // builder.html and by check-parity against the script.
   'builder/rewrites.mjs',
+  // THE SHARED APP CHECK, AND THIS LIST HAD FORGOTTEN IT until 2026-09-09.
+  // It is a gate and its implementation both -- AGENTS.md's tier 2, first
+  // column -- and it is the ONLY gate rux-sm.github.io, rux-ln-notes and
+  // rux-scheduler run, vendored into each and run there from tools/check.mjs.
+  // So `check-controls.mjs` reported "none of 60 touched" for a change to the
+  // one file that decides what passes in three other repositories. Found while
+  // writing roadmap §8.4's diff A, by running check-controls on that diff and
+  // disbelieving the answer. AGENTS.md already covered it -- "a file is not
+  // tier 3 because CONTROL_FILES forgot it; the categories govern" -- so this
+  // line changes no rule, it makes the list agree with the rule.
+  'tools/app-check.mjs',
+
   // AND THE SCRIPT IT IS CHECKED AGAINST. new-project.sh became an expected
   // result the moment a gate started comparing against it: edit the sed
   // pipeline and check-parity agrees with whatever it now says, exactly as
