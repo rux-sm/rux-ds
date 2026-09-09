@@ -296,22 +296,20 @@
           <p><a class="rux--link rux--link--inline" href="https://github.com/rux-sm/rux-ds/blob/main/docs/starting-a-project.md">Starting a project</a> is the recipe, including how to move the pin later. <a class="rux--link rux--link--inline" href="https://github.com/rux-sm/rux-ds">The repository</a> holds the source, the gates and <a class="rux--link rux--link--inline" href="https://github.com/rux-sm/rux-ds/blob/main/docs/roadmap.md">the decision log</a>.</p>
         </section>
 
-        <!-- THE BUILD STAMP, and it is here because this is the one app on the
-             platform NOT pinned to a tag. Every other module vendors rux-ds at
-             a PIN and shows the system as it was; rux-ds cannot vendor itself,
-             so this site serves the working tree at whatever main is. That is
-             arguably right for a design system's own site — it shows what you
-             would get if you moved your pin today — but the visitor has to be
-             able to tell, so the commit is on the page.
+        <!-- THE BUILD STAMP. Since 2026-09-09 (roadmap §8.4 diff B, decided in
+             §8.6) this site deploys on a release tag, and an app that links
+             /rux-ds/ reads that same release. The tag is the honest answer to
+             "which version is live" -- git describe on a checkout names the
+             newest tag, not the deployed one -- so it is on the page.
 
              THE PLACEHOLDER IS THE HONEST LOCAL ANSWER. .github/workflows/
-             pages.yml substitutes the short SHA and the date into this span
-             before it uploads, and does NOT commit the result: a stamp written
-             into the file at build time would make index.html dirty on every
-             single commit, which is the churn portal.html avoids by only
-             changing when its data does. Served from a checkout, it reads
-             "working tree", which is what it is. -->
-        <p>Serving <span id="build-commit">the working tree</span>. Unlike every app built on it, this site is not pinned to a tag &mdash; it is the system as it stands.</p>
+             pages.yml substitutes the tag, the short SHA and the date into
+             this span before it uploads, and does NOT commit the result: a
+             stamp written into the file at build time would make index.html
+             dirty on every single commit, which is the churn portal.html
+             avoids by only changing when its data does. Served from a
+             checkout, it reads "working tree", which is what it is. -->
+        <p>Serving <span id="build-commit">the working tree</span>. This site deploys on a release tag, and an app built on it that links <code>/rux-ds/</code> reads the same release.</p>
 
       </div>
     </div>
