@@ -344,12 +344,32 @@ PIN
 rm -rf "$OUT"
 mv "$NEW" "$OUT"
 
-# The logo is the project's, like the two CSS deltas below: seeded once and
-# never overwritten, so moving the pin cannot clobber a mark you replaced.
-# rux-ds ships a placeholder; swapping brand/logo.svg is the whole procedure.
-mkdir -p "$DIR/brand"
-[ -e "$DIR/brand/logo.svg" ] || cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
-[ -e "$DIR/brand/favicon.svg" ] || cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
+# THE BRAND, THREE FILES, AND ONLY ON A FIRST RUN. logo.svg for the header,
+# favicon.svg for the tab, icon.svg for the 32px tile the hub draws; each is
+# the project's to swap, and brand/README.md is the spec.
+#
+# GATED ON NEW_APP, WHICH IT WAS NOT UNTIL 2026-09-09, AND THAT WAS A BUG.
+# These lines ran on every invocation, a pin move included. That was harmless
+# only by luck: every app already had logo.svg and favicon.svg, so the copies
+# did nothing. The moment icon.svg joined the set, a pin move started ADDING an
+# untracked file outside vendor/ -- and docs/verbs.md verb 4 promises "only
+# vendor/ changes", roll-out.sh prints a commit that stages vendor/rux-ds
+# ALONE, and roll-out.sh's own pre-flight refuses any app with an untracked
+# file. So the first roll-out would have left brand/icon.svg untracked in each
+# app and the NEXT one would have refused all of them. Reproduced end to end on
+# a scratch copy of rux-scheduler before this was changed.
+#
+# Gating the whole set, rather than only the new file, is the point: fixing
+# icon.svg alone leaves the same trap armed for the fourth file anyone adds.
+# "Seeded once" is what the old comment claimed and this is what makes it true.
+# An existing app that wants a tile mark gets it by hand, in its own commit,
+# not smuggled in by a pin move.
+if [ -n "$NEW_APP" ]; then
+  mkdir -p "$DIR/brand"
+  cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
+  cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
+  cp "$HERE/brand/icon.svg" "$DIR/brand/icon.svg"
+fi
 
 for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
@@ -441,7 +461,7 @@ fi
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR${TAG_ARG:+   (exported from the tag; this clone untouched)}"
 echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · templates $(ls "$OUT/templates" | wc -l | tr -d ' ') · PIN$([ -e "$OUT/tools/app-check.mjs" ] && printf ' · tools/app-check.mjs, tools/serve.mjs, githooks/commit-msg')"
 echo "  rux-theme.css, rux-overrides.css   yours, deltas only; left alone if present"
-echo "  brand/logo.svg, brand/favicon.svg   yours; swap any time, left alone if present"
+echo "  brand/logo.svg, brand/favicon.svg, brand/icon.svg   yours; swap any time, left alone if present"
 if [ -n "$MOVE_ONLY" ]; then
   echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
 else
