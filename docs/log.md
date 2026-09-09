@@ -23,18 +23,33 @@ beside it, no console errors.
 **IT AGED 35 OF 50 SWEEP CELLS, AND THAT IS THE GATE WORKING.** `brand` is a
 declared shared input to the five browser gates, whole directory, added
 2026-09-05 after a mark swap aged nothing. Adding a file there ages every
-reading across 16 pages. **The re-sweep was attempted and abandoned, not
-skipped quietly.** The Browser pane was hidden, and a hidden pane does not
-render: screenshots came back blank, `computer` scroll and hover timed out
-with "the page is not rendered while it is not displayed", and `innerWidth`
-read 0 on every fresh navigation until a screenshot forced a layout. Layout
-did compute once forced — `check-a11y` returned 29 findings with
-`focusRingChecked: true`, matching the figure on record — **but a reading
-whose viewport cannot be asserted is the thing this skill's own condition 3
-forbids**, and the visual half of the loop could not run at all. So nothing
-was written to `docs/gate-coverage.json`; the skill's rule against a piecemeal
-ledger holds. `npm run gates` reports 35 stale and does not fail the build.
-**What is needed: the Browser pane visible, then the sweep.**
+reading across 16 pages.
+
+**The first attempt was abandoned, and that stands rather than being tidied
+away.** The Browser pane was hidden, and a hidden pane composites no frames:
+screenshots came back blank and then timed out outright, `computer` scroll and
+hover failed with "the page is not rendered while it is not displayed", and
+`innerWidth` read 0 on every fresh navigation until a capture forced a layout.
+A reading whose viewport cannot be asserted is what the skill's own condition
+3 forbids, so nothing was written.
+
+**DONE THE SAME DAY, `de25a27` and `d2fb7f4`, on this ledger's own
+workaround.** `docs/gate-coverage.json`'s `templates/document-page.html` cell
+already records the way round a blanking pane: an emulated viewport TALLER
+than the document renders the whole page in one capture. That also makes
+`innerWidth` deterministic, so the viewport became assertable. All 16 pages
+swept at 1280x800 with theme, focus, Plex and width asserted per page, and all
+16 looked at in single captures 1500 to 6000 tall. **Every figure on every
+page reproduced its predecessor, with no exception anywhere in the sweep** —
+which `tools/lib/gates.mjs` predicts in as many words: the brand input "BUYS
+NO NEW DETECTION". Sink 29 a11y and 456/406/35/15/36/309 spacing, builder 5,
+wizard 4 with its divergence set matching signature for signature, every other
+page 0; sink 0 stripped and 4 added, nothing collapsed or escaped in five
+themes, 47 of 47 behaviours passing. **One correction was made in the open**:
+the portal's first-pass 11 no-reference was read off the page BEFORE the
+ledger regenerated it, and the true figure is 10, matching its predecessor —
+the reason that page has a second-pass rule. `npm run gates` reads 50 of 50
+current.
 
 **2026-09-09 - §8.4 step 0 done: the workspace server.** `tools/serve.mjs
 --workspace`, `npm run serve:workspace`, port 8640, tier 3. `/` is the
