@@ -9,6 +9,105 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-08 - the scheduler's other three asks: two answered, one
+declined, and a shipped defect found on the way.**
+
+**THE DATE PICKER (ask 2) IS ANSWERED IN FULL, AND NEITHER HALF NEEDED CSS.**
+`data-rux-open="<id>"` on any element opens the picker whose root carries that
+id. This is not a new contract -- modal.js and menu.js already keep it, and
+popover.js states the test it has to pass: an attribute appears only when
+trigger and surface are too far apart for the markup to relate them. A toolbar
+control and a calendar in the page body are that case, which is exactly what
+the request describes.
+
+**THE ANCHOR IS THE LOAD-BEARING PART, and it was proved red.** The opener
+becomes the overlay anchor, not just the focus destination. Exercised against
+the real kernel with two throwaway surfaces so the anchor was the only
+difference: with the input as anchor, a `pointerdown` on the page's trigger is
+an OUTSIDE press and closes the surface -- so the same click would reopen it and
+the toggle would never toggle. With the trigger as anchor it survives. That is
+`overlay.js:122`, and it would have been an intermittent-looking bug rather than
+an obvious one.
+
+**THE SECOND HALF NEEDED NO CSS AT ALL, and the reasoning that said otherwise
+was this repository's own.** `hidden` on `.rux--date-picker__input` computes
+`display: none`, box 0x0, on the built page. `js/date-picker.js`'s header
+argued the opposite for the calendar container -- that a `display: block` rule
+at specificity (0,2,0) beats the UA `[hidden]` rule. It does not, in Chrome 152:
+the UA sheet declares it `!important`. Proved with a bare `<div hidden>` carrying
+an INLINE `display: block`, which still computes `none`, and the same with
+`!important`, which computes `block`. The header is corrected in place rather
+than quietly fixed; the detach design it justified is unchanged and still right
+for its own reason, which is that React mounts the container only while open and
+a detached calendar is absent from the accessibility tree.
+
+**A FIRST MEASUREMENT OF THIS WAS VOID AND IS RECORDED AS SUCH.** The first
+reading was taken on `sink/date-picker.html` opened directly, which is a
+FRAGMENT and links no stylesheet: `display` read `inline-block`, the `<input>`
+UA default, so nothing about Carbon's rule was being measured. It happened to
+give the right answer for the wrong reason. Re-measured on `kitchen-sink.html`
+with `rux.css` confirmed linked in the same execution.
+
+**check-behaviour SCOPED TO THE DOCUMENT (ask 3) IS PROVEN AND PROPOSED, NOT
+APPLIED.** Tier 2. Two diffs sit in `.brand/`: `check-behaviour-scoping.diff`
+against `tools/check-behaviour.js` and `check-behaviour-registry.diff` against
+`tools/lib/gates.mjs`, `docs/composing-pages.md` and two skills. They apply
+cleanly and produce `.brand/cb-v2.js` byte for byte. What was measured:
+
+  - THE COMPLAINT REPRODUCES IN THIS REPOSITORY, which matters because it was
+    filed from another one. The committed gate on `templates/document-page.html`
+    reads 4 passed of 18 with 14 "failed", three of them saying "no shell here"
+    on a page that has a working shell.
+  - THE SINK IS UNMOVED: 47 passed, 47 ran, 47 total, 0 skipped, 0 failed.
+  - IT DOES NOT RETIRE A CONTRACT, which was the risk its own author named.
+    Root present and contract broken still FAILS: with `#table`'s batch bar
+    removed the case reports "a selectable table with no batch bar". Root absent
+    SKIPS: with `#table` removed entirely the same case is skipped, not failed.
+    That is the boundary the diff claims, tested in both directions.
+  - IT EARNED ITS KEEP BEFORE IT WAS EVEN APPLIED -- see below.
+
+**THE DEFECT IT FOUND: ELEVEN TEMPLATES WITH A HAMBURGER THAT NEVER CHANGES ITS
+NAME.** All of them shipped `aria-label="Toggle navigation"`. The capture
+renders `aria-label="Open menu"`, and `js/ui-shell.js` swaps only the known
+pair on purpose -- a trigger labelled anything else is a product's own wording,
+most likely translated. So the invented label silently disabled the swap.
+Measured on `document-page` before the fix: the glyph goes `#i-menu` to
+`#i-close` and `aria-expanded` goes false to true, while the accessible name
+stays "Toggle navigation" in all three states. A sighted user saw close; a
+screen-reader user was told nothing changed. **That is the exact fault
+ui-shell.js's header says it was written to fix on 2026-08-29**, reintroduced
+through markup instead of code and copied forward into each new template from
+the one before it. The sink was never affected, which is why every sweep passed.
+Fixed at `2677d7d`.
+
+**THE SHELL CAPTURE (ask 1's remaining half) IS DECLINED, AND THE REASON IS
+STRONGER THAN THE ONE THIS LOG GAVE YESTERDAY.** The entry below proposed it
+with the trade "nothing measured, but it adds a second expected value for one
+selector". Measured now, it is worse than that and it is certain.
+`docs/carbon-react-spacing.json` keys on the element's OWN class signature plus
+its parents: there is exactly one entry for `cds--header__name`,
+`paddingInlineStart: 16px`, parent `cds--header`. The 8px comes from
+`__menu-toggle:not(.__hidden) ~ __header__name`, a SIBLING selector, and both
+shells give the name an identical signature and an identical parent. So no
+capture can tell the two apart inside check-spacing's model, and
+`check-spacing.js:482` passes a signature on ANY recorded variant -- adding the
+8px would make 8px acceptable on all eleven persistent-shell templates and on
+`index.html`, where it would be a real regression. **The capture cannot do the
+job it was proposed for.** What would: teaching check-spacing to express a
+sibling condition, which is a larger change to a control and not this ask.
+Meanwhile the consumer's adjudicated 8px reading is the correct outcome, not a
+workaround.
+
+A capture of the collapsible shell DOES already exist, incidentally, in
+`docs/carbon-ibm-products-dom.json` -- `menu-trigger.menu-toggle` with no
+`__hidden`. It answers the doctrine question and nothing about the spacing one.
+
+**WHAT IS NOT DONE.** No `check-behaviour` case covers the new date-picker
+contract, because adding one edits a control; it was driven by hand instead --
+open, pick, Escape, outside press, and the built-in `__icon` trigger still
+toggling. And the whole session's sweeps were taken with the Browser pane
+hidden, so no page was looked at.
+
 **2026-09-08 - the scheduler's sprite ask, answered by rasterising rather
 than by reasoning.** rux-scheduler asked for `events` and `user--multiple`
 on 2026-09-07, both to be judged at 16px side by side, with no change asked

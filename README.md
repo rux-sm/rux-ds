@@ -460,21 +460,35 @@ tag would still pass.
    and reads as a smear under two rings, while `user--multiple` keeps a whole
    ring and a shoulder arc in front and a legible partial behind. `events--alt`
    was tried unasked and is worse than either. The symbol ships unreferenced
-   here, as `color-palette` does. It aged all 50 sweep cells, every one of
-   which reproduced exactly (`5cbf08a`, `36f553c`) — **with the visual step
-   not taken on any page, because the Browser pane is hidden and every capture
-   returns blank.** Still open: a **date
-   picker whose trigger the consuming page owns**, since `js/date-picker.js`
-   requires the trigger to be `__icon` inside the picker's own root and every
-   way round it puts a Carbon class on an app element or an app rule on a
-   Carbon part. One is a gate: **`check-behaviour` scoped to the document**
-   rather than to kitchen-sink section ids, which makes it report 4 of 18
-   against a consumer and call the other 14 absent where they are present and
-   were measured by hand. **The fourth is half answered here already** —
-   `js/ui-shell.js` calling a desktop hamburger a state IBM does not have,
-   corrected 2026-09-08 — and what remains of it is a capture of the
-   collapsible shell for `check-spacing` to compare against, which is tier 2
-   and is proposed in `docs/log.md` with its trade rather than taken.
+   here, as `color-palette` does.
+
+   **THE DATE PICKER IS ANSWERED TOO, `89e14fd`** — both halves, and neither
+   needed CSS. `data-rux-open="<id>"` opens the picker from an element the page
+   owns, which is not a new contract but the one modal and menu already keep,
+   and the opener becomes the overlay ANCHOR as well as the focus destination —
+   proved red against the real kernel, because with the input as anchor a press
+   on the page's trigger is an outside press and the toggle never toggles. The
+   input may carry `hidden`: measured `display: none`, box 0x0, which corrects
+   what `js/date-picker.js`'s header claimed about the UA `[hidden]` rule.
+
+   **`check-behaviour` SCOPED TO THE DOCUMENT IS PROVEN AND PROPOSED, NOT
+   APPLIED** — tier 2, two diffs in `.brand/`, and `docs/log.md` has every
+   reading: the complaint reproduces here (4 of 18 on `document-page`, with
+   three "no shell here" on a page that has one), the sink is unmoved at 47 of
+   47, and the fail-versus-skip boundary was tested in both directions so it
+   retires no contract. **It found a shipped defect before it was even
+   applied**: all eleven templates carried an invented
+   `aria-label="Toggle navigation"`, which silently disabled `js/ui-shell.js`'s
+   name swap — the glyph and `aria-expanded` moved, the accessible name never
+   did. Fixed at `2677d7d`.
+
+   **THE SHELL CAPTURE IS DECLINED ON EVIDENCE, and the reason is stronger than
+   the one recorded yesterday.** `check-spacing` keys on an element's own class
+   signature plus its parents; both shells give `header__name` an identical
+   signature and parent, and a signature passes on ANY recorded variant, so
+   adding the 8px would make 8px acceptable on all eleven persistent-shell
+   templates and on `index.html` too. The capture cannot do the job it was
+   proposed for. The doctrine half was already answered 2026-09-08.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template
