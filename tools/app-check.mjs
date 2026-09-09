@@ -237,7 +237,14 @@ export function check(root, opts = {}) {
       fail('ds', 'rux-ds', named
         ? `${where} names ${abs}, which holds no css/rux.css -- that is not a rux-ds checkout. A path you name is a claim about where rux-ds is, so a wrong one fails rather than falling through to a sibling and passing against a different copy.`
         : `this app has no vendor/rux-ds, so it links /rux-ds/ on the shared origin and needs a rux-ds checkout to resolve that against. Looked for a sibling at ${abs}, which holds no css/rux.css. Clone rux-ds beside this app, or pass --ds <dir> / DS=<dir>. Not skipped -- a check that cannot resolve a class is not a check.`);
-      return { failures, notes, pages: [], classUses: 0, tokenUses: 0, defined: 0, vendored, ds, dsFrom, pinTag: null, pinRecorded: null, pinComputed: null, absolute: 0, symbols: 0 };
+      // ONLY `ds` RAN. Everything else needs this directory, so it is reported
+      // as not run rather than as zero-and-green. `unresolvable` is here
+      // because report() subtracts it: omitting it made that arithmetic NaN,
+      // which printed nothing and threw nothing -- a second thing this early
+      // return got quietly wrong.
+      return { failures, notes, pages: [], classUses: 0, tokenUses: 0, defined: 0, vendored, ds, dsFrom, pinTag: null, pinRecorded: null, pinComputed: null, absolute: 0, unresolvable: 0, symbols: 0,
+        ran: ['ds'],
+        notRun: Object.fromEntries(['pin','classes','tokens','files','sprite','ids'].map(k => [k, 'no rux-ds was found, so there is nothing to check this app against'])) };
     }
   }
   const hub = opts.hub ? resolve(root, opts.hub) : null;
@@ -392,19 +399,40 @@ export function check(root, opts = {}) {
   }
   if (unresolvable) notes.push(`${unresolvable} root-absolute resource${unresolvable === 1 ? '' : 's'} (/…) not checked: ${hub ? 'not under /rux-ds/ and not in the hub' : 'they name files on the account\'s root site, which is not this app -- pass --hub <dir> to check them'}`);
 
-  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, vendored, ds, dsFrom, pinTag, pinRecorded, pinComputed, absolute, unresolvable, symbols };
+  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, vendored, ds, dsFrom, pinTag, pinRecorded, pinComputed, absolute, unresolvable, symbols,
+    // Every rule executed except pin in the served shape, where there are no
+    // vendored bytes to verify. Named rather than inferred from a zero.
+    ran: ['ds', ...(vendored ? ['pin'] : []), 'classes', 'tokens', 'files', 'sprite', 'ids'],
+    notRun: vendored ? {} : { pin: 'this app vendors nothing, so there are no pinned bytes to verify -- it loads whatever /rux-ds/ serves' } };
 }
 
 // ── printing ────────────────────────────────────────────────────────────────
 function report(root, r) {
   const rules = ['ds', 'pin', 'classes', 'tokens', 'files', 'sprite', 'ids'];
+  // NOT RUN IS NOT A PASS, AND SAYING SO TOOK A REVIEWER. Until 2026-09-09
+  // this printed a green ` ok ` for every rule whose figure happened to be
+  // zero, so an app where the ds rule failed -- no rux-ds found, nothing to
+  // check anything against -- read:
+  //     FAIL  ds
+  //      ok   classes 0 uses resolve against 0 compiled
+  //      ok   tokens  0 var(--rux-*) reads resolve      ... and three more
+  // Five greens for five rules that never executed. The exit code was right,
+  // so CI was never fooled; a person reading the output was. It is exactly the
+  // fault this file's own comment claimed to have avoided, guarded on `pin`
+  // and `ds` and nowhere else. Found in review by a session that did not write
+  // this branch.
+  //
+  // So check() now says which rules RAN, and anything else prints as not run
+  // with the reason. A rule that did not execute can no longer look like one
+  // that passed.
+  const ran = new Set(r.ran ?? rules);
   for (const rule of rules) {
     const fs = r.failures.filter(f => f.rule === rule);
-    // The pin rule prints nothing in the served shape: it does not apply, and
-    // a green ' ok ' line for a rule that never ran is the shape of thing this
-    // file exists to avoid. The note says so instead.
-    if (rule === 'pin' && !r.vendored && !fs.length) continue;
-    if (rule === 'ds' && !fs.length && !r.ds) continue;
+    if (!ran.has(rule)) {
+      console.log(`  ----  ${rule.padEnd(8)}NOT RUN -- ${(r.notRun ?? {})[rule] ?? 'a rule it depends on failed first'}`);
+      for (const f of fs) console.log(`          ${f.where}: ${f.what}`);
+      continue;
+    }
     console.log(`  ${fs.length ? 'FAIL' : ' ok '}  ${rule.padEnd(8)}${fs.length ? '' : ({
       ds: `rux-ds from ${r.dsFrom}`,
       pin: `vendor/rux-ds at ${r.pinTag}${r.pinRecorded ? `, bytes verified ${shortHash(r.pinRecorded)}` : ''}`,
@@ -418,7 +446,16 @@ function report(root, r) {
   }
   for (const n of r.notes) console.log(`  note  ${n}`);
   console.log(`\n  ${r.failures.length ? `${r.failures.length} failure${r.failures.length === 1 ? '' : 's'}` : 'passes'} in ${root}`);
-  console.log(`  This says the page CAN render from the pin. Whether it looks right is yours: open`);
+  // AND THE CLOSING LINE IS EARNED OR IT IS NOT PRINTED. It says the page can
+  // render and invites a person to go and look; after a run where most rules
+  // never executed it would be describing a check that did not happen.
+  const skipped = rules.filter(x => !ran.has(x));
+  if (skipped.length > 2) {
+    console.log(`  ${skipped.length} of ${rules.length} rules did not run, so this says almost nothing about the page.`);
+    console.log(`  Fix the failure above and run it again.\n`);
+    return;
+  }
+  console.log(`  This says the page CAN render from ${r.vendored ? 'the pin' : 'the rux-ds it found'}. Whether it looks right is yours: open`);
   for (const p of r.pages) console.log(`    ${p}`);
   console.log(`  in each theme -- ${THEMES} -- from the account panel.\n`);
 }
@@ -481,7 +518,7 @@ function selfTest() {
     // THE SERVED SHAPE, §8.4. Deleting the PIN alone is what a half-done move
     // looks like, and it must FAIL rather than fall back to the working
     // directory or to silence.
-    ['served: no ds anywhere', 'ds', () => { rmSync(join(work, 'vendor'), { recursive: true, force: true }); }],
+    ['served: no ds anywhere', 'ds', () => { rmSync(join(work, 'vendor'), { recursive: true, force: true }); }, null, ['ds']],
     ['served: --ds resolves', null, () => {
       const page = readFileSync(join(work, 'index.html'), 'utf8').replace('vendor/rux-ds/css/rux.css', '/rux-ds/css/rux.css');
       rmSync(join(work, 'vendor'), { recursive: true, force: true });
@@ -549,17 +586,22 @@ function selfTest() {
   ];
   let bad = 0;
   try {
-    for (const [label, rule, mutate, wantNote] of cases) {
+    for (const [label, rule, mutate, wantNote, wantRan] of cases) {
       good(); mutate();
       const r = check(work, dsOpt);
       const rules = [...new Set(r.failures.map(f => f.rule))];
       const rulesOk = rule === null ? rules.length === 0 : rules.length === 1 && rules[0] === rule;
       const noteOk = !wantNote || r.notes.some(n => wantNote.test(n));
-      const ok = rulesOk && noteOk;
+      // WHICH RULES RAN, asserted rather than inferred from a zero. A run that
+      // stops at `ds` used to print five green rules that never executed, and
+      // no case here could see it because the harness only ever compared
+      // FAILURES. This is the assertion that would have caught it.
+      const ranOk = !wantRan || (Array.isArray(r.ran) && r.ran.length === wantRan.length && wantRan.every(x => r.ran.includes(x)));
+      const ok = rulesOk && noteOk && ranOk;
       if (!ok) bad++;
       const want = rule === null ? 'no failure' : `only ${rule}`;
       const got = rules.length ? rules.join(', ') : 'none';
-      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${want}${wantNote ? ' and the note' : ''}, got ${got}${wantNote ? (noteOk ? ' and the note' : ' and NO note') : ''}`);
+      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${want}${wantNote ? ' and the note' : ''}${wantRan ? `, ran only ${wantRan.join('+')}` : ''}, got ${got}${wantNote ? (noteOk ? ' and the note' : ' and NO note') : ''}${wantRan ? `, ran ${(r.ran ?? []).join('+')}` : ''}`);
     }
   } finally {
     rmSync(work, { recursive: true, force: true });

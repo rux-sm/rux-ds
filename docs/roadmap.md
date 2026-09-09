@@ -5260,8 +5260,8 @@ the thing this file exists to stop.
   branch stays for the same reason.
 - ✱ **The sprite rule compares symbol by symbol, never the block.** Pages
   deliberately carry different subsets: measured 2026-09-09, the hub's account
-  page inlines 4 symbols, its home page 60, the scheduler and Notes 61, rux-ds
-  63. "The block equals `icons.svg`" would have failed four of six pages for
+  page inlined 4 symbols and its home page 60 **before the hub was fixed** (3
+  and 59 after), the scheduler and Notes 61, rux-ds 63. "The block equals `icons.svg`" would have failed four of six pages for
   being correct. So: every `<symbol id="i-…">` a page inlines must be
   byte-identical to the one rux-ds ships, and a page carrying fewer is not
   stale. This still catches the 2026-09-06 defect, which was one symbol's
@@ -5286,8 +5286,8 @@ judged here.**
 | | |
 |---|---|
 | Self-test | 23 cases, 0 wrong. The first run was 1 wrong and it was a real flaw: keying the shape on `vendor/rux-ds/PIN` made an app whose PIN was deleted look *served*, so "vendor/ was not committed" reported as "no rux-ds found". Keyed on the directory instead |
-| The three apps, unchanged, vendored shape | Notes and the scheduler pass, with the same rules green as before plus `sprite`: 1525 and 122 inlined symbols match. The hub **FAILS**, and it is a true finding — below |
-| A served app, end to end | The scheduler copied to a scratch tree, `vendor/` deleted, its two pages' resource paths rewritten to `/rux-ds/`. The check passes: 275 classes, 79 tokens, 122 symbols, and **49 root-absolute resources now resolved that the old rule counted and skipped** |
+| The three apps, unchanged, vendored shape | Notes and the scheduler pass, with the same rules green as before plus `sprite`: 122 inlined symbols match on the scheduler, and Notes matched every one of its own. **Notes' symbol count is not quotable and this row used to quote it** — 1525 on 2026-09-09 at 23 guides, 1708 and then 1769 within the hour as atlas published more. It moves with the data; the fact that every symbol matched is the reading, not the total. The hub **FAILS**, and it is a true finding — below |
+| A served app, end to end | The scheduler copied to a scratch tree, `vendor/` deleted, its two pages' resource paths rewritten to `/rux-ds/`. The check passes: 275 classes, 79 tokens, 122 symbols, and **46 root-absolute resources now resolved that the old rule counted and skipped**, with 3 named as unresolvable (they are the hub's, not this app's) out of 49 found. *An earlier draft of this row said 49 resolved, which counted the found as the resolved; corrected on an independent reading, and the corrected figure re-measured here* |
 | The served page in a browser | Served from a throwaway workspace on 8641 and opened: 0 `vendor/` references, 24 `/rux-ds/` links, IBM Plex loading, all 19 behaviour modules on `window.Rux`, the switcher filled from the hub's list, no console errors, the g90 board rendering. **This is the first evidence that an app works with no vendored copy at all** |
 
 **THE HUB FAILED THE NEW SPRITE RULE, THE FINDING WAS REAL, AND IT IS FIXED —
@@ -5484,6 +5484,61 @@ catches its own factual slips and not its own blind spots.
 8. Smaller: "every app's" local server 404s on `/switcher.json` — the hub's
    does not; "copies nothing" — the scaffold still seeds a brand and two
    delta files; "one commit in one repository" — step 6 touches four.
+
+#### Reviewed independently, 2026-09-09 — and it found a real defect
+
+**By a session that did not write either branch**, working in detached
+worktrees so this checkout was never touched, and diffing each branch from its
+own merge-base rather than from `main` — both branches are behind `main`, and
+`git diff main..branch` shows `main`'s newer work as phantom deletions. Its
+verdicts on Q1 and Q2: neither branch weakens a check, and
+`tools/app-check.mjs` is correctly tier 2 with the `CONTROL_FILES` line right.
+It drove the served shape red itself rather than trusting the self-test —
+invented class, missing `/rux-ds/` file, no rux-ds, tampered symbol — each
+exit 1 with exactly one rule red.
+
+**THE DEFECT, AND IT IS THE ONE THIS FILE CLAIMED TO HAVE AVOIDED.** `report()`
+printed a green ` ok ` for any rule whose figure happened to be zero. So an app
+where the `ds` rule failed — no rux-ds found, nothing to check anything
+against — printed one red line and then **five greens for five rules that
+never executed**: `0 uses resolve against 0 compiled`, `0 var(--rux-*) reads
+resolve`, and so on. The exit code was 1 throughout, so CI was never fooled; a
+person reading the output was. The guard existed on `pin` and on `ds` and
+nowhere else, and the paragraph above this one asserted the principle as
+achieved. **Fixed:** `check()` now returns which rules RAN, anything else
+prints `---- NOT RUN` with the reason, and the closing "this says the page CAN
+render" line is suppressed when most rules did not run. A 24th self-test case
+asserts the run-set, driven red and restored. The same early return also
+omitted `unresolvable`, making one figure `NaN`; now included.
+
+**Three numbers in the write-up above were wrong and are corrected in place.**
+49 root-absolute resources "resolved" was 46 resolved and 3 unresolvable out of
+49 found — the row counted found as resolved. Notes' 1525 symbols is not a
+quotable figure at all: it read 1708 and then 1769 within the hour as atlas
+published more guides. And the sprite bullet's 4-and-60 are pre-fix readings
+stated in the present tense.
+
+**One correction the reviewer made to itself, kept here because it is a trap
+for the next reader**: `node tools/check-controls.mjs` with no argument
+compares against `HEAD`, so on a clean worktree it reports "none touched" and
+reads as contradicting this section. Pass the merge-base and it reports 2 of
+61, as claimed.
+
+**AND THE CONTROL LIST IS STILL SHORT BY TWO.** Neither
+`.github/workflows/pages.yml` nor `.github/workflows/gates.yml` is in
+`CONTROL_FILES`, and `AGENTS.md` puts CI in tier 2 by name. The reviewer hit
+this independently on `main` earlier the same day: `4ffe544`, a comment-only
+edit to `pages.yml`, was reported as touching no control. Adding them is itself
+tier 2 and **is not done here** — it is rux's, and it is a separate change from
+this branch.
+
+**What the review did not cover**, said rather than left implied: `--hub` was
+not exercised, so this section's own criticism of it — a gate whose
+thoroughness depends on an argument — stands unconfirmed either way. And
+whether the served shape is the right direction was left alone, correctly:
+that is §8.4's decision and rux's, not a reviewer's.
+
+---
 
 **§8.3 and §8.2 stand until rux says otherwise.** This section is the plan for
 a decision not yet made.
