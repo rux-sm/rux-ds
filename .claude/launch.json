@@ -7,6 +7,12 @@
       "runtimeArgs": ["tools/serve.mjs"],
       "port": 8642,
       "autoPort": true
+    },
+    {
+      "name": "workspace",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs", "--workspace"],
+      "port": 8640
     }
   ]
 }

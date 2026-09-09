@@ -115,7 +115,7 @@ the act; it never restates the detail.
 
 | # | Step | Command or file | Kind | What happens | Verb |
 |---|---|---|---|---|---|
-| 8 | **Serve the page** | `npm run serve` → `localhost:8642` | step | An app serves itself on 8643 with its own `tools/serve.mjs` | 1 |
+| 8 | **Serve the page** | `npm run serve` → `localhost:8642`; or `npm run serve:workspace` → `localhost:8640`, every site on one origin | step | An app serves itself on 8643 with its own `tools/serve.mjs`. The workspace server serves it at its live path, with the switcher list resolving | 1 |
 | 9 | **Run the five browser gates** | skill `sink-check` | gate | `check-a11y`, `check-rendered`, `check-runtime-classes`, `check-spacing`, `check-behaviour`. Pasted into the console of the served page — they are not Node tools, deliberately | 1 |
 | 10 | **Record the sweep** | `npm run gates` | gate | Says which page each browser gate was last run against, and **fails on a page never swept**. This is where the counts live. Never in prose | 1 |
 | 11 | **Open the page** | no command | gate | Every theme — white, g10, g90, g100, rux — from the account panel. **This is the only node that catches a page that compiles, resolves and still renders wrong** | 1 |

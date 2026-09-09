@@ -43,7 +43,7 @@ authored by rux alone. `AGENTS.md` is the policy; this card is the routine.
 | | |
 |---|---|
 | How | Skill `rux-ds-page`. Copy the nearest `templates/*.html`; never start from scratch or from a guess. Markup is diffed against `docs/carbon-*.json` (`node tools/diff-fragment.mjs <name>`). |
-| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. An app: `node tools/serve.mjs` → `http://localhost:8643`. |
+| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. An app: `node tools/serve.mjs` → `http://localhost:8643`. The whole workspace on one origin, laid out as the live sites are: `npm run serve:workspace` in rux-ds → `http://localhost:8640`, `/` the hub and `/<name>/` each app. The switcher fills from the hub's list there, which it cannot on a per-app server. |
 | Check | rux-ds: `npm run verify`. An app: `node tools/check.mjs` — rux-ds's shared check from `vendor/rux-ds/tools/app-check.mjs` (classes, tokens, local references, ids, the pin), then the app's own gates. Browser gates: skill `sink-check`; `npm run gates` says which page was last swept and fails on one never swept. |
 | Look | The page, in the browser, in every theme — white, g10, g90, g100, rux — from the account panel. The template's `BEHAVIOUR:` comment says what was verified and what was not. |
 

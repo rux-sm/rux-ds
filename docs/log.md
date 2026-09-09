@@ -9,6 +9,22 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 - §8.4 step 0 done: the workspace server.** `tools/serve.mjs
+--workspace`, `npm run serve:workspace`, port 8640, tier 3. `/` is the
+`<account>.github.io` folder; each path in its `switcher.json` is the folder
+of that name beside it; a directory answers `index.html`; nothing else beside
+the hub is served. Read the same evening through the Browser pane: `/`,
+`/switcher.json`, `/switcher.js`, `/rux-ds/`, `/rux-ds/css/rux.css`
+(1,048,469 bytes), `/rux-scheduler/`, `/rux-ln-notes/` and one guide,
+`/account/`, all 200; `/rux-ln-atlas/` and `/rux-ui/` 404, and four `..`
+forms sent raw with `--path-as-is` 404. On `/rux-scheduler/` the switcher
+panel's links read Home, LN Notes, Scheduler (current), Design System — the
+hub's list, fetched from `/switcher.json`, where the page itself ships only
+Home and Scheduler. No console errors on the hub, rux-ds or the scheduler.
+Plain `npm run serve` is unchanged: port, root and home. The step's proof
+line in §8.4 had asked for the scheduler "with no vendored file on disk",
+which is step 2's proof, not this one's; corrected there.
+
 **2026-09-09 - one copy, the plan: roadmap §8.4 drafted, not decided.**
 Three measurements taken for it. `tools/serve.mjs`, unmodified, run in a
 scratch folder holding a `rux-ds` symlink, answered `/rux-ds/css/rux.css`

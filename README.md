@@ -104,8 +104,10 @@ marks it `aria-current` — where you are and where you can go are different job
 **Open, 2026-09-09: roadmap §8.4, the plan for one copy of the design system
 instead of three, drafted and not decided.** It amends §8.3 in one place — the
 site would deploy on a tag, not on every push — and carries the tier-2 pieces
-as diffs for rux to judge. Nothing is built. Until rux decides, every app still
-vendors a pin.
+as diffs for rux to judge. Until rux decides, every app still vendors a pin.
+**Step 0 is done (2026-09-09): `npm run serve:workspace` serves every site on
+one local origin at 8640.** It is tier 3 and stands on its own; nothing after
+it moves without the decision.
 
 The paragraphs below are the state as it was recorded, oldest claims last. Phases 9,
 10 and 11 are done. Phase 7's
@@ -624,6 +626,7 @@ and the cells with it.
 | `tools/check-provenance.mjs --inferred` | the fragments whose markup was never diffed against a reference (roadmap §4.1.13) |
 | `tools/diff-fragment.mjs <name> --omissions` | where a fragment's nesting disagrees with Carbon, and what Carbon renders that it omits |
 | `npm run serve` | kitchen sink at `http://localhost:8642` |
+| `npm run serve:workspace` | every site on one origin at `http://localhost:8640`, laid out as the live sites are: `/` the hub, `/rux-ds/`, `/rux-scheduler/`, `/rux-ln-notes/` |
 | `npm run watch` | rebuild CSS on change |
 
 ## Layout
