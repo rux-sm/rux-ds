@@ -4995,3 +4995,120 @@ hazard — a component leaves in three lines and a page written outside this rep
 finds out by rendering wrong, with `check-classes` unable to see it.
 
 ---
+
+### 8.3 One copy instead of three — PROPOSED 2026-09-09, NOT DECIDED
+
+**Raised by rux.** Written up on request, as a proposal to decide against. Nothing
+in it has been built or tested; the numbers below are measured and the mechanism is
+read from the workflows, not run.
+
+**The proposal.** Apps stop vendoring this repository. Every `vendor/rux-ds/<path>`
+becomes `/rux-ds/<path>` — an absolute path on the account root, where this
+repository already publishes. `vendor/rux-ds/` and its `PIN` are deleted from each
+app. `tools/roll-out.sh` and verb 4 retire. A fix made here reaches every app on the
+next Pages deploy, with no tag and no pin move. Each app keeps its own
+`rux-theme.css`, `rux-overrides.css` and pages exactly as it has them.
+
+**It is possible with no new machinery, which is the surprising part.** All four
+sites are on one origin: the hub at `/`, Notes at `/rux-ln-notes/`, Scheduler at
+`/rux-scheduler/`, and this repository at `/rux-ds/` since 2026-09-07. An absolute
+path resolves between them with no CDN, no CORS and no build step. §1's "consumable
+from a raw URL" already made the files fetchable; this uses that property one site
+over instead of across the internet.
+
+#### What was measured, 2026-09-09
+
+| | |
+|---|---|
+| Vendored copies | **3** — `rux-sm.github.io`, `rux-ln-notes`, `rux-scheduler`. 41 files and 2.7 MB each; 123 files and 8.1 MB in total |
+| What they are pinned to | All three on `v0.1.11`, commit `a0196fa`, 2026-09-07 — **identical**. This corrects `pages.yml`'s header, which still says Notes is at `v0.1.6` and Scheduler at `v0.1.8` |
+| Unreleased work | **45 commits** on `main` past `v0.1.11`, including a template fix an app is waiting on |
+| Edit surface | **735** references to `vendor/rux-ds` outside the vendored trees, across 58 files. Notes holds 611 of them, but 23 of its files are generated `guides/` — its real edit is the six generators in `tools/` |
+| Removals ever recorded | **None.** `CHANGES.md` reads "Nothing removed yet" across eleven tags |
+| What gates the deploy | `pages.yml` runs `npm run verify` and deploys only if it passes; a failure leaves the previous deployment serving. **A broken `main` is in git but not on the web** |
+| What does not gate it | The five browser gates cannot run in CI. `pages.yml`'s own header says so. A push can go live with every browser reading stale |
+
+#### What it makes weaker
+
+Six things, and the first is the decision.
+
+1. **A visual defect reaches four sites at once instead of one.** The Node gates
+   gate the deploy; the browser gates are the ones that catch a page that compiles,
+   resolves and still renders wrong, and they cannot run in CI. Five shipped defects
+   passed every Node gate. Today such a defect reaches whichever app last moved its
+   pin. After this it reaches all of them on the same deploy.
+2. **The `PIN` checksum gate goes, and it is a control.** `tools/check.mjs` fails on
+   an edit made inside `vendor/`. With no vendored tree there is nothing to check,
+   and nothing answers *which version is this app on* — the answer becomes "whatever
+   is live". Removing a control is tier 2 by `AGENTS.md`.
+3. **`CHANGES.md` loses its reader.** §8.2's hazard is unchanged in kind — a
+   component leaves in three lines and an outside page finds out by rendering wrong
+   — but the moment where someone reads `CHANGES.md` between two tags disappears,
+   because there are no two tags. That the hazard has never fired in eleven tags is
+   evidence, not a guarantee, and §4.9's admissions are still open.
+4. **An app stops being a whole site.** A folder handed to someone, or opened from
+   disk, renders unstyled. Today each app is self-contained.
+5. **Local development gains a step.** Every app needs this repository reachable at
+   `/rux-ds/` on the same local origin, or its pages are unstyled while being worked
+   on — the exact opposite of the intended simplification if it is not solved first.
+6. **One failure takes everything.** A bad Pages deploy or a move of the `/rux-ds/`
+   path takes four sites together rather than one.
+
+#### What it makes stronger
+
+- **One copy instead of three**, and drift between apps becomes impossible by
+  construction rather than reported after the fact.
+- **A fix is live everywhere on the next deploy.** Today 45 commits of finished work
+  reach no app, and nothing measures that distance — only `README.md`'s prose says
+  it, which is the stale-prose failure waiting to happen.
+- **Verb 4 retires**, with `tools/roll-out.sh`, the per-app pin commits and the
+  drift-report reading it triggers. A release becomes verb 5 alone.
+- `tools/drift.mjs` keeps its real job — comparing a page's shell to the template —
+  which was never about the vendored bytes.
+
+#### Rejected alternatives
+
+| | Alternative | Why not |
+|---|---|---|
+| a | **Keep the pin, cut tags more often** | Treats the symptom. The friction is that the tag is rux's deliberate call; making it routine removes the deliberation, which is the pin's only remaining value |
+| b | **Publish a second, deliberately-updated copy at `/ds/`** | One copy instead of three *and* the app still moves only when rux says. Rejected as the first step, **kept as the fallback** if weakness 1 proves real — it is strictly more machinery, and worth building once something has actually broken, not before |
+| c | **Versioned paths — `/rux-ds/v0.1.11/css/rux.css`** | Keeps pinning with no vendoring, but needs this repository to publish every tag's tree. That is build machinery this proposal exists to avoid |
+| d | **An npm package** | Refused by §1: no `dependencies` at all, and a consumer installs nothing |
+
+#### The steps, if it is taken
+
+1. **Serve `/rux-ds/` locally, and prove it before anything else.** A gitignored
+   `rux-ds` symlink at each app root — the precedent is `.brand/sched` here, already
+   gitignored and already used to give a browser gate a same-origin path — plus
+   whatever `tools/serve.mjs` needs to follow it. Nothing below is worth doing if
+   this does not work.
+2. **One app first: `rux-scheduler`.** 68 references across 12 files, no generated
+   pages, and it is the app currently waiting on a fix. Rewrite the paths, delete
+   `vendor/`, run its own check, open it in every theme.
+3. **`tools/check.mjs`** — decide whether the pin rule is deleted or replaced by
+   something that reads the live build stamp. **Tier 2.**
+4. **`tools/new-project.sh`** — a `CONTROL_FILE`. It writes the five vendored paths
+   and copies the tree, and both stop being true. **Tier 2, proposed as a diff.**
+5. **`tools/roll-out.sh` retires**, and `docs/verbs.md` loses verb 4 — the same pass
+   should add the `rux-scheduler` row its closing table is missing.
+6. **Each app's `AGENTS.md`** says `vendor/rux-ds/` is rux-ds's and never edited.
+   That becomes a statement about a path served from elsewhere. Three edits, by
+   hand, because nothing propagates a rule change to an app — the finding recorded
+   in `docs/workspace-flow-map.md` §7.1.
+
+#### What is rux's to settle
+
+- **Whether weakness 1 is acceptable.** That is the whole decision; everything else
+  is consequence.
+- **Whether the target is `/rux-ds/` — this repository's working tree, deployed on
+  every push to `main` — or alternative (b)'s deliberately-updated path.** The
+  proposal above assumes the first, and it is the more aggressive of the two.
+- **Whether `PIN` is replaced by anything at all**, or whether "whatever is live" is
+  an acceptable answer for a solo maintainer's own sites.
+
+**This reopens §8.2, decided 2026-09-01.** It does not contradict its reasoning: that
+section's hazard is removal, and this proposal does not make removal safer — it
+removes the pause in which someone would notice. §8.2 stands until rux says
+otherwise, and this section is a proposal, not an amendment.
+
+---
