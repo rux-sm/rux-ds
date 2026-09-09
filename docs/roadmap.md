@@ -4722,6 +4722,11 @@ change, proven red, and it strengthens rather than weakens the file.
 
 ### 4.16 Phase 16 — Saved custom themes, platform-wide
 
+**Scope extended by rux, 2026-09-09: see §8.5.** The browser-local store
+described below is the shipped implementation, not the new sharing target.
+Published themes must be saved in rux-ds and available to every user in
+every app.
+
 **Added 2026-09-06**, the day after Phase 15, from rux asking for the
 step both Phase 14 and 15 had explicitly deferred in almost the same
 words — a custom theme wired into the account panel and the shared
@@ -5115,6 +5120,11 @@ otherwise, and this section is a proposal, not an amendment.
 
 ### 8.4 One copy — the plan, DRAFTED 2026-09-09, NOT DECIDED
 
+**Read with §8.5, added after review on 2026-09-09.** Both builders are
+part of the intended central workspace. Theme publication on push is now
+a requirement; this section's tag-only publication assumption does not
+settle that requirement. The migration and control changes remain drafts.
+
 **Asked for by rux on 2026-09-09, after §8.3 was read back.** This is the plan
 to run if §8.3 is taken. Nothing below is built. What was measured says so and
 carries its date. §8.3 stands as the proposal and its weaknesses; this section
@@ -5135,15 +5145,15 @@ for a tag.
 
 | | |
 |---|---|
-| Copies and their tags | Three, byte-identical, all `v0.1.11`. The pin has never separated one app from the others |
+| Copies and their tags | Three, all `v0.1.11`, and byte-identical by measurement: `app-check --hash` reads `4cbba751…` on all three trees. **No `PIN` carries a `sha256` line.** All three were exported while the vendored check had no `--hash`, so the checksum rule §8.3 counts as a control has never run on any app; each check reports the bytes as unverifiable and passes |
 | Distance from the tag | **49 commits** on `main`. §8.3 typed 45 and the flow map 44, the same day, at different hours, and nothing re-read either. The map's §7.1 third failure, live |
 | Serving a sibling locally | `tools/serve.mjs`, unmodified, run in a scratch folder holding a `rux-ds` symlink: `/rux-ds/css/rux.css` answered 200, 1,048,469 bytes; `plex.css` 200. **§8.3 step 1 needs no code** |
 | Scripts that fetch by relative path | None. `js/*.js` has no `fetch(`, `import(` or `currentScript` read, so an absolute link breaks no module |
-| The launchers do not travel | The hub is on `v0.1.11`, which carries the shared check, and still runs its own eight-line class check and a hand-copied server. A pin move refreshes `vendor/` and never `tools/`. Only the scheduler runs the shared check |
+| The launchers do not travel | The hub is on `v0.1.11`, which carries the shared check, and still runs its own 40-line check — classes for four files, `switcher.json`'s shape, the pin — and a hand-copied server. A pin move refreshes `vendor/` and never `tools/`. Only the scheduler runs the shared check |
 | Where the references are | Hub: two pages, `account.js`, its check, two docs. Scheduler: two pages, three launchers, four docs. Notes: `index.html`, the candidate page, `tools/build.mjs` and five other tools, two docs, the workflow — and 23 generated guides that follow the generator |
 | The live cache | `rux-sm.github.io/rux-ds/css/rux.css` answers `cache-control: max-age=600`. A tag reaches every site within ten minutes |
-| Absolute paths in the app check | `tools/app-check.mjs`'s files rule counts an absolute `href` and skips it. Today that is `/switcher.js` alone. After this every stylesheet and module link is absolute and unchecked, unless the rule learns where `/rux-ds/` is |
-| Servers and ports | Four servers on two ports: rux-ds on 8642, each app's own copy on 8643. On every app's local server `/switcher.json` 404s and `switcher.js` falls back silently |
+| Absolute paths in the app check | `tools/app-check.mjs`'s files rule counts an absolute `href` or `src` and skips it. On the scheduler's page today that is `/switcher.js`, `/account.js`, and the switcher's own `/` and `/rux-scheduler/` links. After this every stylesheet and module link is absolute too, unless the rule learns where `/rux-ds/` is |
+| Servers and ports | Four servers on two ports: rux-ds on 8642, each app's own copy on 8643. On Notes' and the scheduler's local servers `/switcher.json` 404s and `switcher.js` falls back silently; the hub's serves its own |
 
 #### The shape
 
@@ -5151,7 +5161,7 @@ for a tag.
 |---|---|
 | `vendor/rux-ds/` in three repositories, 41 files and 2.7 MB each, recommitted at every pin move | none. Every link is `/rux-ds/<path>`, one origin |
 | `PIN`, its checksum, `tools/roll-out.sh`, verb 4 | gone. `git describe --tags` in rux-ds and the stamp on `index.html` say what is live |
-| `new-project.sh` exports a tag and copies the tree | it writes a page and the scaffold, and copies nothing |
+| `new-project.sh` exports a tag and copies the tree | it writes a page and the scaffold, and copies nothing of rux-ds's |
 | three servers, three class checks, two sprite pasters across the workspace | one of each, in rux-ds, imported from the sibling checkout |
 | an app's CI reads the stylesheet from `vendor/` | an app's CI checks rux-ds out at the newest tag; rux-ds's release checks every app before it deploys |
 | promote a rule: edit rux-ds, tag, move three pins, delete the app's copy | edit rux-ds, delete the app's copy, tag |
@@ -5168,10 +5178,10 @@ before a tag. `tools/drift.mjs` keeps its job.
 | # | §8.3 said | This plan |
 |---|---|---|
 | 1 | A visual defect reaches four sites at once | It reaches them at a tag, after `npm run gates` says every browser cell is current and after the page has been opened — verb 5 as written today. The blast radius does not grow: all three apps already move to the same tag. What goes is the *pause* between tag and pin move. The record shows that pause used to lag, never to refuse: no app has stayed behind a tag because the tag was judged unsafe |
-| 2 | The `PIN` checksum gate goes | It answered "are these bytes the tag's". With no copy there are no bytes to drift. "Which version is this app on" becomes "which tag is live", answered by the stamp and by `git describe`. The control that replaces it is stronger: rux-ds refuses to deploy a tag that breaks a consumer's page (diff B) |
+| 2 | The `PIN` checksum gate goes | It answered "are these bytes the tag's" — and has never yet been asked: no app's `PIN` carries a checksum (measured above). With no copy there are no bytes to drift. "Which version is this app on" becomes "which tag is live", answered by the stamp and by `git describe`. The control that replaces it is stronger: rux-ds refuses to deploy a tag that breaks a consumer's page (diff B) |
 | 3 | `CHANGES.md` loses its reader | Its reader becomes a gate. A class that leaves fails the release while any app still uses it. rux still writes the line before tagging; the gate is what makes forgetting visible |
 | 4 | An app stops being a whole site | Accepted. A folder opened from disk is unstyled, and `docs/starting-a-project.md`'s "no server needed" line goes with the copy. Every app already ships a serve launcher |
-| 5 | Local development gains a step | Measured: none for the symlink. The target is one workspace server (below), which removes a step instead: `/switcher.json` would resolve locally, and today it does not |
+| 5 | Local development gains a step | Measured: none for the symlink. The target is one workspace server (below), which removes a step instead: `/switcher.json` would resolve locally, and today it does not on the two apps that are not the hub |
 | 6 | One failure takes everything | Accepted. The four sites already share one origin and one `/switcher.js`; a bad hub deploy already empties every switcher |
 
 #### Three things §8.3 did not see
@@ -5196,18 +5206,20 @@ before a tag. `tools/drift.mjs` keeps its job.
 
 #### The steps
 
-Nothing is deleted before the thing replacing it is proven. Each step is one
-commit in one repository, and each ends by opening the page.
+Nothing is deleted before the thing replacing it is proven. Each step is a
+commit per repository it touches, and each ends by opening the page. **Diff A
+comes before any app moves**: an app's CI checks rux-ds out at the newest tag,
+and until a tag carries the `--ds` flag no app's check can pass there.
 
 | | Step | Repository | Tier | Proof |
 |---|---|---|---|---|
 | 0 | **Serve the workspace as one origin.** `tools/serve.mjs --workspace`, run from `~/Developer`: `/` is the hub's folder, `/<name>/` is that folder, a directory answers its `index.html`. Port 8640; `npm run serve` on 8642 is untouched, so the `sink-check` skill's conditions still hold. Until it exists, a gitignored `rux-ds` symlink at the app root does the same for one app, measured above | rux-ds | 3 | `curl` on `/`, `/switcher.json`, `/rux-ds/css/rux.css`, `/rux-scheduler/`; then the scheduler open in every theme with no vendored file on disk |
-| 1 | **The scheduler first.** Rewrite `vendor/rux-ds/` to `/rux-ds/` in both pages and `docs/`; `tools/check.mjs` and `tools/serve.mjs` import from `DS` (default `../rux-ds`); the hook the same; `tools/sprite.mjs` reads `$DS/assets/icons.svg`; `pages.yml` checks rux-ds out at the newest tag (diff C). Delete `vendor/`. Run the check with `DS` set and read what fails — that list is the specification for diff A | rux-scheduler | 3 there; the check it runs is rux-ds's (A) | `node tools/check.mjs` exit 0 with `DS` set; the site live after its next push, every theme, header, switcher and account panel read |
-| 2 | **Diff A — the shared app check learns where rux-ds is.** Below. Proposed, not applied, and not judged by the session that wrote it | rux-ds | **2** | `npm run app-check` driven red for each new rule and restored; the scheduler's check green against a sibling and against a CI-style checkout |
+| 1 | **Diff A — the shared app check learns where rux-ds is.** Below. Proposed, not applied, and not judged by the session that wrote it. Then an ordinary release, verb 5, so a tag carries it | rux-ds | **2** | `npm run app-check` driven red for each new rule and restored; the scheduler's check green against a sibling and against a CI-style checkout, `vendor/` still in place |
+| 2 | **The scheduler first.** Rewrite `vendor/rux-ds/` to `/rux-ds/` in both pages and `docs/`; `tools/check.mjs` and `tools/serve.mjs` import from `DS` (default `../rux-ds`); the hook the same; `tools/sprite.mjs` reads `$DS/assets/icons.svg`; `pages.yml` checks rux-ds out at the newest tag (diff C). Delete `vendor/` | rux-scheduler | 3 there; the check it runs is rux-ds's (A) | `node tools/check.mjs` exit 0 with `DS` set; the site live after its next push, every theme, header, switcher and account panel read |
 | 3 | **Diff B — rux-ds deploys on a tag and checks its consumers first.** Below | rux-ds | **2** | A tag pushed; the run seen refusing a deliberately broken consumer on a branch, then passing; the four sites read live within ten minutes |
 | 4 | **Diff C — the skeleton and the scaffold stop vendoring.** Below. `tools/new-project.sh` and `builder/rewrites.mjs` move together because `check-parity` compares them | rux-ds | **2** — both are in `CONTROL_FILES` | `npm run verify` exit 0; a throwaway app scaffolded into the scratchpad, served by step 0, opened, deleted |
-| 5 | **The hub, then Notes.** Hub: two pages, `account.js`, its own `check.mjs` replaced by the launcher, so it finally runs the shared check. Notes: `tools/build.mjs` and the five other tools, rebuild, 23 guides follow; `check-ancestry` resolves the newest tag in `DS` instead of the pin commit — a gate there, tier 2 in that repository; its workflow's `ref:` becomes the tag. Delete `vendor/` in each | rux-sm.github.io, rux-ln-notes | 3, and 2 for the ancestry gate | each app's check exit 0; both sites live, every theme |
-| 6 | **Retire what nothing runs.** `tools/roll-out.sh`; the pin rule in `tools/app-check.mjs`; the `PIN` block in `tools/new-project.sh`'s header; `docs/verbs.md` verb 4, and the closing table gains its `rux-scheduler` row; `docs/workspace-flow-map.md` stage 7 folds into stage 6 and nodes 17 to 20 go; `docs/starting-a-project.md`'s tree; each app's `AGENTS.md` "rux-ds's" line — three edits by hand, the map's §7.1; `index.html`'s stamp sentence, which says this is the one site not on a tag and would be wrong | rux-ds and the three apps | 3, except the pin rule (2) | `git grep vendor/rux-ds` finds only history in all four repositories |
+| 5 | **The hub, then Notes.** Hub: two pages, `account.js`, and its own `check.mjs` becomes the launcher with its `switcher.json` rule kept after the import — the shared check at last, without losing the one rule that is the hub's own. Notes: `tools/build.mjs` and the five other tools, rebuild, 23 guides follow; `check-ancestry` resolves the newest tag in `DS` instead of the pin commit — a gate there, tier 2 in that repository; its workflow's `ref:` becomes the tag. Delete `vendor/` in each | rux-sm.github.io, rux-ln-notes | 3, and 2 for the ancestry gate | each app's check exit 0; both sites live, every theme |
+| 6 | **Retire what nothing runs.** `tools/roll-out.sh`; the pin rule in `tools/app-check.mjs`; the `PIN` block in `tools/new-project.sh`'s header; `docs/verbs.md` verb 4; `docs/workspace-flow-map.md` stage 7 folds into stage 6, nodes 17 to 20 go, and its §9 note that the card has no `rux-scheduler` row goes too — the row landed in `0720737` after the note was written, and §8.3's step 5 asks for it again; `docs/starting-a-project.md`'s tree; each app's `AGENTS.md` "rux-ds's" line — three edits by hand, the map's §7.1; `index.html`'s stamp sentence, which says this is the one site not on a tag and would be wrong | rux-ds and the three apps | 3, except the pin rule (2) | `git grep vendor/rux-ds` finds only history in all four repositories |
 | 7 | **The first release under the new shape.** Verb 5 as written: `npm run verify`, `npm run gates`, `CHANGES.md` if anything left, tag, push the tag. Watch the run; open four sites | rux-ds | 3 | Every site shows the tag's bytes; `git log <tag>..main` reads 0 |
 
 #### The tier-2 diffs, drafted
@@ -5222,10 +5234,13 @@ it makes weaker, as `AGENTS.md` asks.
   prints: not skipped — a gate that cannot run says so.
 - The classes and tokens rules read `<ds>/css/rux.css`, `rux-theme.css` and
   `rux-overrides.css` instead of `vendor/rux-ds/css/`.
-- The files rule stops skipping absolute paths. `/rux-ds/<p>` resolves under
-  `ds`. `/switcher.js` and `/switcher.json` resolve under `--hub <dir>` when
-  given, else are counted and named as unresolvable here — never passed
-  silently. Any other absolute path fails.
+- The files rule stops skipping absolute paths, for resources only: the
+  `href` or `src` of a `<link>`, `<script>`, `<img>` or `<use>`. `/rux-ds/<p>`
+  resolves under `ds`. Any other absolute resource — `/switcher.js`,
+  `/account.js` — resolves under `--hub <dir>` when given, else is counted and
+  named as unresolvable here, never passed silently. An `<a href>` to `/` or
+  `/<name>/` is navigation to another site, not a file this check can see; it
+  is left alone, as today.
 - The pin rule is deleted with `vendor/`, and `defaultRoot()`'s vendored-copy
   branch with it.
 - A sprite rule joins: every page's `SPRITE:BEGIN…END` block equals
@@ -5255,8 +5270,9 @@ A new job between `check` and `deploy`, `consumers`: check out
 at depth 1 into `consumers/<name>`; per app run
 `node tools/app-check.mjs consumers/<name> --ds . --hub consumers/rux-sm.github.io`
 and `node tools/drift.mjs consumers/<name>`, the second printing as it does
-today. `deploy` needs both jobs. The build stamp writes the tag from
-`git describe --tags --exact-match` beside the commit.
+today. `deploy` needs both jobs. The build stamp writes the tag beside the
+commit, from `github.ref_name` — on a tag push that is the tag, and the
+deploy job's depth-1 checkout has no tag list for `git describe` to read.
 
 *Weaker:* the design-system site no longer shows `main`. `builder.html` and
 `theme-creator.html` on the web are the last tag's. Anyone reading the site
@@ -5273,7 +5289,9 @@ because a check that can be skipped is not a gate.
   the same, or dropped once step 0's workspace server exists.
   `.githooks/commit-msg` execs `<DS>/.githooks/commit-msg`.
 - `.github/workflows/pages.yml`: before the check, resolve the newest tag with
-  `git ls-remote --tags --refs https://github.com/rux-sm/rux-ds.git 'v*' | sort -V | tail -1`,
+  `git ls-remote --tags --refs https://github.com/rux-sm/rux-ds.git 'v*' | awk -F/ '{print $NF}' | sort -V | tail -1`
+  — the ref column, not the line: `ls-remote` prints the commit first, and
+  `sort -V` over whole lines orders by commit —
   check rux-ds out at it into `../rux-ds`, run the check with `DS` set. Notes'
   workflow is the model with `ref:` changed.
 - `new-project.sh`: the `--tag` export, the staging, the checksum, the
@@ -5310,7 +5328,7 @@ needs no code and one gitignore line per app.
   account panel open.
 - `git log $(git describe --tags --abbrev=0)..main --oneline | wc -l` is the
   distance from live. A command, not a sentence.
-- `docs/verbs.md` has four verbs and a `rux-scheduler` row.
+- `docs/verbs.md` has four verbs.
 - `npm run verify` exit 0; `npm run gates` every cell current; each app's
   check exit 0 with `DS` set, locally and in CI.
 
@@ -5337,7 +5355,140 @@ Two questions, down from §8.3's three.
 by nothing, because what it measured no longer exists, and by diff B for the
 risk it stood in front of.
 
+#### Reviewed 2026-09-09, by the session that wrote it
+
+Read back the same day against the system, not against memory. The
+corrections are made in place above and listed here, because a plan that
+quietly edits itself is worth less than one that shows what it got wrong.
+**A reviewer that did not write this is still owed**: the same session
+catches its own factual slips and not its own blind spots.
+
+1. **The steps were in the wrong order.** The scheduler moved at step 1 and
+   diff A came at step 2, but the scheduler's CI checks rux-ds out at the
+   newest tag, and no tag would carry `--ds` until step 7. Its deploy would
+   have been blocked for the length of the plan. Diff A is now step 1 and is
+   tagged before any app moves.
+2. **"Byte-identical" was asserted from the tag and commit lines, not from
+   bytes.** Measured in review: `app-check --hash` reads the same
+   `4cbba751…` on all three trees, so the claim holds — and no `PIN` carries a
+   `sha256` line at all, so the checksum control §8.3 lists as lost has never
+   run on any app. Both facts are now in the table.
+3. **The hub's check is 40 lines and checks `switcher.json`**, not "eight-line"
+   — that number was the shared check's description of the hub before
+   2026-09-05. Replacing it wholesale, as step 5 said, would have dropped the
+   one rule that is the hub's own. Step 5 now keeps it after the import.
+4. **Absolute links were undercounted.** The scheduler's page carries
+   `/account.js` and two switcher links besides `/switcher.js`, and diff A's
+   "any other absolute path fails" would have failed all three. The rule now
+   checks resources only and leaves navigation alone.
+5. **The tag-resolving pipeline in diff C was wrong.** `sort -V` ran over
+   `ls-remote`'s whole line, which begins with the commit, so it ordered by
+   commit. Now the ref column is cut first.
+6. **Diff B's stamp used `git describe` in a depth-1 checkout** that has no
+   tag list. `github.ref_name` is the tag on a tag push.
+7. **A stale line was copied forward.** Step 6 and the exit criteria asked for
+   a `rux-scheduler` row in `docs/verbs.md` that landed in `0720737` earlier
+   the same day; §8.3 step 5 and the map's §9 still ask for it. Those two are
+   now on step 6's list rather than repeated here.
+8. Smaller: "every app's" local server 404s on `/switcher.json` — the hub's
+   does not; "copies nothing" — the scaffold still seeds a brand and two
+   delta files; "one commit in one repository" — step 6 touches four.
+
 **§8.3 and §8.2 stand until rux says otherwise.** This section is the plan for
 a decision not yet made.
+
+---
+
+### 8.5 One workspace, published themes — requirement, 2026-09-09
+
+**Rux's clarification after the §8.4 review:** the page builder and theme
+builder belong in one place, in rux-ds. Created themes are saved to this
+repository and, when pushed and successfully deployed, become available
+for any user to apply in any app. This is the required product outcome;
+the implementation and tier-2 diffs are still to be drafted and reviewed.
+
+This corrects the review's suggestion to defer builder work wholesale.
+Connecting both existing builders to the shared workflow is part of this
+milestone. Additional builder features are not prerequisites.
+
+#### The user workflow
+
+1. Open rux-ds. Page Builder and Theme Builder are available from the same
+   home and navigation; they may remain separate tools within that site.
+2. Create or edit a theme in Theme Builder and preview it against the same
+   components and pages Page Builder uses.
+3. Save the theme as a tracked record in rux-ds. Browser storage may keep a
+   draft, but a local draft must not be presented as a repository save.
+4. Push the saved change. Successful publication updates the shared theme
+   catalog without moving app pins, copying theme files into apps, or
+   deploying each app again.
+5. Any visitor can select the published theme in any app's theme picker.
+   Publishing makes a theme available; it does not select it for everyone.
+   Page Builder and Theme Builder read that same published catalog.
+
+#### What changes from the implementation today
+
+`js/custom-themes.js` currently saves only to
+`localStorage['rux.custom-themes']`. This was checked in the source on
+2026-09-09. It shares records between apps in the same browser on the
+same origin, but does not publish them or make them available to other
+users. The repository catalog becomes the source for published themes;
+the user's selected theme remains a preference separate from that catalog.
+
+Use structured theme records with stable IDs and the existing supported
+token values. Keep one catalog and one validation implementation shared
+by both builders and the app runtime. Reuse the current accent and surface
+representations where possible. A published ID must not be shadowed by an
+unrelated browser-local draft with the same name.
+
+Repository saving needs an actual write path. The current static builder
+has none: its Save action calls the local-storage store. The implementation
+draft must specify how the local workspace builder writes tracked files,
+and how the hosted builder saves through an authenticated repository write
+or an explicit export/import step. A download alone must not be labelled
+"Saved to rux-ds". Public access to apply themes does not imply public
+permission to modify the repository.
+
+#### Publication and availability
+
+Theme-record changes publish on push after their checks pass. This does
+not by itself authorize publishing every CSS, behaviour, or tooling change
+on every push. The implementation must preserve the distinction between
+publishing catalog data and releasing the runtime that interprets it.
+Only publish records compatible with the deployed runtime; a new theme
+format requires that runtime to be released first.
+
+"Instantly" means automatically available after successful deployment,
+without work in the consuming apps. It is not a promise that a git push
+completes a deployment synchronously. Apps refresh the catalog when the
+theme picker opens and when returning to an already-open tab, with cache
+revalidation. Keep the last usable catalog during a fetch failure. An
+unresolved fetch must not erase a saved theme preference. Updates to an
+active published theme apply after refresh; deleting that theme uses a
+documented built-in fallback and leaves the picker in a valid state.
+
+The live catalog carries its revision. Neither the newest git tag nor
+local `git describe` proves which revision was successfully published.
+Rolling back theme publication restores the previous catalog without
+requiring a commit or deployment in every app.
+
+#### Proof of completion
+
+- Save in Theme Builder produces a reviewable tracked theme record in
+  rux-ds, with failures reported accurately.
+- After push and successful publication, a fresh browser with no local
+  theme records sees the new theme in both builders and every app.
+- Selecting it applies its supported values correctly across the apps;
+  publishing it does not change another user's selection.
+- An app open before publication sees it when its picker opens or the
+  tab regains focus. A failed refresh preserves the usable current theme.
+- Updating, deleting, and rolling back a published theme are exercised,
+  including an active selection and an unavailable catalog.
+- No app needs a theme-file copy, pin move, or separate deployment to
+  receive a catalog change after the shared loader is installed.
+
+**Not implemented in this pass.** This amendment records the clarified
+scope. It changes no gate, workflow, runtime, builder, or release policy;
+those diffs still need to account for §8.4's review findings before rollout.
 
 ---

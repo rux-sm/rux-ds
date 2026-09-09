@@ -22,6 +22,16 @@ its own eight-line class check — a pin move refreshes `vendor/` and never
 tag, not on a push. Nothing is built; the tier-2 pieces are drafted as
 diffs in §8.4 and not applied.
 
+Reviewed the same evening by the session that wrote it, against the system:
+eight corrections, listed at the end of §8.4 and made in place. Measured in
+review: `app-check --hash` reads `4cbba751…` on all three vendored trees, so
+they are byte-identical in fact and not only by tag; no app's `PIN` carries a
+`sha256` line, so the checksum rule has never run on an app; the scheduler's
+page carries four absolute links, not one. The plan's steps were reordered:
+the app check's `--ds` flag has to be tagged before any app moves, or that
+app's CI cannot pass. A reviewer that did not write the section is still
+owed.
+
 **2026-09-08 - a template gaining a `<script>` never reaches an app that
 already exists, and three of them had been missing one since Phase 16.**
 Saved custom themes worked here and nowhere else. `js/custom-themes.js` has
