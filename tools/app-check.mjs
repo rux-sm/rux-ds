@@ -11,7 +11,12 @@
 //   node tools/app-check.mjs --ds <dir>    where rux-ds is, for an app that
 //                                          LINKS it rather than vendoring it.
 //                                          DS=<dir> is the same thing; a
-//                                          sibling ../rux-ds is the default
+//                                          sibling ../rux-ds is the default.
+//                                          A RELATIVE VALUE IS RESOLVED
+//                                          AGAINST THE APP, not the working
+//                                          directory -- so ../rux-ds means
+//                                          the same thing wherever it is run
+//                                          from, and matches the default.
 //   node tools/app-check.mjs --hub <dir>   where the account-root site is, so
 //                                          /switcher.js and its siblings
 //                                          resolve instead of being counted
