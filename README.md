@@ -86,8 +86,13 @@ machine-local note. This section is the current state and the next steps only.
 Every dated pass, measurement and answered decision that used to sit here is in
 `docs/log.md`, and stays there as the record.
 
-**Where this stopped, 2026-09-07 — `v0.1.11`, clean tree, `npm run verify` exit 0,
-47 of 47 sweep cells current.** Four apps are in the hub's `switcher.json` and that
+**Where this stopped, 2026-09-09 — clean tree, `npm run verify` exit 0, `npm run
+gates` every cell current, and `v0.1.11` still the newest tag with everything
+since it unreleased on `main`** (the live item below). This sentence typed
+**47 of 47** from 2026-09-07 until 2026-09-09, by which time `document-page` had
+taken the sweep to 50 — a count in prose, which `AGENTS.md` keeps in
+`npm run gates` for exactly this reason; it points there now instead of carrying
+a number. Four apps are in the hub's `switcher.json` and that
 list is the only one: Home (`/`), Notes, Scheduler and Design System (`/rux-ds/`).
 Scheduler joined as module three; the design system joined as module four when this
 repository gained the site described at the top of this file. **The hub's landing grid
