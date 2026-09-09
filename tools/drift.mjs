@@ -16,7 +16,9 @@
 // vendored — a page is copied once and then it is the project's — so what a
 // template gains after the copy reaches a page only if someone compares.
 //
-// WHAT IT COMPARES. Two things, both against vendor/rux-ds/templates/app-shell.html:
+// WHAT IT COMPARES. Two things, both against vendor/rux-ds/templates/app-shell.html
+// -- or, for an app that links /rux-ds/ and vendors nothing, against
+// <DS>/templates/app-shell.html (DS=<dir>, default ../rux-ds):
 //   head    the <link> and <script> resources by file name — a preload, a
 //           stylesheet, a module — in order
 //   shell   the SKELETON of <header>…</header>: each tag with its classes and
@@ -42,8 +44,14 @@ import { join, basename, relative } from 'node:path';
 
 const DIR = process.argv[2];
 if (!DIR) { console.error('usage: node tools/drift.mjs <project-dir>'); process.exit(2); }
-const TEMPLATE = join(DIR, 'vendor/rux-ds/templates/app-shell.html');
-if (!existsSync(TEMPLATE)) { console.log(`  drift: no vendor/rux-ds/templates/app-shell.html under ${DIR}; nothing to compare`); process.exit(0); }
+// The template is the vendored one when the app vendors, else rux-ds's own
+// (DS=<dir>, default the sibling ../rux-ds) for an app that links /rux-ds/
+// -- roadmap §8.4, 2026-09-09.
+const VENDORED = join(DIR, 'vendor/rux-ds/templates/app-shell.html');
+const DS = process.env.DS ?? join(DIR, '..', 'rux-ds');
+const TEMPLATE = existsSync(VENDORED) ? VENDORED : join(DS, 'templates/app-shell.html');
+const AGAINST = existsSync(VENDORED) ? 'vendor/rux-ds/templates/app-shell.html' : TEMPLATE;
+if (!existsSync(TEMPLATE)) { console.log(`  drift: no vendor/rux-ds/ under ${DIR} and no rux-ds at ${DS} (set DS=<dir>); nothing to compare`); process.exit(0); }
 
 const SKIP = new Set(['vendor', 'node_modules', 'build', '.git']);
 const pages = [];
@@ -142,7 +150,7 @@ for (const p of pages) {
   groups.get(key).push(relative(DIR, p));
 }
 
-console.log(`\n  drift against vendor/rux-ds/templates/app-shell.html · ${pages.length} page(s)`);
+console.log(`\n  drift against ${AGAINST} · ${pages.length} page(s)`);
 for (const [key, ps] of groups) {
   const who = ps.length > 3 ? `${ps.slice(0, 2).join(', ')} and ${ps.length - 2} more` : ps.join(', ');
   if (!key) { console.log(`  ${who}: shell and head resources match the template`); continue; }

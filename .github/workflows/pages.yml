@@ -10,30 +10,35 @@ name: pages
 # would have to duplicate exactly what this repository exists to stop being
 # duplicated. So the site is this tree.
 #
-# WHICH MAKES IT THE ONE APP NOT ON A TAG. Every module shows rux-ds as it was
-# at the tag its own vendor/rux-ds/PIN names; this site shows main. That is
-# defensible for a design system's own site — it is what you get if you move
-# your pin today — but it is not the same guarantee the modules have, so
-# index.html stamps the commit it was built from and says so on the page.
+# IT DEPLOYS ON A TAG, AND CHECKS ITS CONSUMERS FIRST -- roadmap §8.4 diff B,
+# decided by rux in §8.6 on 2026-09-09. Until then it deployed on every push
+# to main and was the one app on the platform not on a tag. Now an app that
+# links /rux-ds/ on the shared origin (the scheduler since §8.4 step 2) reads
+# whatever this deploys, so what this deploys is a release: cutting a tag IS
+# the roll-out, and nothing right of the tag moves until one is cut. gates.yml
+# still checks every push; only the deploy waits. workflow_dispatch stays for
+# two uses -- redeploying an older tag (the rollback: run this workflow at
+# that tag) and rehearsing -- and the stamp says which it was.
 #
-# THE VERSIONS WERE NAMED HERE AND WENT STALE. Until 2026-09-09 this comment
-# read "Notes shows rux-ds as it was at v0.1.6 and Scheduler at v0.1.8". All
-# three modules had been on v0.1.11 since 2026-09-07, and the sentence named
-# two of the three. It now states the rule instead of the readings, because
-# nothing re-reads a version typed into a comment — the same failure
-# docs/agent-tooling.md argues about and README.md hit the same week. The PIN
-# files are the reading.
+# THE consumers JOB IS THE CONTROL THAT REPLACES THE PIN. A vendored app had a
+# checksum saying "these are the tag's bytes"; a served app has no bytes of
+# its own, so the question moves here: does every served consumer's page
+# still pass the shared check against THIS tree? A class that left while an
+# app uses it fails that job, and the deploy needs it. An app that still
+# vendors is reported NOT RUN with its pin -- it loads its own copy, and a
+# green line for a check that did not run is what tools/app-check.mjs
+# exists to refuse. It is checked here the day it moves (§8.4 step 5).
 #
 # THE CHECK IS npm run verify, THE SAME ONE gates.yml RUNS. It is defined once
 # in package.json, so a new gate is picked up here with no second list. This
 # workflow runs it AGAIN rather than depending on gates.yml: a workflow_run
 # trigger deploys from a ref resolved separately from the run that passed, and
 # a design system serving a page its own gates never saw is the one failure
-# this is meant to prevent. The cost is one duplicated run per push to main.
+# this is meant to prevent. The cost is one duplicated run per tag.
 
 on:
   push:
-    branches: [main]
+    tags: ['v*']
   workflow_dispatch:
 
 # WIDER THAN gates.yml, WHICH HAS contents: read AND NOTHING ELSE. Deploying to
@@ -100,8 +105,54 @@ jobs:
             exit 1
           fi
 
-  deploy:
+  # EVERY SERVED CONSUMER, AGAINST THIS TREE. Three public checkouts at their
+  # main; each is either served (no vendor/) and checked with --ds pointing at
+  # this tree and --hub at the account-root checkout, or vendored and reported
+  # NOT RUN with the tag its PIN names. A consumer that fails to check out
+  # fails the job: continue-on-error is not used, because a check that can be
+  # skipped is not a gate. --ds is ABSOLUTE on purpose -- app-check resolves a
+  # relative --ds against the app, so `--ds .` would name the app itself;
+  # measured 2026-09-09 before this was written, not inferred.
+  consumers:
     needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: rux-sm/rux-sm.github.io
+          path: consumers/rux-sm.github.io
+      - uses: actions/checkout@v7
+        with:
+          repository: rux-sm/rux-ln-notes
+          path: consumers/rux-ln-notes
+      - uses: actions/checkout@v7
+        with:
+          repository: rux-sm/rux-scheduler
+          path: consumers/rux-scheduler
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Every served consumer passes the shared check against this tree
+        run: |
+          hub="$PWD/consumers/rux-sm.github.io"
+          fail=0
+          for app in rux-sm.github.io rux-ln-notes rux-scheduler; do
+            dir="$PWD/consumers/$app"
+            echo "::group::$app"
+            if [ -d "$dir/vendor/rux-ds" ]; then
+              echo "  ---- NOT RUN: $app vendors rux-ds at $(awk '/^tag/{print $2}' "$dir/vendor/rux-ds/PIN") and loads that copy, not this tree. Checked here the day it moves (roadmap §8.4 step 5)."
+            else
+              node tools/app-check.mjs "$dir" --ds "$PWD" --hub "$hub" || fail=1
+              DS="$PWD" node tools/drift.mjs "$dir" || true
+            fi
+            echo "::endgroup::"
+          done
+          if [ "$fail" = 1 ]; then echo "::error::A served consumer fails the shared check against this tree. This tag does not deploy."; fi
+          exit $fail
+
+  deploy:
+    needs: [check, consumers]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -123,18 +174,31 @@ jobs:
       # Substituted HERE and never committed: a stamp written into the file at
       # build time would leave index.html dirty after every single commit, the
       # churn portal.html avoids by changing only when its data does.
-      - name: Stamp the commit onto the home page
+      #
+      # THE TAG COMES FROM THE REF, NOT FROM git describe: this is a depth-1
+      # checkout with no tag list, and describe would name nothing. On a tag
+      # push the ref IS the tag. A workflow_dispatch from a branch stamps the
+      # branch and says it is not a release, so a rehearsal cannot pass for one.
+      - name: Stamp the release onto the home page
         run: |
           SHA="$(git rev-parse --short HEAD)"
           DATE="$(git log -1 --format=%cs)"
-          sed -i "s|<span id=\"build-commit\">the working tree</span>|<span id=\"build-commit\">commit <code>${SHA}</code>, ${DATE}</span>|" index.html
-          grep -q "id=\"build-commit\">commit" index.html || { echo "::error::The build stamp did not substitute — index.html's placeholder has moved."; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            LABEL="tag <code>${GITHUB_REF_NAME}</code> (<code>${SHA}</code>), ${DATE}"
+          else
+            LABEL="branch <code>${GITHUB_REF_NAME}</code>, commit <code>${SHA}</code>, ${DATE} &mdash; not a release"
+          fi
+          sed -i "s|<span id=\"build-commit\">the working tree</span>|<span id=\"build-commit\">${LABEL}</span>|" index.html
+          grep -qE "id=\"build-commit\">(tag|branch) " index.html || { echo "::error::The build stamp did not substitute — index.html's placeholder has moved."; exit 1; }
 
       # NEITHER BELONGS ON A WEB SERVER, and the upload action tars whatever it
       # is given. .git is the whole history at every push; .github is workflow
       # definitions. Removing them from the checkout is local to this runner.
+      # consumers/ is not in this checkout -- the consumers job's checkouts
+      # live on its own runner -- but is named here so that never changes
+      # silently.
       - name: Drop what is not the site
-        run: rm -rf .git .github
+        run: rm -rf .git .github consumers
 
       - uses: actions/configure-pages@v5
 
