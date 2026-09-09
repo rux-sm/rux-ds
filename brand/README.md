@@ -1,5 +1,37 @@
 # brand/
 
+**THREE FILES, AND THIS FOLDER IS THE WHOLE BRAND OF AN APP.** Every project
+on rux-ds carries its own `brand/`, seeded once by `tools/new-project.sh` and
+never overwritten by a pin move or a rebuild. Swap a file and the project
+follows it on reload. Nothing else anywhere needs editing.
+
+| file | where it shows | how it is coloured |
+|---|---|---|
+| `logo.svg` | the header of every page, as an `<img>` | baked into the file. The header is `#161616` in all four themes, so one colourway serves |
+| `favicon.svg` | the browser tab | inside the file, by a `prefers-color-scheme` block. A favicon gets no CSS from the page |
+| `icon.svg` | the 32px tile on Rux Home, named in the hub's `switcher.json` by absolute path | not at all. The tile masks it over its own text colour, so the file's colours are discarded and only its alpha is read |
+
+**Which are drawn and which are derived, in this repository.** `logo.svg` is
+the drawing a person edits. `favicon.svg` is a second drawing, hand-kept
+identical to it. `icon.svg` is GENERATED from `logo.svg` by
+`tools/make-marks.mjs` — swap the logo, run `npm run marks`, and the tile
+follows. **A consumer app has none of that**: it holds three plain files and
+swaps whichever it likes by hand, because `make-marks.mjs` is rux-ds's and is
+not vendored.
+
+**`assets/brand/` is a different thing and is not swappable.** It holds the
+two generated launcher icons in fixed colourways, rux-ds's own. `brand/` is
+what a project owns and replaces; `assets/brand/` is output.
+
+**Adding or changing anything in this folder ages every browser-gate reading**,
+by design: `brand` is a declared shared input in `tools/lib/gates.mjs`, whole
+directory, added 2026-09-05 after a mark swap aged nothing. It buys no new
+detection — no gate here reads the mark — and what it buys is a ledger that
+stops calling a reading current for a page whose header has changed. Expect
+`npm run gates` to want a re-sweep after touching this folder.
+
+---
+
 **`logo.svg` is the logo. Swap the file; nothing else changes.**
 
 Every page in this repository embeds it the same way, with no class and no
