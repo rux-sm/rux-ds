@@ -15,9 +15,11 @@ README that narrates its own history goes stale, and this one did.
 ## Picking this up
 
 **2026-09-09.** Clean tree. `npm run verify` exits 0; `npm run gates` reads every
-cell current. Newest tag `v0.1.14`. The hub, Notes and Scheduler all hold that
-tag's bytes; their `PIN` files still name `v0.1.12`, because nothing vendored
-has changed since it and the pin names bytes, not a position in the tag order.
+cell current. Newest tag `v0.1.14`. **Scheduler vendors nothing since this
+evening** — it links `/rux-ds/` live and its CI checks the newest tag (roadmap
+§8.4 step 2, §8.6). The hub and Notes still hold the tag's bytes; their `PIN`
+files name `v0.1.12`, because nothing vendored has changed since it and the
+pin names bytes, not a position in the tag order.
 
 Where the phases stand — the long form is in the log:
 

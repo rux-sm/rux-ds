@@ -9,6 +9,39 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 — §8.4 step 2 DONE: the scheduler links `/rux-ds/` and
+vendors nothing. Live at 23:42 UTC, `rux-scheduler` `13b261f`.** Decided
+by rux the same evening (§8.6: take §8.4, on a tag, themes by their own
+path). Built on branch `one-copy`, merged fast-forward on rux's instruction
+after the CI diff was shown.
+
+**Read before the merge, locally.** `node tools/check.mjs` exit 0 from the
+sibling and with `DS=../rux-ds` (the CI form); exit 1 with `DS` pointing
+nowhere — the ds rule fails, not skips. The re-pointed commit hook refused
+a `Co-Authored-By` probe. On the workspace server (8640, this app at
+`/rux-scheduler/`): 0 `vendor/` links, 23 `/rux-ds/` resources all 200,
+19 modules on `window.Rux`, IBM Plex loading, no console errors, body
+colours resolving in all five themes (set by attribute), live trip data.
+The CI's tag pipeline run locally answered `v0.1.14`.
+
+**Read after the deploy, live.** Both jobs green
+(`actions/runs/34418051405`); the check job read `rux-ds from DS` and the
+pin rule printed `NOT RUN` with its reason. The live page: 0 `vendor/`
+links, 23 `/rux-ds/` resources all 200 from `rux-sm.github.io/rux-ds/`,
+whose `css/rux.css` answers 200 at 1,048,469 bytes with `max-age=600`;
+19 modules; no console errors; seven day columns and 148 trip elements
+from live data; header "Rux Scheduler"; switcher panel listing Home, LN
+Notes, Scheduler (current), Design System; account panel offering
+white, g10, g90, g100, rux with sign-in behind Turnstile; every theme's
+body colour resolving.
+
+**What was not done.** The browser gates were not swept against the
+served page. Themes were read by setting the attribute, not by clicking
+the panel. And the gap §8.6 named is now open: until diff B lands, the
+live scheduler follows rux-ds `main`, which deploys on every push, while
+its CI checks the newest tag — identical bytes today, distance 0. Step 3
+next. Branch `one-copy` left on origin, merged.
+
 **2026-09-09 — README cut to one screen; everything dated below moved here
 verbatim.** The second such move (the first was 2026-09-02, above). What
 follows, in the order it stood in `README.md`: the Status block, "Where this

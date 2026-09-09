@@ -5644,7 +5644,18 @@ those diffs still need to account for §8.4's review findings before rollout.
 
 ---
 
-### 8.6 One copy — decision brief, 2026-09-09, NOT DECIDED
+### 8.6 One copy — decision brief, 2026-09-09 — DECIDED the same day
+
+**DECIDED BY RUX, 2026-09-09, all three:** take §8.4; deploy on a **tag**;
+the theme catalog publishes by **its own path**, (ii) below. §8.3 and §8.4
+are taken as written, with §8.6's two additions before step 3 is judged:
+the rollback rehearsal and the compatibility refusal. §8.2 is amended by
+this: a consumer no longer pins a tag — it reads the tag rux-ds has live.
+`CHANGES.md` keeps its job. Execution begins at step 2; each step is its
+own commit and is recorded in `docs/log.md` with its proof. The
+tier-2 diffs (B, the de-vendoring half of C, the pin rule's removal, the
+scheduler's and Notes' workflows, the catalog job for §8.5) are each
+proposed as a diff before they land, as `AGENTS.md` asks.
 
 **Written after the README cut of the same day, at rux's request, so the
 decision §8.3 raised and §8.4 planned can be taken from one page.** Nothing
@@ -5659,7 +5670,7 @@ decision as three questions with a recommendation.
 |---|---|---|
 | 0 · the workspace server | done | `npm run serve:workspace` in `package.json` |
 | 1 · diff A, the shared check learns `--ds` | **done and tagged** | `tools/app-check.mjs` carries `--ds` at `v0.1.12`; reviewed independently, one real defect found and fixed (`docs/log.md`, 2026-09-09) |
-| 2 · the scheduler moves | not started | `rux-scheduler/vendor/rux-ds/` present, `PIN` at `v0.1.12` |
+| 2 · the scheduler moves | **DONE, live, the same evening** — `rux-scheduler` `13b261f` | no `vendor/`, 23 `/rux-ds/` links, CI checks rux-ds out at the newest tag; readings in `docs/log.md` |
 | 3 · diff B, deploy on a tag and check consumers first | not applied | rux-ds `pages.yml` still `on: push: branches: [main]` |
 | 4 · diff C, the scaffold stops vendoring | the brand-seeding half landed (`0c841e9`); the de-vendoring half not applied | `tools/new-project.sh` still writes `PIN` — it did so today, twice |
 | 5 · the hub, then Notes | not started; and one §8.4 line is stale — the hub now runs the shared check | `rux-sm.github.io/tools/check.mjs:37` imports `vendor/rux-ds/tools/app-check.mjs` since its pin moved to `v0.1.12` |
