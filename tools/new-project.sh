@@ -350,6 +350,14 @@ mv "$NEW" "$OUT"
 mkdir -p "$DIR/brand"
 [ -e "$DIR/brand/logo.svg" ] || cp "$HERE/brand/logo.svg" "$DIR/brand/logo.svg"
 [ -e "$DIR/brand/favicon.svg" ] || cp "$HERE/brand/favicon.svg" "$DIR/brand/favicon.svg"
+# THE THIRD FILE, added 2026-09-09. brand/icon.svg is the 32px tile the hub
+# draws for this app, named in switcher.json by absolute path; brand/README.md
+# is the spec. Seeded like the other two -- written only if absent, so a
+# project that drew its own keeps it -- and rux-ds generates its own from
+# brand/logo.svg, which a consumer cannot do because make-marks.mjs is not
+# vendored. Without this line a new app has no tile mark and the hub draws a
+# swatch, which is the documented interim rather than a fault.
+[ -e "$DIR/brand/icon.svg" ] || cp "$HERE/brand/icon.svg" "$DIR/brand/icon.svg"
 
 for f in rux-theme.css rux-overrides.css; do
   [ -e "$DIR/$f" ] || cat > "$DIR/$f" <<DELTA
@@ -441,7 +449,7 @@ fi
 echo "rux-ds ${TAG:-$(echo "$SHA" | cut -c1-7)} → $DIR${TAG_ARG:+   (exported from the tag; this clone untouched)}"
 echo "  vendor/rux-ds/   css $(ls "$OUT/css" | wc -l | tr -d ' ') · js $(ls "$OUT/js" | wc -l | tr -d ' ') · fonts $(ls "$OUT/assets/fonts" | wc -l | tr -d ' ') · templates $(ls "$OUT/templates" | wc -l | tr -d ' ') · PIN$([ -e "$OUT/tools/app-check.mjs" ] && printf ' · tools/app-check.mjs, tools/serve.mjs, githooks/commit-msg')"
 echo "  rux-theme.css, rux-overrides.css   yours, deltas only; left alone if present"
-echo "  brand/logo.svg, brand/favicon.svg   yours; swap any time, left alone if present"
+echo "  brand/logo.svg, brand/favicon.svg, brand/icon.svg   yours; swap any time, left alone if present"
 if [ -n "$MOVE_ONLY" ]; then
   echo "  pages   left alone; pin moved from $OLD_PIN. Name --template or --page to add one"
 else
