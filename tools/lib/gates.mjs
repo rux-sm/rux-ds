@@ -883,7 +883,18 @@ export const CONTROL_FILES = [
   // What runs the gates where nobody can skip them, and what guards a commit.
   // The hook is enabled per clone with `git config core.hooksPath .githooks`,
   // so it is one unversioned setting away from silently absent.
-  '.github/workflows/gates.yml', '.githooks/commit-msg', 'package.json',
+  //
+  // BOTH WORKFLOWS, AND pages.yml WAS MISSING UNTIL 2026-09-09. AGENTS.md puts
+  // CI in tier 2 by name and this list held one of the two. The gap is not
+  // cosmetic: pages.yml runs `npm run verify` AND decides what reaches the
+  // web, so an edit there can stop the gates running on what is published
+  // while gates.yml goes on passing on the same commit. It also carries the
+  // widest permissions in the repository -- pages: write and id-token: write,
+  // which its own header calls out as a real privilege increase. Found by a
+  // session reviewing an unrelated branch, which noticed that `4ffe544`, a
+  // comment-only edit to pages.yml, reported as touching no control.
+  '.github/workflows/gates.yml', '.github/workflows/pages.yml',
+  '.githooks/commit-msg', 'package.json',
 
   // The instruction files. Under the reference these are the only repository
   // content that may establish policy; everything else is data.

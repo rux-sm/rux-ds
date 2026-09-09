@@ -5524,13 +5524,17 @@ compares against `HEAD`, so on a clean worktree it reports "none touched" and
 reads as contradicting this section. Pass the merge-base and it reports 2 of
 61, as claimed.
 
-**AND THE CONTROL LIST IS STILL SHORT BY TWO.** Neither
-`.github/workflows/pages.yml` nor `.github/workflows/gates.yml` is in
-`CONTROL_FILES`, and `AGENTS.md` puts CI in tier 2 by name. The reviewer hit
-this independently on `main` earlier the same day: `4ffe544`, a comment-only
-edit to `pages.yml`, was reported as touching no control. Adding them is itself
-tier 2 and **is not done here** — it is rux's, and it is a separate change from
-this branch.
+**AND THE CONTROL LIST WAS SHORT BY ONE — not two, and the reviewer's count is
+corrected here rather than repeated.** It reported that neither
+`.github/workflows/pages.yml` nor `.github/workflows/gates.yml` was in
+`CONTROL_FILES`. `gates.yml` has been listed all along; only `pages.yml` was
+missing. The finding itself holds and the evidence for it is exact: `4ffe544`,
+a comment-only edit to `pages.yml`, reported as touching no control, and
+`AGENTS.md` puts CI in tier 2 by name. **Added on `main` 2026-09-09 at rux's
+instruction**, taking the list to 62; replaying `4ffe544` against it now names
+the file. The gap was not cosmetic — `pages.yml` runs `npm run verify` *and*
+decides what reaches the web, and carries the widest permissions in the
+repository.
 
 **What the review did not cover**, said rather than left implied: `--hub` was
 not exercised, so this section's own criticism of it — a gate whose
