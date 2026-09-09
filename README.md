@@ -450,7 +450,9 @@ tag would still pass.
    Storybook cross-origin. And the truncating-label ruling is rux's: it may
    decide the markup, so answering it first avoids authoring the sections
    twice.
-4. **Scheduler's asks, four of them, 2026-09-07 and -08.** Read in place in
+4. **Scheduler's asks, four of them, 2026-09-07 and -08 — ALL FOUR RESOLVED
+   2026-09-08, three answered and one declined on evidence. Nothing in this
+   item is pending; it is kept as the record.** Read in place in
    that repository (`docs/rux-ds-requests.md`); nothing from it enters here,
    by the same rule as item 3. Two are additions. **The sprite ask is
    ANSWERED, 2026-09-08** (`c869d7f`): `user--multiple` is in, `events` is
@@ -491,6 +493,16 @@ tag would still pass.
    adding the 8px would make 8px acceptable on all eleven persistent-shell
    templates and on `index.html` too. The capture cannot do the job it was
    proposed for. The doctrine half was already answered 2026-09-08.
+
+**THE CONSUMER CANNOT USE ANY OF IT YET, and that is the one live item.**
+`v0.1.11` is still the newest tag and everything above sits past it on `main`:
+the sprite icon, the date-picker trigger, the template label fix and the scoped
+`check-behaviour`. A project pins a tag and `tools/new-project.sh` moves the pin
+only to one, so rux-scheduler is reading `v0.1.11` — which is why it still sees
+`js/ui-shell.js`'s corrected comment as uncorrected. **Cutting the tag is rux's
+call and nobody else's**; by §8.2 the icon and the date-picker contract are
+additions, so it is a minor bump and `CHANGES.md` gains lines. That session has
+offered to test a release candidate against the app before a tag is cut.
 
 **Open, not next in order:** whether `templates/settings-page.html`'s
 `col-span-4/8/8` (not full-width) is deliberate or just what the template
