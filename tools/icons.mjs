@@ -58,6 +58,19 @@ const ICONS = [
   // this sprite -- which is why check-icons counts it among the symbols nothing
   // points at rather than failing on it.
   'color-palette',
+  // A GROUP OF PEOPLE, asked for by rux-scheduler 2026-09-07. A roster control
+  // sitting in a toolbar Carbon draws as icons had to be a text button, because
+  // the sprite held exactly one person in 62 -- `user--avatar`, which the shell's
+  // Account button already uses on the same screen. `events` was asked for beside
+  // this one, to be judged at 16 by LOOKING, and is DECLINED ON THE PIXELS:
+  // rasterised at 16 device px its front figure smears into its own shoulders
+  // while the two behind stay rings, so it reads as noise under two circles.
+  // `user--multiple` keeps a whole ring and a shoulder arc in front and a legible
+  // partial behind, at 16 and at 32. `events--alt` was tried unasked and is worse
+  // than either. Both candidates are 32-unit drawings shown at 16 -- Carbon draws
+  // no multi-person glyph among its 68 sixteens, which is its own judgement about
+  // this same risk, and the reason the ask was for two and not one.
+  'user--multiple',
 ];
 
 const symbols = [], missing = [], from = {};

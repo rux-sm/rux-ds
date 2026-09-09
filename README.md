@@ -511,7 +511,7 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **73 `rendered-dom` · 6 `source` · 0 `inferred`** across 79 files |
-| Icons | 62 symbols in a 17.3 KB sprite — 51 referenced, 11 nothing points at |
+| Icons | 63 symbols in a 17.7 KB sprite — 51 referenced, 12 nothing points at |
 | Size | 1023.9 KB raw · 920.9 KB min · **91 KB gzipped** |
 | Behaviour JS | **17** modules · **53 KB gzipped** · 179.5 KB raw, 60% of it comment · 71.5 KB of code |
 
