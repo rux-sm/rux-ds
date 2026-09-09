@@ -471,12 +471,14 @@ tag would still pass.
    input may carry `hidden`: measured `display: none`, box 0x0, which corrects
    what `js/date-picker.js`'s header claimed about the UA `[hidden]` rule.
 
-   **`check-behaviour` SCOPED TO THE DOCUMENT IS PROVEN AND PROPOSED, NOT
-   APPLIED** — tier 2, two diffs in `.brand/`, and `docs/log.md` has every
-   reading: the complaint reproduces here (4 of 18 on `document-page`, with
+   **`check-behaviour` IS SCOPED TO THE DOCUMENT, LANDED ON rux'S ACCEPTANCE
+   `0527a30`** — tier 2, proposed as a proven diff and taken. `docs/log.md` has
+   every reading, all of them taken against the UNMODIFIED gate before it
+   landed: the complaint reproduces here (4 of 18 on `document-page`, with
    three "no shell here" on a page that has one), the sink is unmoved at 47 of
    47, and the fail-versus-skip boundary was tested in both directions so it
-   retires no contract. **It found a shipped defect before it was even
+   retires no contract. Read `passed/ran` off the sink; templates stay off the
+   coverage matrix deliberately. **It found a shipped defect before it was even
    applied**: all eleven templates carried an invented
    `aria-label="Toggle navigation"`, which silently disabled `js/ui-shell.js`'s
    name swap — the glyph and `aria-expanded` moved, the accessible name never

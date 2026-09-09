@@ -48,8 +48,13 @@ UA default, so nothing about Carbon's rule was being measured. It happened to
 give the right answer for the wrong reason. Re-measured on `kitchen-sink.html`
 with `rux.css` confirmed linked in the same execution.
 
-**check-behaviour SCOPED TO THE DOCUMENT (ask 3) IS PROVEN AND PROPOSED, NOT
-APPLIED.** Tier 2. Two diffs sit in `.brand/`: `check-behaviour-scoping.diff`
+**check-behaviour SCOPED TO THE DOCUMENT (ask 3) WAS PROVEN, PROPOSED, AND
+LANDED THE SAME DAY ON rux'S ACCEPTANCE (`0527a30`).** Tier 2, and the readings
+below were all taken against the UNMODIFIED gate, before it was applied -- which
+is the whole point of the rule: a control is not judged by the run that lands
+it. The re-read afterwards (47 passed, 47 ran, 0 skipped, 0 failed, 14 modules)
+confirms the applied file matches what was proved and certifies nothing.
+Two diffs sat in `.brand/`: `check-behaviour-scoping.diff`
 against `tools/check-behaviour.js` and `check-behaviour-registry.diff` against
 `tools/lib/gates.mjs`, `docs/composing-pages.md` and two skills. They apply
 cleanly and produce `.brand/cb-v2.js` byte for byte. What was measured:
