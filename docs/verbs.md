@@ -171,16 +171,13 @@ git push origin vX.Y.Z    # two commands; one carrying both is refused
 
 ---
 
-## What each repository is, in one line
+## What each repository is
 
-| Repository | Is | Its check |
-|---|---|---|
-| `rux-ds` | the design system; the only place a class or a rule is born | `npm run verify`, then `sink-check` |
-| `rux-sm.github.io` | the front door and the app list (`switcher.json`) | `node tools/check.mjs` |
-| `rux-ln-notes` | one app; pages generated from private data | `node tools/build.mjs && node tools/check.mjs` |
-| `rux-scheduler` | one app; a schedule grid and trip bars Carbon has none of, owned there and prefixed `sch-` | `node tools/check.mjs` |
-| `rux-backend` | the one Supabase project's configuration; no secrets | — |
-| `rux-ln-atlas` | private; nothing from it appears anywhere public | — |
+One table, in one place: the workspace page in rux's config
+(`~/claude-config/workspaces/rux-ln.md`, private) — for each repository, how
+to run it, where to edit, how to verify and how it is released. This card
+carried a copy of that table until 2026-09-09; it was missing the scheduler
+for four days, which is what a second copy does. It now carries the pointer.
 
 An app is `index.html`, `vendor/rux-ds/`, two delta CSS files, and the
 launchers `tools/app-skeleton/` writes — a check, a server and a hook that
@@ -191,9 +188,3 @@ its pages, because the data behind them is private. Scheduler owns components
 this design system does not have, in `sch.css`, `sch.js` and `sch-data.js`.
 Neither reason travels to the next app; an app that needs neither is the four
 files above.
-
-**The `rux-scheduler` row was missing until 2026-09-09.** This card was drafted
-2026-09-05 and the scheduler joined the switcher afterwards, so the table read
-as complete while naming four of five public repositories. Recorded here rather
-than quietly added — a list with nothing that re-reads it is the same failure
-`docs/agent-tooling.md` argues about.
