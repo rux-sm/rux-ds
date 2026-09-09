@@ -4,6 +4,7 @@
     { "path": "rux-ds" },
     { "path": "rux-ln-atlas" },
     { "path": "rux-ln-notes" },
+    { "path": "rux-scheduler" },
     { "path": "rux-sm.github.io" }
   ],
   "settings": {

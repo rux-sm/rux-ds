@@ -9,6 +9,566 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 — README cut to one screen; everything dated below moved here
+verbatim.** The second such move (the first was 2026-09-02, above). What
+follows, in the order it stood in `README.md`: the Status block, "Where this
+stopped", the state as it was recorded from 2026-09-02 onward, the pre-strip
+figures, the stale-install incident of 2026-08-31, and the harness note. Each
+figure is what was true on the date it names, not the current state. Open
+decisions were not moved; they are the "Open decisions" table in README.
+
+---
+
+### Status
+
+**Phase 3 complete — stripped.** Carbon compiles under the `rux` namespace, every
+shipped fragment has been diffed against Carbon's own rendered DOM, and the build is
+now the keep-set rather than all of Carbon.
+
+**Phase 5 (behaviors) — every module written, exit criterion still open.** `js/` is an
+overlay kernel plus popover, menu, list-box, tabs, accordion, data-table, form-controls,
+ui-shell, dismiss, tile, modal, copy-button, date-picker, and — since §4.13 — theme and
+profile. The count is in the generated table below rather than typed here: this sentence
+read "fourteen" from the day `theme.js` and `profile.js` landed until 2026-09-04 —
+the drift this README's own opening paragraph warns about. **The markup is the API** —
+a page built from a template needs no script of its own. An attribute appears only when
+trigger and surface are too far apart for the markup to relate them (`data-rux-open` on
+modal and menu); a popover, tooltip or overflow menu needs none. Focus trapping, Escape,
+outside press and the stack deciding which surface a press belongs to all come from the
+kernel.
+
+What is left of the phase is not code: **a screen-reader pass**. `tools/check-a11y.js`'s
+current reading on every page is in `docs/gate-coverage.json`, each finding adjudicated
+there with its evidence, and `npm run gates` says whether that reading is still current;
+a count copied here read nine, then twelve, then twenty-nine within two days. One reading
+was wrong by method rather than markup: the sweep took
+focus with a CLICK, which is an outside press, and the kernel removed the calendar the
+tool then could not find. The cause is the method, not the markup. But it reads
+attributes rather than running an AT. Its focus-ring check does now run in an
+automated browser, once the page has focus. See "Picking this up".
+
+**Phase 4 (devendor) is DECLINED while admissions are open, decided 2026-08-31.** It
+closes as met-by-measurement rather than met-by-deletion: `css/rux.css` carries zero
+`cds`, there are no `dependencies` at all, and a consumer fetches the committed
+stylesheet and installs nothing — so the runtime half of the goal already holds. What
+steps 1–2 would still buy is tidiness of this repository, at the price §4.4 lists: no
+admitting a component, no new icon, no theme change, no version bump. §2.1's amendment
+of the same day made admissions the project's job, and the door's price is exactly the
+ability to admit.
+
+**Revisit on an explicit freeze**, not on quiet. The
+execution order it used to end — 1 → 2 → 3 → 5 → 6 → 4 → 7 → 8 — stands for the rest;
+the phase numbers are names, not positions. Roadmap §4.4.
+
+**Phases 12 and 14 through 16 are the current work, and this file said nothing about
+14 to 16 for a day.** They landed 2026-09-06 and the Status block above was written
+as though the plan still ended at §4.13 — exactly the drift the opening paragraph
+warns about, recorded here rather than quietly fixed. What they are: **Phase 14**,
+the Theme Creator (`theme-creator.html`) — a theme built from a Carbon hue family or
+free hex per token, with the first contrast math in this repository, warning but never
+blocking; **Phase 15**, surface overlays, after a first draft proposing a fifth
+compiled theme was killed in review (changing one key stops Carbon's `matches()`
+selecting `g100`, and 67 tokens would have moved, not one); **Phase 16**,
+`js/custom-themes.js`, saved themes in the account panel platform-wide, five runtime
+bugs caught in review before anything was written. **Phase 12** is the builder, at
+stage 12 of 13. Roadmap §4.12 and §4.14–§4.16 hold all four.
+
+**Where this stopped, 2026-09-09 — clean tree, `npm run verify` exit 0, `npm run
+gates` every cell current, `v0.1.13` the newest tag, and all three apps' pins
+correctly still naming `v0.1.12`** — `v0.1.13`'s only change was
+`docs/workspace-flow-map.md`, so it changed no vendored byte and the roll-out
+wrote nothing; `git log v0.1.13..main --oneline | wc -l` reads 0. Four apps are
+in the hub's `switcher.json` and that list is the only one: Home (`/`), Notes,
+Scheduler and Design System (`/rux-ds/`). **The hub's landing grid no longer
+carries a tile for the page it is on** (hub `acea009`, 2026-09-07): a Home card
+on Home is not a destination, so `switcher.js` filters the current app out of
+the grid by the same test that marks the panel entry.
+
+**No app has stopped vendoring — that stays §8.4's decision — but the check
+that would let one can now tell the two shapes apart.** `tools/app-check.mjs`
+learned to resolve rux-ds from `--ds`, `DS` or a sibling when an app has no
+`vendor/`, alongside the vendored shape every app still actually uses;
+reviewed independently by a session that had not written it, which found a
+real false-green defect and fixed it before the merge. Separately, and this
+DID ship to all three: each app's one check gained a gate that catches a page
+whose pasted icons are stale against its own pin, which nothing before today
+ever checked — a rebuild-and-diff for `rux-ln-notes`, which generates its
+pages, and a sprite-currency check adapted from the scheduler's own tool for
+the hub and the scheduler, which do not. All three were already stale when
+the gates were added, and are fixed. `docs/log.md` has the day's second half
+in one entry, log-first per the flow map's own nodes 12–13.
+
+**Open: roadmap §8.4 itself, the plan to stop every app vendoring a copy at
+all, drafted and still not decided.** The two tier-2 pieces it named — the
+shared check's shape detection, and the scaffold's brand seeding — are built,
+reviewed and merged, both driven red before merging and both carrying a real
+found-and-fixed defect (docs/log.md). What remains is §8.4's actual proposal:
+no app has stopped vendoring, and nothing here assumes it will. `npm run
+serve:workspace` — step 0, tier 3, done 2026-09-09 — serves every site on one
+local origin at 8640 regardless of the decision.
+
+The paragraphs below are the state as it was recorded, oldest claims last. Phases 9,
+10 and 11 are done. Phase 7's
+component index is implemented and swept — `npm run gates` holds the
+cells: `portal.html` carries a Reference column from `docs/component-docs.json`, every compiled
+component accounted for and all 135 URLs live, with `action-set` and
+`skeleton-styles` honestly marked as having nothing to link. **Its content has
+no gate**, which roadmap §4.7 states and proposes. The plan being
+executed is roadmap §4.12, three creators and the hub, now named **Rux Apps**,
+and after it §4.13: every theme in every app, a profile everywhere, one
+backend. Its first step is the next-steps list below.
+Landed: the script questionnaire, `docs/choices.md`, the switcher panel in every
+template with its behaviour (`v0.1.1`), and the hub itself, pushed and live at
+https://rux-sm.github.io/ since 2026-09-02.
+
+**The hub's repository must be named `rux-sm.github.io`, not after the hub.**
+Only `<account>.github.io` publishes at the account root, and the root is the
+whole arrangement: every module's shell fetches `/switcher.json` and links
+`/switcher.js` by absolute path, and `tools/check.mjs` there requires each
+`path` to be `/` or `/name/`. A project repository serves at
+`https://rux-sm.github.io/<repo>/` instead, where those two fetches 404 —
+silently, because `switcher.js` catches and falls back to the entries the page
+shipped. `rux-sm/rux-apps` was created on 2026-09-02 under the wrong name and
+renamed to `rux-sm.github.io` the same day, before anything was pushed to it.
+
+**One click of rux's on GitHub remains:** Settings → Pages → Source → GitHub
+Actions. GitHub enabled Pages from the branch on the first push, so today both
+the branch build and `pages.yml` deploy, and the branch build ignores
+`tools/check.mjs`. The token here cannot change it (403 on the Pages API).
+
+**Notes is module two in fact, 2026-09-02** (`48786ce` there): the grid button,
+the collapsed panel, and `/switcher.js` filling it from the shared list,
+verified live with Notes marked current. Its header reads "Rux Notes" since
+the same day, by the naming rule in §4.13. The manifest contract is written
+down in §4.12.
+
+**§4.13 step 2 is done, 2026-09-02.** `v0.1.2` is cut and both modules are on
+it by `tools/new-project.sh` — the hub at `54d3c4a` there, Notes at `27e69a9`
+with its `sync-ds.sh` retired and its theme and overrides files linked. Both
+sites verified live: Plex loading from the preloads, the switcher filling from
+the root. The same-tag CI check for the hub is drafted as a diff and not
+applied; it is rux's to accept.
+
+**§4.13 step 3 is DONE, 2026-09-02/03, tagged `v0.1.3`** (`fd2a6e1`, fixed at
+`4a29024`, swept at `8fc08a1`): the account panel in every template and the
+sink, every theme offered in it, `js/theme.js` and `js/profile.js`, the first
+live rule in `css/rux-overrides.css`, the theme and overrides vendored,
+`tools/drift.mjs`. **Both modules are on the tag and it is proved across
+them**: a theme and a display name chosen on the hub (`020363a` there) are
+what Notes (`44486b8` there) opens with, read live on 2026-09-03.
+
+**ONE SHELL, EVERYWHERE, as of `v0.1.4` 2026-09-03.** The notifications glyph
+left the templates as well as both modules: nothing notifies, and an icon-only
+button with no handler is an affordance that lies. Two global actions ship, in
+Carbon's prescribed order — the switcher and the account. `sink/ui-shell.html`
+keeps all three, because that fragment is the capture and a template is what an
+app ships. Notes gained the mark, which it alone had never carried. Read live
+on both sites: the same 33×30 mark, the same `Rux` prefix, the same two
+actions, the same account panel. The three shells now differ in their name and
+their nav and nothing else.
+
+**§4.13 step 4 is DONE, 2026-09-03** (`rux-backend` `b95f839`). `rux-backend`
+(private, `rux-sm/rux-backend`, not tagged) adopted `rux-ui`
+(`udnmqhayzhrbltxzzhjw`) as the one shared Supabase project rather than
+provisioning a second — it already backed the bus/trip scheduler.
+`platform.profiles` (the cross-app profile, owner-only RLS, keyed to
+`auth.users`) is live there, tested 4/4 locally first; `rux-ui`'s own
+`public.profiles`, an unrelated driver roster, is untouched. Anonymous
+sign-in and manual identity linking are live and confirmed in the
+dashboard. The GitHub OAuth App and Cloudflare Turnstile site are created,
+`platform` is in the live dashboard's exposed schemas, and
+`[auth.external.github]` / `[auth.captcha]` are `enabled = true` in
+`config.toml`, pushed and confirmed. Roadmap §4.13 has the full account,
+including two `config push` mistakes along the way — one that briefly
+reverted MFA/email/search-path settings on the live project, one that
+briefly pushed placeholder text as the live `client_id` — both caught from
+the diff and corrected before anything downstream used them. Read it
+before touching `rux-backend`'s `config.toml` again.
+
+**`v0.1.5`, 2026-09-03: the tile-fill rule reaches every app.** `fd437ae`
+promoted the hub's one-class fix into `css/rux-overrides.css`, and no tag
+carried it — so the hub kept a private copy of a rule meant to be shared,
+and Notes had none. Both modules are on the tag by `tools/new-project.sh`
+(hub `75a2cfd`, Notes `57ce558`), the hub's local copy is deleted, and both
+drift reports read as they did at `v0.1.4`. Read live the same day at
+1280×900: the hub's two cards 152 px each, one flush edge, the rule served
+from `vendor/` alone. Notes uses no clickable tile, so nothing rendered
+there moves. A patch, by §8.2: `CHANGES.md` gains no line.
+
+**§4.13 step 6 is DONE, 2026-09-03** (hub `68ce1fa`): the landing page is
+header-only. The side nav the app-shell template carries held Home and an
+anchor to a grid already on screen, so it left with the hamburger, the
+scrim and the content-indent `<style>` block; the grid from `switcher.json`
+and one Foundations link to the rux-ds repository remain, and Carbon's own
+`.rux--header ~ .rux--content` rule places the content. Gated on the served
+page with the three page-level browser gates loaded from disk on one origin
+— runtime-classes 47/47, a11y 0 findings with rings checked, spacing 27/29
+with both remainders older than the change and in the ledger — and read
+live the same day. Roadmap §4.13 has the readings and what is not done.
+
+**§4.13 step 5 is DONE, verified live, 2026-09-03**
+(`rux-sm.github.io` `bf26c6d`). `account.js` at the hub root: opens an
+anonymous Supabase session gated on Turnstile, syncs `platform.profiles`
+with the local profile field by field (cloud wins on load, local edits push
+up debounced), wires the sign-in button to GitHub `linkIdentity`. Read live
+by rux, in a real browser: the anonymous session, the Turnstile gate, and
+the profile sync (a name and a theme, both survived a reload) all worked.
+One real bug turned up in that same read — `linkIdentity` redirects to
+GitHub before Supabase knows whether the identity is free, so
+`identity_already_exists` (hit by testing across several anonymous
+sessions) only ever surfaces as error params on the return redirect, never
+through the promise — fixed by falling back to a direct GitHub sign-in on
+that specific error. A second gap the same read found: the panel has no
+avatar or name/email swap, so nothing showed whether linking had actually
+worked; fixed by only revealing the Sign in button while the session is
+still anonymous, so its absence is now the signal. Console-verified after
+both fixes: `anonymous: false`, `providers: ['github']`.
+
+**The profile system gained its full page, 2026-09-04**
+(`rux-sm.github.io` `ff1ab64`; `rux-ds` `252c652`), beyond the nine steps
+§4.13 originally scoped: `/account/` at the hub root, built from
+`templates/settings-page.html`'s fieldset pattern rather than the raw
+template (the hub's own header-only shell is the correct base, not the
+side-nav one settings-page.html demos). Three groups — Profile (a
+`user-avatar`, initials and a colour hashed from the user id, beside the
+name field), Theme, Connected accounts (a status tag plus connect/sign-out,
+reusing `sink/table.html`'s tag markup) — real-time-save through
+`window.Rux.profile`, no separate Save/Discard, matching the panel's own
+already-verified contract instead of adding a second save model. The
+panel gained one link, "Account settings", added by `account.js` rather
+than rux-ds's markup — the switcher panel's own contents are JS-filled the
+same way, so a hub-specific route has no reason to grow every template.
+Found stale in the same pass: `js/profile.js`'s comment claiming Carbon
+compiles no avatar component — `user-avatar` was admitted 2026-08-31,
+before that comment was written; corrected in place. Verified live:
+avatar initials/colour and theme/name sync bidirectionally between panel
+and page; one real gap surfaced by testing rather than reasoning — with no
+session at all (Turnstile blocked, as it does in an automated pane), the
+connected-accounts tag read identically to a genuine unlinked anonymous
+session, both "Not connected" — fixed with a distinct "Signed out" state.
+
+**A review pass the same day, 2026-09-04, closed the one real gap that
+review found and three smaller ones.** The real one: Notes
+(`rux-ln-notes` `437cfd2`) never loaded `account.js` at all — it had the
+local profile from the shell rollout but none of the cloud half, no
+sign-in, no "Account settings" link, because step 5 only ever named "the
+hub root". Fixed with three script tags pointing at the hub's one copy,
+no new file there. The three smaller ones, all in `rux-sm.github.io`
+`9c1c93f`: the connected-accounts tag now reads "Connected as
+`<github-username>`" (`identity_data.user_name`, falling back to email)
+rather than a bare "Connected"; signing out gets a helper-text note that
+it starts a new anonymous session, rather than doing that silently, with
+no native `confirm()` since this codebase uses one nowhere else; and
+`rux-backend`'s `config.toml` had `/notes/` in `additional_redirect_urls`
+where the real path is `/rux-ln-notes/`, harmless today since `account.js`
+always redirects to the bare origin but wrong to leave written down —
+corrected, pending `config push`.
+
+**`/account/` gated 2026-09-04**, served from a symlink scratch root
+beside `rux-ds`'s `tools/` and `docs/` the way step 6 did it —
+`check-runtime-classes` 0 stripped, 2 added (the JS-injected panel link);
+`check-a11y` 0 findings with `focusRingChecked: true`, confirmed real by
+stripping every ring first (13 findings) and restoring; `check-spacing`
+28 of 28 comparable classes matched across the signed-out and connected
+states, 0 diverges. Seven classes have no Carbon reference at all to
+compare against — this page's own compositions, the same ones its own
+header comment already names — so those read "nothing to compare," not
+"correct."
+
+**THE LOGO IS ONE FILE, AND `v0.1.6` IS CUT, 2026-09-05.** `brand/logo.svg` is
+the mark; every shell in every repository embeds it as
+`<img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;…">` — no
+class, so `check-classes` has nothing to resolve, and no build step between the
+file and the page. **Swap that one file and every shell follows on reload**: no
+markup edit in fourteen places, no re-pin. An `<img>` rather than inline SVG is
+what makes the swap free, and it costs nothing that was in use — the shell
+header measures `#161616` with `#f4f4f4` text in ALL FOUR themes, so
+`currentColor` had exactly one value to carry. Sized by HEIGHT with the width
+following, so the file's own aspect governs.
+
+Until 2026-09-04 the mark was inlined geometry copied into every shell, which is
+why the hub and Notes had drifted onto different marks with no gate able to see
+it. `tools/new-project.sh` seeds `brand/logo.svg` and `brand/favicon.svg` only
+when ABSENT — the rule `rux-theme.css` already followed — so moving a pin cannot
+clobber a replaced mark. Exercised for the first time on the `v0.1.6` move and
+confirmed clean in both consumers.
+
+**rux's drawn mark replaced the placeholder, 2026-09-05** (`ca911fb`), stripped
+from a 2150-byte Linearity Curve export to 859 with all 14 `d=` strings byte for
+byte what Curve wrote. As exported it was `#000000`, which measures **1.16:1**
+on the `#161616` header and is invisible — caught by rendering it, not by
+reading it. **THE MARK IS NEUTRAL AND THAT IS THE BRAND RULE**, rux's, 2026-09-05:
+gray-10 `#f4f4f4` on any dark surface, gray-100 `#161616` on a light one, and no
+brand colour anywhere. The blue favicon shipped for a few hours and was rejected
+on sight.
+
+**A favicon ships for the first time**, `brand/favicon.svg`, linked by every page
+here and in both consumers; none had one before. It is a separate file from the
+logo because a favicon gets no CSS from the page, so the light/dark swap lives
+inside it — verified in both emulated schemes, not assumed. `npm run marks` no
+longer holds a drawing: it READS `brand/logo.svg`, copies the geometry verbatim,
+and emits the favicon plus two app icons (`light`, `dark` — four became two when
+blue left, since the blue pair would have been byte-identical to the mono pair).
+**Swapping the logo does NOT regenerate them**; that needs `npm run marks` and a
+copy to each consumer, which is the one thing the swap does not do for you.
+
+**The dachshund is the mark in every place, 2026-09-07, fourth drawing of the
+day.** The edge-to-edge favicon that landed that morning (159 cells) became a
+longer-bodied dachshund (139), then one with the 2026-09-06 mark's ONE-cell
+legs (124), and finally this: **114 filled cells, bounds x=1..15 and y=1..15,
+one cell of air on every side.** `brand/logo.svg` and `brand/favicon.svg`
+carry it byte for byte, and the two app icons follow.
+
+**The air is back, and it is what the icons needed.** Every drawing between
+2026-09-06 and this one filled all 16 columns. Measured against the masks a
+launcher applies, the edge-to-edge mark lost 3 filled cells to a circular
+mask, 0 to an iOS superellipse and 8 to the 28-of-32 safe area; this one
+loses none under any of the three. It is also cleaner at fractional sizes —
+85 partly transparent pixels at 20px and 72 at 24px against 88 and 93 — so
+the padding cost nothing and gained there.
+
+**The legs and the tail stay one cell wide**, against the measured cost: at
+20 CSS pixels the leg row reads as 2 solid device pixels against 14 partly
+transparent, a grey band rather than four legs. rux chose the finer legs with
+that in hand; `brand/README.md` keeps the numbers so nobody later mistakes
+them for a regression.
+
+Both files are one `<path>` of three closed loops — the boundary of the
+filled region, not abutting rectangles, which anti-alias their shared edges
+at fractional scales. Whole-pixel sizes stay exact: none at 16, 32, 48 or 64.
+`brand/favicon.svg` stays hand-owned exactly like `brand/logo.svg`, and
+`npm run marks` reads it for the `--` fault and the light/dark swap instead
+of writing it. **Nothing enforces that the two files match**; they are kept
+identical by hand.
+
+**Brand.svg is the official drawing, confirmed 2026-09-05.** It uses integer
+coordinates in a 16x16 viewBox, replacing the earlier 1024-unit drawing.
+The cleaned SVG preserves all 86 filled cells and the placement of the export; the favicon
+and both neutral app icons were regenerated from it. A cell is 1.5px at the
+24px header slot on a 1x display and 3 device pixels on a 2x display. Sizes
+16, 32, 48 and 64 align to whole pixels at 1x. The header was opened and
+measured at 24x24 on a 2x display; no shell sizing changed. Rux Apps and Rux
+Notes now carry matching logo and favicon copies locally; publication is
+still pending. [Brand usage](brand/README.md) records
+the sizes and which file to use on each surface.
+
+**`--` INSIDE AN XML COMMENT IS ILLEGAL, and it has now cost two rounds.** Such
+an SVG serves `200 OK` and renders 0x0 — invisible in a network tab and in the
+markup, and reasoning about the file catches neither. It shipped once from
+`brand/logo.svg` and once from `make-marks`' own generated comment, four broken
+icons found only by opening the page. `tools/make-marks.mjs` now refuses to
+write one, proved red before it was trusted. It checks that ONE fault and says
+so: node ships no `DOMParser` and nothing is vendored to get one, so an unclosed
+tag would still pass.
+
+**Next, in order:**
+
+1. Creator 3, the page builder, `builder.html` here — stages 0 to 11 of its
+   plan have landed (markers, the gate, the skeleton round trip, the preview
+   2026-09-04; select-and-edit, instance identity, add-and-move on a page
+   model, the gate registry, undo with a draft that survives a reload, and
+   **export with `check-parity`** 2026-09-05). `npm run gates` reads 41 of 41
+   current. **The page can now be taken away**: download it, copy its
+   `<main>`, or copy the exact `new-project.sh` command — the script stays the
+   one project creator. `tools/check-parity.mjs` runs the script's own
+   extracted lines against `exportPage`, 10 templates × 4 answer sets, and
+   found a real divergence on its first run (roadmap §4.12). **The content
+   panel now reads as content**: every field named by what it is, grouped, with
+   its original beside it, a per-field reset, and a link target where the markup
+   has one, and **button size and table density are swappable per group**.
+   **Stages 10 and 11 and three growth batches followed, 2026-09-05/06**: the
+   manifest measured whole with a generated coverage table, the guide map
+   `builder/guide.json` with placement derived rather than claimed, and a
+   catalogue of 51 blocks with every unmarked fragment carrying its reason.
+   This item read "stages 0 to 9" until 2026-09-06, a day after 10 and 11
+   landed. **The map was read and stage 12 landed, both 2026-09-06**: 45 of 47
+   entries in `builder/guide.json` reviewed, and `builder.html` now opens in a
+   GUIDED MODE — five steps behind a stepper, one at a time, on the same draft
+   the free mode shows all at once. What remains of creator 3 is stage 13,
+   repeated items, which the plan file marks as v2 and still an open question.
+   Roadmap §4.12 item 3 has the account. The tier-2 wiring (`check-blocks` and `npm run builder` in
+   `verify`, the registry, the CI staleness list) was proposed as a proven diff
+   and landed 2026-09-04 on rux's acceptance.
+2. The brand copy is made. All three consumers took `brand/logo.svg` and
+   `brand/favicon.svg` on 2026-09-07 and their live files hash identical to
+   this repository's. A pin move never overwrites `brand/`, so the next mark
+   change is another hand copy. `npm run gates` holds the cells.
+3. **Notes' ask, received 2026-09-06, is ANSWERED — both halves, 2026-09-08.**
+   It was the first thing this repository was ever sent. `templates/document-page.html`
+   is the eleventh template: one record read top to bottom, numbered sections
+   each with a kicker, a route line and a table, callouts inline, reference
+   tables at the end. It is authored here against invented content — a
+   service-restore runbook — and nothing crossed from that repository, by the
+   rule at the top of `AGENTS.md`.
+
+   **THE RULING: A ROUTE IS A BREADCRUMB, NOT A TAG.** Measured on running
+   Carbon at 1280 rather than argued from the stylesheet. `cds--tag`
+   read-only caps at `max-inline-size: 208px` with its label clipped at 192,
+   and the same four-segment route reported scrollWidth 278 against
+   clientWidth 192 — **86px lost to the ellipsis**. `cds--breadcrumb` has
+   `max-inline-size: none`, wraps at `flex-wrap: wrap`, and in a 280px track
+   put the route on three rows with every segment's scrollWidth equal to its
+   clientWidth. **`.rux--tag-label-tooltip` was rejected on evidence, not
+   taste**: every capture that renders it wraps an INTERACTIVE tag
+   (`button.cds--tag--operational|dismissible|selectable`) in a popover, so
+   it would make ~45 tab stops of a document's routes and still truncate on
+   paper and on touch. Segments are bare `<span>`s — measured
+   `rgb(22,22,22)`, cursor auto, so they read as text — with the last taking
+   the captured `--current` markup; `a.cds--link` there is link-blue with a
+   pointer cursor and would claim a menu name is clickable.
+
+   **THREE OF ITS OWN GATES CAUGHT THIS TEMPLATE**, which is the answer to
+   §3 of that memo: check-tags (tags on `<span>` where Carbon renders
+   `<div>`, and `stack-vertical` on `<section>`), check-ancestry
+   (`checkbox--inline` outside the selection column it lives in in all seven
+   captures) and check-aria-roles (an invented `role="note"` — Carbon renders
+   `role="status"` on that class five times out of five). **The first two are
+   also true of `template-candidate.html`**, which is worth sending back.
+
+   **WHAT IS NOT DONE.** The three gate baselines in `tools/lib/gates.mjs`
+   still read "10 templates"/"40 of 40" and are now stale. They are a record
+   and not an assertion (`gates.mjs:35`), so nothing fails, but editing them
+   is tier 2 and they are proposed rather than applied — as is
+   `tools/build-theme-creator.mjs`'s `TEMPLATES` list, which is a
+   CONTROL_FILE. `builder/guide.json`'s eight new entries are marked
+   `reviewed: false`: the purpose line and the seven table-density
+   recommendations are mine and have not been read by rux.
+
+   **What picking this up costs, surveyed 2026-09-08 so the next pass does
+   not find it out halfway.** An eleventh template is not one file. It is
+   registered in `builder/guide.json` and `builder/blocks.json`,
+   `docs/choices.md`, `docs/composing-pages.md`, `index.html` and the
+   `rux-ds-page` skill — and in seven CONTROL_FILES:
+   `builder/placement.mjs`, `builder/rewrites.mjs`, `tools/build-portal.mjs`,
+   `tools/build-theme-creator.mjs`'s `TEMPLATES`, `tools/check-a11y.js`,
+   `tools/check-ancestry.mjs`, `tools/check-blocks.mjs` and
+   `tools/lib/blocks.mjs`.
+
+   **THREE GATE BASELINES MOVE, which makes this a tier 2 change before it is
+   a design one.** `tools/lib/gates.mjs` asserts "10 templates verified-live"
+   (provenance), "10 templates mapped" (blocks) and "10 templates × 4 answer
+   sets · 40 of 40 byte-identical" (parity). Raising each to 11 and 44 is not
+   lowering a baseline, but it is still editing expected results, so it is
+   drafted as a diff and proposed rather than applied — and by the rule in
+   `AGENTS.md`, the change must not be judged by a control edited in the same
+   run. `npm run gates` also grows from 47 cells to 50, and the new three are
+   swept before they are recorded.
+
+   **Two things gate the work itself.** The template needs a `BEHAVIOUR:`
+   comment naming the running Carbon page it was verified against, its date,
+   and what was not covered (`docs/verifying-templates.md`) — so a Carbon page
+   has to be opened, which needs rux, because the browser pane cannot reach
+   Storybook cross-origin. And the truncating-label ruling is rux's: it may
+   decide the markup, so answering it first avoids authoring the sections
+   twice.
+4. **Scheduler's asks, four of them, 2026-09-07 and -08 — ALL FOUR RESOLVED
+   2026-09-08, three answered and one declined on evidence. Nothing in this
+   item is pending; it is kept as the record.** Read in place in
+   that repository (`docs/rux-ds-requests.md`); nothing from it enters here,
+   by the same rule as item 3. Two are additions. **The sprite ask is
+   ANSWERED, 2026-09-08** (`c869d7f`): `user--multiple` is in, `events` is
+   declined, and the decision was made by LOOKING rather than from the source
+   — both rasterised at 16 device px and magnified nearest-neighbour, where
+   `events` puts its front figure's head and shoulders into the same pixels
+   and reads as a smear under two rings, while `user--multiple` keeps a whole
+   ring and a shoulder arc in front and a legible partial behind. `events--alt`
+   was tried unasked and is worse than either. The symbol ships unreferenced
+   here, as `color-palette` does.
+
+   **THE DATE PICKER IS ANSWERED TOO, `89e14fd`** — both halves, and neither
+   needed CSS. `data-rux-open="<id>"` opens the picker from an element the page
+   owns, which is not a new contract but the one modal and menu already keep,
+   and the opener becomes the overlay ANCHOR as well as the focus destination —
+   proved red against the real kernel, because with the input as anchor a press
+   on the page's trigger is an outside press and the toggle never toggles. The
+   input may carry `hidden`: measured `display: none`, box 0x0, which corrects
+   what `js/date-picker.js`'s header claimed about the UA `[hidden]` rule.
+
+   **`check-behaviour` IS SCOPED TO THE DOCUMENT, LANDED ON rux'S ACCEPTANCE
+   `0527a30`** — tier 2, proposed as a proven diff and taken. `docs/log.md` has
+   every reading, all of them taken against the UNMODIFIED gate before it
+   landed: the complaint reproduces here (4 of 18 on `document-page`, with
+   three "no shell here" on a page that has one), the sink is unmoved at 47 of
+   47, and the fail-versus-skip boundary was tested in both directions so it
+   retires no contract. Read `passed/ran` off the sink; templates stay off the
+   coverage matrix deliberately. **It found a shipped defect before it was even
+   applied**: all eleven templates carried an invented
+   `aria-label="Toggle navigation"`, which silently disabled `js/ui-shell.js`'s
+   name swap — the glyph and `aria-expanded` moved, the accessible name never
+   did. Fixed at `2677d7d`.
+
+   **THE SHELL CAPTURE IS DECLINED ON EVIDENCE, and the reason is stronger than
+   the one recorded yesterday.** `check-spacing` keys on an element's own class
+   signature plus its parents; both shells give `header__name` an identical
+   signature and parent, and a signature passes on ANY recorded variant, so
+   adding the 8px would make 8px acceptable on all eleven persistent-shell
+   templates and on `index.html` too. The capture cannot do the job it was
+   proposed for. The doctrine half was already answered 2026-09-08.
+
+**THE CONSUMER CANNOT USE ANY OF IT YET, and that is the one live item.**
+`v0.1.11` is still the newest tag and everything above sits past it on `main`:
+the sprite icon, the date-picker trigger, the template label fix and the scoped
+`check-behaviour`. A project pins a tag and `tools/new-project.sh` moves the pin
+only to one, so rux-scheduler is reading `v0.1.11` — which is why it still sees
+`js/ui-shell.js`'s corrected comment as uncorrected. **Cutting the tag is rux's
+call and nobody else's**; by §8.2 the icon and the date-picker contract are
+additions, so it is a minor bump and `CHANGES.md` gains lines. That session has
+offered to test a release candidate against the app before a tag is cut.
+
+**Open, not next in order:** whether `templates/settings-page.html`'s
+`col-span-4/8/8` (not full-width) is deliberate or just what the template
+happened to ship with — `/account/` copied it verbatim rather than decide.
+Now that a live settings-shaped page exists on it, revisit the template
+with that as a second reference point, not only the original Carbon
+capture.
+
+**Creator 2 is done, 2026-09-02** — the `rux-ds-page` skill's §2, a decision
+table of eight rows offering only what `docs/choices.md` lists, naming five
+things that are not choices, and gating the result through this root.
+
+Before the strip: **83 components** — Carbon 1.114 added eight to the 75 this project
+first stripped, and `docs/inventory.md` has since decided all 83 — 4 themes, 939 KB min,
+**94.0 KB gzipped**.
+
+The current component count and disposition summary are generated in `portal.html`.
+Roadmap §4.9 owns the admission batches and their state; `docs/inventory.md` owns each
+component's decision; `npm run gates` and `docs/gate-coverage.json` own the sweep state.
+They are intentionally not repeated here.
+
+**`npm install --ignore-scripts` BEFORE `npm run verify`, after any pull that touches `package.json`** — `npm ci --ignore-scripts` on a fresh clone. The flag skips the `ibmtelemetry` postinstall every `@carbon/*` package carries, as CI does.
+`verify` BUILDS `css/rux.css` and `.min.css` from the `@carbon/styles` that is in
+`node_modules`, and never compares that against what `package.json` pins. So a stale
+install does not fail — it rewrites the committed stylesheet from the OLD Carbon and
+exits 0.
+
+Measured 2026-08-31, not hypothetical: `package.json` pinned `^1.114.0`, `node_modules`
+still held 1.113.0, and one `verify` reverted 736 lines of `css/rux.css` — dropping the
+`any-hover` media queries around the overflow-menu hover rules and a `background-color`
+on `.rux--btn--icon-only.rux--btn--ghost:focus`. Exit code 0 throughout, which is the
+part worth remembering: **the exit code cannot see this**, and this README's own advice
+to trust it over grepping output does not help here.
+
+There is a second cost. All five browser gates declare `css/rux.css` and `js` as inputs,
+so a spurious rebuild marks every browser cell DIRTY. That prints and does not fail
+the build, but it destroys a `26 current · 0 stale` state that takes a browser and a
+person to re-earn. `npm install --ignore-scripts` then `npm run verify` restores `css/` byte-identically
+and the cells with it.
+
+#### The sink is interactive — the system is not, yet
+
+`sink/harness.js` is **down to two demo conveniences that were never component
+behaviour**: cancelling in-page anchor jumps so a clickable tile does not throw the
+reader up the page, and the theme switcher. Everything else has gone. Modal, popover,
+tooltip, menu, overflow menu, list box, tabs, accordion, data table, the form controls
+and the UI shell all moved to `js/` with real focus management, keyboard support and
+ARIA; the blocks driving CUT or DEFERRED components — copy button, content switcher,
+tree view, slider, toggletip, combo box, multiselect — were deleted rather than moved,
+because driving markup that is not on the page is code nobody can test and nobody will
+delete. **390 lines have become 67.** The phase is done when the file is empty. Roadmap §4.1.8.
+
+---
+
+
 **2026-09-09 - diff A and diff C reviewed independently, fixed, merged;
 two releases; two new gates found stale icons in every app that had them.**
 The long arc, after step 0 and the sweep below.
