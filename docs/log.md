@@ -9,6 +9,57 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-08 - the scheduler's sprite ask, answered by rasterising rather
+than by reasoning.** rux-scheduler asked for `events` and `user--multiple`
+on 2026-09-07, both to be judged at 16px side by side, with no change asked
+for if neither read. The ask was for two and not one because Carbon draws
+2592 icons at 32 and only 68 at 16, and no multi-person glyph is among the
+68 -- which is Carbon's own judgement that a group does not survive being
+shrunk.
+
+**READING THE SOURCE WOULD HAVE GOT THIS WRONG, and reading a screenshot
+would have too.** The pane returns a screenshot downscaled 0.625 from a
+1280-wide viewport, which destroys exactly the detail being judged: at that
+scale both candidates look acceptable. The decision was made from a
+nearest-neighbour magnification of each glyph rasterised at its real device
+size -- 16 device px for a 1x display, 32 for 16 CSS px on a 2x one -- in
+`.brand/icon-magnify.html`, which is gitignored scratch.
+
+**AT 16 DEVICE PX:** `events` puts the front figure's head and shoulders
+into the same pixels; the two behind stay legible rings, so it reads as a
+smear under two circles rather than as three people. `user--multiple` keeps
+a whole ring and a shoulder arc for the front figure and a clear partial
+behind. `events--alt` was tried unasked -- four figures in a 2x2 -- and is
+worse than either. **At 32 device px all three are legible**, so a
+2x-display-only reading would have admitted `events`; it was declined on the
+1x reading, which is the one the request's own argument turns on.
+
+`user--multiple` is in at `c869d7f`, unreferenced by any page here, as
+`color-palette` is. No sink fragment demos it: the precedent set by
+`accessibility` and `hotel` on 2026-09-06 is that a glyph admitted for a
+consuming app lives in the sprite and nowhere else.
+
+**IT COST TWO SWEEPS.** The sprite is inlined into every page, so one added
+`<symbol>` aged all 50 cells. Every one reproduced its recorded figure
+exactly -- including the two adjudicated sets that are not zero,
+`wizard-page`'s four focus findings and `schedule-page`'s eight stripped
+date-picker classes. Portal was read last and alone at `5cbf08a` (145
+tag--green, 0 tag--magenta), and recording its three cells rebuilt the page
+again, so that rebuild was diffed rather than assumed: the `rux--` class set
+is identical before and after, which is what `check-runtime-classes` reads.
+`5cbf08a` and `36f553c`.
+
+**WHAT WAS NOT DONE: the visual step, on any page.** The Browser pane is
+hidden in this session -- `document.visibilityState` reads `hidden` in the
+same execution as every gate, and every capture comes back blank. Each of
+the 50 cells says so rather than claiming a look it did not take. The gates
+cannot see a component that compiles, resolves and renders wrong; five
+shipped defects have passed all of them. rux has to open the pages.
+
+**Three of the scheduler's four asks remain**, and none is tier 3: the
+document-scoped `check-behaviour`, the page-owned date-picker trigger, and
+the collapsible-shell capture that is the remaining half of the shell ask.
+
 **2026-09-08 - the theme creator's Surfaces section, four tokens to
 twenty-nine, and three defects the gates could not see.** rux built an
 OLED-dark theme in the tool and the result was patchwork: the data-table

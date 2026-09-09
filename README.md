@@ -452,9 +452,18 @@ tag would still pass.
    twice.
 4. **Scheduler's asks, four of them, 2026-09-07 and -08.** Read in place in
    that repository (`docs/rux-ds-requests.md`); nothing from it enters here,
-   by the same rule as item 3. Two are additions: **`events` and
-   `user--multiple` for the sprite**, both 32-unit drawings to be judged at
-   16px side by side, with no change asked for if neither reads; and a **date
+   by the same rule as item 3. Two are additions. **The sprite ask is
+   ANSWERED, 2026-09-08** (`c869d7f`): `user--multiple` is in, `events` is
+   declined, and the decision was made by LOOKING rather than from the source
+   — both rasterised at 16 device px and magnified nearest-neighbour, where
+   `events` puts its front figure's head and shoulders into the same pixels
+   and reads as a smear under two rings, while `user--multiple` keeps a whole
+   ring and a shoulder arc in front and a legible partial behind. `events--alt`
+   was tried unasked and is worse than either. The symbol ships unreferenced
+   here, as `color-palette` does. It aged all 50 sweep cells, every one of
+   which reproduced exactly (`5cbf08a`, `36f553c`) — **with the visual step
+   not taken on any page, because the Browser pane is hidden and every capture
+   returns blank.** Still open: a **date
    picker whose trigger the consuming page owns**, since `js/date-picker.js`
    requires the trigger to be `__icon` inside the picker's own root and every
    way round it puts a Carbon class on an app element or an app rule on a
