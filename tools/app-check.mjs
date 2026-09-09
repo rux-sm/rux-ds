@@ -8,11 +8,37 @@
 //   node tools/app-check.mjs [app-dir]     from anywhere; app-dir defaults to
 //                                          the app this copy is vendored in,
 //                                          else the working directory
+//   node tools/app-check.mjs --ds <dir>    where rux-ds is, for an app that
+//                                          LINKS it rather than vendoring it.
+//                                          DS=<dir> is the same thing; a
+//                                          sibling ../rux-ds is the default.
+//                                          A RELATIVE VALUE IS RESOLVED
+//                                          AGAINST THE APP, not the working
+//                                          directory -- so ../rux-ds means
+//                                          the same thing wherever it is run
+//                                          from, and matches the default.
+//   node tools/app-check.mjs --hub <dir>   where the account-root site is, so
+//                                          /switcher.js and its siblings
+//                                          resolve instead of being counted
 //   node tools/app-check.mjs --self-test   drive every rule red in a scratch
 //                                          app, then remove it
 //   node tools/app-check.mjs --hash <dir>  print the tree checksum of <dir>
 //                                          and nothing else; how
 //                                          new-project.sh records one in a PIN
+//
+// TWO SHAPES, AND THE APP DECIDES WHICH -- roadmap §8.4, added 2026-09-09.
+//   vendored  vendor/rux-ds/PIN is there. rux-ds is that tree, the pin rule
+//             runs, and --ds is REFUSED: pointing a vendored app at another
+//             copy would check its pages against bytes they do not link, and
+//             pass. This is every app until §8.4 step 2.
+//   served    no vendor/. The pages link /rux-ds/<path> on the shared origin,
+//             and this needs a checkout to resolve them against: --ds, else
+//             DS, else a sibling ../rux-ds. NOT FOUND IS A FAILURE, never a
+//             skip -- the wording Notes' check-ancestry settled on: a gate
+//             that cannot run says so rather than passing.
+// The shape is read from the app, not from a flag, so one release serves both
+// while the workspace is half-moved. Nothing here says which shape is right;
+// that is §8.4's decision and rux's.
 //
 // WHY IT EXISTS. Until 2026-09-05 the hub carried an eight-line class check
 // and Notes a ninety-nine-line one, and neither checked a token; the recipe
@@ -25,19 +51,41 @@
 //             the pinned vendor/rux-ds/css/rux.css
 //   tokens    every var(--rux-*) a page, local stylesheet or script reads is
 //             declared in the pinned css or the app's own two delta files
-//   files     every relative href/src on a page names a file that exists
+//   files     every relative href/src on a page names a file that exists, and
+//             so does every ROOT-ABSOLUTE RESOURCE it can resolve: /rux-ds/…
+//             against the rux-ds it found, anything else against --hub when
+//             that is given. A resource is a link, script, img, use, source,
+//             iframe, video, audio or embed; an <a href="/…"> is navigation
+//             to another site on the origin and is left alone, as it always
+//             was
+//   sprite    every <symbol id="i-…"> a page inlines is byte-identical to the
+//             one rux-ds ships in assets/icons.svg. A page carries the subset
+//             it uses -- the hub's account page carries four of sixty-three --
+//             so this compares symbol by symbol and never the block as a whole
 //   ids       ids are unique per page, and every aria-controls, aria-labelledby,
 //             aria-describedby, aria-owns, for= and #fragment resolves to one
-//   pin       vendor/rux-ds/PIN exists, names a tag, and -- when it carries a
-//             sha256 line -- the bytes under vendor/rux-ds/ still hash to it
+//   pin       VENDORED SHAPE ONLY. vendor/rux-ds/PIN exists, names a tag, and
+//             -- when it carries a sha256 line -- the bytes under
+//             vendor/rux-ds/ still hash to it
 //
 // WHAT IT CANNOT SEE, said plainly because a green run is easy to over-read:
 //   * whether a class is the RIGHT one -- btn--secondary where btn--danger was
 //     meant resolves fine; rux-ds diffs markup against Carbon captures, and
 //     those are not vendored (Notes' check-ancestry says why).
-//   * a root-absolute reference such as /switcher.js: it names a file on the
-//     account's ROOT site, which this app is not. Counted and reported as not
-//     checked, never as resolved.
+//   * a root-absolute reference this has no directory for: /switcher.js names
+//     a file on the account's ROOT site, which this app is not. Counted and
+//     reported as not checked, never as resolved -- pass --hub and it is
+//     checked instead. WHY THIS IS NOT A HARD FAILURE: an app is checked
+//     alone, in CI, with no hub beside it, and a rule that needs a second
+//     checkout to pass would be switched off the first time it was
+//     inconvenient.
+//   * WHETHER THE rux-ds IT RESOLVED AGAINST IS THE ONE THAT WILL SERVE THE
+//     PAGE. In the served shape the page links /rux-ds/… and gets whatever is
+//     deployed; this reads a checkout on disk. Locally that is a sibling on
+//     main, which is AHEAD of what is live -- so a class added since the last
+//     tag passes here and 404s in a browser. CI is the honest reading, where
+//     the checkout is the tag. Said here because it is the one thing the
+//     vendored shape had that the served shape does not.
 //   * an id built at runtime, a class an app-specific check knows better,
 //     spacing, contrast, behaviour, or how the page LOOKS. It prints which
 //     pages to open and names the five themes; the looking is the owner's.
@@ -68,6 +116,11 @@ import { tmpdir } from 'node:os';
 
 const SKIP = new Set(['vendor', 'node_modules', 'build', '.git', '.claude', '.github']);
 const THEMES = 'white g10 g90 g100 rux';
+// A resource carries a file the page needs to render; anything else with an
+// href is navigation. The distinction only matters for root-absolute values:
+// /rux-ds/css/rux.css is a file this can resolve, and <a href="/"> is the hub.
+const RESOURCE = /<(link|script|img|use|source|iframe|video|audio|embed)\b([^>]*)>/gi;
+const SYMBOL = /<symbol\b[^>]*\bid="(i-[a-zA-Z0-9_-]+)"[\s\S]*?<\/symbol>/g;
 
 // ── where the app is ────────────────────────────────────────────────────────
 const self = fileURLToPath(import.meta.url);
@@ -133,16 +186,80 @@ const skipRef = v => /^(?:[a-z][a-z0-9+.-]*:|\/\/|#|\/)/i.test(v) || v === '';
 
 // ── the rules ───────────────────────────────────────────────────────────────
 // Returns { failures: [{rule, where, what}], notes: [...], pages: [...] }.
-export function check(root) {
+// opts: { ds, hub } -- where rux-ds is for a SERVED app, and where the
+// account-root site is. Both may be absent; the shape below decides whether
+// that matters.
+export function check(root, opts = {}) {
   const failures = [], notes = [];
   const fail = (rule, where, what) => failures.push({ rule, where, what });
   const rel = p => relative(root, p) || '.';
 
-  // pin
+  // ── which shape this app is, and where rux-ds is for it ──────────────────
+  // READ FROM THE APP, AND FROM THE DIRECTORY RATHER THAN THE PIN. A vendored
+  // app is one with a vendor/rux-ds/ tree; that tree is what its pages link,
+  // so that tree is what they are checked against, and --ds is refused rather
+  // than quietly ignored. A served app links /rux-ds/ and must be told, or
+  // have a sibling.
+  //
+  // KEYING THIS ON THE PIN FILE WAS WRONG AND THE SELF-TEST SAID SO: deleting
+  // the PIN from a vendored app made it look served, so "vendor/ was not
+  // committed" -- a broken app -- reported as "no rux-ds found" instead. The
+  // tree is the shape; the PIN is a rule about it.
+  const vendored = existsSync(join(root, 'vendor/rux-ds'));
+  let ds = null, dsFrom = null;
+  if (vendored) {
+    if (opts.ds) fail('ds', 'vendor/rux-ds/PIN', `this app vendors rux-ds, and --ds names ${opts.ds}. Its pages link vendor/rux-ds/, so checking them against another copy would pass on bytes they do not load. Drop --ds, or delete vendor/ if this app was meant to link /rux-ds/.`);
+    ds = join(root, 'vendor/rux-ds');
+    dsFrom = 'vendor/rux-ds';
+  } else {
+    // A PATH YOU NAME IS A CLAIM, AND A WRONG CLAIM FAILS HERE RATHER THAN
+    // FALLING THROUGH. The first draft tried --ds, then DS, then a sibling, and
+    // took whichever worked. So `--ds /tmp` beside a real sibling PASSED, and
+    // said `rux-ds from a sibling` while the operator watched their own flag be
+    // ignored -- measured 2026-09-09 on a scratch app, and it is the exact
+    // shape this repository keeps being bitten by: a confident wrong answer
+    // that reads clean. It matters most in CI, where --ds names a checked-out
+    // TAG: a checkout that failed or moved would leave the check passing
+    // against whatever else was on disk.
+    //
+    // So only the UNNAMED sibling is a fallback. Name a path and it must be
+    // right.
+    const named = opts.ds ? ['--ds', opts.ds] : process.env.DS ? ['DS', process.env.DS] : null;
+    if (named && opts.ds && process.env.DS && resolve(root, process.env.DS) !== resolve(root, opts.ds))
+      notes.push(`DS=${process.env.DS} is set and ignored: --ds wins, and it names ${resolve(root, opts.ds)}`);
+    const [where, dir] = named ?? ['a sibling', join(root, '..', 'rux-ds')];
+    const abs = resolve(root, dir);
+    if (existsSync(join(abs, 'css/rux.css'))) { ds = abs; dsFrom = `${where} ${abs}`; }
+    if (!ds) {
+      // NOT SKIPPED. The same wording Notes' check-ancestry uses: a gate that
+      // cannot run says so. Everything downstream needs this directory, so
+      // there is nothing to report but this.
+      fail('ds', 'rux-ds', named
+        ? `${where} names ${abs}, which holds no css/rux.css -- that is not a rux-ds checkout. A path you name is a claim about where rux-ds is, so a wrong one fails rather than falling through to a sibling and passing against a different copy.`
+        : `this app has no vendor/rux-ds, so it links /rux-ds/ on the shared origin and needs a rux-ds checkout to resolve that against. Looked for a sibling at ${abs}, which holds no css/rux.css. Clone rux-ds beside this app, or pass --ds <dir> / DS=<dir>. Not skipped -- a check that cannot resolve a class is not a check.`);
+      // ONLY `ds` RAN. Everything else needs this directory, so it is reported
+      // as not run rather than as zero-and-green. `unresolvable` is here
+      // because report() subtracts it: omitting it made that arithmetic NaN,
+      // which printed nothing and threw nothing -- a second thing this early
+      // return got quietly wrong.
+      return { failures, notes, pages: [], classUses: 0, tokenUses: 0, defined: 0, vendored, ds, dsFrom, pinTag: null, pinRecorded: null, pinComputed: null, absolute: 0, unresolvable: 0, symbols: 0,
+        ran: ['ds'],
+        notRun: Object.fromEntries(['pin','classes','tokens','files','sprite','ids'].map(k => [k, 'no rux-ds was found, so there is nothing to check this app against'])) };
+    }
+  }
+  const hub = opts.hub ? resolve(root, opts.hub) : null;
+  if (hub && !existsSync(join(hub, 'switcher.json'))) fail('ds', 'hub', `--hub names ${hub}, which has no switcher.json; that is not the account-root site`);
+
+  // pin -- the vendored shape only. A served app has no bytes of its own to
+  // verify: it loads whatever /rux-ds/ is serving, and the tag that answers
+  // "which version is this" is the deployed one, not a file here.
   const pinPath = join(root, 'vendor/rux-ds/PIN');
   let pinTag = null, pinRecorded = null, pinComputed = null;
-  if (!existsSync(pinPath)) fail('pin', 'vendor/rux-ds/PIN', 'missing -- this is not a project on rux-ds, or vendor/ was not committed');
-  else {
+  if (!vendored) {
+    notes.push(`served shape: no vendor/, so the pin rule does not apply. rux-ds read from ${dsFrom}. What is LIVE at /rux-ds/ is not read here.`);
+  } else if (!existsSync(pinPath)) {
+    fail('pin', 'vendor/rux-ds/PIN', 'missing -- this is not a project on rux-ds, or vendor/ was not committed');
+  } else {
     const pinText = readFileSync(pinPath, 'utf8');
     pinTag = pinText.match(/^tag\s+(v\d\S*)/m)?.[1] ?? null;
     if (!pinTag) fail('pin', 'vendor/rux-ds/PIN', 'names no tag; a pin between tags is not a release a consumer can be on');
@@ -183,11 +300,11 @@ export function check(root) {
     }
   }
 
-  // what the pinned release defines
-  const vendorCss = ['rux.css', 'rux-theme.css', 'rux-overrides.css'].map(f => join(root, 'vendor/rux-ds/css', f));
+  // what rux-ds defines, wherever it was found
+  const vendorCss = ['rux.css', 'rux-theme.css', 'rux-overrides.css'].map(f => join(ds, 'css', f));
   const cssText = f => existsSync(f) ? readFileSync(f, 'utf8') : '';
   const ruxCss = cssText(vendorCss[0]);
-  if (!ruxCss) fail('classes', 'vendor/rux-ds/css/rux.css', 'missing; nothing to resolve a class against');
+  if (!ruxCss) fail('classes', rel(vendorCss[0]), 'missing; nothing to resolve a class against');
   const defined = new Set([...ruxCss.matchAll(/\.(rux--(?:\\.|[A-Za-z0-9_-])+)/g)].map(m => m[1].replace(/\\/g, '')));
 
   const pages = walk(root, ['.html']);
@@ -213,26 +330,64 @@ export function check(root) {
       ? new Set([...inAttrs(text), ...[...text.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].flatMap(m => [...inScript(stripJsComments(m[1]))])])
       : kind === 'js' ? inScript(text) : inSheet(text);
     classUses += used.size;
-    for (const c of used) if (!defined.has(c)) fail('classes', rel(f), `${c} is not compiled in the pinned rux.css`);
+    for (const c of used) if (!defined.has(c)) fail('classes', rel(f), `${c} is not compiled in ${dsFrom}'s rux.css`);
     const toks = tokensIn(text);
     tokenUses += toks.size;
-    for (const t of toks) if (!declared.has(t)) fail('tokens', rel(f), `var(${t}) is declared nowhere -- not in the pinned css, not in this app's own two files`);
+    for (const t of toks) if (!declared.has(t)) fail('tokens', rel(f), `var(${t}) is declared nowhere -- not in rux-ds's css, not in this app's own two files`);
   }
 
-  // files and ids, per page
+  // files, sprite and ids, per page
   const IDREF = /\b(aria-controls|aria-labelledby|aria-describedby|aria-owns|for)="([^"]*)"/g;
+  // The sprite as rux-ds ships it, by symbol id. Read once; a page carries the
+  // subset it uses, so the comparison is per symbol and a page that carries
+  // fewer is not stale.
+  const spritePath = join(ds, 'assets/icons.svg');
+  const shipped = existsSync(spritePath)
+    ? new Map([...readFileSync(spritePath, 'utf8').matchAll(SYMBOL)].map(m => [m[1], m[0]]))
+    : null;
+  if (!shipped) fail('sprite', rel(spritePath), 'missing; nothing to compare an inlined symbol against');
+  // WHICH ABSOLUTE RESOURCES CAN BE RESOLVED, and against what. /rux-ds/ is
+  // the design system wherever it was found -- in the vendored shape that is
+  // the app's own copy, which is right: an app that vendors AND links /rux-ds/
+  // is checked against the bytes it committed.
+  const absoluteBase = (raw) => raw.startsWith('/rux-ds/') ? [ds, raw.slice('/rux-ds/'.length)]
+    : hub ? [hub, raw.slice(1)] : null;
+  let symbols = 0, unresolvable = 0;
   for (const f of pages) {
     const html = stripHtmlComments(readFileSync(f, 'utf8'));
     const dir = dirname(f);
+    // A resource's href/src only. An <a href> is navigation: on this origin
+    // "/" is the hub and "/name/" is another app, and neither is a file this
+    // app can be asked for.
+    const resources = new Set();
+    for (const m of html.matchAll(RESOURCE))
+      for (const a of m[2].matchAll(/\b(?:href|src)="([^"]*)"/g)) resources.add(a[1]);
     for (const m of html.matchAll(/\b(?:href|src)="([^"]*)"/g)) {
       const raw = m[1];
-      if (raw.startsWith('/') && !raw.startsWith('//')) { absolute++; continue; }
-      if (skipRef(raw)) continue;
-      const path = raw.split(/[?#]/)[0];
+      let base = dir, path = raw;
+      if (raw.startsWith('/') && !raw.startsWith('//')) {
+        if (!resources.has(raw)) continue;              // navigation, as before
+        absolute++;
+        const at = absoluteBase(raw);
+        if (!at) { unresolvable++; continue; }
+        [base, path] = at;
+      } else if (skipRef(raw)) continue;
+      path = path.split(/[?#]/)[0];
       if (!path) continue;
-      const target = resolve(dir, decodeURIComponent(path));
+      const target = resolve(base, decodeURIComponent(path));
       const ok = existsSync(target) && (statSync(target).isFile() || existsSync(join(target, 'index.html')));
-      if (!ok) fail('files', rel(f), `${raw} names nothing on disk`);
+      if (!ok) fail('files', rel(f), `${raw} names nothing on disk${base === dir ? '' : ` (resolved under ${relative(root, base) || base})`}`);
+    }
+    // THE INLINED SPRITE. A page pastes symbols because WebKit will not follow
+    // <use> into another document, and nothing re-reads that paste: rux-ds
+    // ships a new glyph, the page keeps the old one, every other rule passes
+    // and the icon renders stale or empty. Found by hand in the scheduler,
+    // 2026-09-06, moving to v0.1.8.
+    if (shipped) for (const m of html.matchAll(SYMBOL)) {
+      symbols++;
+      const [markup, id] = [m[0], m[1]];
+      if (!shipped.has(id)) fail('sprite', rel(f), `<symbol id="${id}"> is inlined here and rux-ds ships no such symbol; it was renamed or removed, or invented locally`);
+      else if (shipped.get(id) !== markup) fail('sprite', rel(f), `<symbol id="${id}"> differs from the one rux-ds ships -- the paste is stale. Re-inline the sprite from ${relative(root, spritePath) || spritePath}.`);
     }
     const ids = new Map();
     for (const m of html.matchAll(/\bid="([^"]*)"/g)) ids.set(m[1], (ids.get(m[1]) ?? 0) + 1);
@@ -242,28 +397,65 @@ export function check(root) {
     for (const m of html.matchAll(/\bhref="#([^"]+)"/g)) refs.add(['href', m[1]]);
     for (const [attr, id] of refs) if (!ids.has(id)) fail('ids', rel(f), `${attr} points at #${id}, and no element on the page has that id`);
   }
-  if (absolute) notes.push(`${absolute} root-absolute reference${absolute === 1 ? '' : 's'} (/…) not checked: they name files on the account's root site, not in this app`);
+  if (unresolvable) notes.push(`${unresolvable} root-absolute resource${unresolvable === 1 ? '' : 's'} (/…) not checked: ${hub ? 'not under /rux-ds/ and not in the hub' : 'they name files on the account\'s root site, which is not this app -- pass --hub <dir> to check them'}`);
 
-  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, pinTag, pinRecorded, pinComputed };
+  return { failures, notes, pages: pages.map(rel), classUses, tokenUses, defined: defined.size, vendored, ds, dsFrom, pinTag, pinRecorded, pinComputed, absolute, unresolvable, symbols,
+    // Every rule executed except pin in the served shape, where there are no
+    // vendored bytes to verify. Named rather than inferred from a zero.
+    ran: ['ds', ...(vendored ? ['pin'] : []), 'classes', 'tokens', 'files', 'sprite', 'ids'],
+    notRun: vendored ? {} : { pin: 'this app vendors nothing, so there are no pinned bytes to verify -- it loads whatever /rux-ds/ serves' } };
 }
 
 // ── printing ────────────────────────────────────────────────────────────────
 function report(root, r) {
-  const rules = ['pin', 'classes', 'tokens', 'files', 'ids'];
+  const rules = ['ds', 'pin', 'classes', 'tokens', 'files', 'sprite', 'ids'];
+  // NOT RUN IS NOT A PASS, AND SAYING SO TOOK A REVIEWER. Until 2026-09-09
+  // this printed a green ` ok ` for every rule whose figure happened to be
+  // zero, so an app where the ds rule failed -- no rux-ds found, nothing to
+  // check anything against -- read:
+  //     FAIL  ds
+  //      ok   classes 0 uses resolve against 0 compiled
+  //      ok   tokens  0 var(--rux-*) reads resolve      ... and three more
+  // Five greens for five rules that never executed. The exit code was right,
+  // so CI was never fooled; a person reading the output was. It is exactly the
+  // fault this file's own comment claimed to have avoided, guarded on `pin`
+  // and `ds` and nowhere else. Found in review by a session that did not write
+  // this branch.
+  //
+  // So check() now says which rules RAN, and anything else prints as not run
+  // with the reason. A rule that did not execute can no longer look like one
+  // that passed.
+  const ran = new Set(r.ran ?? rules);
   for (const rule of rules) {
     const fs = r.failures.filter(f => f.rule === rule);
+    if (!ran.has(rule)) {
+      console.log(`  ----  ${rule.padEnd(8)}NOT RUN -- ${(r.notRun ?? {})[rule] ?? 'a rule it depends on failed first'}`);
+      for (const f of fs) console.log(`          ${f.where}: ${f.what}`);
+      continue;
+    }
     console.log(`  ${fs.length ? 'FAIL' : ' ok '}  ${rule.padEnd(8)}${fs.length ? '' : ({
+      ds: `rux-ds from ${r.dsFrom}`,
       pin: `vendor/rux-ds at ${r.pinTag}${r.pinRecorded ? `, bytes verified ${shortHash(r.pinRecorded)}` : ''}`,
       classes: `${r.classUses} uses resolve against ${r.defined} compiled`,
       tokens: `${r.tokenUses} var(--rux-*) reads resolve`,
-      files: `every relative href and src on ${r.pages.length} page${r.pages.length === 1 ? '' : 's'} exists`,
+      files: `every relative href and src on ${r.pages.length} page${r.pages.length === 1 ? '' : 's'} exists${r.absolute - r.unresolvable > 0 ? `, and ${r.absolute - r.unresolvable} root-absolute resource${r.absolute - r.unresolvable === 1 ? '' : 's'}` : ''}`,
+      sprite: r.symbols ? `${r.symbols} inlined symbol${r.symbols === 1 ? '' : 's'} match the sprite rux-ds ships` : 'no page inlines a symbol',
       ids: 'unique, and every reference to one resolves',
     })[rule]}`);
     for (const f of fs) console.log(`          ${f.where}: ${f.what}`);
   }
   for (const n of r.notes) console.log(`  note  ${n}`);
   console.log(`\n  ${r.failures.length ? `${r.failures.length} failure${r.failures.length === 1 ? '' : 's'}` : 'passes'} in ${root}`);
-  console.log(`  This says the page CAN render from the pin. Whether it looks right is yours: open`);
+  // AND THE CLOSING LINE IS EARNED OR IT IS NOT PRINTED. It says the page can
+  // render and invites a person to go and look; after a run where most rules
+  // never executed it would be describing a check that did not happen.
+  const skipped = rules.filter(x => !ran.has(x));
+  if (skipped.length > 2) {
+    console.log(`  ${skipped.length} of ${rules.length} rules did not run, so this says almost nothing about the page.`);
+    console.log(`  Fix the failure above and run it again.\n`);
+    return;
+  }
+  console.log(`  This says the page CAN render from ${r.vendored ? 'the pin' : 'the rux-ds it found'}. Whether it looks right is yours: open`);
   for (const p of r.pages) console.log(`    ${p}`);
   console.log(`  in each theme -- ${THEMES} -- from the account panel.\n`);
 }
@@ -272,12 +464,32 @@ function report(root, r) {
 function selfTest() {
   const work = mkdtempSync(join(tmpdir(), 'rux-app-check-'));
   const w = (p, s) => { mkdirSync(dirname(join(work, p)), { recursive: true }); writeFileSync(join(work, p), s); };
+  // A rux-ds checkout that is NOT inside the app, for the served cases and for
+  // the one that proves a vendored app refuses to be pointed at another copy.
+  let away = null, dsOpt = {};
+  const elsewhere = () => {
+    away = mkdtempSync(join(tmpdir(), 'rux-ds-away-'));
+    mkdirSync(join(away, 'css'), { recursive: true });
+    mkdirSync(join(away, 'assets'), { recursive: true });
+    writeFileSync(join(away, 'css/rux.css'), '.rux--btn{--rux-x:1}.rux--btn--primary{color:var(--rux-x)}.rux--lg\\:col-span-8{}');
+    writeFileSync(join(away, 'css/rux-theme.css'), '[data-theme=white]{--rux-y:2}');
+    writeFileSync(join(away, 'css/rux-overrides.css'), '');
+    writeFileSync(join(away, 'assets/icons.svg'), '<svg></svg>');
+    return away;
+  };
+  // The PIN records the bytes under vendor/, so a case that writes there must
+  // rewrite it or the pin rule fires instead of the rule under test.
+  const repin = () => w('vendor/rux-ds/PIN', `tag     v0.0.0\ncommit  0000000\nsha256  ${treeHash(join(work, 'vendor/rux-ds'))}\n`);
   // THE PIN IS WRITTEN LAST, and its checksum is computed from the fixture that
   // was just built -- exactly the order new-project.sh uses. Writing it first
   // with a hand-typed hash would make every case fail on a mismatch nobody
   // meant to test.
   const good = () => {
     rmSync(work, { recursive: true, force: true });
+    if (away) { rmSync(away, { recursive: true, force: true }); away = null; }
+    dsOpt = {};
+    delete process.env.DS;
+    w('vendor/rux-ds/assets/icons.svg', '<svg><symbol id="i-a"><path d="M0 0h1"/></symbol></svg>');
     w('vendor/rux-ds/css/rux.css', '.rux--btn{--rux-x:1}.rux--btn--primary{color:var(--rux-x)}.rux--lg\\:col-span-8{}');
     w('vendor/rux-ds/css/rux-theme.css', '[data-theme=white]{--rux-y:2}');
     w('vendor/rux-ds/css/rux-overrides.css', '');
@@ -303,6 +515,52 @@ function selfTest() {
   const pinNoSha = 'tag     v0.0.0\ncommit  0000000\n';
   const cases = [
     ['a valid app passes', null, () => {}],
+    // THE SERVED SHAPE, §8.4. Deleting the PIN alone is what a half-done move
+    // looks like, and it must FAIL rather than fall back to the working
+    // directory or to silence.
+    ['served: no ds anywhere', 'ds', () => { rmSync(join(work, 'vendor'), { recursive: true, force: true }); }, null, ['ds']],
+    ['served: --ds resolves', null, () => {
+      const page = readFileSync(join(work, 'index.html'), 'utf8').replace('vendor/rux-ds/css/rux.css', '/rux-ds/css/rux.css');
+      rmSync(join(work, 'vendor'), { recursive: true, force: true });
+      w('index.html', page);
+      dsOpt = { ds: elsewhere() };
+    }, /served shape/],
+    ['served: an absolute /rux-ds/ path that is not there', 'files', () => {
+      rmSync(join(work, 'vendor'), { recursive: true, force: true });
+      w('index.html', '<html><body><link rel="stylesheet" href="/rux-ds/css/gone.css"></body></html>');
+      dsOpt = { ds: elsewhere() };
+    }],
+    ['served: an <a href="/"> is navigation, not a file', null, () => {
+      rmSync(join(work, 'vendor'), { recursive: true, force: true });
+      w('index.html', '<html><body><a href="/rux-ds/anything/">DS</a><a href="/">Home</a></body></html>');
+      dsOpt = { ds: elsewhere() };
+    }],
+    ['vendored: --ds is refused', 'ds', () => { dsOpt = { ds: elsewhere() }; }],
+    // A NAMED PATH DOES NOT FALL THROUGH TO ANOTHER SOURCE. The wrong --ds
+    // here sits beside a PERFECTLY GOOD DS, so a fall-through would pass and
+    // report the other source -- which is what the first draft did, with a
+    // real sibling, and it is the reason this rule is written down. The
+    // unnamed-sibling arm is covered by 'served: no ds anywhere' above.
+    ['served: a wrong --ds does not fall through to DS', 'ds', () => {
+      rmSync(join(work, 'vendor'), { recursive: true, force: true });
+      process.env.DS = elsewhere();
+      dsOpt = { ds: join(work, 'not-rux-ds') };
+    }],
+    // THE SPRITE. One symbol's paste left behind by a release that changed it.
+    ['sprite: a stale inlined symbol', 'sprite', () => {
+      w('index.html', '<html><body><svg><symbol id="i-x" viewBox="0 0 1 1"><path d="M0 0h1"/></symbol></svg><svg><use href="#i-x"/></svg></body></html>');
+      w('vendor/rux-ds/assets/icons.svg', '<svg><symbol id="i-x" viewBox="0 0 2 2"><path d="M0 0h2"/></symbol></svg>');
+      repin();
+    }],
+    ['sprite: a symbol rux-ds does not ship', 'sprite', () => {
+      w('index.html', '<html><body><svg><symbol id="i-invented"><path d="M0 0h1"/></symbol></svg><svg><use href="#i-invented"/></svg></body></html>');
+      repin();
+    }],
+    ['sprite: a page carrying a subset passes', null, () => {
+      w('vendor/rux-ds/assets/icons.svg', '<svg><symbol id="i-a"><path d="M0 0h1"/></symbol><symbol id="i-b"><path d="M0 0h2"/></symbol></svg>');
+      w('index.html', '<html><body><svg><symbol id="i-a"><path d="M0 0h1"/></symbol></svg><svg><use href="#i-a"/></svg></body></html>');
+      repin();
+    }],
     ['classes', 'classes', () => w('page.html', '<html><body class="rux--invented"></body></html>')],
     ['classes in a local script', 'classes', () => w('more.js', 'el.className = "rux--nope";')],
     ['tokens', 'tokens', () => w('rux-theme.css', '[data-theme=white]{color:var(--rux-unknown)}')],
@@ -328,20 +586,26 @@ function selfTest() {
   ];
   let bad = 0;
   try {
-    for (const [label, rule, mutate, wantNote] of cases) {
+    for (const [label, rule, mutate, wantNote, wantRan] of cases) {
       good(); mutate();
-      const r = check(work);
+      const r = check(work, dsOpt);
       const rules = [...new Set(r.failures.map(f => f.rule))];
       const rulesOk = rule === null ? rules.length === 0 : rules.length === 1 && rules[0] === rule;
       const noteOk = !wantNote || r.notes.some(n => wantNote.test(n));
-      const ok = rulesOk && noteOk;
+      // WHICH RULES RAN, asserted rather than inferred from a zero. A run that
+      // stops at `ds` used to print five green rules that never executed, and
+      // no case here could see it because the harness only ever compared
+      // FAILURES. This is the assertion that would have caught it.
+      const ranOk = !wantRan || (Array.isArray(r.ran) && r.ran.length === wantRan.length && wantRan.every(x => r.ran.includes(x)));
+      const ok = rulesOk && noteOk && ranOk;
       if (!ok) bad++;
       const want = rule === null ? 'no failure' : `only ${rule}`;
       const got = rules.length ? rules.join(', ') : 'none';
-      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${want}${wantNote ? ' and the note' : ''}, got ${got}${wantNote ? (noteOk ? ' and the note' : ' and NO note') : ''}`);
+      console.log(`  ${ok ? ' ok ' : 'FAIL'}  ${label.padEnd(30)} expected ${want}${wantNote ? ' and the note' : ''}${wantRan ? `, ran only ${wantRan.join('+')}` : ''}, got ${got}${wantNote ? (noteOk ? ' and the note' : ' and NO note') : ''}${wantRan ? `, ran ${(r.ran ?? []).join('+')}` : ''}`);
     }
   } finally {
     rmSync(work, { recursive: true, force: true });
+    if (away) rmSync(away, { recursive: true, force: true });
   }
   console.log(`\n  ${cases.length} cases, ${bad} wrong. The scratch app is removed.`);
   console.log(`  This proves each rule CAN go red; it is the author's own proof. A session that`);
@@ -371,8 +635,20 @@ else if (args.includes('--hash')) {
   }
 }
 else {
-  const root = resolve(args.find(a => !a.startsWith('--')) ?? defaultRoot());
-  const r = check(root);
+  // A flag's value is not a positional. --ds <dir> and --hub <dir> each eat the
+  // argument after them, so the app directory is whatever bare argument is
+  // left -- without this, `--ds ../rux-ds` would be read as the app.
+  const flag = (name) => {
+    const i = args.indexOf(name);
+    if (i < 0) return null;
+    const v = args[i + 1];
+    if (!v || v.startsWith('--')) { console.error(`${name} needs a directory`); process.exit(2); }
+    return v;
+  };
+  const ds = flag('--ds'), hub = flag('--hub');
+  const taken = new Set([ds, hub].filter(Boolean));
+  const root = resolve(args.find(a => !a.startsWith('--') && !taken.has(a)) ?? defaultRoot());
+  const r = check(root, { ds, hub });
   report(root, r);
   if (r.failures.length) process.exit(1);
 }

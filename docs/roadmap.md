@@ -5228,33 +5228,124 @@ Written here so rux can judge them before anything is applied. Each says what
 it makes weaker, as `AGENTS.md` asks.
 
 **A. `tools/app-check.mjs` — a `--ds <dir>` flag, `DS` env as the alias.**
+**WRITTEN 2026-09-09 on branch `diff-a-app-check-ds`, not merged.** Four
+things changed on contact with the code; each is marked ✱ and said in full
+below the list, because a diff that quietly differs from its own proposal is
+the thing this file exists to stop.
 
 - `root` stays the app. A new `ds` resolves from `--ds`, then `DS`, then
   `../rux-ds` beside the app, then fails with the message Notes' ancestry gate
   prints: not skipped — a gate that cannot run says so.
+- ✱ **The app's SHAPE decides, and it is read from the directory.** An app
+  holding `vendor/rux-ds/` is *vendored*: rux-ds is that tree, the pin rule
+  runs unchanged, and `--ds` is **refused** rather than ignored — pointing a
+  vendored app at another copy would check its pages against bytes they do not
+  load, and pass. An app without it is *served* and must be told where rux-ds
+  is. So one release serves both worlds while the workspace is half-moved, and
+  the hub and Notes keep their pin rule until they move.
 - The classes and tokens rules read `<ds>/css/rux.css`, `rux-theme.css` and
   `rux-overrides.css` instead of `vendor/rux-ds/css/`.
 - The files rule stops skipping absolute paths, for resources only: the
-  `href` or `src` of a `<link>`, `<script>`, `<img>` or `<use>`. `/rux-ds/<p>`
-  resolves under `ds`. Any other absolute resource — `/switcher.js`,
-  `/account.js` — resolves under `--hub <dir>` when given, else is counted and
-  named as unresolvable here, never passed silently. An `<a href>` to `/` or
-  `/<name>/` is navigation to another site, not a file this check can see; it
-  is left alone, as today.
-- The pin rule is deleted with `vendor/`, and `defaultRoot()`'s vendored-copy
-  branch with it.
-- A sprite rule joins: every page's `SPRITE:BEGIN…END` block equals
-  `<ds>/assets/icons.svg`, or the page fails. The two app-side paste tools
-  become one in rux-ds.
-- The self-test gains a case per rule, driven red then restored, as the others
-  are.
+  `href` or `src` of a `<link>`, `<script>`, `<img>`, `<use>`, `<source>`,
+  `<iframe>`, `<video>`, `<audio>` or `<embed>`. `/rux-ds/<p>` resolves under
+  `ds`. Any other absolute resource — `/switcher.js`, `/account.js` —
+  resolves under `--hub <dir>` when given, else is counted and named as
+  unresolvable here, never passed silently. An `<a href>` to `/` or `/<name>/`
+  is navigation to another site, not a file this check can see; it is left
+  alone, as today.
+- ✱ **The pin rule is NOT deleted.** It becomes inapplicable in the served
+  shape and prints nothing there — a green ` ok ` line for a rule that never
+  ran is exactly what this file exists to avoid — with a note saying so. It is
+  deleted at step 6, when nothing vendors. `defaultRoot()`'s vendored-copy
+  branch stays for the same reason.
+- ✱ **The sprite rule compares symbol by symbol, never the block.** Pages
+  deliberately carry different subsets: measured 2026-09-09, the hub's account
+  page inlined 4 symbols and its home page 60 **before the hub was fixed** (3
+  and 59 after), the scheduler and Notes 61, rux-ds 63. "The block equals `icons.svg`" would have failed four of six pages for
+  being correct. So: every `<symbol id="i-…">` a page inlines must be
+  byte-identical to the one rux-ds ships, and a page carrying fewer is not
+  stale. This still catches the 2026-09-06 defect, which was one symbol's
+  paste left behind by a release that changed it.
+- The self-test gains eight cases, driven red then restored, as the others
+  are: 23 in total, 0 wrong.
+- ✱ **`tools/app-check.mjs` is added to `CONTROL_FILES`**, which had forgotten
+  it. See below.
 
-*Weaker:* the checksum rule is gone, and with it the only proof that an app's
-stylesheet was a tag's bytes — replaced by there being no app copy to be
-anything else. *Different, not weaker:* a page is checked against whichever
-rux-ds `--ds` names. Locally that is the sibling on `main`; in CI it is the
-newest tag. A class added on `main` passes locally and fails in CI until it is
-tagged. That is the right failure, and it is loud.
+**✱ THE CONTROL LIST HAD FORGOTTEN THE SHARED APP CHECK.** Running
+`tools/check-controls.mjs` on this very diff answered *none of 60 touched* —
+for a change to the one gate `rux-sm.github.io`, `rux-ln-notes` and
+`rux-scheduler` all run. `AGENTS.md` already covered it ("a file is not tier 3
+because `CONTROL_FILES` forgot it; the categories govern"), so the missing
+line changed no rule and weakened nothing on paper — but it meant every past
+change to this file was reported as touching no control. The line is added in
+this branch and the reading is now 2 of 61. **This is itself tier 2 and is not
+judged here.**
+
+**What was read on the day, all of it on branch, nothing merged:**
+
+| | |
+|---|---|
+| Self-test | 23 cases, 0 wrong. The first run was 1 wrong and it was a real flaw: keying the shape on `vendor/rux-ds/PIN` made an app whose PIN was deleted look *served*, so "vendor/ was not committed" reported as "no rux-ds found". Keyed on the directory instead |
+| The three apps, unchanged, vendored shape | Notes and the scheduler pass, with the same rules green as before plus `sprite`: 122 inlined symbols match on the scheduler, and Notes matched every one of its own. **Notes' symbol count is not quotable and this row used to quote it** — 1525 on 2026-09-09 at 23 guides, 1708 and then 1769 within the hour as atlas published more. It moves with the data; the fact that every symbol matched is the reading, not the total. The hub **FAILS**, and it is a true finding — below |
+| A served app, end to end | The scheduler copied to a scratch tree, `vendor/` deleted, its two pages' resource paths rewritten to `/rux-ds/`. The check passes: 275 classes, 79 tokens, 122 symbols, and **46 root-absolute resources now resolved that the old rule counted and skipped**, with 3 named as unresolvable (they are the hub's, not this app's) out of 49 found. *An earlier draft of this row said 49 resolved, which counted the found as the resolved; corrected on an independent reading, and the corrected figure re-measured here* |
+| The served page in a browser | Served from a throwaway workspace on 8641 and opened: 0 `vendor/` references, 24 `/rux-ds/` links, IBM Plex loading, all 19 behaviour modules on `window.Rux`, the switcher filled from the hub's list, no console errors, the g90 board rendering. **This is the first evidence that an app works with no vendored copy at all** |
+
+**THE HUB FAILED THE NEW SPRITE RULE, THE FINDING WAS REAL, AND IT IS FIXED —
+hub `7cfbf43`, 2026-09-09, on rux's instruction to fix it before this diff is
+judged.** Both its pages inlined `<symbol id="i-color-palette">`, which **no
+rux-ds tag ships**: it arrived in `a77dedb`, one of the 50 commits past
+`v0.1.11`, and `git tag --contains` names nothing. `switcher.json` asked for
+that glyph for the Design System card, so the hub had pasted it from `main`.
+Nothing on either side could see this — the hub does not run this check at all
+today (step 5), its own 40-line check reads classes and the app list, and the
+page rendered because the symbol was inlined. It is the same two-places state
+§4.13 records for the tile-fill rule. Nothing was broken live.
+
+**What was done, and what was deliberately NOT done.** The symbol is removed
+from both pages and the `icon` field dropped, so the tile falls back to the
+32px swatch — which `brand/README.md` names as the correct state until an app
+names its own mark file, not a workaround invented here. Measured after: the
+hub reads `sprite  62 inlined symbols match`, its own check exit 0, the grid
+renders three cards with the swatch holding the same space, and the swatch is
+visible in all five themes. **The two fixes that KEEP a drawn icon were both
+left to rux**, because each is a decision this session does not own: cutting a
+rux-ds tag that carries the glyph and moving the pin (the tag is rux's alone,
+`docs/verbs.md` verb 5), or drawing `brand/icon.svg` and naming it by absolute
+path, which is the mechanism `brand/README.md` actually prescribes for an app
+tile — the sprite id is documented in `switcher.js` as the shortcut. Either
+restores an icon in one line of `switcher.json`.
+
+**This removes the branch's only failing app.** All three now pass the new
+rule: hub 62, scheduler 122, Notes 1525 inlined symbols matching.
+
+**Merging this changes no CI anywhere, today.** Each app runs the copy it
+vendored, at `v0.1.11`; the hub does not run this file at all. So the failure
+above surfaces when the hub's pin moves, which is step 5, by which point the
+tag carries the glyph.
+
+**A DEFECT IN THE FIRST DRAFT, FOUND BY THE AUTHOR TESTING IT AND FIXED
+2026-09-09.** The resolution tried `--ds`, then `DS`, then a sibling, and took
+whichever worked — so `--ds /tmp` beside a real sibling **passed**, printing
+`rux-ds from a sibling` while the operator's own flag was ignored without a
+word. Measured on a scratch app. It matters most in CI, where `--ds` names a
+checked-out tag: a checkout that failed or moved would have left the check
+passing against whatever else was on disk. Now only the UNNAMED sibling is a
+fallback; a path you name is a claim and a wrong one fails. A 24th self-test
+case drives it, with a valid `DS` beside the bad `--ds` so a fall-through
+would be visible.
+
+*Weaker:* the checksum rule stops applying to an app the moment it stops
+vendoring — replaced by there being no app copy to be anything else, but that
+is a control leaving, one app at a time, and it should be counted as one.
+*Weaker, and new:* `--hub` makes a rule's strength depend on an argument. An
+app checked without it reports absolute resources as unchecked, exactly as
+today; an app checked with it resolves them. A gate whose thoroughness varies
+by invocation is a gate that can be quietly under-run, and the only defence
+here is that the skeleton's workflow passes it. *Different, not weaker:* a
+page is checked against whichever rux-ds `--ds` names. Locally that is the
+sibling on `main`; in CI it is the newest tag. A class added on `main` passes
+locally and fails in CI until it is tagged. That is the right failure, and it
+is loud.
 
 **B. `.github/workflows/pages.yml` in rux-ds — on a tag, consumers first.**
 
@@ -5393,6 +5484,61 @@ catches its own factual slips and not its own blind spots.
 8. Smaller: "every app's" local server 404s on `/switcher.json` — the hub's
    does not; "copies nothing" — the scaffold still seeds a brand and two
    delta files; "one commit in one repository" — step 6 touches four.
+
+#### Reviewed independently, 2026-09-09 — and it found a real defect
+
+**By a session that did not write either branch**, working in detached
+worktrees so this checkout was never touched, and diffing each branch from its
+own merge-base rather than from `main` — both branches are behind `main`, and
+`git diff main..branch` shows `main`'s newer work as phantom deletions. Its
+verdicts on Q1 and Q2: neither branch weakens a check, and
+`tools/app-check.mjs` is correctly tier 2 with the `CONTROL_FILES` line right.
+It drove the served shape red itself rather than trusting the self-test —
+invented class, missing `/rux-ds/` file, no rux-ds, tampered symbol — each
+exit 1 with exactly one rule red.
+
+**THE DEFECT, AND IT IS THE ONE THIS FILE CLAIMED TO HAVE AVOIDED.** `report()`
+printed a green ` ok ` for any rule whose figure happened to be zero. So an app
+where the `ds` rule failed — no rux-ds found, nothing to check anything
+against — printed one red line and then **five greens for five rules that
+never executed**: `0 uses resolve against 0 compiled`, `0 var(--rux-*) reads
+resolve`, and so on. The exit code was 1 throughout, so CI was never fooled; a
+person reading the output was. The guard existed on `pin` and on `ds` and
+nowhere else, and the paragraph above this one asserted the principle as
+achieved. **Fixed:** `check()` now returns which rules RAN, anything else
+prints `---- NOT RUN` with the reason, and the closing "this says the page CAN
+render" line is suppressed when most rules did not run. A 24th self-test case
+asserts the run-set, driven red and restored. The same early return also
+omitted `unresolvable`, making one figure `NaN`; now included.
+
+**Three numbers in the write-up above were wrong and are corrected in place.**
+49 root-absolute resources "resolved" was 46 resolved and 3 unresolvable out of
+49 found — the row counted found as resolved. Notes' 1525 symbols is not a
+quotable figure at all: it read 1708 and then 1769 within the hour as atlas
+published more guides. And the sprite bullet's 4-and-60 are pre-fix readings
+stated in the present tense.
+
+**One correction the reviewer made to itself, kept here because it is a trap
+for the next reader**: `node tools/check-controls.mjs` with no argument
+compares against `HEAD`, so on a clean worktree it reports "none touched" and
+reads as contradicting this section. Pass the merge-base and it reports 2 of
+61, as claimed.
+
+**AND THE CONTROL LIST IS STILL SHORT BY TWO.** Neither
+`.github/workflows/pages.yml` nor `.github/workflows/gates.yml` is in
+`CONTROL_FILES`, and `AGENTS.md` puts CI in tier 2 by name. The reviewer hit
+this independently on `main` earlier the same day: `4ffe544`, a comment-only
+edit to `pages.yml`, was reported as touching no control. Adding them is itself
+tier 2 and **is not done here** — it is rux's, and it is a separate change from
+this branch.
+
+**What the review did not cover**, said rather than left implied: `--hub` was
+not exercised, so this section's own criticism of it — a gate whose
+thoroughness depends on an argument — stands unconfirmed either way. And
+whether the served shape is the right direction was left alone, correctly:
+that is §8.4's decision and rux's, not a reviewer's.
+
+---
 
 **§8.3 and §8.2 stand until rux says otherwise.** This section is the plan for
 a decision not yet made.
