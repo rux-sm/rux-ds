@@ -5290,17 +5290,33 @@ judged here.**
 | A served app, end to end | The scheduler copied to a scratch tree, `vendor/` deleted, its two pages' resource paths rewritten to `/rux-ds/`. The check passes: 275 classes, 79 tokens, 122 symbols, and **49 root-absolute resources now resolved that the old rule counted and skipped** |
 | The served page in a browser | Served from a throwaway workspace on 8641 and opened: 0 `vendor/` references, 24 `/rux-ds/` links, IBM Plex loading, all 19 behaviour modules on `window.Rux`, the switcher filled from the hub's list, no console errors, the g90 board rendering. **This is the first evidence that an app works with no vendored copy at all** |
 
-**THE HUB FAILS THE NEW SPRITE RULE, AND THE FINDING IS REAL.** Both its pages
-inline `<symbol id="i-color-palette">`, which **no rux-ds tag ships**: it
-arrived in `a77dedb`, one of the 50 commits past `v0.1.11`, and
-`git tag --contains` names nothing. `switcher.json` asks for that glyph for the
-Design System card, so the hub pasted it from `main`. Nothing on either side
-could see this — the hub does not run this check at all today (step 5), its own
-40-line check reads classes and the app list, and the page renders because the
-symbol is inlined. It is the same two-places state §4.13 records for the
-tile-fill rule, and it resolves the moment step 1's tag is cut and the hub
-moves its pin, because that tag carries the glyph. **Nothing about it is
-urgent and nothing is broken live.**
+**THE HUB FAILED THE NEW SPRITE RULE, THE FINDING WAS REAL, AND IT IS FIXED —
+hub `7cfbf43`, 2026-09-09, on rux's instruction to fix it before this diff is
+judged.** Both its pages inlined `<symbol id="i-color-palette">`, which **no
+rux-ds tag ships**: it arrived in `a77dedb`, one of the 50 commits past
+`v0.1.11`, and `git tag --contains` names nothing. `switcher.json` asked for
+that glyph for the Design System card, so the hub had pasted it from `main`.
+Nothing on either side could see this — the hub does not run this check at all
+today (step 5), its own 40-line check reads classes and the app list, and the
+page rendered because the symbol was inlined. It is the same two-places state
+§4.13 records for the tile-fill rule. Nothing was broken live.
+
+**What was done, and what was deliberately NOT done.** The symbol is removed
+from both pages and the `icon` field dropped, so the tile falls back to the
+32px swatch — which `brand/README.md` names as the correct state until an app
+names its own mark file, not a workaround invented here. Measured after: the
+hub reads `sprite  62 inlined symbols match`, its own check exit 0, the grid
+renders three cards with the swatch holding the same space, and the swatch is
+visible in all five themes. **The two fixes that KEEP a drawn icon were both
+left to rux**, because each is a decision this session does not own: cutting a
+rux-ds tag that carries the glyph and moving the pin (the tag is rux's alone,
+`docs/verbs.md` verb 5), or drawing `brand/icon.svg` and naming it by absolute
+path, which is the mechanism `brand/README.md` actually prescribes for an app
+tile — the sprite id is documented in `switcher.js` as the shortcut. Either
+restores an icon in one line of `switcher.json`.
+
+**This removes the branch's only failing app.** All three now pass the new
+rule: hub 62, scheduler 122, Notes 1525 inlined symbols matching.
 
 **Merging this changes no CI anywhere, today.** Each app runs the copy it
 vendored, at `v0.1.11`; the hub does not run this file at all. So the failure
