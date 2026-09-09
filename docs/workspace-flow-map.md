@@ -23,6 +23,14 @@ disagree, the card is right and this is the bug.
 *what do I type*. This answers *where am I in the chain, what can refuse me
 here, and what happens with no message at all*.
 
+**It draws the workspace as it is, not as roadmap §8.4 proposes it.** §8.4 is
+a drafted, not-decided plan to stop every app vendoring `vendor/rux-ds/` at
+all, which would remove stage 7 and nodes 17–20 outright and replace them with
+a tag deploy. Nothing here assumes it is taken. One piece of it is already
+built regardless of the decision — the workspace server at node 8 — and that
+is the only place this map differs from what §8.2's tag-and-vendor model alone
+would draw.
+
 ---
 
 ## 1. Decisions to settle before it is drawn
@@ -49,8 +57,9 @@ see, the change is wrong.
    place rather than a step.
 2. **Passing every gate is not the finish.** Stage 4 is a separate stage on
    purpose. Five shipped defects passed every gate this repository has.
-3. **The chain fails quietly in five places.** Section 7 states them. Four of
-   the five produce no message at all.
+3. **The chain fails quietly in five places, and one more fails LOUDLY and
+   still slips past the step meant to catch it.** Section 7 states all six.
+   Four of the first five produce no message at all.
 
 ---
 
@@ -137,7 +146,7 @@ the act; it never restates the detail.
 | 17 | **Move every pin** | `sh tools/roll-out.sh vX.Y.Z` | transfer | Finds every sibling folder holding a `vendor/rux-ds/PIN`, refuses the lot if any is dirty, exports the tag per app, runs that app's own check, stops at the first failure. Only `vendor/` changes. It commits nothing | 4 |
 | 18 | **Read each drift report** | `tools/drift.mjs`, run by node 17 | read | Compares the page's `<head>` resources and header skeleton to the vendored `app-shell`. **Blocks nothing** — a page is the app's own | 4 |
 | 19 | **Read what left** | `CHANGES.md` between the two tags | read | A class that left is the one hazard a green check does not show | 4 |
-| 20 | **Commit per app** | `chore(vendor): Move the pin to rux-ds vX.Y.Z` | step | The printed command stages `vendor/rux-ds` explicitly — `commit -a` would skip a newly vendored file | 4 |
+| 20 | **Commit and push per app** | `chore(vendor): Move the pin to rux-ds vX.Y.Z`, then `push` | step | The printed command stages `vendor/rux-ds` explicitly — `commit -a` would skip a newly vendored file. **For a generated app, this is not enough on its own** — see 7.1's sixth failure | 4 |
 | 21 | **Open each site** | the live URL | gate | Header, switcher, account panel, theme. Record the pass in `docs/log.md` | 4 |
 
 ---
@@ -185,7 +194,7 @@ that arrived. `PIN` records which tag each app is on either way.
 
 Per D4 this is printed next to the drawing, not inside it.
 
-### 7.1 Five ways this flow fails quietly
+### 7.1 Six ways this flow fails
 
 **Every gate passes and the page is still wrong.** The gates read files and
 attributes. They cannot see a component that compiles, resolves and renders
@@ -206,9 +215,14 @@ is not untidiness — it is a corrupted variable. `npm run gates` and
 
 **The work is done and no tag carries it.** Nothing measures the distance
 between `main` and the newest tag, so an app keeps reading an old pin and looks
-correct doing it. Today 44 commits sit past `v0.1.11`, including a fix an app is
-still waiting on. **Only the README's prose says so, which is failure three
-waiting to happen.**
+correct doing it. **Only prose says so, which is failure three waiting to
+happen** — this document's own §8.3 cross-reference read "44 commits past
+`v0.1.11`" on 2026-09-09, the same day `docs/log.md` records the true figure
+as 49 and roadmap §8.3 itself as 45: three numbers, one day, none of them
+re-read. `v0.1.12` closed the gap the same day.
+`git log $(git describe --tags --abbrev=0)..main --oneline | wc -l` is the
+command that answers it truthfully; today it reads 0, and it will drift the
+moment the next commit lands.
 
 **An app keeps naming an older tag after a roll-out, and is right to.** `PIN`
 carries a checksum of the vendored bytes, so a move to a tag whose files are
@@ -216,20 +230,46 @@ identical writes nothing and leaves the old tag name in place. This reads as a
 failed roll-out and is not one. The pin names bytes, not a position in the tag
 order.
 
+**Node 17's own check passes while a generated app is still stale, and nothing
+in this chain says to rebuild first.** Found live, 2026-09-09, moving
+`rux-ln-notes` from `v0.1.11` to `v0.1.12`: `roll-out.sh` ran `node
+tools/check.mjs`, which read `sprite 1769 inlined symbols match` — a true
+reading, because the shared check only verifies that every inlined symbol is
+SOMEWHERE in what rux-ds ships, never that a page carries the CURRENT sprite
+in full. Notes' pages are generated and `build.mjs` inlines rux-ds's whole
+sprite, not a subset, into every one; two symbols had joined it since Notes
+last built, so the committed pages were stale against the pin that had just
+moved, and neither `roll-out.sh` nor Notes' own AGENTS.md "Moving the pin"
+procedure says to run `node tools/build.mjs` before committing — checked
+against both, and neither names it. It reached `git push` and was refused
+there: Notes' `pages.yml` runs `build.mjs` and diffs the result before
+deploying, which is the one place in this chain that happened to catch it.
+An app without that build-and-diff step would have had nothing to catch it at
+all. **Correcting `roll-out.sh` or Notes' own procedure is a separate
+change**, the same rule section 9 already applies to the scheduler-row gap.
+
 ### 7.2 What has actually been walked
 
-**Verbs 1, 2 and 5 are walked constantly** — pages, rules and eleven tags, the
-whole way to `v0.1.11`.
+**Verbs 1, 2 and 5 are walked constantly** — pages, rules and thirteen tags,
+the whole way to `v0.1.12`.
 
 **Verb 3 has been walked twice**, adding rux-scheduler and this repository's own
 site to the switcher.
 
-**Verb 4's command has been rehearsed, not confirmed in the record.**
-`tools/roll-out.sh v0.1.6` was exercised as a self-test on 2026-09-05: it
-refused the hub while it carried untracked files, then moved both apps, both
-checks passed, and **both were restored afterwards.** Pins have moved since. I
-did not establish from the log whether a real roll-out has run, or whether each
-pin was moved singly with `new-project.sh`.
+**Verb 4 has now run for real, 2026-09-09, and found something the rehearsal
+could not have.** `tools/roll-out.sh v0.1.6` was exercised as a self-test on
+2026-09-05 — it refused the hub while it carried untracked files, then moved
+both apps, both checks passed, and both were restored afterwards, so nothing
+was actually pushed or lived on. On 2026-09-09 `v0.1.12` moved all three real
+apps for the first time: `roll-out.sh` ran, each app's own check passed, and
+the commit-and-push at node 20 went out for all three. One of them —
+`rux-ln-notes` — then failed at deploy, caught by its own CI rather than by
+anything in this chain; that is 7.1's sixth failure, and it was fixed with a
+second commit before node 21 was walked. All three sites were then opened
+live: header, switcher, account panel, theme, no console errors, pin reading
+`v0.1.12` over the network on each. **This is the first time verb 4 has moved
+something live rather than a rehearsal**, and the record it leaves is the
+commit history of the three apps that day, not a note in this file.
 
 **Nothing has ever been removed.** `CHANGES.md` reads "Nothing removed yet", so
 node 15 has never fired and every tag so far has been an addition or a fix.
@@ -266,8 +306,12 @@ node 15 has never fired and every tag so far has been an addition or a fix.
    `check-controls.mjs`, `serve.mjs`, `drift.mjs` and `new-project.sh` are all
    present.
 
-**One source is stale and this map does not inherit it.** `docs/verbs.md`'s
-closing table, "What each repository is, in one line", has no row for
-`rux-scheduler` — it was drafted 2026-09-05 and the scheduler joined afterwards.
-Section 3 lists the lane rather than copying that table. Correcting the card is
-a separate change.
+**One source was stale and this map did not inherit it, and it is fixed.**
+`docs/verbs.md`'s closing table, "What each repository is, in one line", had
+no row for `rux-scheduler` — it was drafted 2026-09-05 and the scheduler
+joined afterwards. Corrected in the card itself on 2026-09-09 (`0720737`),
+rather than here: Section 3 lists the lane rather than copying that table, so
+this document never carried the gap and needed no change of its own. Recorded
+as a closed finding rather than deleted, on the same rule that keeps a
+correction visible in `docs/log.md` — silently removing a note that turned out
+to be fixable reads as though the map never caught it.
