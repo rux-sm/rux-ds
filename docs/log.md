@@ -9,6 +9,33 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 - the app tile icon, and 35 browser readings owed a re-sweep
+that could not be run.** `brand/icon.svg` is generated from `brand/logo.svg`
+by `tools/make-marks.mjs` rather than drawn a third time: `logo.svg` and
+`favicon.svg` already carry the same 114 cells and the tool's own header
+argues against a second hand-kept source. The hub's Design System card names
+it by absolute path, which is what `brand/README.md` prescribes for an app
+tile; the sprite id it used before had forced an unreleased glyph to be pasted
+into the hub (fixed at hub `7cfbf43`, card restored at `9904730`). Read at
+1280 in all five themes: 32px, gray-100, level with the two Carbon glyphs
+beside it, no console errors.
+
+**IT AGED 35 OF 50 SWEEP CELLS, AND THAT IS THE GATE WORKING.** `brand` is a
+declared shared input to the five browser gates, whole directory, added
+2026-09-05 after a mark swap aged nothing. Adding a file there ages every
+reading across 16 pages. **The re-sweep was attempted and abandoned, not
+skipped quietly.** The Browser pane was hidden, and a hidden pane does not
+render: screenshots came back blank, `computer` scroll and hover timed out
+with "the page is not rendered while it is not displayed", and `innerWidth`
+read 0 on every fresh navigation until a screenshot forced a layout. Layout
+did compute once forced — `check-a11y` returned 29 findings with
+`focusRingChecked: true`, matching the figure on record — **but a reading
+whose viewport cannot be asserted is the thing this skill's own condition 3
+forbids**, and the visual half of the loop could not run at all. So nothing
+was written to `docs/gate-coverage.json`; the skill's rule against a piecemeal
+ledger holds. `npm run gates` reports 35 stale and does not fail the build.
+**What is needed: the Browser pane visible, then the sweep.**
+
 **2026-09-09 - §8.4 step 0 done: the workspace server.** `tools/serve.mjs
 --workspace`, `npm run serve:workspace`, port 8640, tier 3. `/` is the
 `<account>.github.io` folder; each path in its `switcher.json` is the folder

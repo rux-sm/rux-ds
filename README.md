@@ -101,6 +101,15 @@ card on Home is not a destination, so `switcher.js` filters the current app out 
 grid by the same test that marks the panel entry. The panel is unchanged and still
 marks it `aria-current` — where you are and where you can go are different jobs.
 
+**Open, 2026-09-09: 35 of 50 browser sweep cells are stale and a re-sweep is
+owed.** `brand/icon.svg` was added, and `brand` is a declared shared input to
+the five browser gates, so every reading across 16 pages aged. The sweep was
+attempted and abandoned: the Browser pane was hidden, a hidden pane does not
+render, and a reading whose viewport cannot be asserted is not a reading.
+Nothing was written to the ledger. `npm run gates` names the cells and does
+not fail the build. **Show the Browser pane, then run the `sink-check`
+skill.**
+
 **Open, 2026-09-09: roadmap §8.4, the plan for one copy of the design system
 instead of three, drafted and not decided.** It amends §8.3 in one place — the
 site would deploy on a tag, not on every push — and carries the tier-2 pieces
