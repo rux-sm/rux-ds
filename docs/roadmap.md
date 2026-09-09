@@ -5145,7 +5145,7 @@ for a tag.
 
 | | |
 |---|---|
-| Copies and their tags | Three, all `v0.1.11`, and byte-identical by measurement: `app-check --hash` reads `4cbba751…` on all three trees. **No `PIN` carries a `sha256` line.** All three were exported while the vendored check had no `--hash`, so the checksum rule §8.3 counts as a control has never run on any app; each check reports the bytes as unverifiable and passes |
+| Copies and their tags | Three, all `v0.1.11`, and byte-identical by measurement: `app-check --hash` reads `4cbba751…` on all three trees. **No `PIN` carries a `sha256` line.** All three were exported while the vendored check had no `--hash`, so the checksum rule §8.3 counts as a control has never run on any app; each check reports the bytes as unverifiable and passes. *Corrected 2026-09-09, evening: the `v0.1.12` roll-out re-exported all three and every `PIN` now carries `sha256 1a43baf6…`; the rule ran twice in the `v0.1.14` pin moves and refused to write. §8.6* |
 | Distance from the tag | **49 commits** on `main`. §8.3 typed 45 and the flow map 44, the same day, at different hours, and nothing re-read either. The map's §7.1 third failure, live |
 | Serving a sibling locally | `tools/serve.mjs`, unmodified, run in a scratch folder holding a `rux-ds` symlink: `/rux-ds/css/rux.css` answered 200, 1,048,469 bytes; `plex.css` 200. **§8.3 step 1 needs no code** |
 | Scripts that fetch by relative path | None. `js/*.js` has no `fetch(`, `import(` or `currentScript` read, so an absolute link breaks no module |
@@ -5178,7 +5178,7 @@ before a tag. `tools/drift.mjs` keeps its job.
 | # | §8.3 said | This plan |
 |---|---|---|
 | 1 | A visual defect reaches four sites at once | It reaches them at a tag, after `npm run gates` says every browser cell is current and after the page has been opened — verb 5 as written today. The blast radius does not grow: all three apps already move to the same tag. What goes is the *pause* between tag and pin move. The record shows that pause used to lag, never to refuse: no app has stayed behind a tag because the tag was judged unsafe |
-| 2 | The `PIN` checksum gate goes | It answered "are these bytes the tag's" — and has never yet been asked: no app's `PIN` carries a checksum (measured above). With no copy there are no bytes to drift. "Which version is this app on" becomes "which tag is live", answered by the stamp and by `git describe`. The control that replaces it is stronger: rux-ds refuses to deploy a tag that breaks a consumer's page (diff B) |
+| 2 | The `PIN` checksum gate goes | It answered "are these bytes the tag's" — and has never yet been asked: no app's `PIN` carries a checksum (measured above). *No longer true by the evening of the same day — every `PIN` carries one and the rule has run; §8.6.* With no copy there are no bytes to drift. "Which version is this app on" becomes "which tag is live", answered by the stamp and by `git describe`. The control that replaces it is stronger: rux-ds refuses to deploy a tag that breaks a consumer's page (diff B) |
 | 3 | `CHANGES.md` loses its reader | Its reader becomes a gate. A class that leaves fails the release while any app still uses it. rux still writes the line before tagging; the gate is what makes forgetting visible |
 | 4 | An app stops being a whole site | Accepted. A folder opened from disk is unstyled, and `docs/starting-a-project.md`'s "no server needed" line goes with the copy. Every app already ships a serve launcher |
 | 5 | Local development gains a step | Measured: none for the symlink. The target is one workspace server (below), which removes a step instead: `/switcher.json` would resolve locally, and today it does not on the two apps that are not the hub |
@@ -5463,7 +5463,8 @@ catches its own factual slips and not its own blind spots.
    bytes.** Measured in review: `app-check --hash` reads the same
    `4cbba751…` on all three trees, so the claim holds — and no `PIN` carries a
    `sha256` line at all, so the checksum control §8.3 lists as lost has never
-   run on any app. Both facts are now in the table.
+   run on any app. Both facts are now in the table. *The second stopped being
+   true later the same day; the table row carries the correction. §8.6.*
 3. **The hub's check is 40 lines and checks `switcher.json`**, not "eight-line"
    — that number was the shared check's description of the hub before
    2026-09-05. Replacing it wholesale, as step 5 said, would have dropped the
@@ -5640,5 +5641,95 @@ requiring a commit or deployment in every app.
 **Not implemented in this pass.** This amendment records the clarified
 scope. It changes no gate, workflow, runtime, builder, or release policy;
 those diffs still need to account for §8.4's review findings before rollout.
+
+---
+
+### 8.6 One copy — decision brief, 2026-09-09, NOT DECIDED
+
+**Written after the README cut of the same day, at rux's request, so the
+decision §8.3 raised and §8.4 planned can be taken from one page.** Nothing
+below is applied. §8.4 stands as the plan; this section says where it stands
+today, measured, corrects two of its inputs, answers four questions its
+reviewer said the summary left open, says how it meets §8.5, and puts the
+decision as three questions with a recommendation.
+
+#### Where the plan stands, measured 2026-09-09, evening
+
+| §8.4 step | State | Evidence |
+|---|---|---|
+| 0 · the workspace server | done | `npm run serve:workspace` in `package.json` |
+| 1 · diff A, the shared check learns `--ds` | **done and tagged** | `tools/app-check.mjs` carries `--ds` at `v0.1.12`; reviewed independently, one real defect found and fixed (`docs/log.md`, 2026-09-09) |
+| 2 · the scheduler moves | not started | `rux-scheduler/vendor/rux-ds/` present, `PIN` at `v0.1.12` |
+| 3 · diff B, deploy on a tag and check consumers first | not applied | rux-ds `pages.yml` still `on: push: branches: [main]` |
+| 4 · diff C, the scaffold stops vendoring | the brand-seeding half landed (`0c841e9`); the de-vendoring half not applied | `tools/new-project.sh` still writes `PIN` — it did so today, twice |
+| 5 · the hub, then Notes | not started; and one §8.4 line is stale — the hub now runs the shared check | `rux-sm.github.io/tools/check.mjs:37` imports `vendor/rux-ds/tools/app-check.mjs` since its pin moved to `v0.1.12` |
+| 6 · retire what nothing runs | not started | `tools/roll-out.sh`, verb 4 and the pin rule are all live |
+| 7 · the first release under the new shape | — | — |
+
+#### Two inputs that changed after §8.4 was written
+
+1. **Every `PIN` now carries a checksum, and the checksum rule has run.**
+   §8.4's table and its self-review item 2 said no `PIN` carried a `sha256`
+   line and the control had never run. True when measured; false by the
+   evening: the `v0.1.12` roll-out re-exported all three apps with
+   `sha256 1a43baf6…`, and the `v0.1.14` pin moves ran the rule twice and
+   refused to write because the bytes matched. So §8.3's weakness 2 is a
+   real control leaving, not a paper one. Corrected in place in §8.4 with
+   dated notes.
+2. **The distance from live is zero.** §8.3 counted 45 unreleased commits
+   and §8.4 49; `git log v0.1.14..main` reads 0 and all three apps hold the
+   tag's bytes. The backlog that motivated §8.3 was cleared by two releases
+   in one day. The plan's strengthening argument is now about the *next*
+   backlog, not this one.
+
+#### Four questions the summary was said to leave open
+
+Asked by the 2026-09-09 review of the README cut: "one owner does not
+resolve compatibility, failed deployment, caching, or rollback." Each is
+answered from §8.4 where it already does, and completed where it does not.
+
+| | Answer | Completion criterion |
+|---|---|---|
+| **Compatibility** — an app's page against a rux-ds it did not pin | The only breaking change is a removal (§8.2), and diff B refuses to deploy a tag while any consumer's page fails the shared check against it. An addition on `main` fails an app's CI until it is tagged, which §8.4 calls the right failure. **Not covered:** a rule in `css/rux-overrides.css` that changes a rendered result without removing a class — the browser gates see that on the sink, not on an app | Diff B's consumer job seen refusing a branch that removes a class an app uses, then passing once the app is fixed; recorded in the log before the tag |
+| **Failed deployment** | Pages keeps the previous deployment when a job fails (§8.3's table, read from the workflow). A consumer checkout that fails blocks the release — no `continue-on-error` (diff B). **Not covered:** a deploy that succeeds and renders wrong — the same gap as today, on four sites instead of one; that is weakness 1 | A deliberately failing run observed leaving the previous site serving; the run linked from `docs/log.md` |
+| **Caching** | `cache-control: max-age=600` measured on the live stylesheet (§8.4's table). A tag reaches every site within ten minutes; a hard reload sooner. **Not covered:** a page and a stylesheet cached from two different tags for up to ten minutes. Only a removal makes that visible, and `CHANGES.md` is the record of removals | The four sites read within fifteen minutes of a tag push, each showing the tag's stamp — the reading, not the header, is the proof |
+| **Rollback** | Per app: revert the commit and `vendor/` returns from git (§8.4). For rux-ds after diff B: **not written, and it must be** — `workflow_dispatch` on the previous tag redeploys it; no tag is deleted, no history rewritten. `git describe` then names the newest tag, not the live one, so the stamp on `index.html` is the only truthful answer to "which tag is live" — §8.5 asks the same of the theme catalog | A rollback rehearsed once on a throwaway tag pair before step 3 is judged, and the command recorded in `docs/verbs.md` verb 5 |
+
+#### How it meets §8.5
+
+§8.5 requires a theme record saved in the Theme Creator to reach every app
+on push, with no pin move — and separates publishing catalog data from
+releasing the runtime that reads it. Under diff B as drafted, rux-ds deploys
+on a **tag**, so a theme record pushed to `main` would not publish until the
+next tag. Two ways to hold both:
+
+- (i) deploy on every push — rux's question 2 in §8.4. The whole site,
+  runtime included, follows `main` commit by commit.
+- (ii) deploy on a tag, and publish the catalog by its own path: a job on
+  push to `main` that deploys only the theme records — one small JSON file
+  and nothing else. The runtime stays on the tag; the data moves on push.
+
+(ii) is what §8.5's own wording asks for and keeps the tag as the release
+boundary. It is more machinery than (i). Neither is drafted; this is the
+third thing rux settles.
+
+#### The decision, as three questions
+
+1. **Take §8.4.** A tag reaches four sites at once, with no per-app pause.
+   The checksum control leaves — a real one, item 1 above — and diff B's
+   consumer check stands in front of the risk it covered.
+2. **On a tag, or on every push.**
+3. **How §8.5's catalog publishes** — (i) or (ii) above.
+
+**Recommendation — this session's, not a decision:** take it, on a tag,
+with (ii). §8.4's order holds, with two additions before step 3 is judged:
+the rollback rehearsal and the compatibility refusal, both from the table
+above. Step 2 does not start until the answer to question 1 is yes; nothing
+in steps 0–1 is wasted if it is no — both improved the vendored shape too.
+
+**Why not now, and why not never.** The backlog is zero today, so nothing is
+hurting; the next one begins with the next commit that touches `css/` or
+`js/`. What the plan buys a solo maintainer is not speed. It is that "which
+version is live" stops being a question with four answers.
 
 ---
