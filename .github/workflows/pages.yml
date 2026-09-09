@@ -10,11 +10,19 @@ name: pages
 # would have to duplicate exactly what this repository exists to stop being
 # duplicated. So the site is this tree.
 #
-# WHICH MAKES IT THE ONE APP NOT ON A TAG. Notes shows rux-ds as it was at
-# v0.1.6 and Scheduler at v0.1.8; this site shows main. That is defensible for
-# a design system's own site — it is what you get if you move your pin today —
-# but it is not the same guarantee the modules have, so index.html stamps the
-# commit it was built from and says so on the page.
+# WHICH MAKES IT THE ONE APP NOT ON A TAG. Every module shows rux-ds as it was
+# at the tag its own vendor/rux-ds/PIN names; this site shows main. That is
+# defensible for a design system's own site — it is what you get if you move
+# your pin today — but it is not the same guarantee the modules have, so
+# index.html stamps the commit it was built from and says so on the page.
+#
+# THE VERSIONS WERE NAMED HERE AND WENT STALE. Until 2026-09-09 this comment
+# read "Notes shows rux-ds as it was at v0.1.6 and Scheduler at v0.1.8". All
+# three modules had been on v0.1.11 since 2026-09-07, and the sentence named
+# two of the three. It now states the rule instead of the readings, because
+# nothing re-reads a version typed into a comment — the same failure
+# docs/agent-tooling.md argues about and README.md hit the same week. The PIN
+# files are the reading.
 #
 # THE CHECK IS npm run verify, THE SAME ONE gates.yml RUNS. It is defined once
 # in package.json, so a new gate is picked up here with no second list. This
