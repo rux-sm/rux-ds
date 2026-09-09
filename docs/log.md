@@ -9,6 +9,19 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-09 - one copy, the plan: roadmap §8.4 drafted, not decided.**
+Three measurements taken for it. `tools/serve.mjs`, unmodified, run in a
+scratch folder holding a `rux-ds` symlink, answered `/rux-ds/css/rux.css`
+with 200 and 1,048,469 bytes, so §8.3's first step needs no code. `main` is
+49 commits past `v0.1.11`; §8.3 and the flow map typed 45 and 44 the same
+day, and nothing re-read either. The live stylesheet answers
+`cache-control: max-age=600`. One thing found by reading, not measuring:
+the hub is on `v0.1.11`, which carries the shared app check, and still runs
+its own eight-line class check — a pin move refreshes `vendor/` and never
+`tools/`. The plan's one change to §8.3 is that the site would deploy on a
+tag, not on a push. Nothing is built; the tier-2 pieces are drafted as
+diffs in §8.4 and not applied.
+
 **2026-09-08 - a template gaining a `<script>` never reaches an app that
 already exists, and three of them had been missing one since Phase 16.**
 Saved custom themes worked here and nowhere else. `js/custom-themes.js` has

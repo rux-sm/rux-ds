@@ -101,6 +101,12 @@ card on Home is not a destination, so `switcher.js` filters the current app out 
 grid by the same test that marks the panel entry. The panel is unchanged and still
 marks it `aria-current` — where you are and where you can go are different jobs.
 
+**Open, 2026-09-09: roadmap §8.4, the plan for one copy of the design system
+instead of three, drafted and not decided.** It amends §8.3 in one place — the
+site would deploy on a tag, not on every push — and carries the tier-2 pieces
+as diffs for rux to judge. Nothing is built. Until rux decides, every app still
+vendors a pin.
+
 The paragraphs below are the state as it was recorded, oldest claims last. Phases 9,
 10 and 11 are done. Phase 7's
 component index is implemented and swept — `npm run gates` holds the
