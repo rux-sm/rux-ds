@@ -195,11 +195,12 @@ argument**, they read whatever document they are evaluated in, so load your page
 and run the tool there, fetched from the server rather than pasted. A bug
 shipped nine times in `table-page.html` because nobody did this.
 
-Two cannot be pointed at an arbitrary page: `check-rendered`, whose unit is the
-`.ks-sec` section no template has, and `check-behaviour`, which needs one of
-every component present.
+One cannot be pointed at an arbitrary page: `check-rendered`, whose unit is the
+`.ks-sec` section no template has. `check-behaviour` can be, since 2026-09-08 —
+it skips what the page does not carry instead of failing it — but read it as a
+diagnostic; the required cell is still the sink's.
 
-**Use the `sink-check` skill for the procedure** — its six conditions each exist
+**Use the `sink-check` skill for the procedure** — its eight conditions each exist
 because getting one wrong produced a confident wrong number. `npm run gates`
 says which gate has been run against which page.
 

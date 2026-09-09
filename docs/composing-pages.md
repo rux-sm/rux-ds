@@ -402,11 +402,16 @@ they are evaluated in, so you load your page and run the tool there. Fetch it
 from the server rather than pasting, so the file on disk is what runs. A bug
 shipped nine times in `table-page.html` because nobody did this.
 
-Two cannot be pointed at an arbitrary page: `check-rendered`, whose unit is the
-`.ks-sec` section no template has, and `check-behaviour`, which drives every
-module and needs one of every component present.
+One cannot be pointed at an arbitrary page: `check-rendered`, whose unit is the
+`.ks-sec` section no template has — it throws rather than reporting nothing.
 
-`.claude/skills/sink-check/SKILL.md` is the procedure, and its six conditions
+`check-behaviour` can be, since 2026-09-08. It scopes each case to the sink
+section where that exists and to the document where it does not, and reports a
+component the page does not carry as **skipped** rather than failed. Read
+`passed/ran` off the sink and treat it as a diagnostic: the coverage cell
+`npm run gates` requires is still the sink's.
+
+`.claude/skills/sink-check/SKILL.md` is the procedure, and its eight conditions
 each exist because getting one wrong produced a confident wrong number.
 
 `docs/verifying-templates.md` covers the behaviour half: a template's behaviour

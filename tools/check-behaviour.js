@@ -39,11 +39,39 @@
 //
 (() => {
   const cases = [];
+  // `ok` IS COERCED, so only `skip()` can ever produce `null`. Several
+  // assertions are written as `node && test(node)`, which yields null rather
+  // than false when the node is missing — harmless while `!c.ok` sorted the
+  // cases, and a silent reclassification of a real failure into a skip once
+  // `null` came to mean absence. Measured 2026-09-08: with `#tabs` emptied,
+  // `its panel is shown` reported SKIP where the honest answer is FAIL.
   const record = (module, name, ok, detail) =>
-    cases.push({ module, name, ok, detail: ok ? '' : detail });
+    cases.push({ module, name, ok: !!ok, detail: ok ? '' : detail });
+  // ABSENT IS NOT BROKEN, AND BROKEN IS NOT ABSENT. `ok: null` means the page
+  // does not carry the component, so there was nothing to assert; `ok: false`
+  // stays what it always was, a contract the page claims and does not keep.
+  // THE LINE BETWEEN THEM IS THE COMPONENT ROOT: root missing is a skip, root
+  // present with a required descendant or relationship missing is a FAILURE.
+  // Written down because the first draft of this change (2026-09-08) skipped
+  // both, which quietly retired five contracts — a table with rows and no
+  // batch bar, a tablist that cannot rove, a number input with one stepper, a
+  // modal trigger naming nothing, and a shell action controlling nothing.
+  const skip = (module, name, detail) =>
+    cases.push({ module, name, ok: null, detail });
 
   const q = sel => document.querySelector(sel);
   const has = (el, c) => !!el && el.classList.contains(c);
+  // SCOPE IS CHOSEN ONCE PER CASE, NEVER PER QUERY. The sink lays each
+  // component out in a `<section id>`; a page built from `templates/` does not.
+  // So the section is the scope where it exists and the document is the scope
+  // where it does not, and every query for one case comes from that SAME root.
+  // A PER-QUERY FALLBACK LETS A BROKEN SINK SECTION ESCAPE, AND IT WAS
+  // MEASURED DOING SO. The sink carries ten `[role="tablist"]`, three of them
+  // outside `#tabs`, and fifteen `button[role="combobox"]`, seven outside
+  // `#dropdown`. Emptying `#tabs` of tablists on 2026-09-08 sent the per-query
+  // version into the CONTENT SWITCHER, where it ran the tab assertions against
+  // a different component and reported a failure that component never owed.
+  const fixture = section => q(section) ?? document;
 
   // A real click. The modules bind at document level, so a synthetic
   // `dispatchEvent` on a detached path would miss the delegation entirely.
@@ -65,10 +93,13 @@
   // selected keeps the bar open, correctly. A behaviour test has to drive the
   // page to a known state rather than assume one, or it measures the fixture.
   (() => {
-    const rows = [...document.querySelectorAll(
-      '#table tbody td.rux--table-column-checkbox input[type="checkbox"]')];
-    const bar = q('#table .rux--batch-actions');
-    if (!rows.length || !bar) return record('data-table', 'batch bar', false, 'no selectable table on this page');
+    const root = fixture('#table');
+    const rows = [...root.querySelectorAll(
+      'tbody td.rux--table-column-checkbox input[type="checkbox"]')];
+    const bar = root.querySelector('.rux--batch-actions');
+    if (!rows.length) return skip('data-table', 'batch bar', 'no selectable table on this page');
+    if (!bar) return record('data-table', 'batch bar', false,
+      'a selectable table with no batch bar — js/data-table.js derives one from the same count');
     const was = rows.map(r => r.checked);
     const btns = () => [...bar.querySelectorAll('button')];
     const state = () => `aria-hidden=${bar.getAttribute('aria-hidden')} tabindex=[${btns().map(b => b.tabIndex)}]`;
@@ -96,10 +127,16 @@
   // the trigger defaults to `md` at 40px, so without the module writing an
   // offset the list covers 8px of the button that opens it.
   (() => {
-    const wrap = q('#overflow-menu .ks-row > div');
+    const root = fixture('#overflow-menu');
+    // `.ks-row` is sink furniture; off the sink the wrapper is the trigger's
+    // own parent, which keeps the trigger and its list one pairing.
+    const wrap = root.querySelector('.ks-row > div')
+      ?? root.querySelector('button.rux--overflow-menu')?.parentElement;
     const trigger = wrap?.querySelector('button.rux--overflow-menu');
     const list = wrap?.querySelector('.rux--overflow-menu-options');
-    if (!trigger || !list) return record('menu', 'overflow offset', false, 'no overflow menu on this page');
+    if (!trigger) return skip('menu', 'overflow offset', 'no overflow menu on this page');
+    if (!list) return record('menu', 'overflow offset', false,
+      'an overflow trigger with no options list in its wrapper');
 
     click(trigger);
     const tr = trigger.getBoundingClientRect(), lr = list.getBoundingClientRect();
@@ -117,9 +154,12 @@
 
   // ── tabs: roving tabindex, and the panel follows ──────────────────────────
   (() => {
-    const list = q('#tabs [role="tablist"]');
-    const tabs = list ? [...list.querySelectorAll('[role="tab"]')] : [];
-    if (tabs.length < 2) return record('tabs', 'roving tabindex', false, 'fewer than two tabs here');
+    const root = fixture('#tabs');
+    const list = root.querySelector('[role="tablist"]');
+    if (!list) return skip('tabs', 'roving tabindex', 'no tablist on this page');
+    const tabs = [...list.querySelectorAll('[role="tab"]')];
+    if (tabs.length < 2) return record('tabs', 'roving tabindex', false,
+      `a tablist carrying ${tabs.length} tab(s) — roving is what a tablist is for`);
     const first = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
     const other = tabs.find(t => t !== first);
 
@@ -135,10 +175,16 @@
     // A VERTICAL TABLIST ANSWERS UP AND DOWN, and until 2026-08-29 it answered
     // Left and Right instead — vertical was read off aria-orientation, which
     // neither Carbon nor this markup sets, so the axis never swapped.
-    const vlist = q('.rux--tabs--vertical [role="tablist"]');
-    if (!vlist) {
-      record('tabs', 'a vertical tablist answers the vertical arrows', false,
+    // Its own root, not a part of the horizontal one: a page with no vertical
+    // tabs is not a page with a broken tablist.
+    const vroot = q('.rux--tabs--vertical');
+    const vlist = vroot?.querySelector('[role="tablist"]');
+    if (!vroot) {
+      skip('tabs', 'a vertical tablist answers the vertical arrows',
         'no vertical tablist on this page');
+    } else if (!vlist) {
+      record('tabs', 'a vertical tablist answers the vertical arrows', false,
+        'a vertical tabs root with no tablist inside it');
     } else {
       const vt = [...vlist.querySelectorAll('[role="tab"]')];
       const at = () => vt.indexOf(document.activeElement);
@@ -162,8 +208,9 @@
 
   // ── accordion: the attribute and the class move together ──────────────────
   (() => {
-    const head = q('#accordion .rux--accordion__heading');
-    if (!head) return record('accordion', 'toggle', false, 'no accordion on this page');
+    const root = fixture('#accordion');
+    const head = root.querySelector('.rux--accordion__heading');
+    if (!head) return skip('accordion', 'toggle', 'no accordion on this page');
     const item = head.closest('.rux--accordion__item');
     const before = head.getAttribute('aria-expanded');
 
@@ -189,7 +236,7 @@
     // THE DECLINE, ASSERTED. Carbon implements no arrow-key navigation here and
     // neither does this; without a case saying so, adding it later would look
     // like a fix rather than a divergence.
-    const heads = [...document.querySelectorAll('#accordion .rux--accordion__heading')];
+    const heads = [...root.querySelectorAll('.rux--accordion__heading')];
     head.focus();
     const wasFocus = document.activeElement;
     const wasExpanded = heads.map(h => h.getAttribute('aria-expanded')).join(',');
@@ -205,9 +252,12 @@
   // Focus lands in a microtask, so this checks the class and attribute contract
   // and leaves where focus went to check-a11y.
   (() => {
-    const trigger = q('#modal [data-rux-open]');
-    const modal = trigger ? document.getElementById(trigger.getAttribute('data-rux-open')) : null;
-    if (!modal) return record('modal', 'open and dismiss', false, 'no modal trigger on this page');
+    const root = fixture('#modal');
+    const trigger = root.querySelector('[data-rux-open]');
+    if (!trigger) return skip('modal', 'open and dismiss', 'no modal trigger on this page');
+    const modal = document.getElementById(trigger.getAttribute('data-rux-open'));
+    if (!modal) return record('modal', 'open and dismiss', false,
+      `the trigger names #${trigger.getAttribute('data-rux-open')} and no such element exists`);
 
     click(trigger);
     record('modal', 'a trigger opens the surface it names',
@@ -244,9 +294,12 @@
   // an X, aria-label swaps to "Close menu", Escape closes it, and an outside
   // press does not.
   (() => {
-    const trigger = q('#ui-shell .rux--header__menu-trigger');
-    const nav = q('#ui-shell .rux--side-nav');
-    if (!trigger || !nav) return record('ui-shell', 'hamburger', false, 'no shell here');
+    const root = fixture('#ui-shell');
+    const trigger = root.querySelector('.rux--header__menu-trigger');
+    const nav = root.querySelector('.rux--side-nav');
+    if (!trigger) return skip('ui-shell', 'hamburger', 'no shell here');
+    if (!nav) return record('ui-shell', 'hamburger', false,
+      'a menu trigger with no side nav in the same shell');
     const EXP = 'rux--side-nav--expanded';
     const glyph = () => trigger.querySelector('svg use')?.getAttribute('href');
 
@@ -287,9 +340,12 @@
     // BY NAME SINCE 2026-09-02: the Account action carries aria-expanded too
     // now, and comes first, so "the first expandable action" stopped being the
     // switcher. Each action names its panel with aria-controls.
-    const trigger = q('#ui-shell .rux--header__action[aria-label="App switcher"]');
-    const panel = trigger && document.getElementById(trigger.getAttribute('aria-controls') || '');
-    if (!trigger || !panel) return record('ui-shell', 'switcher', false, 'no switcher here');
+    const root = fixture('#ui-shell');
+    const trigger = root.querySelector('.rux--header__action[aria-label="App switcher"]');
+    if (!trigger) return skip('ui-shell', 'switcher', 'no switcher here');
+    const panel = document.getElementById(trigger.getAttribute('aria-controls') || '');
+    if (!panel) return record('ui-shell', 'switcher', false,
+      `the action controls "${trigger.getAttribute('aria-controls')}" and no such element exists`);
     const EXP = 'rux--header-panel--expanded';
     const link = panel.querySelector('a');
     if (has(panel, EXP)) click(trigger);
@@ -323,11 +379,15 @@
   // closed, and opening the switcher must close it, because the kernel keeps
   // one dismissible surface on the stack.
   (() => {
-    const account = q('#ui-shell .rux--header__action[aria-controls="rux-account-panel"]');
-    const grid = q('#ui-shell .rux--header__action[aria-controls="rux-switcher-panel"]');
+    const root = fixture('#ui-shell');
+    const account = root.querySelector('.rux--header__action[aria-controls="rux-account-panel"]');
+    const grid = root.querySelector('.rux--header__action[aria-controls="rux-switcher-panel"]');
+    if (!account && !grid) return skip('ui-shell', 'account panel', 'no account panel here');
     const ap = document.getElementById('rux-account-panel');
     const sp = document.getElementById('rux-switcher-panel');
-    if (!account || !grid || !ap || !sp) return record('ui-shell', 'account panel', false, 'no account panel here');
+    if (!account || !grid || !ap || !sp) return record('ui-shell', 'account panel', false,
+      `action account=${!!account} grid=${!!grid}, `
+      + `#rux-account-panel=${!!ap} #rux-switcher-panel=${!!sp}`);
     const EXP = 'rux--header-panel--expanded';
     if (has(ap, EXP)) click(account);
     if (has(sp, EXP)) click(grid);
@@ -351,9 +411,12 @@
   // touched — storage, the theme, the name — is restored.
   (() => {
     const P = window.Rux?.profile, T = window.Rux?.theme;
-    const radio = q('#rux-account-panel input[name="rux-theme"][value="g90"]');
-    const name = q('#rux-profile-name');
-    if (!P || !T || !radio || !name) return record('profile', 'local profile', false, 'no account panel or modules here');
+    const panel = document.getElementById('rux-account-panel');
+    if (!P || !T || !panel) return skip('profile', 'local profile', 'no account panel or modules here');
+    const radio = panel.querySelector('input[name="rux-theme"][value="g90"]');
+    const name = document.getElementById('rux-profile-name');
+    if (!radio || !name) return record('profile', 'local profile', false,
+      `inside the account panel: g90 radio=${!!radio}, #rux-profile-name=${!!name}`);
     const html = document.documentElement;
     const before = { theme: html.dataset.theme, stored: localStorage.getItem(T.KEY), name: name.value };
 
@@ -389,8 +452,8 @@
   // tile--is-expanded, collapsing restores it. The fold is visibility:hidden
   // and still occupies layout, which is why no class can express the height.
   (() => {
-    const tile = q('#tile .rux--tile--expandable');
-    if (!tile) return record('tile', 'expand', false, 'no expandable tile here');
+    const tile = fixture('#tile').querySelector('.rux--tile--expandable');
+    if (!tile) return skip('tile', 'expand', 'no expandable tile here');
     const capped = tile.style.maxHeight;
     if (!capped) return record('tile', 'a collapsed tile carries an inline max-height',
       false, 'no inline max-height at load — the fold was never measured');
@@ -412,8 +475,8 @@
   // toggles popover--open on the CONTAINER and aria-expanded on the trigger,
   // together, twice. Neither alone is the state.
   (() => {
-    const container = q('#popover .rux--popover-container:not(.rux--tooltip)');
-    if (!container) return record('popover', 'toggle', false, 'no click popover here');
+    const container = fixture('#popover').querySelector('.rux--popover-container:not(.rux--tooltip)');
+    if (!container) return skip('popover', 'toggle', 'no click popover here');
     const trigger = container.querySelector('button');
     if (!trigger) return record('popover', 'toggle', false, 'no trigger in the container');
 
@@ -436,8 +499,8 @@
   // js/dismiss.js states Carbon's React unmounts rather than hides, and that a
   // hidden-but-present element would keep answering querySelectorAll.
   (() => {
-    const close = q('#notification .rux--inline-notification__close-button');
-    if (!close) return record('dismiss', 'removal', false, 'no dismissible notification here');
+    const close = fixture('#notification').querySelector('.rux--inline-notification__close-button');
+    if (!close) return skip('dismiss', 'removal', 'no dismissible notification here');
     const box = close.closest('.rux--inline-notification');
     const parent = box.parentNode, next = box.nextSibling;
 
@@ -450,13 +513,16 @@
     // FOCUS GOES TO THE NEXT ONE, which Carbon does too — measured on
     // components-tag--dismissible 2026-08-29, where dismissing the tag at
     // index 3 left focus on the tag that slid into index 3.
-    const tags = [...document.querySelectorAll('#tags .rux--tag')]
+    // TWO DISMISSIBLE TAGS IS AN ARRANGEMENT THIS TEST NEEDS, not a contract
+    // the tag component owes — unlike a tablist, which exists to rove. So one
+    // tag skips rather than fails.
+    const tags = [...fixture('#tags').querySelectorAll('.rux--tag')]
       .filter(t => t.querySelector('.rux--tag__close-icon'));
     // TWO IS ENOUGH: dismiss the first and the second is the "next". The sink
     // ships two dismissible tags because two is what the specimen needs, and a
     // test that asks for a third would be measuring the markup it demanded.
     if (tags.length < 2) {
-      record('dismiss', 'focus lands on the next dismissible', false,
+      skip('dismiss', 'focus lands on the next dismissible',
         `only ${tags.length} dismissible tags here, need 2`);
     } else {
       const victim = tags[0];
@@ -472,8 +538,8 @@
 
   // ── form-controls: the toggle ─────────────────────────────────────────────
   (() => {
-    const toggle = q('#toggle .rux--toggle__button');
-    if (!toggle) return record('form-controls', 'toggle', false, 'no toggle on this page');
+    const toggle = fixture('#toggle').querySelector('.rux--toggle__button');
+    if (!toggle) return skip('form-controls', 'toggle', 'no toggle on this page');
     const before = toggle.getAttribute('aria-checked');
 
     click(toggle);
@@ -487,12 +553,15 @@
     // Carbon marks them with. Until 2026-08-29 our markup carried neither
     // down-icon nor up-icon, so both sat at CSS `order: 0` and only DOM order
     // decided what a user saw — which made reading position work by accident.
-    const num = q('#number .rux--number');
+    const num = fixture('#number').querySelector('.rux--number');
     const input = num?.querySelector('input[type="number"]');
     const btns = num ? [...num.querySelectorAll('.rux--number__control-btn')] : [];
-    if (!input || btns.length < 2) {
+    if (!num) {
+      skip('form-controls', 'the steppers are marked up/down and step that way',
+        'no number input on this page');
+    } else if (!input || btns.length < 2) {
       record('form-controls', 'the steppers are marked up/down and step that way',
-        false, 'no number input with two controls here');
+        false, `a number root with input=${!!input} and ${btns.length} control(s), need 2`);
     } else {
       const marked = btns.some(b => b.classList.contains('down-icon'))
         && btns.some(b => b.classList.contains('up-icon'));
@@ -509,8 +578,8 @@
 
   // ── list-box: the dropdown its consumers are built from ───────────────────
   (() => {
-    const trigger = q('#dropdown button[role="combobox"]');
-    if (!trigger) return record('list-box', 'open', false, 'no dropdown trigger on this page');
+    const trigger = fixture('#dropdown').querySelector('button[role="combobox"]');
+    if (!trigger) return skip('list-box', 'open', 'no dropdown trigger on this page');
     const menu = trigger.closest('.rux--list-box')?.querySelector('.rux--list-box__menu');
 
     click(trigger);
@@ -567,10 +636,12 @@
   // js/overlay.js exists because two surfaces otherwise disagree about who owns
   // a press. Opening a second dismissible surface must close the first.
   (() => {
-    const a = q('#dropdown button[role="combobox"]');
-    const b = q('#modal [data-rux-open]');
-    const modal = b ? document.getElementById(b.getAttribute('data-rux-open')) : null;
-    if (!a || !modal) return record('overlay', 'stack', false, 'need a dropdown and a modal on this page');
+    const a = fixture('#dropdown').querySelector('button[role="combobox"]');
+    const b = fixture('#modal').querySelector('[data-rux-open]');
+    if (!a || !b) return skip('overlay', 'stack', 'need a dropdown and a modal on this page');
+    const modal = document.getElementById(b.getAttribute('data-rux-open'));
+    if (!modal) return record('overlay', 'stack', false,
+      `the modal trigger names #${b.getAttribute('data-rux-open')} and no such element exists`);
 
     click(a);
     click(b);
@@ -582,12 +653,19 @@
     if (a.getAttribute('aria-expanded') === 'true') click(a);
   })();
 
-  const failed = cases.filter(c => !c.ok);
-  console.log(`\n  check-behaviour — ${cases.length - failed.length}/${cases.length} passed`);
+  const failed = cases.filter(c => c.ok === false);
+  const skipped = cases.filter(c => c.ok === null);
+  const ran = cases.length - skipped.length;
+  const passed = ran - failed.length;
+  console.log(`\n  check-behaviour — ${passed}/${ran} passed, ${skipped.length} skipped`);
   for (const f of failed) console.log(`  FAIL  ${f.module}: ${f.name}\n        ${f.detail}`);
+  for (const s of skipped) console.log(`  skip  ${s.module}: ${s.name} — ${s.detail}`);
   console.log(`\n  NOT CHECKED: anything that lands in a microtask — focus destination,`);
   console.log(`  focus restoration, and the order two surfaces close in. A synchronous`);
   console.log(`  tool cannot wait for them. check-a11y owns where focus ends up.\n`);
 
-  return { passed: cases.length - failed.length, total: cases.length, failed, cases };
+  // `total` still counts every case DEFINED; `ran` counts those with a
+  // fixture. The honest score is passed/ran — a reading of passed/total
+  // understates any page that legitimately carries only some components.
+  return { passed, ran, total: cases.length, failed, skipped, cases };
 })();

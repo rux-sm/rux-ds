@@ -180,7 +180,9 @@ For `portal.html` and each template, use this loop in order:
    count.
 
 Use the same order on `kitchen-sink.html`, then also run `check-rendered` and
-`check-behaviour`. The sink is their unit; templates are not. Keep the calendar present
+`check-behaviour`. The sink is where both are required. `check-rendered` THROWS
+anywhere else. `check-behaviour` runs anywhere since 2026-09-08 and skips what
+the page lacks — useful on a consumer page, still not a template cell. Keep the calendar present
 through the a11y reading and compare every new finding or spacing unknown with the
 adjudicated evidence before changing code.
 

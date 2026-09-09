@@ -693,14 +693,21 @@ export const GATES = [
     catches: 'a behaviour module that stops doing what its own header claims — the state a click produces, which every other gate is blind to',
     blindTo: 'anything landing in a microtask: focus destination, focus restoration, and the order two surfaces close in',
     reads: 'page',
-    // The sink only. It drives real components, so it needs one of everything —
-    // a selectable table, an overflow menu, tabs, an accordion, a modal, a
-    // dismissible notification, a toggle and a dropdown. No template carries
-    // that set, and five of the modules bind to nothing in any template.
+    // The sink is where the CELL is required, and that has not changed. What
+    // changed on 2026-09-08 is that the tool no longer mistakes a page for a
+    // broken one: each case is scoped to its sink section where that exists and
+    // to the document where it does not, and a component the page does not
+    // carry is `skipped` rather than failed.
+    // TEMPLATES STAY OFF, DELIBERATELY. Flipping `templates` to true would make
+    // `npm run gates` demand a cell for all ten of them (gates.mjs cells(), and
+    // the N/A row in check-gates.mjs), and those cells would be almost entirely
+    // skips — ten more sweeps to keep current in exchange for recording what a
+    // template does not contain. Off the sink this tool is a diagnostic a person
+    // runs, not a coverage cell.
     fileTargets: [],
     pageTargets: ['kitchen-sink.html'],
     canRun: { sink: true, templates: false },
-    cannotRunReason: 'it drives every module, and no template carries the components to drive — five modules bind to nothing there at all',
+    cannotRunReason: 'it runs anywhere since 2026-09-08, but a template carries almost none of the components, so its cell would record absence rather than coverage — off-sink it is a diagnostic, not a gate',
     // CSS REACHES THIS ONE. It measures element rectangles and menu
     // height, so a stylesheet can change its result -- it is not a
     // pure-JavaScript reading.
@@ -716,7 +723,10 @@ export const GATES = [
     // popover, dismiss, form-controls, list-box and overlay. The gate grew with
     // every module admitted since; the record never moved with it, and nothing
     // reads baseline, so nothing said so.
-    baseline: '47 of 47 cases passing on the sink, across 14 modules',
+    // Read passed/ran, not passed/total: `total` counts every case defined and
+    // `ran` only those with a fixture, so the two agree on the sink and part
+    // company anywhere else.
+    baseline: '47 of 47 ran on the sink, 0 skipped, 0 failed, across 14 modules',
   },
   {
     id: 'check-a11y',
