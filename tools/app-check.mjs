@@ -212,18 +212,31 @@ export function check(root, opts = {}) {
     ds = join(root, 'vendor/rux-ds');
     dsFrom = 'vendor/rux-ds';
   } else {
-    const tried = [];
-    for (const [where, dir] of [['--ds', opts.ds], ['DS', process.env.DS], ['a sibling', join(root, '..', 'rux-ds')]]) {
-      if (!dir) continue;
-      const abs = resolve(root, dir);
-      tried.push(`${where} ${abs}`);
-      if (existsSync(join(abs, 'css/rux.css'))) { ds = abs; dsFrom = `${where} ${abs}`; break; }
-    }
+    // A PATH YOU NAME IS A CLAIM, AND A WRONG CLAIM FAILS HERE RATHER THAN
+    // FALLING THROUGH. The first draft tried --ds, then DS, then a sibling, and
+    // took whichever worked. So `--ds /tmp` beside a real sibling PASSED, and
+    // said `rux-ds from a sibling` while the operator watched their own flag be
+    // ignored -- measured 2026-09-09 on a scratch app, and it is the exact
+    // shape this repository keeps being bitten by: a confident wrong answer
+    // that reads clean. It matters most in CI, where --ds names a checked-out
+    // TAG: a checkout that failed or moved would leave the check passing
+    // against whatever else was on disk.
+    //
+    // So only the UNNAMED sibling is a fallback. Name a path and it must be
+    // right.
+    const named = opts.ds ? ['--ds', opts.ds] : process.env.DS ? ['DS', process.env.DS] : null;
+    if (named && opts.ds && process.env.DS && resolve(root, process.env.DS) !== resolve(root, opts.ds))
+      notes.push(`DS=${process.env.DS} is set and ignored: --ds wins, and it names ${resolve(root, opts.ds)}`);
+    const [where, dir] = named ?? ['a sibling', join(root, '..', 'rux-ds')];
+    const abs = resolve(root, dir);
+    if (existsSync(join(abs, 'css/rux.css'))) { ds = abs; dsFrom = `${where} ${abs}`; }
     if (!ds) {
       // NOT SKIPPED. The same wording Notes' check-ancestry uses: a gate that
       // cannot run says so. Everything downstream needs this directory, so
       // there is nothing to report but this.
-      fail('ds', 'rux-ds', `this app has no vendor/rux-ds, so it links /rux-ds/ on the shared origin and needs a rux-ds checkout to resolve that against. ${tried.length ? `Looked in: ${tried.join('; ')}, and none holds css/rux.css.` : 'Nothing was named.'} Clone rux-ds beside this app, or pass --ds <dir> / DS=<dir>. Not skipped -- a check that cannot resolve a class is not a check.`);
+      fail('ds', 'rux-ds', named
+        ? `${where} names ${abs}, which holds no css/rux.css -- that is not a rux-ds checkout. A path you name is a claim about where rux-ds is, so a wrong one fails rather than falling through to a sibling and passing against a different copy.`
+        : `this app has no vendor/rux-ds, so it links /rux-ds/ on the shared origin and needs a rux-ds checkout to resolve that against. Looked for a sibling at ${abs}, which holds no css/rux.css. Clone rux-ds beside this app, or pass --ds <dir> / DS=<dir>. Not skipped -- a check that cannot resolve a class is not a check.`);
       return { failures, notes, pages: [], classUses: 0, tokenUses: 0, defined: 0, vendored, ds, dsFrom, pinTag: null, pinRecorded: null, pinComputed: null, absolute: 0, symbols: 0 };
     }
   }
@@ -438,6 +451,7 @@ function selfTest() {
     rmSync(work, { recursive: true, force: true });
     if (away) { rmSync(away, { recursive: true, force: true }); away = null; }
     dsOpt = {};
+    delete process.env.DS;
     w('vendor/rux-ds/assets/icons.svg', '<svg><symbol id="i-a"><path d="M0 0h1"/></symbol></svg>');
     w('vendor/rux-ds/css/rux.css', '.rux--btn{--rux-x:1}.rux--btn--primary{color:var(--rux-x)}.rux--lg\\:col-span-8{}');
     w('vendor/rux-ds/css/rux-theme.css', '[data-theme=white]{--rux-y:2}');
@@ -485,6 +499,16 @@ function selfTest() {
       dsOpt = { ds: elsewhere() };
     }],
     ['vendored: --ds is refused', 'ds', () => { dsOpt = { ds: elsewhere() }; }],
+    // A NAMED PATH DOES NOT FALL THROUGH TO ANOTHER SOURCE. The wrong --ds
+    // here sits beside a PERFECTLY GOOD DS, so a fall-through would pass and
+    // report the other source -- which is what the first draft did, with a
+    // real sibling, and it is the reason this rule is written down. The
+    // unnamed-sibling arm is covered by 'served: no ds anywhere' above.
+    ['served: a wrong --ds does not fall through to DS', 'ds', () => {
+      rmSync(join(work, 'vendor'), { recursive: true, force: true });
+      process.env.DS = elsewhere();
+      dsOpt = { ds: join(work, 'not-rux-ds') };
+    }],
     // THE SPRITE. One symbol's paste left behind by a release that changed it.
     ['sprite: a stale inlined symbol', 'sprite', () => {
       w('index.html', '<html><body><svg><symbol id="i-x" viewBox="0 0 1 1"><path d="M0 0h1"/></symbol></svg><svg><use href="#i-x"/></svg></body></html>');

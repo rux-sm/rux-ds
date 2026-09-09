@@ -5323,6 +5323,17 @@ vendored, at `v0.1.11`; the hub does not run this file at all. So the failure
 above surfaces when the hub's pin moves, which is step 5, by which point the
 tag carries the glyph.
 
+**A DEFECT IN THE FIRST DRAFT, FOUND BY THE AUTHOR TESTING IT AND FIXED
+2026-09-09.** The resolution tried `--ds`, then `DS`, then a sibling, and took
+whichever worked — so `--ds /tmp` beside a real sibling **passed**, printing
+`rux-ds from a sibling` while the operator's own flag was ignored without a
+word. Measured on a scratch app. It matters most in CI, where `--ds` names a
+checked-out tag: a checkout that failed or moved would have left the check
+passing against whatever else was on disk. Now only the UNNAMED sibling is a
+fallback; a path you name is a claim and a wrong one fails. A 24th self-test
+case drives it, with a valid `DS` beside the bad `--ds` so a fall-through
+would be visible.
+
 *Weaker:* the checksum rule stops applying to an app the moment it stops
 vendoring — replaced by there being no app copy to be anything else, but that
 is a control leaving, one app at a time, and it should be counted as one.
