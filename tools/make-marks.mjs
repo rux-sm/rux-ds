@@ -142,6 +142,44 @@ for (const rule of swap) {
 }
 console.log(`  ${FAV}  checked, not written: ${favPaths.length} shapes, viewBox ${favViewBox}`);
 
+// ------------------------------------------------------- 3. the app tile icon
+// brand/icon.svg -- the 32px silhouette the hub's grid draws for THIS app,
+// named in switcher.json by absolute path (`/rux-ds/brand/icon.svg`).
+// brand/README.md "App tile icons" is the spec; this is rux-ds's own.
+//
+// GENERATED, NOT DRAWN A THIRD TIME. logo.svg and favicon.svg already carry
+// the same 114 cells and the file itself says they are "kept identical by
+// hand, and nothing enforces it". A third hand-kept copy is the drift this
+// tool's own header was written to argue against, and the tile needs no new
+// geometry: the mark already has one cell of air on every side, which is
+// exactly what the tile spec asks for.
+//
+// IT CARRIES NO COLOUR AND NO LABEL, and both absences are the design. The
+// tile uses this file as a CSS mask over its own text colour, so every colour
+// inside is discarded and only the alpha is read -- a fill would be ignored,
+// and a <style> block like the favicon's would be ignored too. It is fetched
+// through url() in a mask, never parsed as a document, so a title or
+// aria-label could not reach the accessibility tree; the tile's own text is
+// the name, and the span is decorative. Default fill is opaque black, which
+// is alpha 1 everywhere the mark is drawn.
+//
+// A CONSUMER SWAPS THIS FILE BY HAND, as it does logo.svg and favicon.svg.
+// This tool is rux-ds's and is not vendored, so it writes rux-ds's own icon
+// and nothing else. That is why the output lands in brand/ rather than
+// assets/brand/: brand/ is what a project owns and replaces.
+const ICON = 'brand/icon.svg';
+const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
+<!-- The app tile icon, generated from ${SRC} by tools/make-marks.mjs.
+     Edit that file, not this one. Drawn as a CSS mask over the tile's text
+     colour, so this file's own colours are discarded and only its alpha is
+     read; that is why it carries no fill and no title. brand/README.md,
+     "App tile icons", is the spec. -->
+${body}
+</svg>`.replace(/\n{2,}/g, '\n').trim() + '\n';
+assertNoDoubleHyphen(ICON, iconSvg);
+writeFileSync(ICON, iconSvg);
+console.log(`  ${ICON}  the tile mask, from ${SRC}`);
+
 console.log(`\n  ${paths.length} shapes read from ${SRC}, viewBox ${viewBox}`);
 console.log('  Geometry copied verbatim. Swap brand/logo.svg and re-run to follow it.');
 console.log('  The favicon is its own drawing; swap brand/favicon.svg directly.');
