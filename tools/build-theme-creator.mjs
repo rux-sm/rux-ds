@@ -531,7 +531,7 @@ ${sprite}
                     <input id="thc-name" class="rux--text-input" type="text" value="" placeholder="your-theme">
                   </div>
                 </div>
-                <div class="rux--form__helper-text" id="thc-name-helper">Lowercase letters, digits and hyphens; not white, g10, g90, g100 or geist — those are the shipped themes, not a name you can save over.</div>
+                <div class="rux--form__helper-text" id="thc-name-helper">Lowercase letters, digits and hyphens; not white, g10, g90, g100, geist or linear — those are the shipped themes, not a name you can save over.</div>
               </div>
 
               <div class="rux--form-item">
