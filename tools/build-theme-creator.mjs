@@ -112,6 +112,14 @@ for (const m of buttonScss.matchAll(/\$([a-z0-9-]+):\s*\(([\s\S]*?)\)\s*!default
 for (const [name] of TOKENS) {
   if (!(name in DEFAULTS)) { console.log(`  build-theme-creator: @carbon/themes has no white value for ${name}, but TOKENS names it`); process.exit(1); }
 }
+// theme-creator.js takes Object.keys(defaults) as the full set of rows to
+// wire up (tokenNames), so thc-defaults must carry exactly the twenty TOKENS
+// entries — the $white map and _button-tokens.scss have over two hundred
+// keys between them, and shipping all of them made init() look up a
+// thc-tok-* element for tokens with no row and crash on .addEventListener,
+// which the page then misreported as "could not load families.json or
+// scenarios.json" since that crash happened inside the same .then().
+const ROW_DEFAULTS = Object.fromEntries(TOKENS.map(([name]) => [name, DEFAULTS[name]]));
 
 // EVERY SURFACE-ISH TOKEN THE SECTION OFFERS, grouped as the page shows
 // them. Four until 2026-09-08, which left an OLED-dark theme visibly
@@ -679,7 +687,7 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
-<script type="application/json" id="thc-defaults">${JSON.stringify(DEFAULTS)}</script>
+<script type="application/json" id="thc-defaults">${JSON.stringify(ROW_DEFAULTS)}</script>
 <!-- The surface ladder's seeds and its per-token contrast check, generated
      from css/rux.css by tools/build-theme-creator.mjs. Data, not script:
      theme-creator.js parses it rather than keeping a second copy that
