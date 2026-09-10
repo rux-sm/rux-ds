@@ -456,16 +456,30 @@ else {
   // A flag's value is not a positional. --ds <dir> and --hub <dir> each eat the
   // argument after them, so the app directory is whatever bare argument is
   // left -- without this, `--ds ../rux-ds` would be read as the app.
+  //
+  // EXCLUDED BY POSITION, NOT BY VALUE -- found live, 2026-09-10, cutting
+  // v0.1.16. A Set of the flags' VALUES meant that checking the hub against
+  // itself, `app-check.mjs <hub> --ds <rux-ds> --hub <hub>` -- the shape
+  // rux-ds's own consumers job always uses, since a served app's own entry
+  // in the loop passes --hub pointing at itself -- excluded the positional
+  // app path too, because it read identical to the --hub value. `find`
+  // then matched nothing and silently fell back to defaultRoot(), which
+  // checked THIS repository's own sink/deferred/ fragments against
+  // themselves and failed on every uncompiled class in them: a confident
+  // wrong answer, not a crash. Reproduced locally before this was written:
+  // `node tools/app-check.mjs <hub> --ds <rux-ds> --hub <hub>` failed on
+  // sink/deferred/page-header.html, which the hub does not even carry.
+  const takenAt = new Set();
   const flag = (name) => {
     const i = args.indexOf(name);
     if (i < 0) return null;
     const v = args[i + 1];
     if (!v || v.startsWith('--')) { console.error(`${name} needs a directory`); process.exit(2); }
+    takenAt.add(i + 1);
     return v;
   };
   const ds = flag('--ds'), hub = flag('--hub');
-  const taken = new Set([ds, hub].filter(Boolean));
-  const root = resolve(args.find(a => !a.startsWith('--') && !taken.has(a)) ?? defaultRoot());
+  const root = resolve(args.find((a, i) => !a.startsWith('--') && !takenAt.has(i)) ?? defaultRoot());
   const r = check(root, { ds, hub });
   report(root, r);
   if (r.failures.length) process.exit(1);
