@@ -8,8 +8,9 @@
   `[data-theme="linear"]`, `[data-theme="ant-dark"]` and
   `[data-theme="spotify"]`, each the whole story for its own theme: every
   core token its palette redefines, plus derived values for Carbon's
-  button component tokens (below), which are a separate map none of the
-  four supplied palettes name. Custom properties inherit, so anything a
+  button component tokens and transcribed values for its tag,
+  notification, status and content-switcher ones (both below), which are
+  separate maps none of the four supplied palettes name. Custom properties inherit, so anything a
   block does NOT name keeps white's compiled value from :root — in
   practice that is almost nothing for any of the four, since each
   redefines the surface end to end, but it is why a handful of tokens
@@ -47,6 +48,40 @@
   every account-panel theme radio (ten templates, `index.html`, the sink,
   `builder.html`'s default-theme picker) all carry eight names now, not
   five.
+
+  TAG, NOTIFICATION, STATUS AND CONTENT-SWITCHER, ADDED 2026-09-10,
+  TRANSCRIBED RATHER THAN DESIGNED. 62 values per block: `tag-*` 40,
+  `notification-*` 10, `status-*` 9, `content-switcher-*` 3. Until today
+  none of the four blocks named one of them, so all 62 fell through to
+  white's compiled `:root` and every one of these four dark themes drew
+  Carbon's tags, inline notifications and status dots light-on-black. The
+  values are Carbon's own `[data-theme=g100]` set, copied: Carbon ships
+  only TWO sets for these families — white and g10 are identical to each
+  other for all 62, and g90 and g100 are identical for 58 — so a dark
+  theme has one set to take, not a palette to invent. Measured from
+  `css/rux.css`, not assumed.
+
+  THE FOUR THAT ARE NOT COPIED are the only place a choice existed.
+  `notification-background-error`, `-success`, `-info` and `-warning` are
+  the four of 62 where g90 and g100 differ, and in each theme the value
+  is that theme's OWN `layer-01` — g90's #393939 and g100's #262626 are
+  exactly their own layer-01 — so each block here takes its own instead:
+  geist #0a0a0a, linear #141419, ant-dark #141414, spotify #181818. An
+  inline notification sits on the page's own raised surface, which is
+  what these four themes each redefine.
+
+  ONE VALUE IS CARRIED THROUGH AS A REFERENCE, not flattened:
+  `notification-action-hover` is `var(--rux-layer-hover)` in Carbon's
+  g100 and stays that here, so it reads each theme's own hover surface.
+  It behaves exactly as g100's does, including when a theme is set below
+  the root element rather than on it — copying Carbon verbatim keeps that
+  identical rather than quietly improving it.
+
+  WHY THIS WAS ASKED FOR RATHER THAN NOTICED HERE. rux-scheduler files
+  requests against this system, and reported on 2026-09-10 that every
+  trip bar on its board takes its fill from the tag palette, so all four
+  of these themes drew the board pale-blue-on-black. Its count of
+  `status-*` was 7; it is 9. Nothing else in the report was off.
 
   WHAT NONE OF THEM TOUCH. `ai-*` (Carbon's AI-feature identity) and
   `syntax-*` (code-block colours) are not part of any of the four
@@ -335,6 +370,77 @@
   --rux-button-danger-active: #702326;
   --rux-button-separator: #000000;
   --rux-button-disabled: rgba(237, 237, 237, 0.25);
+
+  /* tag (component tokens — Carbon's own dark set, see header) */
+  --rux-tag-background-red: #a2191f;
+  --rux-tag-color-red: #ffd7d9;
+  --rux-tag-hover-red: #c21e25;
+  --rux-tag-background-magenta: #9f1853;
+  --rux-tag-color-magenta: #ffd6e8;
+  --rux-tag-hover-magenta: #bf1d63;
+  --rux-tag-background-purple: #6929c4;
+  --rux-tag-color-purple: #e8daff;
+  --rux-tag-hover-purple: #7c3dd6;
+  --rux-tag-background-blue: #0043ce;
+  --rux-tag-color-blue: #d0e2ff;
+  --rux-tag-hover-blue: #0053ff;
+  --rux-tag-background-cyan: #00539a;
+  --rux-tag-color-cyan: #bae6ff;
+  --rux-tag-hover-cyan: #0066bd;
+  --rux-tag-background-teal: #005d5d;
+  --rux-tag-color-teal: #9ef0f0;
+  --rux-tag-hover-teal: #007070;
+  --rux-tag-background-green: #0e6027;
+  --rux-tag-color-green: #a7f0ba;
+  --rux-tag-hover-green: #11742f;
+  --rux-tag-background-gray: #525252;
+  --rux-tag-color-gray: #f4f4f4;
+  --rux-tag-hover-gray: #636363;
+  --rux-tag-border-red: #fa4d56;
+  --rux-tag-border-blue: #4589ff;
+  --rux-tag-border-cyan: #1192e8;
+  --rux-tag-border-teal: #009d9a;
+  --rux-tag-border-green: #24a148;
+  --rux-tag-border-magenta: #ee5396;
+  --rux-tag-border-purple: #a56eff;
+  --rux-tag-border-gray: #8d8d8d;
+  --rux-tag-border-cool-gray: #878d96;
+  --rux-tag-border-warm-gray: #8f8b8b;
+  --rux-tag-background-cool-gray: #4d5358;
+  --rux-tag-color-cool-gray: #f2f4f8;
+  --rux-tag-hover-cool-gray: #5d646a;
+  --rux-tag-background-warm-gray: #565151;
+  --rux-tag-color-warm-gray: #f7f3f2;
+  --rux-tag-hover-warm-gray: #696363;
+
+  /* notification (component tokens — Carbon's own dark set;
+     the four surface backgrounds take THIS theme's layer-01) */
+  --rux-notification-background-error: #0a0a0a;
+  --rux-notification-background-success: #0a0a0a;
+  --rux-notification-background-info: #0a0a0a;
+  --rux-notification-background-warning: #0a0a0a;
+  --rux-notification-action-hover: var(--rux-layer-hover);
+  --rux-notification-action-tertiary-inverse: #0f62fe;
+  --rux-notification-action-tertiary-inverse-active: #002d9c;
+  --rux-notification-action-tertiary-inverse-hover: #0050e6;
+  --rux-notification-action-tertiary-inverse-text: #ffffff;
+  --rux-notification-action-tertiary-inverse-text-on-color-disabled: #8d8d8d;
+
+  /* status indicator (component tokens — Carbon's own dark set) */
+  --rux-status-red: #fa4d56;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ff832b;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #f1c21b;
+  --rux-status-green: #42be65;
+  --rux-status-blue: #4589ff;
+  --rux-status-purple: #a56eff;
+  --rux-status-gray: #8d8d8d;
+
+  /* content switcher (component tokens — Carbon's own dark set) */
+  --rux-content-switcher-background: rgba(0, 0, 0, 0);
+  --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
+  --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
 }
 
 [data-theme="linear"] {
@@ -504,6 +610,77 @@
   --rux-button-danger-active: #752f2f;
   --rux-button-separator: #0f0f12;
   --rux-button-disabled: rgba(241, 241, 243, 0.25);
+
+  /* tag (component tokens — Carbon's own dark set, see header) */
+  --rux-tag-background-red: #a2191f;
+  --rux-tag-color-red: #ffd7d9;
+  --rux-tag-hover-red: #c21e25;
+  --rux-tag-background-magenta: #9f1853;
+  --rux-tag-color-magenta: #ffd6e8;
+  --rux-tag-hover-magenta: #bf1d63;
+  --rux-tag-background-purple: #6929c4;
+  --rux-tag-color-purple: #e8daff;
+  --rux-tag-hover-purple: #7c3dd6;
+  --rux-tag-background-blue: #0043ce;
+  --rux-tag-color-blue: #d0e2ff;
+  --rux-tag-hover-blue: #0053ff;
+  --rux-tag-background-cyan: #00539a;
+  --rux-tag-color-cyan: #bae6ff;
+  --rux-tag-hover-cyan: #0066bd;
+  --rux-tag-background-teal: #005d5d;
+  --rux-tag-color-teal: #9ef0f0;
+  --rux-tag-hover-teal: #007070;
+  --rux-tag-background-green: #0e6027;
+  --rux-tag-color-green: #a7f0ba;
+  --rux-tag-hover-green: #11742f;
+  --rux-tag-background-gray: #525252;
+  --rux-tag-color-gray: #f4f4f4;
+  --rux-tag-hover-gray: #636363;
+  --rux-tag-border-red: #fa4d56;
+  --rux-tag-border-blue: #4589ff;
+  --rux-tag-border-cyan: #1192e8;
+  --rux-tag-border-teal: #009d9a;
+  --rux-tag-border-green: #24a148;
+  --rux-tag-border-magenta: #ee5396;
+  --rux-tag-border-purple: #a56eff;
+  --rux-tag-border-gray: #8d8d8d;
+  --rux-tag-border-cool-gray: #878d96;
+  --rux-tag-border-warm-gray: #8f8b8b;
+  --rux-tag-background-cool-gray: #4d5358;
+  --rux-tag-color-cool-gray: #f2f4f8;
+  --rux-tag-hover-cool-gray: #5d646a;
+  --rux-tag-background-warm-gray: #565151;
+  --rux-tag-color-warm-gray: #f7f3f2;
+  --rux-tag-hover-warm-gray: #696363;
+
+  /* notification (component tokens — Carbon's own dark set;
+     the four surface backgrounds take THIS theme's layer-01) */
+  --rux-notification-background-error: #141419;
+  --rux-notification-background-success: #141419;
+  --rux-notification-background-info: #141419;
+  --rux-notification-background-warning: #141419;
+  --rux-notification-action-hover: var(--rux-layer-hover);
+  --rux-notification-action-tertiary-inverse: #0f62fe;
+  --rux-notification-action-tertiary-inverse-active: #002d9c;
+  --rux-notification-action-tertiary-inverse-hover: #0050e6;
+  --rux-notification-action-tertiary-inverse-text: #ffffff;
+  --rux-notification-action-tertiary-inverse-text-on-color-disabled: #8d8d8d;
+
+  /* status indicator (component tokens — Carbon's own dark set) */
+  --rux-status-red: #fa4d56;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ff832b;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #f1c21b;
+  --rux-status-green: #42be65;
+  --rux-status-blue: #4589ff;
+  --rux-status-purple: #a56eff;
+  --rux-status-gray: #8d8d8d;
+
+  /* content switcher (component tokens — Carbon's own dark set) */
+  --rux-content-switcher-background: rgba(0, 0, 0, 0);
+  --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
+  --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
 }
 
 [data-theme="ant-dark"] {
@@ -673,6 +850,77 @@
   --rux-button-danger-active: #7d2627;
   --rux-button-separator: #000000;
   --rux-button-disabled: rgba(255, 255, 255, 0.25);
+
+  /* tag (component tokens — Carbon's own dark set, see header) */
+  --rux-tag-background-red: #a2191f;
+  --rux-tag-color-red: #ffd7d9;
+  --rux-tag-hover-red: #c21e25;
+  --rux-tag-background-magenta: #9f1853;
+  --rux-tag-color-magenta: #ffd6e8;
+  --rux-tag-hover-magenta: #bf1d63;
+  --rux-tag-background-purple: #6929c4;
+  --rux-tag-color-purple: #e8daff;
+  --rux-tag-hover-purple: #7c3dd6;
+  --rux-tag-background-blue: #0043ce;
+  --rux-tag-color-blue: #d0e2ff;
+  --rux-tag-hover-blue: #0053ff;
+  --rux-tag-background-cyan: #00539a;
+  --rux-tag-color-cyan: #bae6ff;
+  --rux-tag-hover-cyan: #0066bd;
+  --rux-tag-background-teal: #005d5d;
+  --rux-tag-color-teal: #9ef0f0;
+  --rux-tag-hover-teal: #007070;
+  --rux-tag-background-green: #0e6027;
+  --rux-tag-color-green: #a7f0ba;
+  --rux-tag-hover-green: #11742f;
+  --rux-tag-background-gray: #525252;
+  --rux-tag-color-gray: #f4f4f4;
+  --rux-tag-hover-gray: #636363;
+  --rux-tag-border-red: #fa4d56;
+  --rux-tag-border-blue: #4589ff;
+  --rux-tag-border-cyan: #1192e8;
+  --rux-tag-border-teal: #009d9a;
+  --rux-tag-border-green: #24a148;
+  --rux-tag-border-magenta: #ee5396;
+  --rux-tag-border-purple: #a56eff;
+  --rux-tag-border-gray: #8d8d8d;
+  --rux-tag-border-cool-gray: #878d96;
+  --rux-tag-border-warm-gray: #8f8b8b;
+  --rux-tag-background-cool-gray: #4d5358;
+  --rux-tag-color-cool-gray: #f2f4f8;
+  --rux-tag-hover-cool-gray: #5d646a;
+  --rux-tag-background-warm-gray: #565151;
+  --rux-tag-color-warm-gray: #f7f3f2;
+  --rux-tag-hover-warm-gray: #696363;
+
+  /* notification (component tokens — Carbon's own dark set;
+     the four surface backgrounds take THIS theme's layer-01) */
+  --rux-notification-background-error: #141414;
+  --rux-notification-background-success: #141414;
+  --rux-notification-background-info: #141414;
+  --rux-notification-background-warning: #141414;
+  --rux-notification-action-hover: var(--rux-layer-hover);
+  --rux-notification-action-tertiary-inverse: #0f62fe;
+  --rux-notification-action-tertiary-inverse-active: #002d9c;
+  --rux-notification-action-tertiary-inverse-hover: #0050e6;
+  --rux-notification-action-tertiary-inverse-text: #ffffff;
+  --rux-notification-action-tertiary-inverse-text-on-color-disabled: #8d8d8d;
+
+  /* status indicator (component tokens — Carbon's own dark set) */
+  --rux-status-red: #fa4d56;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ff832b;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #f1c21b;
+  --rux-status-green: #42be65;
+  --rux-status-blue: #4589ff;
+  --rux-status-purple: #a56eff;
+  --rux-status-gray: #8d8d8d;
+
+  /* content switcher (component tokens — Carbon's own dark set) */
+  --rux-content-switcher-background: rgba(0, 0, 0, 0);
+  --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
+  --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
 }
 
 [data-theme="spotify"] {
@@ -842,4 +1090,75 @@
   --rux-button-danger-active: #762e35;
   --rux-button-separator: #121212;
   --rux-button-disabled: rgba(255, 255, 255, 0.25);
+
+  /* tag (component tokens — Carbon's own dark set, see header) */
+  --rux-tag-background-red: #a2191f;
+  --rux-tag-color-red: #ffd7d9;
+  --rux-tag-hover-red: #c21e25;
+  --rux-tag-background-magenta: #9f1853;
+  --rux-tag-color-magenta: #ffd6e8;
+  --rux-tag-hover-magenta: #bf1d63;
+  --rux-tag-background-purple: #6929c4;
+  --rux-tag-color-purple: #e8daff;
+  --rux-tag-hover-purple: #7c3dd6;
+  --rux-tag-background-blue: #0043ce;
+  --rux-tag-color-blue: #d0e2ff;
+  --rux-tag-hover-blue: #0053ff;
+  --rux-tag-background-cyan: #00539a;
+  --rux-tag-color-cyan: #bae6ff;
+  --rux-tag-hover-cyan: #0066bd;
+  --rux-tag-background-teal: #005d5d;
+  --rux-tag-color-teal: #9ef0f0;
+  --rux-tag-hover-teal: #007070;
+  --rux-tag-background-green: #0e6027;
+  --rux-tag-color-green: #a7f0ba;
+  --rux-tag-hover-green: #11742f;
+  --rux-tag-background-gray: #525252;
+  --rux-tag-color-gray: #f4f4f4;
+  --rux-tag-hover-gray: #636363;
+  --rux-tag-border-red: #fa4d56;
+  --rux-tag-border-blue: #4589ff;
+  --rux-tag-border-cyan: #1192e8;
+  --rux-tag-border-teal: #009d9a;
+  --rux-tag-border-green: #24a148;
+  --rux-tag-border-magenta: #ee5396;
+  --rux-tag-border-purple: #a56eff;
+  --rux-tag-border-gray: #8d8d8d;
+  --rux-tag-border-cool-gray: #878d96;
+  --rux-tag-border-warm-gray: #8f8b8b;
+  --rux-tag-background-cool-gray: #4d5358;
+  --rux-tag-color-cool-gray: #f2f4f8;
+  --rux-tag-hover-cool-gray: #5d646a;
+  --rux-tag-background-warm-gray: #565151;
+  --rux-tag-color-warm-gray: #f7f3f2;
+  --rux-tag-hover-warm-gray: #696363;
+
+  /* notification (component tokens — Carbon's own dark set;
+     the four surface backgrounds take THIS theme's layer-01) */
+  --rux-notification-background-error: #181818;
+  --rux-notification-background-success: #181818;
+  --rux-notification-background-info: #181818;
+  --rux-notification-background-warning: #181818;
+  --rux-notification-action-hover: var(--rux-layer-hover);
+  --rux-notification-action-tertiary-inverse: #0f62fe;
+  --rux-notification-action-tertiary-inverse-active: #002d9c;
+  --rux-notification-action-tertiary-inverse-hover: #0050e6;
+  --rux-notification-action-tertiary-inverse-text: #ffffff;
+  --rux-notification-action-tertiary-inverse-text-on-color-disabled: #8d8d8d;
+
+  /* status indicator (component tokens — Carbon's own dark set) */
+  --rux-status-red: #fa4d56;
+  --rux-status-orange: #ff832b;
+  --rux-status-orange-outline: #ff832b;
+  --rux-status-yellow: #f1c21b;
+  --rux-status-yellow-outline: #f1c21b;
+  --rux-status-green: #42be65;
+  --rux-status-blue: #4589ff;
+  --rux-status-purple: #a56eff;
+  --rux-status-gray: #8d8d8d;
+
+  /* content switcher (component tokens — Carbon's own dark set) */
+  --rux-content-switcher-background: rgba(0, 0, 0, 0);
+  --rux-content-switcher-background-hover: rgba(141, 141, 141, 0.12);
+  --rux-content-switcher-selected: rgba(141, 141, 141, 0.24);
 }
