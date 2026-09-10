@@ -55,7 +55,8 @@ expand when wanted, provenance and gate vocabulary in secondary details.
 - **Field style is not a swap**: fluid controls have different markup and no
   fluid form is captured. Deferred.
 - **Export today is a page, not a project.** `exportPage` writes paths into
-  `vendor/rux-ds/`, `brand/`, `rux-theme.css` and `rux-overrides.css`, which
+  `/rux-ds/`, `brand/`, `rux-theme.css` and `rux-overrides.css` (roadmap §8.4,
+  done 2026-09-10 — it wrote `vendor/rux-ds/` before), which
   `tools/new-project.sh` creates. `bodyOnly` returns the whole `<main>`, so
   it replaces a page's main region. A zip is out: no third-party libraries.
 - **Attested chrome exists** for the guided mode: a progress indicator

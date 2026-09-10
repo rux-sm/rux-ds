@@ -1,6 +1,6 @@
-# The five verbs
+# The four verbs
 
-Everything done in this family of repositories is one of five tasks. Each
+Everything done in this family of repositories is one of four tasks. Each
 has one command, one check, and one place to look afterwards. This card is
 the instruction set; `README.md` "Picking this up", `docs/roadmap.md` and
 `docs/log.md` are the record, and nothing you need to *do* lives only there.
@@ -9,13 +9,10 @@ Where a verb takes more than one command today, the card says so and names
 what it should be. A command listed here exists; a target marked **not yet**
 does not, and is the next thing to build for that verb.
 
-Drafted 2026-09-05 from the three public repositories at `v0.1.6`. Revised
-the same day, after the eight-phase workspace plan was withdrawn for four
-changes: verbs 3 and 4 have their commands, and an app's check is rux-ds's,
-vendored with the pin (`tools/app-check.mjs`, `tools/app-skeleton/`,
-`tools/roll-out.sh`, `new-project.sh --tag`). The hub and Notes pick those up
-at their next pin move to a tag that carries them; until then the rows below
-say which of today's steps still apply to them.
+Drafted 2026-09-05 from the three public repositories at `v0.1.6`. Down to
+four verbs since 2026-09-10 (roadmap §8.4, §8.6): no app vendors a copy of
+rux-ds any more, so the old verb 4 — moving every app's pin — has nothing
+left to do, and is gone rather than kept as a no-op.
 
 ---
 
@@ -30,9 +27,9 @@ cannot see everything; five shipped defects passed all of them. Every verb
 ends by opening the page.
 
 Four things are never done, in any repository: editing a file under
-`node_modules/@carbon` or `vendor/rux-ds/`; writing a `rux--*` class Carbon
-does not compile; `!important`; a commit not in `type(scope): Subject` form
-authored by rux alone. `AGENTS.md` is the policy; this card is the routine.
+`node_modules/@carbon`; writing a `rux--*` class Carbon does not compile;
+`!important`; a commit not in `type(scope): Subject` form authored by rux
+alone. `AGENTS.md` is the policy; this card is the routine.
 
 ---
 
@@ -43,8 +40,8 @@ authored by rux alone. `AGENTS.md` is the policy; this card is the routine.
 | | |
 |---|---|
 | How | Skill `rux-ds-page`. Copy the nearest `templates/*.html`; never start from scratch or from a guess. Markup is diffed against `docs/carbon-*.json` (`node tools/diff-fragment.mjs <name>`). |
-| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. An app: `node tools/serve.mjs` → `http://localhost:8643`. The whole workspace on one origin, laid out as the live sites are: `npm run serve:workspace` in rux-ds → `http://localhost:8640`, `/` the hub and `/<name>/` each app. The switcher fills from the hub's list there, which it cannot on a per-app server. |
-| Check | rux-ds: `npm run verify`. An app: `node tools/check.mjs` — rux-ds's shared check from `vendor/rux-ds/tools/app-check.mjs` (classes, tokens, local references, ids, the pin), then the app's own gates. Browser gates: skill `sink-check`; `npm run gates` says which page was last swept and fails on one never swept. |
+| Serve | rux-ds: `npm run serve` → `http://localhost:8642`. An app: `node tools/serve.mjs` → `http://localhost:8640`, the workspace server every app's launcher delegates to since no app can be shown styled from its own folder alone — `/` the hub, `/<name>/` each app, `/rux-ds/` this repository. The switcher fills from the hub's list there. |
+| Check | rux-ds: `npm run verify`. An app: `node tools/check.mjs` — rux-ds's shared check, read from the checkout beside it (or `DS=<dir>`): classes, tokens, local references, ids — then the app's own gates. Browser gates: skill `sink-check`; `npm run gates` says which page was last swept and fails on one never swept. |
 | Look | The page, in the browser, in every theme — white, g10, g90, g100, rux — from the account panel. The template's `BEHAVIOUR:` comment says what was verified and what was not. |
 
 One command today. Notes is the exception: its pages are generated, so the
@@ -59,16 +56,16 @@ edit goes in `tools/build.mjs`, then `node tools/build.mjs`, then the check.
 | A colour, or any value a token names | `rux-theme.css`, inside a `[data-theme]` block | |
 | How a component looks beyond its tokens | `rux-overrides.css`, at Carbon's own specificity | |
 | — in one app only | that app's own pair, at its root | that app |
-| — in every app | `css/` pair in rux-ds | every app, after verb 5 then verb 4 |
+| — in every app | `css/` pair in rux-ds | every app, on the next release (verb 4) — no separate step moves it further |
 
 | | |
 |---|---|
-| Check | rux-ds: `npm run verify` — `check-tokens` refuses a token the theme file invents, `check-classes` a class either file selects that `rux.css` does not compile. An app: `node tools/check.mjs` — the vendored check refuses a class the pinned `rux.css` does not compile and a `var(--rux-*)` nothing declares, in the page, the two delta files and local scripts. Nothing is ever copied into rux-ds to check it. Hub and Notes: their own class check until the next pin move, and nothing checks a token there yet. |
+| Check | rux-ds: `npm run verify` — `check-tokens` refuses a token the theme file invents, `check-classes` a class either file selects that `rux.css` does not compile. An app: `node tools/check.mjs` — the shared check, read from the rux-ds checkout beside it, refuses a class or a `var(--rux-*)` nothing declares, in the page, the two delta files and local scripts. Nothing is ever copied into rux-ds to check it. |
 | Look | The component, in the sink or on the page, in every theme. A rule that should not have changed anything: measure before and after. |
 
-One edit today. A rule promoted from an app's pair into rux-ds's is not
-finished until a tag carries it, every pin has moved, and the app deletes its
-own copy in the same commit as its pin move (`docs/roadmap.md` §4.13).
+One edit today. A rule promoted from an app's pair into rux-ds's is live in
+every app the moment a release tag carries it — no app holds a copy to
+delete or a pin to move (roadmap §8.4, §8.6).
 
 ## 3 · Add an app
 
@@ -101,58 +98,13 @@ Then, by hand:
 |---|---|
 | Look | `https://rux-sm.github.io/` — the new card; the switcher panel on Notes — the new entry, marked current on its own site. |
 
-## 4 · Update the design system everywhere
-
-*Move every app to a rux-ds tag.*
-
-Do this when `CHANGES.md` gained a line, the drift report names a shell
-change, or an app needs a component that arrived — not on every tag. `PIN`
-records which tag each app is on either way.
-
-One command for every app, from rux-ds on `main`, which it never leaves:
-
-```sh
-git -C ~/Developer/rux-ds fetch --tags
-sh ~/Developer/rux-ds/tools/roll-out.sh vX.Y.Z          # --app <name> for one; --dry-run to see
-```
-
-It finds every sibling folder with a `vendor/rux-ds/PIN`, refuses the lot if
-any is dirty, lacks an upstream or has no `tools/check.mjs`, then per app
-exports the tag (`new-project.sh <app> --tag vX.Y.Z`, usable alone), runs
-that app's own check, and stops at the first failure with the restore
-command printed. Only `vendor/` changes. It commits nothing.
-
-**AN APP THAT ALREADY HOLDS THOSE BYTES IS LEFT ALONE, PIN AND ALL.** Since
-the `PIN` carries a `sha256` of the vendored tree, a move to a tag whose
-vendored files are identical writes nothing and the app keeps naming **the tag
-it already named** — not necessarily the earliest that carried those bytes: a
-project scaffolded from a later byte-identical tag keeps that one. That is the
-pin doing its job — it names bytes, not a position in the tag order — and the
-roll-out separates *moved* from *already holding these bytes*, printing a
-commit command only for the first. A run where every app is unchanged says so
-and asks for no commit.
-
-The commit it prints stages `vendor/rux-ds` explicitly rather than relying on
-`commit -a`, because a release that ADDS a vendored file leaves it untracked
-and `-a` would skip it — committing a PIN whose checksum covers a file the
-commit does not contain.
-
-Read each drift report. Apply by hand only what it names — it compares the
-page's `<head>` resources and header skeleton to the vendored `app-shell` and
-blocks nothing. Read `CHANGES.md` between the two tags: a class that left is
-the one hazard a green check does not show. Then per app, commit
-`chore(vendor): Move the pin to rux-ds vX.Y.Z`, push.
-
-| | |
-|---|---|
-| Look | Each site, live: header, switcher, account panel, theme. Record the pass in `docs/log.md`. |
-
-## 5 · Release the design system
+## 4 · Release the design system
 
 *Cut a tag. Since `v0.1.15` (2026-09-10, roadmap §8.4 diff B) the tag IS
 the deploy: pushing it publishes this site, after a `consumers` job has
-checked every app that links `/rux-ds/` against the tree, and those apps
-read it on their next load. An app that still vendors moves by verb 4.*
+checked every app that links `/rux-ds/` against the tree, and every app
+reads it on its next load — there is no separate step, because no app
+vendors a copy (§8.4 steps 2–5, done 2026-09-10).*
 
 ```sh
 npm run verify            # every Node gate, exit code
@@ -170,7 +122,8 @@ gh run watch "$(gh run list --workflow=pages.yml --limit 1 --json databaseId --j
 ```
 
 The run is three jobs: `check` (`npm run verify`), `consumers` (the shared
-check on every served app, `NOT RUN` with its pin for one that vendors),
+check on every app — `NOT RUN` with its pin is the branch for one that
+vendors, kept defensively though no app in the family does any more),
 `deploy`. A red `consumers` deploys nothing and the last release keeps
 serving; fix the app or the tree, then push a new tag.
 
@@ -189,7 +142,7 @@ first run ended. A repository setting, rux's to change.
 
 | | |
 |---|---|
-| Look | The live home page's stamp names the tag — `git describe --tags` on a checkout names the NEWEST tag, never the deployed one. `CHANGES.md` says what left. Every served app, in every theme. A vendored consumer does not move until verb 4 has a reason. |
+| Look | The live home page's stamp names the tag — `git describe --tags` on a checkout names the NEWEST tag, never the deployed one. `CHANGES.md` says what left. Every app, in every theme, reads it on its next load. |
 
 ---
 
@@ -201,9 +154,10 @@ to run it, where to edit, how to verify and how it is released. This card
 carried a copy of that table until 2026-09-09; it was missing the scheduler
 for four days, which is what a second copy does. It now carries the pointer.
 
-An app is `index.html`, `vendor/rux-ds/`, two delta CSS files, and the
+An app is `index.html` linking `/rux-ds/…`, two delta CSS files, and the
 launchers `tools/app-skeleton/` writes — a check, a server and a hook that
-each run rux-ds's vendored copy, so the rules move with the pin.
+each read rux-ds live from the checkout beside it, so the rules are always
+whatever rux-ds's newest release says (roadmap §8.4, done 2026-09-10).
 
 **Two apps carry more than that, for two different reasons.** Notes generates
 its pages, because the data behind them is private. Scheduler owns components

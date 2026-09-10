@@ -1,8 +1,8 @@
 ---
 id: rux-ds-workspace-flow-map
 type: reference
-status: draft
-updated: 2026-09-09
+status: draft — partially superseded 2026-09-10, see the top notice
+updated: 2026-09-10
 covers: [rux-ds, rux-sm.github.io, rux-ln-notes, rux-scheduler]
 verbs: [1, 2, 3, 4, 5]
 ---
@@ -23,13 +23,19 @@ disagree, the card is right and this is the bug.
 *what do I type*. This answers *where am I in the chain, what can refuse me
 here, and what happens with no message at all*.
 
-**It draws the workspace as it is, not as roadmap §8.4 proposes it.** §8.4 is
-a drafted, not-decided plan to stop every app vendoring `vendor/rux-ds/` at
-all, which would remove stage 7 and nodes 17–20 outright and replace them with
-a tag deploy. Nothing here assumes it is taken. One piece of it is already
-built regardless of the decision — the workspace server at node 8 — and that
-is the only place this map differs from what §8.2's tag-and-vendor model alone
-would draw.
+**SUPERSEDED IN PART, 2026-09-10 — §8.4 WAS TAKEN, and this section said what
+that would do before it happened.** No app vendors `vendor/rux-ds/` any more
+(roadmap §8.4, §8.6, all five steps done the same day; `docs/log.md` has each
+one's proof). That removes stage 7 and nodes 17–21 exactly as this paragraph
+said it would, and node 16 (cut the tag) now reaches every app directly —
+there is no separate adopt phase left to walk. **What is NOT redrawn here**:
+sections 4 through 6 below (stages, nodes, edges) still show the old eight-
+stage, twenty-one-node shape and have not been renumbered to match. Read
+`docs/verbs.md` (four verbs now, not five) and roadmap §8.6 as current; treat
+stage 7, nodes 17–21, and any edge naming them, as retired rather than live.
+A full redraw is the next thing to do with this file, not done in this pass —
+this notice exists so the gap is found by reading it, not by trusting a
+picture generated from a stale source.
 
 ---
 

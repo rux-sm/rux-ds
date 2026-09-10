@@ -19,5 +19,5 @@ this repository (or `DS=<dir>`), so the rules stay rux-ds's own. `@NAME@`,
 
 Until 2026-09-10 (roadmap §8.4 diff C) these files ran a copy vendored under
 `vendor/rux-ds/` and a pin moved it forward; now each reads a sibling
-checkout, and there is nothing to move. The hub and Notes still vendor,
-until their own move (§8.4 step 5).
+checkout, and there is nothing to move. The hub and Notes moved to this same
+shape the same day (§8.4 step 5); no app in the family vendors a copy.

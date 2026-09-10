@@ -215,9 +215,11 @@ a URL, the date, and what was NOT covered.
 
 ## Using this outside rux-ds
 
-A consumer vendors `css/`, `assets/` and `js/` — **not this skill, not
+A consumer links `css/`, `assets/` and `js/` live from `/rux-ds/` on the
+shared origin (roadmap §8.4, done 2026-09-10) — **not this skill, not
 `sink/`, not the captures, and not the gates**. Everything in §5 is unenforced
 there unless the consumer adopts it deliberately. `rux-ln-notes` is the first
-such project; its `vendor/rux-ds/PIN` records which commit its copy came from,
-and a reference read at a different commit than the vendored CSS is the drift
-that pin exists to prevent.
+such project; its `tools/check.mjs` reads rux-ds from the checkout beside it
+(or `DS=<dir>`) — locally the sibling on `main`, in CI the checkout at
+rux-ds's newest tag — so a page and the stylesheet it is checked against are
+never more than a release apart.
