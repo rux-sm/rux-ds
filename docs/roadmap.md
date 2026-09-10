@@ -5673,8 +5673,8 @@ decision as three questions with a recommendation.
 | 2 · the scheduler moves | **DONE, live, the same evening** — `rux-scheduler` `13b261f` | no `vendor/`, 23 `/rux-ds/` links, CI checks rux-ds out at the newest tag; readings in `docs/log.md` |
 | 3 · diff B, deploy on a tag and check consumers first | **DONE — `v0.1.15` live 2026-09-10 00:11 UTC**, merged `6328046` on rux's acceptance | the refusal rehearsed in CI (consumers red, deploy skipped), the rollback rehearsed both ways by `workflow_dispatch` at a tag, the first tag refused by the `github-pages` environment until rux added a `v*` tag rule — all in `docs/log.md` |
 | 4 · diff C, the scaffold stops vendoring | **DONE — `ec7c321`, 2026-09-10** | `tools/new-project.sh` writes no `vendor/`, no `PIN`; `--tag` is now an unknown flag; `check-parity` 44 of 44, 0 faults; a real scaffold proved end to end and deleted — `docs/log.md` |
-| 5 · the hub, then Notes | not started; and one §8.4 line is stale — the hub now runs the shared check | `rux-sm.github.io/tools/check.mjs:37` imports `vendor/rux-ds/tools/app-check.mjs` since its pin moved to `v0.1.12` |
-| 6 · retire what nothing runs | not started | `tools/roll-out.sh`, verb 4 and the pin rule are all live |
+| 5 · the hub, then Notes | **DONE — both live 2026-09-10** | hub `2d4c3b6`, Notes `e51429a`; the hub's own switcher rule kept after the shared import; Notes' tier-2 ancestry gate resolves a release tag instead of a pin, proven at v0.1.15, 669 stories, 0 missing — `docs/log.md` |
+| 6 · retire what nothing runs | not started — **and now the whole plan, not just a tidy-up: no app vendors anything any more** | `tools/roll-out.sh`, verb 4 and the pin rule are all still live code with nothing left to call them |
 | 7 · the first release under the new shape | — | — |
 
 #### Two inputs that changed after §8.4 was written

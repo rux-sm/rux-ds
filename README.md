@@ -20,9 +20,10 @@ deploys on a tag, after checking every served app against it** (roadmap §8.4
 diff B, §8.6). **Scheduler vendors nothing** — it links `/rux-ds/` live and its
 CI checks the newest tag (step 2). **A new project vendors nothing either** —
 `tools/new-project.sh` writes a page linking `/rux-ds/` directly; there is no
-`--tag`, no `PIN`, no pin to move (step 4). The hub and Notes still hold a
-vendored copy from before this change; their `PIN` files name `v0.1.12`. Next:
-step 5, the hub and Notes move to the served shape too.
+`--tag`, no `PIN`, no pin to move (step 4). **The hub and Notes moved too, the
+same day** (step 5) — every app in the family now links `/rux-ds/` live; no
+`vendor/` directory exists anywhere. Next: step 6, retiring `tools/roll-out.sh`,
+verb 4 and the pin rule, which nothing calls any more.
 
 Where the phases stand — the long form is in the log:
 

@@ -60,6 +60,63 @@ finding changed; every figure reproduced its predecessor.
 
 ---
 
+**2026-09-10 — §8.4 step 5 DONE: the hub and Notes both link `/rux-ds/` and
+vendor nothing. Both live within minutes of each other — hub `2d4c3b6`,
+Notes `e51429a`.** No app anywhere in the family vendors a copy any more.
+
+**The hub.** Both pages rewritten; the one thing step 5 named not to lose —
+`tools/check.mjs`'s own `switcher.json` rule, run after the shared import —
+kept. One real bug caught by running the check rather than trusting the
+diff: `account/index.html` sits one directory down, so its original paths
+read `../vendor/rux-ds/...`; a blanket string replace left `..//rux-ds/...`,
+which the shared check reported as 23 files naming nothing on disk. Fixed
+by stripping the leading `../` along with the old prefix — `/rux-ds/` is
+absolute regardless of a page's own depth. `brand/` paths were untouched;
+they never contained the literal string being replaced, and were already
+correctly depth-adjusted by hand.
+
+**Notes, the harder half: 28 generated pages from one template function,
+plus a tier-2 gate.** Fixing `tools/build.mjs`'s `page()` template fixed
+every generated page at once — rebuilt and committed, all 28 plus
+`index.html` and `template-candidate.html`. `check-ancestry.mjs`, tier 2 in
+that repository, no longer reads `vendor/rux-ds/PIN` for a commit to
+archive: it resolves the newest `v*` tag in the `DS` checkout instead,
+archives that, and runs the same two-tier real-result-then-informational-
+HEAD comparison as before. Proven before trusting it: `v0.1.15` resolved,
+669 stories, 550 corroborated, 0 missing, both at the release and at
+rux-ds's HEAD. `measure.mjs`'s `rux-ds.pin` and its two `at-pin` figures
+became `rux-ds.head` and `.live`, read from the sibling's own HEAD — there
+is nothing to pin any more. The private internal viewer's symlink trick
+(`sync-internal.sh`) moved from linking a `vendor/` folder to linking one
+named `rux-ds`, served by rux-ds's own plain server rather than the new
+workspace-delegating one, since the private site is not the real workspace.
+
+**One bug found that has nothing to do with §8.4, and blocked the commit
+until it was fixed.** `check-build.mjs` — the gate that rebuilds and
+refuses a stale committed page — compared `git status --porcelain` against
+`HEAD`, which flags a file as stale whenever it is staged-modified at all.
+True of every legitimate content commit to `guides/`, not only a genuinely
+stale one. It has refused any such commit unconditionally since it was
+added (`69c387c`, 2026-09-09) — nothing had touched `guides/` since, so
+nothing had hit it until this one did. Proven both directions before
+trusting the fix: a deliberately staged stale `index.html` was caught and
+refused; the real, legitimately-staged commit then passed clean through
+the real pre-commit hook, no `--no-verify`, all 9 gates.
+
+**Read live after both deploys.** `rux-sm.github.io/` (25 `/rux-ds/` links,
+0 vendor), `/account/` (23, 0), `rux-ln-notes/` (23, 0) and a guide page
+(23, 0) — curled and re-measured after the fact, not only during the
+build. The hub's home page screenshotted live: three tiles, the drawn
+mark, no console errors. A guide page opened live: styled, correct title,
+zero broken images, zero console errors.
+
+**What was not done.** Neither branch carries a browser-gate sweep of its
+own (neither repository has one — that machinery is rux-ds's). The
+`check-build.mjs` fix is a genuine, useful correction but is explicitly
+not part of §8.4 and was flagged as such rather than folded in silently.
+
+---
+
 **2026-09-10 — §8.4 step 3 DONE: rux-ds deploys on a tag and checks its
 consumers first. `v0.1.15` live at 00:11 UTC; diff B merged at `6328046`
 on rux's acceptance after the diff was shown.** Branch `diff-b`, four
