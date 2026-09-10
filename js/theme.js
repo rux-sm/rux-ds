@@ -50,7 +50,7 @@
   'use strict';
   const KEY = 'rux.profile';
   const NAME = /^[a-z][a-z0-9-]*$/;
-  const KNOWN = new Set(['white', 'g10', 'g90', 'g100', 'rux']);
+  const KNOWN = new Set(['white', 'g10', 'g90', 'g100', 'geist']);
 
   const read = () => {
     try { const p = JSON.parse(localStorage.getItem(KEY) || 'null'); return p && typeof p === 'object' ? p : null; }

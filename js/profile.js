@@ -24,7 +24,7 @@
    apps do not disagree about who the user is.
 
    PHASE 16: THE THEME RADIOS ARE NO LONGER A FIXED FIVE. syncCustomRadios()
-   clones the existing `rux` radio's own wrapper — real, already-compiled
+   clones the existing `geist` radio's own wrapper — real, already-compiled
    markup, nothing invented — once per theme js/custom-themes.js lists, so a
    saved theme appears here with no template edited anywhere. Three things
    that fixed-five assumption used to get away with had to change with it:
@@ -68,14 +68,14 @@
   const get = () => theme.read() || {};
   const write = p => { try { localStorage.setItem(theme.KEY, JSON.stringify(p)); } catch { /* storage refused: the page still works, nothing persists */ } };
 
-  // One wrapper per saved custom theme, cloned from the `rux` radio's own —
-  // real markup this file did not invent. Tagged data-rux-custom so a later
-  // sync can tell a clone from the five that ship in every template, and
-  // drop it again once its theme no longer exists.
+  // One wrapper per saved custom theme, cloned from the `geist` radio's
+  // own — real markup this file did not invent. Tagged data-rux-custom so
+  // a later sync can tell a clone from the five that ship in every
+  // template, and drop it again once its theme no longer exists.
   const syncCustomRadios = () => {
     if (!fieldset) return;
-    const ruxWrapper = fieldset.querySelector('input[name="rux-theme"][value="rux"]')?.closest('.rux--radio-button-wrapper');
-    if (!ruxWrapper) return;
+    const templateWrapper = fieldset.querySelector('input[name="rux-theme"][value="geist"]')?.closest('.rux--radio-button-wrapper');
+    if (!templateWrapper) return;
     const saved = window.Rux?.customThemes?.list() ?? [];
     const savedIds = new Set(saved.map(t => t.id));
 
@@ -85,7 +85,7 @@
     const present = new Set(getRadios().map(r => r.value));
     for (const t of saved) {
       if (present.has(t.id)) continue;
-      const clone = ruxWrapper.cloneNode(true);
+      const clone = templateWrapper.cloneNode(true);
       const input = clone.querySelector('input');
       const label = clone.querySelector('label');
       const labelText = clone.querySelector('.rux--radio-button__label-text');

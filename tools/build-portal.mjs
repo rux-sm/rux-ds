@@ -291,7 +291,7 @@ const page = `<!doctype html>
 
      ADDING THEM CHANGES NOTHING ON THIS PAGE TODAY, and that is measured, not
      assumed: css/rux-overrides.css carries no live rule at all, and
-     css/rux-theme.css carries exactly one block, [data-theme="rux"], which
+     css/rux-theme.css carries exactly one block, [data-theme="geist"], which
      this page does not match -- it is data-theme="white" above. The point is
      that the portal stops being the exception. The moment a rule lands in
      overrides, or this page's theme changes, it moves with every other page

@@ -45,7 +45,7 @@ import { runKey, sameRun, RUN_MS, copy, CAP } from '../builder/session.mjs';
 import { contrastRatio, meetsThreshold, normaliseHex } from './contrast.mjs';
 
 const NAME_RE = /^[a-z][a-z0-9-]*$/;
-const RESERVED = new Set(['white', 'g10', 'g90', 'g100']);
+const RESERVED = new Set(['white', 'g10', 'g90', 'g100', 'geist']);
 
 // token → the Carbon shade key it takes when a family is applied. Roadmap
 // §4.14's Step 2 table: seven shades cover all twenty tokens.
@@ -74,7 +74,8 @@ const FIXED_SURFACES = {
 // The four compiled bases a surface overlay may sit on, their fixed
 // text-primary and text-on-color, and the twenty-nine tokens the section
 // offers with what each one's contrast badge is measured against. Never
-// `rux` — "base" means exactly one of Carbon's compiled themes.
+// `geist` (or any other CSS-override theme) — "base" means exactly one of
+// Carbon's own compiled themes.
 //
 // READ FROM THE PAGE, NOT MIRRORED. This was a hand-kept copy of
 // tools/build-theme-creator.mjs's BASES until 2026-09-08, and the comment
@@ -101,7 +102,7 @@ const tokenNames = Object.keys(defaults);
 let scenarios = [];
 let families = {};
 
-let state = { name: 'rux', tokens: copy(defaults), surface: defaultSurface() };
+let state = { name: '', tokens: copy(defaults), surface: defaultSurface() };
 let history = { past: [], future: [] };
 let openRun = null; // { key, at } — see builder/session.mjs's own comment on runs.
 let activeSection = 'accent'; // 'accent' | 'surface' — which one the preview/status line reflects.
@@ -203,16 +204,18 @@ const previewSurfaceName = () => (surfaceNameProblem(state.surface.name) ? 'your
 
 // ── saving (Phase 16) ───────────────────────────────────────────────────
 // Stricter than nameProblem/surfaceNameProblem, and only for the Save
-// button: previewing under the name "rux" — this section's own default
-// seed, since its values start from the shipped rux theme — stays fine,
-// exactly as it always has; persisting a NEW saved theme under that name,
-// or under one already saved as the other kind, is what gets refused.
-// `forKind` is the kind this section would save as, so a theme already
-// saved under the SAME kind is not a collision — that is an overwrite,
-// decided inside Rux.customThemes.save() itself.
+// button: persisting a saved theme under a reserved name (caught above,
+// in generalProblem), or under a name already saved as the OTHER kind, is
+// what gets refused. `forKind` is the kind this section would save as, so
+// a theme already saved under the SAME kind is not a collision — that is
+// an overwrite, decided inside Rux.customThemes.save() itself. Nothing
+// named "rux" is special here any more: the shipped purple accent this
+// tool used to seed by default was retired as a file default (roadmap
+// §4.10's amendment) — this section now starts from Carbon's own white
+// values (the defaults embedded below) and "rux" is free for anyone to
+// save their own theme under, the same as any other name.
 function saveNameProblem(name, forKind, generalProblem) {
   if (generalProblem) return generalProblem;
-  if (name === 'rux') return '"rux" is the shipped accent theme — pick a different name to save your own';
   const existing = window.Rux?.customThemes?.get(name);
   if (existing && existing.kind !== forKind) return `"${name}" is already saved as a${existing.kind === 'accent' ? 'n' : ''} ${existing.kind} theme`;
   return null;
@@ -606,7 +609,7 @@ function init() {
   $('thc-redo').addEventListener('click', redo);
   $('thc-start-over').addEventListener('click', () => {
     pushSnapshot();
-    state = { name: 'rux', tokens: copy(defaults), surface: defaultSurface() };
+    state = { name: '', tokens: copy(defaults), surface: defaultSurface() };
     renderEverything();
   });
   $('thc-target').addEventListener('change', schedulePreview);

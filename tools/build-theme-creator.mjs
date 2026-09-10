@@ -25,9 +25,10 @@
 // theme. Surfaces instead overrides four tokens — background, layer-01,
 // layer-02, layer-03 — in the CSS cascade, on a compound
 // `[data-theme="<base>"][data-rux-surface="<name>"]` selector, the same
-// mechanism the shipped `rux` accent theme already uses on `:root`. Carbon's
-// Sass never sees it, so nothing about the chosen base's own component
-// tokens, text, icons, borders or interaction states can move.
+// mechanism the shipped `geist` theme already uses on `[data-theme="geist"]`
+// (and `rux` did before it). Carbon's Sass never sees it, so nothing about
+// the chosen base's own component tokens, text, icons, borders or
+// interaction states can move.
 //
 // THE TWENTY ROWS ARE STATIC MARKUP, not cloned at runtime. Builder.html
 // clones because its blocks are a variable, per-template catalogue; this
@@ -85,16 +86,31 @@ const TOKENS = [
   ['chat-avatar-user', 'Chat avatar (user)', '60'],
 ];
 
-// css/rux-theme.css's own [data-theme="rux"] block is the one source of
-// truth for today's values — read directly, not retyped, so this page can
-// never disagree with the file it exists to help someone replace.
-const themeCss = readFileSync('css/rux-theme.css', 'utf8');
-const block = themeCss.match(/\[data-theme="rux"\]\s*\{([\s\S]*?)\n\}/);
-if (!block) { console.log('  build-theme-creator: no [data-theme="rux"] block in css/rux-theme.css'); process.exit(1); }
+// UNTIL 2026-09-09 this read css/rux-theme.css's own [data-theme="rux"]
+// block: rux was a twenty-token override on top of white, so its values
+// WERE white's values plus a chosen accent, and this tool started someone
+// editing from the shipped example. rux is retired as a file default
+// (roadmap §4.10's amendment; geist took the fifth built-in slot), so
+// there is no override block left to read defaults from — this now reads
+// Carbon's own white-theme values directly out of @carbon/themes, the
+// same source tools/build-theme-families.mjs already imports from for the
+// same reason (no compiled CSS file carries a plain by-name dump of them;
+// see that script's own comment). Fourteen of the twenty tokens are core
+// tokens (_themes.scss's $white map); the other six are button component
+// tokens, a separate map (_button-tokens.scss) keyed by "white-theme".
+const themesScss = readFileSync('node_modules/@carbon/themes/scss/generated/_themes.scss', 'utf8');
+const whiteMap = themesScss.match(/\$white:\s*\(([\s\S]*?)\n\)\s*!default;/);
+if (!whiteMap) { console.log('  build-theme-creator: no $white map in @carbon/themes _themes.scss'); process.exit(1); }
 const DEFAULTS = {};
-for (const m of block[1].matchAll(/--rux-([a-z-]+):\s*(#[0-9a-f]{3,8});/gi)) DEFAULTS[m[1]] = m[2];
+for (const m of whiteMap[1].matchAll(/^\s*([a-z0-9-]+):\s*(#[0-9a-f]{3,8}),?\s*$/gim)) DEFAULTS[m[1]] = m[2];
+
+const buttonScss = readFileSync('node_modules/@carbon/themes/scss/generated/_button-tokens.scss', 'utf8');
+for (const m of buttonScss.matchAll(/\$([a-z0-9-]+):\s*\(([\s\S]*?)\)\s*!default;/g)) {
+  const white = m[2].match(/white-theme:\s*(#[0-9a-f]{3,8})/i);
+  if (white) DEFAULTS[m[1]] = white[1];
+}
 for (const [name] of TOKENS) {
-  if (!(name in DEFAULTS)) { console.log(`  build-theme-creator: css/rux-theme.css has no --rux-${name}, but TOKENS names it`); process.exit(1); }
+  if (!(name in DEFAULTS)) { console.log(`  build-theme-creator: @carbon/themes has no white value for ${name}, but TOKENS names it`); process.exit(1); }
 }
 
 // EVERY SURFACE-ISH TOKEN THE SECTION OFFERS, grouped as the page shows
@@ -512,10 +528,10 @@ ${sprite}
                 </div>
                 <div class="rux--text-input__field-outer-wrapper">
                   <div class="rux--text-input__field-wrapper">
-                    <input id="thc-name" class="rux--text-input" type="text" value="rux" placeholder="rux">
+                    <input id="thc-name" class="rux--text-input" type="text" value="" placeholder="your-theme">
                   </div>
                 </div>
-                <div class="rux--form__helper-text" id="thc-name-helper">Lowercase letters, digits and hyphens; not white, g10, g90 or g100 — those are compiled Carbon themes, not a surface to layer over.</div>
+                <div class="rux--form__helper-text" id="thc-name-helper">Lowercase letters, digits and hyphens; not white, g10, g90, g100 or geist — those are the shipped themes, not a name you can save over.</div>
               </div>
 
               <div class="rux--form-item">

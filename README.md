@@ -48,7 +48,6 @@ Where the phases stand — the long form is in the log:
 |---|---|
 | Serve one copy of rux-ds to every app instead of vendoring three | roadmap §8.3 (the proposal), §8.4 (the plan), §8.6 (the brief: three questions, a recommendation) — **not decided** |
 | Published themes: a theme saved in the Theme Creator reaches every app on push | roadmap §8.5 — **required, not implemented** |
-| The custom theme's accent — a purple placeholder today | `css/rux-theme.css` |
 | Two screen-reader tasks: flip a toggle; open a modal and a popover | `docs/screen-reader-pass.md` |
 | Whether `templates/settings-page.html`'s `col-span-4/8/8` is deliberate | the template, with `/account/` on the hub as a second reference |
 | Builder stage 13, repeated items | `docs/builder-guided-plan.md` |
