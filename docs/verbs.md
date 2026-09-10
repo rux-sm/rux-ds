@@ -149,7 +149,10 @@ the one hazard a green check does not show. Then per app, commit
 
 ## 5 · Release the design system
 
-*Cut a tag consumers can pin.*
+*Cut a tag. Since `v0.1.15` (2026-09-10, roadmap §8.4 diff B) the tag IS
+the deploy: pushing it publishes this site, after a `consumers` job has
+checked every app that links `/rux-ds/` against the tree, and those apps
+read it on their next load. An app that still vendors moves by verb 4.*
 
 ```sh
 npm run verify            # every Node gate, exit code
@@ -163,11 +166,30 @@ rux says so. Nothing else is recorded — additions are safe.
 ```sh
 git tag vX.Y.Z
 git push origin vX.Y.Z    # two commands; one carrying both is refused
+gh run watch "$(gh run list --workflow=pages.yml --limit 1 --json databaseId --jq '.[0].databaseId')"
 ```
+
+The run is three jobs: `check` (`npm run verify`), `consumers` (the shared
+check on every served app, `NOT RUN` with its pin for one that vendors),
+`deploy`. A red `consumers` deploys nothing and the last release keeps
+serving; fix the app or the tree, then push a new tag.
+
+**Roll back** by redeploying the previous tag — no tag is deleted, no
+history rewritten, and the same command redeploys forward again:
+
+```sh
+gh workflow run pages.yml --ref vX.Y.Z   # the tag to put live
+```
+
+**The `github-pages` environment must allow tags**: a rule `v*` under
+Settings → Environments → github-pages → deployment branches and tags.
+Without it the deploy job fails before its first step — *not allowed to
+deploy due to environment protection rules* — which is how `v0.1.15`'s
+first run ended. A repository setting, rux's to change.
 
 | | |
 |---|---|
-| Look | `git describe --tags` says the tag; `CHANGES.md` says what left. A consumer does not move until verb 4 has a reason. |
+| Look | The live home page's stamp names the tag — `git describe --tags` on a checkout names the NEWEST tag, never the deployed one. `CHANGES.md` says what left. Every served app, in every theme. A vendored consumer does not move until verb 4 has a reason. |
 
 ---
 

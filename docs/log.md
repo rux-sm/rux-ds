@@ -9,6 +9,68 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §8.4 step 3 DONE: rux-ds deploys on a tag and checks its
+consumers first. `v0.1.15` live at 00:11 UTC; diff B merged at `6328046`
+on rux's acceptance after the diff was shown.** Branch `diff-b`, four
+commits, fast-forwarded to `main`; pushing `main` deployed nothing, as
+the trigger now says.
+
+**Read before the merge.** §8.4's own command `--ds .` fails: app-check
+resolves a relative `--ds` against the app, so it named the scheduler and
+found no rux-ds (exit 1). The job uses `--ds "$PWD"`; with `--hub` the
+scheduler passes and 49 root-absolute resources resolve. A throwaway
+rux-ds with `rux--btn--primary` renamed fails the scheduler on `classes`,
+exit 1. The consumers script run locally: hub and Notes NOT RUN at
+`v0.1.12`, the scheduler passing, drift reporting against rux-ds's
+template through its new `DS` fallback. The YAML parsed, three jobs,
+deploy needing both. `check-controls` named `pages.yml` and read the
+change as strengthening.
+
+**The compatibility refusal, in CI, before the merge (§8.6's first
+addition).** A throwaway scheduler branch carrying
+`rux--rehearsal-not-a-compiled-class`, checked out by a throwaway rux-ds
+branch off `diff-b`, dispatched: `check` green, `consumers` red —
+`index.html: rux--rehearsal-not-a-compiled-class is not compiled in
+--ds …/rux-ds's rux.css` — `deploy` skipped
+(`actions/runs/34418778008`). Both throwaway branches deleted afterwards.
+
+**The home page's sentence moved with the diff, and cost a sweep.** It
+said this was the one site not on a tag; now it says the site deploys on
+a release tag. Its three cells re-read at `5aa8df5`, then the portal's
+three at `b2e60d7` as the ledger's fixed point demands; every figure
+reproduced its predecessor and `npm run gates` read 50 of 50. NOT LOOKED
+AT: the pane was hidden the whole session and every screenshot timed
+out, including at the tall emulated height; each cell says so.
+
+**THE FIRST TAG WAS REFUSED, AND THE REASON IS A SETTING, NOT THE
+WORKFLOW.** `v0.1.15`'s run: `check` and `consumers` green, `deploy`
+failed with no steps run — *Tag "v0.1.15" is not allowed to deploy to
+github-pages due to environment protection rules.* The `github-pages`
+environment allowed `main` alone. The live site kept serving `4976c25`
+throughout: the failed-deploy behaviour §8.6 asked to see, seen. rux
+added a tag rule `v*` to the environment (a repository setting, rux's
+alone); the failed job re-run, `deploy` green, 00:11 UTC.
+
+**Read live after.** Home stamp `tag v0.1.15 (79eda48), 2026-09-09`,
+read cache-busted. `/`, `/rux-ln-notes/`, `/rux-scheduler/`, `/rux-ds/`
+all 200; the scheduler's page still carries 23 `/rux-ds/` links and
+`css/rux.css` answers 1,048,469 bytes, unchanged.
+
+**The rollback, rehearsed both ways (§8.6's second addition).**
+`gh workflow run pages.yml --ref v0.1.14`: that tag's own, older
+workflow ran — `check`, `deploy` — and the stamp read `commit c1dbe30`,
+its pre-diff-B form, at 00:13 UTC. `--ref v0.1.15`: `check`,
+`consumers`, `deploy`, stamp back to `tag v0.1.15 (79eda48)` at 00:14
+UTC. Bytes identical for every consumer between the two, so nothing
+moved on the apps; the mechanism is what was proved. Recorded in
+`docs/verbs.md` verb 5.
+
+**What was not done.** The pages were not looked at in a browser during
+the sweep. Notes' and the hub's pages are not checked against the tag
+until they move (step 5). `git describe --tags` on a checkout names the
+newest tag, never the deployed one; the live stamp is the only answer to
+"which tag is live", as §8.5 says of the catalog too.
+
 **2026-09-09 — §8.4 step 2 DONE: the scheduler links `/rux-ds/` and
 vendors nothing. Live at 23:42 UTC, `rux-scheduler` `13b261f`.** Decided
 by rux the same evening (§8.6: take §8.4, on a tag, themes by their own
