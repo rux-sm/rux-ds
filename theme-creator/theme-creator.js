@@ -45,7 +45,7 @@ import { runKey, sameRun, RUN_MS, copy, CAP } from '../builder/session.mjs';
 import { contrastRatio, meetsThreshold, normaliseHex } from './contrast.mjs';
 
 const NAME_RE = /^[a-z][a-z0-9-]*$/;
-const RESERVED = new Set(['white', 'g10', 'g90', 'g100', 'geist', 'linear']);
+const RESERVED = new Set(['white', 'g10', 'g90', 'g100', 'geist', 'linear', 'ant-dark']);
 
 // token → the Carbon shade key it takes when a family is applied. Roadmap
 // §4.14's Step 2 table: seven shades cover all twenty tokens.

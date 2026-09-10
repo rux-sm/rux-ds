@@ -69,6 +69,7 @@ ${nav}
     <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g100">g100</button>
     <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="geist">geist</button>
     <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="linear">linear</button>
+    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="ant-dark">ant-dark</button>
   </div>
 
 ${sections.join('\n\n')}
