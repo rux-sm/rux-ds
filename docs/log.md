@@ -9,6 +9,35 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §4.10 amended a fourth time: spotify, an eighth theme,
+and two missed files finally caught. `6e29f91`.** A Spotify-inspired
+vivid-green palette, the same additive move as the three before it —
+`[data-theme="spotify"]`, a fourth independent block in
+`css/rux-theme.css`. The cleanest button-token derivation of the four:
+every value reused from an already-given token, including the first
+case in this file where hover and active move in opposite directions
+from the base (hover lighter, active darker) because both tones already
+existed in the palette.
+
+**What this pass found that the other three didn't.**
+`tools/check-rendered.js` — the browser gate `sink-check` actually
+runs — still carried a `rux: sweep('rux')` key from Phase 10
+(2026-09-02), untouched across the rux→geist swap and both additions
+since; its fixed set is eight keys now, not five. `tools/app-check.mjs`'s
+`THEMES` constant, caught and fixed twice already in the geist and
+ant-dark passes, took its fourth addition normally this time. Neither
+had been swept by name in any earlier "every fixed list" description —
+both amendments above list the files checked, and neither of these two
+was on either list. Grep for a bare `'rux'` as a theme value, not just
+the files already known to hold one, before the next theme.
+
+Every fixed theme-name list — `KNOWN`, both `RESERVED` sets, the
+draft-theme validation, every account-panel radio, `builder.html`'s
+picker — carries eight names. Checked live in the browser: applies,
+persists through the account panel, `builder.html`'s wizard picks it up.
+Same open item as the last three entries — the browser-only gates
+still were not re-swept for this pass.
+
 **2026-09-10 — §4.10 amended a third time: ant-dark, a seventh theme.
 `43995e2`.** An Ant Design Dark-inspired palette, added the same day as
 geist and linear, beside both rather than replacing either —

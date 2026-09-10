@@ -2789,6 +2789,24 @@ either earlier block moving, and every fixed theme-name list — `KNOWN`,
 both `RESERVED` sets, the draft-theme validation, every account-panel
 radio, `builder.html`'s picker — now carrying seven names.
 
+**AMENDED 2026-09-10, A FOURTH TIME — `spotify` is an eighth theme,
+additive again, and this pass found two files the first three missed.**
+A Spotify-inspired palette: near-black background, a single vivid green
+brand colour (`background-brand`/`interactive` #1ed760), black button
+text. The cleanest of the four derivations — every button token is an
+already-given value, nothing computed or extrapolated, including the
+first case in this file where hover and active move in OPPOSITE
+directions from the base (hover lighter, active darker), because both
+tones already existed in the given palette. `tools/check-rendered.js`,
+the browser-gate tool the `sink-check` skill runs, still swept a
+`rux: sweep('rux')` key from the very first pass — missed then and in
+both amendments since, found only now — and its fixed set became eight
+theme keys instead of five. `tools/app-check.mjs`'s `THEMES` constant,
+already caught and fixed twice, needed its fourth name added the normal
+way this time. Every other fixed theme-name list — `KNOWN`, both
+`RESERVED` sets, the draft-theme validation, every account-panel radio,
+`builder.html`'s picker — carries eight names now.
+
 ### 4.11 Phase 11 — Starting a project
 
 **Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`
