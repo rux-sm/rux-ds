@@ -2758,6 +2758,21 @@ lines above it were both about `rux`'s own hex values, which no longer
 exist as a file default — both are moot now, not answered. See §4.14's
 own amendment below.
 
+**AMENDED 2026-09-10, SAME DAY — `linear` is a sixth theme, additive,
+given by rux the same day as geist.** A Linear-inspired violet-tinted
+dark palette, unlike geist's monochrome one: its own brand colour
+(`background-brand` #5e6ad2) is a saturated indigo, not white or black,
+so its derived buttons are genuinely coloured — `text-on-color` is white
+here, the opposite of geist's black. Nothing about geist's block, or any
+compiled theme, moves because linear exists: it is a second, independent
+`[data-theme="linear"]` block in `css/rux-theme.css`, the same override
+mechanism, still invisible to Carbon's `matches()`. Every place that
+carried five theme names now carries six — `js/theme.js`'s `KNOWN`,
+`js/custom-themes.js`'s and `theme-creator/theme-creator.js`'s own
+`RESERVED` sets, `builder/session.mjs`'s draft-theme validation, the
+account-panel theme radio in ten templates plus `index.html` and the
+sink, and `builder.html`'s default-theme picker.
+
 ### 4.11 Phase 11 — Starting a project
 
 **Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`

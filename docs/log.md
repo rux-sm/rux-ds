@@ -9,6 +9,22 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §4.10 amended again: linear, a sixth theme, additive.
+`29a7dc2`.** A Linear-inspired violet-tinted dark palette, given the same
+day as geist, added beside it rather than replacing anything —
+`[data-theme="linear"]`, a second block in `css/rux-theme.css`, same
+override mechanism. Unlike geist, linear's brand colour is a saturated
+indigo (`background-brand` #5e6ad2) with white button text, so its
+derived button tokens walk the palette's own given
+brand/interactive/icon-interactive ladder rather than a monochrome one;
+the reasoning sits in the file's own header beside geist's. Every fixed
+five-name list (`js/theme.js`'s `KNOWN`, both `RESERVED` sets, the
+account-panel radio, `builder.html`'s picker, `builder/session.mjs`'s
+draft validation) grew to six. Checked live in the browser: applies,
+persists through the account panel, and `builder.html`'s own wizard picks
+it up too. The browser-only gates were not re-swept for this pass either
+— same open item the entry below already names.
+
 **2026-09-10 — §4.10 amended: geist replaces rux as the fifth theme.
 `78794b2`.** `css/rux-theme.css`'s twenty-token purple placeholder under
 `[data-theme="rux"]` is retired; `[data-theme="geist"]` takes its slot
