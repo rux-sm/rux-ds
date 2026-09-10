@@ -60,6 +60,54 @@ finding changed; every figure reproduced its predecessor.
 
 ---
 
+**2026-09-10 — §8.4 step 7 DONE: the first release with nothing left to
+retire. Two tags to get there. `v0.1.16` never deployed; `v0.1.17` is live,
+`c4c9b69`, 00:1x UTC.**
+
+**`v0.1.16` cut first, on rux's instruction, nothing vendored changed since
+`v0.1.15` — a patch.** `check` passed. `consumers` did not: the hub's own
+entry in the loop checks it against itself, so `--hub` names the same
+directory as the positional app path. `tools/app-check.mjs`'s argument
+parser excluded a flag's value from the positional search **by value**, so
+the app path — identical to the `--hub` value in exactly this one case —
+read as already taken, `args.find()` matched nothing, and root silently
+fell back to `defaultRoot()`: this repository's own working directory. The
+hub's run checked rux-ds's own `sink/deferred/page-header.html` — a
+deliberately uncompiled specimen — against rux-ds's own stylesheet and
+failed on every one of its classes. `deploy` was skipped; the previous
+release, `v0.1.15`, kept serving throughout. Exactly the failed-deploy
+behaviour §8.6 asked to see rehearsed once already — seen again, for real,
+on the release this rehearsal was supposed to protect.
+
+**Reproduced before it was believed:** `node tools/app-check.mjs <hub>
+--ds <rux-ds> --hub <hub>` failed locally on the same fragment the hub
+does not carry at all — confirming the diagnosis before touching the fix.
+**Fixed by tracking which argument INDEX each flag consumed rather than
+which value**, so a positional and a flag's value can be the identical
+string and still be recognised as two different arguments. Proven in
+order: the exact failing invocation now passes; the self-test's 16 cases
+still read 0 wrong; the `consumers` job's real script rehearsed locally
+against all three real apps, all three pass. `npm run verify` exit 0, 50
+of 50 cells current. `c4c9b69`.
+
+**`v0.1.17` cut carrying the fix, since a tag is never rewritten — the
+same discipline the rollback rehearsal already established.** `check`,
+`consumers` and `deploy` all green. Read live, cache-busted: the stamp
+names `v0.1.17` at `c4c9b69`; all four sites 200; the scheduler's page
+still carries 23 `/rux-ds/` links and the live stylesheet is
+byte-identical, 1,048,469 bytes.
+
+**What this found, said plainly.** A control's own defect surfaced only
+when every served app was checked in the exact shape the release actually
+uses — not in the diff-B rehearsal (which used a throwaway branch, never
+the real hub), not in step 5's local proof (which checked the hub without
+`--hub`, since checking an app against itself never needs it), not in the
+self-test (which has no case for `--ds` and `--hub` naming the same
+directory). Three prior proofs, all real, none of them this exact shape.
+The fourth one — the actual release — was the first to exercise it.
+
+---
+
 **2026-09-10 — §8.4 step 6 DONE, and with it §8.4 itself: nothing left to
 retire, nothing left to do. `d633771` then `d1131ca`.** Split in two on
 purpose: the safe half first, the one real risk — a control every app's

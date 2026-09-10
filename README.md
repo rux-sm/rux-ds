@@ -22,11 +22,14 @@ CI checks the newest tag (step 2). **A new project vendors nothing either** —
 `tools/new-project.sh` writes a page linking `/rux-ds/` directly; there is no
 `--tag`, no `PIN`, no pin to move (step 4). **The hub and Notes moved too, the
 same day** (step 5) — every app in the family now links `/rux-ds/` live; no
-`vendor/` directory exists anywhere. **§8.4 is complete as of the same
-evening** (step 6): `tools/roll-out.sh`, the old pin-move docs and
-`tools/app-check.mjs`'s vendored branch are all retired, proven against every
-real app first. One thing remains on the table and nothing else does: cutting
-the first release with nothing left to retire (step 7), rux's call alone.
+`vendor/` directory exists anywhere. **§8.4 is complete** (step 6):
+`tools/roll-out.sh`, the old pin-move docs and `tools/app-check.mjs`'s
+vendored branch are all retired. **And `v0.1.17` is the first release under
+the new shape, live** (step 7) — `v0.1.16` never deployed: the release itself
+found a real defect in `tools/app-check.mjs`'s argument parsing that no
+rehearsal had exercised, fixed and proven before `v0.1.17` carried it. All
+four sites read live, `docs/log.md` has the account. Roadmap §8.4 has no
+step left.
 
 Where the phases stand — the long form is in the log:
 
