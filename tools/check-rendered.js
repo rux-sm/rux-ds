@@ -73,13 +73,18 @@
     sections: document.querySelectorAll(SEC).length,
     emptySvgs: [...document.querySelectorAll(`${MAIN} svg`)].filter(s => !s.children.length).length,
     uaStyled,
-    // Five since Phase 10 (2026-09-02): the four Carbon themes plus the custom
-    // one in css/rux-theme.css, which only the sink and the templates link.
+    // Eight since 2026-09-10: the four Carbon themes plus the four in
+    // css/rux-theme.css (geist, linear, ant-dark, spotify — rux held this
+    // set's fifth slot from Phase 10 until geist replaced it), which only
+    // the sink and the templates link.
     white: sweep('white'),
     g10: sweep('g10'),
     g90: sweep('g90'),
     g100: sweep('g100'),
-    rux: sweep('rux'),
+    geist: sweep('geist'),
+    linear: sweep('linear'),
+    antDark: sweep('ant-dark'),
+    spotify: sweep('spotify'),
   };
   document.documentElement.dataset.theme = 'white';
   console.log(out);

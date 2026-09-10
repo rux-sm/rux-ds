@@ -1,22 +1,22 @@
 /*
   rux-theme.css — themes above the compiled four. Roadmap §4.10
-  (2026-09-02), superseded 2026-09-09, extended 2026-09-10 twice (see
-  docs/roadmap.md for all three dated entries).
+  (2026-09-02), superseded 2026-09-09, extended 2026-09-10 three times
+  (see docs/roadmap.md for all four dated entries).
 
   TOKEN OVERRIDES, LAYERED ON A COMPILED THEME. Link it after css/rux.css.
-  Three theme blocks live here, `[data-theme="geist"]`,
-  `[data-theme="linear"]` and `[data-theme="ant-dark"]`, each the whole
-  story for its own theme: every core token its palette redefines, plus
-  derived values for Carbon's button component tokens (below), which are
-  a separate map none of the three supplied palettes name. Custom
-  properties inherit, so anything a block does NOT name keeps white's
-  compiled value from :root — in practice that is almost nothing for any
-  of the three, since each redefines the surface end to end, but it is
-  why a handful of tokens (e.g. the syntax-* and ai-* families) still
-  read white's values under all three — see "WHAT NONE OF THEM TOUCH"
-  below.
+  Four theme blocks live here, `[data-theme="geist"]`,
+  `[data-theme="linear"]`, `[data-theme="ant-dark"]` and
+  `[data-theme="spotify"]`, each the whole story for its own theme: every
+  core token its palette redefines, plus derived values for Carbon's
+  button component tokens (below), which are a separate map none of the
+  four supplied palettes name. Custom properties inherit, so anything a
+  block does NOT name keeps white's compiled value from :root — in
+  practice that is almost nothing for any of the four, since each
+  redefines the surface end to end, but it is why a handful of tokens
+  (e.g. the syntax-* and ai-* families) still read white's values under
+  all four — see "WHAT NONE OF THEM TOUCH" below.
 
-  THE MECHANISM IS UNCHANGED FROM BEFORE, AND FROM ONE THEME TO THREE: a
+  THE MECHANISM IS UNCHANGED FROM BEFORE, AND FROM ONE THEME TO FOUR: a
   plain CSS custom-property override block, never a compiled Sass theme.
   `node_modules/@carbon/themes/scss/_theme.scss`'s `matches()` selects a
   theme's component-token values (buttons, tags, notifications) only
@@ -26,10 +26,11 @@
   a theme this size as a compiled Sass map (roadmap §4.15) was killed in
   review on exactly that finding before any file was touched. So every
   block stays what the original twenty-token rux accent already proved:
-  Carbon's Sass never sees `geist`, `linear` or `ant-dark` — every value
-  below is a CSS custom property read at runtime by components that
-  already say `var(--rux-<token>, <white's value>)`, which is also why
-  `git diff css/rux.css` stays empty no matter how this file changes.
+  Carbon's Sass never sees `geist`, `linear`, `ant-dark` or `spotify` —
+  every value below is a CSS custom property read at runtime by
+  components that already say `var(--rux-<token>, <white's value>)`,
+  which is also why `git diff css/rux.css` stays empty no matter how
+  this file changes.
 
   WHAT REPLACED THE OLD `rux` THEME. The twenty-token purple accent this
   file used to ship under `[data-theme="rux"]` — "chosen so the mechanism
@@ -37,23 +38,23 @@
   default, not recreated: rux does not want it back. `geist` took the
   fifth, built-in slot instead.
 
-  `linear` AND `ant-dark` ARE ADDITIVE, NOT REPLACEMENTS. Each takes its
-  own slot beside white, g10, g90, g100 and whatever came before it —
-  nothing about an earlier block, or any compiled theme, changes because
-  a later one exists. `js/theme.js`'s `KNOWN` set, `js/custom-themes.js`'s
-  and `theme-creator/theme-creator.js`'s own `RESERVED` sets,
-  `builder/session.mjs`'s draft-theme validation, and every
-  account-panel theme radio (ten templates, `index.html`, the sink,
-  `builder.html`'s default-theme picker) all carry seven names now, not
+  `linear`, `ant-dark` AND `spotify` ARE ADDITIVE, NOT REPLACEMENTS. Each
+  takes its own slot beside white, g10, g90, g100 and whatever came
+  before it — nothing about an earlier block, or any compiled theme,
+  changes because a later one exists. `js/theme.js`'s `KNOWN` set,
+  `js/custom-themes.js`'s and `theme-creator/theme-creator.js`'s own
+  `RESERVED` sets, `builder/session.mjs`'s draft-theme validation, and
+  every account-panel theme radio (ten templates, `index.html`, the sink,
+  `builder.html`'s default-theme picker) all carry eight names now, not
   five.
 
   WHAT NONE OF THEM TOUCH. `ai-*` (Carbon's AI-feature identity) and
-  `syntax-*` (code-block colours) are not part of any of the three
-  supplied palettes, so all three are left alone and keep reading
-  white's values — a page in any of them with a syntax-highlighted code
-  block or an AI-labelled component will look inconsistent there until
-  someone decides those values on purpose. Not an oversight: recorded
-  here so it reads as a decision deferred, not a page nobody checked.
+  `syntax-*` (code-block colours) are not part of any of the four
+  supplied palettes, so all four are left alone and keep reading white's
+  values — a page in any of them with a syntax-highlighted code block or
+  an AI-labelled component will look inconsistent there until someone
+  decides those values on purpose. Not an oversight: recorded here so it
+  reads as a decision deferred, not a page nobody checked.
 
   DERIVED BUTTON TOKENS, GEIST. Carbon's button colours are a
   component-token map separate from the core tokens above
@@ -135,6 +136,28 @@
       already given); active is computed at the same ~0.49 darkening
       ratio used for geist's and linear's danger-active — #7d2627.
     - button-separator: background (#000000) — the darkest surface,
+      the same move as every other theme here.
+    - button-disabled: the same rgba(255, 255, 255, 0.25) already used
+      for text-disabled/icon-disabled.
+
+  DERIVED BUTTON TOKENS, SPOTIFY. The cleanest of the four: every value
+  below is an already-given token, nothing computed or extrapolated.
+    - button-primary / button-tertiary: background-brand (#1ed760) as
+      the base — text-on-color is BLACK, so the vivid green itself is
+      the button colour, with dark text on top of it. hover steps to
+      link-primary-hover (#3be477, already given, lighter); active
+      steps to focus-inverse (#169c46, already given, darker) — the
+      only theme here where hover and active move in OPPOSITE
+      directions from the base, because both tones already existed in
+      the given palette and both read correctly against it.
+    - button-secondary: the layer-active ladder (#333333 → #404040
+      hover → #535353 active) — the same move as every other theme
+      here.
+    - button-danger-primary / -secondary: support-error (#f15e6c,
+      already given); hover steps to support-error-inverse (#c93646,
+      already given); active is computed at the same ~0.49 darkening
+      ratio used throughout this file — #762e35.
+    - button-separator: background (#121212) — the darkest surface,
       the same move as every other theme here.
     - button-disabled: the same rgba(255, 255, 255, 0.25) already used
       for text-disabled/icon-disabled.
@@ -649,5 +672,174 @@
   --rux-button-danger-hover: #cf1322;
   --rux-button-danger-active: #7d2627;
   --rux-button-separator: #000000;
+  --rux-button-disabled: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="spotify"] {
+  /* color-scheme / brand */
+  --rux-color-scheme: dark;
+
+  /* background */
+  --rux-background: #121212;
+  --rux-background-active: rgba(255, 255, 255, 0.2);
+  --rux-background-brand: #1ed760;
+  --rux-background-hover: rgba(255, 255, 255, 0.08);
+  --rux-background-inverse: #ffffff;
+  --rux-background-inverse-hover: #e6e6e6;
+  --rux-background-selected: rgba(30, 215, 96, 0.14);
+  --rux-background-selected-hover: rgba(30, 215, 96, 0.2);
+
+  /* layer */
+  --rux-layer-01: #181818;
+  --rux-layer-02: #242424;
+  --rux-layer-03: #2a2a2a;
+  --rux-layer-accent-01: #242424;
+  --rux-layer-accent-02: #333333;
+  --rux-layer-accent-03: #404040;
+  --rux-layer-accent-active-01: #404040;
+  --rux-layer-accent-active-02: #535353;
+  --rux-layer-accent-active-03: #727272;
+  --rux-layer-accent-hover-01: #333333;
+  --rux-layer-accent-hover-02: #404040;
+  --rux-layer-accent-hover-03: #4a4a4a;
+  --rux-layer-active-01: #333333;
+  --rux-layer-active-02: #404040;
+  --rux-layer-active-03: #535353;
+  --rux-layer-background-01: #121212;
+  --rux-layer-background-02: #181818;
+  --rux-layer-background-03: #242424;
+  --rux-layer-hover-01: #242424;
+  --rux-layer-hover-02: #2a2a2a;
+  --rux-layer-hover-03: #333333;
+  --rux-layer-selected-01: #193824;
+  --rux-layer-selected-02: #1d472b;
+  --rux-layer-selected-03: #225834;
+  --rux-layer-selected-disabled: #535353;
+  --rux-layer-selected-hover-01: #1d472b;
+  --rux-layer-selected-hover-02: #225834;
+  --rux-layer-selected-hover-03: #276b3e;
+  --rux-layer-selected-inverse: #ffffff;
+
+  /* field */
+  --rux-field-01: #242424;
+  --rux-field-02: #2a2a2a;
+  --rux-field-03: #333333;
+  --rux-field-hover-01: #2a2a2a;
+  --rux-field-hover-02: #333333;
+  --rux-field-hover-03: #404040;
+
+  /* border */
+  --rux-border-disabled: rgba(255, 255, 255, 0.22);
+  --rux-border-interactive: #1ed760;
+  --rux-border-inverse: #ffffff;
+  --rux-border-strong-01: #535353;
+  --rux-border-strong-02: #727272;
+  --rux-border-strong-03: #8f8f8f;
+  --rux-border-subtle-00: #292929;
+  --rux-border-subtle-01: #333333;
+  --rux-border-subtle-02: #404040;
+  --rux-border-subtle-03: #535353;
+  --rux-border-subtle-selected-01: #404040;
+  --rux-border-subtle-selected-02: #535353;
+  --rux-border-subtle-selected-03: #727272;
+  --rux-border-tile-01: #333333;
+  --rux-border-tile-02: #404040;
+  --rux-border-tile-03: #535353;
+
+  /* text */
+  --rux-text-disabled: rgba(255, 255, 255, 0.25);
+  --rux-text-error: #ff7b88;
+  --rux-text-helper: #8f8f8f;
+  --rux-text-inverse: #121212;
+  --rux-text-on-color: #000000;
+  --rux-text-on-color-disabled: rgba(0, 0, 0, 0.4);
+  --rux-text-placeholder: rgba(255, 255, 255, 0.4);
+  --rux-text-primary: #f5f5f5;
+  --rux-text-secondary: #b3b3b3;
+
+  /* link */
+  --rux-link-inverse: #169c46;
+  --rux-link-inverse-active: #121212;
+  --rux-link-inverse-hover: #117a37;
+  --rux-link-inverse-visited: #7b4bb7;
+  --rux-link-primary: #1ed760;
+  --rux-link-primary-hover: #3be477;
+  --rux-link-secondary: #69e99a;
+  --rux-link-visited: #c49cff;
+
+  /* icon */
+  --rux-icon-disabled: rgba(255, 255, 255, 0.25);
+  --rux-icon-interactive: #1ed760;
+  --rux-icon-inverse: #121212;
+  --rux-icon-on-color: #000000;
+  --rux-icon-on-color-disabled: rgba(0, 0, 0, 0.4);
+  --rux-icon-primary: #f5f5f5;
+  --rux-icon-secondary: #b3b3b3;
+
+  /* support */
+  --rux-support-caution-major: #ff8c42;
+  --rux-support-caution-minor: #f5c344;
+  --rux-support-caution-undefined: #a970ff;
+  --rux-support-error: #f15e6c;
+  --rux-support-error-inverse: #c93646;
+  --rux-support-info: #4cb3ff;
+  --rux-support-info-inverse: #0d72ea;
+  --rux-support-success: #1ed760;
+  --rux-support-success-inverse: #169c46;
+  --rux-support-warning: #f5c344;
+  --rux-support-warning-inverse: #c99416;
+
+  /* focus */
+  --rux-focus: #1ed760;
+  --rux-focus-inset: #121212;
+  --rux-focus-inverse: #169c46;
+
+  /* chat */
+  --rux-chat-avatar-agent: #e6e6e6;
+  --rux-chat-avatar-bot: #8f8f8f;
+  --rux-chat-avatar-user: #1ed760;
+  --rux-chat-bubble-agent: #242424;
+  --rux-chat-bubble-agent-text: #f5f5f5;
+  --rux-chat-bubble-border: #333333;
+  --rux-chat-bubble-user: #2a2a2a;
+  --rux-chat-bubble-user-text: #f5f5f5;
+  --rux-chat-button: #1ed760;
+  --rux-chat-button-active: rgba(30, 215, 96, 0.3);
+  --rux-chat-button-hover: rgba(30, 215, 96, 0.12);
+  --rux-chat-button-selected: rgba(30, 215, 96, 0.2);
+  --rux-chat-button-text-hover: #3be477;
+  --rux-chat-button-text-selected: #b3b3b3;
+  --rux-chat-header-background: #181818;
+  --rux-chat-header-text: #f5f5f5;
+  --rux-chat-prompt-background: #181818;
+  --rux-chat-prompt-border-end: rgba(36, 36, 36, 0);
+  --rux-chat-prompt-border-start: #242424;
+  --rux-chat-prompt-text: #f5f5f5;
+  --rux-chat-shell-background: #181818;
+
+  /* misc */
+  --rux-interactive: #1ed760;
+  --rux-highlight: #124f2a;
+  --rux-overlay: rgba(0, 0, 0, 0.72);
+  --rux-shadow: rgba(0, 0, 0, 0.85);
+  --rux-skeleton-background: #242424;
+  --rux-skeleton-element: #333333;
+  --rux-toggle-off: #535353;
+
+  /* button (component tokens — derived, see header) */
+  --rux-button-primary: #1ed760;
+  --rux-button-primary-hover: #3be477;
+  --rux-button-primary-active: #169c46;
+  --rux-button-tertiary: #1ed760;
+  --rux-button-tertiary-hover: #3be477;
+  --rux-button-tertiary-active: #169c46;
+  --rux-button-secondary: #333333;
+  --rux-button-secondary-hover: #404040;
+  --rux-button-secondary-active: #535353;
+  --rux-button-danger-primary: #f15e6c;
+  --rux-button-danger-secondary: #f15e6c;
+  --rux-button-danger-hover: #c93646;
+  --rux-button-danger-active: #762e35;
+  --rux-button-separator: #121212;
   --rux-button-disabled: rgba(255, 255, 255, 0.25);
 }

@@ -98,7 +98,7 @@ import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 
 const SKIP = new Set(['node_modules', 'build', '.git', '.claude', '.github']);
-const THEMES = 'white g10 g90 g100 geist linear ant-dark';
+const THEMES = 'white g10 g90 g100 geist linear ant-dark spotify';
 // A resource carries a file the page needs to render; anything else with an
 // href is navigation. The distinction only matters for root-absolute values:
 // /rux-ds/css/rux.css is a file this can resolve, and <a href="/"> is the hub.
