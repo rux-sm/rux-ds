@@ -9,6 +9,37 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §4.10 amended: geist replaces rux as the fifth theme.
+`78794b2`.** `css/rux-theme.css`'s twenty-token purple placeholder under
+`[data-theme="rux"]` is retired; `[data-theme="geist"]` takes its slot
+with a full Vercel/Geist-style palette — every core token the theme
+touches named, not twenty, plus button component tokens derived from it
+(Carbon keeps those in a separate map the given palette did not cover;
+the derivation reasoning is in the file's own header). The mechanism is
+unchanged — still a CSS custom-property override layer, still invisible
+to `@carbon/themes/scss/_theme.scss`'s `matches()`, still zero Sass
+touched. `js/theme.js`'s `KNOWN` set and `js/custom-themes.js`'s
+`RESERVED` set both swap `rux` for `geist`; the account-panel theme
+radio (ten templates, `index.html`, the sink), `builder.html`'s
+default-theme picker, and `theme-creator/theme-creator.js`'s own
+reserved-name list all follow.
+
+rux's purple is not gone, only no longer shipped: it is recreated in the
+Theme Creator's Accent tab and saved to the visitor's own profile like
+any other custom theme, the path Phase 16 already built for exactly
+this. `tools/build-theme-creator.mjs`'s Accent tool now seeds its twenty
+defaults from Carbon's own white-theme values in `@carbon/themes`
+directly (the same source `tools/build-theme-families.mjs` already
+reads, and for the same reason), since the block it used to read them
+from is gone. `npm run verify` passes clean; the geist theme was checked
+live in the browser — applies, persists through the account panel across
+a reload, and the Theme Creator's Accent tab seeds from Carbon blue
+without error. The five browser-only gates (`sink-check`) were not
+re-swept and recorded across every page this touched; `npm run gates`
+will show every cell dirty until that pass runs.
+
+---
+
 **2026-09-10 — §8.4 step 4 DONE: a new project vendors nothing. `ec7c321`,
 followed by two ledger passes at `58db683` and `467757a`/`48f95d3`.**
 `tools/new-project.sh` no longer copies `css/js/assets/templates` into

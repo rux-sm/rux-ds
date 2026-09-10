@@ -2720,6 +2720,44 @@ wired and gated but has not yet moved a pixel; the custom hue is a placeholder,
 not a decision; g10 and g90 have their tokens and their render sweep but no
 page has been LOOKED at in either beyond the sink's button section.
 
+**AMENDED 2026-09-10 — `geist` replaces `rux` as the fifth theme; the
+twenty-token placeholder is retired, not extended.** rux brought a
+Geist-inspired (Vercel-style) palette — black background, near-white
+"brand" chip with black text, a blue link/focus accent — as a complete
+theme, not another accent over `white`. The mechanism does not change:
+`[data-theme="geist"]` is still a plain CSS custom-property override
+block in `css/rux-theme.css`, still never a compiled Sass theme, still
+invisible to `node_modules/@carbon/themes/scss/_theme.scss`'s `matches()`
+(§4.15 explains why that matters). What changed is completeness — every
+core token the palette redefines is named, not twenty, plus derived
+values for Carbon's button component tokens (a separate map the supplied
+palette does not cover; the derivations and their reasoning are in
+`css/rux-theme.css`'s own header). `js/theme.js`'s `KNOWN` set and
+`js/custom-themes.js`'s `RESERVED` set both swap `rux` for `geist`; every
+account-panel theme radio (ten templates, `index.html`, the sink) and
+`builder.html`'s default-theme picker now offer Geist, not Rux.
+
+**`rux`'s purple accent is not gone, but it is no longer shipped.** It
+was always "chosen so the mechanism can be seen and measured" (§4.10's
+own words above) rather than a real decision — this amendment is that
+placeholder finally being replaced, not a second placeholder taking its
+seat. Recreating it is now what the Theme Creator's Accent tab is for:
+pick a hue family (or enter the four purple hexes by hand) and save,
+which stores it as an ordinary custom theme in the visitor's own profile
+(`js/custom-themes.js`, Phase 16) — the same path any other saved accent
+theme takes, no longer hardcoded into a file or into `js/theme.js`'s
+known names. `tools/build-theme-creator.mjs` no longer reads defaults out
+of a `[data-theme="rux"]` block (retired along with it); it reads
+Carbon's own white-theme values straight from `@carbon/themes`, the same
+source `tools/build-theme-families.mjs` already imports from and for the
+same reason — nothing compiled carries a plain by-name dump of them.
+
+**What this makes weaker, said outright:** the "proving the mechanism"
+framing in §4.14 point 2 and the open hue-derivation question at §4.14
+lines above it were both about `rux`'s own hex values, which no longer
+exist as a file default — both are moot now, not answered. See §4.14's
+own amendment below.
+
 ### 4.11 Phase 11 — Starting a project
 
 **Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`
@@ -4582,7 +4620,18 @@ today's values as-is (they ship and pass every gate; "grade-for-grade"
 becomes a documented near-miss rather than a broken promise), or correct
 the two hover tokens to a true `purple60Hover` derivation first.
 
-**Explicitly deferred, said so rather than dropped silently:**
+**AMENDED 2026-09-10 — both open items above are moot, not answered.**
+§4.10's amendment retires `rux` as a shipped theme; `geist` took the
+fifth slot instead, as a complete theme rather than another twenty-token
+accent. Point 2's "`rux` stays an allowed name, since replacing its
+placeholder value is exactly what the tool is for" no longer has a
+placeholder to replace — there is no `[data-theme="rux"]` block left in
+`css/rux-theme.css` to hand-edit, and `rux` is simply an ordinary,
+unreserved name now, like any other. The hover-token near-miss just above
+is the same story: those hexes lived only in the retired block, so the
+choice between living with them or correcting them evaporated along with
+it. Neither question was resolved — the thing they were both about is
+gone.
 
 - Wiring an arbitrary theme name into the account panel's five-option
   theme radio group (`js/profile.js`, every template's
