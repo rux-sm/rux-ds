@@ -60,6 +60,70 @@ finding changed; every figure reproduced its predecessor.
 
 ---
 
+**2026-09-10 — §8.4 step 6 DONE, and with it §8.4 itself: nothing left to
+retire, nothing left to do. `d633771` then `d1131ca`.** Split in two on
+purpose: the safe half first, the one real risk — a control every app's
+check imports live — proven separately before it was trusted.
+
+**The safe half, `d633771`.** `tools/roll-out.sh` deleted; nothing called
+it (no app anywhere has had a pin to move since step 5). `docs/verbs.md`
+loses the old verb 4 and renumbers release to verb 4 of four, with every
+place that counted verbs or named "verb 4"/"verb 5" by the old scheme
+corrected, not only the heading. `docs/starting-a-project.md` drops the
+whole "Moving the pin" section for "Which rux-ds this app is on." Two
+direct falsifications caught and fixed: the `rux-ds-page` skill still told
+a reader Notes vendors a copy with a PIN; `docs/builder-guided-plan.md`
+still said `exportPage` writes into `vendor/rux-ds/`. `docs/workspace-flow-
+map.md` is deliberately NOT redrawn — a superseded notice at the top says
+so and points at current sources, rather than risking a wrong renumbering
+of its 21 nodes under this same pass.
+
+**The one real risk, `d1131ca`: `tools/app-check.mjs`'s vendored branch and
+pin rule, removed entirely.** The "TWO SHAPES" check, the `--ds` refusal
+for a vendored app, the whole pin rule (tag, checksum, malformed-vs-missing
+handling), `treeHash`/`shortHash`, the `--hash` CLI mode nothing has called
+since `new-project.sh` stopped writing a `PIN`, and `defaultRoot()`'s
+vendored-copy path detection are all gone. `pin` is dropped from `report()`'s
+rule list rather than kept as a permanent `NOT RUN` line.
+
+**Proven in order, not assumed, because this file is imported live by
+every app's own check right now:** the self-test's fixture rebuilt to a
+served app (16 cases, 0 wrong, down from 24 — the eight removed all tested
+the branch that is now gone); the real `check()` run directly against all
+three real apps with `--ds` pointed at this checkout; then each app's own
+unmodified `tools/check.mjs` wrapper, end to end — scheduler, hub and Notes
+all exit 0; a bad `--ds` still refuses loudly rather than falling through.
+`npm run verify` exit 0, 50 of 50 sweep cells current, `check-controls`: 1
+of 62, this file, exactly as expected.
+
+**Two more falsifications found chasing `git grep vendor/rux-ds` down to
+only history, both live and neither historical.** Every app's own
+`rux-theme.css`/`rux-overrides.css` header still said "linked after
+`vendor/rux-ds/css/…`" — wrong since steps 2 and 5, since `new-project.sh`
+only seeds those files if absent and never touched the ones written before
+diff C. Fixed in each app's own repository: scheduler `f5b3be0`, hub
+`edf7852`, Notes `954421a` (which also fixed its `.gitignore`'s stale claim
+that `vendor/rux-ds/` is a second regenerable tracked tree — it does not
+exist at all). The same sentence in rux-ds's own `css/rux-overrides.css`
+was found, fixed, then **reverted** rather than kept: `css/` is a declared
+shared input to all five browser gates, so fixing a comment there would
+have aged 35 of 50 sweep cells for zero rendered change — the exact "aged
+but proves nothing changed" shape the brand-input precedent already
+established, just not worth the sweep for one sentence. Left for a pass
+already touching those cells; said here rather than left implied.
+
+**What is now true everywhere:** `git grep vendor/rux-ds` across all four
+repositories finds only dated history — log entries, the roadmap's own
+record, and comments explicitly marked "until 2026-09-10, this used to…" —
+plus the one disclosed exception above and the flow map's disclosed gap.
+
+**§8.4 is complete.** Steps 0 through 6, all done, all in `docs/log.md`.
+Step 7 — the first release cut with nothing left to retire — is the one
+thing left on the table, and cutting a tag is rux's call alone, not
+assumed here.
+
+---
+
 **2026-09-10 — §8.4 step 5 DONE: the hub and Notes both link `/rux-ds/` and
 vendor nothing. Both live within minutes of each other — hub `2d4c3b6`,
 Notes `e51429a`.** No app anywhere in the family vendors a copy any more.

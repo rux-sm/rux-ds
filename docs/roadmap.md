@@ -5674,7 +5674,7 @@ decision as three questions with a recommendation.
 | 3 · diff B, deploy on a tag and check consumers first | **DONE — `v0.1.15` live 2026-09-10 00:11 UTC**, merged `6328046` on rux's acceptance | the refusal rehearsed in CI (consumers red, deploy skipped), the rollback rehearsed both ways by `workflow_dispatch` at a tag, the first tag refused by the `github-pages` environment until rux added a `v*` tag rule — all in `docs/log.md` |
 | 4 · diff C, the scaffold stops vendoring | **DONE — `ec7c321`, 2026-09-10** | `tools/new-project.sh` writes no `vendor/`, no `PIN`; `--tag` is now an unknown flag; `check-parity` 44 of 44, 0 faults; a real scaffold proved end to end and deleted — `docs/log.md` |
 | 5 · the hub, then Notes | **DONE — both live 2026-09-10** | hub `2d4c3b6`, Notes `e51429a`; the hub's own switcher rule kept after the shared import; Notes' tier-2 ancestry gate resolves a release tag instead of a pin, proven at v0.1.15, 669 stories, 0 missing — `docs/log.md` |
-| 6 · retire what nothing runs | not started — **and now the whole plan, not just a tidy-up: no app vendors anything any more** | `tools/roll-out.sh`, verb 4 and the pin rule are all still live code with nothing left to call them |
+| 6 · retire what nothing runs | **DONE — `d633771`, `d1131ca`, 2026-09-10. §8.4 is complete: no step remains** | `roll-out.sh` deleted; `docs/verbs.md` down to four verbs; `docs/starting-a-project.md`'s pin-move section gone; `app-check.mjs`'s vendored branch and pin rule removed, proven against all three real apps' own checks — `docs/log.md`. `docs/workspace-flow-map.md` is NOT redrawn, flagged superseded rather than silently wrong |
 | 7 · the first release under the new shape | — | — |
 
 #### Two inputs that changed after §8.4 was written
