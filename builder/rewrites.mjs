@@ -2,14 +2,22 @@
 // page. Pure ES module, no imports, so the browser (builder/builder.js) and
 // node (tools/check-parity.mjs) run the same code. Roadmap §4.12, creator 3.
 //
-// exportPage() MUST REPRODUCE tools/new-project.sh:189-200 BYTE FOR BYTE,
-// including sed's semantics: an expression without /g replaces the FIRST
-// match on each line, one with /g replaces every match, and `^` anchors a
-// line. The awk step prints the two project stylesheet links after EVERY line
-// matching the vendored overrides link — templates carry one, so one pair is
-// inserted; the loop mirrors awk rather than assuming. check-parity runs the
-// script and diffs; when the two disagree, someone decides which is right, and
-// that is the point of having the check rather than a promise.
+// exportPage() MUST REPRODUCE the page-writing region tools/new-project.sh
+// itself carries — tools/check-parity.mjs extracts it by anchor rather than
+// by line number, because a line number written here would go stale the
+// first time either file grew a line above it, which is exactly what
+// happened once (roadmap §8.6) — BYTE FOR BYTE, including sed's semantics: an
+// expression without /g replaces the FIRST match on each line, one with /g
+// replaces every match, and `^` anchors a line. The awk step prints the two
+// project stylesheet links after EVERY line matching rux-ds's own overrides
+// link — templates carry one, so one pair is inserted; the loop mirrors awk
+// rather than assuming. check-parity runs the script and diffs; when the two
+// disagree, someone decides which is right, and that is the point of having
+// the check rather than a promise.
+//
+// SINCE 2026-09-10 (roadmap §8.4 diff C) A PAGE LINKS /rux-ds/, NOT
+// vendor/rux-ds/: nothing of rux-ds is copied into a project any more. Both
+// sides changed together in the same commit that removed the copy.
 //
 // previewPage() is the same page pointed at this repository's own css/, js/,
 // assets/ and brand/ (builder.html sits at the root, so `../` would climb
@@ -64,21 +72,22 @@ function content(lines, a) {
 // What tools/new-project.sh writes for a template and these answers.
 export function exportPage(templateHtml, answers = {}) {
   let lines = templateHtml.split('\n');
-  lines = firstPerLine(lines, '"../css/rux.css"', '"vendor/rux-ds/css/rux.css"');
-  lines = firstPerLine(lines, '"../css/rux-theme.css"', '"vendor/rux-ds/css/rux-theme.css"');
-  lines = firstPerLine(lines, '"../css/rux-overrides.css"', '"vendor/rux-ds/css/rux-overrides.css"');
-  // brand/ is the PROJECT'S, not the pin's: the script seeds logo.svg beside
-  // the page and never overwrites it, so the path must not point into
-  // vendor/, which every pin move replaces. Placed here because that is where
-  // the script's own -e sits, and this function reproduces it line for line.
+  lines = firstPerLine(lines, '"../css/rux.css"', '"/rux-ds/css/rux.css"');
+  lines = firstPerLine(lines, '"../css/rux-theme.css"', '"/rux-ds/css/rux-theme.css"');
+  lines = firstPerLine(lines, '"../css/rux-overrides.css"', '"/rux-ds/css/rux-overrides.css"');
+  // brand/ is the PROJECT'S, not rux-ds's: the script seeds logo.svg beside
+  // the page and never overwrites it, so the path must not point at
+  // /rux-ds/, which is never the project's to keep a file under. Placed here
+  // because that is where the script's own -e sits, and this function
+  // reproduces it line for line.
   lines = everywhere(lines, '"../brand/', '"brand/');
-  lines = everywhere(lines, '"../assets/', '"vendor/rux-ds/assets/');
-  lines = everywhere(lines, '"../js/', '"vendor/rux-ds/js/');
+  lines = everywhere(lines, '"../assets/', '"/rux-ds/assets/');
+  lines = everywhere(lines, '"../js/', '"/rux-ds/js/');
   lines = content(lines, answers);
   const out = [];
   for (const l of lines) {
     out.push(l);
-    if (l.includes('href="vendor/rux-ds/css/rux-overrides.css"')) {
+    if (l.includes('href="/rux-ds/css/rux-overrides.css"')) {
       out.push('<link rel="stylesheet" href="rux-theme.css">', '<link rel="stylesheet" href="rux-overrides.css">');
     }
   }

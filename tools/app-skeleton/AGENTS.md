@@ -6,20 +6,20 @@ one, is the long version.
 ## What this repository is
 
 **Public.** @TITLE@, one app on rux-ds, served at `rux-sm.github.io@PATH@`.
-Started by rux-ds `tools/new-project.sh`; `vendor/rux-ds/PIN` names the tag
-it is on. Nothing from a client, a person or a private repository appears in
-it.
+Started by rux-ds `tools/new-project.sh`. It vendors no copy of rux-ds: its
+pages link `/rux-ds/…` on the shared origin, and what is live there is
+rux-ds's newest release tag (rux-ds roadmap §8.4). Nothing from a client, a
+person or a private repository appears in it.
 
 ## What is yours and what is not
 
 - **Yours:** the pages at the root, `rux-theme.css` and `rux-overrides.css`
   (deltas only — empty is the normal state), `brand/`, `tools/`, this file.
-- **rux-ds's:** everything under `vendor/rux-ds/`. Never edited; a pin move
-  overwrites it, and `vendor/rux-ds/PIN` carries a `sha256` of those bytes so
-  `tools/check.mjs` FAILS on an edit made here. A missing component or rule is
-  a request to rux-ds with invented content, never a local rule.
-- Every `rux--*` class comes from `vendor/rux-ds/css/rux.css`. A colour goes
-  in `rux-theme.css` inside a `[data-theme]` block; a component rule in
+- **rux-ds's:** everything under `/rux-ds/`, served from its own repository
+  and never copied here. A missing component or rule is a request to rux-ds
+  with invented content, never a local rule.
+- Every `rux--*` class comes from rux-ds's `css/rux.css`. A colour goes in
+  `rux-theme.css` inside a `[data-theme]` block; a component rule in
   `rux-overrides.css` at Carbon's own specificity; never `!important`.
 - The app list is the hub's `switcher.json`, and `/switcher.js` fills the
   panel at runtime. Nothing here lists apps.
@@ -28,26 +28,21 @@ it.
 
     node tools/check.mjs
 
-rux-ds's shared check, run from the vendored copy: classes, tokens, local
-references, ids, the pin. The Pages workflow runs it and the site deploys
-only when it passes. It cannot see whether the page looks right: serve it
-(`node tools/serve.mjs`), open it, in every theme.
+rux-ds's shared check, imported from the rux-ds checkout beside this
+repository (`../rux-ds`, or `DS=<dir>`): classes, tokens, local references,
+ids. Locally that is rux-ds on `main`; the Pages workflow checks rux-ds out
+at its newest tag — what is live at `/rux-ds/` — and the site deploys only
+when the check passes there. A class added on `main` passes locally and
+fails in CI until it is tagged; that is the right failure. It cannot see
+whether the page looks right: serve it (`node tools/serve.mjs`, every site
+on one origin at :8640, this app at `@PATH@`), open it, in every theme.
 
-## Moving the pin
+## Which rux-ds this app is on
 
-From a rux-ds clone on `main`, with the tag fetched:
-
-    sh ~/Developer/rux-ds/tools/new-project.sh . --tag vX.Y.Z
-
-Only `vendor/rux-ds/` changes. Read the drift report it prints, then
-`CHANGES.md` in rux-ds between the two tags, then `node tools/check.mjs`.
-
-**It may write nothing, and that is a result, not a failure.** The `PIN`
-records a `sha256` of the vendored tree; a tag whose vendored files are
-byte-identical is declined and the `PIN` keeps naming the tag it already
-named. The pin names bytes, not a position in the tag order, so an app that
-already holds them is not out of date. A `PIN` written before checksums says so in `tools/check.mjs` as a
-note rather than a failure, and gains one on its first move.
+The one that is live. There is no pin to move: a rux-ds release reaches this
+site on its next deploy, and `CHANGES.md` in rux-ds names any class that
+left between two tags. `rux-ds` cloned beside this repository is required
+to check or serve it.
 
 ## Commits
 
