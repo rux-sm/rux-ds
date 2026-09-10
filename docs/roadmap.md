@@ -5672,7 +5672,7 @@ decision as three questions with a recommendation.
 | 1 · diff A, the shared check learns `--ds` | **done and tagged** | `tools/app-check.mjs` carries `--ds` at `v0.1.12`; reviewed independently, one real defect found and fixed (`docs/log.md`, 2026-09-09) |
 | 2 · the scheduler moves | **DONE, live, the same evening** — `rux-scheduler` `13b261f` | no `vendor/`, 23 `/rux-ds/` links, CI checks rux-ds out at the newest tag; readings in `docs/log.md` |
 | 3 · diff B, deploy on a tag and check consumers first | **DONE — `v0.1.15` live 2026-09-10 00:11 UTC**, merged `6328046` on rux's acceptance | the refusal rehearsed in CI (consumers red, deploy skipped), the rollback rehearsed both ways by `workflow_dispatch` at a tag, the first tag refused by the `github-pages` environment until rux added a `v*` tag rule — all in `docs/log.md` |
-| 4 · diff C, the scaffold stops vendoring | the brand-seeding half landed (`0c841e9`); the de-vendoring half not applied | `tools/new-project.sh` still writes `PIN` — it did so today, twice |
+| 4 · diff C, the scaffold stops vendoring | **DONE — `ec7c321`, 2026-09-10** | `tools/new-project.sh` writes no `vendor/`, no `PIN`; `--tag` is now an unknown flag; `check-parity` 44 of 44, 0 faults; a real scaffold proved end to end and deleted — `docs/log.md` |
 | 5 · the hub, then Notes | not started; and one §8.4 line is stale — the hub now runs the shared check | `rux-sm.github.io/tools/check.mjs:37` imports `vendor/rux-ds/tools/app-check.mjs` since its pin moved to `v0.1.12` |
 | 6 · retire what nothing runs | not started | `tools/roll-out.sh`, verb 4 and the pin rule are all live |
 | 7 · the first release under the new shape | — | — |

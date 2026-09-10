@@ -18,10 +18,11 @@ README that narrates its own history goes stale, and this one did.
 cell current. Newest tag `v0.1.15`, and **it is live: since 2026-09-10 this site
 deploys on a tag, after checking every served app against it** (roadmap §8.4
 diff B, §8.6). **Scheduler vendors nothing** — it links `/rux-ds/` live and its
-CI checks the newest tag (step 2). The hub and Notes still hold a vendored copy;
-their `PIN` files name `v0.1.12`, because nothing vendored has changed since it
-and the pin names bytes, not a position in the tag order. Next: step 5, the hub
-and Notes move.
+CI checks the newest tag (step 2). **A new project vendors nothing either** —
+`tools/new-project.sh` writes a page linking `/rux-ds/` directly; there is no
+`--tag`, no `PIN`, no pin to move (step 4). The hub and Notes still hold a
+vendored copy from before this change; their `PIN` files name `v0.1.12`. Next:
+step 5, the hub and Notes move to the served shape too.
 
 Where the phases stand — the long form is in the log:
 

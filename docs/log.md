@@ -9,6 +9,57 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §8.4 step 4 DONE: a new project vendors nothing. `ec7c321`,
+followed by two ledger passes at `58db683` and `467757a`/`48f95d3`.**
+`tools/new-project.sh` no longer copies `css/js/assets/templates` into
+`vendor/rux-ds/`; a page it writes links `/rux-ds/` directly, matching what
+step 2 did to the scheduler by hand. `builder/rewrites.mjs`'s `exportPage()`
+carries the same six substitutions, in the same commit — `check-parity`
+exists for exactly the moment the two disagree, and reads 44 of 44, 0
+faults, both before and after.
+
+**Removed entirely, not merely rewritten: `--tag`, the staging, the
+checksum, the three-way byte-identical skip, the PIN heredoc.** Roadmap
+§8.4's own words for diff C: "an app is on the live tag or it is not on
+rux-ds." Re-running the script on an existing app used to move its pin;
+there is no pin now, so it prints that there is nothing to move and exits
+0 rather than asking the five questions again — the same trap the
+2026-09-02 `MOVE_ONLY` fix existed to close, closed the same way for the
+served shape.
+
+**Two direct falsifications caught and fixed in the same commit**, found by
+grepping for the string the change was about to make false rather than
+by reading: `builder/builder.js`'s download notice and
+`tools/build-builder.mjs`'s generator string for it both told a visitor
+"paths already point at vendor/rux-ds/" — true until this commit, false
+the instant `exportPage()` changed. Both now say `/rux-ds/`.
+
+**Proven before committing, on a real scaffold, not reasoned about.** A
+throwaway app built with `sh tools/new-project.sh <scratch> --template
+table-page --theme g10 --name Widgets --path /widgets-test/`: no `vendor/`
+anywhere under it (`find … -iname vendor` empty); every page link is
+`/rux-ds/…`; `AGENTS.md`'s placeholders resolved (`Widgets`,
+`/widgets-test/`); the launcher's port is 8640, the workspace server's,
+not the old per-app 8643. Its own check passed with `DS` pointed at this
+checkout and failed loudly with `DS` pointed at nothing rather than
+skipping. Re-run with only the folder: "already an app… nothing to move."
+`--tag v0.1.14`: "unknown flag --tag." Served for real on a throwaway
+workspace (a stub hub folder, a `rux-ds` symlink): 23 `/rux-ds/` requests
+all 200, 0 `vendor/` requests, 17 modules on `window.Rux`, the g10 theme
+rendering correctly, no console errors but the one expected 404 —
+`/switcher.js`, which the stub hub does not carry, exactly the fallback
+the switcher-entries code exists for. Deleted after.
+
+**What was not done, named rather than left implied.** `docs/starting-a-
+project.md`'s tree and `docs/verbs.md`'s check row and roll-out description
+still describe the vendored shape — true of the hub and Notes today, wrong
+the moment either moves, and already named for step 6 in §8.4's own plan
+rather than fixed piecemeal here. The two ledger-cell re-sweeps
+(`builder.html`, then `portal.html` as its own fixed point) found no
+finding changed; every figure reproduced its predecessor.
+
+---
+
 **2026-09-10 — §8.4 step 3 DONE: rux-ds deploys on a tag and checks its
 consumers first. `v0.1.15` live at 00:11 UTC; diff B merged at `6328046`
 on rux's acceptance after the diff was shown.** Branch `diff-b`, four
