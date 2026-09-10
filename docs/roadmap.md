@@ -2720,7 +2720,7 @@ wired and gated but has not yet moved a pixel; the custom hue is a placeholder,
 not a decision; g10 and g90 have their tokens and their render sweep but no
 page has been LOOKED at in either beyond the sink's button section.
 
-**AMENDED 2026-09-10 — `geist` replaces `rux` as the fifth theme; the
+**AMENDED 2026-09-09 — `geist` replaces `rux` as the fifth theme; the
 twenty-token placeholder is retired, not extended.** rux brought a
 Geist-inspired (Vercel-style) palette — black background, near-white
 "brand" chip with black text, a blue link/focus accent — as a complete
@@ -2758,7 +2758,7 @@ lines above it were both about `rux`'s own hex values, which no longer
 exist as a file default — both are moot now, not answered. See §4.14's
 own amendment below.
 
-**AMENDED 2026-09-10, SAME DAY — `linear` is a sixth theme, additive,
+**AMENDED 2026-09-09, SAME DAY — `linear` is a sixth theme, additive,
 given by rux the same day as geist.** A Linear-inspired violet-tinted
 dark palette, unlike geist's monochrome one: its own brand colour
 (`background-brand` #5e6ad2) is a saturated indigo, not white or black,
@@ -2773,7 +2773,7 @@ carried five theme names now carries six — `js/theme.js`'s `KNOWN`,
 account-panel theme radio in ten templates plus `index.html` and the
 sink, and `builder.html`'s default-theme picker.
 
-**AMENDED 2026-09-10, A THIRD TIME — `ant-dark` is a seventh theme,
+**AMENDED 2026-09-09, A THIRD TIME — `ant-dark` is a seventh theme,
 additive again.** An Ant Design Dark-inspired palette: pure black
 background, a single saturated blue brand colour (`background-brand`
 #1677ff) rather than linear's three-step ladder, white button text like
@@ -2789,7 +2789,7 @@ either earlier block moving, and every fixed theme-name list — `KNOWN`,
 both `RESERVED` sets, the draft-theme validation, every account-panel
 radio, `builder.html`'s picker — now carrying seven names.
 
-**AMENDED 2026-09-10, A FOURTH TIME — `spotify` is an eighth theme,
+**AMENDED 2026-09-09, A FOURTH TIME — `spotify` is an eighth theme,
 additive again, and this pass found two files the first three missed.**
 A Spotify-inspired palette: near-black background, a single vivid green
 brand colour (`background-brand`/`interactive` #1ed760), black button
@@ -4669,7 +4669,7 @@ today's values as-is (they ship and pass every gate; "grade-for-grade"
 becomes a documented near-miss rather than a broken promise), or correct
 the two hover tokens to a true `purple60Hover` derivation first.
 
-**AMENDED 2026-09-10 — both open items above are moot, not answered.**
+**AMENDED 2026-09-09 — both open items above are moot, not answered.**
 §4.10's amendment retires `rux` as a shipped theme; `geist` took the
 fifth slot instead, as a complete theme rather than another twenty-token
 accent. Point 2's "`rux` stays an allowed name, since replacing its

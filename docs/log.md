@@ -9,7 +9,14 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
-**2026-09-10 — §4.10 amended a fourth time: spotify, an eighth theme,
+**2026-09-09 — CORRECTION: the four theme-pass entries below, and the
+matching amendments in `docs/roadmap.md` §4.10, were dated 2026-09-10
+in the commits that introduced them (`78794b2` through `6378325`). The
+actual date was 2026-09-09 — an assistant date error, caught during the
+browser-gate sweep and fixed at the point each was wrong rather than
+left standing or quietly edited without a trace.**
+
+**2026-09-09 — §4.10 amended a fourth time: spotify, an eighth theme,
 and two missed files finally caught. `6e29f91`.** A Spotify-inspired
 vivid-green palette, the same additive move as the three before it —
 `[data-theme="spotify"]`, a fourth independent block in
@@ -38,7 +45,7 @@ persists through the account panel, `builder.html`'s wizard picks it up.
 Same open item as the last three entries — the browser-only gates
 still were not re-swept for this pass.
 
-**2026-09-10 — §4.10 amended a third time: ant-dark, a seventh theme.
+**2026-09-09 — §4.10 amended a third time: ant-dark, a seventh theme.
 `43995e2`.** An Ant Design Dark-inspired palette, added the same day as
 geist and linear, beside both rather than replacing either —
 `[data-theme="ant-dark"]`, a third independent block in
@@ -58,7 +65,7 @@ the browser: applies, persists through the account panel, and
 `builder.html`'s wizard picks it up. Same open item as the last two
 entries — the browser-only gates were not re-swept for this pass.
 
-**2026-09-10 — §4.10 amended again: linear, a sixth theme, additive.
+**2026-09-09 — §4.10 amended again: linear, a sixth theme, additive.
 `29a7dc2`.** A Linear-inspired violet-tinted dark palette, given the same
 day as geist, added beside it rather than replacing anything —
 `[data-theme="linear"]`, a second block in `css/rux-theme.css`, same
@@ -74,7 +81,7 @@ persists through the account panel, and `builder.html`'s own wizard picks
 it up too. The browser-only gates were not re-swept for this pass either
 — same open item the entry below already names.
 
-**2026-09-10 — §4.10 amended: geist replaces rux as the fifth theme.
+**2026-09-09 — §4.10 amended: geist replaces rux as the fifth theme.
 `78794b2`.** `css/rux-theme.css`'s twenty-token purple placeholder under
 `[data-theme="rux"]` is retired; `[data-theme="geist"]` takes its slot
 with a full Vercel/Geist-style palette — every core token the theme
