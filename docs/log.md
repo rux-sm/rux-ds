@@ -9,6 +9,26 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — §4.10 amended a third time: ant-dark, a seventh theme.
+`43995e2`.** An Ant Design Dark-inspired palette, added the same day as
+geist and linear, beside both rather than replacing either —
+`[data-theme="ant-dark"]`, a third independent block in
+`css/rux-theme.css`, same override mechanism. Its given palette supplies
+only a two-step brand ladder (`background-brand` #1677ff,
+`border-interactive`/`focus` #4096ff one step lighter), one short of
+what a three-state button needs — `button-primary-active` is the first
+value in this file EXTRAPOLATED rather than pulled from an already-given
+token (the per-channel delta from base to hover, applied once more,
+clamped at 255), flagged in the header as the least-grounded derivation
+here and worth a second look. Every fixed theme-name list grew from six
+to seven, the same files each earlier addition touched — and
+`tools/app-check.mjs`'s own `THEMES` constant, missed in both of the
+earlier two passes and found already partially caught up to `geist
+linear` from outside this session, is completed here. Checked live in
+the browser: applies, persists through the account panel, and
+`builder.html`'s wizard picks it up. Same open item as the last two
+entries — the browser-only gates were not re-swept for this pass.
+
 **2026-09-10 — §4.10 amended again: linear, a sixth theme, additive.
 `29a7dc2`.** A Linear-inspired violet-tinted dark palette, given the same
 day as geist, added beside it rather than replacing anything —

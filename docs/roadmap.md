@@ -2773,6 +2773,22 @@ carried five theme names now carries six — `js/theme.js`'s `KNOWN`,
 account-panel theme radio in ten templates plus `index.html` and the
 sink, and `builder.html`'s default-theme picker.
 
+**AMENDED 2026-09-10, A THIRD TIME — `ant-dark` is a seventh theme,
+additive again.** An Ant Design Dark-inspired palette: pure black
+background, a single saturated blue brand colour (`background-brand`
+#1677ff) rather than linear's three-step ladder, white button text like
+linear. The two-step brand ladder the given palette actually supplies
+(`#1677ff` base, `#4096ff` one step lighter) left no third tone for a
+button "active" state to reuse, unlike geist's and linear's derivations
+— that one value is EXTRAPOLATED (the per-channel delta from base to
+hover, applied once more) rather than pulled from an already-given
+token, and is flagged as such in `css/rux-theme.css`'s own header as the
+least-grounded value in the file. Otherwise the same story as linear:
+a third independent `[data-theme="ant-dark"]` block, nothing about
+either earlier block moving, and every fixed theme-name list — `KNOWN`,
+both `RESERVED` sets, the draft-theme validation, every account-panel
+radio, `builder.html`'s picker — now carrying seven names.
+
 ### 4.11 Phase 11 — Starting a project
 
 **Added 2026-09-01.** The vendoring recipe `rux-ln-notes/tools/sync-ds.sh`
