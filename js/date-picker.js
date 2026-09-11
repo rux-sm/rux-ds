@@ -62,24 +62,40 @@
    it. Focus returns to the opener rather than to the input, which is what
    makes the next point safe.
 
-   THE INPUT MAY BE `hidden`, AND THAT NEEDS NO CSS — measured, not reasoned.
+   THE INPUT MAY BE `hidden`, AND THAT NEEDS ONE RULE, WHICH rux-ds NOW SHIPS.
    rux-scheduler asked for a picker whose value is read rather than shown,
    because a toolbar reading "Sep 7 - 13, 2026" beside a `2026-09-07` field is
-   one week displayed twice. Writing `hidden` on `.rux--date-picker__input`
-   computes `display: none` and a 0x0 box on the built page.
+   one week displayed twice. `.rux--date-picker__input[hidden]` is in
+   `css/rux-overrides.css` since 2026-09-11, and every page that links that
+   file gets it; a page that links only `css/rux.css` does not.
 
-   WHICH CONTRADICTS WHAT THIS HEADER SAID BELOW, and the correction is left in
-   the open rather than quietly applied. The note beginning "THE `hidden`
-   ATTRIBUTE DOES NOT WORK HERE" reasons that a `display: block` rule at
-   specificity (0,2,0) beats the UA rule. It does not, in Chrome 152: the UA
-   sheet declares `[hidden] { display: none !important }`, so an author
-   declaration loses unless it is itself `!important`. Proved with a bare
-   `<div hidden>` carrying an INLINE `display: block`, which still computes
-   `none`, and an inline `display: block !important`, which computes `block`.
-   The detach design that note justifies is UNCHANGED and still right for its
-   own reason — React mounts the container only while open, and a detached
-   calendar is absent from the accessibility tree rather than merely invisible.
-   Only the stated reason was wrong.
+   THIS PARAGRAPH SAID "AND THAT NEEDS NO CSS — measured, not reasoned" AND
+   THE MEASUREMENT WAS TAKEN ON THE ONE PAGE WHERE IT CANNOT BE MADE.
+   kitchen-sink.html links `sink/harness.css`, which declares
+   `[hidden] { display: none !important }` at :112 — deliberately, to stand in
+   for the mount/unmount Carbon's React does — so on the sink the attribute
+   hides everything and no author `display` can be seen losing to it. The
+   paragraph then blamed the browser: it claimed the UA sheet declares
+   `[hidden]` `!important`, offering as proof an inline `display: block` that
+   computed `none`. That proof was the harness rule, not the UA rule.
+
+   RE-MEASURED 2026-09-11 ON A PAGE THAT LINKS NO HARNESS, Chrome 152. A
+   `[hidden]` div with an author `display: block` computes `block`; with an
+   INLINE `display: block` it computes `block`; with no author display at all
+   it computes `none`. So the UA rule is NOT important and an author
+   declaration beats it — which is what the button's own hidden rule in
+   `css/rux-overrides.css` has said since 2026-09-02, and this header
+   contradicted it for nine days. That rule is named in words rather than
+   spelled as a selector on purpose: `tools/lib/ownership.mjs` reads a class
+   token out of a module's PROSE as readily as out of its code, so spelling
+   the button's class here made `docs/builder-coverage.md` credit
+   `date-picker` with the behaviour of every fragment holding a button.
+   Caught by the regenerated table, 2026-09-11. rux-scheduler measured the live condition on
+   its own page and reported it; that report was right.
+
+   SO THE NOTE BELOW BEGINNING "THE `hidden` ATTRIBUTE DOES NOT WORK HERE"
+   STANDS AS WRITTEN, reason included, and the "correction" above it is
+   withdrawn. The detach design is unchanged and was never in question.
 
    A HIDDEN INPUT REQUIRES A PAGE-OWNED TRIGGER, and the module does not
    enforce it. Focus has to land somewhere on close; with no opener and no
@@ -99,8 +115,9 @@
    `margin-block-start: 0`. React needs no hiding rule because it MOUNTS the
    container only while open.
 
-   THE `hidden` ATTRIBUTE DOES NOT WORK HERE, and that is worth stating
-   because it works everywhere else in this repository.
+   THE `hidden` ATTRIBUTE DOES NOT WORK HERE — correct as written, see the
+   withdrawal above — and that is worth stating because it works everywhere
+   else in this repository.
    `sink/dropdown.html` hides its menu with `<ul ... hidden>` and that is
    correct — the UA rule `[hidden] { display: none }` is unopposed there. It
    is OPPOSED here: `.rux--date-picker--next .rux--date-picker__calendar-container`
@@ -146,9 +163,11 @@
    thing markup can express -- so this is NOT a reimplementation of anything
    observed there and is not claimed as one. It is this layer's own
    trigger/surface contract, already kept by modal.js and menu.js, extended to
-   a third surface. What was measured on the built page rather than reasoned:
-   `hidden` on `.rux--date-picker__input` computes `display: none`, box 0x0,
-   in Chrome 152. */
+   a third surface. What was measured, and where, because the first reading of
+   it was taken on the sink and the sink is the page that cannot show it:
+   `hidden` on `.rux--date-picker__input` computes `display: block` and a
+   288x40 box in Chrome 152 on a page linking only `css/rux.css`, and
+   `display: none` at 0x0 once `css/rux-overrides.css` is linked after it. */
 
 (function () {
   'use strict';

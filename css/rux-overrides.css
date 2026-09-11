@@ -12,10 +12,12 @@
   !important is aimed at the wrong selector. No Carbon file is touched, and
   `git diff css/rux.css` after any edit here is empty.
 
-  THREE RULES ARE LIVE, since 2026-09-02 and 2026-09-03 (roadmap §4.13,
-  §4.10). Nothing else has been decided about rux's look beyond Carbon's, and
-  a rule that moves a captured component away from its capture does not
-  belong here. The example below is the shape of such a rule, commented out:
+  FIVE RULES ARE LIVE, from 2026-09-02, 2026-09-03 and 2026-09-11 (roadmap
+  §4.13, §4.10). Nothing else has been decided about rux's look beyond
+  Carbon's, and a rule that moves a captured component away from its capture
+  does not belong here — every rule below repairs a box that renders wrong,
+  and none of them changes a decision Carbon made. The example below is the
+  shape of a rule that WOULD move the capture, commented out:
 
   .rux--btn { border-radius: 0.25rem; }
 
@@ -54,3 +56,36 @@
    prose should still be its own height. portal.html's own component grid
    carries titles of uneven length and shows the same condition. */
 .rux--tile--clickable { block-size: 100%; }
+
+/* A HIDDEN DATE-PICKER INPUT MUST NOT RENDER, and this is the `.rux--btn`
+   rule above one component over. Asked for by rux-scheduler 2026-09-11, whose
+   week picker reads its value rather than showing it: `hidden` on
+   `.rux--date-picker__input` left a 288x40 ISO field beside the formatted week
+   the toolbar already prints. Carbon's `.rux--date-picker__input
+   { display: block }` (rux.css:14620) is an author declaration and the UA's
+   `[hidden] { display: none }` is not important, so the attribute loses.
+
+   MEASURED 2026-09-11 ON A PAGE WITH NO HARNESS, because the sink's has one:
+   `sink/harness.css:112` declares `[hidden] { display: none !important }` to
+   stand in for Carbon's mount/unmount, so on kitchen-sink.html `hidden` works
+   on everything and the condition is invisible. On a consumer page in Chrome
+   152 a `[hidden]` element carrying an author `display: block` — by class or
+   inline — computes `block`. js/date-picker.js said the opposite and has been
+   corrected in the same pass. */
+.rux--date-picker__input[hidden] { display: none; }
+
+/* A CONTAINED LIST'S LABEL TAKES ITS HEADER'S TYPE. This repair is of this
+   system's own divergence, not Carbon's: Carbon renders `__label` on a `<div>`
+   that inherits the header's type, and `sink/contained-list.html` deliberately
+   uses an `<h3>` instead so the label carries a heading level. Carbon's own
+   type reset then gives that `<h3>` `heading-04` (rux.css:210), and
+   `.rux--contained-list__label` sets only `inline-size`, so nothing puts the
+   variant's type back.
+
+   MEASURED ON kitchen-sink.html 2026-09-11, both variants, both wrong:
+   `--on-page` header 14px/600 with a 28px/400 label, `--disclosed` header
+   12px/400 with the same 28px/400 label — so the component's own demo shows
+   neither type it defines, and a label reads 2.3x its header. `font: inherit`
+   restores exactly what Carbon's `<div>` computes and keeps the heading.
+   Reported by rux-scheduler 2026-09-10, who measured 28px there too. */
+.rux--contained-list__label { font: inherit; }

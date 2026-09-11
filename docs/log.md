@@ -9,6 +9,170 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — two consumer asks answered by measuring, and the second
+overturned this repository's own note.** `node tools/exchange.mjs` listed
+nineteen open asks; sixteen are addressed here. Two had a fix that follows from
+the evidence and no decision attached, and both are one line in
+`css/rux-overrides.css`. The rest are decisions and are listed at the end
+rather than quietly settled.
+
+**THE CONTAINED LIST'S LABEL HAD NO TYPE, AND THE DIVERGENCE THAT CAUSED IT IS
+OURS.** rux-scheduler reported a `__label` rendering at 28px against a 14px
+header (2026-09-10). Carbon renders `__label` on a `<div>` that inherits the
+header's type and therefore needs no font of its own;
+`sink/contained-list.html` deliberately uses an `<h3>` instead, so the label
+carries a heading level, and that choice is recorded in the fragment's own
+comment. Carbon's type reset then gives the `<h3>` `heading-04`
+(`css/rux.css:210`) and the variant's type never reaches the text. **Measured
+on `kitchen-sink.html`, both variants wrong and the demo showing neither type
+it defines:** `--on-page` header 14px/600 against a 28px/400 label,
+`--disclosed` header 12px/400 against the same 28px/400. `font: inherit` on
+the label restores exactly what Carbon's `<div>` computes and keeps the
+heading; after, `--on-page` reads 14px/600 and `--disclosed` 12px/400, on the
+sink and on `builder.html`, which carries the only other one.
+
+**THE SCHEDULER'S REPORT ABOUT `hidden` WAS RIGHT AND THIS REPOSITORY'S
+CORRECTION OF IT WAS WRONG.** `js/date-picker.js` stated, under "measured, not
+reasoned", that `hidden` on `.rux--date-picker__input` needs no CSS, and
+withdrew an earlier note saying the opposite on the grounds that Chrome's UA
+sheet declares `[hidden] { display: none !important }`. **Both halves fail on
+any page but ours, and the reason is a file only ours load.**
+`sink/harness.css:112` declares `[hidden] { display: none !important }`
+deliberately, to stand in for the mount/unmount Carbon's React does. Only
+`kitchen-sink.html` links it. So the proof offered for the correction — an
+inline `display: block` that still computed `none` — was the harness winning,
+not the UA.
+
+**RE-MEASURED 2026-09-11 ON A PAGE THAT LINKS NO HARNESS**, Chrome 152: a
+`[hidden]` element with an author `display: block` computes `block`, with an
+INLINE `display: block` computes `block`, and with no author display computes
+`none`. The UA rule is not important and an author declaration beats it —
+which is what the `.rux--btn[hidden]` comment in `css/rux-overrides.css` has
+said correctly since 2026-09-02, and which this header contradicted for nine
+days. Read on `rux-scheduler`'s own served page, the input carries `hidden`,
+computes `display: block` and boxes 288x40 — exactly what they reported, and
+their 0x0 reading came from their own container override, because
+`getComputedStyle` inside a `display: none` subtree does not report the UA
+rule. `.rux--date-picker__input[hidden]` now sits beside the button rule, and
+all three claims in the module header are corrected in place.
+
+**THIS IS WIDER THAN ONE INPUT AND IS NOT FIXED HERE.** Every Carbon component
+that sets `display` on its own class ignores `hidden` in a consumer app, and
+no gate can see it, because the one page the gates sweep is the one page the
+harness makes immune. Two components are covered by name. Whether the right
+answer is a rule per component or one blanket rule is a decision and is
+rux's — `docs/consumer-policy.md` would have to say which.
+
+**A COMMENT CHANGED A COVERAGE TABLE, and the regenerated file is what caught
+it.** The first draft of the correction above named the button's rule by its
+selector. `tools/lib/ownership.mjs`'s `classesInJs` matches a `rux--*` token
+after a quote or a dot and cannot tell code from prose, so `js/date-picker.js`
+began claiming the `button` component and `docs/builder-coverage.md` credited
+`date-picker` with the behaviour of every fragment holding a button — twelve
+rows, in a file nothing had asked to change. The comment now names the rule in
+words. **The parser is not changed and should not be on this evidence:** it is
+a control file, the false positive was visible the moment the table
+regenerated, and a rule that tried to exclude comments would have to parse
+them.
+
+**SWEPT SIXTEEN PAGES**, every cell at 1280x900, white asserted by reading
+back `--rux-field-hover` of `#e8e8e8` and `body` `rgb(255,255,255)`, focus
+taken with Tab then blurred (`hasFocus` true, `activeElement` BODY),
+transitions and animations suppressed before any read, IBM Plex confirmed
+serving, pointer parked at (60,500) with zero elements in `:hover`, and
+`check-runtime-classes` run first on every freshly loaded page before any
+focus, click or hover. The sink's calendar was confirmed open in the same
+execution. **EVERY FIGURE ON EVERY PAGE IS IDENTICAL TO THE READING IT
+REPLACES**, which is the expected result and the reason to measure it rather
+than argue it: the sink at 456 checked / 406 matched / 35 known / 15 diverges
+/ 36 not comparable / 309 no reference, a11y 29 findings and 6 notes,
+`check-rendered` 68 sections with 0 empty svgs across all eight themes, and
+`check-behaviour` 47 of 47.
+
+**ONE CELL DISAGREES WITH ITS RECORD AND IT IS NOT THIS CHANGE'S.**
+`theme-creator.html` reads 1 not comparable where the ledger says 0; the
+element is a `rux--form__helper-text` inside a detail-level section whose
+parent is `display: none`. Proved by removing both new rules from the live
+sheet and re-running: 38ck/37m/0k/1d/1nc/11nr with them and without them,
+identical. Recorded as read.
+
+**ONE CONDITION FAULT, CAUGHT AND DISCARDED.** The first sink reading was
+taken in a pane that had sized itself to 1024x768 and against the workspace
+server, where `check-spacing` returns `{error: 404}` because its capture path
+does not resolve under `/rux-ds/`. Re-run on port 8642 at 1280x900 it matched
+the ledger exactly. A second is worth naming because it is a reading error
+rather than a condition one: the sink's spacing was first reported here as 0
+diverges, from a probe reading `unknown` where the tool returns `diverges`.
+The figure is 15 and always was.
+
+**NOT DONE, AND EACH IS A DECISION RATHER THAN AN OMISSION.** The contained
+list's row and header ACTIONS are left alone: both are Carbon's own rendering
+at Carbon's own `size-lg`, visible on this repository's sink, and centring or
+padding them diverges from the capture — the header-action padding would also
+need a `KNOWN` entry in `check-spacing`, which is an exception list and not a
+passing check. `rux--btn--lg` is compiled zero times, because `lg` IS
+`.rux--btn`, so the side panel's close cannot be given the variant asked for
+without inventing a class. Nothing records the size of a header action's icon:
+the DOM capture stores no svg dimensions and `@carbon/react` is not a
+dependency here, so 16 against 20 cannot be settled from this repository's
+evidence. Carbon ships no `credit-card`, no plain `bank` and no cheque glyph,
+so the four payment icons asked for cannot be four. The combo box's filtering,
+the date picker's display format and the toggle's two words are features with
+an API to design. The toggle's tap target is a touch-policy decision. And
+`--rux-border-strong-01` is a tier 2 proposal, below.
+
+**rux-ln-notes' CONTRAST FINDING REPRODUCES, INDEPENDENTLY.** Eight themes
+read off `documentElement` on `kitchen-sink.html`, WCAG 2.x luminance, not
+rounded until the table: `border-strong-01` against `--rux-background` is
+3.319 white, 3.0177 g10, 4.5596 g90, 3.6013 g100, 2.6875 geist, 2.1976
+linear, 2.9980 ant-dark, 2.4354 spotify. Their figures to the fourth decimal
+on six of eight and the third on the other two. Five of the twelve
+theme-and-rung combinations sit below 3:1, all of them in the four brand
+themes and four of the five on `-01`. Against `--rux-layer-01` all four brand
+themes are lower again and g100 slips to 3.0117.
+
+**WHAT THE COMMENT ACTUALLY GOVERNS, which narrows their question.**
+`tools/build-theme-creator.mjs:168` says border-strong "keeps the 3:1: Carbon
+meets it in every theme". The page it builds offers four base themes — white,
+g10, g90, g100 — and no brand theme is selectable there, so the sentence is
+true of everything that page can show and the badge never judges the failing
+values. It still reads as a property of the token, and `css/rux-theme.css`
+ships eight.
+
+**`tools/build-theme-creator.mjs` IS A CONTROL FILE, so this is proposed and
+not applied.** The diff is one clause and nothing else:
+
+    -// reads. border-strong is the opposite case and keeps the 3:1: Carbon meets
+    -// it in every theme, from 3.02 in g10 to 8.86 in g90.
+    +// reads. border-strong is the opposite case and keeps the 3:1 across the
+    +// four bases this page offers: Carbon meets it in every one of them, from
+    +// 3.02 in g10 to 8.86 in g90. That is a property of Carbon's compiled
+    +// themes and not of the token — css/rux-theme.css's four brand themes put
+    +// border-strong-01 below 3:1 in all four (2.6875 geist, 2.1976 linear,
+    +// 2.9980 ant-dark, 2.4354 spotify, measured 2026-09-11), and none of them
+    +// is selectable here.
+
+**What it makes weaker: nothing that is checked, and one thing that is read.**
+No gate reads this comment, and no badge changes, so no failing condition
+becomes a passing one. What it weakens is the argument the comment carries:
+the sentence currently justifies judging `edge` on evidence from Carbon's
+bases alone, and once the exception is written down, that justification stops
+covering the four themes it names. Someone could then read it as licence to
+leave them failing. **The alternative is the other half of their §3** — decide
+that `--rux-border-strong-01` intends 3:1 in every theme rux-ds ships, and
+move four values — and that is a palette decision this session is not making,
+because the brand themes answer to an outside reference.
+
+**A number worth watching either way:** the badge prints one decimal, so
+`ant-dark`'s 2.9980 would read as `3.0:1` if it were ever shown. It is not
+shown today, because the base picker offers only the four.
+
+**Their §4 point stands unanswered:** nothing in either repository measures
+border contrast, and a new theme could land below linear's 2.1976 with no gate
+saying a word. A gate for it is itself tier 2.
+
+---
+
 **2026-09-10 — the twelfth template: `search-results-page`, `f32ae4b`
 through `e49c3e1`.** A query, facets that narrow it, and the results. It was
 written before this pass and sitting uncommitted; what this pass did was
