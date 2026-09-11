@@ -12,9 +12,16 @@ the record of every dated pass and answered decision; counts live in
 Carbon's markup allows and compiled under the `rux` prefix; Carbon stays a dev
 dependency as the upgrade path (roadmap §1, revised 2026-09-01). Nothing ERP,
 nothing from a client, nothing from `rux-ln-atlas` in any directory, tracked or
-not — a template is authored against invented content. Its consumers pin a tag
-(`docs/roadmap.md` §8.2) and start from `tools/new-project.sh`; a removed
-class is announced in `CHANGES.md`.
+not — a template is authored against invented content. Its consumers link
+`/rux-ds/…` live at this repository's newest release tag and start from
+`tools/new-project.sh`; a removed class is announced in `CHANGES.md`, and
+`docs/consumer-policy.md` is the contract they hold to.
+
+**Nothing pins, and this sentence said it did until 2026-09-11.** Vendoring
+and the pin both went on 2026-09-10 (roadmap §8.4, decided §8.6); README's
+"Picking this up" has said so since, and this file contradicted it. A policy
+file that disagrees with the status page is the worse of the two to leave
+wrong, because it is read first.
 
 ## The one rule
 
