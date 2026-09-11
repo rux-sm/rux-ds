@@ -15,21 +15,19 @@ README that narrates its own history goes stale, and this one did.
 ## Picking this up
 
 **2026-09-10.** Clean tree. `npm run verify` exits 0; `npm run gates` reads every
-cell current. Newest tag `v0.1.15`, and **it is live: since 2026-09-10 this site
-deploys on a tag, after checking every served app against it** (roadmap §8.4
-diff B, §8.6). **Scheduler vendors nothing** — it links `/rux-ds/` live and its
-CI checks the newest tag (step 2). **A new project vendors nothing either** —
-`tools/new-project.sh` writes a page linking `/rux-ds/` directly; there is no
-`--tag`, no `PIN`, no pin to move (step 4). **The hub and Notes moved too, the
-same day** (step 5) — every app in the family now links `/rux-ds/` live; no
-`vendor/` directory exists anywhere. **§8.4 is complete** (step 6):
-`tools/roll-out.sh`, the old pin-move docs and `tools/app-check.mjs`'s
-vendored branch are all retired. **And `v0.1.17` is the first release under
-the new shape, live** (step 7) — `v0.1.16` never deployed: the release itself
-found a real defect in `tools/app-check.mjs`'s argument parsing that no
-rehearsal had exercised, fixed and proven before `v0.1.17` carried it. All
-four sites read live, `docs/log.md` has the account. Roadmap §8.4 has no
-step left.
+cell current. **A twelfth template landed today**, `search-results-page`, and
+finishing it cost a control change and one real defect — `docs/log.md` has the
+account.
+
+**`main` is ahead of what is published.** This site deploys on a tag, after
+checking every served app against it (roadmap §8.4 diff B, §8.6); the newest
+tag is `v0.1.22` and `main` is nine commits past it, so the twelfth template is
+on GitHub and not yet on the site. `git describe --tags` is the check.
+
+**Nothing vendors rux-ds anywhere.** The scheduler, the hub, Notes and every
+page `tools/new-project.sh` writes all link `/rux-ds/` live; no `vendor/`
+directory exists in the family, there is no pin to move, and §8.4 has no step
+left. The dated account of how that happened is in the log, not here.
 
 Where the phases stand — the long form is in the log:
 
@@ -38,7 +36,7 @@ Where the phases stand — the long form is in the log:
 | Carbon compiled under `rux`, stripped to the keep-set (Phase 3) | done |
 | Devendoring Carbon (Phase 4) | declined while admissions are open — roadmap §4.4 |
 | Behaviour modules in `js/` (Phase 5) | all written; the exit criterion is a screen-reader pass by a person, `docs/screen-reader-pass.md` |
-| Templates (6), the component index (7), the app scaffold (9–11) | done — eleven templates |
+| Templates (6), the component index (7), the app scaffold (9–11) | done — `portal.html` counts them |
 | The page builder, `builder.html` (12) | stage 12 of 13; stage 13, repeated items, is marked v2 |
 | Theme Creator, surface overlays, saved themes (14–16) | landed 2026-09-06 |
 | The Theme Creator rebuilt as one list (Phase 17) | landed 2026-09-10 — all 311 colour tokens, three detail levels, a theme file to download and load back |
@@ -134,7 +132,7 @@ than measurements and live with their reasoning in `tools/build.mjs`.
 | `src/app.scss` | the build manifest — which components and themes compile, under which prefix. Roadmap §4.3 |
 | `css/` | build output, generated and committed: `rux.css`, `rux.min.css`, and the two files every page links after them — `rux-theme.css` (token values) and `rux-overrides.css` (component rules) |
 | `js/` | the behaviour layer; `overlay.js` is the kernel and loads first. Roadmap §4.5 |
-| `templates/` | eleven complete pages, shell included; copy the nearest one. Roadmap §4.6 |
+| `templates/` | complete pages, shell included; copy the nearest one. Roadmap §4.6 |
 | `sink/` | one markup fragment per component, plus `ORDER`, `harness.css`, `harness.js` |
 | `kitchen-sink.html` · `portal.html` · `builder.html` · `theme-creator.html` | generated — edit `sink/`, `docs/component-docs.json`, `builder/` or `theme-creator/` and rebuild |
 | `index.html` | the site's home page, hand-authored — the only root page that is not generated |

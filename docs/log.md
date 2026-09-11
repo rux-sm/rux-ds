@@ -9,6 +9,73 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — the twelfth template: `search-results-page`, `f32ae4b`
+through `e49c3e1`.** A query, facets that narrow it, and the results. It was
+written before this pass and sitting uncommitted; what this pass did was
+finish it, and two of the three things it found were not what the page
+looked like.
+
+**`check-ancestry` was red on both pagination arrows** and the fix is an
+adjudication, not markup. Carbon nests every one of those buttons in the
+icon-tooltip chrome; this project declines that chrome throughout, because
+the hint is positioned by floating-ui and Phase 5 never wrote it, and the
+same decline is already recorded for `sink/pagination.html` and
+`templates/table-page.html`. Two `KNOWN` entries added, table-page's
+verbatim. **It was driven red before it was trusted**: replacing
+`rux--pagination__control-buttons`, the wrapper that actually carries a
+style rule, took the gate straight back to 2 missing naming both buttons,
+so the entry declines the tooltip chrome and nothing else. This is a tier 2
+change and it was proposed as a diff before it was applied, with what it
+weakens named.
+
+**`check-spacing` found a real defect and it was in the search field, not
+the pagination.** The hidden label paired `rux--label` with
+`rux--visually-hidden`, a shape Carbon never renders:
+`components-search--default` emits a bare `label.cds--label`, and
+`.rux--search .rux--label` (css/rux.css:12796) already hides it with the
+identical declarations — position absolute, a 1px box, `clip
+rect(0,0,0,0)`, `margin -1px`. The pair matched neither of the two captured
+compositions of `label.visually-hidden` (a `select--inline` and a number
+input; a search is neither), which is what surfaced it. Bare, it matches
+capture variant 3 of `cds--label`, parent
+`cds--search.cds--search--lg.cds--layout--size-lg`, all four margins -1px.
+Measured after: 1x1, absolute, clipped — still hidden, so nothing changed
+for a screen reader. The pagination page-number label KEEPS the pair,
+because there the parent IS a `select--inline` and Carbon captures exactly
+that; `table-page.html` and `sink/pagination.html` carry it for the same
+reason.
+
+**Swept four pages**, the new one and the three the change aged. New page:
+runtime classes 125/125 nothing stripped, a11y 0, spacing 64 checked / 61
+matched, 1 known, 2 diverges. Both divergences adjudicated and neither a
+defect: the grid column's `minBlockSize` is the grid STORY's demo height
+and no rule in `css/rux.css` sets it (grepped, 0 hits); and
+`pagination__left` has no inline-start padding because Carbon's own rule
+gives it only inside `@container pagination (min-width: 42rem)` = 672px,
+and the bar measures **663px**, nine pixels under. That is the
+container-query strip this template exists to demonstrate, with four
+children at `display: none` in the same execution. `index.html`,
+`builder.html` and `portal.html` each reproduced their previous readings
+figure for figure. **Red run** on the new page: stripping every outline,
+box-shadow and border colour took `check-a11y` 0 → 39 → 0 restored.
+
+**Two condition faults caught by the read-back rather than by luck.** The
+preview pane silently resized itself to 741px and the first `index.html`
+reading came back 32/30 against the ledger's 33/31; re-run at 1280x900 it
+matched exactly. And this browser profile carried a saved **spotify** theme
+in `localStorage`, so every page loads green-on-black until `data-theme` is
+set — the reason the token probe is taken before AND after each gate rather
+than once at the top. A screenshot also showed a stale dark composite of a
+page whose DOM read white; the computed values, not the picture, were
+believed.
+
+NOT COVERED: `check-rendered` and `check-behaviour` are N/A on a template
+by the rule already in `docs/gate-coverage.json`, and no screen-reader pass
+was attempted — roadmap §4.5 is untouched by this. The two doc tables in
+`docs/composing-pages.md` and `docs/choices.md` had drifted and were fixed
+in passing: one listed seven of eleven templates under a heading claiming
+ten.
+
 **2026-09-10 — Phase 17: the Theme Creator is one list of all 311 colour
 tokens, roadmap §4.17.** rux asked to simplify it, arriving with a
 Spotify-inspired Carbon map pasted whole, and chose three levels (Simple 20,
