@@ -15,7 +15,7 @@ Three layers offer them, cheapest first:
 | **Skill** `rux-ds-page` | composition: which shell parts, which fields, which buttons, which blocks; then the gates | Done 2026-09-02, its §2 |
 | **Builder** `builder.html`, here | a page builder: a template, its answers, marked blocks from `sink/` and `templates/`, a live preview, the HTML to take away | Done 2026-09-06 — a guided mode (purpose, sections and content, add sections, review, take it away) and a free mode on one draft; every marked block added, moved or removed; text, links, sizes and densities edited in place; undo, a draft that survives a reload, and export held to `new-project.sh` by `check-parity` (roadmap §4.12 item 3) |
 
-## Page shape — ten, pick one
+## Page shape — pick one
 
 Each is a complete page with the shell. Start from the one nearest the job;
 the second column is the suggestion.
@@ -28,6 +28,7 @@ the second column is the suggestion.
 | `form-page` | create or edit one record |
 | `detail-page` | read one record, with actions |
 | `document-page` | read one record top to bottom, in order |
+| `search-results-page` | a query, facets that narrow it, and what came back |
 | `settings-page` | grouped controls that save |
 | `wizard-page` | one step of a multi-step flow |
 | `schedule-page` | dates and times |

@@ -217,6 +217,20 @@
       "purpose": "Read one document top to bottom, in order.",
       "reviewed": false,
       "suggestions": []
+    },
+    "search-results-page": {
+      "purpose": "A query, facets that narrow it, and what came back.",
+      "reviewed": false,
+      "suggestions": [
+        {
+          "block": "templates/empty-state/empty-state",
+          "slot": "body",
+          "reason": "A search that returns nothing still has to say so and offer a way on. IBM's search pattern calls it avoiding a dead end, and the count line is the only part of this page that survives zero results.",
+          "unless": "The page already handles the empty case inside the results column.",
+          "evidence": "The empty state was measured in a col-span-100 body; this page has three columns and no block of its own spans them. Whether it lands in the results column or replaces all three is unverified, and so is its spacing against the filter column beside it. §3.10.",
+          "reviewed": false
+        }
+      ]
     }
   },
   "variants": {
@@ -338,6 +352,11 @@
     "templates/document-page/downstream#0": {
       "recommended": "sm",
       "reason": "A document is a reference: eleven tables read down one column, and sm keeps the rows tight enough that a reader scanning for their step is not scrolling past whitespace. This is the block’s own attested size, so recommending it splices nothing. NOT YET READ BY RUX.",
+      "reviewed": false
+    },
+    "templates/search-results-page/filters#0": {
+      "recommended": "as-attested",
+      "reason": "Bare, which is lg. The same reading rux made on 2026-09-06 for every other button here: the sm guidance in docs/choices.md is for tables and toolbars, and a filter column is neither. This block shipped sm for one draft and was put back. NOT YET READ BY RUX.",
       "reviewed": false
     }
   }

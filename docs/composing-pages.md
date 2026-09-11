@@ -18,16 +18,23 @@ copies of a rule is how the counts in README drifted before `check-gates`.
 
 ## 1. Start from a template, never from scratch
 
-Ten exist, each a **complete page** — shell included, because §4.6 asks for
-runnable skeletons. Copy the nearest shape and delete what you do not need.
+Each is a **complete page** — shell included, because §4.6 asks for runnable
+skeletons. Copy the nearest shape and delete what you do not need. The count
+belongs in `npm run gates` and `portal.html`, not here; this table listed seven
+of eleven and claimed ten until 2026-09-10.
 
 | your page | start from |
 | :--- | :--- |
 | anything with a nav and a header | `templates/app-shell.html` |
+| an overview of many things | `templates/dashboard-page.html` |
 | a list of records, sortable, selectable | `templates/table-page.html` |
 | creating or editing one record | `templates/form-page.html` |
 | viewing one record | `templates/detail-page.html` |
 | reading one record top to bottom, in order | `templates/document-page.html` |
+| a query, facets that narrow it, and the results | `templates/search-results-page.html` |
+| grouped preferences that save | `templates/settings-page.html` |
+| one step of a multi-step flow | `templates/wizard-page.html` |
+| dates and times | `templates/schedule-page.html` |
 | nothing to show yet | `templates/empty-state.html` |
 | something went wrong | `templates/error-state.html` |
 
@@ -35,7 +42,7 @@ runnable skeletons. Copy the nearest shape and delete what you do not need.
 sandbox, so its header and nav are positioned for a specimen rather than a page.
 
 **Read the source comments in the template you copied.** They are not decoration —
-between them the nine carry roughly 4,300 lines, most of it recording an approach
+between them they carry several thousand lines, most of it recording an approach
 that was tried and failed. The comment above the thing you are about to change is
 usually the answer to the question you are about to ask.
 

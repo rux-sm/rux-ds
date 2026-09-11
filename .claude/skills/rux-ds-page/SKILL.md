@@ -13,7 +13,7 @@ work; go to the document for why any line here is true.
 
 ## 1. Copy a template — never start from scratch
 
-Eleven exist, each a **complete page**, shell included.
+Twelve exist, each a **complete page**, shell included.
 
 | page | start from |
 | :--- | :--- |
@@ -22,6 +22,7 @@ Eleven exist, each a **complete page**, shell included.
 | create or edit one record | `templates/form-page.html` |
 | view one record | `templates/detail-page.html` |
 | read one record top to bottom | `templates/document-page.html` |
+| a query, facets, and the results | `templates/search-results-page.html` |
 | nothing to show yet | `templates/empty-state.html` |
 | one step of a multi-step flow | `templates/wizard-page.html` |
 | an overview of many things | `templates/dashboard-page.html` |
@@ -50,7 +51,7 @@ call", take the default and say which one you took.
 
 | # | Question | The only answers | What it changes | Default |
 | :-- | :--- | :--- | :--- | :--- |
-| 1 | Page shape | the ten in §1 | which template you copy | the nearest row in §1 |
+| 1 | Page shape | the twelve in §1 | which template you copy | the nearest row in §1 |
 | 2 | Theme | `white` `g10` `g90` `g100` `rux` | `data-theme` on `<html>` | `white`; `g10` when cards should stand off the page; `g90`/`g100` for a dark tool |
 | 3 | Header nav links | present, absent | the `<nav class="rux--header__nav">` block | present |
 | 4 | Global actions and the switcher panel | present, absent | `rux--header__global` and its sibling panel | present |
