@@ -49,6 +49,7 @@ Where the phases stand — the long form is in the log:
 | Two screen-reader tasks: flip a toggle; open a modal and a popover | `docs/screen-reader-pass.md` |
 | Whether `templates/settings-page.html`'s `col-span-4/8/8` is deliberate | the template, with `/account/` on the hub as a second reference |
 | Builder stage 13, repeated items | `docs/builder-guided-plan.md` |
+| Whether `--rux-border-strong-01` keeps 3:1 in every theme shipped, or only in the four compiled | `SEND-DS-2.md` in rux-ln-notes, read in place — measured on this repository's own `kitchen-sink.html` |
 
 ## Run, edit, verify, release
 
