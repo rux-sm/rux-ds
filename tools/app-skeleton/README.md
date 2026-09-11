@@ -1,5 +1,10 @@
 # app-skeleton — what every app on rux-ds starts with
 
+**Three files at the root and no more** — `AGENTS.md`, `CLAUDE.md`,
+`README.md`. State goes in `docs/status.md`, working documents in `docs/`,
+cross-repository memos in `exchange/`. `docs/consumer-policy.md` §3.1 is the
+rule and why. There is no `TODO.md`.
+
 `tools/new-project.sh` copies this directory into a project on its FIRST run
 (no `tools/check.mjs` yet), each file only if absent. Nothing here holds a
 rule: every file is a launcher that reads rux-ds from the checkout beside
@@ -8,7 +13,7 @@ this repository (or `DS=<dir>`), so the rules stay rux-ds's own. `@NAME@`,
 
 | File | Is | Reads |
 |---|---|---|
-| `AGENTS.md` | the app's policy: what is its own, what is rux-ds's, the one check | |
+| `AGENTS.md` | the app's policy: what is its own, what is rux-ds's, the one check. Opens `type: app` | |
 | `CLAUDE.md` | imports `AGENTS.md` | |
 | `tools/check.mjs` | runs rux-ds's `tools/app-check.mjs`; app gates go after it | `../rux-ds`, or `DS=<dir>` |
 | `tools/serve.mjs` | runs rux-ds's workspace server on :8640, this app at its own path | `../rux-ds`, or `DS=<dir>` |

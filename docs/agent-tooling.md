@@ -92,7 +92,7 @@ unskippable at a moment when skipping is tempting.
 2026-09-01 — that no hook existed and `CLAUDE.md`'s claim was a corrupted
 variable — and by then the hook had existed for days. The paragraph describing
 the corruption was itself the stale line, which is the failure mode this
-document warns about, arriving from inside it. `adoption-audit.md` finding 5
+document warns about, arriving from inside it. `docs/adoption-audit.md` finding 5
 recorded the contradiction; nobody corrected the sentence.
 
 **When to add one.** When a defect could recur silently, and the question that

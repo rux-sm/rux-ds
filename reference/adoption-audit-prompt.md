@@ -75,7 +75,7 @@ Include three sections that are easy to skip and are the most useful:
 - WHAT I COULD NOT DETERMINE: open questions a human has to answer, and what
   evidence would settle each one.
 
-Write the report to `adoption-audit.md` in the repository root. Do not create
+Write the report to `docs/adoption-audit.md` in the repository root. Do not create
 any other file.
 ```
 

@@ -3883,7 +3883,7 @@ flagged. `tools/check-coverage.mjs` now REFUSES to record a lower number and nam
 components; a real loss, a component stripped or a class gone upstream, needs
 `node tools/check-coverage.mjs --update --force`, which has no npm script in front of it
 and prints what it lowered. Found by the adoption audit and confirmed by probing a copy
-of the tree; `adoption-audit.md` carries the transcript.
+of the tree; `docs/adoption-audit.md` carries the transcript.
 
 **It counts the FILE, and the file is not what the reader sees.** `check-coverage` is a
 Node tool, so it parses `kitchen-sink.html`; modules then run. `check-runtime-classes.js`

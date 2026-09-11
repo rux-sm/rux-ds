@@ -55,6 +55,35 @@ public and generic, with its own consumers. Nothing from a client, a person,
 a private repository or a domain goes into a commit, template or issue there —
 whatever an app needs is demonstrated on content that was made up.
 
+## 3.1 Where a document goes
+
+**Three files at the root, the same three in every repository.** Adopted
+2026-09-11, after one project carried nine root documents and another carried
+two with identical totals — only the placement differed.
+
+| | |
+| :--- | :--- |
+| root | `AGENTS.md` the policy, `CLAUDE.md` importing it, `README.md` the front door — plus what the project publishes |
+| `docs/status.md` | where the project stands and what is outstanding. One name, one place, wherever there is state to record |
+| `docs/` | working documents: reasoning, designs, records, plans |
+| `exchange/` | cross-repository memos, one question each, with `exchange:` frontmatter so `tools/exchange.mjs` can list what is open |
+
+**`README.md` stays at the root because GitHub renders it** — a repository
+whose front page is blank is worse than one file out of place.
+
+**There is no `TODO.md`.** It was a fourth kind of root file that only one
+project had, and what it held was half task and half record. It is
+`docs/status.md` now, renamed rather than folded into `README.md`: the two
+change at different rates and mixing reference with state makes both harder
+to read.
+
+**Two exceptions, both deliberate.** `rux-ds/CHANGES.md` stays at its root — it
+is a published contract with consumers and a changelog belongs where people
+look for one. `rux-ln-atlas` keeps its nine, because `START-HERE.md`,
+`HANDOFF.md`, `SETUP.md` and `PLAN.md` are entry points for a reader rather
+than working documents, and burying them defeats their purpose. A library is
+not an app.
+
 ## 4. The one check
 
     node tools/check.mjs

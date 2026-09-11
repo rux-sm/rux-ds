@@ -1,3 +1,7 @@
+---
+type: design-system
+---
+
 # AGENTS.md — the policy
 
 This is the one instruction file. `CLAUDE.md` imports it, Codex reads it
@@ -73,7 +77,7 @@ authorization.
 
 | Tier | Covers | Rule |
 |---|---|---|
-| 1 | Sandbox, supervisors, verifier harness, digest baselines | None exist here, deliberately (`adoption-audit.md`). If a task asks you to build one, stop and say so. |
+| 1 | Sandbox, supervisors, verifier harness, digest baselines | None exist here, deliberately (`docs/adoption-audit.md`). If a task asks you to build one, stop and say so. |
 | 2 | Gates and their implementations, fixtures and expected results, CI, the commit hook, budgets, `CONTROL_FILES`, this file | Draft it as a diff, propose it to rux in the open, and say what the change makes weaker. Never let your own change be judged by a control you authored in the same run. |
 | 3 | Everything else | Normal work. |
 

@@ -6,7 +6,7 @@ here, and nothing in `npm run verify` reads them. A `README` because
 
 | File | Is |
 |---|---|
-| `agent-self-correction-loop.md` | the architecture `adoption-audit.md` at the repository root measures this repository against |
+| `agent-self-correction-loop.md` | the architecture `docs/adoption-audit.md` at the repository root measures this repository against |
 | `adoption-audit-prompt.md` | the reusable instrument that produces such an audit — hand it to an agent pointed at any repository; it writes a gap report, never a patch |
 | `tier-rules-block.md` | the tier vocabulary both of the above use |
 
