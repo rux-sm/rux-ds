@@ -9,6 +9,52 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-10 — Phase 17: the Theme Creator is one list of all 311 colour
+tokens, roadmap §4.17.** rux asked to simplify it, arriving with a
+Spotify-inspired Carbon map pasted whole, and chose three levels (Simple 20,
+Detailed 144, Full 311) over a flat list, plus a downloadable theme file
+instead of the backend §8.5 would need. Two tools became one; the Carbon
+hue-family select is gone with nothing replacing it, and
+`tools/build-theme-families.mjs` is left in place with no consumer rather than
+retired in passing. `tools/build-theme-catalogue.mjs` is new and added to
+`CONTROL_FILES`; it derives the token set from `css/rux.css`'s own theme
+blocks, not from `@carbon/themes`, because the package describes 188 tokens
+where the build declares 311 — the missing 123 are component tokens in
+separate Sass maps. Carbon's DTCG descriptions are used where they say
+something: 91 of 117 non-syntax ones are filler ("Token for 01 in the design
+system.") and are dropped, and the four theme files disagree on 129 of 188
+descriptions, so all four are read and the longest wins — an assertion that
+they agreed is what found it. `js/custom-themes.js` stops validating token
+names against a list and checks their shape instead, which no longer catches a
+name this build does not declare; `js/theme.js` now clears the `--rux-*`
+properties actually set inline rather than a fixed forty-nine, measured on
+`templates/dashboard-page.html` as 18 before and 0 after a switch away, where
+three of those eighteen were outside the old list entirely. The contrast
+readout covers 48 of 311 rows and the page says so; its comparison grounds are
+the edited colours now rather than white's hardcoded values.
+
+Two faults the browser found and no gate could: the paste parser ended a value
+at the first comma, so all twenty-five of Carbon's `rgba()` values were read as
+`rgba(18` and reported as "not a colour"; and the sticky preview's trailing
+spacer left ~1600px of hole once the list could be filtered shorter than the
+pinned pane. One the gates did catch as designed: clamping the helper text put
+`display:-webkit-box` on `rux--form__helper-text` and `check-spacing` reported
+it on 3/3 variants, so the clamp moved to a `thc-` span. The clamp did not do
+what it was added for — the Detailed list measures 23,456px against 22,743px
+before, because 255px was the worst row and never the typical one; it is kept
+for capping outliers and the search box is what answers 144 rows.
+
+Swept all 16 pages. Every one matches its recorded baseline exactly except
+`theme-creator.html`, which grew with the page: 38 checked / 37 matched
+against 30 / 29, one divergence either way (the adjudicated subgrid), a11y 0,
+runtime classes 65/65 with nothing stripped. `builder.html` first read 45/41
+at a 1024px viewport and 46/42 at 1280 — the ledger's own width, and a
+reminder that a reading is only comparable at the conditions it was taken at.
+NOT COVERED, and the riskiest part of this change: `check-behaviour` still has
+no case for the custom-themes store or the clear-overrides path, deferred by
+§4.16 and deferred again here, so that path is verified by hand in the browser
+and by nothing automated.
+
 **2026-09-09 — CORRECTION: the four theme-pass entries below, and the
 matching amendments in `docs/roadmap.md` §4.10, were dated 2026-09-10
 in the commits that introduced them (`78794b2` through `6378325`). The

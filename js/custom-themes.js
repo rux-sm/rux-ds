@@ -30,59 +30,50 @@
   const MAX_BYTES = 200_000;
 
   const ID_RE = /^[a-z][a-z0-9-]*$/;
-  const HEX_RE = /^#[0-9a-f]{3,8}$/i;
-  const KINDS = new Set(['accent', 'surface']);
-  const BASE_NAMES = new Set(['white', 'g10', 'g90', 'g100']);
-
-  // The same twenty/four names tools/build-theme-creator.mjs's TOKENS and
-  // SURFACE_TOKENS tables carry, and theme-creator.js's SHADE_MAP/BASES
-  // mirror a third time — a duplication already named and accepted in
-  // roadmap §4.14's own comment, not solved here either: this file cannot
-  // import from theme-creator/, which is not vendored into consumer
-  // projects, so it carries its own copy like the other two do.
-  const ACCENT_TOKENS = new Set([
-    'interactive', 'icon-interactive', 'border-interactive', 'background-brand',
-    'focus', 'highlight', 'link-primary', 'link-primary-hover', 'link-secondary',
-    'link-inverse', 'link-inverse-hover', 'button-primary', 'button-primary-hover',
-    'button-primary-active', 'button-tertiary', 'button-tertiary-hover',
-    'button-tertiary-active', 'chat-button', 'chat-button-text-hover', 'chat-avatar-user',
-  ]);
-  // Twenty-nine since 2026-09-08, four before it. WIDENING THIS IS SAFE AND
-  // NARROWING IT IS NOT: list() drops any record with a token it does not
-  // recognise, whole and without a word, so a theme saved by a newer theme
-  // creator would simply vanish from an older app's account panel rather
-  // than partially apply. A record saved when this was four still validates
-  // against the twenty-nine, which is why no migration is needed here.
+  // A TOKEN NAME IS CHECKED BY SHAPE, NOT AGAINST A LIST, since 2026-09-10.
+  // The list was the point of this file — twenty names, then twenty-nine —
+  // and its own comment already named the cost: the same table is written
+  // out in tools/build-theme-creator.mjs and again in theme-creator.js, a
+  // duplication roadmap §4.14 accepted because this file cannot import from
+  // theme-creator/, which is not vendored into consumer projects.
   //
-  // The four ladders and the one flat token, matching
-  // tools/build-theme-creator.mjs's SURFACE_GROUPS: layers, table headers
-  // (layer-accent), fields, hairlines (border-subtle, offset by one against
-  // the layers), outlines (border-strong), the secondary button, and the
-  // hover/selected/active states Carbon does not derive from the layer.
-  const SURFACE_TOKENS = new Set([
-    'background', 'layer-01', 'layer-02', 'layer-03',
-    'layer-accent-01', 'layer-accent-02', 'layer-accent-03',
-    'field-01', 'field-02', 'field-03',
-    'border-subtle-00', 'border-subtle-01', 'border-subtle-02', 'border-subtle-03',
-    'border-strong-01', 'border-strong-02', 'border-strong-03',
-    'button-secondary', 'button-secondary-hover', 'button-secondary-active',
-    'layer-hover-01', 'layer-hover-02', 'layer-hover-03',
-    'layer-selected-01', 'layer-selected-02', 'layer-selected-03',
-    'layer-active-01', 'layer-active-02', 'layer-active-03',
-  ]);
+  // §4.17 made every one of the 311 colour tokens css/rux.css declares
+  // editable, and three hand-kept copies of 311 names is not a list, it is a
+  // liability. THE SHAPE CHECK COVERS WHAT THE LIST ACTUALLY COVERED: the
+  // risk was an arbitrary stored key reaching style.setProperty, and a name
+  // matching /^[a-z][a-z0-9-]*$/ can only ever compose `--rux-<that>` — it
+  // cannot carry a colon, a semicolon, a brace or a closing paren, so it
+  // cannot escape the property it is written into or inject a second
+  // declaration. WHAT IT NO LONGER COVERS, said plainly: a record naming a
+  // token this build does not declare is now stored and applied rather than
+  // dropped. Applying it sets a custom property nothing reads, which is
+  // inert — but it is a real narrowing of what "validated" means here, and
+  // it is the trade §4.17 took to stop maintaining three copies of a list.
+  const TOKEN_RE = /^[a-z][a-z0-9-]*$/;
+  // A COLOUR, and only a colour. Hex covers 286 of the 311; the other 25 are
+  // Carbon's own rgba() values (every ai-aura-*, background-hover,
+  // text-disabled and the shadows), which a hex-only check would have made
+  // unsaveable at their own defaults. The character class inside the
+  // parentheses is digits, dots, commas, spaces and percent — no url(), no
+  // var(), no nested function, nothing that can carry a second declaration.
+  const VALUE_RE = /^(#[0-9a-f]{3,8}|rgba?\([0-9.,%\s]+\))$/i;
+  // `theme` is §4.17's unified kind: a base plus any set of token overrides.
+  // `accent` and `surface` are Phase 14/15 records, still valid and still
+  // applied exactly as they were — nothing saved before this needs migrating,
+  // and a record written by an older page still loads here.
+  const KINDS = new Set(['accent', 'surface', 'theme']);
+  const BASE_NAMES = new Set(['white', 'g10', 'g90', 'g100']);
+  // A cap in place of the list's implicit one. 311 is what the build
+  // declares; the slack is for a Carbon version that adds some.
+  const MAX_TOKENS = 400;
 
-  // Every property either kind could ever have set inline — js/theme.js
-  // clears exactly this set on every apply(), regardless of what the
-  // resolved theme actually names, so switching away never leaves a stale
-  // override behind.
-  const ALL_OVERRIDE_PROPS = [...ACCENT_TOKENS, ...SURFACE_TOKENS];
-
-  function tokensValid(kind, tokens) {
+  function tokensValid(tokens) {
     if (typeof tokens !== 'object' || !tokens) return false;
-    const allowed = kind === 'accent' ? ACCENT_TOKENS : SURFACE_TOKENS;
-    for (const [k, v] of Object.entries(tokens)) {
-      if (!allowed.has(k)) return false;
-      if (typeof v !== 'string' || !HEX_RE.test(v)) return false;
+    const entries = Object.entries(tokens);
+    if (entries.length > MAX_TOKENS) return false;
+    for (const [k, v] of entries) {
+      if (!TOKEN_RE.test(k)) return false;
+      if (typeof v !== 'string' || !VALUE_RE.test(v)) return false;
     }
     return true;
   }
@@ -93,8 +84,8 @@
     if (!r || typeof r !== 'object') return false;
     if (typeof r.id !== 'string' || !ID_RE.test(r.id)) return false;
     if (!KINDS.has(r.kind)) return false;
-    if (r.kind === 'surface' && !BASE_NAMES.has(r.base)) return false;
-    if (!tokensValid(r.kind, r.tokens)) return false;
+    if ((r.kind === 'surface' || r.kind === 'theme') && !BASE_NAMES.has(r.base)) return false;
+    if (!tokensValid(r.tokens)) return false;
     return true;
   }
 
@@ -158,5 +149,12 @@
   }
 
   window.Rux = window.Rux || {};
-  window.Rux.customThemes = { KEY, ALL_OVERRIDE_PROPS, list, get, save, remove };
+  // ALL_OVERRIDE_PROPS is GONE, 2026-09-10. It was the fixed list of every
+  // property a custom theme could set inline, and js/theme.js cleared
+  // exactly it on every apply() so switching away left nothing stale. With
+  // the token list retired there is no such enumeration to publish — and
+  // there no longer needs to be: theme.js now clears whatever --rux-*
+  // properties are actually on the element's own inline style, which is
+  // exact rather than a superset, and cannot fall behind this file.
+  window.Rux.customThemes = { KEY, list, get, save, remove };
 })();

@@ -791,6 +791,14 @@ export const CONTROL_FILES = [
   'tools/check-tags.mjs', 'tools/check-tokens.mjs',
   'tools/build.mjs', 'tools/build-portal.mjs', 'tools/build-blocks.mjs', 'tools/build-builder.mjs',
   'tools/build-theme-creator.mjs', 'tools/build-theme-families.mjs',
+  // ADDED 2026-09-10 with §4.17. build-theme-catalogue writes
+  // theme-creator/tokens.json, which decides which tokens the theme creator
+  // offers, at which level, seeded from which values, and with which note —
+  // so it sits exactly where build-theme-families already does. It is
+  // listed on the narrower ground too: it reads css/rux.css's own theme
+  // blocks and asserts their shape, and a loosened assertion there is a
+  // build that still succeeds while seeding an empty or partial catalogue.
+  'tools/build-theme-catalogue.mjs',
 
   // PHASE 8'S TOKEN SNAPSHOT, ALL FOUR PIECES. The gate is obvious; the other
   // three are here because each one decides what passes. build-token-values

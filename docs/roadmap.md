@@ -4893,6 +4893,143 @@ pages — the same scale Phase 13's original rollout recorded. New
 paths is proposed on its own, once the mechanism works, not folded into
 the commit that writes it.
 
+
+### 4.17 Phase 17 — Theme Creator: one list, every token
+
+**Asked by rux, 2026-09-10**, arriving with a Spotify-inspired Carbon theme
+map pasted in full: "i want to simplify the theme creator. simply want a list
+of all these tokens and make them modifable. simpler ui. tokens on left with
+brief description of what they are tied to and persitent preview on right."
+Then, on being shown what it would cost: "have options for simple theme
+creator to detailed and full?" and "with and export import theme option?"
+
+**What the page was.** Two independent tools sharing a preview and an undo
+stack: §4.14's twenty accent tokens with a Carbon hue-family shortcut, and
+§4.15's twenty-nine surface tokens layered on a compiled base. Forty-nine of
+the three hundred and eleven colour tokens the build actually declares.
+
+**What it is now.** One list. Every `--rux-*` colour token `css/rux.css`
+declares, each a field with a swatch, a note saying what it is tied to, and a
+contrast badge where one can be computed. A **detail level** above the list
+decides how many rows show — Simple 20, Detailed 144, Full 311 — and a search
+box filters by name. The level hides rows; it never discards a value, and the
+export is a diff against the base, so a token set at Full survives a return to
+Simple.
+
+**THE COUNT IS 311, NOT 188 AND NOT ~300.** `@carbon/themes` describes 188
+tokens; the compiled CSS declares 311 colour ones, because component tokens
+(`button-*`, `tag-*`, `notification-*`) live in separate Sass maps the theme
+package's own JSON never merges. A catalogue built from the package would have
+silently omitted a hundred and twenty-three editable colours. rux's pasted map
+looked like ~300 because Sass merges spacing and type into it; those are not
+colours and are not offered.
+
+#### The three questions rux settled
+
+1. **Where a saved theme lives.** Not a backend — §8.5's "every user, every
+   app" needs one and none exists. rux answered with a third option neither
+   side had proposed: *"what about saving as an output file that can be loaded
+   again if the browser is reset?"* So the store stays the browser-local one
+   §4.16 built, and **Download / Load a theme file** is the durability answer.
+   It does not sync between machines and the page does not claim it does.
+2. **Whether the ~90 code-highlighting tokens belong in the list.** Yes, in
+   Full, where they sit with tags, the AI label and the chat shell — 167 tokens
+   that are not lesser, only narrower, and none of them on a page with no tag,
+   no chat and no code block.
+3. **Whether the two modes and the hue shortcut go.** Both go.
+
+#### What the change makes weaker, named before it was written
+
+- **The contrast readout now covers 48 of 311 rows.** The same forty-eight
+  carried it before and the other 263 have no recorded pairing to be checked
+  against, so nothing was removed — but a badge column empty for five rows in
+  six reads as "this is fine" unless the page says otherwise, and the page now
+  says it in those words. Simple is exactly the level where the check is
+  dense, which is why the level exists rather than being a row count somebody
+  picked.
+- **The Carbon hue-family select is gone.** It set twenty tokens from one ramp
+  in one undoable step. Nothing replaces it. `theme-creator/families.json` and
+  `tools/build-theme-families.mjs` are left in place with no consumer:
+  retiring a control file is not something this change does on its way
+  somewhere else.
+- **`js/custom-themes.js` no longer validates token names against a list.**
+  It checks the shape, `/^[a-z][a-z0-9-]*$/`, which still cannot compose
+  anything but `--rux-<name>` and so still cannot escape the property or
+  inject a second declaration. What it no longer catches: a record naming a
+  token this build does not declare is now stored and applied rather than
+  dropped. Applying it sets a custom property nothing reads, which is inert.
+  That is the trade for retiring three hand-kept copies of a list that was
+  about to become 311 names long — the duplication §4.14 accepted and its own
+  comment complained about.
+
+#### What got better, measured rather than assumed
+
+- **`js/theme.js` clears what is set, not what it remembers.** `apply()` used
+  to walk `ALL_OVERRIDE_PROPS`, the forty-nine properties a custom theme could
+  name; it now reads the element's own inline style. Measured on
+  `templates/dashboard-page.html`: an 18-token theme applied, then switched
+  away — 18 inline properties before, 0 after, `data-rux-surface` gone, body
+  back to `rgb(255,255,255)`. Under the old fixed list, `text-secondary`,
+  `background-active` and every `ai-aura-*` would have been left behind,
+  because none of the three was ever in it.
+- **The contrast grounds are the edited colours now.** `scenarios.json` names
+  them `fixed:background`, `fixed:text-primary` — fixed because until today
+  the accent section could not edit them. Every one is an editable token, so
+  the ratios finally reflect the theme being built.
+- **Descriptions are Carbon's own, where Carbon wrote one.** `@carbon/themes`
+  ships a DTCG `$description` per token. Measured before it was trusted: of
+  the 117 non-syntax tokens, 91 say only "Token for <leaf> in the design
+  system." Those are dropped rather than printed — 106 of 311 survive. And the
+  four theme files disagree: 129 of 188 descriptions differ between white and
+  g100, with the prose in g100 and the token name restated in the others, so
+  all four are read and the longest wins. An assertion that they agreed is
+  what caught it, on the first run.
+- **`usedBy` is a grep of the compiled stylesheet, and is suppressed where it
+  lies.** The five contextual ladders are named directly by a handful of
+  components and reached by dozens through `--rux-layer`; §4.15's comment
+  already recorded that grepping `layer-01` finds eleven classes and
+  understates it. Those rows print the curated note instead.
+
+#### Two faults the browser found that no gate could
+
+- **The paste parser ended a value at the first comma**, which is right for
+  `layer-01: #181818,` and wrong for all twenty-five of Carbon's `rgba()`
+  values. Pasting rux's own Spotify map read `rgba(18` and reported three
+  values "ignored (not a colour)" with no hint the parser was at fault. Found
+  by pasting the real map into the real page.
+- **The trailing spacer left a hole.** `.thc-tail` is half a viewport of empty
+  space holding the sticky preview's range open — correct when the column was
+  always forty-nine rows. Filter to one token and the column is shorter than
+  the pinned pane, and the spacer is just a gap: seen as ~1600px at a 3200px
+  viewport. It is now measured and conditional.
+
+And one the gates did catch, exactly as designed: clamping the helper text to
+two lines put `display: -webkit-box` on `rux--form__helper-text` itself, and
+`check-spacing` reported a divergence on 3/3 variants — the same finding the
+`.thc-tail` comment already records for padding on a Carbon-classed stack. The
+clamp moved to a `thc-` span inside the wrapper. *The clamp itself did not do
+what it was added for:* measured after, the Detailed list is 23,456px against
+22,743px before. 255px was the worst row, never the typical one. It is kept
+for capping outliers; the search box is what answers 144 rows.
+
+**Deferred, explicitly:** `check-behaviour` has no case for the custom-themes
+store or the clear-overrides path — §4.16 deferred that coverage and this
+phase does not add it, so the riskiest change here is verified by hand in the
+browser and by nothing automated. `tools/new-project.sh` and
+`tools/app-check.mjs` keep their fixed theme lists.
+
+**Control-file checkpoint.** `tools/build-theme-creator.mjs` was already in
+`CONTROL_FILES` and is rewritten here; `tools/build-theme-catalogue.mjs` is
+new and is ADDED to that list, on the same ground
+`tools/build-theme-families.mjs` sits there — it decides which tokens the page
+offers, at which level and seeded from which values — and on the narrower one
+that it asserts the shape of `css/rux.css`'s theme blocks, where a loosened
+assertion is a build that succeeds while seeding a partial catalogue. Both
+changes were put to rux as a diff with their costs named, and rux said go.
+`js/theme.js` and `js/custom-themes.js` sit inside `RENDERED_INPUTS`' shared
+`js` entry, so this ages the whole browser-gate matrix.
+
+
 ## 5. Risks and one-way doors
 
 - **Carbon's docs will not match your CSS from Phase 1 onward.** Setting `$prefix` early
