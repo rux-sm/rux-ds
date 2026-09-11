@@ -14,7 +14,7 @@ README that narrates its own history goes stale, and this one did.
 
 ## Picking this up
 
-**2026-09-09.** Clean tree. `npm run verify` exits 0; `npm run gates` reads every
+**2026-09-10.** Clean tree. `npm run verify` exits 0; `npm run gates` reads every
 cell current. Newest tag `v0.1.15`, and **it is live: since 2026-09-10 this site
 deploys on a tag, after checking every served app against it** (roadmap §8.4
 diff B, §8.6). **Scheduler vendors nothing** — it links `/rux-ds/` live and its
@@ -41,12 +41,12 @@ Where the phases stand — the long form is in the log:
 | Templates (6), the component index (7), the app scaffold (9–11) | done — eleven templates |
 | The page builder, `builder.html` (12) | stage 12 of 13; stage 13, repeated items, is marked v2 |
 | Theme Creator, surface overlays, saved themes (14–16) | landed 2026-09-06 |
+| The Theme Creator rebuilt as one list (Phase 17) | landed 2026-09-10 — all 311 colour tokens, three detail levels, a theme file to download and load back |
 
 ### Open decisions — rux's
 
 | What | Where |
 |---|---|
-| Serve one copy of rux-ds to every app instead of vendoring three | roadmap §8.3 (the proposal), §8.4 (the plan), §8.6 (the brief: three questions, a recommendation) — **not decided** |
 | Published themes: a theme saved in the Theme Creator reaches every app on push | roadmap §8.5 — **required, not implemented** |
 | Two screen-reader tasks: flip a toggle; open a modal and a popover | `docs/screen-reader-pass.md` |
 | Whether `templates/settings-page.html`'s `col-span-4/8/8` is deliberate | the template, with `/account/` on the hub as a second reference |
