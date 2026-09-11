@@ -106,6 +106,16 @@ body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
              background: var(--rux-interactive); }
 .ks-dark { padding: 1rem; background: var(--rux-background-inverse); }
 
+/* A SCROLL GRADIENT FADES TO layer-01, SO ITS SPECIMEN HAS TO SIT ON ONE.
+   Carbon's component paints `var(--cds-layer-01)` at the closed edge -- read
+   off the running utility, not assumed -- and its own story renders on a
+   layer-01 surface, which is why the fade is invisible there. Dropped on the
+   sink's page background the same fade is a pale band: measured in g100,
+   layer-01 is #262626 against a #161616 ground. This is demo chrome, not a
+   rule about the component: ks- classes are the harness's, and check-classes
+   ignores them the way it ignores bld- and thc-. 2026-09-11. */
+.ks-layer { background: var(--rux-layer-01); }
+
 /* Carbon components set `display` on their own class, which outranks the UA
    `[hidden] { display: none }` rule on specificity. The harness needs `hidden` to
    actually hide, to stand in for the mount/unmount Carbon's web components do. */

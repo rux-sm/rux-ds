@@ -110,13 +110,13 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Components | **77 / 83 compiled** in 80 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 4 — white, g10, g90, g100 — plus `geist`, `linear`, `ant-dark` and `spotify`, token override blocks in `css/rux-theme.css`, not a compile |
 | Tokens · classes | **626** `--rux-*` defined, 10 more read through a fallback · **1,798** `.rux--*` |
-| Kitchen sink | **68** sections · **990** classes with `templates/` and `js/` |
+| Kitchen sink | **68** sections · **991** classes with `templates/` and `js/` |
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **74 `rendered-dom` · 6 `source` · 0 `inferred`** across 80 files |
 | Icons | 63 symbols in a 17.7 KB sprite — 51 referenced, 12 nothing points at |
 | Size | 1023.9 KB raw · 920.9 KB min · **91 KB gzipped** |
-| Behaviour JS | **17** modules · **57 KB gzipped** · 187.6 KB raw, 62% of it comment · 71.4 KB of code |
+| Behaviour JS | **18** modules · **59 KB gzipped** · 195.8 KB raw, 62% of it comment · 74.1 KB of code |
 
 **Every figure above is generated** by `tools/build-readme.mjs` from
 `tools/lib/stats.mjs`, rewritten on every `npm run verify`, and CI fails if the

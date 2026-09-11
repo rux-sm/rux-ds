@@ -6,13 +6,20 @@
     The captured c4p-- utility is absorbed and compiles as rux--. The capture
     records the four presentation overlays and the scrollable class but not the
     data attributes or inline paint React uses to observe the scroll edges.
-    This fragment therefore demonstrates the captured structure and overflow;
-    it does not claim React's unrecorded intersection treatment.
+
+    THE FADE IS LIVE SINCE 2026-09-11, and this comment said the opposite until
+    then. js/scroll-gradient.js drives it, from declarations read off Carbon's
+    own running component rather than from the capture -- @carbon/styles ships
+    NO background for this utility at all, so nothing was missing from the
+    build and nothing here is a compiled rule. The module's BEHAVIOUR label
+    carries the three gradients, the two stories they were read on and the
+    three scroll positions. Still not claimed: the IntersectionObserver
+    mechanism, which needs the data attributes the capture did not record.
 
     --x-none and --y-none appear in the capture and have no compiled rule, so
     §4.1.12 leaves them unwritten.
   -->
-  <div class="rux--scroll-gradient rux--scroll-gradient--y-scrollable" role="presentation" style="block-size:12rem;max-inline-size:32rem">
+  <div class="rux--scroll-gradient rux--scroll-gradient--y-scrollable ks-layer" role="presentation" style="block-size:12rem;max-inline-size:32rem">
     <div class="rux--scroll-gradient__content">
       <span></span><span></span>
       <div class="rux--scroll-gradient__content-children">

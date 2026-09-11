@@ -93,6 +93,7 @@ ${sections.join('\n\n')}
 <script src="js/ui-shell.js"></script>
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
+<script src="js/scroll-gradient.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/profile.js"></script>
 <script src="sink/harness.js"></script>

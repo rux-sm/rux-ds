@@ -214,7 +214,7 @@ _68 shipped fragments · 21 marked, holding 27 of the catalogue's 63 blocks · 2
 | `progress-bar` | progress-bar | — | 4 | — | — | — | no |
 | `progress-indicator` | progress-indicator | 2 | 3 | 8 | 0 | — | yes |
 | `radio` | form, radio-button | 1 | 5 | 4 | 0 | profile | yes |
-| `scroll-gradient` | scroll-gradient | — | 1 | — | — | — | no |
+| `scroll-gradient` | scroll-gradient | — | 1 | — | — | scroll-gradient | no |
 | `search` | search | 1 | 3 | 1 | 0 | form-controls | yes |
 | `select` | form, select | — | 5 | — | — | form-controls | no |
 | `shape-indicator` | shape-indicator | — | 13 | — | — | — | no |

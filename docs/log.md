@@ -9,6 +9,93 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the scroll gradient had no gradient, and the reason it was
+left that way was wrong.** rux opened the sink and asked where the fade was.
+The first answer given was that it could not be built without inventing a
+colour Carbon never shipped, and that the specimen was an honest decline.
+**Half of that was right and the half that mattered was not.** rux supplied
+the running component and it settles it.
+
+**WHAT IS TRUE: the fade is in no stylesheet.** `@carbon/styles`'
+scroll-gradient compiles geometry only, sets all four edge elements to
+`display: none`, never turns them back on, and declares no background,
+colour or gradient anywhere. `css/rux.css` matches it declaration for
+declaration, so nothing was dropped by this build. Measured on the sink
+before any change: four edges at `display: none`, 0x0, no background, and
+zero elements in the subtree painting a gradient.
+
+**WHAT WAS WRONG: "no recipe exists" — it does, and it is observable.**
+Driven on Carbon's own utility at three scroll positions, the fade is inline
+style written per edge, and every value in it is Carbon's own token and
+Carbon's own numbers:
+
+    start-vertical    right: 0 · linear-gradient(0deg, transparent,
+                      var(--cds-layer-01) 90%)
+    end-vertical      right: 0; bottom: 0 · linear-gradient(0deg,
+                      var(--cds-layer-01) 10%, transparent)
+    end-horizontal    right: 0; bottom: 0 · linear-gradient(-90deg,
+                      var(--cds-layer-01) 10%, transparent)
+
+Each edge carries `opacity` and `display` together, on when there is content
+past that edge. Reproducing that is what `js/` is for; the only substitution
+is the prefix on the token. `js/scroll-gradient.js` is the eighteenth module
+and the sink's fade is live.
+
+**CARBON'S OWN LEFT EDGE IS BLANK, in all three states**, and it is left blank
+here. `__start-horizontal` gets `opacity: 1; display: block` and never a
+background-image, so scrolling right opens a 48px transparent block and no
+fade appears; the other three all carry one. That reads as an oversight rather
+than a decision, and its mirror is one line — written into the module,
+commented out, because uncommenting it paints a gradient Carbon does not.
+
+**IT FADES TO layer-01, SO THE SPECIMEN MOVED ONTO ONE.** Carbon's story
+renders on a layer-01 surface, which is why the fade is seamless there; on the
+sink's page ground the same fade is a visible pale band — in g100, layer-01 is
+`#262626` against a `#161616` ground. `sink/scroll-gradient.html` now carries a
+`ks-layer` class from the harness. That is demo chrome, not a rule about the
+component. Measured after: the panel and the fade resolve to the same colour in
+both themes, `#f4f4f4` in white and `rgb(38,38,38)` in g100.
+
+**THE CLASS PARSER BIT TWICE MORE, and the second time is the clearest
+statement of the rule there is.** `check-classes` reads `rux--*` out of string
+literals in `js/`, so building a selector by joining the block prefix to an
+element name reported that bare prefix as an undefined class and failed the
+build. Writing the note explaining that, with the offending literal quoted,
+failed it a second time — the parser does not read comments differently from
+code. Every selector is now spelled out and the note describes the problem in
+words. The same edge caught `js/date-picker.js` from prose earlier the same
+day.
+
+**THE js TRIPWIRE FIRED, AND IT WAS NOT RAISED.** Adding the module took
+`js/` from 57.18 KB gzipped to 59.99 against a 60 KB tripwire, and the build
+stopped. A tripwire is tier 2 and lowering one is out of bounds for the
+session that tripped it, so the module's own prose was consolidated instead —
+the header and the `BEHAVIOUR:` label had been carrying the same four facts
+twice each. 59.8 KB, every distinct fact kept once.
+
+**BUT THE PREMISE WRITTEN BESIDE THAT NUMBER IS NOW FALSE, and rux should see
+it.** `tools/build.mjs:118` says "60 KB against today's ~35 is deliberately
+wide. Writing more modules does not reach it. What reaches it is somebody
+vendoring a library into js/." Writing one ordinary module reached it. Nothing
+was vendored, no library was added, and the margin is now 0.2 KB — so the next
+module of any size trips a control whose stated purpose is to catch something
+else entirely. The same comment says js is comment on purpose and that "a rule
+whose only route to compliance is deleting the reasoning is a rule working
+against itself", which is exactly the pressure the next author will be under.
+**Not changed here.** It is a tier 2 decision and the options are rux's: raise
+the number with the reasoning restated, measure code separately from comment,
+or accept that new modules now come with a prose budget.
+
+**NOT COVERED: `check-behaviour` has no case for this module.** Adding one
+means adding a fixture and an expected result, which is tier 2, so it is
+proposed rather than written. The four states are cheap to assert on the sink —
+at the top, start hidden and end shown; scrolled, both shown; at the bottom,
+start shown and end hidden — and that is exactly what was driven by hand here.
+
+**Swept and recorded separately, at the commit that carries this.**
+
+---
+
 **2026-09-11 — two consumer asks answered by measuring, and the second
 overturned this repository's own note.** `node tools/exchange.mjs` listed
 nineteen open asks; sixteen are addressed here. Two had a fix that follows from
