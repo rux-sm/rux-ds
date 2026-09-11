@@ -7,6 +7,11 @@
       "mcp__Claude_Browser__get_page_text",
       "mcp__Claude_Browser__tabs_context",
       "mcp__Claude_Browser__preview_list"
+    ],
+    "additionalDirectories": [
+      "~/Developer/rux-scheduler",
+      "~/Developer/rux-sm.github.io",
+      "~/Developer/rux-ln-notes"
     ]
   },
   "hooks": {
