@@ -51,6 +51,11 @@ Where the phases stand — the long form is in the log:
 | Builder stage 13, repeated items | `docs/builder-guided-plan.md` |
 | Whether `--rux-border-strong-01` keeps 3:1 in every theme shipped, or only in the four compiled | `SEND-DS-2.md` in rux-ln-notes, read in place — measured on this repository's own `kitchen-sink.html` |
 
+The last row is an ask from another repository, and that class of row is the
+one that goes stale here. `node tools/exchange.mjs` lists every open ask in the
+workspace from the memos' own frontmatter; the four rows above it are this
+repository's own decisions and are not exchange state. Added 2026-09-11.
+
 ## Run, edit, verify, release
 
 The full routine, with what to look at afterwards, is `docs/verbs.md`.
