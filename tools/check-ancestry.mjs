@@ -294,6 +294,17 @@ const KNOWN = {
     'the icon-tooltip the sink declines throughout'],
   'templates/table-page:pagination__button--no-index': [[...TOOLTIP_CHROME, 'popover--top', 'icon-tooltip--disabled'],
     'the icon-tooltip the sink declines throughout, in its disabled form'],
+  // THE SECOND TEMPLATE TO CARRY A PAGINATION BAR, 2026-09-10. Both entries are
+  // templates/table-page's verbatim, because the markup is: the icon-tooltip
+  // chrome, declined here for the reason it is declined everywhere — the hint
+  // is positioned by floating-ui and that behaviour was never written.
+  // `pagination__control-buttons`, the STYLED wrapper the pagination: note used
+  // to omit, IS present. Dropping THAT one is the defect this gate was written
+  // for, and neither entry below declines it.
+  'templates/search-results-page:pagination__button': [[...TOOLTIP_CHROME, 'popover--top'],
+    'the icon-tooltip the sink declines throughout'],
+  'templates/search-results-page:pagination__button--no-index': [[...TOOLTIP_CHROME, 'popover--top', 'icon-tooltip--disabled'],
+    'the icon-tooltip the sink declines throughout, in its disabled form'],
   'tooltip:tooltip__trigger': [['form-item', 'text-input-wrapper', 'password-input-wrapper',
     'text-input__field-outer-wrapper', 'text-input__field-wrapper', 'popover--high-contrast',
     'popover--bottom-end', 'toggle-password-tooltip', 'icon-tooltip', 'tooltip-trigger__wrapper'],
