@@ -90,7 +90,33 @@ const showAll = process.argv.includes('--all');
 for (const { name, path } of targets) {
   const src = readFileSync(path, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
   const seenHere = new Set();
-  for (const m of src.matchAll(/<([a-z0-9]+)\b([^>]*\brole="([^"]+)"[^>]*)>/g)) {
+  // `\srole="`, NOT `\brole="`. Reported by rux 2026-09-10 and fixed here.
+  // `\b` matches between the hyphen and the r in `data-role="label"` — a
+  // hyphen is not a word character and `r` is — so EVERY `data-role`,
+  // `data-thc-role` or any other custom `*-role` attribute was read as an
+  // ARIA role and measured against the captures. It surfaced on
+  // theme-creator.html, whose row <template> used `data-role` to mark the
+  // parts a clone fills in: four elements were reported as carrying roles
+  // Carbon never renders — `role="label"`, `role="hex"`, `role="note"`,
+  // `role="used"` — and the page was changed to `data-thc` to get past a
+  // gate that was wrong, which is the wrong way round and is why this is
+  // being fixed rather than worked around again.
+  //
+  // WHAT THE NARROWING COSTS: nothing that was ever a true positive. An
+  // ARIA role attribute is separated from the tag name or the attribute
+  // before it by whitespace, always — there is no valid markup in which
+  // `role=` is preceded directly by a word character, and the only strings
+  // of that shape are custom attributes ENDING in `role`, none of which is
+  // an ARIA role. Proven rather than argued: a probe fragment carrying
+  // `data-role="alpha"` and `role="beta"` on the same attested class read
+  // 2 invented under `\b` and 1 under `\s`, the one being beta; and the
+  // whole-repo run is otherwise identical, 604 corroborated and 4 declined
+  // either way.
+  //
+  // WHAT IT STILL CANNOT SEE, unchanged by this: a role written inside
+  // another attribute's value, and any role a script sets at runtime. This
+  // gate reads files.
+  for (const m of src.matchAll(/<([a-z0-9]+)\b([^>]*\srole="([^"]+)"[^>]*)>/g)) {
     const [, tag, attrs, role] = m;
     const cm = attrs.match(/class="([^"]*)"/);
     const classes = (cm ? cm[1].split(/\s+/) : [])
