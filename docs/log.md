@@ -9,6 +9,49 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — all five pages reviewed against each other, and one was still
+out.** rux asked for a consistency pass on theme, nav and switcher. It was done
+by PARSING WHAT THE SERVER SERVES for all seventeen pages and comparing ten
+fields — header theme, skip link, toggle configuration, menu bar, global
+actions, switcher entries, theme-radio count, nav contents, which entry is
+current, and whether the 18rem offset is in the file.
+
+**The twelve templates are identical to each other, all twelve, on all ten
+fields**, and they are deliberately a different shell: persistent nav, header
+menu bar, an invented app's switcher, the 18rem offset. `check-parity` compares
+them against `tools/new-project.sh` and `tools/lib/shell.mjs` says in its own
+header that nothing there should reach them. They were checked and they are
+consistent; they are not meant to match the five.
+
+**Four of the five root pages were already identical. `index.html` was not**,
+and it was the one page rux had never named: no hamburger at all, no side nav
+at all, and the header menu bar the other four had just lost. It kept its theme
+panel, so the audit's other fields matched — which is exactly how it survived
+three passes.
+
+**IT IS HAND-WRITTEN, SO IT IS SPLICED RATHER THAN GENERATED.** Pasting the
+shared shell into it would have recreated the fifth copy `lib/shell.mjs` exists
+to remove. `tools/inline-shell.mjs` writes the same bytes between two markers
+the page declares, the way `tools/icons.mjs` splices the sprite into
+`templates/`. It is idempotent — a second run reports "unchanged" — and the
+result is committed, so a clone with no build step still serves a correct page.
+A file opts in by carrying the markers and naming which page it is; an unknown
+name stops the build rather than emitting a nav with nothing current.
+
+**SO THE NAV IS FIVE ENTRIES NOW, Home first.** `index.html` is what `/rux-ds/`
+serves and it was previously reachable only through the switcher's "Design
+System" — the app-switcher tier, reaching sideways at its own app. **Home in
+the nav and Home in the switcher are not the same place and that is the point:**
+the switcher's is the ACCOUNT root, another product; the nav's is this
+product's front door. Two tiers, two panels, which is the layering Carbon's
+shell exists to express.
+
+**MEASURED AFTER: one distinct signature across all five**, every field
+identical except `current`, which is correctly different on each. That is the
+whole of the review's answer and it is a comparison rather than an opinion.
+
+---
+
 **2026-09-11 — the switcher's Home link opened the kitchen sink, and the shell
 was right.** rux clicked Home on one of the newly-shelled pages and landed on
 the sink. Reproduced at once on port 8642: `/` returned `kitchen-sink.html`,

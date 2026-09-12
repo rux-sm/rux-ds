@@ -221,6 +221,7 @@
   <div class="rux--side-nav__overlay"></div>
   <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--hidden" aria-label="Pages">
     <ul class="rux--side-nav__items">
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="index.html"><span class="rux--side-nav__link-text">Home</span></a></li>
       <li class="rux--side-nav__item rux--side-nav__item--active"><a class="rux--side-nav__link" href="portal.html" aria-current="page"><span class="rux--side-nav__link-text">Portal</span></a></li>
       <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="kitchen-sink.html"><span class="rux--side-nav__link-text">Kitchen sink</span></a></li>
       <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="builder.html"><span class="rux--side-nav__link-text">Page builder</span></a></li>
@@ -285,7 +286,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <p class="rux--type-heading-04">50 of 50 shown</p>
+              <p class="rux--type-heading-04">42 of 50 shown</p>
               <p>3 portal cells reported by npm run gates only</p>
             </div>
           </div>
@@ -1108,7 +1109,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 50 of 50 are current; 0 not current, 0 never run. <code>npm run gates</code> reports all 53, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 42 of 50 are current; 8 not current, 0 never run. <code>npm run gates</code> reports all 53, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -1125,9 +1126,9 @@
                 <tr>
                   <td>check-rendered</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1139,16 +1140,16 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>index.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1251,16 +1252,16 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>index.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1356,9 +1357,9 @@
                 <tr>
                   <td>check-behaviour</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
@@ -1370,16 +1371,16 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>index.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>

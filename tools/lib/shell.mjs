@@ -1,7 +1,7 @@
 //
-// ONE SHELL, EMITTED ONCE, FOR EVERY PAGE THIS REPOSITORY GENERATES.
+// ONE SHELL, EMITTED ONCE, FOR EVERY PAGE THIS REPOSITORY PUBLISHES.
 //
-// Written 2026-09-11 because the four pages had four different shells and
+// Written 2026-09-11 because the five pages had five different shells and
 // nobody had noticed. Counted before this file existed: portal carried a
 // persistent side nav and no account panel, builder and theme-creator carried
 // a header menu bar and neither a nav nor a panel, index carried the panel and
@@ -10,6 +10,12 @@
 // way four copies of anything drift. A design system's own pages disagreeing
 // about the design system's own shell is the specific embarrassment this
 // removes.
+//
+// FOUR PAGES CALL shell() DIRECTLY FROM THEIR GENERATORS. index.html is
+// hand-written -- prose and a tile grid nobody wants inside a template literal
+// -- so tools/inline-shell.mjs splices the same output between two markers in
+// it, the way tools/icons.mjs splices the sprite into templates/. Same bytes,
+// two delivery routes, no fifth copy.
 //
 // THE SHAPE, and why each part is the way it is:
 //
@@ -47,11 +53,18 @@
 // against tools/new-project.sh. Nothing here should reach them.
 //
 
-// The four pages, in nav order. Order is deliberate and not alphabetical:
-// portal is the front door, the sink is the reference, and the two tools
-// follow. `file` is what every page links to — these all sit at the root
-// together, so no prefix is needed and none is offered.
+// The five pages, in nav order. Order is deliberate and not alphabetical:
+// home is the front door, portal the status board, the sink the reference, and
+// the two tools follow. `file` is what every page links to — these all sit at
+// the root together, so no prefix is needed and none is offered.
 export const PAGES = [
+  // HOME IS index.html AND IT IS NOT THE SWITCHER'S HOME. The switcher's Home
+  // is the ACCOUNT root, another product entirely; this is rux-ds's own front
+  // door, the page /rux-ds/ serves. Two tiers, two panels, which is the
+  // layering Carbon's shell exists to express — and until 2026-09-11 this page
+  // was reachable only through the switcher's "Design System" entry, which is
+  // the app-switcher tier reaching sideways at its own app.
+  { id: 'index', file: 'index.html', label: 'Home' },
   { id: 'portal', file: 'portal.html', label: 'Portal' },
   { id: 'kitchen-sink', file: 'kitchen-sink.html', label: 'Kitchen sink' },
   { id: 'builder', file: 'builder.html', label: 'Page builder' },
