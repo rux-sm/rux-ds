@@ -40,9 +40,22 @@ const WORKSPACE = wsAt < 0 ? null
   : resolve(args[wsAt + 1] ?? resolve(dirname(fileURLToPath(import.meta.url)), '..', '..'));
 const PORT = process.env.PORT ?? (WORKSPACE ? 8640 : 8642);
 const ROOT = process.cwd();
-// Vendored into every app since 2026-09-05 (tools/app-skeleton/tools/serve.mjs
-// imports it): at rux-ds's root `/` is the sink, in an app it is index.html.
-const HOME = existsSync(join(ROOT, 'kitchen-sink.html')) ? '/kitchen-sink.html' : '/index.html';
+// WHAT `/` SERVES, and it is index.html wherever there is one. Imported by
+// every app since 2026-09-05 (tools/app-skeleton/tools/serve.mjs), so this one
+// line decides the front door of every dev server in the family.
+//
+// IT PREFERRED THE SINK UNTIL 2026-09-11 and that had stopped being true of
+// this repository. The old line read "at rux-ds's root `/` is the sink, in an
+// app it is index.html", written when rux-ds had no landing page and the sink
+// was the only thing to open. rux-ds has had index.html for a while, and the
+// shell's switcher links Home at `/` — so on port 8642 the Home link landed on
+// the kitchen sink, which is the bug rux reported. In production `/` is the
+// hub and the link is correct; only the dev server disagreed with it.
+//
+// NOTHING CHANGES FOR AN APP: an app has index.html and no kitchen-sink.html,
+// so it took the second branch before and takes the first one now, to the same
+// file. The fallback is kept for a checkout that genuinely has only a sink.
+const HOME = existsSync(join(ROOT, 'index.html')) ? '/index.html' : '/kitchen-sink.html';
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',

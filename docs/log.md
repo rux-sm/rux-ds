@@ -9,6 +9,41 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the switcher's Home link opened the kitchen sink, and the shell
+was right.** rux clicked Home on one of the newly-shelled pages and landed on
+the sink. Reproduced at once on port 8642: `/` returned `kitchen-sink.html`,
+title and all. **The link is `/` and that is correct** — in production the hub
+publishes at the account root, so `/` is the hub's home, and the same link on
+the workspace server resolves through `switcher.json`. The only thing that
+disagreed with it was rux-ds's own single-repo dev server.
+
+**`tools/serve.mjs:45` decided it, and its own comment was the fossil.** It
+read "at rux-ds's root `/` is the sink, in an app it is index.html" and chose
+`kitchen-sink.html` whenever that file existed. True when it was written: this
+repository had no landing page and the sink was the only thing worth opening.
+`index.html` has existed for a while, the shell now links Home from four pages,
+and nobody had gone back to the line. It prefers `index.html` now and falls
+back to the sink for a checkout that genuinely has only one.
+
+**NOTHING CHANGES FOR A CONSUMER.** Every app imports this file rather than
+copying it, so the line reaches all of them — and an app has `index.html` and
+no `kitchen-sink.html`, so it took the second branch before and takes the first
+one now, to the same file. Verified after: `/` serves "rux-ds — home" with its
+own h1, and the Home link resolves there.
+
+**WHAT IS STILL 404 ON PORT 8642, and is meant to be:** `/rux-ds/`,
+`/rux-ln-notes/` and `/rux-scheduler/` — the switcher's other three. Measured,
+all three. The single-repo server serves this checkout at `/` and knows nothing
+about its siblings; `serve.mjs --workspace` on 8640 is the only local layout
+where those resolve, which `CLAUDE.md` already says. Worth stating here because
+the shell now puts that switcher on four pages, so three dead links are three
+times more visible than they were this morning.
+
+**No cell aged**: `tools/serve.mjs` is not a rendered input and not a control,
+and no page changed.
+
+---
+
 **2026-09-11 — one shell for every page, emitted from one file.** rux asked
 for the portal, the builder and the theme creator to carry what the sink now
 carries. Counted before touching anything, the four pages had **four different
