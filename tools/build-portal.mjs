@@ -43,7 +43,7 @@
 // invariant so it is not merely undocumented.
 //
 import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
-import { shell } from './lib/shell.mjs';
+import { shell, shellHead, shellScripts } from './lib/shell.mjs';
 import { gzipSync } from 'node:zlib';
 import { GATES, browserGates, cells } from './lib/gates.mjs';
 import { markupFiles } from './lib/sources.mjs';
@@ -301,6 +301,7 @@ const page = `<!doctype html>
      instead of silently diverging. -->
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
+${shellHead()}
 <style>
 /* THE PAGE INDEX, in the page. This page's four section links were in the
    left panel until 2026-09-11, which is the tier IBM reserves for a product's
@@ -487,6 +488,7 @@ ${matrixRows}
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
+${shellScripts()}
 </body>
 </html>
 `;

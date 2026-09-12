@@ -63,7 +63,7 @@
 // check-classes exactly as bld- and the sink's ks- are, and read by
 // check-tokens because this is a root page.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { shell } from './lib/shell.mjs';
+import { shell, shellHead, shellScripts } from './lib/shell.mjs';
 
 const sprite = readFileSync('assets/icons.svg', 'utf8').trim();
 const symbols = new Set([...sprite.matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
@@ -280,8 +280,7 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
-<script src="js/custom-themes.js"></script>
-<script src="js/theme.js"></script>
+${shellHead()}
 <style>
 /* The theme creator's own layout, thc- so check-classes ignores it the way
    it ignores the builder's bld- and the sink's ks-. Tokens only. */
@@ -656,6 +655,7 @@ ${WIDTHS.map(([v, l]) => `                <button type="button" class="rux--btn 
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
+${shellScripts()}
 <!-- The catalogue: every token's label, level, group, note, the four
      compiled bases' values for it, and the contrast check or scenarios that
      give it a badge. Generated from css/rux.css and

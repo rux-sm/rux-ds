@@ -9,6 +9,51 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-12 — the theme panel I put on three pages did nothing, and rux found
+it.** The shell gave the portal, the builder and the theme creator an account
+panel with eight theme radios. **None of the three loaded `js/profile.js`,
+which is the module that listens to those radios**, and the PORTAL loaded none
+of the three theme scripts at all. Measured on the served pages before any fix:
+clicking Gray 100 on the portal checked the radio and moved nothing —
+`data-theme` stayed `white`, the background stayed `rgb(255,255,255)` — while
+`rux.profile` in that same browser held `{"theme":"spotify"}`, which nothing
+applied. A panel nobody wired is an affordance that lies, which is the rule
+`js/` states about itself, and this is the shell breaking it on the day it was
+written.
+
+**COUNTED ACROSS ALL FIVE, because one page working is not the question:**
+
+    page            custom-themes  theme.js  profile.js   radios
+    index                 yes        yes       yes          worked
+    kitchen-sink          yes        yes       yes          worked
+    portal                 no         no        no          dead, and no stored theme applied
+    builder               yes        yes        no          dead radios, stored theme applied
+    theme-creator         yes        yes        no          dead radios, stored theme applied
+
+**THE SHELL OWNS ITS SCRIPTS NOW**, as `shellHead()` and `shellScripts()`. The
+split is not cosmetic: the first pair goes in `<head>` BEFORE the stylesheets,
+because `js/theme.js` puts the stored theme on `<html>` and doing that after
+first paint is a visible flash of the wrong theme; `js/profile.js` needs the
+panel to exist, so it goes at the end of `<body>`. A generator that emits the
+shell now emits both, and all four do.
+
+**DRIVEN END TO END AFTER, across every page in one pass:** the portal loaded
+showing the stored `spotify` — which it could not do this morning — Gray 100
+picked there moved `data-theme`, painted `rgb(22,22,22)` and stored; the sink,
+the theme creator and the builder each then LOADED in Gray 100 with the right
+radio checked; White set on the builder came back as White on home. The theme
+is one setting shared by five pages, set from any of them, which is what the
+panel claimed to be from the moment it appeared.
+
+**WHAT THIS SAYS ABOUT THE CONSISTENCY PASS THAT PRECEDED IT.** That review
+compared ten fields and reported one distinct signature across the five. Every
+one of those fields was markup. **Not one of them asked whether the markup was
+connected to anything**, so a panel present on five pages and working on two
+passed it clean. Comparing structure is not the same as checking it works, and
+the review said "consistent" when it had only earned "identically shaped".
+
+---
+
 **2026-09-11 — all five pages reviewed against each other, and one was still
 out.** rux asked for a consistency pass on theme, nav and switcher. It was done
 by PARSING WHAT THE SERVER SERVES for all seventeen pages and comparing ten

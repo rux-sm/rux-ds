@@ -91,7 +91,7 @@
 // document and do not descend into an iframe; sweeping this page measures the
 // builder's chrome, not the page inside it. The page says so.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { shell } from './lib/shell.mjs';
+import { shell, shellHead, shellScripts } from './lib/shell.mjs';
 
 const sprite = readFileSync('assets/icons.svg', 'utf8').trim();
 const symbols = new Set([...sprite.matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
@@ -152,8 +152,7 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
-<script src="js/custom-themes.js"></script>
-<script src="js/theme.js"></script>
+${shellHead()}
 <style>
 /* The builder's own layout, bld- so check-classes ignores it the way it
    ignores the sink's ks-. Tokens only; no colour or size is invented. */
@@ -616,6 +615,7 @@ ${WIDTHS.map(([v, l]) => `                      <button type="button" class="rux
 <script src="js/dismiss.js"></script>
 <script src="js/tile.js"></script>
 <script src="js/modal.js"></script>
+${shellScripts()}
 <script type="module" src="builder/builder.js"></script>
 </body>
 </html>

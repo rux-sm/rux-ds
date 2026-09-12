@@ -53,6 +53,26 @@
 // against tools/new-project.sh. Nothing here should reach them.
 //
 
+// THE SHELL'S OWN SCRIPTS, because a panel nobody wired is an affordance that
+// lies — the rule js/ states about itself, and one this file broke the day it
+// was written. It put an account panel with eight theme radios on the portal,
+// the builder and the theme creator; none of the three loaded js/profile.js,
+// which is what listens to those radios, and the PORTAL loaded none of the
+// three scripts at all. Measured 2026-09-12 on the served pages: clicking
+// Gray 100 on the portal checked the radio and moved nothing, and a stored
+// theme of "spotify" rendered white because nothing applied it.
+//
+// TWO PLACES, AND THE SPLIT IS NOT COSMETIC. The first pair goes in <head>,
+// BEFORE the stylesheets paint, because js/theme.js puts the stored theme on
+// <html> and doing that after first paint is a visible flash of the wrong
+// theme. js/profile.js needs the panel to exist, so it goes at the end of
+// <body> with the other modules. A generator that emits the shell must emit
+// both.
+export const shellHead = () => `<script src="js/custom-themes.js"></script>
+<script src="js/theme.js"></script>`;
+
+export const shellScripts = () => `<script src="js/profile.js"></script>`;
+
 // The five pages, in nav order. Order is deliberate and not alphabetical:
 // home is the front door, portal the status board, the sink the reference, and
 // the two tools follow. `file` is what every page links to — these all sit at

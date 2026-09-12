@@ -10,7 +10,7 @@
 // and reported, so a new fragment can never be silently invisible.
 //
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
-import { shell } from './lib/shell.mjs';
+import { shell, shellHead, shellScripts } from './lib/shell.mjs';
 
 const frags = readdirSync('sink').filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, ''));
 const order = existsSync('sink/ORDER')
@@ -59,8 +59,7 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux.css">
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
-<script src="js/custom-themes.js"></script>
-<script src="js/theme.js"></script>
+${shellHead()}
 <link rel="stylesheet" href="sink/harness.css">
 </head>
 <body>
@@ -103,7 +102,7 @@ ${sections.join('\n\n')}
 <script src="js/tile.js"></script>
 <script src="js/scroll-gradient.js"></script>
 <script src="js/modal.js"></script>
-<script src="js/profile.js"></script>
+${shellScripts()}
 <script src="sink/harness.js"></script>
 </body>
 </html>
