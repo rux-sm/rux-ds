@@ -84,6 +84,38 @@ look for one. `rux-ln-atlas` keeps its nine, because `START-HERE.md`,
 than working documents, and burying them defeats their purpose. A library is
 not an app.
 
+## 3.2 Where a toast goes, because rux-ds cannot ship it
+
+**rux-ds compiles the toast CARD and nothing about where it sits.** Checked at
+source 2026-09-11: `@carbon/styles`' `_toast-notification.scss` carries no
+`position`, no `inset`, no `z-index` and no stacking rule at all, and Carbon's
+own captured demo drops the card straight into the page with no wrapper. The
+card's width, wrap and shadow are all it ships.
+
+**And rux-ds cannot fix that with a class.** A `rux--*` class comes from
+Carbon; `check-classes` fails the build on one Carbon does not compile, so
+there is no `rux--toast-region` to be had. By §2 and §3 a region is therefore
+**yours, under your own prefix** — the same answer as any component Carbon has
+no equivalent for. Asked for by `rux-scheduler` 2026-09-11 and declined on
+that ground, not on merit: the gap is real.
+
+**So that every app's is the same, here is the shape.** Carbon's own guidance
+(`carbon-website`, notification usage) is specific, and these three facts are
+the whole of it:
+
+- toasts sit at the **top right** of the screen,
+- they **stack with `--rux-spacing-03`** between them,
+- the **newest is on top**, older ones pushed down until dismissed.
+
+**The placement is a default, not a rule, and the first consumer to build one
+overrode it with a measurement.** `rux-scheduler` puts its toasts bottom right,
+because at 1440x950 Carbon's top-right lands on that board's own toolbar
+buttons. A region worth writing makes its corner easy to change; an app with
+chrome in that corner should move it and say why.
+
+Everything else is yours: the fixed position, the gutter, the z-index, and a
+narrow-width override so an 18rem card does not decide a 375px layout.
+
 ## 4. The one check
 
     node tools/check.mjs

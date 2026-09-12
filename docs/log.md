@@ -9,6 +9,43 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the toast ask, answered by reading the source and declining the
+class.** `rux-scheduler` asked for a compiled region to put toasts in, carrying
+the position, inset, stacking and z-index "that Carbon's guidance describes but
+its CSS does not ship". **Every word of that checks out.**
+`@carbon/styles`' `_toast-notification.scss` contains no `position`, no
+`inset`, no `z-index` and no stacking rule — grepped at source, not inferred —
+and the captured `components-notifications-toast--default` drops the card
+straight into `cds--layout` with no wrapper of any kind. The card's width,
+wrap and shadow are the whole of what Carbon ships.
+
+**IT IS DECLINED ANYWAY, AND ON A RULE RATHER THAN ON MERIT.** A `rux--*`
+class comes from Carbon and `check-classes` fails the build on one Carbon does
+not compile, so `rux--toast-region` cannot exist here. `docs/consumer-policy.md`
+§2 and §3 already answer it: a component Carbon has no equivalent for is the
+app's, under the app's own prefix. What the policy did NOT do is say where a
+toast goes, which is why the first consumer to want one had to decide it alone.
+
+**SO THE THREE FACTS ARE WRITTEN DOWN INSTEAD, as §3.2.** Carbon's own
+guidance is specific and short — top right, `spacing-03` between, newest on
+top, older pushed down — and it is quoted from `carbon-website`'s notification
+usage page. Every app still writes its own region; they now write the same one.
+
+**ONE CORRECTION TO THE ASK, because a consumer may go looking.** It says that
+guidance is "vendored in this very repository". It is not: `carbon-website/` is
+in `.gitignore`, a local reference clone, and a fresh checkout has no such
+file. The quote itself is verbatim and was checked line for line.
+
+**AND THE DEFAULT IS RECORDED AS A DEFAULT.** rux-scheduler placed its toasts
+bottom right rather than top, because at 1440x950 Carbon's corner lands on that
+board's toolbar. That is the right kind of override and §3.2 says so rather
+than mandating a corner nobody can use.
+
+**Nothing rendered changed, so nothing was swept**: `docs/consumer-policy.md`
+is not a rendered input and all 53 cells stayed current.
+
+---
+
 **2026-09-11 — the scroll gradient had no gradient, and the reason it was
 left that way was wrong.** rux opened the sink and asked where the fade was.
 The first answer given was that it could not be built without inventing a
