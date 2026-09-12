@@ -1,20 +1,27 @@
 /* Kitchen-sink harness only. Not part of the system — everything here is ks-. */
-body { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
-       background: var(--rux-background); color: var(--rux-text-primary); }
-.ks-nav { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
-          padding: 1.5rem 1rem; border-inline-end: 1px solid var(--rux-border-subtle);
-          background: var(--rux-layer-01); }
-.ks-nav h1 { font-size: .875rem; letter-spacing: .32px; text-transform: uppercase;
-             color: var(--rux-text-secondary); }
-.ks-count { font-size: .75rem; color: var(--rux-text-helper); margin-block: .25rem 1rem; }
-.ks-navlinks { display: flex; flex-direction: column; }
-.ks-nav a { padding: .1875rem 0; font-size: .8125rem; color: var(--rux-text-secondary);
-            text-decoration: none; }
-.ks-nav a:hover { color: var(--rux-link-primary); text-decoration: underline; }
-.ks-main { padding: 2rem 2.5rem 6rem; max-width: 64rem; }
-.ks-themes { display: flex; gap: .25rem; margin-block-end: 1.5rem; flex-wrap: wrap;
-             position: sticky; top: 0; z-index: 10; padding-block: .5rem;
-             background: var(--rux-background); }
+/* THE SHELL IS THE SYSTEM'S NOW, 2026-09-11. This file used to lay the page
+   out itself — a two-column body grid, a sticky ks-nav holding every section
+   link, and a row of eight theme buttons at the top of the content. All three
+   are gone. The page carries the same rux--header, side nav and profile panel
+   as every other page here, so the sink is built from the thing it documents
+   rather than from harness chrome that resembled it.
+
+   WHAT IS LEFT IS SIZING AND NOTHING ELSE. ks-main rides alongside
+   rux--content, which supplies the padding and the 18rem offset for the nav
+   inside the header; this only caps the measure so 68 sections do not run the
+   full width of a wide screen. ks-count is the line under the h1. */
+body { min-height: 100vh; background: var(--rux-background);
+       color: var(--rux-text-primary); }
+/* MEASURE ONLY. rux--content's own padding is left alone deliberately: the
+   sink used to set padding-block here, and check-spacing reported
+   rux--content diverging on paddingBlockStart and paddingBlockEnd as well as
+   the inline offset. Only the offset is adjudicated (SELF_INDENT, and every
+   template carries it), so a block padding of ours turns one known row into
+   an unknown one. Fitting the markup to the adjudication is the cheap side of
+   that; widening the adjudication is a control change. 2026-09-11. */
+.ks-main { max-width: 66rem; }
+.ks-count { font-size: .75rem; color: var(--rux-text-helper);
+            margin-block: .25rem 2rem; }
 .ks-sec { padding-block: 2rem; border-block-start: 1px solid var(--rux-border-subtle); }
 /* EVERY SECTION IS ITS OWN STACKING CONTEXT, AND THE MODAL SECTION IS NOT.
    The sink shows overlay components in their OPEN state statically — a page

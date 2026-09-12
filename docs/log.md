@@ -9,6 +9,73 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the kitchen sink gets the shell it documents.** It was the only
+page here without one: index, portal, builder and theme-creator each carry a
+real `rux--header`, and the sink carried three — all of them specimens inside
+its own `ui-shell` section. So from the reference page there was no way to
+reach the portal. It now has the shell from `templates/app-shell.html`: header
+at `g100`, skip link, product nav, account and switcher panels, and the section
+list in a `rux--side-nav`. `<h1>` is "Kitchen sink" in the content, which is how
+the other four satisfy `check-headings`.
+
+**THE THEME CONTROL MOVED INTO THE PROFILE PANEL, and that reverses a recorded
+decision rather than filling a gap.** `templates/app-shell.html` says in as many
+words that "the sink's five buttons stay in harness.js as a demo convenience".
+rux asked for the sink to match every other page, so the eight `data-set-theme`
+buttons at the top of the content are gone and the eight radios in
+`#rux-account-panel` are the only way to pick a theme here. It is strictly more
+than the buttons did: `js/profile.js` stores the choice, so it now survives a
+reload and follows the reader to every other page on the origin. Measured:
+picking Gray 100 moves `data-theme`, paints the body `rgb(22,22,22)` and writes
+`{"theme":"g100"}` to storage; picking White returns it.
+
+**THIRTEEN DUPLICATE IDS APPEARED THE MOMENT THE SHELL LANDED, and no gate saw
+a single one.** The `ui-shell` specimen carried the canonical
+`rux-account-panel`, `rux-switcher-panel`, `rux-profile-*` and all eight
+`rux-theme-*` ids, because until today it was the only shell on the page. With
+a real one above it every id existed twice, every `<label for>` pointed at
+whichever came first, and `name="rux-theme"` was one radio group of SIXTEEN —
+so the specimen's radios and the page's were the same control. Found by
+enumerating `[id]` on the built page and counting, not by a gate. The specimen
+now takes `ks-` ids and `name="ks-demo-theme"`; it keeps every captured CLASS,
+which is what it is there to show. Re-measured after: 0 duplicates, 8 radios in
+the group, and clicking the specimen's Gray 100 leaves `data-theme` alone.
+
+**THE NAV IS TALLER AND IT SCROLLS, both measured rather than assumed.**
+Carbon's side-nav link is a fixed 2rem against the old harness row's 19px, so
+68 entries make a 2192px list where the old one was 1292. That is not a
+regression to a clipped nav: `.rux--side-nav--ux .rux--side-nav__items` is
+`overflow-y: auto` (`rux.css:27729`), the list scrolls inside an 852px window,
+26 entries show at once, and scrolling to the end puts "User avatar" fully in
+view. **A first reading of this said 42 links were unreachable and that was
+wrong** — it measured `overflow` on the NAV, which is `hidden`, instead of on
+the `__items` list inside it, which is not. Expandable categories would collapse
+the list and `app-shell.html` demonstrates them, but grouping 68 components is a
+judgement nobody has made. Flat until then.
+
+**ONE SPACING ROW WAS FIXED BY CHANGING THE MARKUP, NOT THE ADJUDICATION.** The
+first draft set `padding-block` on the content, and `check-spacing` reported
+`rux--content` diverging on three properties. Only `paddingInlineStart` is
+adjudicated — `SELF_INDENT`, the row every template carries — and a KNOWN entry
+matches only when EVERY diverging property is covered, so the whole row fell
+into the unknown set. Dropping our block padding and letting `rux--content` keep
+Carbon's 32px puts it back: 15 diverges, exactly the count before the shell.
+Widening the exception list would have been the other way round, and that is a
+control change.
+
+**WHAT THIS COST, stated rather than buried: `check-behaviour` now SKIPS one
+case.** Its "account panel" case scopes to `#ui-shell` and looks for an action
+carrying `aria-controls="rux-account-panel"` inside it; the specimen's action
+now names its own `ks-` panel, so the case skips and the sink reads 45 of 46
+with 1 skipped where it read 47 of 47. **The two checks it makes are still
+true, and were driven by hand here** — the Account action opens its own panel
+and not the switcher, and opening the switcher closes the account panel, both
+on the page's real shell. The fix is one selector: the case should find the
+shell at document level, or prefer the page's over a specimen's. That is a
+fixture change and therefore tier 2, so it is proposed here and not applied.
+
+---
+
 **2026-09-11 — the sink's nav sorted, its page left alone.** rux read the whole
 left column looking for one entry and asked whether it could be alphabetical.
 It can, and `sink/ORDER` is the one file that decides it — but sorting the ORDER

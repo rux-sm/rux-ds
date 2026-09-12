@@ -88,92 +88,224 @@
 <symbol id="i-user--multiple" viewBox="0 0 32 32"><path d="M30,30H28V25a5.0057,5.0057,0,0,0-5-5V18a7.0078,7.0078,0,0,1,7,7Z"/><path d="M22,30H20V25a5.0059,5.0059,0,0,0-5-5H9a5.0059,5.0059,0,0,0-5,5v5H2V25a7.0082,7.0082,0,0,1,7-7h6a7.0082,7.0082,0,0,1,7,7Z"/><path d="M20,2V4a5,5,0,0,1,0,10v2A7,7,0,0,0,20,2Z"/><path d="M12,4A5,5,0,1,1,7,9a5,5,0,0,1,5-5m0-2a7,7,0,1,0,7,7A7,7,0,0,0,12,2Z"/></symbol>
 </svg>
 
-<nav class="ks-nav">
-  <h1>rux-ds</h1>
-  <div class="ks-count">68 sections</div>
-  <div class="ks-navlinks">
-    <a href="#accordion">Accordion</a>
-    <a href="#action-set">Action set</a>
-    <a href="#ai-label">AI label</a>
-    <a href="#aspect-ratio">Aspect ratio</a>
-    <a href="#badge-indicator">Badge indicator</a>
-    <a href="#big-number">Big number</a>
-    <a href="#breadcrumb">Breadcrumb</a>
-    <a href="#buttons">Buttons</a>
-    <a href="#card">Card</a>
-    <a href="#chat-button">Chat button</a>
-    <a href="#checkbox">Checkbox</a>
-    <a href="#code-snippet">Code snippet</a>
-    <a href="#combo-box">Combo box</a>
-    <a href="#combo-button">Combo button</a>
-    <a href="#contained-list">Contained list</a>
-    <a href="#content-switcher">Content switcher</a>
-    <a href="#copy-button">Copy button</a>
-    <a href="#table">Data table</a>
-    <a href="#date-picker">Date picker</a>
-    <a href="#dialog">Dialog</a>
-    <a href="#dropdown">Dropdown</a>
-    <a href="#edit-in-place">Edit in place</a>
-    <a href="#file-uploader">File uploader</a>
-    <a href="#fluid">Fluid inputs</a>
-    <a href="#full-page-error">Full-page error</a>
-    <a href="#grid">Grid</a>
-    <a href="#icon-indicator">Icon indicator</a>
-    <a href="#inline-loading">Inline loading</a>
-    <a href="#links">Links</a>
-    <a href="#list">List</a>
-    <a href="#list-box">List box</a>
-    <a href="#loading">Loading</a>
-    <a href="#menu">Menu</a>
-    <a href="#menu-button">Menu button</a>
-    <a href="#modal">Modal</a>
-    <a href="#multiselect">Multiselect</a>
-    <a href="#notification">Notification</a>
-    <a href="#number">Number input</a>
-    <a href="#options-tile">Options tile</a>
-    <a href="#overflow-menu">Overflow menu</a>
-    <a href="#pagination">Pagination</a>
-    <a href="#pagination-nav">Pagination nav</a>
-    <a href="#popover">Popover</a>
-    <a href="#progress-bar">Progress bar</a>
-    <a href="#progress-indicator">Progress indicator</a>
-    <a href="#radio">Radio button</a>
-    <a href="#scroll-gradient">Scroll gradient</a>
-    <a href="#search">Search</a>
-    <a href="#select">Select</a>
-    <a href="#shape-indicator">Shape indicator</a>
-    <a href="#side-panel">Side panel</a>
-    <a href="#skeleton">Skeleton</a>
-    <a href="#slider">Slider</a>
-    <a href="#spacing">Spacing</a>
-    <a href="#stack">Stack</a>
-    <a href="#structured-list">Structured list</a>
-    <a href="#tabs">Tabs</a>
-    <a href="#tags">Tags</a>
-    <a href="#textarea">Text area</a>
-    <a href="#text-input">Text input</a>
-    <a href="#tile">Tile</a>
-    <a href="#time-picker">Time picker</a>
-    <a href="#toggle">Toggle</a>
-    <a href="#toggletip">Toggletip</a>
-    <a href="#tooltip">Tooltip</a>
-    <a href="#treeview">Tree view</a>
-    <a href="#ui-shell">UI shell</a>
-    <a href="#user-avatar">User avatar</a>
-  </div>
-</nav>
+<!-- THE ONE PIECE OF LAYOUT CARBON DOES NOT SHIP, copied from
+     templates/app-shell.html with its reasoning intact: .rux--content is
+     indented only by a SIBLING side nav, and the nav in this shell lives
+     inside the header, so none of Carbon's three rules match. 16rem clears
+     the nav and the remaining 2rem is the content's own gutter. Scoped to the
+     same breakpoint the nav is, because below it the nav is 0 wide and
+     overlays instead. -->
+<style>
+@media (min-width: 66rem) {
+  .rux--content { padding-inline-start: 18rem; }
+}
+</style>
 
-<main class="ks-main">
-  <div class="ks-themes">
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="white">white</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g10">g10</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g90">g90</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g100">g100</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="geist">geist</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="linear">linear</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="ant-dark">ant-dark</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="spotify">spotify</button>
+<header class="rux--header" data-theme="g100" aria-label="rux-ds">
+  <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <nav class="rux--header__nav" aria-label="rux-ds">
+    <ul class="rux--header__menu-bar">
+      <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
+      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="kitchen-sink.html" aria-current="page"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
+      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
+      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
+    </ul>
+  </nav>
+  <div class="rux--header__global">
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
   </div>
+  <div class="rux--header-panel" id="rux-switcher-panel">
+    <ul class="rux--switcher" aria-label="Applications">
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ds/" aria-current="page">Design System</a></li>
+      <li><hr class="rux--switcher__item--divider"></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/">Home</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ln-notes/">Notes</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-scheduler/">Scheduler</a></li>
+    </ul>
+  </div>
+  <!-- THE THEME CONTROL LIVES HERE NOW, and it did not until 2026-09-11.
+       Eight data-set-theme buttons sat at the top of the content instead,
+       and templates/app-shell.html's own comment recorded that as deliberate —
+       "the sink's five buttons stay in harness.js as a demo convenience". rux
+       asked for the sink to match every other page, so the convenience is
+       withdrawn and the profile panel is the one place a theme is chosen.
+       js/profile.js drives the radios and js/theme.js stores the choice, both
+       already loaded here. Carbon reserves the header's global actions for
+       universal system functions and no capture has a theme button, which is
+       why it is in this panel rather than beside the account icon. -->
+  <div class="rux--header-panel" id="rux-account-panel">
+    <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
+      <div class="rux--form-item rux--text-input-wrapper">
+        <div class="rux--text-input__label-wrapper">
+          <label class="rux--label" for="rux-profile-name">Display name</label>
+        </div>
+        <div class="rux--text-input__field-outer-wrapper">
+          <div class="rux--text-input__field-wrapper">
+            <input id="rux-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-item">
+        <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme">
+          <legend class="rux--label">Theme</legend>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-white" class="rux--radio-button" type="radio" name="rux-theme" value="white" checked>
+            <label for="rux-theme-white" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">White</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g10" class="rux--radio-button" type="radio" name="rux-theme" value="g10">
+            <label for="rux-theme-g10" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 10</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g90" class="rux--radio-button" type="radio" name="rux-theme" value="g90">
+            <label for="rux-theme-g90" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 90</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g100" class="rux--radio-button" type="radio" name="rux-theme" value="g100">
+            <label for="rux-theme-g100" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 100</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-geist" class="rux--radio-button" type="radio" name="rux-theme" value="geist">
+            <label for="rux-theme-geist" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Geist</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-linear" class="rux--radio-button" type="radio" name="rux-theme" value="linear">
+            <label for="rux-theme-linear" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Linear</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-ant-dark" class="rux--radio-button" type="radio" name="rux-theme" value="ant-dark">
+            <label for="rux-theme-ant-dark" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Ant Dark</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-spotify" class="rux--radio-button" type="radio" name="rux-theme" value="spotify">
+            <label for="rux-theme-spotify" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Spotify</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <button type="button" class="rux--btn rux--btn--tertiary" id="rux-profile-sign-in" hidden>Sign in</button>
+    </div>
+  </div>
+
+  <div class="rux--side-nav__overlay"></div>
+  <!-- THE SECTION LIST, WHICH IS WHAT A SIDE NAV IS FOR — the same thing
+       portal.html puts in its own, four links there and 68
+       here. Sorted by title; sink/ORDER still groups the PAGE. No icons: 65
+       of the 74 captured side-nav links carry none, so an icon-less link is
+       the majority shape rather than an omission, and 68
+       invented glyphs would be 68 inventions.
+
+       IT IS TALLER THAN THE LIST IT REPLACES AND THAT WAS MEASURED, not
+       discovered afterwards: Carbon's link is a fixed 2rem against the old
+       harness row's 19px, so the list goes from 1292px to about 2176px and a
+       900px window shows roughly 28 entries where it showed 47. Carbon
+       compiles no denser variant. Expandable categories would collapse it —
+       app-shell.html demonstrates them — but grouping 68
+       components is a judgement nobody has made, and sink/ORDER's own
+       grouping has already half-rotted at the tail. Flat until then. -->
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Sections">
+    <ul class="rux--side-nav__items">
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#accordion"><span class="rux--side-nav__link-text">Accordion</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#action-set"><span class="rux--side-nav__link-text">Action set</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#ai-label"><span class="rux--side-nav__link-text">AI label</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#aspect-ratio"><span class="rux--side-nav__link-text">Aspect ratio</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#badge-indicator"><span class="rux--side-nav__link-text">Badge indicator</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#big-number"><span class="rux--side-nav__link-text">Big number</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#breadcrumb"><span class="rux--side-nav__link-text">Breadcrumb</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#buttons"><span class="rux--side-nav__link-text">Buttons</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#card"><span class="rux--side-nav__link-text">Card</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#chat-button"><span class="rux--side-nav__link-text">Chat button</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#checkbox"><span class="rux--side-nav__link-text">Checkbox</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#code-snippet"><span class="rux--side-nav__link-text">Code snippet</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#combo-box"><span class="rux--side-nav__link-text">Combo box</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#combo-button"><span class="rux--side-nav__link-text">Combo button</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#contained-list"><span class="rux--side-nav__link-text">Contained list</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#content-switcher"><span class="rux--side-nav__link-text">Content switcher</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#copy-button"><span class="rux--side-nav__link-text">Copy button</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#table"><span class="rux--side-nav__link-text">Data table</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#date-picker"><span class="rux--side-nav__link-text">Date picker</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#dialog"><span class="rux--side-nav__link-text">Dialog</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#dropdown"><span class="rux--side-nav__link-text">Dropdown</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#edit-in-place"><span class="rux--side-nav__link-text">Edit in place</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#file-uploader"><span class="rux--side-nav__link-text">File uploader</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#fluid"><span class="rux--side-nav__link-text">Fluid inputs</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#full-page-error"><span class="rux--side-nav__link-text">Full-page error</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#grid"><span class="rux--side-nav__link-text">Grid</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#icon-indicator"><span class="rux--side-nav__link-text">Icon indicator</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#inline-loading"><span class="rux--side-nav__link-text">Inline loading</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#links"><span class="rux--side-nav__link-text">Links</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#list"><span class="rux--side-nav__link-text">List</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#list-box"><span class="rux--side-nav__link-text">List box</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#loading"><span class="rux--side-nav__link-text">Loading</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#menu"><span class="rux--side-nav__link-text">Menu</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#menu-button"><span class="rux--side-nav__link-text">Menu button</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#modal"><span class="rux--side-nav__link-text">Modal</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#multiselect"><span class="rux--side-nav__link-text">Multiselect</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#notification"><span class="rux--side-nav__link-text">Notification</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#number"><span class="rux--side-nav__link-text">Number input</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#options-tile"><span class="rux--side-nav__link-text">Options tile</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#overflow-menu"><span class="rux--side-nav__link-text">Overflow menu</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#pagination"><span class="rux--side-nav__link-text">Pagination</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#pagination-nav"><span class="rux--side-nav__link-text">Pagination nav</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#popover"><span class="rux--side-nav__link-text">Popover</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#progress-bar"><span class="rux--side-nav__link-text">Progress bar</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#progress-indicator"><span class="rux--side-nav__link-text">Progress indicator</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#radio"><span class="rux--side-nav__link-text">Radio button</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#scroll-gradient"><span class="rux--side-nav__link-text">Scroll gradient</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#search"><span class="rux--side-nav__link-text">Search</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#select"><span class="rux--side-nav__link-text">Select</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#shape-indicator"><span class="rux--side-nav__link-text">Shape indicator</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#side-panel"><span class="rux--side-nav__link-text">Side panel</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#skeleton"><span class="rux--side-nav__link-text">Skeleton</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#slider"><span class="rux--side-nav__link-text">Slider</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#spacing"><span class="rux--side-nav__link-text">Spacing</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#stack"><span class="rux--side-nav__link-text">Stack</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#structured-list"><span class="rux--side-nav__link-text">Structured list</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#tabs"><span class="rux--side-nav__link-text">Tabs</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#tags"><span class="rux--side-nav__link-text">Tags</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#textarea"><span class="rux--side-nav__link-text">Text area</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#text-input"><span class="rux--side-nav__link-text">Text input</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#tile"><span class="rux--side-nav__link-text">Tile</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#time-picker"><span class="rux--side-nav__link-text">Time picker</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#toggle"><span class="rux--side-nav__link-text">Toggle</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#toggletip"><span class="rux--side-nav__link-text">Toggletip</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#tooltip"><span class="rux--side-nav__link-text">Tooltip</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#treeview"><span class="rux--side-nav__link-text">Tree view</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#ui-shell"><span class="rux--side-nav__link-text">UI shell</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#user-avatar"><span class="rux--side-nav__link-text">User avatar</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main-content" class="rux--content ks-main">
+  <h1>Kitchen sink</h1>
+  <p class="ks-count">68 sections · every component this system compiles, on one page</p>
 
 <section class="ks-sec" id="buttons">
     <h2>Buttons</h2><p>kinds · sizes · states</p>
@@ -5741,13 +5873,13 @@
       </nav>
       <div class="rux--header__global">
         <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-notification"/></svg></button>
-        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
-        <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
+        <button type="button" class="rux--header__action rux--header__action--active rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="ks-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+        <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="ks-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
       </div>
       <!-- THE SWITCHER PANEL: a sibling of __global, collapsed until the grid button
            opens it (js/ui-shell.js). Every app in an ecosystem lists the same apps
            here; a divider is an <hr> in an li of its own. -->
-      <div class="rux--header-panel" id="rux-switcher-panel" style="position:absolute;block-size:calc(22rem - 3rem)">
+      <div class="rux--header-panel" id="ks-switcher-panel" style="position:absolute;block-size:calc(22rem - 3rem)">
         <ul class="rux--switcher" aria-label="Applications">
           <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="./" aria-current="page">Rux DS</a></li>
           <li><hr class="rux--switcher__item--divider"></li>
@@ -5764,80 +5896,89 @@
            radio group. The sign-in button ships hidden and shows only once
            something registers a handler for it, because a button with no handler
            is an affordance that lies. -->
-      <div class="rux--header-panel" id="rux-account-panel" style="position:absolute;block-size:calc(22rem - 3rem)">
+      <!-- DEMO IDS, NOT THE SHELL'S, since 2026-09-11. This specimen used to
+           carry the canonical rux-account-panel / rux-profile-theme /
+           rux-theme-* ids because it was the only shell on the page. The page
+           now has a real one, and thirteen ids collided the moment it landed:
+           two elements per id, two radios per theme in one 16-radio group, and
+           every label pointing at whichever came first. The specimen keeps the
+           captured CLASSES, which is what it is here to show, and takes ks-
+           ids so js/profile.js drives the page's shell and not this. The same
+           move the profile fragment already made for the same reason. -->
+      <div class="rux--header-panel" id="ks-account-panel" style="position:absolute;block-size:calc(22rem - 3rem)">
         <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
           <div class="rux--form-item rux--text-input-wrapper">
             <div class="rux--text-input__label-wrapper">
-              <label class="rux--label" for="rux-profile-name">Display name</label>
+              <label class="rux--label" for="ks-profile-name">Display name</label>
             </div>
             <div class="rux--text-input__field-outer-wrapper">
               <div class="rux--text-input__field-wrapper">
-                <input id="rux-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
+                <input id="ks-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
               </div>
             </div>
           </div>
           <div class="rux--form-item">
-            <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme">
+            <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="ks-profile-theme">
               <legend class="rux--label">Theme</legend>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-white" class="rux--radio-button" type="radio" name="rux-theme" value="white" checked>
-                <label for="rux-theme-white" class="rux--radio-button__label">
+                <input id="ks-demo-theme-white" class="rux--radio-button" type="radio" name="ks-demo-theme" value="white" checked>
+                <label for="ks-demo-theme-white" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">White</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g10" class="rux--radio-button" type="radio" name="rux-theme" value="g10">
-                <label for="rux-theme-g10" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g10" class="rux--radio-button" type="radio" name="ks-demo-theme" value="g10">
+                <label for="ks-demo-theme-g10" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 10</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g90" class="rux--radio-button" type="radio" name="rux-theme" value="g90">
-                <label for="rux-theme-g90" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g90" class="rux--radio-button" type="radio" name="ks-demo-theme" value="g90">
+                <label for="ks-demo-theme-g90" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 90</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g100" class="rux--radio-button" type="radio" name="rux-theme" value="g100">
-                <label for="rux-theme-g100" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g100" class="rux--radio-button" type="radio" name="ks-demo-theme" value="g100">
+                <label for="ks-demo-theme-g100" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 100</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-geist" class="rux--radio-button" type="radio" name="rux-theme" value="geist">
-                <label for="rux-theme-geist" class="rux--radio-button__label">
+                <input id="ks-demo-theme-geist" class="rux--radio-button" type="radio" name="ks-demo-theme" value="geist">
+                <label for="ks-demo-theme-geist" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Geist</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-linear" class="rux--radio-button" type="radio" name="rux-theme" value="linear">
-                <label for="rux-theme-linear" class="rux--radio-button__label">
+                <input id="ks-demo-theme-linear" class="rux--radio-button" type="radio" name="ks-demo-theme" value="linear">
+                <label for="ks-demo-theme-linear" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Linear</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-ant-dark" class="rux--radio-button" type="radio" name="rux-theme" value="ant-dark">
-                <label for="rux-theme-ant-dark" class="rux--radio-button__label">
+                <input id="ks-demo-theme-ant-dark" class="rux--radio-button" type="radio" name="ks-demo-theme" value="ant-dark">
+                <label for="ks-demo-theme-ant-dark" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Ant Dark</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-spotify" class="rux--radio-button" type="radio" name="rux-theme" value="spotify">
-                <label for="rux-theme-spotify" class="rux--radio-button__label">
+                <input id="ks-demo-theme-spotify" class="rux--radio-button" type="radio" name="ks-demo-theme" value="spotify">
+                <label for="ks-demo-theme-spotify" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Spotify</span>
                 </label>
               </div>
             </fieldset>
           </div>
-          <button type="button" class="rux--btn rux--btn--tertiary" id="rux-profile-sign-in" hidden>Sign in</button>
+          <button type="button" class="rux--btn rux--btn--tertiary" id="ks-profile-sign-in" hidden>Sign in</button>
         </div>
       </div>
       <!-- The scrim is position:fixed in Carbon, which is right in production and
@@ -5979,57 +6120,57 @@
             <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme-demo">
               <legend class="rux--label">Theme</legend>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-white-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="white" checked>
-                <label for="rux-theme-white-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-white-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="white" checked>
+                <label for="ks-demo-theme-white-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">White</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g10-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="g10">
-                <label for="rux-theme-g10-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g10-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="g10">
+                <label for="ks-demo-theme-g10-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 10</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g90-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="g90">
-                <label for="rux-theme-g90-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g90-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="g90">
+                <label for="ks-demo-theme-g90-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 90</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-g100-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="g100">
-                <label for="rux-theme-g100-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-g100-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="g100">
+                <label for="ks-demo-theme-g100-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Gray 100</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-geist-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="geist">
-                <label for="rux-theme-geist-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-geist-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="geist">
+                <label for="ks-demo-theme-geist-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Geist</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-linear-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="linear">
-                <label for="rux-theme-linear-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-linear-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="linear">
+                <label for="ks-demo-theme-linear-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Linear</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-ant-dark-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="ant-dark">
-                <label for="rux-theme-ant-dark-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-ant-dark-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="ant-dark">
+                <label for="ks-demo-theme-ant-dark-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Ant Dark</span>
                 </label>
               </div>
               <div class="rux--radio-button-wrapper">
-                <input id="rux-theme-spotify-demo" class="rux--radio-button" type="radio" name="rux-theme-demo" value="spotify">
-                <label for="rux-theme-spotify-demo" class="rux--radio-button__label">
+                <input id="ks-demo-theme-spotify-demo" class="rux--radio-button" type="radio" name="ks-demo-theme-demo" value="spotify">
+                <label for="ks-demo-theme-spotify-demo" class="rux--radio-button__label">
                   <span class="rux--radio-button__appearance"></span>
                   <span class="rux--radio-button__label-text">Spotify</span>
                 </label>

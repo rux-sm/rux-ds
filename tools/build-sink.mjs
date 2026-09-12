@@ -42,7 +42,25 @@ const sprite = existsSync('assets/icons.svg')
 const nav = sections
   .slice()
   .sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'en', { sensitivity: 'base' }))
-  .map(s => `    <a href="#${idOf(s)}">${titleOf(s)}</a>`).join('\n');
+  .map(s => `      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#${idOf(s)}"><span class="rux--side-nav__link-text">${titleOf(s)}</span></a></li>`)
+  .join('\n');
+
+// THE EIGHT THEMES, as the profile panel's radio group. Same markup as
+// templates/app-shell.html's, generated rather than pasted because the sink
+// is generated and a hand-kept copy of eight near-identical blocks drifts.
+// White is checked because <html> ships data-theme="white"; js/theme.js
+// re-checks whichever one storage holds on load.
+const THEME_NAMES = [
+  ['white', 'White'], ['g10', 'Gray 10'], ['g90', 'Gray 90'], ['g100', 'Gray 100'],
+  ['geist', 'Geist'], ['linear', 'Linear'], ['ant-dark', 'Ant Dark'], ['spotify', 'Spotify'],
+];
+const THEMES = THEME_NAMES.map(([value, label]) => `          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-${value}" class="rux--radio-button" type="radio" name="rux-theme" value="${value}"${value === 'white' ? ' checked' : ''}>
+            <label for="rux-theme-${value}" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">${label}</span>
+            </label>
+          </div>`).join('\n');
 
 const page = `<!doctype html>
 <html lang="en" data-theme="white">
@@ -66,25 +84,102 @@ const page = `<!doctype html>
 
 ${sprite}
 
-<nav class="ks-nav">
-  <h1>rux-ds</h1>
-  <div class="ks-count">${sections.length} sections</div>
-  <div class="ks-navlinks">
-${nav}
-  </div>
-</nav>
+<!-- THE ONE PIECE OF LAYOUT CARBON DOES NOT SHIP, copied from
+     templates/app-shell.html with its reasoning intact: .rux--content is
+     indented only by a SIBLING side nav, and the nav in this shell lives
+     inside the header, so none of Carbon's three rules match. 16rem clears
+     the nav and the remaining 2rem is the content's own gutter. Scoped to the
+     same breakpoint the nav is, because below it the nav is 0 wide and
+     overlays instead. -->
+<style>
+@media (min-width: 66rem) {
+  .rux--content { padding-inline-start: 18rem; }
+}
+</style>
 
-<main class="ks-main">
-  <div class="ks-themes">
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="white">white</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g10">g10</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g90">g90</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="g100">g100</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="geist">geist</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="linear">linear</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="ant-dark">ant-dark</button>
-    <button class="rux--btn rux--btn--tertiary rux--btn--sm rux--layout--size-sm" data-set-theme="spotify">spotify</button>
+<header class="rux--header" data-theme="g100" aria-label="rux-ds">
+  <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <nav class="rux--header__nav" aria-label="rux-ds">
+    <ul class="rux--header__menu-bar">
+      <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
+      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="kitchen-sink.html" aria-current="page"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
+      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
+      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
+    </ul>
+  </nav>
+  <div class="rux--header__global">
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
   </div>
+  <div class="rux--header-panel" id="rux-switcher-panel">
+    <ul class="rux--switcher" aria-label="Applications">
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ds/" aria-current="page">Design System</a></li>
+      <li><hr class="rux--switcher__item--divider"></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/">Home</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ln-notes/">Notes</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-scheduler/">Scheduler</a></li>
+    </ul>
+  </div>
+  <!-- THE THEME CONTROL LIVES HERE NOW, and it did not until 2026-09-11.
+       Eight data-set-theme buttons sat at the top of the content instead,
+       and templates/app-shell.html's own comment recorded that as deliberate —
+       "the sink's five buttons stay in harness.js as a demo convenience". rux
+       asked for the sink to match every other page, so the convenience is
+       withdrawn and the profile panel is the one place a theme is chosen.
+       js/profile.js drives the radios and js/theme.js stores the choice, both
+       already loaded here. Carbon reserves the header's global actions for
+       universal system functions and no capture has a theme button, which is
+       why it is in this panel rather than beside the account icon. -->
+  <div class="rux--header-panel" id="rux-account-panel">
+    <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
+      <div class="rux--form-item rux--text-input-wrapper">
+        <div class="rux--text-input__label-wrapper">
+          <label class="rux--label" for="rux-profile-name">Display name</label>
+        </div>
+        <div class="rux--text-input__field-outer-wrapper">
+          <div class="rux--text-input__field-wrapper">
+            <input id="rux-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-item">
+        <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme">
+          <legend class="rux--label">Theme</legend>
+${THEMES}
+        </fieldset>
+      </div>
+      <button type="button" class="rux--btn rux--btn--tertiary" id="rux-profile-sign-in" hidden>Sign in</button>
+    </div>
+  </div>
+
+  <div class="rux--side-nav__overlay"></div>
+  <!-- THE SECTION LIST, WHICH IS WHAT A SIDE NAV IS FOR — the same thing
+       portal.html puts in its own, four links there and ${sections.length}
+       here. Sorted by title; sink/ORDER still groups the PAGE. No icons: 65
+       of the 74 captured side-nav links carry none, so an icon-less link is
+       the majority shape rather than an omission, and ${sections.length}
+       invented glyphs would be ${sections.length} inventions.
+
+       IT IS TALLER THAN THE LIST IT REPLACES AND THAT WAS MEASURED, not
+       discovered afterwards: Carbon's link is a fixed 2rem against the old
+       harness row's 19px, so the list goes from 1292px to about 2176px and a
+       900px window shows roughly 28 entries where it showed 47. Carbon
+       compiles no denser variant. Expandable categories would collapse it —
+       app-shell.html demonstrates them — but grouping ${sections.length}
+       components is a judgement nobody has made, and sink/ORDER's own
+       grouping has already half-rotted at the tail. Flat until then. -->
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Sections">
+    <ul class="rux--side-nav__items">
+${nav}
+    </ul>
+  </nav>
+</header>
+
+<main id="main-content" class="rux--content ks-main">
+  <h1>Kitchen sink</h1>
+  <p class="ks-count">${sections.length} sections · every component this system compiles, on one page</p>
 
 ${sections.join('\n\n')}
 </main>
