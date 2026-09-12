@@ -43,6 +43,7 @@
 // invariant so it is not merely undocumented.
 //
 import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import { shell } from './lib/shell.mjs';
 import { gzipSync } from 'node:zlib';
 import { GATES, browserGates, cells } from './lib/gates.mjs';
 import { markupFiles } from './lib/sources.mjs';
@@ -301,12 +302,24 @@ const page = `<!doctype html>
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
 <style>
-/* Copied from templates/app-shell.html, which records why this is a fixed
-   padding and not a grid offset: .rux--content is only ever indented by a
-   SIBLING side nav, and this shell's nav lives inside the header. */
-@media (min-width: 66rem) {
-  .rux--content { padding-inline-start: 18rem; }
-}
+/* THE PAGE INDEX, in the page. This page's four section links were in the
+   left panel until 2026-09-11, which is the tier IBM reserves for a product's
+   PAGES; content beneath that tier belongs in the page. Same shape as the
+   kitchen sink's, one row rather than columns because four fit.
+
+   AND NO 18rem CONTENT OFFSET ANY MORE. It was copied from
+   templates/app-shell.html, correctly, while this page carried the persistent
+   shell. tools/lib/shell.mjs emits the collapsible one: the nav overlays
+   instead of standing beside the content, so the offset would be a permanent
+   gap next to nothing. */
+.ks-index { display: flex; flex-wrap: wrap; gap: .125rem 1.5rem;
+            margin-block-end: 2rem; padding-block: 1rem;
+            border-block: 1px solid var(--rux-border-subtle); }
+.ks-index a { font-size: .8125rem; color: var(--rux-text-secondary);
+              text-decoration: none; }
+.ks-index a:hover { color: var(--rux-link-primary); text-decoration: underline; }
+.ks-index a:focus-visible { outline: 2px solid var(--rux-focus);
+                            outline-offset: -2px; }
 </style>
 </head>
 <body>
@@ -316,33 +329,15 @@ const page = `<!doctype html>
 
 ${sprite}
 
-<header class="rux--header" data-theme="g100" aria-label="rux-ds">
-  <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false">${icon('menu', 20, 16)}</button>
-  <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-  <nav class="rux--header__nav" aria-label="rux-ds">
-    <ul class="rux--header__menu-bar">
-      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="portal.html" aria-current="page"><span class="rux--text-truncate-end">Portal</span></a></li>
-      <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
-      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
-      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
-    </ul>
-  </nav>
-  <div class="rux--header__global">
-    <a class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" href="kitchen-sink.html" aria-label="Kitchen sink">${icon('grid', 20, 32)}</a>
-  </div>
-  <div class="rux--side-nav__overlay"></div>
-  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Side navigation">
-    <ul class="rux--side-nav__items">
-${navItem('status', 'Status', 'grid', true)}
-${navItem('components', 'Components', 'list', false)}
-${navItem('templates', 'Templates', 'document', false)}
-${navItem('gates', 'Gates', 'checkmark--outline', false)}
-    </ul>
-  </nav>
-</header>
+${shell('portal')}
 
 <main id="main-content" class="rux--content">
+  <nav class="ks-index" aria-label="Sections">
+    <a href="#status">Status</a>
+    <a href="#components">Components</a>
+    <a href="#templates">Templates</a>
+    <a href="#gates">Gates</a>
+  </nav>
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
 

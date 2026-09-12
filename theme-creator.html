@@ -242,13 +242,105 @@
 
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <a class="rux--header__name" href="theme-creator.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-  <nav class="rux--header__nav" aria-label="rux-ds">
-    <ul class="rux--header__menu-bar">
-      <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
-      <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
-      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
-      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="theme-creator.html" aria-current="page"><span class="rux--text-truncate-end">Theme creator</span></a></li>
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
+  <div class="rux--header__global">
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
+  </div>
+  <div class="rux--header-panel" id="rux-switcher-panel">
+    <ul class="rux--switcher" aria-label="Applications">
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ds/" aria-current="page">Design System</a></li>
+      <li><hr class="rux--switcher__item--divider"></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/">Home</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ln-notes/">Notes</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-scheduler/">Scheduler</a></li>
+    </ul>
+  </div>
+  <div class="rux--header-panel" id="rux-account-panel">
+    <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
+      <div class="rux--form-item rux--text-input-wrapper">
+        <div class="rux--text-input__label-wrapper">
+          <label class="rux--label" for="rux-profile-name">Display name</label>
+        </div>
+        <div class="rux--text-input__field-outer-wrapper">
+          <div class="rux--text-input__field-wrapper">
+            <input id="rux-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-item">
+        <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme">
+          <legend class="rux--label">Theme</legend>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-white" class="rux--radio-button" type="radio" name="rux-theme" value="white" checked>
+            <label for="rux-theme-white" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">White</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g10" class="rux--radio-button" type="radio" name="rux-theme" value="g10">
+            <label for="rux-theme-g10" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 10</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g90" class="rux--radio-button" type="radio" name="rux-theme" value="g90">
+            <label for="rux-theme-g90" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 90</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g100" class="rux--radio-button" type="radio" name="rux-theme" value="g100">
+            <label for="rux-theme-g100" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 100</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-geist" class="rux--radio-button" type="radio" name="rux-theme" value="geist">
+            <label for="rux-theme-geist" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Geist</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-linear" class="rux--radio-button" type="radio" name="rux-theme" value="linear">
+            <label for="rux-theme-linear" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Linear</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-ant-dark" class="rux--radio-button" type="radio" name="rux-theme" value="ant-dark">
+            <label for="rux-theme-ant-dark" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Ant Dark</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-spotify" class="rux--radio-button" type="radio" name="rux-theme" value="spotify">
+            <label for="rux-theme-spotify" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Spotify</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <button type="button" class="rux--btn rux--btn--tertiary" id="rux-profile-sign-in" hidden>Sign in</button>
+    </div>
+  </div>
+
+  <div class="rux--side-nav__overlay"></div>
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--hidden" aria-label="Pages">
+    <ul class="rux--side-nav__items">
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="portal.html"><span class="rux--side-nav__link-text">Portal</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="kitchen-sink.html"><span class="rux--side-nav__link-text">Kitchen sink</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="builder.html"><span class="rux--side-nav__link-text">Page builder</span></a></li>
+      <li class="rux--side-nav__item rux--side-nav__item--active"><a class="rux--side-nav__link" href="theme-creator.html" aria-current="page"><span class="rux--side-nav__link-text">Theme creator</span></a></li>
     </ul>
   </nav>
 </header>

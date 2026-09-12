@@ -9,6 +9,72 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — one shell for every page, emitted from one file.** rux asked
+for the portal, the builder and the theme creator to carry what the sink now
+carries. Counted before touching anything, the four pages had **four different
+shells**: portal a persistent side nav and no account panel, builder and
+theme-creator a header menu bar and neither a nav nor a panel, index the panel
+and no nav, and the sink whatever the last hour had given it. Every one was
+hand-kept in its own generator, so they drifted the way four copies drift. A
+design system's own pages disagreeing about its own shell is a specific
+embarrassment and it is now impossible: `tools/lib/shell.mjs` emits it and the
+four generators call `shell(<page>)`.
+
+**IT THROWS ON AN UNKNOWN PAGE rather than emitting a shell with nothing
+marked current.** A nav that never says where you are is the failure this whole
+change is about, and a silent one would be worse than a build that stops.
+
+**WHAT CHANGED ON EACH PAGE**, beyond becoming identical: the header menu bar
+is gone from all three (the same four links in a bar above the panel that holds
+them is duplication); the hamburger is on screen at every width; the account
+panel with the eight theme radios is now on the portal, the builder and the
+theme creator, which had no way to change theme at all; and `portal.html`'s
+four section anchors moved out of its left panel into the page, which is the
+same correction the sink got and the one this entry's predecessor named as
+not done.
+
+**THE 18rem OFFSET WENT FROM THE PORTAL TOO.** It was copied from
+`templates/app-shell.html` correctly, while that page carried the persistent
+shell. The collapsible one overlays, so the offset was a permanent gap beside
+nothing the moment the shell changed.
+
+**THREE CONTROL FILES WERE EDITED AND `check-controls` REPORTS THEM.**
+`tools/build-portal.mjs`, `tools/build-builder.mjs` and
+`tools/build-theme-creator.mjs` are all on the list. **What the edit weakens:
+nothing a gate reads.** None of the three carries an assertion about the shell;
+what makes them controls is that build-portal carries the sprite gate and all
+three write files other checks compare against, and this change touches the
+page chrome they emit and not a single threshold, fixture or expected result.
+Stated rather than assumed, because "it only changes markup" is exactly what
+someone would say while weakening one.
+
+**AND `tools/lib/shell.mjs` IS PROBABLY A CONTROL AND IS NOT ON THE LIST.** It
+is now the single input four generated pages take their chrome from, which is
+the same footing `tools/lib/coverage.mjs` sits on. Adding it to `CONTROL_FILES`
+is itself a tier 2 edit to `tools/lib/gates.mjs`, so it is proposed here and
+not taken. Until it is, a change to the shell every page shows reports as
+touching no control at all.
+
+**MEASURED ON ALL FIVE PAGES BY PARSING WHAT THE SERVER ACTUALLY SERVED**, not
+by reading the generators: menu bars 0 on the four, the hamburger unhidden on
+the four, the same four nav links in the same order with the right one
+`aria-current`, 8 theme radios each, no 18rem offset anywhere, 0 duplicate ids.
+
+**THE ONE NEW SPACING ROW IS THE PREDICTED ONE.** builder and theme-creator
+each gained a `rux--header__name` diverge at 8px against Carbon's 16 —
+`js/ui-shell.js` says in as many words that Carbon tightens the name whenever
+the toggle lacks `__hidden`, at every width, and that there is no capture of
+this shell to compare against. The sink and the portal already carried it.
+
+**NOT DONE: `index.html`.** It is hand-written rather than generated, it is
+what `/rux-ds/` actually serves, and it is not one of the four the nav lists —
+so giving it this shell raises a question nobody has answered: whether the
+landing page is a fifth entry in the nav or stays outside it. rux named three
+pages and this is not one of them. It is the only page still on the old shape,
+with a menu bar and no side nav.
+
+---
+
 **2026-09-11 — the left panel holds PAGES, and yesterday's answer to that was
 wrong.** rux asked whether the nav should list the pages rather than the page's
 contents. I said no and cited IBM's "secondary navigation". **rux was right and

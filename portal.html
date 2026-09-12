@@ -29,12 +29,24 @@
 <link rel="stylesheet" href="css/rux-theme.css">
 <link rel="stylesheet" href="css/rux-overrides.css">
 <style>
-/* Copied from templates/app-shell.html, which records why this is a fixed
-   padding and not a grid offset: .rux--content is only ever indented by a
-   SIBLING side nav, and this shell's nav lives inside the header. */
-@media (min-width: 66rem) {
-  .rux--content { padding-inline-start: 18rem; }
-}
+/* THE PAGE INDEX, in the page. This page's four section links were in the
+   left panel until 2026-09-11, which is the tier IBM reserves for a product's
+   PAGES; content beneath that tier belongs in the page. Same shape as the
+   kitchen sink's, one row rather than columns because four fit.
+
+   AND NO 18rem CONTENT OFFSET ANY MORE. It was copied from
+   templates/app-shell.html, correctly, while this page carried the persistent
+   shell. tools/lib/shell.mjs emits the collapsible one: the nav overlays
+   instead of standing beside the content, so the offset would be a permanent
+   gap next to nothing. */
+.ks-index { display: flex; flex-wrap: wrap; gap: .125rem 1.5rem;
+            margin-block-end: 2rem; padding-block: 1rem;
+            border-block: 1px solid var(--rux-border-subtle); }
+.ks-index a { font-size: .8125rem; color: var(--rux-text-secondary);
+              text-decoration: none; }
+.ks-index a:hover { color: var(--rux-link-primary); text-decoration: underline; }
+.ks-index a:focus-visible { outline: 2px solid var(--rux-focus);
+                            outline-offset: -2px; }
 </style>
 </head>
 <body>
@@ -114,51 +126,116 @@
 
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Toggle navigation" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
   <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-  <nav class="rux--header__nav" aria-label="rux-ds">
-    <ul class="rux--header__menu-bar">
-      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="portal.html" aria-current="page"><span class="rux--text-truncate-end">Portal</span></a></li>
-      <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
-      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
-      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
-    </ul>
-  </nav>
   <div class="rux--header__global">
-    <a class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" href="kitchen-sink.html" aria-label="Kitchen sink"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></a>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
+    <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
   </div>
+  <div class="rux--header-panel" id="rux-switcher-panel">
+    <ul class="rux--switcher" aria-label="Applications">
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ds/" aria-current="page">Design System</a></li>
+      <li><hr class="rux--switcher__item--divider"></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/">Home</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-ln-notes/">Notes</a></li>
+      <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-scheduler/">Scheduler</a></li>
+    </ul>
+  </div>
+  <div class="rux--header-panel" id="rux-account-panel">
+    <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
+      <div class="rux--form-item rux--text-input-wrapper">
+        <div class="rux--text-input__label-wrapper">
+          <label class="rux--label" for="rux-profile-name">Display name</label>
+        </div>
+        <div class="rux--text-input__field-outer-wrapper">
+          <div class="rux--text-input__field-wrapper">
+            <input id="rux-profile-name" class="rux--text-input" type="text" autocomplete="nickname" placeholder="Saved in this browser">
+          </div>
+        </div>
+      </div>
+      <div class="rux--form-item">
+        <fieldset class="rux--radio-button-group rux--radio-button-group--label-right rux--radio-button-group--vertical" id="rux-profile-theme">
+          <legend class="rux--label">Theme</legend>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-white" class="rux--radio-button" type="radio" name="rux-theme" value="white" checked>
+            <label for="rux-theme-white" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">White</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g10" class="rux--radio-button" type="radio" name="rux-theme" value="g10">
+            <label for="rux-theme-g10" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 10</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g90" class="rux--radio-button" type="radio" name="rux-theme" value="g90">
+            <label for="rux-theme-g90" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 90</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-g100" class="rux--radio-button" type="radio" name="rux-theme" value="g100">
+            <label for="rux-theme-g100" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Gray 100</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-geist" class="rux--radio-button" type="radio" name="rux-theme" value="geist">
+            <label for="rux-theme-geist" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Geist</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-linear" class="rux--radio-button" type="radio" name="rux-theme" value="linear">
+            <label for="rux-theme-linear" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Linear</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-ant-dark" class="rux--radio-button" type="radio" name="rux-theme" value="ant-dark">
+            <label for="rux-theme-ant-dark" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Ant Dark</span>
+            </label>
+          </div>
+          <div class="rux--radio-button-wrapper">
+            <input id="rux-theme-spotify" class="rux--radio-button" type="radio" name="rux-theme" value="spotify">
+            <label for="rux-theme-spotify" class="rux--radio-button__label">
+              <span class="rux--radio-button__appearance"></span>
+              <span class="rux--radio-button__label-text">Spotify</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <button type="button" class="rux--btn rux--btn--tertiary" id="rux-profile-sign-in" hidden>Sign in</button>
+    </div>
+  </div>
+
   <div class="rux--side-nav__overlay"></div>
-  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Side navigation">
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--hidden" aria-label="Pages">
     <ul class="rux--side-nav__items">
-      <li class="rux--side-nav__item rux--side-nav__item--active">
-        <a class="rux--side-nav__link" href="#status" aria-current="page">
-          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></div>
-          <span class="rux--side-nav__link-text">Status</span>
-        </a>
-      </li>
-      <li class="rux--side-nav__item">
-        <a class="rux--side-nav__link" href="#components">
-          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-list"/></svg></div>
-          <span class="rux--side-nav__link-text">Components</span>
-        </a>
-      </li>
-      <li class="rux--side-nav__item">
-        <a class="rux--side-nav__link" href="#templates">
-          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-document"/></svg></div>
-          <span class="rux--side-nav__link-text">Templates</span>
-        </a>
-      </li>
-      <li class="rux--side-nav__item">
-        <a class="rux--side-nav__link" href="#gates">
-          <div class="rux--side-nav__icon"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-checkmark--outline"/></svg></div>
-          <span class="rux--side-nav__link-text">Gates</span>
-        </a>
-      </li>
+      <li class="rux--side-nav__item rux--side-nav__item--active"><a class="rux--side-nav__link" href="portal.html" aria-current="page"><span class="rux--side-nav__link-text">Portal</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="kitchen-sink.html"><span class="rux--side-nav__link-text">Kitchen sink</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="builder.html"><span class="rux--side-nav__link-text">Page builder</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="theme-creator.html"><span class="rux--side-nav__link-text">Theme creator</span></a></li>
     </ul>
   </nav>
 </header>
 
 <main id="main-content" class="rux--content">
+  <nav class="ks-index" aria-label="Sections">
+    <a href="#status">Status</a>
+    <a href="#components">Components</a>
+    <a href="#templates">Templates</a>
+    <a href="#gates">Gates</a>
+  </nav>
   <div class="rux--css-grid">
     <div class="rux--css-grid-column rux--col-span-100">
 
@@ -208,7 +285,7 @@
           <div class="rux--css-grid-column rux--sm:col-span-4 rux--md:col-span-4 rux--lg:col-span-4">
             <div class="rux--tile">
               <p>Browser gates current</p>
-              <p class="rux--type-heading-04">50 of 50 shown</p>
+              <p class="rux--type-heading-04">39 of 50 shown</p>
               <p>3 portal cells reported by npm run gates only</p>
             </div>
           </div>
@@ -1031,7 +1108,7 @@
 
         <div class="rux--stack-vertical rux--stack-scale-5">
           <h3>Browser gate coverage</h3>
-          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 50 of 50 are current; 0 not current, 0 never run. <code>npm run gates</code> reports all 53, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
+          <p>A gate never run against a target is indistinguishable from one that passed, and a reading whose inputs have moved since is not coverage either. Of the cells this page can report without describing itself, 39 of 50 are current; 11 not current, 0 never run. <code>npm run gates</code> reports all 53, including 3 for this portal that are omitted below to prevent self-invalidation.</p>
           <section class="rux--data-table-container">
             <div class="rux--data-table-content">
               <table class="rux--data-table rux--data-table--lg">
@@ -1048,16 +1125,16 @@
                 <tr>
                   <td>check-rendered</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1069,16 +1146,16 @@
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
                   <td>theme-creator.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-runtime-classes</td>
@@ -1167,9 +1244,9 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1181,16 +1258,16 @@
                 <tr>
                   <td>check-spacing</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
                   <td>theme-creator.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-spacing</td>
@@ -1279,16 +1356,16 @@
                 <tr>
                   <td>check-behaviour</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>builder.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
@@ -1300,16 +1377,16 @@
                 <tr>
                   <td>check-a11y</td>
                   <td>kitchen-sink.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>
                   <td>theme-creator.html</td>
-                  <td><span class="rux--tag rux--tag--green rux--tag--sm"><span class="rux--tag__label">current</span></span></td>
+                  <td><span class="rux--tag rux--tag--red rux--tag--sm"><span class="rux--tag__label">stale</span></span></td>
                   <td>2026-09-11</td>
-                  <td>2026-09-11</td>
+                  <td>an input changed since</td>
                 </tr>
                 <tr>
                   <td>check-a11y</td>

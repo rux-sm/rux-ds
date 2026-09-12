@@ -91,6 +91,7 @@
 // document and do not descend into an iframe; sweeping this page measures the
 // builder's chrome, not the page inside it. The page says so.
 import { readFileSync, writeFileSync } from 'node:fs';
+import { shell } from './lib/shell.mjs';
 
 const sprite = readFileSync('assets/icons.svg', 'utf8').trim();
 const symbols = new Set([...sprite.matchAll(/<symbol\s+id="([^"]+)"/g)].map(m => m[1]));
@@ -199,18 +200,7 @@ const page = `<!doctype html>
 
 ${sprite}
 
-<header class="rux--header" data-theme="g100" aria-label="rux-ds">
-  <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <a class="rux--header__name" href="builder.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-  <nav class="rux--header__nav" aria-label="rux-ds">
-    <ul class="rux--header__menu-bar">
-      <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
-      <li><a class="rux--header__menu-item" href="kitchen-sink.html"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
-      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="builder.html" aria-current="page"><span class="rux--text-truncate-end">Builder</span></a></li>
-      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
-    </ul>
-  </nav>
-</header>
+${shell('builder')}
 
 <main id="main-content" class="rux--content">
   <div class="rux--css-grid">
