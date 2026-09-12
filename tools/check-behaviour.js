@@ -378,10 +378,34 @@
   // Account action must open #rux-account-panel and leave the switcher's
   // closed, and opening the switcher must close it, because the kernel keeps
   // one dismissible surface on the stack.
+  //
+  // THIS CASE IS NOT SECTION-SCOPED, AND THE OTHER TWO ABOVE IT ARE. Corrected
+  // 2026-09-11 after it started skipping. It read `fixture('#ui-shell')` for
+  // the two ACTIONS while resolving their PANELS with document.getElementById
+  // two lines later -- half-scoped, and only ever correct while one shell on
+  // the page owned both halves. `aria-controls` names an id, and an id is
+  // document-scoped by definition, so the action and its target are resolved
+  // the same way now.
+  //
+  // WHAT MADE IT SKIP, because the cause is the useful half: kitchen-sink.html
+  // gained a real shell, the ui-shell SPECIMEN was carrying the canonical
+  // rux-account-panel and rux-switcher-panel ids, and thirteen ids existed
+  // twice on one page. The specimen took ks- ids; nothing inside #ui-shell
+  // names the canonical panels any more, so a section-scoped lookup finds
+  // nothing and the case reported "no account panel here" on a page that has
+  // one.
+  //
+  // WHAT THIS MAKES WEAKER, stated rather than left to be discovered: the case
+  // no longer asserts anything about the SPECIMEN. It follows whichever shell
+  // on the page owns those two ids -- the page's own on kitchen-sink.html, a
+  // consumer's on a consumer page -- so the sink's ui-shell fragment now has
+  // no case exercising its panel pair. That is a real loss of one fixture's
+  // coverage, traded for the case testing the shell a reader actually uses.
+  // If the specimen is ever to be covered again it needs its own case naming
+  // the ks- ids, which is a second fixture and not this edit.
   (() => {
-    const root = fixture('#ui-shell');
-    const account = root.querySelector('.rux--header__action[aria-controls="rux-account-panel"]');
-    const grid = root.querySelector('.rux--header__action[aria-controls="rux-switcher-panel"]');
+    const account = document.querySelector('.rux--header__action[aria-controls="rux-account-panel"]');
+    const grid = document.querySelector('.rux--header__action[aria-controls="rux-switcher-panel"]');
     if (!account && !grid) return skip('ui-shell', 'account panel', 'no account panel here');
     const ap = document.getElementById('rux-account-panel');
     const sp = document.getElementById('rux-switcher-panel');

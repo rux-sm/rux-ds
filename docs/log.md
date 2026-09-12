@@ -9,6 +9,57 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the account-panel case fixed, and it was half-scoped from the
+day it was written.** It skipped once the sink got a real shell, and the
+proposal in the entry below called it a one-selector fix. It is. The case read
+`fixture('#ui-shell')` for the two ACTIONS and then resolved their PANELS with
+`document.getElementById` two lines later. `aria-controls` names an id and an
+id is document-scoped by definition, so half of one assertion was section-bound
+and the other half was not. That only ever worked while a single shell on the
+page owned both halves — which is exactly what stopped being true. Both are
+resolved at document level now.
+
+**DRIVEN RED TWICE, because the first red run was weaker than it looked.**
+Removing `aria-controls` from the page's Account action took the gate to 45 of
+46 with one failure — but the failure was the GUARD reporting `account=false`,
+which proves only that the case notices a missing action. The second one leaves
+every attribute in place and breaks the behaviour instead: a capture-phase
+listener swallows the click before `js/ui-shell.js` sees it, and the assertion
+itself fails — "the Account action opens its own panel and not the switcher ::
+account=false, switcher=false, aria-expanded=false", 46 of 47. Restored both
+times to 47 of 47.
+
+**47 of 47 with nothing skipped**, where the reading it replaces was 45 of 46
+with one skipped. The case contributes both its records again.
+
+**WHAT IT MAKES WEAKER, and this is the half worth reading.** The case no
+longer asserts anything about the ui-shell SPECIMEN. It follows whichever shell
+owns those two ids — the page's own here, a consumer's on a consumer page — so
+`sink/ui-shell.html`'s panel pair now has no case exercising it. That is one
+fixture's coverage traded for the case testing the shell a reader actually
+uses. Covering the specimen again needs its own case naming the `ks-` ids,
+which is a second fixture and not this edit.
+
+**AND THE THING THIS SESSION CANNOT SETTLE: I WROTE BOTH SIDES.** The shell
+that made the case skip and the control that now passes it were authored in the
+same run, which is the one thing `AGENTS.md` tier 2 forbids in as many words.
+`tools/check-controls.mjs` says it plainly — "Nothing here verified that this
+change strengthens the control rather than weakening it" — and it is right.
+**The 47 of 47 is not independent evidence.** What would make it independent is
+a session that did not write the shell reading this diff and the two red runs
+against it. Recorded here so the green is not mistaken for a verdict.
+
+**A SECOND GAP, FOUND ON THE WAY AND NOT FIXED.** `npm run gates` still read 53
+of 53 current after this edit, because a gate's own implementation is not among
+the inputs its cell declares — so changing `tools/check-behaviour.js` aged no
+reading, and the ledger went on publishing 45 of 46 as current while the gate
+returned 47 of 47. The cell is restamped by hand below. Adding a gate's own
+file to its cell's inputs would age every reading whenever a gate is touched,
+which may be correct and is a change to `tools/lib/gates.mjs` either way. Tier
+2, not taken.
+
+---
+
 **2026-09-11 — the kitchen sink gets the shell it documents.** It was the only
 page here without one: index, portal, builder and theme-creator each carry a
 real `rux--header`, and the sink carried three — all of them specimens inside
