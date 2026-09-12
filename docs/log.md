@@ -9,6 +9,46 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-12 — the switcher was a hardcoded list that nothing updated, and it
+already disagreed with the hub.** rux asked whether its links work. They do —
+all four resolve 200 on the workspace server and clicking Scheduler really
+lands on `/rux-scheduler/` — but checking that turned up the thing underneath.
+
+**`docs/consumer-policy.md` §5 says nothing but the hub lists apps.** The
+mechanism is `/switcher.js`: every app links it, it fetches `/switcher.json`
+from the account root and REWRITES every `ul.rux--switcher` on the page,
+marking the one you are on. The entries a page ships are a fallback for when
+that fetch fails. **Of rux-ds's five pages, only `index.html` linked it** —
+the hub, `rux-scheduler` and `rux-ln-notes` all do, on every page. So the four
+generated pages carried a list nothing could ever correct.
+
+**AND THE LIST THEY CARRIED WAS ALREADY WRONG.** `switcher.json` reads Home,
+LN Notes, Scheduler, Design System; the shell shipped Design System first and
+called the second one "Notes". Different order, different name. A page whose
+fetch failed showed a different ecosystem from one whose fetch worked, and a
+fallback that disagrees with the thing it stands in for is worse than no
+fallback. Both are fixed: `shellScripts()` emits the script and the fallback
+matches the hub's order and names as of today.
+
+**PROVED IT IS THE HUB'S LIST AND NOT A COINCIDENCE, because the fallback now
+matches and "it looks right" would not distinguish them.** `switcher.js` sets
+`tabIndex = -1` on the links of a collapsed panel and the shipped markup
+carries no `tabindex` at all, so that attribute is its fingerprint. Measured on
+the portal: all four links at `tabIndex -1`, so the list on screen was
+regenerated from `/switcher.json` rather than left as shipped. All five pages
+link the script; all four targets return 200; clicking Scheduler navigates to
+`/rux-scheduler/` and the page that arrives is titled Scheduler.
+
+**ONLY THE WORKSPACE SERVER CAN ANSWER THIS, and the single-repo one was the
+wrong place to have been looking all afternoon.** On port 8642 `/switcher.js`,
+`/switcher.json` and three of the four targets are 404, because that server
+serves one checkout at `/` and knows nothing of its siblings — `switcher.js`
+catches the failed fetch and leaves the fallback, which is exactly the
+graceful case it was written for. Port 8640 lays the family out the way GitHub
+Pages does, and that is where every figure above was read.
+
+---
+
 **2026-09-12 — the theme panel I put on three pages did nothing, and rux found
 it.** The shell gave the portal, the builder and the theme creator an account
 panel with eight theme radios. **None of the three loaded `js/profile.js`,
