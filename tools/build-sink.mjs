@@ -42,8 +42,7 @@ const sprite = existsSync('assets/icons.svg')
 const nav = sections
   .slice()
   .sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'en', { sensitivity: 'base' }))
-  .map(s => `      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="#${idOf(s)}"><span class="rux--side-nav__link-text">${titleOf(s)}</span></a></li>`)
-  .join('\n');
+  .map(s => `    <a href="#${idOf(s)}">${titleOf(s)}</a>`).join('\n');
 
 // THE EIGHT THEMES, as the profile panel's radio group. Same markup as
 // templates/app-shell.html's, generated rather than pasted because the sink
@@ -84,31 +83,27 @@ const page = `<!doctype html>
 
 ${sprite}
 
-<!-- THE ONE PIECE OF LAYOUT CARBON DOES NOT SHIP, copied from
-     templates/app-shell.html with its reasoning intact: .rux--content is
-     indented only by a SIBLING side nav, and the nav in this shell lives
-     inside the header, so none of Carbon's three rules match. 16rem clears
-     the nav and the remaining 2rem is the content's own gutter. Scoped to the
-     same breakpoint the nav is, because below it the nav is 0 wide and
-     overlays instead. -->
-<style>
-@media (min-width: 66rem) {
-  .rux--content { padding-inline-start: 18rem; }
-}
-</style>
+<!-- THE COLLAPSIBLE SHELL, not the persistent one, and js/ui-shell.js names
+     both. The toggle carries NO __menu-toggle__hidden, so the hamburger is on
+     screen at every width; the nav carries --side-nav--hidden, so it is closed
+     until the button opens it over the page. templates/ all ship the other
+     one. Chosen 2026-09-11: this page is four pages deep and does not want a
+     256px column standing open beside 68 sections.
 
+     SO THERE IS NO 18rem OFFSET HERE. The content is indented only when a nav
+     sits BESIDE it; this nav overlays, so an offset would be a permanent gap
+     next to nothing. templates/app-shell.html keeps its offset because it
+     keeps the persistent shell.
+
+     WHAT THIS SHELL COSTS, quoted from js/ui-shell.js rather than rediscovered:
+     Carbon tightens the app name to 8px of inline start whenever the toggle
+     lacks __hidden, at every width and with no media query, so check-spacing
+     reports 8px against a capture taken from the persistent shell. It is
+     correct and there is no capture of this shell to compare against. -->
 <header class="rux--header" data-theme="g100" aria-label="rux-ds">
   <a class="rux--skip-to-content" href="#main-content">Skip to main content</a>
-  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle rux--header__menu-toggle__hidden" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <button type="button" class="rux--header__action rux--header__menu-trigger rux--header__menu-toggle" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-menu"/></svg></button>
   <a class="rux--header__name" href="portal.html"><img src="brand/logo.svg" alt="" style="height:1.5rem;width:auto;margin-right:.5rem;flex:none"><span class="rux--header__name--prefix">Rux</span>&nbsp;DS</a>
-  <nav class="rux--header__nav" aria-label="rux-ds">
-    <ul class="rux--header__menu-bar">
-      <li><a class="rux--header__menu-item" href="portal.html"><span class="rux--text-truncate-end">Portal</span></a></li>
-      <li><a class="rux--header__menu-item rux--header__menu-item--current" href="kitchen-sink.html" aria-current="page"><span class="rux--text-truncate-end">Kitchen sink</span></a></li>
-      <li><a class="rux--header__menu-item" href="builder.html"><span class="rux--text-truncate-end">Builder</span></a></li>
-      <li><a class="rux--header__menu-item" href="theme-creator.html"><span class="rux--text-truncate-end">Theme creator</span></a></li>
-    </ul>
-  </nav>
   <div class="rux--header__global">
     <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="Account" aria-expanded="false" aria-controls="rux-account-panel"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><use href="#i-user--avatar"/></svg></button>
     <button type="button" class="rux--header__action rux--btn rux--layout--size-lg rux--btn--ghost rux--btn--icon-only" aria-label="App switcher" aria-expanded="false" aria-controls="rux-switcher-panel"><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><use href="#i-grid"/></svg></button>
@@ -122,16 +117,6 @@ ${sprite}
       <li class="rux--switcher__item"><a class="rux--switcher__item-link" href="/rux-scheduler/">Scheduler</a></li>
     </ul>
   </div>
-  <!-- THE THEME CONTROL LIVES HERE NOW, and it did not until 2026-09-11.
-       Eight data-set-theme buttons sat at the top of the content instead,
-       and templates/app-shell.html's own comment recorded that as deliberate —
-       "the sink's five buttons stay in harness.js as a demo convenience". rux
-       asked for the sink to match every other page, so the convenience is
-       withdrawn and the profile panel is the one place a theme is chosen.
-       js/profile.js drives the radios and js/theme.js stores the choice, both
-       already loaded here. Carbon reserves the header's global actions for
-       universal system functions and no capture has a theme button, which is
-       why it is in this panel rather than beside the account icon. -->
   <div class="rux--header-panel" id="rux-account-panel">
     <div class="rux--layer-two rux--stack-vertical rux--stack-scale-5">
       <div class="rux--form-item rux--text-input-wrapper">
@@ -155,24 +140,20 @@ ${THEMES}
   </div>
 
   <div class="rux--side-nav__overlay"></div>
-  <!-- THE SECTION LIST, WHICH IS WHAT A SIDE NAV IS FOR — the same thing
-       portal.html puts in its own, four links there and ${sections.length}
-       here. Sorted by title; sink/ORDER still groups the PAGE. No icons: 65
-       of the 74 captured side-nav links carry none, so an icon-less link is
-       the majority shape rather than an omission, and ${sections.length}
-       invented glyphs would be ${sections.length} inventions.
-
-       IT IS TALLER THAN THE LIST IT REPLACES AND THAT WAS MEASURED, not
-       discovered afterwards: Carbon's link is a fixed 2rem against the old
-       harness row's 19px, so the list goes from 1292px to about 2176px and a
-       900px window shows roughly 28 entries where it showed 47. Carbon
-       compiles no denser variant. Expandable categories would collapse it —
-       app-shell.html demonstrates them — but grouping ${sections.length}
-       components is a judgement nobody has made, and sink/ORDER's own
-       grouping has already half-rotted at the tail. Flat until then. -->
-  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux" aria-label="Sections">
+  <!-- THE PAGES, WHICH IS WHAT A LEFT PANEL HOLDS. IBM's UI shell left panel
+       usage puts the header at the highest level of navigation and the left
+       panel one tier below it, and says content BENEATH that tier belongs in
+       tabs within the page rather than in the nav. This page's 68 section
+       links were in here until 2026-09-11 and that was the wrong tier: they
+       are page content, so they are back in the page as the index they always
+       were. templates/app-shell.html models the same thing -- its panel holds
+       Dashboard, Trips, Invoices, not anchors. -->
+  <nav class="rux--side-nav__navigation rux--side-nav rux--side-nav--ux rux--side-nav--hidden" aria-label="Pages">
     <ul class="rux--side-nav__items">
-${nav}
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="portal.html"><span class="rux--side-nav__link-text">Portal</span></a></li>
+      <li class="rux--side-nav__item rux--side-nav__item--active"><a class="rux--side-nav__link" href="kitchen-sink.html" aria-current="page"><span class="rux--side-nav__link-text">Kitchen sink</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="builder.html"><span class="rux--side-nav__link-text">Page builder</span></a></li>
+      <li class="rux--side-nav__item"><a class="rux--side-nav__link" href="theme-creator.html"><span class="rux--side-nav__link-text">Theme creator</span></a></li>
     </ul>
   </nav>
 </header>
@@ -180,6 +161,14 @@ ${nav}
 <main id="main-content" class="rux--content ks-main">
   <h1>Kitchen sink</h1>
   <p class="ks-count">${sections.length} sections · every component this system compiles, on one page</p>
+
+  <!-- THE SECTION INDEX, IN THE PAGE WHERE IT BELONGS. Not a shell part and
+       not pretending to be one: ks- chrome, 19px rows, sorted by title while
+       sink/ORDER groups the page below it. It lived in the left panel for one
+       afternoon and Carbon's own guidance says that tier is for pages. -->
+  <nav class="ks-index" aria-label="Sections">
+${nav}
+  </nav>
 
 ${sections.join('\n\n')}
 </main>

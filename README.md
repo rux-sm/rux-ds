@@ -110,7 +110,7 @@ the browser sweep. The two capture-backed gates print this, re-measured
 | Components | **77 / 83 compiled** in 80 `@use` lines — `data-table` is four of them — and `docs/inventory.md` decides all 83, which `check-inventory` fails if it stops |
 | Themes | 4 — white, g10, g90, g100 — plus `geist`, `linear`, `ant-dark` and `spotify`, token override blocks in `css/rux-theme.css`, not a compile |
 | Tokens · classes | **626** `--rux-*` defined, 10 more read through a fallback · **1,798** `.rux--*` |
-| Kitchen sink | **68** sections · **991** classes with `templates/` and `js/` |
+| Kitchen sink | **68** sections · **992** classes with `templates/` and `js/` |
 | Class coverage | **948 / 1,356 (70%)** — ratcheted in `docs/coverage.json` |
 | Spacing scale | 13 `--rux-spacing-*` tokens, demoed in the `spacing` section |
 | Markup provenance | **74 `rendered-dom` · 6 `source` · 0 `inferred`** across 80 files |

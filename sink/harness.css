@@ -20,6 +20,29 @@ body { min-height: 100vh; background: var(--rux-background);
    an unknown one. Fitting the markup to the adjudication is the cheap side of
    that; widening the adjudication is a control change. 2026-09-11. */
 .ks-main { max-width: 66rem; }
+
+/* THE SECTION INDEX, in the page. It was the left column until 2026-09-11,
+   then the shell's side nav for an afternoon, and neither was right: IBM puts
+   pages in the left panel and page content in the page. Dense on purpose --
+   19px rows against Carbon's 32px side-nav link, so 68 entries read as an
+   index rather than a second navigation. Columns rather than one tall list,
+   because a 1292px column pushes every section below the fold. */
+.ks-index { columns: 11rem; column-gap: 1.5rem; margin-block-end: 2.5rem;
+            padding-block: 1rem; border-block: 1px solid var(--rux-border-subtle); }
+.ks-index a { display: block; padding-block: .0625rem; break-inside: avoid; }
+.ks-index a { font-size: .8125rem; color: var(--rux-text-secondary);
+              text-decoration: none; }
+.ks-index a:hover { color: var(--rux-link-primary); text-decoration: underline; }
+/* A REAL FOCUS RING, because 68 links with only the browser's own is a defect
+   and check-a11y counts it as one. It reported 68 findings the moment this
+   index moved into the page -- all of them "no visible focus change" on an
+   anchor whose focused outline computes `auto`, which the gate does not count
+   and this stylesheet never writes. Carbon's own idiom: 2px solid on the focus
+   token, inset so it does not shift the row. The list that stood in the left
+   column before this had no ring either and was never reported, which is its
+   own question and is written up in docs/log.md. */
+.ks-index a:focus-visible { outline: 2px solid var(--rux-focus);
+                            outline-offset: -2px; }
 .ks-count { font-size: .75rem; color: var(--rux-text-helper);
             margin-block: .25rem 2rem; }
 .ks-sec { padding-block: 2rem; border-block-start: 1px solid var(--rux-border-subtle); }

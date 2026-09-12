@@ -9,6 +9,66 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the left panel holds PAGES, and yesterday's answer to that was
+wrong.** rux asked whether the nav should list the pages rather than the page's
+contents. I said no and cited IBM's "secondary navigation". **rux was right and
+I had misread it.** The same guidance says the left panel does not support a
+third tier and that content below a sub-menu belongs in tabs within the page —
+so "secondary" means one tier BELOW the header, still pages, not in-page
+anchors. `templates/app-shell.html` models exactly that and was in front of me
+the whole time: its panel holds Dashboard, Trips and Invoices, not anchors.
+The behaviour page also says to reach for the panel past five items, a count
+that only makes sense for pages. The correction is recorded here rather than
+quietly applied.
+
+**SO THE SHELL IS THE COLLAPSIBLE ONE NOW, which `js/ui-shell.js` already
+names and blesses.** The toggle carries no `__menu-toggle__hidden`, so the
+hamburger is on screen at every width; the nav carries `--side-nav--hidden` and
+opens over the page. The panel holds four links — Portal, Kitchen sink, Page
+builder, Theme creator — and the header's menu bar is gone, because the same
+four in a bar above the panel is the duplication rux was right to be suspicious
+of. Driven at 1280: closed 0, open 256 with `aria-expanded` true and the label
+at "Close menu", closed 0 again.
+
+**AND THE 18rem OFFSET WENT WITH IT.** Content is indented only when a nav
+sits beside it; this one overlays, so the offset would be a permanent gap next
+to nothing. `.rux--content` is back to Carbon's own 32px and the two
+`SELF_INDENT` known rows the offset created are gone with it — known 35, the
+figure before any of this.
+
+**THE 68 SECTION LINKS ARE BACK IN THE PAGE**, as `ks-index`: dense 19px rows
+in CSS columns, 244px tall against 1292 as one column and 2192 in the side nav.
+CSS columns rather than a grid, because a grid fills across and an alphabetical
+index wants to read DOWN a column the way a printed one does.
+
+**IT SHIPPED 68 ACCESSIBILITY DEFECTS FOR ONE BUILD, and the gate caught every
+one.** Moving the links into the page took `check-a11y` from 29 findings to 97
+— 68 of them "no visible focus change" on an anchor whose focused outline
+computes `auto`, the browser's own ring, which this stylesheet never writes and
+the gate does not count. A focus ring on the system's own token takes it back
+to 29 and `(page)` disappears from the map entirely.
+
+**WHY THE OLD LEFT COLUMN NEVER REPORTED THE SAME THING IS NOT DIAGNOSED, and
+that is the honest state.** It held the same 68 anchors with no focus style of
+their own and `check-a11y` read 29 throughout. Probed with two identical bare
+anchors, one appended to the content and one to the header: findings went up by
+exactly ONE, so the gate reports an anchor in the content and not the same
+anchor in the header. That is evidence of a scope or layout-dependent blind
+spot and not an explanation of it. `tools/check-a11y.js` is a control; nothing
+was changed there, and this paragraph exists so the next reader starts from the
+probe rather than from the question.
+
+**Swept and recorded separately.** 47 of 47 on behaviour with nothing skipped,
+spacing 459 checked with diverges at 15, check-rendered 68 sections clean in
+all eight themes, 0 duplicate ids.
+
+**NOT DONE: `portal.html` has the same mistake.** Its left panel is four
+anchors into its own page — the tier this entry just corrected. rux has not
+asked for it and it is a second page's composition, so it is named here and
+left.
+
+---
+
 **2026-09-11 — the account-panel case fixed, and it was half-scoped from the
 day it was written.** It skipped once the sink got a real shell, and the
 proposal in the entry below called it a one-selector fix. It is. The case read
