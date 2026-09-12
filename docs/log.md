@@ -9,6 +9,38 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-11 — the sink's nav sorted, its page left alone.** rux read the whole
+left column looking for one entry and asked whether it could be alphabetical.
+It can, and `sink/ORDER` is the one file that decides it — but sorting the ORDER
+sorts the PAGE, and the page is grouped by kind on purpose: the form controls
+sit together, the overlays sit together, and a reader comparing two of a kind
+has them side by side. **Two different jobs, so they are split.** The page keeps
+`sink/ORDER`; the nav is sorted in `tools/build-sink.mjs` at render time.
+
+**SORTED ON THE VISIBLE TITLE, NOT THE FRAGMENT NAME**, because the title is
+what is on screen to scan. Most agree, and the two that do not are the ones a
+reader would hunt for: `table` renders as "Data table" and now sorts under D,
+`ui-shell` renders as "UI shell" and sorts under U. `localeCompare` with base
+sensitivity, so case does not split the alphabet into two runs.
+
+**SWEPT, and the split is what the reading proves:** 68 nav links sorted true,
+68 page sections sorted false, in the same execution. Every gate figure on the
+sink is identical to the reading it replaces — runtime classes 864/868 with
+nothing stripped, a11y 29 findings and 6 notes with the calendar confirmed open,
+spacing 456 checked / 406 matched / 35 known / 15 diverges / 36 not comparable /
+308 no reference, check-rendered 68 sections and 0 empty svgs, check-behaviour
+47 of 47. Reordering `ks-` chrome moves no class, no box and no behaviour, and
+the figures say so rather than the reasoning.
+
+**The grouping this protects had already half-rotted, and that is worth saying
+rather than leaving for whoever reads ORDER next.** The first two thirds are
+grouped; the tail — `scroll-gradient`, `dialog`, `side-panel`, `ai-label`,
+`chat-button`, `action-set` — is newest-added-last and belongs to no group. The
+sort was not the moment to regroup it, because that is a judgement about which
+components are alike and nobody asked for it. Left as found, named here.
+
+---
+
 **2026-09-11 — the toast ask, answered by reading the source and declining the
 class.** `rux-scheduler` asked for a compiled region to put toasts in, carrying
 the position, inset, stacking and z-index "that Carbon's guidance describes but

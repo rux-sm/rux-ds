@@ -29,7 +29,20 @@ const sections = seq.map(n => readFileSync(`sink/${n}.html`, 'utf8').trim());
 const sprite = existsSync('assets/icons.svg')
   ? readFileSync('assets/icons.svg', 'utf8').trim()
   : '<!-- no assets/icons.svg; run tools/icons.mjs -->';
-const nav = sections.map(s => `    <a href="#${idOf(s)}">${titleOf(s)}</a>`).join('\n');
+// THE NAV IS SORTED AND THE PAGE IS NOT, and the split is the point.
+// sink/ORDER groups the page by kind, so the form controls sit together and
+// the overlays sit together and a reader comparing two of a kind has them side
+// by side. That is worth keeping and it is useless for FINDING one of 68 by
+// name, which is what the nav is for. Asked for 2026-09-11 after the whole
+// list was read looking for one entry. Sorted on the visible TITLE rather than
+// the fragment name, because the title is what is on screen to scan --
+// `combo-button` and `Combo button` sort the same here, but `ui-shell` and
+// `UI shell` do not, and the reader only ever sees the second. localeCompare
+// so case does not split the alphabet into two runs.
+const nav = sections
+  .slice()
+  .sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'en', { sensitivity: 'base' }))
+  .map(s => `    <a href="#${idOf(s)}">${titleOf(s)}</a>`).join('\n');
 
 const page = `<!doctype html>
 <html lang="en" data-theme="white">
