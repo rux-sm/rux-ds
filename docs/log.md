@@ -30,12 +30,19 @@ fallback that disagrees with the thing it stands in for is worse than no
 fallback. Both are fixed: `shellScripts()` emits the script and the fallback
 matches the hub's order and names as of today.
 
-**PROVED IT IS THE HUB'S LIST AND NOT A COINCIDENCE, because the fallback now
-matches and "it looks right" would not distinguish them.** `switcher.js` sets
-`tabIndex = -1` on the links of a collapsed panel and the shipped markup
-carries no `tabindex` at all, so that attribute is its fingerprint. Measured on
-the portal: all four links at `tabIndex -1`, so the list on screen was
-regenerated from `/switcher.json` rather than left as shipped. All five pages
+**PROVING IT IS THE HUB'S LIST AND NOT THE FALLBACK TOOK TWO GOES, because
+making the fallback match removed every easy way to tell them apart.** The
+first attempt claimed `tabIndex = -1` on the links was `switcher.js`'s
+fingerprint. **It is not, and that claim is withdrawn:** `js/ui-shell.js` sets
+the same `tabIndex = -1` on every link in a collapsed header panel, and the
+sink on port 8642 — where `/switcher.js` 404s and nothing can rewrite anything
+— reads `-1,-1,-1,-1` too. It proved only that a panel was closed.
+
+**WHAT ACTUALLY PROVES IT:** on the portal, the switcher's list was replaced
+by hand with a single link reading "ZZ WRECKED", then `/switcher.js` was
+re-injected. The hub's four entries came back — Home, LN Notes, Scheduler,
+Design System with `aria-current` on the last — and the wreckage was gone. A
+fallback cannot do that; only a fetch of `/switcher.json` can. All five pages
 link the script; all four targets return 200; clicking Scheduler navigates to
 `/rux-scheduler/` and the page that arrives is titled Scheduler.
 
