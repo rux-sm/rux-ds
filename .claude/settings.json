@@ -13,19 +13,5 @@
       "~/Developer/rux-sm.github.io",
       "~/Developer/rux-ln-notes"
     ]
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node tools/exchange.mjs 2>/dev/null | jq -Rs '{hookSpecificOutput:{hookEventName:\"SessionStart\",additionalContext:.}}' || true",
-            "timeout": 15,
-            "statusMessage": "Reading open cross-repo asks"
-          }
-        ]
-      }
-    ]
   }
 }
