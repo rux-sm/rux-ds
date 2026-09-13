@@ -41,16 +41,16 @@ fallback if that is ever needed.
 | :--- | :--- | :--- |
 | a colour, or any value a token names | your `rux-theme.css`, inside a `[data-theme]` block | `:root`; rux-ds's files |
 | how a rux-ds component looks beyond its tokens | your `rux-overrides.css`, at Carbon's own specificity | `!important`; a class rux-ds does not compile |
-| a component rux-ds does not have | **a request to rux-ds, with invented content** | a local rule on a `rux--*` class |
+| a component rux-ds does not have | **added to rux-ds, in the same session, with invented content** | a local rule on a `rux--*` class |
 
 **An app's own component is yours and is prefixed.** Carbon has no schedule
 grid; the app that needs one owns it — markup in the page, rules in its own
 stylesheet, and **every colour, size and space a `--rux-*` token**. A variable
 in your own namespace carries a count or a position, never a colour. A
-prefixed class is never a way to restyle a Carbon part: that is a request to
+prefixed class is never a way to restyle a Carbon part: that is done in
 rux-ds.
 
-**A request to rux-ds is authored with invented, generic content.** rux-ds is
+**Work in rux-ds is authored with invented, generic content.** rux-ds is
 public and generic, with its own consumers. Nothing from a client, a person,
 a private repository or a domain goes into a commit, template or issue there —
 whatever an app needs is demonstrated on content that was made up.
@@ -66,7 +66,7 @@ two with identical totals — only the placement differed.
 | root | `AGENTS.md` the policy, `CLAUDE.md` importing it, `README.md` the front door — plus what the project publishes |
 | `docs/status.md` | where the project stands and what is outstanding. One name, one place, wherever there is state to record |
 | `docs/` | working documents: reasoning, designs, records, plans |
-| `exchange/` | cross-repository memos, one question each, with `exchange:` frontmatter so `tools/exchange.mjs` can list what is open |
+| `exchange/` | the record of past cross-repository memos; since 2026-09-12 the work is done in the owning repository in the same session, and nothing new is written there for routine work |
 
 **`README.md` stays at the root because GitHub renders it** — a repository
 whose front page is blank is worse than one file out of place.

@@ -15,17 +15,21 @@ the record of every dated pass and answered decision; counts live in
 **Public.** A framework-free UI kit built from Carbon v11, kept as complete as
 Carbon's markup allows and compiled under the `rux` prefix; Carbon stays a dev
 dependency as the upgrade path (roadmap §1, revised 2026-09-01). Nothing ERP,
-nothing from a client, nothing from `rux-ln-atlas` in any directory, tracked or
-not — a template is authored against invented content. Its consumers link
+nothing from a client, nothing from `rux-ln-atlas` anywhere in this tree,
+tracked or not — after the family consolidates, anywhere under `rux-ds/`; the
+Notes export lives in `rux-ln-notes/` and is not a DS example. A template is
+authored against invented content. Its consumers link
 `/rux-ds/…` live at this repository's newest release tag and start from
 `tools/new-project.sh`; a removed class is announced in `CHANGES.md`, and
 `docs/consumer-policy.md` is the contract they hold to.
 
-**Nothing pins, and this sentence said it did until 2026-09-11.** Vendoring
-and the pin both went on 2026-09-10 (roadmap §8.4, decided §8.6); README's
-"Picking this up" has said so since, and this file contradicted it. A policy
-file that disagrees with the status page is the worse of the two to leave
-wrong, because it is read first.
+## Work for an app is done here, in the same session
+
+Since 2026-09-12 a class, rule, icon or template fix an app needs is made
+here directly, in the session that makes the app change, with invented
+content — no memo, no request, no reply. `docs/consumer-policy.md` §3 says
+where it goes. What is still unfinished across the family is one list, the
+hub's `docs/status.md`.
 
 ## The one rule
 

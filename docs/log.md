@@ -9,6 +9,19 @@ not be. A new pass or an answered decision goes at the top of the block below.
 
 ---
 
+**2026-09-12 — two paragraphs left the startup files for this log, under the
+consolidation plan's stage 1 (`rux-sm.github.io/docs/platform-consolidation-plan.md`).**
+From `AGENTS.md`, verbatim: *"Nothing pins, and this sentence said it did
+until 2026-09-11. Vendoring and the pin both went on 2026-09-10 (roadmap §8.4,
+decided §8.6); README's 'Picking this up' has said so since, and this file
+contradicted it. A policy file that disagrees with the status page is the
+worse of the two to leave wrong, because it is read first."* From
+`CLAUDE.md`: the instruction that consumer-facing work starts with
+`node tools/exchange.mjs`, and its SessionStart hook. Since 2026-09-12 an
+app's need is met here directly in the same session, and the one list of
+what is unfinished is the hub's `docs/status.md`. Full text:
+`git show f4b204e:AGENTS.md` and `git show f4b204e:CLAUDE.md`.
+
 **2026-09-12 — the switcher was a hardcoded list that nothing updated, and it
 already disagreed with the hub.** rux asked whether its links work. They do —
 all four resolve 200 on the workspace server and clicking Scheduler really

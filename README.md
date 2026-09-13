@@ -19,10 +19,9 @@ cell current. **A twelfth template landed today**, `search-results-page`, and
 finishing it cost a control change and one real defect — `docs/log.md` has the
 account.
 
-**`main` is ahead of what is published.** This site deploys on a tag, after
-checking every served app against it (roadmap §8.4 diff B, §8.6); the newest
-tag is `v0.1.22` and `main` is nine commits past it, so the twelfth template is
-on GitHub and not yet on the site. `git describe --tags` is the check.
+**`main` may be ahead of what is published.** This site deploys on a tag, after
+checking every served app against it (roadmap §8.4 diff B, §8.6).
+`git describe --tags` says how far.
 
 **Nothing vendors rux-ds anywhere.** The scheduler, the hub, Notes and every
 page `tools/new-project.sh` writes all link `/rux-ds/` live; no `vendor/`
@@ -51,10 +50,10 @@ Where the phases stand — the long form is in the log:
 | Builder stage 13, repeated items | `docs/builder-guided-plan.md` |
 | Whether `--rux-border-strong-01` keeps 3:1 in every theme shipped, or only in the four compiled | `SEND-DS-2.md` in rux-ln-notes, read in place — measured on this repository's own `kitchen-sink.html` |
 
-The last row is an ask from another repository, and that class of row is the
-one that goes stale here. `node tools/exchange.mjs` lists every open ask in the
-workspace from the memos' own frontmatter; the four rows above it are this
-repository's own decisions and are not exchange state. Added 2026-09-11.
+The last row is what another app still needs. Since 2026-09-12 that is done
+here directly, in the same session, and the one list across the family is
+the hub's `docs/status.md`. The four rows above it are this repository's own
+decisions.
 
 ## Run, edit, verify, release
 
@@ -69,8 +68,7 @@ The full routine, with what to look at afterwards, is `docs/verbs.md`.
 | Edit how a component looks | `css/rux-overrides.css`, at Carbon's own specificity | |
 | Edit which components or themes compile | `src/app.scss` | `npm run build` |
 | Verify | `npm run verify` — **check the exit code, not the output** | the browser gates: skill `sink-check`; `npm run gates` says which page each was last run against |
-| Release | `npm run verify && npm run gates`; a line in `CHANGES.md` if a class left (then a minor, else a patch); `git tag vX.Y.Z`; `git push origin vX.Y.Z` | `git describe --tags` |
-| Roll a tag out to every app | `sh tools/roll-out.sh vX.Y.Z` from here, on `main` | read each drift report; commit per app |
+| Release | `npm run verify && npm run gates`; a line in `CHANGES.md` if a class left (then a minor, else a patch); `git tag vX.Y.Z`; `git push origin vX.Y.Z` | `git describe --tags`; every app reads the new tag on its next deploy |
 
 **`npm install --ignore-scripts` before `npm run verify`, after any pull that
 touches `package.json`** — `npm ci --ignore-scripts` on a fresh clone. `verify`
